@@ -20,6 +20,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.refreshControl = refreshControl
         return scrollView
     }()
 
@@ -43,6 +44,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
+    }()
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pulledToRefresh), for: .valueChanged)
+        return refreshControl
     }()
 
     private let meScenePresenter: ScenePresenter
@@ -297,6 +304,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             finishSync()
         } failure: { (error) in
             finishSync()
+        }
+    }
+
+    @objc
+    private func pulledToRefresh() {
+        blogDetailsViewController?.pulledToRefresh(with: refreshControl) {
+            self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
         }
     }
 
