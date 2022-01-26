@@ -27,6 +27,7 @@ extension BlogDetailsViewController {
         contentView.addSubview(actionRow)
 
         setupConstraints()
+        setupCell()
     }
 
     private func setupConstraints() {
@@ -42,6 +43,10 @@ extension BlogDetailsViewController {
             actionRow.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             widthConstraint
         ])
+    }
+
+    private func setupCell() {
+        selectionStyle = .none
     }
 
     private enum Constants {
