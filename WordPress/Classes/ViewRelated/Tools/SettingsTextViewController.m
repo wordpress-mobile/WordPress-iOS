@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         [self commonInitWithPlaceholder:placeholder hint:hint];
 
@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (instancetype)initWithAttributedText:(NSAttributedString *)text defaultAttributes:(NSDictionary<NSAttributedStringKey, id> *)defaultAttributes placeholder:(NSString *)placeholder hint:(NSString *)hint
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         [self commonInitWithPlaceholder:placeholder hint:hint];
         

@@ -91,7 +91,7 @@ extension SiteSettingsViewController {
     }
 
     @objc func showPostPerPageSetting() {
-        let pickerViewController = SettingsPickerViewController(style: .grouped)
+        let pickerViewController = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title = NSLocalizedString("Posts per Page", comment: "Posts per Page Title")
         pickerViewController.switchVisible = false
         pickerViewController.selectionText = NSLocalizedString("The number of posts to show per page.",
