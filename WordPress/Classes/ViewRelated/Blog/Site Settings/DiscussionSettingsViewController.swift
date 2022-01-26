@@ -11,7 +11,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Initializers / Deinitializers
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
     }
 
@@ -226,7 +226,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedCloseCommenting(_ payload: AnyObject?) {
-        let pickerViewController                = SettingsPickerViewController(style: .grouped)
+        let pickerViewController                = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title              = NSLocalizedString("Close commenting", comment: "Close Comments Title")
         pickerViewController.switchVisible      = true
         pickerViewController.switchOn           = settings.commentsCloseAutomatically
@@ -250,7 +250,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedSortBy(_ payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .grouped)
+        let settingsViewController              = SettingsSelectionViewController(style: .insetGrouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsSortOrder
         settingsViewController.titles           = CommentsSorting.allTitles
@@ -268,7 +268,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedThreading(_ payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .grouped)
+        let settingsViewController              = SettingsSelectionViewController(style: .insetGrouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject
         settingsViewController.titles           = CommentsThreading.allTitles
@@ -286,7 +286,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedPaging(_ payload: AnyObject?) {
-        let pickerViewController                = SettingsPickerViewController(style: .grouped)
+        let pickerViewController                = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title              = NSLocalizedString("Paging", comment: "Comments Paging")
         pickerViewController.switchVisible      = true
         pickerViewController.switchOn           = settings.commentsPagingEnabled
@@ -308,7 +308,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedAutomaticallyApprove(_ payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .grouped)
+        let settingsViewController              = SettingsSelectionViewController(style: .insetGrouped)
         settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue as NSObject
         settingsViewController.titles           = CommentsAutoapproval.allTitles
@@ -327,7 +327,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedLinksInComments(_ payload: AnyObject?) {
-        let pickerViewController                = SettingsPickerViewController(style: .grouped)
+        let pickerViewController                = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title              = NSLocalizedString("Links in comments", comment: "Comments Paging")
         pickerViewController.switchVisible      = false
         pickerViewController.selectionText      = NSLocalizedString("Links in comments", comment: "A label title")

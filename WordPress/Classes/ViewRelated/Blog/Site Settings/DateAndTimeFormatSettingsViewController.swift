@@ -35,7 +35,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     // MARK: - Initializer
 
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
         self.service = BlogService(managedObjectContext: settings.managedObjectContext!)
     }
@@ -111,7 +111,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     func pressedDateFormat() -> ImmuTableAction {
         return { [unowned self] row in
-            let settingsViewController = SettingsSelectionViewController(style: .grouped)
+            let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Date Format",
                                                              comment: "Writing Date Format Settings Title")
             settingsViewController.currentValue = self.settings.dateFormat as NSObject
@@ -145,7 +145,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     func pressedTimeFormat() -> ImmuTableAction {
         return { [unowned self] row in
-            let settingsViewController = SettingsSelectionViewController(style: .grouped)
+            let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Time Format",
                                                              comment: "Writing Time Format Settings Title")
             settingsViewController.currentValue = self.settings.timeFormat as NSObject
@@ -180,7 +180,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     func pressedStartOfWeek() -> ImmuTableAction {
         return { [unowned self] row in
-            let settingsViewController = SettingsSelectionViewController(style: .grouped)
+            let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Week starts on",
                                                              comment: "Blog Writing Settings: Weeks starts on")
             settingsViewController.currentValue = self.settings.startOfWeek as NSObject

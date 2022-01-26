@@ -58,7 +58,7 @@ import WordPressShared
     @objc init(blog: Blog) {
         self.blog = blog
 
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {

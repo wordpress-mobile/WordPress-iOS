@@ -16,7 +16,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
-    BlogDetailsSectionCategoryRemoveSite
+    BlogDetailsSectionCategoryRemoveSite,
+    BlogDetailsSectionCategoryQuickAction
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {

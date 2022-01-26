@@ -15,7 +15,7 @@ class PrivacySettingsViewController: UITableViewController {
     }
 
     required convenience init() {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
     }
 
     override func viewDidLoad() {

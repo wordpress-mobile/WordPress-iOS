@@ -104,7 +104,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
-        view.backgroundColor = .listBackground
+        setupView()
         setupConstraints()
         setupNavigationItem()
         setupSegmentedControl()
@@ -118,6 +118,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if blog == nil {
             showBlogDetailsForMainBlogOrNoSites()
         }
+
+        setupTransparentNavBar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        setupOpaqueNavBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -132,6 +140,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
 
         trackNoSitesVisibleIfNeeded()
+
+        setupTransparentNavBar()
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -149,6 +159,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         segmentedControl.selectedSegmentIndex = 0
 
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+    }
+
+    private func setupView() {
+        view.backgroundColor = .listBackground
     }
 
     /// If the My Site Dashboard feature flag is enabled, then this method builds a layout with the following
@@ -224,6 +238,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
+    }
+
+    private func setupTransparentNavBar() {
+        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
+    }
+
+    private func setupOpaqueNavBar() {
+        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithOpaqueBackground()
     }
 
     // MARK: - Account
