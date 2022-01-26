@@ -28,7 +28,7 @@ extension BlogDetailsViewController {
     private func setupConstraints() {
         actionRow.translatesAutoresizingMaskIntoConstraints = false
 
-        let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: 350)
+        let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: Constants.maxQuickActionsWidth)
         widthConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
@@ -39,5 +39,9 @@ extension BlogDetailsViewController {
             actionRow.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             widthConstraint
         ])
+    }
+
+    private enum Constants {
+        static let maxQuickActionsWidth: CGFloat = 390
     }
 }
