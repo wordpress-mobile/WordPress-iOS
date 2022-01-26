@@ -9,6 +9,10 @@ extension BlogDetailsViewController {
                                   footerTitle: nil,
                                   category: .quickAction)
     }
+
+    @objc func isAccessibilityCategoryEnabled() -> Bool {
+        tableView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
 }
 
 @objc class QuickActionsCell: UITableViewCell {
