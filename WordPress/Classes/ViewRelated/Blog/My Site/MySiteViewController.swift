@@ -313,7 +313,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             guard let self = self else {
                 return
             }
-            
+
             self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
         }
     }
