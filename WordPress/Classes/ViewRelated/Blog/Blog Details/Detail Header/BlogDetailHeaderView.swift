@@ -154,12 +154,6 @@ class BlogDetailHeaderView: UIView {
             titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
-        if FeatureFlag.mySiteDashboard.enabled {
-            constraints.append(
-                titleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.bottom)
-            )
-        }
-
         return constraints
     }
 
