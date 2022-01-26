@@ -17,8 +17,8 @@ final class BlogDashboardViewController: UIViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
-    private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+    private lazy var collectionView: IntrinsicCollectionView = {
+        let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -50,6 +50,9 @@ final class BlogDashboardViewController: UIViewController {
         setupCollectionView()
         applySnapshotForInitialData()
         addHeightObservers()
+
+        // Force the view to update its layout immediately, so the content size is calculated correctly
+        collectionView.layoutIfNeeded()
     }
 
     private func setupCollectionView() {
