@@ -73,6 +73,7 @@ class ActionRow: UIStackView {
 
     enum Constants {
         static let minimumSpacing: CGFloat = 8
+        static let margins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 
     struct Item {
@@ -94,11 +95,11 @@ class ActionRow: UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         refreshStackViewVisibility()
 
-        backgroundColor = .appBarBackground
+        backgroundColor = .listForeground
 
         layer.cornerRadius = 10
 
-        layoutMargins = UIEdgeInsets.init(top: 16, left: 16, bottom: 16, right: 16)
+        layoutMargins = Constants.margins
         isLayoutMarginsRelativeArrangement = true
     }
 
