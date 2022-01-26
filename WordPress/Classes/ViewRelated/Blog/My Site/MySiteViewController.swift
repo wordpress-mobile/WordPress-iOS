@@ -656,7 +656,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private enum Constants {
-        static let segmentedControlXOffset: CGFloat = 16
+        static let segmentedControlXOffset: CGFloat = 20
         static let segmentedControlYOffset: CGFloat = 24
     }
 }
