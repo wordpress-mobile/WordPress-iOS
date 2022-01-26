@@ -71,7 +71,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .followConversationPostDetails:
             return true
         case .mediaPickerPermissionsNotice:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 
