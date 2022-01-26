@@ -158,7 +158,14 @@ lane :download_jetpack_localized_app_store_metadata do
   # internally.
   sh './download_metadata.swift jetpack'
 
-  jetpack_metadata_glob = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata/**/*.txt')
+  # GlotPress doesn't have the English notes because, being already in English,
+  # they do not require a translation. As such, we simply copy the source of
+  # truth file into the Fastlane metadata folder.
+  metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
+  release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+  sh "cp #{release_notes_source} #{File.join(metadata_directory, 'en-US', 'release_notes.txt')}"
+
+  jetpack_metadata_glob = File.join(metadata_directory, '**/*.txt')
 
   no_files_changed = sh "git status #{jetpack_metadata_glob}" do |_, output, _|
     output.include? 'nothing to commit'
