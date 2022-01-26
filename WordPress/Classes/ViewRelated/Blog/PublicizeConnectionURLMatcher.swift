@@ -95,4 +95,65 @@ struct PublicizeConnectionURLMatcher {
             return result
         })
     }
+
+    // MARK: - Authorization Actions
+
+    /// Classify actions taken by the web API
+    ///
+    enum AuthorizeAction: Int {
+        case none
+        case unknown
+        case request
+        case verify
+        case deny
+    }
+
+    static func authorizeAction(for matchURL: URL) -> AuthorizeAction {
+        // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
+        if url(matchURL, contains: .declinePath) {
+            return .deny
+        }
+
+        if !url(matchURL, contains: .authorizationPrefix) {
+            return .none
+        }
+
+        if url(matchURL, contains: .requestActionItem) {
+            return .request
+        }
+
+        // Check the rest of the various decline ranges
+        if url(matchURL, contains: .denyActionItem) {
+            return .deny
+        }
+
+        // LinkedIn
+        if url(matchURL, contains: .userRefused) {
+            return .deny
+        }
+
+        // Facebook and Google+
+        if url(matchURL, contains: .accessDenied) {
+            return .deny
+        }
+
+        // If we've made it this far and verifyRange is found then we're *probably*
+        // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
+        // where verification is declined and we get a false positive.
+        if url(matchURL, contains: .verifyActionItem) {
+            return .verify
+        }
+
+        // Facebook
+        if url(matchURL, contains: .stateItem) && url(matchURL, contains: .codeItem) {
+            return .verify
+        }
+
+        // Facebook failure
+        if url(matchURL, contains: .stateItem) && url(matchURL, contains: .errorItem) {
+            return .unknown
+        }
+
+        return .unknown
+    }
 }

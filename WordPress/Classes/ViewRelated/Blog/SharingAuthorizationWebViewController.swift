@@ -15,16 +15,6 @@ protocol SharingAuthorizationDelegate: NSObjectProtocol {
 
 @objc
 class SharingAuthorizationWebViewController: WPWebViewController {
-    /// Classify actions taken by the web API
-    ///
-    enum AuthorizeAction: Int {
-        case none
-        case unknown
-        case request
-        case verify
-        case deny
-    }
-
     private static let loginURL = "https://wordpress.com/wp-login.php"
 
     /// Verification loading -- dismiss on completion
@@ -128,57 +118,6 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     private func displayLoadError(error: NSError) {
         delegate?.authorize(self.publicizer, didFailWithError: error)
     }
-
-    // MARK: - URL Interpretation
-
-    func authorizeAction(from url: URL) -> AuthorizeAction {
-        // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if PublicizeConnectionURLMatcher.url(url, contains: .declinePath) {
-            return .deny
-        }
-
-        if !PublicizeConnectionURLMatcher.url(url, contains: .authorizationPrefix) {
-            return .none
-        }
-
-        if PublicizeConnectionURLMatcher.url(url, contains: .requestActionItem) {
-            return .request
-        }
-
-        // Check the rest of the various decline ranges
-        if PublicizeConnectionURLMatcher.url(url, contains: .denyActionItem) {
-            return .deny
-        }
-
-        // LinkedIn
-        if PublicizeConnectionURLMatcher.url(url, contains: .userRefused) {
-            return .deny
-        }
-
-        // Facebook and Google+
-        if PublicizeConnectionURLMatcher.url(url, contains: .accessDenied) {
-            return .deny
-        }
-
-        // If we've made it this far and verifyRange is found then we're *probably*
-        // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
-        // where verification is declined and we get a false positive.
-        if PublicizeConnectionURLMatcher.url(url, contains: .verifyActionItem) {
-            return .verify
-        }
-
-        // Facebook
-        if PublicizeConnectionURLMatcher.url(url, contains: .stateItem) && PublicizeConnectionURLMatcher.url(url, contains: .codeItem) {
-            return .verify
-        }
-
-        // Facebook failure
-        if PublicizeConnectionURLMatcher.url(url, contains: .stateItem) && PublicizeConnectionURLMatcher.url(url, contains: .errorItem) {
-            return .unknown
-        }
-
-        return .unknown
-    }
 }
 
 // MARK: - WKNavigationDelegate
@@ -194,7 +133,7 @@ extension SharingAuthorizationWebViewController {
                 return
         }
 
-        let action = authorizeAction(from: url)
+        let action = PublicizeConnectionURLMatcher.authorizeAction(for: url)
 
         switch action {
         case .none:
