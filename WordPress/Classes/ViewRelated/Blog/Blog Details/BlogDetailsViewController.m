@@ -326,8 +326,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
     
-    _tableView = [[IntrinsicTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-    self.tableView.scrollEnabled = false;
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        _tableView = [[IntrinsicTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        self.tableView.scrollEnabled = false;
+    } else {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    }
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
