@@ -1,12 +1,16 @@
-What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.
+* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17758]
+* [**] Accessibility: VoiceOver and Dynamic Type improvements on Activity Log and Schedule Post calendars [#17756, #17761, #17780]
+* [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
+* [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
+* [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
+* [**] Media: If a user has only enabled limited device media access, we now show a prompt to allow the user to change their selection. [#17795]
+* [**] Block editor: Fix content justification attribute in Buttons block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4451]
+* [*] Block editor: Hide help button from Unsupported Block Editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4352]
+* [*] Block editor: Add contrast checker to text-based blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4357]
+* [*] Block editor: Fix missing Featured Image translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4464]
+* [*] Block editor: Fix missing translations of color settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4479]
+* [*] Block editor: Fix cut-off setting labels by properly wrapping the text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4475]
+* [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
+* [**] Block editor: Fix Android handling of Hebrew and Indonesian translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4397]
+* [*] Publicize: Fixed an issue where a successful login was not automatically detected when connecting a Facebook account to Publicize. [#17803]
 
-If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.
-
-We’ve also made some changes to the block editor:
-
-- We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.
-- We added language translation for Jetpack and Layout Grid blocks.
-- We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.
-- Multi-line block titles are now center-aligned in the inserter menu.
-
-Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.
