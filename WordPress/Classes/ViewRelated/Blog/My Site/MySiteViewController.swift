@@ -530,13 +530,27 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
         let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
 
-        sitePickerViewController.onBlogSwitched = { [weak self] in
-            self?.blogDetailsViewController?.showInitialDetailsForBlog()
-            self?.blogDetailsViewController?.tableView.reloadData()
-            self?.blogDetailsViewController?.preloadMetadata()
+        sitePickerViewController.onBlogSwitched = { [weak self] blog in
+            self?.updateChildViewController(for: blog)
         }
 
         return sitePickerViewController
+    }
+
+    private func updateChildViewController(for blog: Blog) {
+        guard let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.preloadMetadata()
+        case .dashboard:
+            // TODO: Update blog dashboard vc
+            break
+        }
     }
 
     func presentCreateSheet() {
