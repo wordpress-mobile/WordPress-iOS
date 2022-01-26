@@ -143,6 +143,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
         }
         segmentedControl.selectedSegmentIndex = 0
+
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
 
     /// If the My Site Dashboard feature flag is enabled, then this method builds a layout with the following
@@ -265,9 +267,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - IBAction
+    // MARK: - Segmented Control
 
-    @IBAction func segmentedControlValueChanged(_ sender: Any) {
+    @objc private func segmentedControlValueChanged(_ sender: Any) {
         guard let blog = blog,
               let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
             return
