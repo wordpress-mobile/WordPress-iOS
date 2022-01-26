@@ -36,7 +36,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private lazy var segmentedControlContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .basicBackground
         return view
     }()
 
@@ -181,9 +180,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
+                                                      constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
-            segmentedControl.centerYAnchor.constraint(equalTo: segmentedControlContainerView.centerYAnchor),
-            segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor, constant: 24)
+            segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
+                                                  constant: Constants.segmentedControlYOffset),
+            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor)
         ])
     }
 
@@ -629,6 +631,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
+    }
+
+    private enum Constants {
+        static let segmentedControlXOffset: CGFloat = 16
+        static let segmentedControlYOffset: CGFloat = 24
     }
 }
 
