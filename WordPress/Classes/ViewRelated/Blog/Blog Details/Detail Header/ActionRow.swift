@@ -95,10 +95,6 @@ class ActionRow: UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         refreshStackViewVisibility()
 
-        backgroundColor = .listForeground
-
-        layer.cornerRadius = 10
-
         layoutMargins = Constants.margins
         isLayoutMarginsRelativeArrangement = true
     }
