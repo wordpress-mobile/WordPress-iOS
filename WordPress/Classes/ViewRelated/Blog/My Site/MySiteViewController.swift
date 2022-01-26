@@ -79,7 +79,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         get {
-            return blogDetailsViewController?.blog
+            guard FeatureFlag.mySiteDashboard.enabled else {
+                return blogDetailsViewController?.blog
+            }
+
+            return sitePickerViewController?.blog
         }
     }
 
