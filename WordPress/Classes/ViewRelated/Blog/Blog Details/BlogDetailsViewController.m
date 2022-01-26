@@ -22,6 +22,7 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
+static NSString *const BlogDetailsQuickActionsCellIdentifier = @"BlogDetailsQuickActionsCell";
 static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartListTitleCellNibName = @"QuickStartListTitleCell";
@@ -346,6 +347,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
+    [self.tableView registerClass:[QuickActionsCell class] forCellReuseIdentifier:BlogDetailsQuickActionsCellIdentifier];
     UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
@@ -751,6 +753,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
 
+    [marr addObject:[self quickActionsSectionViewModel]];
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1422,6 +1425,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
+
+    if (section.category == BlogDetailsSectionCategoryQuickAction) {
+        QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
+        [self configureQuickActionsWithCell: cell];
+        return cell;
+    }
+
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessibilityHint = row.accessibilityHint;
@@ -1483,12 +1493,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
         return [self quickStartHeaderWithTitle:section.title];
-    } else if (sectionNum == 0 && [self.blog supports:BlogFeatureJetpackSettings]) {
-        // Jetpack header shouldn't have any padding
-        BlogDetailsSectionHeaderView *headerView = (BlogDetailsSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
-        headerView.ellipsisButton.hidden = YES;
-        headerView.title = @"";
-        return headerView;
+    } else if (sectionNum == 0) {
+        return nil;
     }
 
     return nil;

@@ -14,7 +14,6 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Child Views
 
-    private let actionRow: ActionRow
     private let titleView: TitleView
 
     // MARK: - Delegate
@@ -104,7 +103,6 @@ class BlogDetailHeaderView: UIView {
     // MARK: - Initializers
 
     required init(items: [ActionRow.Item]) {
-        actionRow = ActionRow(items: items)
         titleView = TitleView(frame: .zero)
 
         super.init(frame: .zero)
@@ -134,10 +132,6 @@ class BlogDetailHeaderView: UIView {
 
         addSubview(titleView)
 
-        if !FeatureFlag.mySiteDashboard.enabled {
-            addSubview(actionRow)
-        }
-
         let showsActionRow = items.count > 0
         setupConstraintsForChildViews(showsActionRow)
     }
@@ -147,37 +141,17 @@ class BlogDetailHeaderView: UIView {
     private var topActionRowConstraint: NSLayoutConstraint?
 
     private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
-        var constraints = constraintsForTitleView()
-
-        if !FeatureFlag.mySiteDashboard.enabled {
-            constraints += constraintsForActionRow(showsActionRow)
-        }
+        let constraints = constraintsForTitleView()
 
         NSLayoutConstraint.activate(constraints)
-    }
-
-    private func constraintsForActionRow(_ showsActionRow: Bool) -> [NSLayoutConstraint] {
-        let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: LayoutSpacing.maxButtonWidth)
-        widthConstraint.priority = .defaultHigh
-
-        let topActionRowConstraint = actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow))
-        self.topActionRowConstraint = topActionRowConstraint
-
-        return [
-            topActionRowConstraint,
-            actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
-            actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: titleView.leadingAnchor),
-            actionRow.trailingAnchor.constraint(lessThanOrEqualTo: titleView.trailingAnchor),
-            actionRow.centerXAnchor.constraint(equalTo: centerXAnchor),
-            widthConstraint
-        ]
     }
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
         var constraints = [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
-            titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides)
+            titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides),
+            titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
         if FeatureFlag.mySiteDashboard.enabled {
