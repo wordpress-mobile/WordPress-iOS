@@ -32,6 +32,8 @@ extension BlogDetailsViewController {
         NSLayoutConstraint.activate([
             actionRow.topAnchor.constraint(equalTo: contentView.topAnchor),
             actionRow.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor),
+            actionRow.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor),
             actionRow.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             widthConstraint
         ])
