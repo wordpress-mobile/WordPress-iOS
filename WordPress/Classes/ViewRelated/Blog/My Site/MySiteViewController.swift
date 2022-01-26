@@ -309,7 +309,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        blogDetailsViewController?.pulledToRefresh(with: refreshControl) {
+        blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
             self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
         }
     }
