@@ -70,6 +70,8 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         //
         switch filter {
         case .followers:
+            fallthrough
+        case .email:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
@@ -195,6 +197,8 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
                 personViewController.screenMode = .User
             case .viewers:
                 personViewController.screenMode = .Viewer
+            case .email:
+                personViewController.screenMode = .Email
             }
 
         } else if let navController = segue.destination as? UINavigationController,
@@ -274,10 +278,11 @@ private extension PeopleViewController {
 
         case users      = "users"
         case followers  = "followers"
+        case email      = "email"
         case viewers    = "viewers"
 
         static var defaultFilters: [Filter] {
-            return [.users, .followers]
+            return [.users, .followers, .email]
         }
 
         var title: String {
@@ -288,6 +293,8 @@ private extension PeopleViewController {
                 return NSLocalizedString("Followers", comment: "Blog Followers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
+            case .email:
+                return NSLocalizedString("Email Followers", comment: "Blog Email Followers")
             }
         }
 
@@ -299,6 +306,8 @@ private extension PeopleViewController {
                 return .follower
             case .viewers:
                 return .viewer
+            case .email:
+                return .emailFollower
             }
         }
     }
@@ -395,6 +404,8 @@ private extension PeopleViewController {
             loadUsersPage(offset, success: success)
         case .viewers:
             service.loadViewersPage(offset, success: success)
+        case .email:
+            service.loadEmailFollowersPage(offset, success: success)
         }
     }
 
