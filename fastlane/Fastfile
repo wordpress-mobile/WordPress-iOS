@@ -983,7 +983,7 @@ def generate_installable_build_number
     branch = ENV['BUILDKITE_BRANCH']
     pr_num = ENV['BUILDKITE_PULL_REQUEST']
 
-    return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_number}-#{commit}"
+    return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
   else
     repo = Git.open(PROJECT_ROOT_FOLDER)
     commit = repo.current_branch
