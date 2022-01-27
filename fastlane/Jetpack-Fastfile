@@ -163,7 +163,7 @@ lane :download_jetpack_localized_app_store_metadata do
   # truth file into the Fastlane metadata folder.
   metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
   release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
-  sh "cp #{release_notes_source} #{File.join(metadata_directory, 'en-US', 'release_notes.txt')}"
+  FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
   jetpack_metadata_glob = File.join(metadata_directory, '**/*.txt')
 
