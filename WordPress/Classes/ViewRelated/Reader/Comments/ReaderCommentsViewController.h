@@ -12,7 +12,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
     ReaderCommentsSourceActivityLogDetail
 };
 
-
+@class RemoteComment;
 @class ReaderPost;
 
 @interface ReaderCommentsViewController : UIViewController
@@ -30,5 +30,13 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic) BOOL promptToAddComment;
 /// Navigates to the specified comment when the view appears
 @property (nonatomic, strong) NSNumber *navigateToCommentID;
+
+
+
+// Undo comment moderation support.
+- (void)refreshTableViewAndNoResultsView;
+@property (nonatomic, strong, readwrite) RemoteComment *commentPendingUndo;
+@property (nonatomic, readwrite) NSInteger pendingCommentDepth;
+@property (nonatomic, strong, readwrite) NSString *pendingCommentHierarchy;
 
 @end

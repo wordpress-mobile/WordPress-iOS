@@ -247,7 +247,21 @@ private extension ReaderCommentsViewController {
                 post.commentCount = NSNumber(value: commentCount + adjustment)
             }
 
+            // If the status is Approved, it cannot be undone. So no need to save comment.
+            if status != .approved {
+                // Save comment for possible restore if Undo is selected.
+                self?.commentPendingUndo = self?.commentService.remoteComment(with: comment)
+                self?.pendingCommentDepth = Int(comment.depth)
+                self?.pendingCommentHierarchy = comment.hierarchy
+
+                // Delete the comment from ReaderPost.
+                let context = comment.managedObjectContext ?? ContextManager.shared.mainContext
+                context.delete(comment)
+                ContextManager.shared.saveContextAndWait(context)
+            }
+
             // Refresh the UI. The table view handler is needed because the fetched results delegate is set to nil.
+            self?.refreshTableViewAndNoResultsView()
             handler.refreshTableViewPreservingOffset()
 
             // If the status is Approved, the user has undone a comment moderation.
@@ -292,8 +306,19 @@ private extension ReaderCommentsViewController {
         displayActionableNotice(title: title,
                                 actionTitle: .undoActionTitle,
                                 actionHandler: { [weak self] _ in
-            // Set the Comment's status back to Approved when the user selects Undo on the notice.
-            self?.moderateComment(comment, status: .approved, handler: handler)
+            guard let self = self else {
+                return
+            }
+
+            // Restore comment to use for moderation.
+            if let comment = self.commentService.restoreHierarchicalComment(self.commentPendingUndo,
+                                                                            depth: self.pendingCommentDepth,
+                                                                            hierarchy: self.pendingCommentHierarchy) {
+                // Set the Comment's status back to Approved when the user selects Undo on the notice.
+                self.moderateComment(comment, status: .approved, handler: handler)
+            } else {
+                self.displayNotice(title: .approveFailed)
+            }
         })
     }
 

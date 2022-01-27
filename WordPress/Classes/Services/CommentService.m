@@ -1119,6 +1119,44 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+
+-(Comment *)restoreHierarchicalComment:(RemoteComment *)remoteComment
+                                 depth:(NSInteger)depth
+                             hierarchy:(NSString *)hierarchy {
+    // Fetch the ReaderPost
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@", remoteComment.postID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching post with id %@: %@", remoteComment.postID, error);
+        return nil;
+    }
+    
+    ReaderPost *post = [results firstObject];
+    if (!post) {
+        return nil;
+    }
+    
+    Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+    
+    // If the Comment already exists, use it.
+    if (comment) {
+        return comment;
+    }
+    
+    // Otherwise create a new Comment.
+    NSString *entityName = NSStringFromClass([Comment class]);
+    comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
+    
+    [self updateComment:comment withRemoteComment:remoteComment];
+    comment.post = post;
+    comment.depth = depth;
+    comment.hierarchy = hierarchy;
+
+    return comment;
+}
+
 - (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post onComplete:(void (^)(BOOL includesNewComments))onComplete
 {
     if (![comments count]) {

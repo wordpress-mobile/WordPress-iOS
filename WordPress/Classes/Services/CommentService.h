@@ -209,4 +209,22 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (CommentServiceRemoteREST *_Nullable)restRemoteForSite:(NSNumber *_Nonnull)siteID;
 
 
+/**
+ Create a RemoteComment from a Comment.
+ 
+ @param comment The local Comment to create a RemoteComment from.
+ */
+- (RemoteComment *_Nonnull)remoteCommentWithComment:(Comment *_Nonnull)comment;
+
+/**
+ Restore a RemoteComment into a Comment.
+ 
+ @param remoteComment The RemoteComment to create a Comment from.
+ @param depth The hierarchical depth for the Comment.
+ @param hierarchy The hierarchy for the Comment.
+ */
+-(Comment *_Nullable)restoreHierarchicalComment:(RemoteComment *_Nonnull)remoteComment
+                                          depth:(NSInteger)depth
+                                      hierarchy:(NSString *_Nonnull)hierarchy;
+    
 @end
