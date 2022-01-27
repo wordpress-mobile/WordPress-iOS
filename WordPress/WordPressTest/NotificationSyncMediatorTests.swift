@@ -175,6 +175,81 @@ class NotificationSyncMediatorTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
+    /// Verifies that Mark Notifications as Read effectively toggles a Notifications' read flag
+    ///
+    func testMarkNotificationsAsReadEffectivelyTogglesNotificationsReadStatus() {
+        // Stub Endpoint
+        let endpoint = "notifications/read"
+        let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+
+        // Inject Dummy Note
+        let path1 = "notifications-like.json"
+        let path2 = "notifications-new-follower.json"
+        let path3 = "notifications-unapproved-comment.json"
+        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
+        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
+        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+
+        XCTAssertFalse(note1.read)
+        XCTAssertFalse(note3.read)
+
+        XCTAssertTrue(note2.read)
+
+        // CoreData Expectations
+        manager.testExpectation = expectation(description: "Context save expectation")
+
+        // Mediator Expectations
+        let expect = expectation(description: "Mark as Read")
+
+        // Mark as Read!
+        mediator.markAsRead([note1, note3]) { success in
+            XCTAssertTrue(note1.read)
+            XCTAssertTrue(note2.read)
+            XCTAssertTrue(note3.read)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    /// Verifies that Mark Notifications as Read modifies only the specified notifications' read status
+    ///
+    func testMarkNotificationsAsReadTogglesOnlyTheReadStatusOfPassedInNotifications() {
+        // Stub Endpoint
+        let endpoint = "notifications/read"
+        let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+
+        // Inject Dummy Note
+        let path1 = "notifications-like.json"
+        let path2 = "notifications-new-follower.json"
+        let path3 = "notifications-unapproved-comment.json"
+        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
+        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
+        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+
+        XCTAssertFalse(note1.read)
+        XCTAssertFalse(note3.read)
+
+        XCTAssertTrue(note2.read)
+
+        // CoreData Expectations
+        manager.testExpectation = expectation(description: "Context save expectation")
+
+        // Mediator Expectations
+        let expect = expectation(description: "Mark as Read")
+
+        // Mark as Read!
+        mediator.markAsRead([note1]) { success in
+            XCTAssertTrue(note1.read)
+            XCTAssertFalse(note3.read)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
 
     /// Verifies that updateLastSeen method effectively calls the callback with successfull flag
     ///
