@@ -978,22 +978,19 @@ end
 # This function is Buildkite-specific
 def generate_installable_build_number
 
-  # This should work outside of Buildkite
-  if ENV['BUILDKITE'] != 'true'
-    require 'git'
+  if ENV['BUILDKITE']
+    commit = ENV['BUILDKITE_COMMIT'][0,7]
+    branch = ENV['BUILDKITE_BRANCH']
+    pr_num = ENV['BUILDKITE_PULL_REQUEST']
 
+    return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_number}-#{commit}"
+  else
     repo = Git.open(PROJECT_ROOT_FOLDER)
-    current_branch = repo.current_branch
-    current_commit = repo.revparse('HEAD')[0, 7]
+    commit = repo.current_branch
+    branch = repo.revparse('HEAD')[0, 7]
 
-    return "#{current_branch}-#{current_commit}"
+    return "#{branch}-#{commit}"
   end
-
-  if ENV['BUILDKITE_PULL_REQUEST'] == 'false'
-    return "#{ENV['BUILDKITE_BRANCH']}-#{ENV['BUILDKITE_COMMIT'][0,7]}"
-  end
-
-  return "pr#{ENV['BUILDKITE_PULL_REQUEST']}-#{ENV['BUILDKITE_COMMIT'][0,7]}"
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also
