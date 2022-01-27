@@ -23,7 +23,7 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
     # Get the current build version, and update it if needed
     version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = get_build_number
+    build_number = generate_installable_build_number
     UI.message("Updating build version to #{build_number}")
     versions['VERSION_LONG'] = build_number
     new_config = Xcodeproj::Config.new(versions)
