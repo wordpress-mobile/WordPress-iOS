@@ -48,7 +48,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-            return true
         case .weeklyRoundup:
             return true
         case .weeklyRoundupStaticNotification:
