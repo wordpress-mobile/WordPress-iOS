@@ -9,6 +9,12 @@ extension BlogDetailsViewController {
         return BlogDetailHeaderView(items: actionItems)
     }
 
+    @objc func configureQuickActions(cell: QuickActionsCell) {
+        let actionItems = createActionItems()
+
+        cell.configure(with: actionItems)
+    }
+
     @objc
     func showSiteTitleSettings() {
         let hint = blog.isAdmin ? SiteTitleStrings.siteTitleHint : SiteTitleStrings.notAnAdminHint

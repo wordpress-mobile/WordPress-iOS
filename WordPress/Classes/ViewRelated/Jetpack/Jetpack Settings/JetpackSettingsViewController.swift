@@ -30,7 +30,7 @@ open class JetpackSettingsViewController: UITableViewController {
     // MARK: - Initializer
 
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: settings.managedObjectContext!)
     }
