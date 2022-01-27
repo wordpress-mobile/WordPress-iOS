@@ -16,6 +16,8 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
   #####################################################################################
   desc "Builds and uploads a Jetpack installable build"
   lane :build_and_upload_jetpack_installable_build do | options |
+    ensure_sentry_installed
+
     jetpack_alpha_code_signing
 
     # Get the current build version, and update it if needed
