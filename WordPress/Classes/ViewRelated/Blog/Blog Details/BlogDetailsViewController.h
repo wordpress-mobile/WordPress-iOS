@@ -3,6 +3,7 @@
 @class Blog;
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
+@class IntrinsicTableView;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
