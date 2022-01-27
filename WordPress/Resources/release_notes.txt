@@ -1,17 +1,25 @@
-* [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
-* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17758]
-* [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
-* [**] Accessibility: VoiceOver and Dynamic Type improvements on Activity Log and Schedule Post calendars [#17756, #17761, #17780]
-* [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
-* [*] Self-hosted login: Improved error messages. [#17724]
-* [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
-* [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
-* [**] Media: If a user has only enabled limited device media access, we now show a prompt to allow the user to change their selection. [#17795]
-* [**] Block editor: Fix content justification attribute in Buttons block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4451]
-* [*] Block editor: Hide help button from Unsupported Block Editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4352]
-* [*] Block editor: Add contrast checker to text-based blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4357]
-* [*] Block editor: Fix missing translations of color settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4479]
-* [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
-* [***] Self-hosted sites: Fixed a crash when saving media and no Internet connection was available. [#17759]
-* [*] Publicize: Fixed an issue where a successful login was not automatically detected when connecting a Facebook account to Publicize. [#17803]
+We solved a problem where self-hosted sites would crash while trying to upload media without an Internet connection. Big yikes, but big fix.
 
+Speaking of media, we know you might have given the app limited access to your media library. No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in dynamic type for easy reading.
+
+We also made voiceover and dynamic type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
+
+Big news for Comments: you can now follow a conversation using a button in the Comments header and moderate individual comments through a drop-down menu.
+
+We made some useful updates to the Block Editor.
+
+- We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
+- We added translation for color settings in Cover blocks.
+- Selecting an image will no longer show you a video thumbnail, and vice versa.
+- We hid the help button in the bottom right of the unsupported block editor to avoid confusion.
+- When you’re using different text and background colors in text blocks, you’ll get a notification if the color combo might make it hard for some people to read.
+- We fixed a handful of edge case problems when changing the color of non-selected text.
+
+We also solved a few smaller issues and crashes.
+
+- Weekly roundup notifications weren’t always being displayed for all users, but now they are.
+- The username selection screen is no longer loading twice.
+- When you connect your Facebook account to Publicize, you’ll now be logged in successfully.
+- Images with a copyright symbol in the file name will now upload or appear in the Share Sheet properly.
+
+Last but not least, we improved error messages on the login screen for self-hosted websites.
