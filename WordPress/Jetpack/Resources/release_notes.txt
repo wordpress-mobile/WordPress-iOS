@@ -7,10 +7,7 @@
 * [**] Block editor: Fix content justification attribute in Buttons block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4451]
 * [*] Block editor: Hide help button from Unsupported Block Editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4352]
 * [*] Block editor: Add contrast checker to text-based blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4357]
-* [*] Block editor: Fix missing Featured Image translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4464]
 * [*] Block editor: Fix missing translations of color settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4479]
-* [*] Block editor: Fix cut-off setting labels by properly wrapping the text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4475]
 * [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
-* [**] Block editor: Fix Android handling of Hebrew and Indonesian translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4397]
 * [*] Publicize: Fixed an issue where a successful login was not automatically detected when connecting a Facebook account to Publicize. [#17803]
 
