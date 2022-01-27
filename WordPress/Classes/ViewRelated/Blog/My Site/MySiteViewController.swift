@@ -152,7 +152,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupSegmentedControl(for blog: Blog) {
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isHostedAtWPcom
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+        segmentedControlContainerView.isHidden = !blog.isHostedAtWPcom || UIDevice.isPad()
+
     }
 
     private func setupView() {
@@ -566,6 +570,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         switch section {
         case .siteMenu:
             blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.showInitialDetailsForBlog()
             blogDetailsViewController?.tableView.reloadData()
             blogDetailsViewController?.preloadMetadata()
         case .dashboard:
