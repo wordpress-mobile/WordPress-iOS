@@ -20,6 +20,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.refreshControl = refreshControl
         return scrollView
     }()
 
@@ -43,6 +44,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
+    }()
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pulledToRefresh), for: .valueChanged)
+        return refreshControl
     }()
 
     private let meScenePresenter: ScenePresenter
@@ -191,7 +198,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
@@ -297,6 +304,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             finishSync()
         } failure: { (error) in
             finishSync()
+        }
+    }
+
+    @objc
+    private func pulledToRefresh() {
+        blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
         }
     }
 
