@@ -234,8 +234,12 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
+        guard let navigationController = navigationController else {
+            return
+        }
+
         if let onDismiss = onDismiss {
-            SiteAssemblyCompletionHelper.completeSiteCreationFromAuthenticationScreen(for: blog, quickStartSettings: quickStartSettings) { [weak self, blog] in
+            SiteAssemblyCompletionHelper.completeSiteCreationFromAuthenticationScreen(for: blog, quickStartSettings: quickStartSettings, navigationController: navigationController) { [weak self, blog] in
                 let quickstartPrompt = QuickStartPromptViewController(blog: blog)
                 quickstartPrompt.onDismiss = onDismiss
                 self?.navigationController?.pushViewController(quickstartPrompt, animated: true)

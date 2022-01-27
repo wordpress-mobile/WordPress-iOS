@@ -571,7 +571,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.43.0-beta.2)
   - WordPressKit (~> 4.46.0-beta)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (~> 1.17.0)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `add/landing-in-the-editor-analytics`)
   - WordPressUI (~> 1.12.3)
   - WPMediaPicker (~> 1.8.2-beta.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json`)
@@ -621,7 +621,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -732,6 +731,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
+  WordPressShared:
+    :branch: add/landing-in-the-editor-analytics
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json
 
@@ -747,6 +749,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
+  WordPressShared:
+    :commit: 20e9b1f261ade36136d6c70e0b6b5a6bda7baf13
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -849,6 +854,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 2198bf3dcf133317995199bc08b6af69a74ee863
+PODFILE CHECKSUM: b74fbc9c25b2eafda1e4b0193bf384595e08d28d
 
 COCOAPODS: 1.11.2

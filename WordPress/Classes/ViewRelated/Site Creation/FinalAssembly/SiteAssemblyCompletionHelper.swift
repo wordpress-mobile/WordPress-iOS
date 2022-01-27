@@ -10,26 +10,37 @@ class SiteAssemblyCompletionHelper {
         }
     }
 
-    static func completeSiteCreationFromAuthenticationScreen(for blog: Blog, quickStartSettings: QuickStartSettings, completion: @escaping () -> Void) {
+    static func completeSiteCreationFromAuthenticationScreen(for blog: Blog, quickStartSettings: QuickStartSettings, navigationController: UINavigationController, completion: @escaping HomepageEditorCompletion) {
         // branch here for explat variation
         if ABTest.landInTheEditorPhase1.variation == .control {
             completion()
         } else {
-            landInTheEditor(for: blog, quickStartSettings: quickStartSettings, completion: completion)
+            landInTheEditor(for: blog, quickStartSettings: quickStartSettings, navigationController: navigationController, completion: completion)
         }
 
     }
 
-    private static func landInTheEditor(for blog: Blog, quickStartSettings: QuickStartSettings, completion: (() -> Void)? = nil) {
+    private static func landInTheEditor(for blog: Blog, quickStartSettings: QuickStartSettings) {
         fetchAllPages(for: blog, success: { _ in
             DispatchQueue.main.async {
                 WPTabBarController.sharedInstance()?.showHomePageEditor(forBlog: blog) {
-                    guard let completion = completion else {
-                        showMySitesScreen(for: blog, quickStartSettings: quickStartSettings)
-                        return
-                    }
-                    completion()
+                    showMySitesScreen(for: blog, quickStartSettings: quickStartSettings)
                 }
+            }
+            WPAnalytics.track(.landingEditorShown)
+        }, failure: { _ in
+            NSLog("Fetching all pages failed after site creation!")
+        })
+    }
+
+    private static func landInTheEditor(for blog: Blog, quickStartSettings: QuickStartSettings, navigationController: UINavigationController, completion: @escaping HomepageEditorCompletion) {
+        fetchAllPages(for: blog, success: { _ in
+            DispatchQueue.main.async {
+                if let homepage = blog.homepage {
+                    let editorViewController = EditPageViewController(homepage: homepage, completion: completion)
+                    navigationController.present(editorViewController, animated: false)
+                }
+                WPAnalytics.track(.landingEditorShown)
             }
         }, failure: { _ in
             NSLog("Fetching all pages failed after site creation!")
