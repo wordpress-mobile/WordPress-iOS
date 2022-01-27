@@ -4,6 +4,7 @@ default_platform(:ios)
 fastlane_require 'xcodeproj'
 fastlane_require 'dotenv'
 fastlane_require 'open-uri'
+fastlane_require 'git'
 
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
@@ -547,17 +548,11 @@ platform :ios do
     # Get the current build version, and update it if needed
     version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = versions['VERSION_LONG']
-
-    if options.key?(:build_number)
-      build_number = options[:build_number]
-
-      UI.message("Updating build version to #{build_number}")
-
-      versions['VERSION_LONG'] = build_number
-      new_config = Xcodeproj::Config.new(versions)
-      new_config.save_as(Pathname.new(version_config_path))
-    end
+    build_number = get_build_number
+    UI.message("Updating build version to #{build_number}")
+    versions['VERSION_LONG'] = build_number
+    new_config = Xcodeproj::Config.new(versions)
+    new_config.save_as(Pathname.new(version_config_path))
 
     gym(
       scheme: 'WordPress Alpha',
@@ -939,6 +934,27 @@ end
 
 def ensure_sentry_installed
     UI.user_error('sentry-cli not installed') unless sh('command -v sentry-cli')
+end
+
+# This function is Buildkite-specific
+def get_build_number
+
+  # This should work outside of Buildkite
+  if ENV['BUILDKITE'] != 'true'
+    require 'git'
+
+    repo = Git.open(PROJECT_ROOT_FOLDER)
+    current_branch = repo.current_branch
+    current_commit = repo.revparse('HEAD')[0, 7]
+
+    return "#{current_branch}-#{current_commit}"
+  end
+
+  if ENV['BUILDKITE_PULL_REQUEST'] == 'false'
+    return "#{ENV['BUILDKITE_BRANCH']}-#{ENV['BUILDKITE_COMMIT'][0,7]}"
+  end
+
+  return "pr#{ENV['BUILDKITE_PULL_REQUEST']}-#{ENV['BUILDKITE_COMMIT'][0,7]}"
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also

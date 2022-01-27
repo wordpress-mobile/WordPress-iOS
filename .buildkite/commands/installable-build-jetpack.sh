@@ -14,4 +14,4 @@ echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane build_and_upload_jetpack_installable_build build_number:$BUILDKITE_PULL_REQUEST
+bundle exec fastlane build_and_upload_jetpack_installable_build
