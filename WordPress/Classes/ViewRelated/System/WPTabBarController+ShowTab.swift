@@ -13,22 +13,6 @@ extension WPTabBarController {
         showStoryEditor(blog: forBlog)
     }
 
-    /// Show the home page editor - Used just after site creation
-    /// - Parameter blog: Blog (which was just created) for which to show the home page editor
-    func showHomePageEditor(forBlog blog: Blog, completion: @escaping HomepageEditorCompletion) {
-        guard presentedViewController == nil else {
-            dismiss(animated: true) { [weak self] in
-                self?.showHomePageEditor(forBlog: blog, completion: completion)
-            }
-            return
-        }
-        if let homepage = blog.homepage {
-            let editorViewController = EditPageViewController(homepage: homepage, completion: completion)
-            present(editorViewController, animated: false)
-        }
-    }
-
-    /// Show the page tab
     /// - Parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
     func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
 

@@ -230,27 +230,45 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
 
-        guard let blog = createdBlog else {
+        guard let blog = createdBlog, let navigationController = navigationController else {
             return
         }
 
-        guard let navigationController = navigationController else {
-            return
-        }
+        SiteAssemblyCompletionHelper.landInTheEditorOrContinue(for: blog, navigationController: navigationController) { [weak self] in
 
-        if let onDismiss = onDismiss {
-            SiteAssemblyCompletionHelper.completeSiteCreationFromAuthenticationScreen(for: blog, quickStartSettings: quickStartSettings, navigationController: navigationController) { [weak self, blog] in
+            guard let self = self else {
+                return
+            }
+
+            if let onDismiss = self.onDismiss {
                 let quickstartPrompt = QuickStartPromptViewController(blog: blog)
                 quickstartPrompt.onDismiss = onDismiss
-                self?.navigationController?.pushViewController(quickstartPrompt, animated: true)
+                navigationController.pushViewController(quickstartPrompt, animated: true)
+                return
             }
+
+            self.dismissTapped(viaDone: true) { [blog, weak self] in
+                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                self?.showQuickStartPrompt(for: blog)
+            }
+        }
+    }
+
+    private func showQuickStartPrompt(for blog: Blog) {
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
             return
         }
 
-        dismissTapped(viaDone: true) { [weak self, blog] in
-            if let strongSelf = self {
-                SiteAssemblyCompletionHelper.completeSiteCreation(for: blog, quickStartSettings: strongSelf.quickStartSettings)
+        guard let tabBar = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = { blog, showQuickStart in
+            if showQuickStart {
+                QuickStartTourGuide.shared.setupWithDelay(for: blog)
             }
         }
+        tabBar.present(quickstartPrompt, animated: true)
     }
 }
