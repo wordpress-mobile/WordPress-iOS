@@ -234,7 +234,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        SiteAssemblyCompletionHelper.landInTheEditorOrContinue(for: blog, navigationController: navigationController) { [weak self] in
+        LandInTheEditorHelper.landInTheEditorOrContinue(for: blog, navigationController: navigationController) { [weak self] in
 
             guard let self = self else {
                 return

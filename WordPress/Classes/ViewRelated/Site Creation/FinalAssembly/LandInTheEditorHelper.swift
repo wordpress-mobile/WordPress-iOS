@@ -1,6 +1,6 @@
 typealias HomepageEditorCompletion = () -> Void
 
-class SiteAssemblyCompletionHelper {
+class LandInTheEditorHelper {
     /// Land in the editor, or continue as usual for the control group -  Used to branch on the ExPlat experiment for landing in the editor from the site creation flow
     /// - Parameter blog: Blog (which was just created) for which to show the home page editor
     /// - Parameter navigationController: UINavigationController used to present the home page editor
