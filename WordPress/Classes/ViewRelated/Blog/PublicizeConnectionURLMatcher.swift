@@ -51,7 +51,7 @@ struct PublicizeConnectionURLMatcher {
             case .declinePath:
                 return "/decline"
             case .authorizationPrefix:
-                return "https://public-api.wordpress.com/connect/"
+                return "https://public-api.wordpress.com/connect"
             default:
                 return nil
             }
@@ -137,8 +137,8 @@ struct PublicizeConnectionURLMatcher {
             return .deny
         }
 
-        // If we've made it this far and verifyRange is found then we're *probably*
-        // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
+        // If we've made it this far and the `action=verify` query param is present then we're
+        // *probably* verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
         if url(matchURL, contains: .verifyActionItem) {
             return .verify

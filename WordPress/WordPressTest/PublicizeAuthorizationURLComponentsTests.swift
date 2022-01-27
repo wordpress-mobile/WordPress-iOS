@@ -2,12 +2,6 @@ import XCTest
 @testable import WordPress
 
 class PublicizeConnectionURLMatcherTests: XCTestCase {
-    override func setUp() {
-    }
-
-    override func tearDown() {
-    }
-
     func testURLContainingAuthorizationItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=verify")!
         XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .authorizationPrefix))
@@ -48,7 +42,7 @@ class PublicizeConnectionURLMatcherTests: XCTestCase {
         XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .codeItem))
     }
 
-    func testURLContainingErrorItemItem() {
+    func testURLContainingErrorItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&error=1234567")!
         XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .errorItem))
     }
