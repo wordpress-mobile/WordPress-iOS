@@ -2,6 +2,12 @@ import Foundation
 import UIKit
 import WordPressShared
 
+// Notification sent when a comment is moderated/edited to allow views that display Comments to update if necessary.
+// Specifically, the Comments snippet on ReaderDetailViewController.
+extension NSNotification.Name {
+    static let ReaderCommentModifiedNotification = NSNotification.Name(rawValue: "ReaderCommentModifiedNotification")
+}
+
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -218,6 +224,7 @@ private extension ReaderCommentsViewController {
             CommentAnalytics.trackCommentEdited(comment: comment)
 
             self?.commentService.uploadComment(comment, success: {
+                NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
                 // update the thread again in case the approval status changed.
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }, failure: { _ in
@@ -232,6 +239,8 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
+            NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
+
             // Adjust the ReaderPost's comment count.
             if let post = self?.post, let commentCount = post.commentCount?.intValue {
                 let adjustment = (status == .approved) ? 1 : -1
