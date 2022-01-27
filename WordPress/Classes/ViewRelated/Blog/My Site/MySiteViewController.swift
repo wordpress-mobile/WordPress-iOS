@@ -74,12 +74,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            showSitePicker(for: newBlog)
+            addSitePickerIfNeeded(for: newBlog)
             showBlogDetails(for: newBlog)
         }
 
         get {
-            return blogDetailsViewController?.blog
+            guard FeatureFlag.mySiteDashboard.enabled else {
+                return blogDetailsViewController?.blog
+            }
+
+            return sitePickerViewController?.blog
         }
     }
 
@@ -89,6 +93,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private(set) var blogDetailsViewController: BlogDetailsViewController?
 
     private let blogDashboardViewController = BlogDashboardViewController()
+
+    private(set) var sitePickerViewController: SitePickerViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -144,24 +150,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func showSitePicker(for blog: Blog) {
-        guard FeatureFlag.mySiteDashboard.enabled else {
-            return
-        }
-
-        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
-
-        sitePickerViewController.onBlogSwitched = { [weak self] in
-            self?.blogDetailsViewController?.showInitialDetailsForBlog()
-            self?.blogDetailsViewController?.tableView.reloadData()
-            self?.blogDetailsViewController?.preloadMetadata()
-        }
-
-        addChild(sitePickerViewController)
-        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
-        sitePickerViewController.didMove(toParent: self)
-    }
-
     private func setupSegmentedControl() {
         segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
 
@@ -170,6 +158,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
         }
         segmentedControl.selectedSegmentIndex = 0
+
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
 
     private func setupView() {
@@ -283,7 +273,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        showSitePicker(for: mainBlog)
+        addSitePickerIfNeeded(for: mainBlog)
         showBlogDetails(for: mainBlog)
     }
 
@@ -304,9 +294,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - IBAction
+    // MARK: - Segmented Control
 
-    @IBAction func segmentedControlValueChanged(_ sender: Any) {
+    @objc private func segmentedControlValueChanged(_ sender: Any) {
         guard let blog = blog,
               let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
             return
@@ -541,6 +531,49 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDetailsViewController.blog = blog
 
         return blogDetailsViewController
+    }
+
+    private func addSitePickerIfNeeded(for blog: Blog) {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+
+        guard sitePickerViewController == nil else {
+            return
+        }
+
+        let sitePickerViewController = makeSitePickerViewController(for: blog)
+        self.sitePickerViewController = sitePickerViewController
+
+        addChild(sitePickerViewController)
+        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+        sitePickerViewController.didMove(toParent: self)
+    }
+
+    private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
+        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+
+        sitePickerViewController.onBlogSwitched = { [weak self] blog in
+            self?.updateChildViewController(for: blog)
+        }
+
+        return sitePickerViewController
+    }
+
+    private func updateChildViewController(for blog: Blog) {
+        guard let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.preloadMetadata()
+        case .dashboard:
+            // TODO: Update blog dashboard vc
+            break
+        }
     }
 
     func presentCreateSheet() {
