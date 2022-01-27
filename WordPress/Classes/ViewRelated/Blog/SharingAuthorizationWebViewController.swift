@@ -25,20 +25,31 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     }
 
     private static let loginURL = "https://wordpress.com/wp-login.php"
-    private static let authorizationPrefix = "https://public-api.wordpress.com/connect/"
-    private static let requestActionParameter = "action=request"
-    private static let verifyActionParameter = "action=verify"
-    private static let denyActionParameter = "action=deny"
 
-    // Special handling for the inconsistent way that services respond to a user's choice to decline
-    // oauth authorization.
-    // Right now we have no clear way to know if Tumblr fails.  This is something we should try
-    // fixing moving forward.
-    // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
-    private static let declinePath = "/decline"
-    private static let userRefused = "oauth_problem=user_refused"
-    private static let authorizationDenied = "denied="
-    private static let accessDenied = "error=access_denied"
+    private enum AuthorizeURLComponents: String {
+        case verifyActionParameter = "action=verify"
+        case denyActionParameter = "action=deny"
+        case requestActionParameter = "action=request"
+
+        case declinePath = "/decline"
+        case authorizationPrefix = "https://public-api.wordpress.com/connect/"
+        case accessDenied = "error=access_denied"
+
+        case state = "state"
+        case code = "code"
+        case error = "error"
+
+        // Special handling for the inconsistent way that services respond to a user's choice to decline
+        // oauth authorization.
+        // Right now we have no clear way to know if Tumblr fails.  This is something we should try
+        // fixing moving forward.
+        // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
+        case userRefused = "oauth_problem=user_refused"
+
+        func containedIn(_ url: URL) -> Bool {
+            url.absoluteString.contains(rawValue)
+        }
+    }
 
     /// Verification loading -- dismiss on completion
     ///
@@ -145,41 +156,49 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     // MARK: - URL Interpretation
 
     private func authorizeAction(from url: URL) -> AuthorizeAction {
-        let requested = url.absoluteString
-
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if requested.range(of: SharingAuthorizationWebViewController.declinePath) != nil {
+        if AuthorizeURLComponents.declinePath.containedIn(url) {
             return .deny
         }
 
-        if !requested.hasPrefix(SharingAuthorizationWebViewController.authorizationPrefix) {
+        if !url.absoluteString.hasPrefix(AuthorizeURLComponents.authorizationPrefix.rawValue) {
             return .none
         }
 
-        if requested.range(of: SharingAuthorizationWebViewController.requestActionParameter) != nil {
+        if AuthorizeURLComponents.requestActionParameter.containedIn(url) {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if requested.range(of: SharingAuthorizationWebViewController.denyActionParameter) != nil {
+        if AuthorizeURLComponents.denyActionParameter.containedIn(url) {
             return .deny
         }
 
         // LinkedIn
-        if requested.range(of: SharingAuthorizationWebViewController.userRefused) != nil {
+        if AuthorizeURLComponents.userRefused.containedIn(url) {
             return .deny
         }
 
         // Facebook and Google+
-        if requested.range(of: SharingAuthorizationWebViewController.accessDenied) != nil {
+        if AuthorizeURLComponents.accessDenied.containedIn(url) {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if requested.range(of: SharingAuthorizationWebViewController.verifyActionParameter) != nil {
+        if AuthorizeURLComponents.verifyActionParameter.containedIn(url) {
             return .verify
+        }
+
+        // Facebook
+        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.code.containedIn(url) {
+            return .verify
+        }
+
+        // Facebook failure
+        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.error.containedIn(url) {
+            return .unknown
         }
 
         return .unknown
