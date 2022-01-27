@@ -1,6 +1,8 @@
 19.2
 -----
 * [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
+* [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
+
 
 19.1
 -----

@@ -13,7 +13,7 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
 
 func AccountSettingsViewController(accountSettingsService: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(accountSettingsService: accountSettingsService)
-    let viewController = ImmuTableViewController(controller: controller)
+    let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
     viewController.handler.automaticallyDeselectCells = true
     return viewController
 }

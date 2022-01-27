@@ -17,10 +17,34 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var segmentedControlContainerView: UIView!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var containerView: UIView!
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 0
+        return stackView
+    }()
+
+    private lazy var segmentedControlContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .basicBackground
+        return view
+    }()
+
+    private lazy var segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
+    }()
+
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -75,6 +99,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        setupView()
+        setupConstraints()
         setupNavigationItem()
         setupSegmentedControl()
         subscribeToPostSignupNotifications()
@@ -87,6 +113,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if blog == nil {
             showBlogDetailsForMainBlogOrNoSites()
         }
+
+        setupTransparentNavBar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        setupOpaqueNavBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -101,6 +135,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
 
         trackNoSitesVisibleIfNeeded()
+
+        setupTransparentNavBar()
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -134,6 +170,41 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
         }
         segmentedControl.selectedSegmentIndex = 0
+    }
+
+    private func setupView() {
+        view.backgroundColor = .listBackground
+    }
+
+    /// If the My Site Dashboard feature flag is enabled, then this method builds a layout with the following
+    /// view hierarchy:
+    ///
+    /// - Stack view
+    ///   - Segmented control container view
+    ///      - Segmented control
+    ///   - Container view (for a child vc)
+    ///
+    /// Otherwise, if the My Site Dashboard feature flag is disabled, this method does nothing and the
+    /// child vc get added directly to the root view of the view controller in showBlogDetails.
+    /// 
+    private func setupConstraints() {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+
+        view.addSubview(stackView)
+        segmentedControlContainerView.addSubview(segmentedControl)
+        stackView.addArrangedSubviews([segmentedControlContainerView, containerView])
+
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
+            segmentedControl.centerYAnchor.constraint(equalTo: segmentedControlContainerView.centerYAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor, constant: 24)
+        ])
     }
 
     // MARK: - Navigation Item
@@ -171,6 +242,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
+    }
+
+    private func setupTransparentNavBar() {
+        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
+    }
+
+    private func setupOpaqueNavBar() {
+        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithOpaqueBackground()
     }
 
     // MARK: - Account
@@ -435,7 +514,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        embedChildInContainerView(blogDetailsViewController)
+        if FeatureFlag.mySiteDashboard.enabled {
+            embedChildInContainerView(blogDetailsViewController)
+        } else {
+            add(blogDetailsViewController)
+            blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            view.pinSubviewToAllEdges(blogDetailsViewController.view)
+        }
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }
