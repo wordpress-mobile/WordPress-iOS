@@ -5,6 +5,7 @@ import AutomatticTracks
 import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+import AutomatticAbout
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -68,6 +69,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     private let loggingStack = WPLoggingStack()
+
+    private lazy var tracksLogger = TracksLogger()
 
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
@@ -273,6 +276,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
+
+        TracksLogging.delegate = tracksLogger
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -699,7 +704,6 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         WPSharedSetLoggingLevel(level)
-        TracksSetLoggingLevel(level)
         WPAuthenticatorSetLoggingLevel(level)
     }
 }

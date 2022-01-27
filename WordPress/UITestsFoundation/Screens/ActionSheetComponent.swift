@@ -16,7 +16,11 @@ public class ActionSheetComponent: ScreenObject {
     var sitePageButton: XCUIElement { Self.getSitePageButton(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton])
+        try super.init(
+            expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func goToBlogPost() {

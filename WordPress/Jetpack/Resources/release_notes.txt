@@ -1,13 +1,20 @@
-Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
-We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
-We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
+Only gave the app limited access to your media library? No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in dynamic type for easy reading.
 
-When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+We also made voiceover and dynamic type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
 
-- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
-- Rich content so you can see each comment just as the author wrote it.
-- A share button for approved comments.
-- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
-- Tappable web address to visit the author's URL (instead of their avatar image).
+Speaking of better user experience, you can now moderate individual comments on a post through a drop-down menu.
 
-Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!
+We made some useful updates to the Block Editor.
+
+- We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
+- We added translation for color settings in Cover blocks.
+- Selecting an image will no longer show you a video thumbnail, and vice versa.
+- We hid the help button in the bottom right of the unsupported block editor to avoid confusion.
+- When you’re using different text and background colors in text blocks, you’ll get a notification if the color combo might make it hard for some people to read.
+- We fixed a handful of edge case problems when changing the color of non-selected text.
+
+We also solved a few smaller issues and crashes.
+
+- Weekly roundup notifications are now showing up, making it easier to stay on top of the latest news.
+- When you connect your Facebook account to Publicize, you’ll now be logged in successfully.
+- Images with a copyright symbol in the file name will now upload or appear in the Share Sheet properly.

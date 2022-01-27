@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 /// The main data provider for Weekly Roundup information.
 ///
@@ -163,7 +164,7 @@ class WeeklyRoundupDataProvider {
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
     private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
-        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(managedObjectContext: context)
 
         noteService.getAllSettings { settings in
             let weeklyRoundupEnabledSites = sites.filter { site in
@@ -191,14 +192,12 @@ class WeeklyRoundupDataProvider {
             NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
         ]
 
-        let controller = NSFetchedResultsController<Blog>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         do {
-            try controller.performFetch()
+            let result = try context.fetch(request)
+            return .success(result)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
         }
-
-        return .success(controller.fetchedObjects ?? [])
     }
 }
 
@@ -377,7 +376,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             }
         }
 
-        let dataProvider = WeeklyRoundupDataProvider(context: ContextManager.shared.mainContext, onError: onError)
+        let context = ContextManager.shared.newDerivedContext()
+        let dataProvider = WeeklyRoundupDataProvider(context: context, onError: onError)
         var siteStats: [Blog: StatsSummaryData]? = nil
 
         let requestData = BlockOperation {
@@ -422,7 +422,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                     views: stats.viewsCount,
                     comments: stats.commentsCount,
                     likes: stats.likesCount,
-                    periodEndDate: self.currentRunPeriodEndDate()) { result in
+                    periodEndDate: self.currentRunPeriodEndDate(),
+                    context: context) { result in
 
                     switch result {
                     case .success:
@@ -502,8 +503,8 @@ class WeeklyRoundupNotificationScheduler {
     }
 
     func scheduleStaticNotification(completion: @escaping (Result<Void, Error>) -> Void) {
-        let title = "Weekly Roundup"
-        let body = "Your weekly roundup is ready, tap here to see the details!"
+        let title = TextContent.staticNotificationTitle
+        let body = TextContent.staticNotificationBody
 
         scheduleNotification(
             identifier: staticNotificationIdentifier,
@@ -526,21 +527,31 @@ class WeeklyRoundupNotificationScheduler {
         comments: Int,
         likes: Int,
         periodEndDate: Date,
+        context: NSManagedObjectContext,
         completion: @escaping (Result<Void, Error>) -> Void) {
 
-        guard let dotComID = site.dotComID?.intValue else {
-            // Error
-            return
-        }
+            var siteTitle: String?
+            var dotComID: Int?
 
-        let title: String = {
-            if let siteTitle = site.title {
-                return "Weekly Roundup: \(siteTitle)"
-            } else {
-                return "Weekly Roundup"
+            context.performAndWait {
+                dotComID = site.dotComID?.intValue
+                siteTitle = site.title
             }
-        }()
-        let body = "Last week you had \(views) views, \(comments) comments and \(likes) likes."
+
+            guard let dotComID = dotComID else {
+                // Error
+                return
+            }
+
+            let title: String = {
+                if let siteTitle = siteTitle {
+                    return String(format: TextContent.dynamicNotificationTitle, siteTitle)
+                } else {
+                    return TextContent.staticNotificationTitle
+                }
+            }()
+
+        let body = String(format: TextContent.dynamicNotificationBody, views, comments, likes)
 
         // The dynamic notification date is defined by when the background task is run.
         // Since these lines of code execute when the BG Task is run, we can just schedule
@@ -553,6 +564,7 @@ class WeeklyRoundupNotificationScheduler {
         let userInfo: [AnyHashable: Any] = [
             InteractiveNotificationsManager.blogIDKey: dotComID,
             InteractiveNotificationsManager.dateKey: periodEndDate,
+            PushNotificationsManager.Notification.typeKey: NotificationEventTracker.NotificationType.weeklyRoundup.rawValue
         ]
 
         scheduleNotification(
@@ -562,13 +574,13 @@ class WeeklyRoundupNotificationScheduler {
             userInfo: userInfo,
             dateComponents: dateComponents) { result in
 
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(NotificationSchedulingError.dynamicNotificationSchedulingError(error: error)))
+                switch result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(NotificationSchedulingError.dynamicNotificationSchedulingError(error: error)))
+                }
             }
-        }
     }
 
     private func scheduleNotification(
@@ -634,5 +646,12 @@ class WeeklyRoundupNotificationScheduler {
 
             completion(true)
         }
+    }
+
+    enum TextContent {
+        static let staticNotificationTitle = NSLocalizedString("Weekly Roundup", comment: "Title of Weekly Roundup push notification")
+        static let dynamicNotificationTitle = NSLocalizedString("Weekly Roundup: %@", comment: "Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites.")
+        static let staticNotificationBody = NSLocalizedString("Your weekly roundup is ready, tap here to see the details!", comment: "Prompt displayed as part of the stats Weekly Roundup push notification.")
+        static let dynamicNotificationBody = NSLocalizedString("Last week you had %1$d views, %2$d comments and %3$d likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes.")
     }
 }

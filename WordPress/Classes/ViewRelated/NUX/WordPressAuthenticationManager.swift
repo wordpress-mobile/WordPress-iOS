@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 
 // MARK: - WordPressAuthenticationManager
@@ -14,9 +15,18 @@ class WordPressAuthenticationManager: NSObject {
     /// without having to reimplement WordPressAuthenticatorDelegate
     private let authenticationHandler: AuthenticationHandler?
 
-    init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
+    private let quickStartSettings: QuickStartSettings
+
+    private let recentSiteService: RecentSitesService
+
+    init(windowManager: WindowManager,
+         authenticationHandler: AuthenticationHandler? = nil,
+         quickStartSettings: QuickStartSettings = QuickStartSettings(),
+         recentSiteService: RecentSitesService = RecentSitesService()) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
+        self.quickStartSettings = quickStartSettings
+        self.recentSiteService = recentSiteService
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -47,7 +57,7 @@ extension WordPressAuthenticationManager {
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
@@ -318,6 +328,24 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
+        let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
+            guard let self = self else {
+                // If self is nil the user will be stuck on the login and not able to progress
+                // Trigger a fatal so we can track this better in Sentry.
+                // This case should be very rare.
+                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
+            }
+
+            self.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
+        }
+
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            return
+        }
+
         if PostSignUpInterstitialViewController.shouldDisplay() {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return
@@ -330,18 +358,48 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = { [weak self] in
-            onDismiss()
 
-            self?.windowManager.dismissFullscreenSignIn()
+        epilogueViewController.onBlogSelected = { [weak self] blog in
+            guard let self = self else {
+                return
+            }
+
+            self.recentSiteService.touch(blog: blog)
+
+            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                } else {
+                    self.windowManager.showAppUI(for: blog)
+                }
+                return
+            }
+
+            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
         }
 
+        epilogueViewController.onCreateNewSite = {
+            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+
+            navigationController.present(wizard, animated: true)
+            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+        }
+
+        navigationController.delegate = epilogueViewController
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+        if let authenticationHandler = authenticationHandler {
+            authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+            return
+        }
+
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
             fatalError()
@@ -390,7 +448,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func shouldPresentSignupEpilogue() -> Bool {
         return true
     }
-
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
@@ -461,6 +518,46 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
+    }
+}
+
+// MARK: - Quick Start Prompt
+private extension WordPressAuthenticationManager {
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog, Bool) -> Void)?) {
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            return
+        }
+
+        // Otherwise, show the Quick Start prompt
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = onDismiss
+        navigationController.pushViewController(quickstartPrompt, animated: true)
+    }
+
+    func onDismissQuickStartPrompt(for blog: Blog, onDismiss: @escaping () -> Void) {
+        onDismiss()
+
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+            self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            return
+        }
+
+        // Otherwise, show the My Site screen for the specified blog and after a short delay,
+        // trigger the Quick Start tour
+        self.windowManager.showAppUI(for: blog, completion: {
+            QuickStartTourGuide.shared.setupWithDelay(for: blog)
+        })
     }
 }
 

@@ -425,7 +425,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 case NSURLErrorNetworkConnectionLost:
                 case NSURLErrorNotConnectedToInternet:
                     // Clear lack of device internet connection, notify the user
-                    customErrorMessage = NSLocalizedString(@"The internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
+                    customErrorMessage = NSLocalizedString(@"The Internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the Internet.");
                     break;
                 default:
                     // Default NSURL error messaging, probably server-side, encourage user to try again
@@ -434,11 +434,13 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             }
         }
     }
+
     if (customErrorMessage) {
-        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
         userInfo[NSLocalizedDescriptionKey] = customErrorMessage;
-        error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
     }
+
     return error;
 }
 
@@ -453,6 +455,14 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     void (^successBlock)(void) = ^() {
         [self.managedObjectContext performBlock:^{
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+
+            if (mediaInContext == nil) {
+                // Considering the intent of calling this method is to delete the media object,
+                // when it doesn't exist, we can simply signal success, since the intent is fulfilled.
+                success();
+                return;
+            }
+
             [self.managedObjectContext deleteObject:mediaInContext];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext
                                      withCompletionBlock:^{

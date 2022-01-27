@@ -11,7 +11,11 @@ public class PostsScreen: ScreenObject {
     private var currentlyFilteredPostStatus: PostStatus = .published
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [ { $0.tables["PostsTable"] } ], app: app)
+        try super.init(
+            expectedElementGetters: [ { $0.tables["PostsTable"] } ],
+            app: app,
+            waitTimeout: 7
+        )
         showOnly(.published)
     }
 
@@ -65,10 +69,6 @@ public struct EditorScreen {
         return XCUIApplication().navigationBars[aztecEditorElement].exists
     }
 
-    private var aztecEditor: AztecEditorScreen {
-        return AztecEditorScreen(mode: .rich)
-    }
-
     func dismissDialogsIfNeeded() throws {
         guard let blockEditor = try? BlockEditorScreen() else { return }
 
@@ -80,8 +80,8 @@ public struct EditorScreen {
             blockEditor.closeEditor()
         }
 
-        if isAztecEditor {
-            self.aztecEditor.closeEditor()
+        if let aztecEditor = try? AztecEditorScreen(mode: .rich) {
+            aztecEditor.closeEditor()
         }
     }
 }

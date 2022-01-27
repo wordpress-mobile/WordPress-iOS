@@ -1322,7 +1322,10 @@
     // Media has an Error transformer
     Media *media1 = (Media *)[NSEntityDescription insertNewObjectForEntityForName:[Media entityName] inManagedObjectContext:context];
     media1.blog = blog1;
-    NSError *error1 = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ @"reason": @"test" }];
+    // The UserInfo dictionary of an NSError can contain types that can't be securely coded, which will throw a Core Data exception on save.
+    // We attach an NSUnderlyingError with the expectation that it won't be included when the error is encoded and persisted.
+    NSError *underlyingError = [NSError errorWithDomain:NSURLErrorDomain code:500 userInfo:nil];
+    NSError *error1 = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ NSLocalizedDescriptionKey: @"test", NSUnderlyingErrorKey: underlyingError }];
     media1.error = error1;
 
     [context save:&error];
@@ -1356,7 +1359,9 @@
 
     // Check that our properties persisted
     Media *fetchedMedia1 = [context fetch:@"Media" withPredicate:nil arguments:nil].firstObject;
-    XCTAssert([fetchedMedia1.error isEqual:error1]);
+    // The expected error is stripped of any keys not included in the Media.error setter
+    NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ NSLocalizedDescriptionKey: @"test" }];
+    XCTAssert([fetchedMedia1.error isEqual:expectedError]);
 
     Blog *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[@123]].firstObject;
     XCTAssertNotNil(fetchedBlog1);

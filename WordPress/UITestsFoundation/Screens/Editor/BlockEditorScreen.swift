@@ -1,5 +1,6 @@
 import ScreenObject
 import XCTest
+import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
@@ -21,7 +22,8 @@ public class BlockEditorScreen: ScreenObject {
         // expect to encase the screen.
         try super.init(
             expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
@@ -91,12 +93,11 @@ public class BlockEditorScreen: ScreenObject {
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
-                let notSavedState = app.staticTexts["You have unsaved changes."]
-                if notSavedState.exists {
-                    Logger.log(message: "Discarding unsaved changes", event: .v)
-                    let discardButton = app.buttons["Discard"] // Uses a localized string
-                    discardButton.tap()
-                }
+                guard app.staticTexts["You have unsaved changes."].waitForIsHittable(timeout: 3) else { return }
+
+                Logger.log(message: "Discarding unsaved changes", event: .v)
+                let discardButton = app.buttons["Discard"] // Uses a localized string
+                discardButton.tap()
             }
 
             let editorNavBar = app.navigationBars["Gutenberg Editor Navigation Bar"]
@@ -107,7 +108,14 @@ public class BlockEditorScreen: ScreenObject {
 
     public func publish() throws -> EditorNoticeComponent {
         let publishButton = app.buttons["Publish"]
-        publishButton.tap()
+        let publishNowButton = app.buttons["Publish Now"]
+        var tries = 0
+        // This loop to check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
+        // The tests would fail sometimes in the pipeline with no apparent reason.
+        repeat {
+            publishButton.tap()
+            tries += 1
+        } while !publishNowButton.waitForIsHittable(timeout: 3) && tries <= 3
         try confirmPublish()
 
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
@@ -124,7 +132,22 @@ public class BlockEditorScreen: ScreenObject {
 
     private func addBlock(_ blockLabel: String) {
         addBlockButton.tap()
-        XCUIApplication().buttons[blockLabel].tap()
+        let blockButton = app.buttons[blockLabel]
+        XCTAssertTrue(blockButton.waitForIsHittable(timeout: 3))
+        blockButton.tap()
+    }
+
+    /// Some tests might fail during the block picking flow. In such cases, we need to dismiss the
+    /// block picker itself before being able to interact with the rest of the app again.
+    public func dismissBlocksPickerIfNeeded() {
+        // Determine whether the block picker is on screen using the visibility of the add block
+        // button as a proxy
+        guard addBlockButton.isFullyVisibleOnScreen() == false else { return }
+
+        // Dismiss the block picker by swiping down
+        app.swipeDown()
+
+        XCTAssertTrue(addBlockButton.waitForIsHittable(timeout: 3))
     }
 
     /*
@@ -150,6 +173,18 @@ public class BlockEditorScreen: ScreenObject {
         } else {
             let publishNowButton = app.buttons["Publish Now"]
             publishNowButton.tap()
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+    }
+
+    public func dismissBloggingRemindersAlertIfNeeded() {
+        guard app.buttons["Set reminders"].waitForExistence(timeout: 3) else { return }
+
+        if XCUIDevice.isPad {
+            app.swipeDown(velocity: .fast)
+        } else {
+            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+            dismissBloggingRemindersAlertButton.tap()
         }
     }
 
@@ -167,24 +202,5 @@ public class BlockEditorScreen: ScreenObject {
     public func closeBlockPicker() throws -> BlockEditorScreen {
         editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
         return try BlockEditorScreen()
-    }
-}
-
-// TODO: Move this to XCUITestHelpers or ScreenObject
-extension XCUIElement {
-
-    func waitFor(
-        predicateString: String,
-        timeout: TimeInterval = 10
-    ) -> XCTWaiter.Result {
-        XCTWaiter.wait(
-            for: [
-                XCTNSPredicateExpectation(
-                    predicate: NSPredicate(format: predicateString),
-                    object: self
-                )
-            ],
-            timeout: timeout
-        )
     }
 }

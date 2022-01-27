@@ -80,17 +80,24 @@ struct EditableTextRow: ImmuTableRow {
     let value: String
     let accessoryImage: UIImage?
     let action: ImmuTableAction?
+    let fieldName: String?
 
-    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?) {
+    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?, fieldName: String? = nil) {
         self.title = title
         self.value = value
         self.accessoryImage = accessoryImage
         self.action = action
+        self.fieldName = fieldName
     }
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityValue = value
+        if cell.isUserInteractionEnabled {
+            cell.accessibilityHint = NSLocalizedString("Tap to edit", comment: "Accessibility hint prompting the user to tap a table row to edit its value.")
+        }
         cell.accessoryType = .disclosureIndicator
         if accessoryImage != nil {
             cell.accessoryView = UIImageView(image: accessoryImage)
@@ -127,6 +134,9 @@ struct TextRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityValue = value
+
         cell.selectionStyle = .none
 
         WPStyleGuide.configureTableViewCell(cell)

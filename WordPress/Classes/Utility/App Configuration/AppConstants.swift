@@ -6,7 +6,9 @@ import WordPressAuthenticator
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
+    static let productBlogDisplayURL = "blog.wordpress.com"
     static let zendeskSourcePlatform = "mobile_-_ios"
+    static let shareAppName: ShareAppName = .wordpress
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
@@ -33,7 +35,13 @@ import WordPressAuthenticator
 extension AppConstants {
 
     struct Settings {
-        static let aboutTitle = NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
+        static let aboutTitle: String = {
+            if FeatureFlag.aboutScreen.enabled {
+                return NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+            } else {
+                return NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
+            }
+        }()
     }
 
     struct Login {

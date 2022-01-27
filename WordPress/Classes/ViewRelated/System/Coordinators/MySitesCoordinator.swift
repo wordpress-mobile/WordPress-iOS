@@ -146,7 +146,7 @@ class MySitesCoordinator: NSObject {
 
     func showSiteCreation() {
         showRootViewController()
-        mySiteViewController.launchSiteCreation()
+        mySiteViewController.launchSiteCreation(source: "my_site")
     }
 
     @objc

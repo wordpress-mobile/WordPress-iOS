@@ -59,6 +59,15 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Table View Controller
 
+    init(controller: ImmuTableController, style: UITableView.Style) {
+        self.controller = controller
+        super.init(style: style)
+
+        title = controller.title
+        registerRows(controller.immuTableRows)
+        controller.refreshModel()
+    }
+
     init(controller: ImmuTableController) {
         self.controller = controller
         super.init(style: .grouped)

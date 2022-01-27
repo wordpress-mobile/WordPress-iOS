@@ -103,7 +103,7 @@ FeaturedImageViewControllerDelegate>
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         self.apost = aPost;
     }

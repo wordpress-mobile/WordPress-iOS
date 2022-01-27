@@ -3,7 +3,7 @@
 import Foundation
 
 let glotPressSubtitleKey = "app_store_subtitle"
-let glotPressWhatsNewKey = "v18.7-whats-new"
+let glotPressWhatsNewKey = "v19.1-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 
@@ -56,6 +56,22 @@ let languages = [
     "zh-Hans": "zh-cn",
     "zh-Hant": "zh-tw",
 ]
+
+func shouldUpdateSubtitle(locale: String) -> Bool {
+    return isIn20211210Experiment(locale: locale) == false
+}
+
+func shouldUpdateKeywords(locale: String) -> Bool {
+    return isIn20211210Experiment(locale: locale) == false
+}
+
+func isIn20211210Experiment(locale: String) -> Bool {
+    // The experiment should run on every English locale. See details in P2 post ref `pcbrnV-440-p2`.
+    //
+    // We could have an allow list, but given the mostly static nature of
+    // locale codes, the following check seems enough.
+    return locale.starts(with: "en")
+}
 
 func downloadTranslation(
     config: Config = .config(for: CommandLine.arguments.second),
@@ -141,9 +157,16 @@ func downloadTranslation(
                 try FileManager.default.removeItem(at: URL(fileURLWithPath: releaseNotesPath))
             }
 
-            try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
+            if shouldUpdateSubtitle(locale: languageCode) {
+                try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
+            }
+
             try whatsNew?.write(toFile: "\(languageFolder)/release_notes.txt", atomically: true, encoding: .utf8)
-            try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
+
+            if shouldUpdateSubtitle(locale: languageCode) {
+                try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
+            }
+
             try storeDescription?.write(toFile: "\(languageFolder)/description.txt", atomically: true, encoding: .utf8)
         } catch {
             print("  Error writing: \(error)")

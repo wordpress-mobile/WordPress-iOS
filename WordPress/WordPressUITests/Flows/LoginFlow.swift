@@ -84,7 +84,7 @@ class LoginFlow {
                     if GetStartedScreen.isLoaded() && GetStartedScreen.isEmailEntered() {
                         try GetStartedScreen().emailTextField.clearText()
                     }
-                    navBackButton.tap()
+                    navigateBack()
                 }
             }
 

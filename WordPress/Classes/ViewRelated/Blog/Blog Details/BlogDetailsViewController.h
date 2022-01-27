@@ -3,6 +3,7 @@
 @class Blog;
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
+@class IntrinsicTableView;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
@@ -15,7 +16,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
-    BlogDetailsSectionCategoryRemoveSite
+    BlogDetailsSectionCategoryRemoveSite,
+    BlogDetailsSectionCategoryQuickAction
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
@@ -137,7 +139,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
-@property (nonatomic, strong, readonly) id<BlogDetailHeader> _Nonnull headerView;
+@property (nonatomic, strong, readonly) BlogDetailHeaderView * _Nonnull headerView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
@@ -157,4 +159,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)toggleSpotlightOnHeaderView;
 - (void)uploadDroppedSiteIcon:(nonnull UIImage *)image onCompletion:(nullable void(^)(void))completion;
 - (void)updateTableViewAndHeader;
+- (void)preloadMetadata;
+- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl  onCompletion:(nullable void(^)(void))completion;
 @end

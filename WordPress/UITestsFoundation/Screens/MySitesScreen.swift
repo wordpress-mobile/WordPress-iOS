@@ -20,14 +20,15 @@ public class MySitesScreen: ScreenObject {
                 cancelButtonGetter,
                 plusButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
-    public func addSelfHostedSite() -> LoginSiteAddressScreen {
+    public func addSelfHostedSite() throws -> LoginSiteAddressScreen {
         plusButtonGetter(app).tap()
         app.buttons["Add self-hosted site"].tap()
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 
     public func closeModal() throws -> MySiteScreen {

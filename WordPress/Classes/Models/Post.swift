@@ -60,7 +60,7 @@ class Post: AbstractPost {
             return
         }
 
-        buildContentPreview()
+        storedContentPreviewForDisplay = ""
     }
 
     // MARK: - Content Preview

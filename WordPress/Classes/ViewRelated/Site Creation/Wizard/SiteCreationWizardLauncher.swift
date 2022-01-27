@@ -20,7 +20,7 @@ final class SiteCreationWizardLauncher {
 
     private lazy var siteAssemblyStep: WizardStep = {
         let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService)
+        return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService, onDismiss: onDismiss)
     }()
 
     private lazy var steps: [WizardStep] = {
@@ -45,4 +45,12 @@ final class SiteCreationWizardLauncher {
 
         return wizardContent
     }()
+
+    /// Closure to be executed upon dismissal of the SiteAssemblyWizardContent.
+    ///
+    private let onDismiss: ((Blog, Bool) -> Void)?
+
+    init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
+        self.onDismiss = onDismiss
+    }
 }

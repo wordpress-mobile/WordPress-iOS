@@ -44,11 +44,36 @@ public class LoginUsernamePasswordScreen: ScreenObject {
                 usernameTextFieldGetter,
                 passwordTextFieldGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
-    public func proceedWith(username: String, password: String) -> LoginEpilogueScreen {
+    public func proceedWith(username: String, password: String) throws -> LoginEpilogueScreen {
+        fill(username: username, password: password)
+
+        return try LoginEpilogueScreen()
+    }
+
+    public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
+        fill(username: username, password: password)
+        try dismissQuickStartPromptIfNeeded()
+
+        return try MySitesScreen()
+    }
+
+    public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
+        fill(username: username, password: password)
+        try dismissQuickStartPromptIfNeeded()
+
+        return try MySiteScreen()
+    }
+
+    public static func isLoaded() -> Bool {
+        (try? LoginUsernamePasswordScreen().isLoaded) ?? false
+    }
+
+    private func fill(username: String, password: String) {
         usernameTextField.tap()
         usernameTextField.typeText(username)
         passwordTextField.tap()
@@ -60,11 +85,15 @@ public class LoginUsernamePasswordScreen: ScreenObject {
             passwordTextField.typeText(password)
         }
         nextButton.tap()
-
-        return LoginEpilogueScreen()
     }
 
-    public static func isLoaded() -> Bool {
-        (try? LoginUsernamePasswordScreen().isLoaded) ?? false
+    private func dismissQuickStartPromptIfNeeded() throws {
+        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { (activity) in
+            if QuickStartPromptScreen.isLoaded() {
+                Logger.log(message: "Dismising quick start prompt...", event: .i)
+                _ = try QuickStartPromptScreen().selectNoThanks()
+                return
+            }
+        }
     }
 }

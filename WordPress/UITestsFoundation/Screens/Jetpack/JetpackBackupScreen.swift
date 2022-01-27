@@ -11,7 +11,11 @@ public class JetpackBackupScreen: ScreenObject {
     var downloadBackupButton: XCUIElement { app.sheets.buttons.element(boundBy: 1) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [ellipsisButtonGetter], app: app)
+        try super.init(
+            expectedElementGetters: [ellipsisButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func goToBackupOptions() throws -> JetpackBackupOptionsScreen {
