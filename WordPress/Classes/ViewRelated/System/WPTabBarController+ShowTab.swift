@@ -1,4 +1,3 @@
-import WordPressKit
 extension WPTabBarController {
 
     func showBlogDetails(for blog: Blog) {
@@ -13,6 +12,7 @@ extension WPTabBarController {
         showStoryEditor(blog: forBlog)
     }
 
+    /// Show the page tab
     /// - Parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
     func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
 
