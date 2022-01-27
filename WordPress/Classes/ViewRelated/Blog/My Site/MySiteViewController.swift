@@ -40,8 +40,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }()
 
     private lazy var segmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
+        let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
 
@@ -75,6 +77,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             addSitePickerIfNeeded(for: newBlog)
             showBlogDetails(for: newBlog)
+            setupSegmentedControl(for: newBlog)
         }
 
         get {
@@ -107,7 +110,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupView()
         setupConstraints()
         setupNavigationItem()
-        setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
     }
@@ -149,16 +151,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func setupSegmentedControl() {
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
-
-        segmentedControl.removeAllSegments()
-        Section.allCases.forEach { section in
-            segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
-        }
-        segmentedControl.selectedSegmentIndex = 0
-
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+    private func setupSegmentedControl(for blog: Blog) {
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isHostedAtWPcom
     }
 
     private func setupView() {
@@ -281,6 +275,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addSitePickerIfNeeded(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        setupSegmentedControl(for: mainBlog)
     }
 
     @objc
