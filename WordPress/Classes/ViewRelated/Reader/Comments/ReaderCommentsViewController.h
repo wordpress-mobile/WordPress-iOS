@@ -34,9 +34,10 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 
 
 // Undo comment moderation support.
-- (void)refreshTableViewAndNoResultsView;
+// These are public so they can be accessed from the Swift extension.
 @property (nonatomic, strong, readwrite) RemoteComment *commentPendingUndo;
 @property (nonatomic, readwrite) NSInteger pendingCommentDepth;
 @property (nonatomic, strong, readwrite) NSString *pendingCommentHierarchy;
+- (void)refreshTableViewAndNoResultsView;
 
 @end

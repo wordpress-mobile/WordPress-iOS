@@ -1121,15 +1121,16 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 
 -(Comment *)restoreHierarchicalComment:(RemoteComment *)remoteComment
+                                siteID:(NSNumber *)siteID
                                  depth:(NSInteger)depth
                              hierarchy:(NSString *)hierarchy {
     // Fetch the ReaderPost
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@", remoteComment.postID];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", remoteComment.postID, siteID];
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        DDLogError(@"Error fetching post with id %@: %@", remoteComment.postID, error);
+        DDLogError(@"Error fetching post with id %@ and site id %@: %@", remoteComment.postID, siteID, error);
         return nil;
     }
     

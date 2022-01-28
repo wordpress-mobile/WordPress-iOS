@@ -220,10 +220,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  Restore a RemoteComment into a Comment.
  
  @param remoteComment The RemoteComment to create a Comment from.
+ @param siteID The siteID for the post the Comment belongs to.
  @param depth The hierarchical depth for the Comment.
  @param hierarchy The hierarchy for the Comment.
  */
 -(Comment *_Nullable)restoreHierarchicalComment:(RemoteComment *_Nonnull)remoteComment
+                                         siteID:(NSNumber *_Nonnull)siteID
                                           depth:(NSInteger)depth
                                       hierarchy:(NSString *_Nonnull)hierarchy;
     

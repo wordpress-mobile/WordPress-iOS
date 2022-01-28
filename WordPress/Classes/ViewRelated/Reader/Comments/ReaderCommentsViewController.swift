@@ -312,6 +312,7 @@ private extension ReaderCommentsViewController {
 
             // Restore comment to use for moderation.
             if let comment = self.commentService.restoreHierarchicalComment(self.commentPendingUndo,
+                                                                            siteID: self.post.siteID,
                                                                             depth: self.pendingCommentDepth,
                                                                             hierarchy: self.pendingCommentHierarchy) {
                 // Set the Comment's status back to Approved when the user selects Undo on the notice.
