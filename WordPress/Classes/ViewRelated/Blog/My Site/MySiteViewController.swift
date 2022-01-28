@@ -193,16 +193,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView)
         scrollView.addSubview(stackView)
         scrollView.pinSubviewToAllEdges(stackView)
         segmentedControlContainerView.addSubview(segmentedControl)
         stackView.addArrangedSubviews([segmentedControlContainerView])
 
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
