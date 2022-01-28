@@ -150,6 +150,14 @@ extension PostsCardViewController: EditorAnalyticsProperties {
     }
 }
 
+// MARK: - DashboardCardInnerErrorViewDelegate
+
+extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
+    func retry() {
+        viewModel.retry()
+    }
+}
+
 // MARK: - PostCardTableView
 
 extension NSNotification.Name {
@@ -171,14 +179,4 @@ private class PostCardTableView: UITableView {
         NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
         return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
-}
-
-extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
-    func retry() {
-        viewModel.retry()
-    }
-}
-
-protocol DashboardCardInnerErrorViewDelegate: AnyObject {
-    func retry()
 }

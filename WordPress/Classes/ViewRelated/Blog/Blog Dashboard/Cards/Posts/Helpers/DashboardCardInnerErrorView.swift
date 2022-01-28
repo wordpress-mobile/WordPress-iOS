@@ -1,5 +1,9 @@
 import UIKit
 
+protocol DashboardCardInnerErrorViewDelegate: AnyObject {
+    func retry()
+}
+
 class DashboardCardInnerErrorView: UIStackView {
     weak var delegate: DashboardCardInnerErrorViewDelegate?
 
