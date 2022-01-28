@@ -77,7 +77,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             addSitePickerIfNeeded(for: newBlog)
             showBlogDetails(for: newBlog)
-            setupSegmentedControl(for: newBlog)
+            updateSegmentedControl(for: newBlog)
         }
 
         get {
@@ -151,12 +151,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func setupSegmentedControl(for blog: Blog) {
+    private func updateSegmentedControl(for blog: Blog) {
         guard FeatureFlag.mySiteDashboard.enabled else {
             return
         }
-        segmentedControlContainerView.isHidden = !blog.isHostedAtWPcom || UIDevice.isPad()
 
+        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
+        segmentedControlContainerView.isHidden = !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
     }
 
     private func setupView() {
@@ -279,7 +280,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addSitePickerIfNeeded(for: mainBlog)
         showBlogDetails(for: mainBlog)
-        setupSegmentedControl(for: mainBlog)
+        updateSegmentedControl(for: mainBlog)
     }
 
     @objc
@@ -556,6 +557,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
+
+            let isShowingDashboard = self?.segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+            if !blog.isAccessibleThroughWPCom() && isShowingDashboard {
+                self?.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+                self?.segmentedControl.sendActions(for: .valueChanged)
+            }
+
+            self?.updateSegmentedControl(for: blog)
             self?.updateChildViewController(for: blog)
         }
 
