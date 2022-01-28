@@ -30,7 +30,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    self = [self initWithStyle:UITableViewStyleGrouped];
+    self = [self initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
         _publicizeServices = [NSMutableArray new];

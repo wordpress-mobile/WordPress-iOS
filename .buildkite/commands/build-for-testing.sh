@@ -5,7 +5,6 @@ echo "--- :rubygems: Fixing Ruby Setup"
 gem install bundler
 
 echo "--- :rubygems: Setting up Gems"
-restore_cache "$(hash_file .ruby-version)-$(hash_file Gemfile.lock)"
 install_gems
 
 echo "--- :cocoapods: Setting up Pods"
