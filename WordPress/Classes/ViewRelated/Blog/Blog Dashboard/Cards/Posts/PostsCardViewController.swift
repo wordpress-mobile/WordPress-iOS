@@ -116,19 +116,17 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func hideLoading() {
+        errorView?.removeFromSuperview()
         removeGhostableTableView()
     }
 
     func showError(message: String, retry: Bool) {
-        if errorView == nil {
-            let errorView = DashboardCardInnerErrorView(message: message, retry: retry)
-            errorView.delegate = self
-            errorView.translatesAutoresizingMaskIntoConstraints = false
-            self.errorView = errorView
-        }
-
-        tableView.addSubview(withFadeAnimation: errorView!)
-        tableView.pinSubviewToSafeArea(errorView!)
+        let errorView = DashboardCardInnerErrorView(message: message, retry: retry)
+        errorView.delegate = self
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(withFadeAnimation: errorView)
+        tableView.pinSubviewToSafeArea(errorView)
+        self.errorView = errorView
 
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
@@ -177,7 +175,6 @@ private class PostCardTableView: UITableView {
 
 extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
     func retry() {
-        errorView?.removeFromSuperview()
         viewModel.retry()
     }
 }
@@ -189,19 +186,33 @@ protocol DashboardCardInnerErrorViewDelegate: AnyObject {
 class DashboardCardInnerErrorView: UIStackView {
     weak var delegate: DashboardCardInnerErrorViewDelegate?
 
-    convenience init(message: String, retry: Bool) {
+    private lazy var errorTitle: UILabel = {
         let errorTitle = UILabel()
-        errorTitle.text = message
         errorTitle.textAlignment = .center
+        errorTitle.textColor = .textSubtle
+        WPStyleGuide.configureLabel(errorTitle, textStyle: .callout, fontWeight: .semibold)
+        return errorTitle
+    }()
 
-        self.init(arrangedSubviews: [errorTitle])
+    private lazy var retryLabel: UILabel = {
+        let retryLabel = UILabel()
+        retryLabel.textAlignment = .center
+        retryLabel.text = "Tap to retry"
+        retryLabel.textColor = .textSubtle
+        WPStyleGuide.configureLabel(retryLabel, textStyle: .callout, fontWeight: .regular)
+        return retryLabel
+    }()
+
+    convenience init(message: String, retry: Bool) {
+        self.init(arrangedSubviews: [])
+
+        errorTitle.text = message
+        addArrangedSubview(errorTitle)
 
         axis = .vertical
+        spacing = Constants.spacing
 
         if retry {
-            let retryLabel = UILabel()
-            retryLabel.textAlignment = .center
-            retryLabel.text = "Tap to retry"
             addArrangedSubview(retryLabel)
 
             isUserInteractionEnabled = true
@@ -212,5 +223,9 @@ class DashboardCardInnerErrorView: UIStackView {
 
     @objc func didTap() {
         delegate?.retry()
+    }
+
+    private enum Constants {
+        static let spacing: CGFloat = 8
     }
 }
