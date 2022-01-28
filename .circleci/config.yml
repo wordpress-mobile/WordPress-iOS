@@ -150,31 +150,6 @@ jobs:
                 include_job_number_field: false
                 include_project_field: false
                 failure_message: '${SLACK_FAILURE_MESSAGE}'
-  WordPress Installable Build:
-    executor:
-      name: ios/default
-      <<: *xcode_version
-    steps:
-      - fix-image
-      - git/shallow-checkout
-      - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run:
-          name: Copy Secrets
-          command: bundle exec fastlane run configure_apply
-      - run:
-          name: Build
-          command: "bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM"
-      - run:
-          name: Prepare Artifacts
-          command: |
-            mkdir -p Artifacts
-            mv "fastlane/comment.json" "Artifacts/comment.json"
-      - store_artifacts:
-          path: Artifacts
-          destination: Artifacts
   Release Build:
     executor:
       name: ios/default
@@ -233,36 +208,6 @@ jobs:
           webhook: '${SLACK_BUILD_WEBHOOK}'
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
-  Jetpack Installable Build:
-    executor:
-      name: ios/default
-      <<: *xcode_version
-    environment:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-    steps:
-      - fix-image
-      - git/shallow-checkout
-      - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run:
-          name: Copy Secrets
-          command: bundle exec fastlane run configure_apply
-      - run:
-          name: Install other tools
-          command: |
-            brew update # Update homebrew to temporarily fix a bintray issue
-            brew install imagemagick
-            brew install ghostscript
-            curl -sL https://sentry.io/get-cli/ | bash
-      - run:
-          name: Build
-          command: bundle exec fastlane build_and_upload_jetpack_installable_build
-          no_output_timeout: 60m
-      - store_artifacts:
-          path: Artifacts
-          destination: Artifacts
   Build Jetpack:
     executor:
       name: ios/default
@@ -345,45 +290,9 @@ workflows:
           name: UI Tests (iPad)
           <<: *ipad_test_device
           requires: [ "Optional Tests" ]
-  Installable Build:
-    when:
-      and:
-        - not: << pipeline.parameters.beta_build >>
-        - not: << pipeline.parameters.release_build >>
-    jobs:
-      - Approve WordPress:
-          type: approval
-          filters:
-            branches:
-              ignore: /pull\/[0-9]+/
-      - WordPress Installable Build:
-          requires: [Approve WordPress]
-          filters:
-            branches:
-              ignore: /pull\/[0-9]+/
-      - Approve Jetpack:
-          type: approval
-          filters:
-            branches:
-              ignore: /pull\/[0-9]+/
-      - Jetpack Installable Build:
-          requires: [Approve Jetpack]
-          filters:
-            branches:
-              ignore: /pull\/[0-9]+/
 
   Release Build:
     when:
       or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs:
       - Release Build
-  Jetpack Nightly:
-    triggers:
-       - schedule:
-           cron: "0 0 * * *"
-           filters:
-             branches:
-               only:
-                 - trunk
-    jobs:
-      - Jetpack Installable Build
