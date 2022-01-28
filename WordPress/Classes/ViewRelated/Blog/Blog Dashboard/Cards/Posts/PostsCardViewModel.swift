@@ -7,7 +7,7 @@ protocol PostsCardView: AnyObject {
 
     func showLoading()
     func hideLoading()
-    func showError(message: String)
+    func showError(message: String, retry: Bool)
 }
 
 /// Responsible for populating a table view with posts
@@ -51,6 +51,11 @@ class PostsCardViewModel: NSObject {
         } catch {
             print("Fetch failed")
         }
+    }
+
+    func retry() {
+        viewController?.showLoading()
+        sync()
     }
 
     /// Set up the view model to be ready for use
@@ -139,12 +144,12 @@ private extension PostsCardViewModel {
 
     func showEmptyPostsError() {
         viewController?.hideLoading()
-        viewController?.showError(message: Strings.noPostsMessage)
+        viewController?.showError(message: Strings.noPostsMessage, retry: false)
     }
 
     func showLoadingFailureError() {
         viewController?.hideLoading()
-        viewController?.showError(message: Strings.loadingFailure)
+        viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
     enum Constants {

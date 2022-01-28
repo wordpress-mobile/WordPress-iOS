@@ -11,6 +11,7 @@ import UIKit
 
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
+    private var errorView: DashboardCardInnerErrorView?
 
     private let status: BasePost.Status = .draft
 
@@ -61,7 +62,7 @@ private extension PostsCardViewController {
     }
 
     func configureGhostableTableView() {
-        let ghostableTableView = IntrinsicTableView()
+        let ghostableTableView = PostCardTableView()
 
         view.addSubview(ghostableTableView)
 
@@ -118,13 +119,18 @@ extension PostsCardViewController: PostsCardView {
         removeGhostableTableView()
     }
 
-    func showError(message: String) {
-        let label = UILabel()
-        label.text = message
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        tableView.addSubview(withFadeAnimation: label)
-        tableView.pinSubviewToSafeArea(label)
+    func showError(message: String, retry: Bool) {
+        if errorView == nil {
+            let errorView = DashboardCardInnerErrorView(message: message, retry: retry)
+            errorView.delegate = self
+            errorView.translatesAutoresizingMaskIntoConstraints = false
+            self.errorView = errorView
+        }
+
+        tableView.addSubview(withFadeAnimation: errorView!)
+        tableView.pinSubviewToSafeArea(errorView!)
+
+        // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
     }
 }
@@ -166,5 +172,45 @@ private class PostCardTableView: UITableView {
         layoutIfNeeded()
         NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
         return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
+    }
+}
+
+extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
+    func retry() {
+        errorView?.removeFromSuperview()
+        viewModel.retry()
+    }
+}
+
+protocol DashboardCardInnerErrorViewDelegate: AnyObject {
+    func retry()
+}
+
+class DashboardCardInnerErrorView: UIStackView {
+    weak var delegate: DashboardCardInnerErrorViewDelegate?
+
+    convenience init(message: String, retry: Bool) {
+        let errorTitle = UILabel()
+        errorTitle.text = message
+        errorTitle.textAlignment = .center
+
+        self.init(arrangedSubviews: [errorTitle])
+
+        axis = .vertical
+
+        if retry {
+            let retryLabel = UILabel()
+            retryLabel.textAlignment = .center
+            retryLabel.text = "Tap to retry"
+            addArrangedSubview(retryLabel)
+
+            isUserInteractionEnabled = true
+            let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
+            addGestureRecognizer(tap)
+        }
+    }
+
+    @objc func didTap() {
+        delegate?.retry()
     }
 }
