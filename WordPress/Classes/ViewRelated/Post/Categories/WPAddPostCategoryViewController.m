@@ -25,7 +25,7 @@
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
     }

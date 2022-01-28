@@ -25,7 +25,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     required convenience init() {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
     }
 
     override func viewDidLoad() {
@@ -248,7 +248,7 @@ class AppSettingsViewController: UITableViewController {
 
     func pushDebugMenu() -> ImmuTableAction {
         return { [weak self] row in
-            let controller = DebugMenuViewController()
+            let controller = DebugMenuViewController(style: .insetGrouped)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -262,7 +262,7 @@ class AppSettingsViewController: UITableViewController {
 
     func pushAbout() -> ImmuTableAction {
         return { [weak self] row in
-            let controller = AboutViewController()
+            let controller = AboutViewController(style: .insetGrouped)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -271,7 +271,7 @@ class AppSettingsViewController: UITableViewController {
         return { [weak self] _ in
             WPAnalytics.track(.privacySettingsOpened)
 
-            let controller = PrivacySettingsViewController()
+            let controller = PrivacySettingsViewController(style: .insetGrouped)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }

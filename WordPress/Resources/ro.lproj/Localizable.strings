@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-17 10:26:23+0000 */
+/* Translation-Revision-Date: 2022-01-25 13:27:21+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -468,7 +468,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Tip de activitate (%1$d)";
 
-/* Remove asset from media picker list */
+/* Accessibility label for add button to add items to the user's media library
+   Remove asset from media picker list */
 "Add" = "Adaugă";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -563,6 +564,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Adaugă element meniu la copil";
+
+/* Accessibility hint for add button to add items to the user's media library */
+"Add new media" = "Adaugă element media nou";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Adaugă meniu nou";
@@ -704,6 +708,12 @@ translators: Block name. %s: The localized block name */
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Trimite întotdeauna jurnalele de erori fatale";
 
+/* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
+"An HTTP error code %i was returned." = "A fost returnat un cod de eroare HTTP %i.";
+
+/* A failure reason for when an error HTTP status code was returned from the site. */
+"An HTTP error code was returned." = "A fost returnat un cod de eroare HTTP.";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Este obligatorie o conexiune activă la internet";
 
@@ -755,6 +765,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "A apărut o eroare.";
+
+/* A failure reason for when the error that occured wasn't able to be determined. */
+"An unknown error occurred." = "A apărut o eroare necunoscută.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "A apărut o eroare necunoscută. Te rog încearcă din nou.";
@@ -817,17 +830,8 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Sigur vrei să deconectezi Jetpack de pe site?";
 
-/* Message asking for confirmation before marking a comment as spam */
-"Are you sure you want to mark this comment as Spam?" = "Ești sigur că vrei să marchezi acest comentariu ca spam?";
-
-/* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Sigur vrei să marchezi acest comentariu ca aruncat la gunoi?";
-
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Sigur vrei să ștergi definitiv aceste elemente?";
-
-/* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Sigur vrei să ștergi definitiv acest comentariu?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Sigur vrei să ștergi definitiv acest element?";
@@ -1292,6 +1296,9 @@ translators: Block name. %s: The localized block name */
    Main title */
 "Change Password" = "Schimbă parola";
 
+/* Title of button that takes user to the system Settings section for the app */
+"Change Settings" = "Modifică setările";
+
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "Schimbă site-ul";
 
@@ -1587,6 +1594,9 @@ translators: Block name. %s: The localized block name */
  My First Post */
 "Comment on" = "Comentariu la";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment set to approved." = "Comentariul este setat ca aprobat.";
+
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Comentariu pus în așteptare.";
 
@@ -1677,8 +1687,7 @@ translators: Block name. %s: The localized block name */
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurare";
 
-/* Confirm
-   Verb. Title for Jetpack Restore confirm button. */
+/* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmă";
 
 /* Close Account alert title */
@@ -2117,7 +2126,8 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Întunecată";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
+   Title for dashboard view on the My Site screen */
 "Dashboard" = "Panou control";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -2174,7 +2184,6 @@ translators: Block name. %s: The localized block name */
 "Defaults for New Posts" = "Implicite pentru articole noi";
 
 /* Delete
-   Delete button title
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
@@ -2533,7 +2542,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, atinge un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
 
-/* Edit the post.
+/* Accessibility label for edit button to enable multi selection mode in the user's media library
+   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
@@ -2743,6 +2753,9 @@ translators: Block name. %s: The localized block name */
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Introdu cuvinte diferite mai sus și vom căuta o adresă care se potrivește cu ele.";
 
+/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
+"Enter edit mode to enable multi select to delete" = "Intră în modul editare pentru a activa selectarea mai multor elemente pentru ștergere";
+
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Introdu parola";
@@ -2793,9 +2806,6 @@ translators: Block name. %s: The localized block name */
 /* There was an error activating a plugin, placeholder is the plugin name */
 "Error activating %@." = "Eroare la activarea %@.";
 
-/* Message shown when approving a Comment fails. */
-"Error approving comment" = "Eroare la aprobarea comentariului";
-
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "Eroare la aprobarea comentariului.";
 
@@ -2804,9 +2814,6 @@ translators: Block name. %s: The localized block name */
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
 "Error deactivating %@." = "Eroare la dezactivarea %@.";
-
-/* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Eroare la ștergerea comentariului";
 
 /* Message displayed when deleting a comment fails. */
 "Error deleting comment." = "Eroare la ștergerea comentariului.";
@@ -2834,9 +2841,6 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Eroare la încărcarea modulelor";
-
-/* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Eroare la marcarea comentariului ca spam";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Eroare la marcarea comentariului ca spam.";
@@ -2877,11 +2881,11 @@ translators: Block name. %s: The localized block name */
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "Eroare la trimiterea emailului de confirmare. Verifică-ți conexiunea și reîncearcă.";
 
+/* Message displayed when approving a comment fails. */
+"Error setting comment to approved." = "Eroare la setarea comentariului ca aprobat.";
+
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "Eroare la punerea în așteptare a comentariului.";
-
-/* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Eroare la refuzarea comentariului";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Eroare la actualizarea %@.";
@@ -3202,6 +3206,9 @@ translators: Block name. %s: The localized block name */
 /* Next web page */
 "Forward" = "Înaintează";
 
+/* No comment provided by engineer. */
+"Four" = "Patru";
+
 /* Browse free themes selection title */
 "Free" = "Gratuite";
 
@@ -3237,6 +3244,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Text asociat galerie. %s";
+
+/* No comment provided by engineer. */
+"Gallery style" = "Stil galerie";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Grădinărit";
@@ -3856,6 +3866,9 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "Nume";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "Săptămâna trecută ai avut %1$d vizualizări, %2$d comentarii și %3$d aprecieri.";
+
 /* Insights latest post summary header */
 "Latest Post Summary" = "Rezumat cu ultimele articole";
 
@@ -4445,6 +4458,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navighează pentru a personaliza gradientul";
 
+/* No comment provided by engineer. */
+"Navigates to layout selection screen" = "Navighează la ecranul de selectare a aranjamentului";
+
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navighează pentru a selecta %s";
@@ -4515,6 +4531,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Table view title for the quick start section. */
 "Next Steps" = "Pașii următori";
+
+/* Accessibility label for the button which shows the previous month in the monthly calendar view */
+"Next month" = "Luna viitoare";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Notificare următoare";
@@ -4613,6 +4632,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed when an Insights stat section has no data.
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Încă nu există date";
+
+/* Accessibility label for no currently selected range. */
+"No date range selected" = "Nu ai selectat niciun interval de date";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Nicio amenințare înlăturată";
@@ -4889,11 +4911,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "După ce ai creat un site WordPress.com, poți republica un conținut care îți place pe propriul site.";
 
+/* No comment provided by engineer. */
+"One" = "Una";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Vezi numai statisticile cele mai relevante. Adaugă Perspective care se potrivesc cu nevoile tale.";
 
 /* No comment provided by engineer. */
 "Only show excerpt" = "Arată numai rezumatul";
+
+/* Message telling the user that they've only enabled limited photo library permissions for the app. */
+"Only the selected photos you've given access to are available." = "Sunt disponibile numai fotografiile selectate pentru care ai dat acces.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5371,7 +5399,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post removed." = "Articol înlăturat.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
-"Post saved." = "Articolul a fost salvat.";
+"Post saved." = "Am salvat articolul.";
 
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Articolul este programat";
@@ -5480,6 +5508,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Previzualizează-ți noul site pentru a înțelege ceea ce vor vedea vizitatorii tăi.";
+
+/* Accessibility label for the button which shows the previous month in the monthly calendar view */
+"Previous month" = "Luna trecută";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificare anterioară";
@@ -5778,7 +5809,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "Înlătură iconul site-ului";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Înlătură imaginea, ca imagine reprezentativă";
+"Remove as Featured Image" = "Înlătură imaginea, ca imagine reprezentativă";
 
 /* No comment provided by engineer. */
 "Remove block" = "Înlătură blocul";
@@ -6238,6 +6269,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selectează țara";
 
+/* Title of button that allows the user to select more photos to access within the app */
+"Select More" = "Selectează mai multe";
+
 /* Blog Picker's Title */
 "Select Site" = "Selectează site-ul";
 
@@ -6301,6 +6335,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media selectată este indisponibilă.";
 
+/* Accessibility label for summary of currently single date. %1$@ is the date */
+"Selected range: %1$@ only" = "Interval selectat: numai %1$@";
+
+/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
+"Selected range: %1$@ to %2$@" = "Interval selectat: de la %1$@ până la %2$@";
+
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selectat: %s";
@@ -6361,7 +6401,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "Setează părinte";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Setează ca imagine reprezentativă";
+"Set as Featured Image" = "Setează ca imagine reprezentativă";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Setează ca prima pagină";
@@ -6579,6 +6619,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Limbă site";
 
+/* Title for the site menu view on the My Site screen */
+"Site Menu" = "Meniu site";
+
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirecționare site";
 
@@ -6766,7 +6809,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for Spam comment state.
    Marks comment as spam.
-   Spam
    Title of spam Comments filter. */
 "Spam" = "Spam";
 
@@ -7109,7 +7151,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Contul Google „%@” nu se potrivește cu niciun cont de pe WordPress.com";
 
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet.
+   Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Conexiunea la internet pare să fie oprită.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -7148,8 +7191,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Imaginea nu a putut fi adăugată în Biblioteca media.";
 
-/* Error message shown when a media upload fails because the user isn't connected to the internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Conexiunea la internet pare să fie decuplată.";
 
 /* Message shown when an asset failed to load while trying to add it to the Media library. */
@@ -7184,6 +7226,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Inițierea rapidă te va conduce la construirea unui site de bază. Sigur vrei să sari peste ea?";
+
+/* A failure reason for when the request couldn't be serialized. */
+"The serialization of the request failed." = "Serializarea cererii a eșuat.";
+
+/* A failure reason for when the response couldn't be serialized. */
+"The serialization of the response failed." = "Serializarea răspunsului a eșuat.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Serverul a returnat un răspuns gol. De obicei, asta înseamnă că trebuie să mărești limita de memorie pentru site-ul tău.";
@@ -7284,6 +7332,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message informing the user that there was a problem blocking posts from a site from their reader. */
 "There was a problem blocking posts from the specified site." = "A fost o problemă la blocarea articolelor de pe site-ul specificat.";
+
+/* A general error message shown to the user when there was an API communication failure. */
+"There was a problem communicating with the site." = "A fost o problemă de comunicare cu site-ul.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "A fost o problemă de conectare la WordPress.com. Te rog autentifică-te din nou.";
@@ -7453,11 +7504,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Amenințarea a fost ignorată.";
 
+/* No comment provided by engineer. */
+"Three" = "Trei";
+
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatură";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Miniatură indisponibilă";
+
+/* No comment provided by engineer. */
+"Tiled gallery settings" = "Setări galerii placate";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7603,12 +7660,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformă blocul...";
 
-/* Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash button to delete items from the user's media library
+   Accessibility label for trash buttons in nav bars
    Button title for Trash comment state.
-   Trash button title
    Trashes a comment
    Trashes the comment */
 "Trash" = "Coș de gunoi";
+
+/* Accessibility hint for trash button to delete items from the user's media library */
+"Trash selected media" = "Aruncă la gunoi elementele media selectate";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "Arunci la gunoi această pagină?";
@@ -7689,6 +7749,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nume utilizator Twitter";
+
+/* No comment provided by engineer. */
+"Two" = "Două";
 
 /* Type menu item in share extension. */
 "Type" = "Tastează";
@@ -7786,7 +7849,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "Nu pot rula videoul";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Nu pot găsi un site WordPress la acel URL. Atinge „Ai nevoi de ajutor?” pentru a vedea Întrebări frecvente.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nu pot să găsesc site-ul WordPress la acel URL. Atinge „Ai nevoi de mai mult ajutor?” pentru a vedea Întrebări frecvente.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Nu pot să restaurez site-ul";
@@ -7869,6 +7932,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "Subliniere";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
@@ -8527,8 +8591,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Săptămâna începe";
 
-/* Setting: indicates if the site reports its Weekly Roundup */
+/* Setting: indicates if the site reports its Weekly Roundup
+   Title of Weekly Roundup push notification */
 "Weekly Roundup" = "Rezumat săptămânal";
+
+/* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
+"Weekly Roundup: %@" = "Rezumat săptămânal: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Săptămâni";
@@ -8833,11 +8901,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Poți comuta între site-uri în orice moment.";
 
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time" = "Poți actualiza oricând";
+
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Poți actualiza oricând mergând la Site-ul meu > Setări site";
-
-/* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "Poți actualiza oricând";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nu poți folosi acea adresă de email pentru înregistrare. Avem probleme cu ele blocându-ne unele din emailurile noastre. Te rog folosește un alt furnizor de email.";
@@ -9061,6 +9129,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai în scopul de a instala Jetpack.";
+
+/* Prompt displayed as part of the stats Weekly Roundup push notification. */
+"Your weekly roundup is ready, tap here to see the details!" = "Rezumat tău săptămânal este pregătit, atinge aici pentru a-l vedea!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Urmărești această conversație. Vei primi un email și o notificare ori de câte ori apare un nou comentariu.";

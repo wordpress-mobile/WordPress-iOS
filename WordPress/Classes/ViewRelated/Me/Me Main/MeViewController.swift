@@ -248,7 +248,7 @@ class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportTableViewController()
+            let controller = SupportTableViewController(style: .insetGrouped)
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)

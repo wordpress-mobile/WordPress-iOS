@@ -17,7 +17,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
     // MARK: - Initialiers
     @objc public convenience init(collection: Set<String>?) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
 
         emptyText = NSLocalizedString("No Items", comment: "List Editor Empty State Message")
 

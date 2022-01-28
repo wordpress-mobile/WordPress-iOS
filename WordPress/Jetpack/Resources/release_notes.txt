@@ -1,12 +1,20 @@
-What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.
+Only gave the app limited access to your media library? No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in dynamic type for easy reading.
 
-If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.
+We also made voiceover and dynamic type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
 
-We’ve also made some changes to the block editor:
+Speaking of better user experience, you can now moderate individual comments on a post through a drop-down menu.
 
-- We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.
-- We added language translation for Jetpack and Layout Grid blocks.
-- We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.
-- Multi-line block titles are now center-aligned in the inserter menu.
+We made some useful updates to the Block Editor.
 
-Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.
+- We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
+- We added translation for color settings in Cover blocks.
+- Selecting an image will no longer show you a video thumbnail, and vice versa.
+- We hid the help button in the bottom right of the unsupported block editor to avoid confusion.
+- When you’re using different text and background colors in text blocks, you’ll get a notification if the color combo might make it hard for some people to read.
+- We fixed a handful of edge case problems when changing the color of non-selected text.
+
+We also solved a few smaller issues and crashes.
+
+- Weekly roundup notifications are now showing up, making it easier to stay on top of the latest news.
+- When you connect your Facebook account to Publicize, you’ll now be logged in successfully.
+- Images with a copyright symbol in the file name will now upload or appear in the Share Sheet properly.
