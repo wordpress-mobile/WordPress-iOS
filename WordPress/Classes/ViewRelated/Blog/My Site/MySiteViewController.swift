@@ -17,6 +17,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    private var isShowingDashboard: Bool {
+        return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+    }
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -558,14 +562,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
 
-            let isShowingDashboard = self?.segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
-            if !blog.isAccessibleThroughWPCom() && isShowingDashboard {
-                self?.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
-                self?.segmentedControl.sendActions(for: .valueChanged)
+            guard let self = self else {
+                return
             }
 
-            self?.updateSegmentedControl(for: blog)
-            self?.updateChildViewController(for: blog)
+            if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
+                self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+                self.segmentedControl.sendActions(for: .valueChanged)
+            }
+
+            self.updateSegmentedControl(for: blog)
+            self.updateChildViewController(for: blog)
         }
 
         return sitePickerViewController
