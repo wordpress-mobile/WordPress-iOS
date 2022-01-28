@@ -7,6 +7,7 @@ protocol PostsCardView: AnyObject {
 
     func showLoading()
     func hideLoading()
+    func showError(message: String)
 }
 
 /// Responsible for populating a table view with posts
@@ -73,6 +74,10 @@ class PostsCardViewModel: NSObject {
 // MARK: - Private methods
 
 private extension PostsCardViewModel {
+    private var numberOfPosts: Int {
+        fetchedResultsController.fetchedObjects?.count ?? 0
+    }
+
     func createFetchedResultsController() {
         fetchedResultsController?.delegate = nil
         fetchedResultsController = nil
@@ -121,16 +126,31 @@ private extension PostsCardViewModel {
             ofType: .post,
             with: options,
             for: blog,
-            success: { _ in
+            success: { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
 
+                if self.numberOfPosts == 0 {
+                    self.showEmptyPostsError()
+                }
             }, failure: { (error: Error?) -> () in
 
         })
     }
 
+    func showEmptyPostsError() {
+        viewController?.hideLoading()
+        viewController?.showError(message: Strings.noPostsMessage)
+    }
+
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 4
+    }
+
+    enum Strings {
+        static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
     }
 }
 

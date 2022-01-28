@@ -117,6 +117,16 @@ extension PostsCardViewController: PostsCardView {
     func hideLoading() {
         removeGhostableTableView()
     }
+
+    func showError(message: String) {
+        let label = UILabel()
+        label.text = message
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(withFadeAnimation: label)
+        tableView.pinSubviewToSafeArea(label)
+        _ = tableView.intrinsicContentSize
+    }
 }
 
 // MARK: - EditorAnalyticsProperties
