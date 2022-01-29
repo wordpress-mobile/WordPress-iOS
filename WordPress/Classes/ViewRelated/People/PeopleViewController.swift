@@ -460,32 +460,29 @@ private extension PeopleViewController {
     // MARK: No Results Helpers
 
     func refreshNoResultsView() {
-        noResultsViewController.removeFromView()
-
-        if isInitialLoad {
-            displayNoResultsView(forLoading: true)
-            return
-        }
-
         guard resultsController.fetchedObjects?.count == 0 else {
+            noResultsViewController.removeFromView()
             return
         }
 
-        displayNoResultsView()
+        displayNoResultsView(isLoading: isInitialLoad)
     }
 
-    func displayNoResultsView(forLoading: Bool = false) {
-        let accessoryView = forLoading ? NoResultsViewController.loadingAccessoryView() : nil
+    func displayNoResultsView(isLoading: Bool = false) {
+        let accessoryView = isLoading ? NoResultsViewController.loadingAccessoryView() : nil
         noResultsViewController.configure(title: noResultsTitle(), accessoryView: accessoryView)
-
-        addChild(noResultsViewController)
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
 
         // Set the NRV top as the filterBar bottom so the NRV
         // adjusts correctly when refreshControl is active.
         let filterBarBottom = filterBar.frame.origin.y + filterBar.frame.size.height
         noResultsViewController.view.frame.origin.y = filterBarBottom
 
+        guard noResultsViewController.parent == nil else {
+            noResultsViewController.updateView()
+            return
+        }
+        addChild(noResultsViewController)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParent: self)
     }
 
