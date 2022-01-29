@@ -184,24 +184,18 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         tableView.reloadData()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let personViewController = segue.destination as? PersonViewController,
-            let selectedIndexPath = tableView.indexPathForSelectedRow {
-            personViewController.context = viewContext
-            personViewController.blog = blog
-            personViewController.person = personAtIndexPath(selectedIndexPath)
-            switch filter {
-            case .followers:
-                personViewController.screenMode = .Follower
-            case .users:
-                personViewController.screenMode = .User
-            case .viewers:
-                personViewController.screenMode = .Viewer
-            case .email:
-                personViewController.screenMode = .Email
-            }
+    @IBSegueAction func createPersonViewController(_ coder: NSCoder) -> PersonViewController? {
+        guard let selectedIndexPath = tableView.indexPathForSelectedRow, let blog = blog else { return nil }
 
-        } else if let navController = segue.destination as? UINavigationController,
+        return PersonViewController(coder: coder,
+                                    blog: blog,
+                                    context: viewContext,
+                                    person: personAtIndexPath(selectedIndexPath),
+                                    screenMode: filter.screenMode)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navController = segue.destination as? UINavigationController,
             let inviteViewController = navController.topViewController as? InvitePersonViewController {
             inviteViewController.blog = blog
         }
@@ -308,6 +302,19 @@ private extension PeopleViewController {
                 return .viewer
             case .email:
                 return .emailFollower
+            }
+        }
+
+        var screenMode: PersonViewController.ScreenMode {
+            switch self {
+            case .users:
+                return .User
+            case .followers:
+                return .Follower
+            case .viewers:
+                return .Viewer
+            case .email:
+                return .Email
             }
         }
     }

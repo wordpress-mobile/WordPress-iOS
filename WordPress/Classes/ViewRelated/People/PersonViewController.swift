@@ -37,19 +37,18 @@ final class PersonViewController: UITableViewController {
         }
     }
 
-    // MARK: - Public Properties
 
     /// Blog to which the Person belongs
     ///
-    @objc var blog: Blog!
+    private let blog: Blog
 
     /// Core Data Context that should be used
     ///
-    @objc var context: NSManagedObjectContext!
+    private let context: NSManagedObjectContext
 
     /// Person to be displayed
     ///
-    var person: Person! {
+    private var person: Person {
         didSet {
             refreshInterfaceIfNeeded()
         }
@@ -57,15 +56,29 @@ final class PersonViewController: UITableViewController {
 
     /// Mode: User / Follower / Viewer / Email Follower
     ///
-    var screenMode: ScreenMode = .User
+    private let screenMode: ScreenMode
 
+    private let service: PeopleService?
+
+    // MARK: - Initializers
+
+    init?(coder: NSCoder, blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) {
+        self.blog = blog
+        self.context = context
+        self.person = person
+        self.screenMode = screenMode
+        self.service = PeopleService(blog: blog, context: context)
+
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View Lifecyle Methods
 
     override func viewDidLoad() {
-        assert(person != nil)
-        assert(blog != nil)
-
         super.viewDidLoad()
 
         title = person.fullName.nonEmptyString() ?? screenMode.title
@@ -257,18 +270,14 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteUser(user, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
-            guard let personWithError = strongSelf.person else {
-                return
-            }
 
-            strongSelf.handleRemoveUserError(error, userName: "@" + personWithError.username)
+            strongSelf.handleRemoveUserError(error, userName: "@" + strongSelf.person.username)
         })
         _ = navigationController?.popViewController(animated: true)
     }
@@ -280,7 +289,6 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
@@ -298,7 +306,6 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteEmailFollower(emailFollower, failure: { [weak self] error in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
@@ -316,7 +323,6 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteViewer(viewer, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
@@ -359,7 +365,7 @@ private extension PersonViewController {
             return
         }
 
-        guard let service = PeopleService(blog: blog, context: context) else {
+        guard let service = service else {
             DDLogError("Couldn't instantiate People Service")
             return
         }

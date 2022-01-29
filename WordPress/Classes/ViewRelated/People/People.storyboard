@@ -127,7 +127,7 @@
                                     <outlet property="roleBadge" destination="5Qj-Ek-EUq" id="uWz-UU-nAn"/>
                                     <outlet property="superAdminRoleBadge" destination="MH9-O4-5bD" id="iAa-YF-4Oi"/>
                                     <outlet property="usernameLabel" destination="1F5-Qy-cZx" id="UcH-Xr-wm1"/>
-                                    <segue destination="IBP-CG-w3b" kind="show" identifier="person" id="EfS-w6-Nga"/>
+                                    <segue destination="IBP-CG-w3b" kind="show" identifier="person" destinationCreationSelector="createPersonViewController:" id="EfS-w6-Nga"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
