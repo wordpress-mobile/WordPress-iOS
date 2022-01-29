@@ -234,13 +234,13 @@ private extension PersonViewController {
                                          comment: "First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string.")
             messageFirstLine = String.localizedStringWithFormat(text, name, name)
         case .Follower:
-            messageFirstLine = NSLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
                                                  comment: "First line of remove follower warning in confirmation dialog.")
         case .Viewer:
             messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
         case .Email:
-            messageFirstLine = NSLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
                                                  comment: "First line of remove email follower warning in confirmation dialog.")
         }
 
