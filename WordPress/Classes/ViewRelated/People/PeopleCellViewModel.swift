@@ -17,7 +17,11 @@ struct PeopleCellViewModel {
     }
 
     var usernameText: String {
-        return username.count > 0 ? "@" + username : " "
+        return "@" + username
+    }
+
+    var usernameHidden: Bool {
+        return username.isEmpty
     }
 
     var usernameColor: UIColor {
