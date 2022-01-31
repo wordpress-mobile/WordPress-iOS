@@ -50,7 +50,6 @@ struct PostListEditorPresenter {
         let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
         editor.modalPresentationStyle = .fullScreen
         postListViewController.present(editor, animated: false)
-        WPAppAnalytics.track(.postListEditAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)
     }
 
     private static func openEditorWithCopy(with post: Post, in postListViewController: EditorPresenterViewController) {

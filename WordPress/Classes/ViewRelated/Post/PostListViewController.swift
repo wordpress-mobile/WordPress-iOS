@@ -576,6 +576,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         PostListEditorPresenter.handle(post: post, in: self)
     }
 
