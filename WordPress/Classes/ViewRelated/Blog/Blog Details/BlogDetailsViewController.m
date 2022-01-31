@@ -421,9 +421,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        
+        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+            parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        }
+        
     } else {
-        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        
+        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+            parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        }
+        
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -1922,7 +1936,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    } else {
+        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    }    
 }
 
 - (void)showViewAdmin
