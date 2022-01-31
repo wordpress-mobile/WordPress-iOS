@@ -382,7 +382,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
-    [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+        
+        [self.createButtonCoordinator addTo:parentVC.view
+                             trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
+                               bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
+    } else {
+        [self.createButtonCoordinator addTo:self.view
+                             trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor
+                               bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    }
+    
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
