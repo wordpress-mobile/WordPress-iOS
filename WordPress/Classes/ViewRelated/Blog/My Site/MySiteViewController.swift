@@ -21,7 +21,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
     }
 
-    private lazy var scrollView: UIScrollView = {
+    @objc
+    private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.refreshControl = refreshControl
