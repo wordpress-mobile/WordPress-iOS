@@ -1,7 +1,7 @@
 19.2
 -----
 * [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
-
+* [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
 
 19.1
 -----
