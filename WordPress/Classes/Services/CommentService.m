@@ -1155,6 +1155,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.depth = depth;
     comment.hierarchy = hierarchy;
 
+    [self.managedObjectContext obtainPermanentIDsForObjects:@[comment] error:&error];
+    if (error) {
+        DDLogError(@"%@ error obtaining permanent ID for a restored hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    
     return comment;
 }
 
