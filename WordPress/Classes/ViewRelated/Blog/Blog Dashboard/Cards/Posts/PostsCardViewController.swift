@@ -122,7 +122,7 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func showError(message: String, retry: Bool) {
-        let errorView = DashboardCardInnerErrorView(message: message, retry: retry)
+        let errorView = DashboardCardInnerErrorView(message: message, canRetry: retry)
         errorView.delegate = self
         errorView.translatesAutoresizingMaskIntoConstraints = false
         tableView.addSubview(withFadeAnimation: errorView)

@@ -24,7 +24,7 @@ class DashboardCardInnerErrorView: UIStackView {
         return retryLabel
     }()
 
-    convenience init(message: String, retry: Bool) {
+    convenience init(message: String, canRetry: Bool) {
         self.init(arrangedSubviews: [])
 
         errorTitle.text = message
@@ -33,7 +33,7 @@ class DashboardCardInnerErrorView: UIStackView {
         axis = .vertical
         spacing = Constants.spacing
 
-        if retry {
+        if canRetry {
             addArrangedSubview(retryLabel)
 
             isUserInteractionEnabled = true
