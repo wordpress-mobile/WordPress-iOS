@@ -241,10 +241,9 @@ private extension ReaderCommentsViewController {
         let successBlock: (String) -> Void = { [weak self] noticeText in
             NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
 
-            // Adjust the ReaderPost's comment count.
-            if let post = self?.post, let commentCount = post.commentCount?.intValue {
-                let adjustment = (status == .approved) ? 1 : -1
-                post.commentCount = NSNumber(value: commentCount + adjustment)
+            // Update the ReaderPost's comment count.
+            if let post = self?.post {
+                post.commentCount = NSNumber(value: post.comments.count)
             }
 
             // If the status is Approved, it cannot be undone. So no need to save comment.
