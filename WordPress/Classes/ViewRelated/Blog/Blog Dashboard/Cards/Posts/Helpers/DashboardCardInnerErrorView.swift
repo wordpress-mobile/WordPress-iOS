@@ -18,7 +18,7 @@ class DashboardCardInnerErrorView: UIStackView {
     private lazy var retryLabel: UILabel = {
         let retryLabel = UILabel()
         retryLabel.textAlignment = .center
-        retryLabel.text = "Tap to retry"
+        retryLabel.text = Strings.tapToRetry
         retryLabel.textColor = .textSubtle
         WPStyleGuide.configureLabel(retryLabel, textStyle: .callout, fontWeight: .regular)
         return retryLabel
@@ -48,5 +48,9 @@ class DashboardCardInnerErrorView: UIStackView {
 
     private enum Constants {
         static let spacing: CGFloat = 8
+    }
+
+    private enum Strings {
+        static let tapToRetry = NSLocalizedString("Tap to retry", comment: "Label for a button to retry loading posts")
     }
 }
