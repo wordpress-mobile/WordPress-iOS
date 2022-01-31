@@ -159,7 +159,7 @@ private extension PostsCardViewModel {
 
     enum Strings {
         static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
-        static let loadingFailure: String = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
+        static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
     }
 }
 
