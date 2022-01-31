@@ -75,7 +75,10 @@ struct PostEditorAnalyticsSession {
 
     func end(outcome endOutcome: Outcome) {
         let outcome = self.outcome ?? endOutcome
-        let properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
+        let properties: [String: Any] = [
+            Property.outcome: outcome.rawValue,
+            Property.entryPoint: (entryPoint ?? .unknown).rawValue
+        ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
