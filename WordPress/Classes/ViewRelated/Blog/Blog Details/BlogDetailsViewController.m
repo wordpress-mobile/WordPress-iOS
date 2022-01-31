@@ -1710,13 +1710,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     int sectionCount = 0;
     int rowCount = 0;
+    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    
     for (BlogDetailsSection *section in self.tableSections) {
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
+                
+                if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+                    parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+                    [parentVC.scrollView scrollToView:cell animated:true];
+                } else {
+                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
+                }
+                
             }
             rowCount++;
         }
