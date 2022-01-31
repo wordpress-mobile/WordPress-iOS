@@ -100,8 +100,12 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     var replaceEditor: (EditorViewController, EditorViewController) -> () { get }
 
     var autosaver: Autosaver { get set }
+
     /// true if the post is the result of a reblog
     var postIsReblogged: Bool { get set }
+
+    /// From where the editor was shown (for analytics reporting)
+    var entryPoint: PostEditorEntryPoint { get set }
 }
 
 extension PostEditor {
@@ -143,4 +147,10 @@ extension PostEditor {
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
         return [.visibility, .schedule, .tags, .categories]
     }
+}
+
+enum PostEditorEntryPoint: String {
+    case unknown
+    case list
+    case dashboard
 }
