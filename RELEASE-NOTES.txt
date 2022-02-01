@@ -3,6 +3,7 @@
 * [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
 * [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
 * [*] Stats: fix navigation between Stats tab. [#17856]
+* [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855] 
 
 19.1
 -----
