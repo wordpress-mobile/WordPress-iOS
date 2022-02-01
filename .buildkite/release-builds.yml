@@ -1,0 +1,33 @@
+# This script is run via Buildkite's scheduled jobs feature.
+#
+# It's meant to rebuild various CI caches on a periodic async basis, so as
+# not to waste time on every CI job updating the cache.
+
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/bash-cache#v1.5.0
+    - automattic/git-s3-cache#v1.1.0:
+        bucket: "a8c-repo-mirrors"
+        repo: "wordpress-mobile/wordpress-ios/"
+  # Common environment values to use with the `env` key.
+  - &common_env
+    IMAGE_ID: xcode-13
+
+steps:
+
+  - label: "🛠 WordPress Release Build"
+    command: ".buildkite/commands/release-build-wordpress.sh"
+    env: *common_env
+    plugins: *common_plugins
+    notify:
+    - slack: "#build-and-ship"
+
+
+  - label: "🛠 Jetpack Release Build"
+    command: ".buildkite/commands/release-build-jetpack.sh"
+    env: *common_env
+    plugins: *common_plugins
+    notify:
+    - slack: "#build-and-ship"
