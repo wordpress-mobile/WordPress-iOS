@@ -151,6 +151,6 @@ extension PostEditor {
 
 enum PostEditorEntryPoint: String {
     case unknown
-    case list
+    case postsList
     case dashboard
 }

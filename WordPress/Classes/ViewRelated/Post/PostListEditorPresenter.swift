@@ -65,7 +65,7 @@ struct PostListEditorPresenter {
         // Open Editor
         let editor = EditPostViewController(post: newPost, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .list
+        editor.entryPoint = .postsList
         postListViewController.present(editor, animated: false)
         // Track Analytics event
         WPAppAnalytics.track(.postListDuplicateAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)

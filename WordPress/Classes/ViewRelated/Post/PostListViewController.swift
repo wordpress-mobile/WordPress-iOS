@@ -563,7 +563,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .list
+        editor.entryPoint = .postsList
         present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
@@ -578,7 +578,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
-        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .list)
+        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
     }
 
     private func editDuplicatePost(apost: AbstractPost) {
