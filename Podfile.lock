@@ -20,12 +20,10 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.3.0):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.9.1):
-    - CocoaLumberjack (~> 3)
-    - Reachability (~> 3)
+  - Automattic-Tracks-iOS (0.11.0):
     - Sentry (~> 6)
     - Sodium (>= 0.9.1)
-    - UIDeviceIdentifier (~> 2)
+    - UIDeviceIdentifier (~> 2.0)
   - boost (1.76.0)
   - BVLinearGradient (2.5.6-wp-2):
     - React-Core
@@ -502,7 +500,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (from `https://github.com/wargcm/Automattic-Tracks-iOS.git`, branch `cm/temporary-0.9.1-change`)
+  - Automattic-Tracks-iOS (~> 0.11.0)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/BVLinearGradient.podspec.json`)
   - Charts (~> 3.2.2)
@@ -569,7 +567,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.7)
   - WordPressAuthenticator (~> 1.43.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, tag `4.47.0-beta.1`)
+  - WordPressKit (~> 4.47.0-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.0)
   - WordPressUI (~> 1.12.3)
@@ -588,6 +586,7 @@ SPEC REPOS:
     - AMScrollingNavbar
     - AppAuth
     - AppCenter
+    - Automattic-Tracks-iOS
     - Charts
     - CocoaLumberjack
     - CropViewController
@@ -618,6 +617,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -633,9 +633,6 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
-  Automattic-Tracks-iOS:
-    :branch: cm/temporary-0.9.1-change
-    :git: https://github.com/wargcm/Automattic-Tracks-iOS.git
   boost:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/boost.podspec.json
   BVLinearGradient:
@@ -733,16 +730,10 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
-  WordPressKit:
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.47.0-beta.1
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
-  Automattic-Tracks-iOS:
-    :commit: 6f1d57baba479ef7a35560a4c78fe4a5136b75f8
-    :git: https://github.com/wargcm/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -754,9 +745,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
-  WordPressKit:
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.47.0-beta.1
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -765,7 +753,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
-  Automattic-Tracks-iOS: 10371918b31bcaca41cae572e92243c4cd6060f3
+  Automattic-Tracks-iOS: 061303f897938044f11a9d97d5f8d6426ee7ff56
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
@@ -859,6 +847,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: b0d11166c4a230b64f62f9ad93b430252f38c73a
+PODFILE CHECKSUM: b10963dbcbffa2add515936104b784dcc64f8ad3
 
 COCOAPODS: 1.11.2

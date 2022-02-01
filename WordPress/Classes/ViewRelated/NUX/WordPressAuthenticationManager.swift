@@ -388,6 +388,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
         }
 
+        navigationController.delegate = epilogueViewController
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 

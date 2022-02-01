@@ -12,14 +12,39 @@ common_params:
 
 # This is the default pipeline – it will build and test the app
 steps:
+
+  #################
+  # Create Installable Builds for WP and JP
+  #################
+  - label: "🛠 WordPress Installable Build"
+    command: ".buildkite/commands/installable-build-wordpress.sh"
+    env: *common_env
+    plugins: *common_plugins
+    if: build.pull_request.id != null
+    notify:
+      - github_commit_status:
+          context: "WordPress Installable Build"
+
+  - label: "🛠 Jetpack Installable Build"
+    command: ".buildkite/commands/installable-build-jetpack.sh"
+    env: *common_env
+    plugins: *common_plugins
+    if: build.pull_request.id != null
+    notify:
+      - github_commit_status:
+          context: "Jetpack Installable Build"
+
   #################
   # Build the app
   #################
-  - label: ":pipeline: Build"
+  - label: "🛠 Build for Testing"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
     env: *common_env
     plugins: *common_plugins
+    notify:
+      - github_commit_status:
+          context: "Build for Testing"
 
   #################
   # Run Unit Tests
@@ -29,6 +54,9 @@ steps:
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
+    notify:
+      - github_commit_status:
+          context: "Unit Tests"
 
   #################
   # Lint Translations
@@ -40,6 +68,9 @@ steps:
           image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
     agents:
       queue: "default"
+    notify:
+      - github_commit_status:
+          context: "Lint Translations"
 
   #################
   # UI Tests
@@ -51,7 +82,9 @@ steps:
     plugins: *common_plugins
     artifact_paths:
       - "build/results/"
-
+    notify:
+      - github_commit_status:
+          context: "UI Tests (iPhone)"
 
   - label: "🧪 UI Tests (iPad)"
     command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 15.0
@@ -60,3 +93,6 @@ steps:
     plugins: *common_plugins
     artifact_paths:
       - "build/results/"
+    notify:
+      - github_commit_status:
+          context: "UI Tests (iPad)"
