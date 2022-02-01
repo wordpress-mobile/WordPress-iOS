@@ -194,10 +194,11 @@ private extension SiteStatsDashboardViewController {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+        let isGrowAudienceShowingOnInsights = insightsTableViewController.isGrowAudienceShowing
 
         switch currentSelectedPeriod {
         case .insights:
-            if selectedPeriodChanged || pageViewControllerIsEmpty {
+            if selectedPeriodChanged || pageViewControllerIsEmpty || isGrowAudienceShowingOnInsights {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)
