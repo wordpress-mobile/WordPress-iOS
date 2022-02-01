@@ -69,7 +69,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .mySiteDashboard:
             return false
         case .markAllNotificationsAsRead:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .followConversationPostDetails:
             return true
         case .mediaPickerPermissionsNotice:
