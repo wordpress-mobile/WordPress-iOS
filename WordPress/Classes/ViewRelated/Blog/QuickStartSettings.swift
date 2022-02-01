@@ -35,9 +35,7 @@ final class QuickStartSettings {
     }
 
     private func promptWasDismissedKey(for blog: Blog) -> String? {
-        guard let siteID = blog.dotComID?.intValue else {
-            return nil
-        }
+        let siteID = blog.dotComID?.intValue ?? 0
         return "QuickStartPromptWasDismissed-\(siteID)"
     }
 
