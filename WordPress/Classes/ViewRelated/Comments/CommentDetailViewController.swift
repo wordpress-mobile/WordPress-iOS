@@ -20,10 +20,19 @@ class CommentDetailViewController: UIViewController {
 
     @objc weak var delegate: CommentDetailsDelegate?
     private var comment: Comment
-    private var isLastInList: Bool
+    private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
+    private var notification: Notification?
+
+    private var isNotificationComment: Bool {
+        notification != nil
+    }
+
+    private var viewTitle: String? {
+        isNotificationComment ? notification?.title : nil
+    }
 
     private var viewIsVisible: Bool {
         return navigationController?.visibleViewController == self
@@ -163,11 +172,21 @@ class CommentDetailViewController: UIViewController {
 
     // MARK: Initialization
 
-    @objc required init(comment: Comment,
-                        isLastInList: Bool,
-                        managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+    @objc init(comment: Comment,
+               isLastInList: Bool,
+               managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.isLastInList = isLastInList
+        self.managedObjectContext = managedObjectContext
+        self.replyID = comment.replyID
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(comment: Comment,
+         notification: Notification,
+         managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+        self.comment = comment
+        self.notification = notification
         self.managedObjectContext = managedObjectContext
         self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
@@ -280,6 +299,7 @@ private extension CommentDetailViewController {
         }
 
         navigationController?.navigationBar.isTranslucent = true
+        title = viewTitle
 
         configureEditButtonItem()
     }
