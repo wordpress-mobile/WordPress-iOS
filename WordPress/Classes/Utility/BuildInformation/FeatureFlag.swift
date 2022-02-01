@@ -23,6 +23,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case followConversationPostDetails
     case markAllNotificationsAsRead
     case mediaPickerPermissionsNotice
+    case notificationCommentDetails
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -74,6 +75,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .mediaPickerPermissionsNotice:
             return true
+        case .notificationCommentDetails:
+            return false
         }
     }
 
@@ -142,6 +145,8 @@ extension FeatureFlag {
             return "Mark Notifications As Read"
         case .mediaPickerPermissionsNotice:
             return "Media Picker Permissions Notice"
+        case .notificationCommentDetails:
+            return "Notification Comment Details"
         }
     }
 

@@ -312,6 +312,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return
         }
 
+        // TODO: add check for CommentDetailViewController
         for case let detailVC as NotificationDetailsViewController in navigationControllers {
             if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
                 configureDetailsViewController(detailVC, withNote: note)
@@ -723,7 +724,24 @@ extension NotificationsViewController {
         view.isUserInteractionEnabled = false
 
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            if FeatureFlag.notificationCommentDetails.enabled,
+               note.kind == .comment {
+                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
+
+                // For now, NotificationCommentDetailCoordinator only loads the Comment if it is cached.
+                // If the comment is not cached, fall back to showing the old comment view.
+                // This is temporary until NotificationCommentDetailCoordinator can fetch the comment from the endpoint.
+
+                if let commentDetailViewController = notificationCommentDetailCoordinator.viewController {
+                    commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+                    self.showDetailViewController(commentDetailViewController, sender: nil)
+                } else {
+                    // TODO: remove when NotificationCommentDetailCoordinator updated to fetch comment.
+                    self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+                }
+            } else {
+                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            }
             self.view.isUserInteractionEnabled = true
         }
     }
