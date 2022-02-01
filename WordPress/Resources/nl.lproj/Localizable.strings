@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-25 18:10:49+0000 */
+/* Translation-Revision-Date: 2022-01-27 07:40:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "Voer hierboven andere woorden in, zodat wij op zoek kunnen gaan naar een adres dat overeenkomt.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "Bewerken openen om gelijktijdig meerdere te verwijderen";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "In de snelle rondleiding wordt getoond hoe je een basissite bouwt. Weet je zeker dat je wilt overslaan? ";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "De serialisatie van het verzoek is mislukt.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "De serialisatie van de reactie is mislukt.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "De server heeft een lege respons teruggestuurd. Dat betekent meestal dat je de geheugenlimiet voor je site moet verhogen.";
