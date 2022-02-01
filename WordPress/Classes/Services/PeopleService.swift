@@ -219,7 +219,7 @@ struct PeopleService {
         remote.deleteEmailFollower(siteID, userID: person.ID, success: {
             success?()
         }, failure: { error in
-            DDLogError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
+            DDLogError("Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
 
             self.createManagedPerson(person)
             failure?(error)
