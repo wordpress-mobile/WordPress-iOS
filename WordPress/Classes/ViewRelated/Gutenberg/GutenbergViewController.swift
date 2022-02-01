@@ -6,9 +6,6 @@ import WordPressFlux
 import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
-
-
-
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
