@@ -65,11 +65,6 @@ before_all do |lane|
   unless File.file?(PROJECT_ENV_FILE_PATH)
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
-
-  # This allows code signing to work on CircleCI
-  # It is skipped if this isn't running on CI
-  # See https://circleci.com/docs/2.0/ios-codesigning/
-  setup_circle_ci
 end
 
 platform :ios do
@@ -847,11 +842,11 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_beta_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
+    buildkite_trigger_build(
+      buildkite_organization: 'automattic',
+      buildkite_pipeline: 'wordpress-ios',
       branch: options[:branch_to_build],
-      job_params: { 'beta_build' => true }
+      pipeline_file: 'release-builds.yml'
     )
   end
 
@@ -865,11 +860,11 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_release_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
+    buildkite_trigger_build(
+      buildkite_organization: 'automattic',
+      buildkite_pipeline: 'wordpress-ios',
       branch: options[:branch_to_build],
-      job_params: { 'release_build' => true }
+      pipeline_file: 'release-builds.yml'
     )
   end
 
