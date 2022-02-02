@@ -12,8 +12,6 @@ extension BlogDetailsViewController {
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
-            self?.toggleSpotlightForSiteTitle()
-            self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
 
@@ -114,9 +112,7 @@ extension BlogDetailsViewController {
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true) { [weak self] in
-            self?.toggleSpotlightOnHeaderView()
-        }
+        present(navigationViewController, animated: true)
 
         QuickStartTourGuide.shared.visited(.checklist)
 
