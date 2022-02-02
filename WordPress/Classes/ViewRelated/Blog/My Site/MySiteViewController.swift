@@ -17,7 +17,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private lazy var scrollView: UIScrollView = {
+    private var isShowingDashboard: Bool {
+        return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+    }
+
+    @objc
+    private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.refreshControl = refreshControl
@@ -41,8 +46,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }()
 
     private lazy var segmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
+        let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
 
@@ -82,6 +89,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             addSitePickerIfNeeded(for: newBlog)
             showBlogDetails(for: newBlog)
+            updateSegmentedControl(for: newBlog)
         }
 
         get {
@@ -114,7 +122,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupView()
         setupConstraints()
         setupNavigationItem()
-        setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
     }
@@ -156,16 +163,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func setupSegmentedControl() {
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
-
-        segmentedControl.removeAllSegments()
-        Section.allCases.forEach { section in
-            segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
+    private func updateSegmentedControl(for blog: Blog) {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
         }
-        segmentedControl.selectedSegmentIndex = 0
 
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
+        segmentedControlContainerView.isHidden = !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
     }
 
     private func setupView() {
@@ -190,16 +194,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView)
         scrollView.addSubview(stackView)
         scrollView.pinSubviewToAllEdges(stackView)
         segmentedControlContainerView.addSubview(segmentedControl)
         stackView.addArrangedSubviews([segmentedControlContainerView])
 
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
@@ -288,6 +289,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addSitePickerIfNeeded(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        updateSegmentedControl(for: mainBlog)
     }
 
     @objc
@@ -575,7 +577,18 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
-            self?.updateChildViewController(for: blog)
+
+            guard let self = self else {
+                return
+            }
+
+            if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
+                self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+                self.segmentedControl.sendActions(for: .valueChanged)
+            }
+
+            self.updateSegmentedControl(for: blog)
+            self.updateChildViewController(for: blog)
         }
 
         return sitePickerViewController
@@ -589,6 +602,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         switch section {
         case .siteMenu:
             blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.showInitialDetailsForBlog()
             blogDetailsViewController?.tableView.reloadData()
             blogDetailsViewController?.preloadMetadata()
         case .dashboard:

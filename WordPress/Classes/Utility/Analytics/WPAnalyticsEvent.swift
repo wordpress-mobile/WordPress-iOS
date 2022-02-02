@@ -303,6 +303,9 @@ import Foundation
     case changeUsernameDisplayed
     case changeUsernameDismissed
 
+    // My Site Dashboard
+    case dashboardCardItemTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -810,6 +813,10 @@ import Foundation
             return "change_username_displayed"
         case .changeUsernameDismissed:
             return "change_username_dismissed"
+
+        // My Site Dashboard
+        case .dashboardCardItemTapped:
+            return "my_site_dashboard_card_item_tapped"
 
         } // END OF SWITCH
     }

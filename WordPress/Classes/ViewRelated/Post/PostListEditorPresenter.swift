@@ -14,16 +14,16 @@ protocol EditorAnalyticsProperties: AnyObject {
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: EditorPresenterViewController) {
+    static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
 
         // Autosaves are ignored for posts with local changes.
         if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
             let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
-                openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController)
+                openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController, entryPoint: entryPoint)
             })
             postListViewController.present(autosaveViewController, animated: true)
         } else {
-            openEditor(with: post, loadAutosaveRevision: false, in: postListViewController)
+            openEditor(with: post, loadAutosaveRevision: false, in: postListViewController, entryPoint: entryPoint)
         }
     }
 
@@ -46,11 +46,11 @@ struct PostListEditorPresenter {
         }
     }
 
-    private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController) {
+    private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
         let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
         editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = entryPoint
         postListViewController.present(editor, animated: false)
-        WPAppAnalytics.track(.postListEditAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)
     }
 
     private static func openEditorWithCopy(with post: Post, in postListViewController: EditorPresenterViewController) {
@@ -65,6 +65,7 @@ struct PostListEditorPresenter {
         // Open Editor
         let editor = EditPostViewController(post: newPost, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .postsList
         postListViewController.present(editor, animated: false)
         // Track Analytics event
         WPAppAnalytics.track(.postListDuplicateAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)

@@ -10,6 +10,7 @@ struct PostEditorAnalyticsSession {
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
+    var entryPoint: PostEditorEntryPoint?
     private let startTime = DispatchTime.now().uptimeNanoseconds
 
     init(editor: Editor, post: AbstractPost) {
@@ -49,6 +50,8 @@ struct PostEditorAnalyticsSession {
             properties[Property.unstableGalleryWithImageBlocks] = "unknown"
         }
 
+        properties[Property.entryPoint] = (entryPoint ?? .unknown).rawValue
+
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
@@ -72,7 +75,10 @@ struct PostEditorAnalyticsSession {
 
     func end(outcome endOutcome: Outcome) {
         let outcome = self.outcome ?? endOutcome
-        let properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
+        let properties: [String: Any] = [
+            Property.outcome: outcome.rawValue,
+            Property.entryPoint: (entryPoint ?? .unknown).rawValue
+        ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -92,6 +98,7 @@ private extension PostEditorAnalyticsSession {
         static let template = "template"
         static let startupTime = "startup_time_ms"
         static let unstableGalleryWithImageBlocks = "unstable_gallery_with_image_blocks"
+        static let entryPoint = "entry_point"
     }
 
     var commonProperties: [String: String] {

@@ -25,7 +25,10 @@ extension SitePickerViewController {
                     self?.additionalSafeAreaInsets = UIEdgeInsets.zero
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view
-                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                    guard let parentVC = self?.parent as? MySiteViewController else {
+                        return
+                    }
+                    parentVC.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
                 default:
                     break
                 }

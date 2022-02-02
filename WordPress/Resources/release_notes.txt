@@ -1,10 +1,10 @@
 We solved a problem where self-hosted sites would crash while trying to upload media without an Internet connection. Big yikes, but big fix.
 
-Speaking of media, we know you might have given the app limited access to your media library. No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in dynamic type for easy reading.
+Speaking of media, we know you might have given the app limited access to your media library. No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in Dynamic Type for easy reading.
 
-We also made voiceover and dynamic type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
+We also made VoiceOver and Dynamic Type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
 
-Big news for Comments: you can now follow a conversation using a button in the Comments header and moderate individual comments through a drop-down menu.
+Big news for Comments: you can now follow a conversation using a button in the Comments header.
 
 We made some useful updates to the Block Editor.
 
