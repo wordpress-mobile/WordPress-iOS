@@ -246,15 +246,10 @@ private extension ReaderCommentsViewController {
     func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
             self?.commentModified = true
+            self?.refreshAfterCommentModeration()
 
-            // Adjust the ReaderPost's comment count.
-            if let post = self?.post, let commentCount = post.commentCount?.intValue {
-                let adjustment = (status == .approved) ? 1 : -1
-                post.commentCount = NSNumber(value: commentCount + adjustment)
-            }
-
-            // Refresh the UI. The table view handler is needed because the fetched results delegate is set to nil.
-            handler.refreshTableViewPreservingOffset()
+            // Dismiss any old notices to avoid stacked Undo notices.
+            self?.dismissNotice()
 
             // If the status is Approved, the user has undone a comment moderation.
             // So don't show the Undo option in this case.

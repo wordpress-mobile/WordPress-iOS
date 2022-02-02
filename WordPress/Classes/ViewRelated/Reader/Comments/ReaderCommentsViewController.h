@@ -34,4 +34,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 
 // Comment moderation support.
 @property (nonatomic, assign, readwrite) BOOL commentModified;
+- (void)refreshAfterCommentModeration;
+
 @end
