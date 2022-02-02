@@ -1,8 +1,3 @@
-# This script is run via Buildkite's scheduled jobs feature.
-#
-# It's meant to rebuild various CI caches on a periodic async basis, so as
-# not to waste time on every CI job updating the cache.
-
 # Nodes with values to reuse in the pipeline.
 common_params:
   # Common plugin settings to use with the `plugins` key.
