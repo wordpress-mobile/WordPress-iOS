@@ -20,12 +20,11 @@ extension BlogDetailsViewController {
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
                 case .noSuchElement:
-                    if FeatureFlag.mySiteDashboard.enabled,
-                       let parentVC = self?.parent as? MySiteViewController {
-                        parentVC.additionalSafeAreaInsets = .zero
-                    } else {
-                        self?.additionalSafeAreaInsets = .zero
+                    guard let parentVC = self?.parent as? MySiteViewController else {
+                        return
                     }
+
+                    parentVC.additionalSafeAreaInsets = .zero
 
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view

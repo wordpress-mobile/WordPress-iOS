@@ -382,18 +382,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-        
-        [self.createButtonCoordinator addTo:parentVC.view
-                             trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
-                               bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
-    } else {
-        [self.createButtonCoordinator addTo:self.view
-                             trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor
-                               bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    }
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
     
+    [self.createButtonCoordinator addTo:parentVC.view
+                         trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
+                           bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
+
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
@@ -419,25 +413,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
 
     if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        
-        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-            parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-        } else {
-            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-        }
-        
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
     } else {
-        
-        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-            parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        } else {
-            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        }
-        
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -1717,18 +1699,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                
-                if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-                    parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                    [parentVC.scrollView scrollToView:cell animated:true];
-                } else {
-                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-                    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
-                }
-                
+                parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+                [parentVC.scrollView scrollToView:cell animated:true];
             }
             rowCount++;
         }
@@ -1948,12 +1922,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    } else {
-        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    }    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
