@@ -383,7 +383,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // Moderated comments could still be cached, so filter out non-approved comments.
-        let approvedComments = comments.filter({ $0.status == "approve"})
+        let approvedStatus = Comment.descriptionFor(.approved)
+        let approvedComments = comments.filter({ $0.status == approvedStatus})
 
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
