@@ -69,9 +69,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         // Followers must be sorted out by creationDate!
         //
         switch filter {
-        case .followers:
-            fallthrough
-        case .email:
+        case .followers, .email:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
