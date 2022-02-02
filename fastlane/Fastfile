@@ -518,7 +518,7 @@ platform :ios do
   end
 
   #####################################################################################
-  # build_and_upload_release [deprecated]
+  # build_and_upload_release [Deprecated - Can be removed once CircleCI is no longer in use]
   # -----------------------------------------------------------------------------------
   # This lane builds the app and uploads it for both internal and external distribution
   # -----------------------------------------------------------------------------------
