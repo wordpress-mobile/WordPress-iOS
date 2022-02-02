@@ -70,6 +70,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
+    var entryPoint: PostEditorEntryPoint = .unknown {
+        didSet {
+            editorSession.entryPoint = entryPoint
+        }
+    }
+
     /// Maintainer of state for editor - like for post button
     ///
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {

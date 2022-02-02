@@ -105,7 +105,10 @@ extension PostsCardViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = viewModel.postAt(indexPath)
 
-        PostListEditorPresenter.handle(post: post, in: self)
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: ["type": "post", "sub_type": status.rawValue])
+
+        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .dashboard)
     }
 }
 
