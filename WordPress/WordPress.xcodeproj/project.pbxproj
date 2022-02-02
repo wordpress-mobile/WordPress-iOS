@@ -2745,6 +2745,8 @@
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
+		FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
+		FA20751527A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
 		FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA347AEB26EB6E300096604B /* GrowAudienceCell.swift */; };
@@ -7510,6 +7512,7 @@
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusFailedView.swift; sourceTree = "<group>"; };
 		FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusFailedView.xib; sourceTree = "<group>"; };
+		FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Helpers.swift"; sourceTree = "<group>"; };
 		FA25F9FD2609AA830005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
@@ -12785,6 +12788,7 @@
 				FE02F95E269DC14A00752A44 /* Comment+Interface.swift */,
 				C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */,
 				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
+				FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -18216,6 +18220,7 @@
 				436110E022C4241A000773AD /* UIColor+MurielColorsObjC.swift in Sources */,
 				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */,
 				46183CF5251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
+				FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */,
 				981D464825B0D4E7000AA65C /* ReaderSeenAction.swift in Sources */,
 				F57402A7235FF9C300374346 /* SchedulingDate+Helpers.swift in Sources */,
 				4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */,
@@ -19759,6 +19764,7 @@
 				FABB22202602FC2C00C8785C /* CustomHighlightButton.m in Sources */,
 				FABB22212602FC2C00C8785C /* UniversalLinkRouter.swift in Sources */,
 				FABB22222602FC2C00C8785C /* LightNavigationController.swift in Sources */,
+				FA20751527A86B73001A644D /* UIScrollView+Helpers.swift in Sources */,
 				FABB22232602FC2C00C8785C /* PluginDirectoryCollectionViewCell.swift in Sources */,
 				FABB22242602FC2C00C8785C /* GutenbergNetworking.swift in Sources */,
 				FABB22252602FC2C00C8785C /* NavigationActionHelpers.swift in Sources */,

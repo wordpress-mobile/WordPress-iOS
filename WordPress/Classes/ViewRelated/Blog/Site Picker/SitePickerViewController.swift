@@ -242,7 +242,10 @@ extension SitePickerViewController {
             tourGuide.completeViewSiteTour(forBlog: blog)
         }
 
-        additionalSafeAreaInsets = .zero
+        guard let parentVC = parent as? MySiteViewController else {
+            return
+        }
+        parentVC.additionalSafeAreaInsets = .zero
     }
 }
 
