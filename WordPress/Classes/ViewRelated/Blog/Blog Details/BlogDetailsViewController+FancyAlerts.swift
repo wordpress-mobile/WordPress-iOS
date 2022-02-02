@@ -22,9 +22,9 @@ extension BlogDetailsViewController {
                 case .noSuchElement:
                     if FeatureFlag.mySiteDashboard.enabled,
                        let parentVC = self?.parent as? MySiteViewController {
-                        parentVC.additionalSafeAreaInsets = UIEdgeInsets.zero
+                        parentVC.additionalSafeAreaInsets = .zero
                     } else {
-                        self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                        self?.additionalSafeAreaInsets = .zero
                     }
 
                 case .siteIcon, .siteTitle:
