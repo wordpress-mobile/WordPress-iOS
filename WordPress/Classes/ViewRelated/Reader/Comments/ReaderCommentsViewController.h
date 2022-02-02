@@ -31,4 +31,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 /// Navigates to the specified comment when the view appears
 @property (nonatomic, strong) NSNumber *navigateToCommentID;
 
+
+// Comment moderation support.
+@property (nonatomic, assign, readwrite) BOOL commentModified;
 @end

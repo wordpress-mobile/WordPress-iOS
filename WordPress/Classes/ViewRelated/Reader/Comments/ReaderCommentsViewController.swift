@@ -142,6 +142,12 @@ extension NSNotification.Name {
         WPAnalytics.trackReader(.readerArticleCommentsOpened, properties: properties)
     }
 
+    // MARK: - Notification
+
+    @objc func postCommentModifiedNotification() {
+        NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
+    }
+
 }
 
 // MARK: - Popover Presentation Delegate
@@ -223,7 +229,7 @@ private extension ReaderCommentsViewController {
             CommentAnalytics.trackCommentEdited(comment: comment)
 
             self?.commentService.uploadComment(comment, success: {
-                NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
+                self?.commentModified = true
 
                 // update the thread again in case the approval status changed.
                 tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -239,7 +245,7 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
+            self?.commentModified = true
 
             // Adjust the ReaderPost's comment count.
             if let post = self?.post, let commentCount = post.commentCount?.intValue {

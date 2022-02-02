@@ -144,6 +144,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor murielBasicBackground];
+    self.commentModified = NO;
 
     [self checkIfLoggedIn];
 
@@ -195,6 +196,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewWillDisappear:animated];
     [self dismissNotice];
+    
+    if (self.commentModified) {
+        // Don't post the notification until the view is being dismissed to avoid purging cached comments prematurely.
+        [self postCommentModifiedNotification];
+    }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
