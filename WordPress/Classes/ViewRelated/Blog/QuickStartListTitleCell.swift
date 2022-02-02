@@ -41,6 +41,9 @@ class QuickStartListTitleCell: UITableViewCell {
         if state == .completed {
             label.textColor = .neutral(.shade30)
             label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+        } else {
+            label.textColor = .label
+            label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: []])
         }
     }
 }
