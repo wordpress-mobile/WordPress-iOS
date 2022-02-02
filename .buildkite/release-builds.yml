@@ -17,13 +17,19 @@ common_params:
 
 steps:
 
-  - label: "🛠 WordPress Release Build"
+  - label: "🛠 WordPress Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-wordpress.sh"
     env: *common_env
     plugins: *common_plugins
     notify:
     - slack: "#build-and-ship"
 
+  - label: "🛠 WordPress Release Build (App Center)"
+    command: ".buildkite/commands/release-build-wordpress-internal.sh"
+    env: *common_env
+    plugins: *common_plugins
+    notify:
+    - slack: "#build-and-ship"
 
   - label: "🛠 Jetpack Release Build"
     command: ".buildkite/commands/release-build-jetpack.sh"

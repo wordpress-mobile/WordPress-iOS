@@ -518,7 +518,7 @@ platform :ios do
   end
 
   #####################################################################################
-  # build_and_upload_release
+  # build_and_upload_release [deprecated]
   # -----------------------------------------------------------------------------------
   # This lane builds the app and uploads it for both internal and external distribution
   # -----------------------------------------------------------------------------------
@@ -534,14 +534,70 @@ platform :ios do
   #####################################################################################
   desc 'Builds and uploads for distribution'
   lane :build_and_upload_release do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm],
-                        internal: options[:beta_release],
-                        external: true)
+    build_and_upload_app_center(options) if options[:beta_release]
+    build_and_upload_app_store_connect(options)
+  end
+
+  #####################################################################################
+  # build_and_upload_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and uploads it for App Store Connect
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_app_store_connect [skip_confirm:<skip confirm>]
+  #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_app_store_connect
+  # bundle exec fastlane build_and_upload_app_store_connect skip_confirm:true
+  # bundle exec fastlane build_and_upload_app_store_connect create_gh_release:true
+  # bundle exec fastlane build_and_upload_app_store_connect beta_release:true
+  #####################################################################################
+  desc 'Builds and uploads for distribution to App Store Connect'
+  lane :build_and_upload_app_store_connect do |options|
+    ios_build_prechecks(
+      skip_confirm: options[:skip_confirm],
+      internal: options[:beta_release],
+      external: true
+    )
+
     ios_build_preflight
 
-    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
-    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm],
-                         beta_release: options[:beta_release], create_release: options[:create_gh_release])
+    build_and_upload_itc(
+      skip_prechecks: true,
+      skip_confirm: options[:skip_confirm],
+      beta_release: options[:beta_release],
+      create_release: options[:create_gh_release]
+    )
+
+  end
+
+  #####################################################################################
+  # build_and_upload_app_center
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and uploads it for App Center
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_app_center [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_app_center
+  # bundle exec fastlane build_and_upload_app_center skip_confirm:true
+  #####################################################################################
+  desc 'Builds and uploads for distribution to App Center'
+  lane :build_and_upload_app_center do |options|
+    ios_build_prechecks(
+      skip_confirm: options[:skip_confirm],
+      internal: true,
+      external: true
+    )
+
+    ios_build_preflight
+
+    build_and_upload_internal(
+      skip_prechecks: true,
+      skip_confirm: options[:skip_confirm]
+    )
   end
 
   #####################################################################################
