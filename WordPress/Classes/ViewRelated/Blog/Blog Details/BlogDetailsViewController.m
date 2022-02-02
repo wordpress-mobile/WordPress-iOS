@@ -327,7 +327,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        _tableView = [[IntrinsicTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
+        self.tableView.scrollEnabled = false;
+    } else {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
+    }
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
@@ -376,7 +382,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
-    [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+        
+        [self.createButtonCoordinator addTo:parentVC.view
+                             trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
+                               bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
+    } else {
+        [self.createButtonCoordinator addTo:self.view
+                             trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor
+                               bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    }
+    
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
@@ -404,9 +421,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        
+        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+            parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+        }
+        
     } else {
-        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        
+        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+            parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        }
+        
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -1679,13 +1710,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     int sectionCount = 0;
     int rowCount = 0;
+    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    
     for (BlogDetailsSection *section in self.tableSections) {
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
+                
+                if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+                    parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+                    [parentVC.scrollView scrollToView:cell animated:true];
+                } else {
+                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
+                }
+                
             }
             rowCount++;
         }
@@ -1905,7 +1948,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    } else {
+        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+    }    
 }
 
 - (void)showViewAdmin
@@ -2028,18 +2076,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 #pragma mark - Pull To Refresh
-
 - (void)pulledToRefresh {
-    __weak __typeof(self) weakSelf = self;
-    
+    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
+}
+
+- (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
+
     [self updateTableViewAndHeader: ^{
         // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
         // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
         // down to refresh the site.
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            [refreshControl endRefreshing];
             
-            [strongSelf.tableView.refreshControl endRefreshing];
+            completion();
         });
     }];
 }

@@ -790,6 +790,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatInstallJetpackWebviewFailed:
             eventName = @"connect_jetpack_failed";
             break;
+        case WPAnalyticsStatLandingEditorShown:
+            eventName = @"landing_editor_shown";
+            break;
         case WPAnalyticsStatLayoutPickerPreviewErrorShown:
             eventName = @"layout_picker_preview_error_shown";
             break;

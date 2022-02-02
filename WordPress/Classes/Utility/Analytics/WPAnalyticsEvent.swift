@@ -264,6 +264,7 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+    case notificationsMarkAllReadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -751,6 +752,8 @@ import Foundation
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
+        case .notificationsMarkAllReadTapped:
+            return "notifications_mark_all_read_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:

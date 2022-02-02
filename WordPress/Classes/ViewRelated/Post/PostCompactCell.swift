@@ -232,4 +232,8 @@ extension PostCompactCell {
         trailingContentConstraint.constant = Constants.margin
         headerStackView.spacing = Constants.margin
     }
+
+    func hideSeparator() {
+        separator.isHidden = true
+    }
 }
