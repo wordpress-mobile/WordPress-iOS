@@ -169,6 +169,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+        // When comments are moderated or edited from the Comments view, update the Comments snippet here.
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -229,10 +232,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
         fetchLikes()
-
-        if FeatureFlag.postDetailsComments.enabled {
-            fetchComments()
-        }
+        fetchComments()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -528,10 +528,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         view.setNeedsDisplay()
     }
 
-    private func fetchComments() {
-        guard let post = post else {
-            return
-        }
+    @objc private func fetchComments() {
+        guard FeatureFlag.postDetailsComments.enabled,
+              let post = post else {
+                  return
+              }
 
         coordinator?.fetchComments(for: post)
     }
