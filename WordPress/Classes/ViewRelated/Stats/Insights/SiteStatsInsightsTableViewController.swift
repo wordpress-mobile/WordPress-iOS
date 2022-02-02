@@ -83,6 +83,29 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         viewModel?.refreshInsights()
     }
 
+    func showAddInsightView() {
+        WPAnalytics.track(.statsItemTappedInsightsAddStat)
+
+        if displayingEmptyView {
+            hideNoResults()
+            addViewModelListeners()
+            refreshInsights()
+        }
+
+        if insightsToShow.contains(.customize) {
+            // The view needs to be updated to remove the Customize card.
+            // However, if it's done here, there is a weird animation before AddInsight is presented.
+            // Instead, set 'viewNeedsUpdating' so the view is updated when 'addInsightDismissed' is called.
+            viewNeedsUpdating = true
+            dismissCustomizeCard()
+        }
+
+        let controller = AddInsightTableViewController(insightsDelegate: self,
+                insightsShown: insightsToShow.compactMap { $0.statSection })
+        let navigationController = UINavigationController(rootViewController: controller)
+        present(navigationController, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - Private Extension
@@ -280,22 +303,6 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     // MARK: - Insights Management
-
-    func showAddInsightView() {
-
-        if insightsToShow.contains(.customize) {
-            // The view needs to be updated to remove the Customize card.
-            // However, if it's done here, there is a weird animation before AddInsight is presented.
-            // Instead, set 'viewNeedsUpdating' so the view is updated when 'addInsightDismissed' is called.
-            viewNeedsUpdating = true
-            dismissCustomizeCard()
-        }
-
-        let controller = AddInsightTableViewController(insightsDelegate: self,
-                                                       insightsShown: insightsToShow.compactMap { $0.statSection })
-        let navigationController = UINavigationController(rootViewController: controller)
-        present(navigationController, animated: true, completion: nil)
-    }
 
     func moveInsightUp(_ insight: InsightType) {
         guard canMoveInsightUp(insight) else {
@@ -541,10 +548,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         trackNudgeEvent(.statsReaderDiscoverNudgeTapped)
     }
 
-    func showAddInsight() {
-        showAddInsightView()
-    }
-
     func addInsightSelected(_ insight: StatSection) {
         guard let insightType = insight.insightType,
             !insightsToShow.contains(insightType) else {
@@ -633,15 +636,7 @@ extension SiteStatsInsightsTableViewController: ReaderDiscoverFlowDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        guard !displayingEmptyView else {
-            WPAnalytics.track(.statsItemTappedInsightsAddStat)
-            showAddInsightView()
-            return
-        }
-
-        hideNoResults()
-        addViewModelListeners()
-        refreshInsights()
+        showAddInsightView()
     }
 }
 

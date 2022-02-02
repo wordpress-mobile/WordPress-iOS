@@ -308,10 +308,6 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsPeriodDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
         siteStatsDetailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
     }
-
-    func showAddInsight() {
-        siteStatsInsightsDelegate?.showAddInsight?()
-    }
 }
 
 // MARK: - StatsTotalRowReferrerDelegate

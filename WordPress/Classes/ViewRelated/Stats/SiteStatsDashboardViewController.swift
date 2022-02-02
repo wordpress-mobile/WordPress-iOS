@@ -69,15 +69,39 @@ class SiteStatsDashboardViewController: UIViewController {
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
     private var pageViewController: UIPageViewController?
 
+    @objc lazy var addStatsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+                image: .gridicon(.cog),
+                style: .plain,
+                target: self,
+                action: #selector(addStatsCardButtonTapped))
+        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavBar(StatsPeriodType.insights)
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         view.accessibilityIdentifier = "stats-dashboard"
+    }
+
+    func configureNavBar(_ statsPeriodType: StatsPeriodType) {
+        if statsPeriodType == StatsPeriodType.insights {
+            parent?.navigationItem.rightBarButtonItem = addStatsButton
+        }
+        else {
+            parent?.navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    @objc func addStatsCardButtonTapped() {
+        insightsTableViewController.showAddInsightView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -145,6 +169,8 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
+
+        configureNavBar(currentSelectedPeriod)
     }
 
 }

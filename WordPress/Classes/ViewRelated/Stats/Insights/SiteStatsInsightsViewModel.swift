@@ -237,9 +237,6 @@ class SiteStatsInsightsViewModel: Observable {
         }
 
         tableRows.append(TableFooterRow())
-        tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-
-        tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -613,12 +610,6 @@ private extension SiteStatsInsightsViewModel {
                        dataRows: followersData ?? [])
     }
 
-    func createAddInsightRow() -> StatsTotalRowData {
-        return StatsTotalRowData(name: StatSection.insightsAddInsight.title,
-                                 data: "",
-                                 icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
-                                 statSection: .insightsAddInsight)
-    }
 }
 
 extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
