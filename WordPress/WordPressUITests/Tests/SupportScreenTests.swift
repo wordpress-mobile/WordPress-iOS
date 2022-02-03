@@ -20,7 +20,6 @@ class SupportScreenTests: XCTestCase {
             .selectHelp()
             .contactSupport()
             .assertCanNotSendEmptyMessage()
-            .enterText("A")
             .assertCanSendMessage()
     }
 }
