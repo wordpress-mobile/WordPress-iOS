@@ -706,7 +706,9 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
+        if let postID = note.metaPostID,
+            let siteID = note.metaSiteID,
+            note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             showDetailViewController(readerViewController, sender: nil)
@@ -714,35 +716,39 @@ extension NotificationsViewController {
             return
         }
 
+        presentCommentDetail(for: note)
+    }
+
+    private func presentCommentDetail(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
-        //
+        
         view.isUserInteractionEnabled = false
 
         DispatchQueue.main.async {
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
                 let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
-
-                // For now, NotificationCommentDetailCoordinator only loads the Comment if it is cached.
-                // If the comment is not cached, fall back to showing the old comment view.
-                // This is temporary until NotificationCommentDetailCoordinator can fetch the comment from the endpoint.
-
-                if let commentDetailViewController = notificationCommentDetailCoordinator.viewController {
+                
+                notificationCommentDetailCoordinator.createViewController { commentDetailViewController in
+                    guard let commentDetailViewController = commentDetailViewController else {
+                        // TODO: show error view
+                        return
+                    }
+                    
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
-                } else {
-                    // TODO: remove when NotificationCommentDetailCoordinator updated to fetch comment.
-                    self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+                    self.view.isUserInteractionEnabled = true
+                    
+                    return
                 }
-            } else {
-                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
             }
-            self.view.isUserInteractionEnabled = true
+            
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
         }
     }
 
