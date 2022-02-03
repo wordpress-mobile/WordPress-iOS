@@ -19,7 +19,7 @@ class MainNavigationTests: XCTestCase {
     }
 
     func testTabBarNavigation() throws {
-        XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
+        XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen ain't loaded.")
 
         _ = try mySiteScreen
             .tabBar.goToReaderScreen()
