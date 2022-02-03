@@ -463,7 +463,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.47.0-beta.4):
+  - WordPressKit (4.47.0-beta.5):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -567,7 +567,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.7)
   - WordPressAuthenticator (~> 1.43.0)
-  - WordPressKit (~> 4.47.0-beta.4)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/17790-fetch_single_comment`)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1-beta.1)
   - WordPressUI (~> 1.12.3)
@@ -579,7 +579,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
   trunk:
     - Alamofire
@@ -730,6 +729,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.0
+  WordPressKit:
+    :branch: feature/17790-fetch_single_comment
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.71.0/third-party-podspecs/Yoga.podspec.json
 
@@ -745,6 +747,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.0
+  WordPressKit:
+    :commit: 26b975baef76ca79e262d6f287f4895aed05536f
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -831,7 +836,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 144f124148079084860368dfd27cb96e0952853e
   WordPress-Editor-iOS: 20551d5a5e51f29832064f08faaaae8e1da7e1e2
   WordPressAuthenticator: e4a43745a647e4dc4b35d21b1353bc4f07f9f3c9
-  WordPressKit: 99ce7f470aff4a4acf518ac25efd6eb4ad9df996
+  WordPressKit: 6a7dcc7fc5b51909bbd64414dd4c458b1829cbcf
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: bc50e38a31e05134a7c643cef9cf6a7e28e9cf34
   WordPressUI: 45591178e843ecb82e65e868ec766148befe9f9f
@@ -847,6 +852,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 492dd2b02f553799011a52c6949548ef8f7997ca
+PODFILE CHECKSUM: be4d3785e140082336df4daf085c5df2c6832f46
 
 COCOAPODS: 1.11.2
