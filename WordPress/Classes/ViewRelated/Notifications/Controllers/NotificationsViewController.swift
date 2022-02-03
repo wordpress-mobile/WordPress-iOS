@@ -749,6 +749,7 @@ extension NotificationsViewController {
             }
 
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            self.view.isUserInteractionEnabled = true
         }
     }
 
