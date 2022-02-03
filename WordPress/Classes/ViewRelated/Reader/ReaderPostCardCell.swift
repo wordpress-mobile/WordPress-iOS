@@ -369,7 +369,7 @@ private extension ReaderPostCardCell {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            DDLogError("ReaderPostCardCell MediaHost error: \(error.localizedDescription)")
         })
 
         mediaRequestAuthenticator.authenticatedRequest(
