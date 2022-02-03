@@ -15,6 +15,7 @@ import Foundation
     @objc optional func growAudienceEnablePostSharingButtonTapped()
     @objc optional func growAudienceBloggingRemindersButtonTapped()
     @objc optional func growAudienceReaderDiscoverButtonTapped()
+    @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
     @objc optional func addInsightDismissed()
     @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)

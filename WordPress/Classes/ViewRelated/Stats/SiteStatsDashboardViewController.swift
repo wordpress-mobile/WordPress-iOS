@@ -101,7 +101,7 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     @objc func addStatsCardButtonTapped() {
-        insightsTableViewController.showAddInsightView()
+        insightsTableViewController.showAddInsightView(source: "nav_bar")
     }
 
     override func viewWillDisappear(_ animated: Bool) {

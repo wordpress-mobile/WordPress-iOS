@@ -83,8 +83,8 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         viewModel?.refreshInsights()
     }
 
-    func showAddInsightView() {
-        WPAnalytics.track(.statsItemTappedInsightsAddStat)
+    func showAddInsightView(source: String = "table_row") {
+        WPAnalytics.track(.statsItemTappedInsightsAddStat, withProperties: ["source": source])
 
         if displayingEmptyView {
             hideNoResults()
@@ -546,6 +546,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         trackNudgeEvent(.statsReaderDiscoverNudgeTapped)
+    }
+
+    func showAddInsight() {
+        showAddInsightView()
     }
 
     func addInsightSelected(_ insight: StatSection) {
