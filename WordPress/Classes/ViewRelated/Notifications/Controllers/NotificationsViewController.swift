@@ -726,28 +726,28 @@ extension NotificationsViewController {
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
-        
+
         view.isUserInteractionEnabled = false
 
         DispatchQueue.main.async {
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
                 let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
-                
+
                 notificationCommentDetailCoordinator.createViewController { commentDetailViewController in
                     guard let commentDetailViewController = commentDetailViewController else {
                         // TODO: show error view
                         return
                     }
-                    
+
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
                     self.view.isUserInteractionEnabled = true
-                    
+
                     return
                 }
             }
-            
+
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
         }
     }
