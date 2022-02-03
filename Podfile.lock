@@ -567,7 +567,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.7)
   - WordPressAuthenticator (~> 1.43.0)
-  - WordPressKit (from `../../WordPressKit-iOS`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/add-dashboard-remote-service`)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1-beta.1)
   - WordPressUI (~> 1.12.3)
@@ -730,7 +730,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.71.0-alpha2
   WordPressKit:
-    :path: "../../WordPressKit-iOS"
+    :branch: issue/add-dashboard-remote-service
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.71.0-alpha2/third-party-podspecs/Yoga.podspec.json
 
@@ -746,6 +747,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.0-alpha2
+  WordPressKit:
+    :commit: b5f32dccbcbcf2361762ad3a9aad23f6ad0f22e0
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -848,6 +852,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: c54f52328518023f31219477f549888d7844c459
+PODFILE CHECKSUM: 6e1e8085afb447dacbd2482e2529e74b8dd8ed50
 
 COCOAPODS: 1.11.2
