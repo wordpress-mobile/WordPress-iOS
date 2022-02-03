@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-20 22:21:22+0000 */
+/* Translation-Revision-Date: 2022-02-01 21:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -566,7 +566,7 @@ translators: Block name. %s: The localized block name */
 "Add menu item to children" = "إضافة عنصر قائمة للعناصر الفرعية";
 
 /* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
+"Add new media" = "إضافة وسائط جديدة";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "إضافة قائمة جديدة";
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "إرسال سجلات الأعطال دومًا";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "تم إرجاع رمز خطأ HTML %i.";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "تم إرجاع رمز خطأ HTTP.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "يلزم وجود اتصال بالإنترنت نشط";
@@ -767,7 +767,7 @@ translators: Block name. %s: The localized block name */
 "An error occurred." = "حدث خطأ.";
 
 /* A failure reason for when the error that occured wasn't able to be determined. */
-"An unknown error occurred." = "An unknown error occurred.";
+"An unknown error occurred." = "حدث خطأ غير متوقع.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "حدث خطأ غير معروف. يُرجى المحاولة مرة أخرى.";
@@ -1297,7 +1297,7 @@ translators: Block name. %s: The localized block name */
 "Change Password" = "تغيير كلمة المرور";
 
 /* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
+"Change Settings" = "تغيير الإعدادات";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "تغيير الموقع";
@@ -1595,7 +1595,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "التعليق على";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "تم تعيين التعليق إلى تمت الموافقة عليه.";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "تم تعيين التعليق تحت المراجعة.";
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "أدخل كلمات مختلفة أعلاه وسنبحث عن عنوان يطابقها.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "دخول وضع التحرير لتمكين التحديد المتعدد للحذف";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2879,7 +2879,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "خطأ في إرسال رسالة بريد إلكتروني للتحقق. تحقق من اتصالك وحاول مرة أخرى.";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "حدث خطأ في أثناء تعيين تعليق إلى تمت الموافقة عليه.";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "خطأ أثناء تعيين التعليق تحت المراجعة.";
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "إعادة التوجيه";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "أربعة";
 
 /* Browse free themes selection title */
 "Free" = "مجانًا";
@@ -3243,7 +3243,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "التسمية التوضيحية للمعرض. %s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "نمط المعرض";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "زراعة الحدائق";
@@ -3864,7 +3864,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "اسم العائلة";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "كان لديك الأسبوع الماضي ⁦%1$d⁩ من المشاهدات، و⁦%2$d⁩ من التعليقات، و⁦%3$d⁩ من الإعجابات.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "ملخص آخر مقالة";
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "التنقل لتخصيص التدرج";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "ينتقل إلى شاشة اختيار التخطيط";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4475,7 +4475,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Need help?" = "هل تحتاج إلى مساعدة؟";
 
 /* Title of the more help button on alert helping users understand their site address */
-"Need more help?" = "هل تحتاج إلى مزيد من المساعدة؟";
+"Need more help?" = "بحاجة إلى مزيد من المساعدة؟";
 
 /* Describes a status of a plugin */
 "Needs Update" = "بحاجة إلى تحديث";
@@ -4530,7 +4530,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Next Steps" = "الخطوات التالية";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
+"Next month" = "الشهر التالي";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "التنبيه التالي";
@@ -4631,7 +4631,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "لا توجد بيانات حتى الآن";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "لم يتم تحديد أي نطاق تاريخ";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "لا توجد تهديدات معالجة";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "بمجرد إنشاء موقع WordPress.com، يمكنك إعادة تدوين المحتوى الذي أعجبك على موقعك الخاص.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "واحد";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "أنظر فقط للإحصائيات الأكثر صلة. أضف رؤى لتناسب احتياجاتك.";
@@ -4918,7 +4918,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "إظهار المقتطف فقط";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "تتوافر فقط الصور المُحدَّدة التي منحت حق الوصول إليها.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "يمكنك معاينة موقعك الجديد لرؤية ما سيراه الزائرون.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "الشهر السابق";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "التنبيه السابق";
@@ -5806,7 +5806,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "إزالة رمز الموقع";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "إزالة كصورة بارزة";
 
 /* No comment provided by engineer. */
 "Remove block" = "إزالة المكوِّن";
@@ -6267,7 +6267,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "تحديد البلد";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
+"Select More" = "تحديد مزيد";
 
 /* Blog Picker's Title */
 "Select Site" = "تحديد موقع";
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "الوسائط المحددة غير متوفرة.";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "النطاق المحدَّد: %1$@ فقط";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "النطاق المحدَّد: %1$@ إلى %2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6398,7 +6398,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "تعيين الأصل";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "تعيين كصورة بارزة";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "تعيين كصفحة رئيسية";
@@ -6617,7 +6617,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "لغة الموقع";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "قائمة الموقع";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "إعادة توجيه الموقع";
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "ستُساعدك جولة البدء السريع على إنشاء الموقع الأساسي. هل تريد بالتأكيد التخطي؟ ";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "فشل إنشاء تسلسل الطلب.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "فشل إنشاء تسلسل الاستجابة.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "أرجع الخادم استجابة فارغة. يعني ذلك عادة أنك بحاجة إلى زيادة الحد الأقصى لذاكرة موقعك.";
@@ -7331,7 +7331,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was a problem blocking posts from the specified site." = "حدثت مشكلة أثناء حظر المقالات من الموقع المحدد.";
 
 /* A general error message shown to the user when there was an API communication failure. */
-"There was a problem communicating with the site." = "There was a problem communicating with the site.";
+"There was a problem communicating with the site." = "حدثت مشكلة في أثناء الاتصال بالموقع.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "حدثت مشكلة أثناء الاتصال بـ WordPress.com. يُرجى تسجيل الدخول مرة أخرى.";
@@ -7502,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "تم تجاهل التهديد.";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "ثلاثة";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "صورة مصغرة";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "الصورة المصغّرة غير متوفرة.";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "إعدادات المعرض المتجانب";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7665,7 +7665,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Trash" = "سلة المهملات";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
+"Trash selected media" = "نقل الوسائط المُحدَّدة إلى سلة المهملات";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "هل تريد نقل هذه الصفحة إلى سلة المهملات؟";
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "اسم مستخدم تويتر";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "اثنان";
 
 /* Type menu item in share extension. */
 "Type" = "النوع";
@@ -7846,7 +7846,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "يتعذر تشغيل الفيديو";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "تعذر قراءة موقع ووردبريس على الرابط URL هذا. أنقر على \"بحاجة إلى مزيد من المساعدة؟\" لمشاهدة الأسئلة الشائعة.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "غير قادر على استعادة موقعك";
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "موجز أسبوعي";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "الموجز الأسبوعي: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "أسابيع";
@@ -8899,7 +8899,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "يمكنك تبديل المواقع في أي وقت.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "يمكنك تحديث هذا في أي وقت";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "لن يتم تخزين بيانات اعتمادك وستُستخدم فقط بغرض تنصيب Jetpack.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "موجزك الأسبوعي جاهز، اضغط هنا للاطلاع على التفاصيل!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "إنك تتابع هذه المحادثة. ستتلقى بريدًا إلكترونيًا وتنبيهًا عند إجراء تعليق جديد.";

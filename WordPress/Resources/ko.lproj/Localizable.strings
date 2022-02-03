@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-20 22:20:35+0000 */
+/* Translation-Revision-Date: 2022-02-02 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "언제나 충돌 기록 보내기";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "HTTP 오류 코드(%i)가 반환되었습니다.";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "HTTP 오류 코드가 반환되었습니다.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "인터넷에 연결되어야 합니다.";
@@ -1595,7 +1595,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "댓글";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "댓글이 승인됨으로 설정되었습니다.";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "댓글이 대기 중으로 설정되었습니다.";
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "위에 다른 단어를 입력하면 일치하는 주소를 찾겠습니다.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "편집 모드로 전환하여 삭제할 다중 선택 활성화하기";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2879,7 +2879,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "확인 이메일을 보내는 중 오류가 발생했습니다. 연결을 확인하고 다시 시도하세요.";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "승인됨으로 댓글 설정 중 오류 발생.";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "댓글을 대기 중으로 설정하는 중 오류가 발생했습니다.";
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "전달";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "4";
 
 /* Browse free themes selection title */
 "Free" = "무료";
@@ -3243,7 +3243,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "갤러리 캡션. %s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "갤러리 스타일";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "원예";
@@ -3864,7 +3864,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "성";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "지난주에는 조회수 %1$d개, 댓글 %2$d개 및 좋아요 %3$d개가 있습니다.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "최신 글 요약";
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "사용자 정의 그라디언트로 가기";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "레이아웃 선택 화면으로 이동";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4631,7 +4631,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "아직 데이터 없음";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "선택된 날짜 범위 없음";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "해결된 위협 없음";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "워드프레스닷컴 사이트를 만든 후 원하는 콘텐츠를 자신의 사이트로 리블로그할 수 있습니다.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "1";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "가장 관련성 높은 통계만 확인하세요. 필요에 맞게 인사이트를 추가하세요.";
@@ -4918,7 +4918,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "요악문만 표시";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "접근 권한을 부여한 선택한 사진만 사용할 수 있습니다.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "새 사이트를 미리 보고 방문자에게 어떤 것이 표시되는지 확인하세요.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "이전 달";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "이전 알림";
@@ -5806,7 +5806,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "사이트 아이콘 제거";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "특성 이미지 제거";
 
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
@@ -6267,7 +6267,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "국가 선택";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
+"Select More" = "더 많이 선택";
 
 /* Blog Picker's Title */
 "Select Site" = "사이트 선택";
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "선택한 미디어를 사용할 수 없습니다.";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "선택한 범위: %1$@만";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "선택한 범위: %1$@~%2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6398,7 +6398,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "상위 항목 설정";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "특성 이미지로 설정";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "홈페이지로 설정";
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "퀵 스타트 투어에서는 기본 사이트 구축에 대해 안내합니다. 건너뛰시겠습니까? ";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "요청 직렬화에 실패했습니다.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "응답 직렬화에 실패했습니다.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "서버에서 응답이 없습니다. 이는 일반적으로 사이트에 대한 메모리 제한을 늘려야 한다는 뜻입니다.";
@@ -7331,7 +7331,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was a problem blocking posts from the specified site." = "지정된 사이트에서 게시물 차단 중 문제가 발생했습니다.";
 
 /* A general error message shown to the user when there was an API communication failure. */
-"There was a problem communicating with the site." = "There was a problem communicating with the site.";
+"There was a problem communicating with the site." = "사이트와 통신하는 중 문제가 발생했습니다.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "워드프레스닷컴에 연결하는 중 문제가 발생했습니다. 다시 로그인해주세요.";
@@ -7502,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "위협이 무시되었습니다.";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "3";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "썸네일";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "썸네일을 사용할 수 없습니다.";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "바둑판식 갤러리 설정";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7665,7 +7665,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Trash" = "휴지통";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
+"Trash selected media" = "선택한 미디어 삭제";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "이 페이지를 휴지통으로 이동할까요?";
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "Twitter 사용자명";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "2";
 
 /* Type menu item in share extension. */
 "Type" = "유형";
@@ -7846,7 +7846,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "비디오를 재생할 수 없음";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "해당 URL에서 워드프레스 사이트를 읽을 수 없습니다. '더 많은 도움이 필요하세요?'를 눌러 FAQ를 보세요.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "사이트를 복원할 수 없음";
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "주간 종합";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "주간 총정리: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "주";
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "웹사이트 자격 증명은 저장되지 않으며 젯팩을 설치하는 용도로만 사용됩니다.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "주간 총정리가 준비되어 있습니다. 여기를 누르면 상세 정보가 표시됩니다!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "이 대화를 팔로우하는 중입니다. 새 댓글이 작성될 때마다 이메일과 알림이 수신됩니다.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-25 10:18:28+0000 */
+/* Translation-Revision-Date: 2022-01-31 19:34:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -566,7 +566,7 @@ translators: Block name. %s: The localized block name */
 "Add menu item to children" = "Lägg till menyobjekt till underordnad";
 
 /* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
+"Add new media" = "Lägg till ny mediefil";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Lägg till meny";
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "Skicka alltid kraschloggar";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "HTTP-felet %i skickades i retur.";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "Svaret var en HTTP-felkod.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "En aktiv internetanslutning krävs";
@@ -1595,7 +1595,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "Kommentar på";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "Kommentaren har godkänts.";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Kommentaren ändrad till väntande.";
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "Skriv in olika ord ovan så letar vi efter en adress som matchar dem.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "Gå till redigeringsläget för att kunna markera flera objekt för borttagning";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2879,7 +2879,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "Ett fel inträffade när e-postmeddelande för verifiering skulle skickas. Kontrollera anslutningen och försök igen.";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "Fel när kommentaren skulle anges som godkända.";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "Fel när kommentaren skulle anges som väntande.";
@@ -3864,7 +3864,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "Efternamn";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "Förra veckan hade du %1$d visningar, %2$d kommentarer och %3$d gilla-markeringar.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Sammanfattning av senaste inlägg";
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Går till anpassning av gradient";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "Går till skärmen för val av layout";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4631,7 +4631,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "Inga uppgifter än";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "Inget datumintervall är angivet";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "En";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Visa bara den statistik som är mest relevat. Lägger till insikter som passar dina behov.";
@@ -4918,7 +4918,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "Visa endast utdrag";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "Endast de markerade fotografier som du har gett åtkomst till är tillgängliga.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "Valt medieobjekt är inte tillgängligt.";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "Valt intervall: endast: %1$@";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "Valt intervall: endast: från %1$@ till %2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6617,7 +6617,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "Webbplatsens språk";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "Webbplatsens meny";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Omdirigera webbplats";
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Snabbstartsdemon visar dig stegen för att bygga en grundläggande webbplats. Är du säker på att du vill hoppa över detta?";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "Serialiseringen av begäran misslyckades.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "Serialiseringen av svaret misslyckades.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Servern skickade tillbaka ett tomt svar. Detta betyder vanligtvis att du behöver öka minnesgränsen för din webbplats.";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "Miniatyr ej tillgänglig.";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "Inställningar för mosaikgalleri";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "Veckosammanfattning";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "Veckosammanfattning: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Veckor";
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Inloggningsuppgifterna till din webbplats används enbart för att installera Jetpack och de kommer inte att sparas.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "Din veckosammanfattning är klar, tryck här för mer information!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Du följer denna konversation. Du kommer att få ett e-postmeddelande och en avisering varje gång en ny kommentar publiceras.";

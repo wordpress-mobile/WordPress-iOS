@@ -1,0 +1,25 @@
+Vi har rättat ett fel där webbplatser på webbhotell kraschade om man försökte ladda upp en mediafil men saknade internetanslutning. Verkligen ett hoppsan, men nu är det fixat.
+
+På tal om mediafiler, vi vet att en del ger appen begränsad åtkomst till mediabiblioteket. Inte är det hela världen, men vi har lagt in en liten påminnelse i mediaväljaren för den händelse du skulle vilja ge större åtkomst. Påminnelsen använder till och med Dynamic Type så att den är lätt att läsa.
+
+Vi har förbättrat VoiceOver och Dynamic Type i kalendrarna för aktivitetslogg och schemaläggning av inlägg. Vi kan med glädje informera att detta entydigt förbättrar användarupplevelsen för dem som behöver förstärkta visuella medel.
+
+Stor nyhet vad det gäller kommentarer: nu kan du prenumerera på en konversation med en knapp i sidhuvudet för kommentarer.
+
+Blockredigeraren har blivit lite mer användbar sen senast.
+
+– Vi har rättat ett fel där knappars justering i sidled inuti knappblocket inte stämde.
+– Vi har lagt till översättningar för inställning av färger i omslagsblock.
+– När du markerar en bild visas inte längre en miniatyrvideo och tvärtom.
+– Vi har dolt hjälpknappen i nedre högra hörnet i den blockredigerare som inte stöds, för att undvika missförstånd.
+– Om du använder olika färgkombinationer för text och bakgrund i textblock kommer du att få information om det finns risk att en del personer får svårt att läsa den färgkombination du valt.
+– Vi har rättat några specialfall som kunde inträffa om man ändrade färgen på omarkerad text.
+
+Dessutom har vi rättat några mindre problem och app-kraschar.
+
+– Aviseringarna om veckosammanfattningar visades inte för alla användare. Det är löst nu.
+– Vyn för val av användarnamn laddas inte längre in två gånger.
+– Om du kopplar ditt Facebook-konto till Publicize loggas du numer in.
+– Bilder, vars filnamn innehåller en copyright-symbol laddas nu upp eller visas i delningsdialogen på rätt sätt.
+
+Slutligen har vi förtydligat några felmeddelanden i inloggningsvyn för webbplatser på webbhotell.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-20 22:21:43+0000 */
+/* Translation-Revision-Date: 2022-02-02 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -566,7 +566,7 @@ translators: Block name. %s: The localized block name */
 "Add menu item to children" = "הוספת פריט תפריט לילדים";
 
 /* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
+"Add new media" = "להוסיף פריט מדיה חדש";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "הוספת תפריט חדש";
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "תמיד לשלוח דוחות קריסה";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "הוחזר קוד שגיאה של HTTP %i.";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "הוחזר קוד שגיאה של HTTP.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "נדרש חיבור פעיל לאינטרנט";
@@ -767,7 +767,7 @@ translators: Block name. %s: The localized block name */
 "An error occurred." = "אירעה שגיאה.";
 
 /* A failure reason for when the error that occured wasn't able to be determined. */
-"An unknown error occurred." = "An unknown error occurred.";
+"An unknown error occurred." = "אירעה שגיאה לא מזוהה.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "אירעה שגיאה לא מזוהה. יש לנסות שוב.";
@@ -1297,7 +1297,7 @@ translators: Block name. %s: The localized block name */
 "Change Password" = "שינוי סיסמה";
 
 /* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
+"Change Settings" = "שינוי ההגדרות";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "שנה אתר";
@@ -1595,7 +1595,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "תגובה על";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "התגובה הוגדרה כ'אושרה'.";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "התגובה הוגדרה ל'בהמתנה'.";
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "יש להזין מילים שונות למעלה ואנחנו נחפש כתובת שתתאים להן.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "יש לעבור למצב עריכה כדי לאפשר בחירה מרובה למחיקה";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2879,7 +2879,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "שגיאה בשליחה האימייל לאימות. יש לבדוק את החיבור ולנסות שוב.";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "שגיאה בהגדרת התגובה ל'אושרה'.";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "שגיאה בהגדרת התגובה ל'בהמתנה'.";
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "העבר";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "4";
 
 /* Browse free themes selection title */
 "Free" = "חינם";
@@ -3243,7 +3243,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "כיתוב לגלריה. %s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "סגנון גלריה";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "גינון";
@@ -3864,7 +3864,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "שם משפחה";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "בשבוע הקודם היו לך ⁦%1$d⁩ צפיות, ⁦%2$d⁩ תגובות ו-⁦%3$d⁩ לייקים.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "סיכום פוסטים אחרונים";
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "הפעולה מנווטת אל האפשרות להתאים את מעבר הצבע";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "מנתב למסך של בחירת הפריסה";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4530,7 +4530,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Next Steps" = "לשלב הבא";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
+"Next month" = "החודש הבא";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "ההודעה הבאה";
@@ -4631,7 +4631,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "אין נתונים עדיין";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "לא נבחר טווח תאריכים";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "אין איומים שתוקנו";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "לאחר יצירת אתר ב-WordPress.com, אפשר לפרסם מחדש בבלוג את התוכן שברצונך להציג באתר שלך.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "אחד";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "הצגה של הנתונים הסטטיסטיים הרלוונטיים ביותר בלבד. להוסיף תובנות שיתאימו לצרכיך.";
@@ -4918,7 +4918,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "להציג את התקציר בלבד";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "רק התמונות הנבחרות שאליהן סיפקת גישה יהיו זמינות.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "באפשרותך להציג תצוגה מקדימה של האתר החדש כדי לבחון מה יראו המבקרים בו.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "החודש הקודם";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "הודעה קודמת";
@@ -5806,7 +5806,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "הסרת סמל האתר";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "להסיר מהתמונה המרכזית";
 
 /* No comment provided by engineer. */
 "Remove block" = "להסיר בלוק";
@@ -6267,7 +6267,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "בחירת מדינה";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
+"Select More" = "לבחור אפשרויות נוספות";
 
 /* Blog Picker's Title */
 "Select Site" = "בחירת אתר";
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "פריטי המדיה שנבחרו אינם זמינים.";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "יש לבחור טווח: %1$@ בלבד";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "יש לבחור טווח: %1$@ עד %2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6398,7 +6398,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "הגדרת הורה";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "להגדיר כתמונה מרכזית";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "להגדיר כעמוד הבית";
@@ -6617,7 +6617,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "שפת אתר";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "תפריט האתר";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "הסיור להתחלה מהירה ידריך אותך כיצד לבנות אתר בסיסי. בחרת להמשיך - האם ההחלטה סופית? ";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "הסריאליזציה של הבקשה נכשלה.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "הסריאליזציה של התגובה נכשלה.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "השרת החזיר תשובה ריקה. בדרך כלל הדבר אומר שצריך להגדיל את מגבלת הזיכרון לאתר.";
@@ -7331,7 +7331,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was a problem blocking posts from the specified site." = "אירעה בעיה בעת חסימת רשומות מהאתר שצוין.";
 
 /* A general error message shown to the user when there was an API communication failure. */
-"There was a problem communicating with the site." = "There was a problem communicating with the site.";
+"There was a problem communicating with the site." = "הייתה בעיה בתקשורת עם האתר הזה.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "בעיה בהתחברות ל-WordPress.com. נא לנסות להתחבר שוב.";
@@ -7502,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "התעלמת מהאיום.";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "שלושה";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "תמונה ממוזערת";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "תמונה ממוזערת לא זמינה.";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "הגדרות גלריה פרושה";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7665,7 +7665,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Trash" = "לאשפה";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
+"Trash selected media" = "להעביר את המדיה הנבחרת לפח";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "האם להעביר את העמוד לפח?";
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "שם המשתמש בטוויטר";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "שניים";
 
 /* Type menu item in share extension. */
 "Type" = "סוג";
@@ -7846,7 +7846,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "אין אפשרות לנגן את הווידאו";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "לא ניתן לקרוא את אתר WordPress בכתובת URL זו. יש להקיש על 'נדרשת עזרה נוספת?' כדי להציג את השאלות הנפוצות.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "לא ניתן לשחזר את האתר שלך";
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "סיכום שבועי";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "סיכום שבועי: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "שבועות";
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "פרטי הכניסה שלך לאתר לא יאוחסנו. אנחנו משתמשים בהם כדי להתקין את Jetpack בלבד.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "הסיכום השבועי שלך מוכן, יש להקיש כאן כדי לעיין בפרטים!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "השיחה הזאת נוספה למעקב שלך. נשלח לך אימייל והודעה כאשר תתפרסם תגובה חדשה.";

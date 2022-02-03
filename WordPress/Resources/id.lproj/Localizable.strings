@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-21 12:20:03+0000 */
+/* Translation-Revision-Date: 2022-01-29 07:50:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -566,7 +566,7 @@ translators: Block name. %s: The localized block name */
 "Add menu item to children" = "Tambahkan item menu ke turunan";
 
 /* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
+"Add new media" = "Tambah media baru";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Tambahkan menu baru";
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "Selalu Kirim Log Crash";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "Kode eror HTTP %i.";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "Kode eror HTTP.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Diperlukan koneksi internet yang aktif";
@@ -767,7 +767,7 @@ translators: Block name. %s: The localized block name */
 "An error occurred." = "Terjadi error.";
 
 /* A failure reason for when the error that occured wasn't able to be determined. */
-"An unknown error occurred." = "An unknown error occurred.";
+"An unknown error occurred." = "Terjadi eror yang tidak diketahui.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Terjadi error yang tidak diketahui. Silakan coba lagi.";
@@ -1297,7 +1297,7 @@ translators: Block name. %s: The localized block name */
 "Change Password" = "Ganti Kata Sandi";
 
 /* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
+"Change Settings" = "Ubah Pengaturan";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "Ganti Situs";
@@ -1595,7 +1595,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "Komentar di";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "Komentar telah disetujui.";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Komentar diatur menjadi tertunda.";
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "Masukkan kata yang berbeda dengan yang di atas dan kami akan mencari alamat yang cocok dengan kata tersebut.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "Aktifkan mode edit untuk mengaktifkan fitur hapus banyak objek yang dipilih";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2879,7 +2879,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "Terjadi error saat mengirim email verifikasi. Periksa sambungan Anda dan coba lagi.";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "Eror saat proses menyetujui komentar.";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "Error mengatur komentar tertunda.";
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "Teruskan";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "Empat";
 
 /* Browse free themes selection title */
 "Free" = "Gratis";
@@ -3243,7 +3243,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "Keterangan galeri. %s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "Gaya galeri";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Berkebun";
@@ -3864,7 +3864,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "Nama Belakang";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "Minggu lalu Anda mendapatkan %1$d tampilan, %2$d komentar, dan %3$d suka.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Ringkasan Pos Terbaru";
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Navigasikan untuk menyesuaikan gradasi";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "Buka layar pemilihan tata letak";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4530,7 +4530,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Next Steps" = "Langkah Berikutnya";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
+"Next month" = "Bulan selanjutnya";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Pemberitahuan selanjutnya";
@@ -4631,7 +4631,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "Belum ada data";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "Tidak ada rentang tanggal dipilih";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Tidak ada ancaman yang telah diperbaiki";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "Satu";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Hanya lihat statistik yang paling relevan. Tambahkan wawasan untuk menyesuaikan dengan kebutuhan Anda.";
@@ -4918,7 +4918,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "Hanya tampilkan kutipan";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "Hanya tersedia foto-foto yang mana Anda diizinkan untuk mengaksesnya.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "Pratinjau situs baru Anda untuk mengetahui tampilan situs yang akan dilihat oleh pengunjung.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "Bulan sebelumnya ";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Pemberitahuan sebelumnya";
@@ -5806,7 +5806,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "Hapus Ikon Situs";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "Hapus Gambar Unggulan";
 
 /* No comment provided by engineer. */
 "Remove block" = "Hapus blok";
@@ -6267,7 +6267,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "Pilih Negara";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
+"Select More" = "Pilih Lainnya";
 
 /* Blog Picker's Title */
 "Select Site" = "Pilih Situs";
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "Media yang dipilih tidak tersedia.";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "Rentang dipilih: hanya %1$@";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "Pilih rentang: %1$@ ke %2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6398,7 +6398,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "Atur Induk";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "Jadikan Gambar Unggulan ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Atur sebagai Beranda";
@@ -6617,7 +6617,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "Bahasa Situs";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "Menu Situs";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Pengalihan Situs";
@@ -7225,10 +7225,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Tur mulai cepat akan memandu Anda dalam membuat situs dasar. Anda yakin ingin melewatinya? ";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "Serialisasi permintaan gagal.";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "Serialisasi respons gagal.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server memberi respon kosong. Biasanya ini berarti Anda perlu meningkatkan batas memori situs Anda.";
@@ -7331,7 +7331,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was a problem blocking posts from the specified site." = "Terjadi kesalahan saat memblokir pos dari situs yang telah ditentukan.";
 
 /* A general error message shown to the user when there was an API communication failure. */
-"There was a problem communicating with the site." = "There was a problem communicating with the site.";
+"There was a problem communicating with the site." = "Ada kendala saat berkomunikasi dengan situs.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "Ada masalah saat berusaha terhubung dengan WordPress.com. Silakan login lagi.";
@@ -7502,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "Ancaman diabaikan.";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "Tiga";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatur";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "Gambar mini tidak tersedia";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "Pengaturan Galeri Tampilan Kotak";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7665,7 +7665,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Trash" = "Buang";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
+"Trash selected media" = "Media terpilih di tempat sampah";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "Hapus halaman ini?";
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "Nama Pengguna Twitter";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "Dua";
 
 /* Type menu item in share extension. */
 "Type" = "Jenis";
@@ -7846,7 +7846,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "Tidak dapat memutar video";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Tidak dapat membaca situs WordPress pada URL tersebut. Ketuk 'Butuh bantuan lainnya?' untuk melihat Tanya-Jawab.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Tidak dapat memulihkan situs Anda";
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "Ringkasan Mingguan";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "Ringkasan Mingguan: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Minggu";
@@ -8899,7 +8899,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "Anda dapat berganti situs kapan saja.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "Anda dapat memperbaruinya kapan saja";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Kredensial situs web Anda tidak akan disimpan dan hanya akan digunakan untuk tujuan penginstalan Jetpack.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "Ringkasan mingguan Anda sudah tersedia, ketuk di sini untuk melihat rinciannya!";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Anda mengikuti percakapan ini. Anda akan menerima email dan notifikasi setiap kali ada komentar baru.";
