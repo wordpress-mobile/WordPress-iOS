@@ -21,8 +21,8 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        viewModel = BlogDashboardViewModel(viewController: self)
-        viewModel.applySnapshotForInitialData(collectionView)
+        viewModel = BlogDashboardViewModel(viewController: self, blog: blog!)
+        viewModel.start()
         addHeightObservers()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
