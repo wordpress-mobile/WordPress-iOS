@@ -7,7 +7,7 @@ class ReaderTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         readerScreen = try EditorFlow
             .goToMySiteScreen()
             .tabBar.goToReaderScreen()
