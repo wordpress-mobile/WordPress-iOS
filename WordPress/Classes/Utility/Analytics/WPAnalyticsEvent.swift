@@ -264,6 +264,7 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+    case notificationsMarkAllReadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -301,6 +302,9 @@ import Foundation
     case changeUsernameSearchPerformed
     case changeUsernameDisplayed
     case changeUsernameDismissed
+
+    // My Site Dashboard
+    case dashboardCardItemTapped
 
     /// A String that represents the event
     var value: String {
@@ -751,6 +755,8 @@ import Foundation
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
+        case .notificationsMarkAllReadTapped:
+            return "notifications_mark_all_read_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
@@ -807,6 +813,10 @@ import Foundation
             return "change_username_displayed"
         case .changeUsernameDismissed:
             return "change_username_dismissed"
+
+        // My Site Dashboard
+        case .dashboardCardItemTapped:
+            return "my_site_dashboard_card_item_tapped"
 
         } // END OF SWITCH
     }

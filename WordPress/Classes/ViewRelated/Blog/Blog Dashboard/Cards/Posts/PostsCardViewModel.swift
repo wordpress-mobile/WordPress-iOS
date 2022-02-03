@@ -7,6 +7,7 @@ protocol PostsCardView: AnyObject {
 
     func showLoading()
     func hideLoading()
+    func showError(message: String, retry: Bool)
 }
 
 /// Responsible for populating a table view with posts
@@ -52,6 +53,11 @@ class PostsCardViewModel: NSObject {
         }
     }
 
+    func retry() {
+        viewController?.showLoading()
+        sync()
+    }
+
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         viewController?.showLoading()
@@ -73,6 +79,10 @@ class PostsCardViewModel: NSObject {
 // MARK: - Private methods
 
 private extension PostsCardViewModel {
+    private var numberOfPosts: Int {
+        fetchedResultsController.fetchedObjects?.count ?? 0
+    }
+
     func createFetchedResultsController() {
         fetchedResultsController?.delegate = nil
         fetchedResultsController = nil
@@ -121,16 +131,35 @@ private extension PostsCardViewModel {
             ofType: .post,
             with: options,
             for: blog,
-            success: { _ in
-
-            }, failure: { (error: Error?) -> () in
-
+            success: { [weak self] _ in
+                if self?.numberOfPosts == 0 {
+                    self?.showEmptyPostsError()
+                }
+            }, failure: { [weak self] _ in
+                if self?.numberOfPosts == 0 {
+                    self?.showLoadingFailureError()
+                }
         })
+    }
+
+    func showEmptyPostsError() {
+        viewController?.hideLoading()
+        viewController?.showError(message: Strings.noPostsMessage, retry: false)
+    }
+
+    func showLoadingFailureError() {
+        viewController?.hideLoading()
+        viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 4
+    }
+
+    enum Strings {
+        static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
+        static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
     }
 }
 

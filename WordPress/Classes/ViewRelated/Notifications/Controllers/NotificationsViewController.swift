@@ -92,10 +92,33 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Notification Settings button
-    lazy var notificationSettingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
-        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
-        return button
+    private lazy var settingsBarButtonItem: UIBarButtonItem = {
+        let settingsButton = UIBarButtonItem(
+            image: .gridicon(.cog),
+            style: .plain,
+            target: self,
+            action: #selector(showNotificationSettings)
+        )
+        settingsButton.accessibilityLabel = NSLocalizedString(
+            "Notification Settings",
+            comment: "Link to Notification Settings section"
+        )
+        return settingsButton
+    }()
+
+    /// Mark All As Read button
+    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
+        let markButton = UIBarButtonItem(
+            image: .gridicon(.checkmark),
+            style: .plain,
+            target: self,
+            action: #selector(showMarkAllAsReadConfirmation)
+        )
+        markButton.accessibilityLabel = NSLocalizedString(
+            "Mark All As Read",
+            comment: "Marks all notifications under the filter as read"
+        )
+        return markButton
     }()
 
     // MARK: - View Lifecycle
@@ -152,6 +175,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
+        updateMarkAllAsReadButton()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -288,6 +312,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return
         }
 
+        // TODO: add check for CommentDetailViewController
         for case let detailVC as NotificationDetailsViewController in navigationControllers {
             if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
                 configureDetailsViewController(detailVC, withNote: note)
@@ -473,7 +498,16 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        navigationItem.rightBarButtonItem = shouldDisplaySettingsButton ? notificationSettingsButton : nil
+        var barItems: [UIBarButtonItem] = []
+        if shouldDisplaySettingsButton {
+            barItems.append(settingsBarButtonItem)
+        }
+
+        if FeatureFlag.markAllNotificationsAsRead.enabled {
+            barItems.append(markAllAsReadBarButtonItem)
+        }
+
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     @objc func closeNotificationSettings() {
@@ -536,7 +570,9 @@ private extension NotificationsViewController {
 
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = Filter.allFilters
+        filterTabBar.superview?.backgroundColor = .filterBarBackground
+
+        filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
@@ -688,7 +724,24 @@ extension NotificationsViewController {
         view.isUserInteractionEnabled = false
 
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            if FeatureFlag.notificationCommentDetails.enabled,
+               note.kind == .comment {
+                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
+
+                // For now, NotificationCommentDetailCoordinator only loads the Comment if it is cached.
+                // If the comment is not cached, fall back to showing the old comment view.
+                // This is temporary until NotificationCommentDetailCoordinator can fetch the comment from the endpoint.
+
+                if let commentDetailViewController = notificationCommentDetailCoordinator.viewController {
+                    commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+                    self.showDetailViewController(commentDetailViewController, sender: nil)
+                } else {
+                    // TODO: remove when NotificationCommentDetailCoordinator updated to fetch comment.
+                    self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+                }
+            } else {
+                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            }
             self.view.isUserInteractionEnabled = true
         }
     }
@@ -805,6 +858,17 @@ private extension NotificationsViewController {
 // MARK: - Marking as Read
 //
 private extension NotificationsViewController {
+    private enum Localization {
+        static let markAllAsReadNoticeSuccess = NSLocalizedString(
+            "Notifications marked as read",
+            comment: "Title for mark all as read success notice"
+        )
+
+        static let markAllAsReadNoticeFailure = NSLocalizedString(
+            "Failed marking Notifications as read",
+            comment: "Message for mark all as read success notice"
+        )
+    }
 
     func markSelectedNotificationAsRead() {
         guard let note = selectedNotification else {
@@ -822,12 +886,78 @@ private extension NotificationsViewController {
         NotificationSyncMediator()?.markAsRead(note)
     }
 
+    /// Marks all messages as read under the selected filter.
+    ///
+    @objc func markAllAsRead() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        WPAnalytics.track(.notificationsMarkAllReadTapped)
+
+        let unreadNotifications = notes.filter {
+            !$0.read
+        }
+
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+            let notice = Notice(
+                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
+            )
+            ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+            self?.updateMarkAllAsReadButton()
+        })
+    }
+
+    /// Presents a confirmation action sheet for mark all as read action.
+    @objc func showMarkAllAsReadConfirmation() {
+        let title: String
+
+        switch filter {
+        case .none:
+            title = NSLocalizedString(
+                "Mark all notifications as read?",
+                comment: "Confirmation title for marking all notifications as read."
+            )
+
+        default:
+            title = NSLocalizedString(
+                "Mark all %1$@ notifications as read?",
+                comment: "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
+            )
+        }
+
+        let cancelTitle = NSLocalizedString(
+            "Cancel",
+            comment: "Cancels the mark all as read action."
+        )
+        let markAllTitle = NSLocalizedString(
+            "OK",
+            comment: "Marks all notifications as read."
+        )
+
+        let alertController = UIAlertController(
+            title: String.localizedStringWithFormat(title, filter.confirmationMessageTitle),
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
+
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        alertController.addActionWithTitle(markAllTitle, style: .default) { [weak self] _ in
+            self?.markAllAsRead()
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
+
     func markAsUnread(note: Notification) {
         guard note.read else {
             return
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
+        updateMarkAllAsReadButton()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -836,6 +966,17 @@ private extension NotificationsViewController {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
+    }
+
+    func updateMarkAllAsReadButton() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        let isEnabled = notes.first { !$0.read } != nil
+
+        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
+        markAllAsReadBarButtonItem.isEnabled = isEnabled
     }
 }
 
@@ -909,6 +1050,7 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
+        updateMarkAllAsReadButton()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
@@ -1579,7 +1721,7 @@ private extension NotificationsViewController {
         }
     }
 
-    enum Filter: Int, FilterTabBarItem {
+    enum Filter: Int, FilterTabBarItem, CaseIterable {
         case none = 0
         case unread = 1
         case comment = 2
@@ -1613,6 +1755,16 @@ private extension NotificationsViewController {
             case .comment:  return "Comments"
             case .follow:   return "Follows"
             case .like:     return "Likes"
+            }
+        }
+
+        var confirmationMessageTitle: String {
+            switch self {
+            case .none:     return ""
+            case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
+            case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
+            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
 
@@ -1658,7 +1810,6 @@ private extension NotificationsViewController {
         }
 
         static let sortKey = "timestamp"
-        static let allFilters = [Filter.none, .unread, .comment, .follow, .like]
     }
 
     enum Settings {

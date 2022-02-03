@@ -17,6 +17,8 @@ class EditPostViewController: UIViewController {
     var insertedMedia: [Media]? = nil
     /// is editing a reblogged post
     var postIsReblogged = false
+    /// the entry point for the editor
+    var entryPoint: PostEditorEntryPoint = .unknown
 
     private let loadAutosaveRevision: Bool
 
@@ -139,6 +141,7 @@ class EditPostViewController: UIViewController {
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })
         editor.postIsReblogged = postIsReblogged
+        editor.entryPoint = entryPoint
         showEditor(editor)
     }
 

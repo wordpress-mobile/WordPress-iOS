@@ -11,6 +11,7 @@ import UIKit
 
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
+    private var errorView: DashboardCardInnerErrorView?
 
     private let status: BasePost.Status = .draft
 
@@ -31,6 +32,11 @@ import UIKit
         viewModel.viewDidLoad()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        hideSeparatorForGhostCells()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.dataSource = viewModel
@@ -49,6 +55,7 @@ private extension PostsCardViewController {
     func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
         view.pinSubviewToAllEdges(tableView)
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
@@ -56,7 +63,7 @@ private extension PostsCardViewController {
     }
 
     func configureGhostableTableView() {
-        let ghostableTableView = IntrinsicTableView()
+        let ghostableTableView = PostCardTableView()
 
         view.addSubview(ghostableTableView)
 
@@ -83,6 +90,11 @@ private extension PostsCardViewController {
         ghostableTableView?.removeFromSuperview()
     }
 
+    func hideSeparatorForGhostCells() {
+        ghostableTableView?.visibleCells
+            .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
+    }
+
     enum Constants {
         static let numberOfPosts = 3
     }
@@ -93,7 +105,10 @@ extension PostsCardViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = viewModel.postAt(indexPath)
 
-        PostListEditorPresenter.handle(post: post, in: self)
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: ["type": "post", "sub_type": status.rawValue])
+
+        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .dashboard)
     }
 }
 
@@ -105,7 +120,20 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func hideLoading() {
+        errorView?.removeFromSuperview()
         removeGhostableTableView()
+    }
+
+    func showError(message: String, retry: Bool) {
+        let errorView = DashboardCardInnerErrorView(message: message, canRetry: retry)
+        errorView.delegate = self
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(withFadeAnimation: errorView)
+        tableView.pinSubviewToSafeArea(errorView)
+        self.errorView = errorView
+
+        // Force the table view to recalculate its height
+        _ = tableView.intrinsicContentSize
     }
 }
 
@@ -123,6 +151,14 @@ extension PostsCardViewController: EditorAnalyticsProperties {
         }
 
         return properties
+    }
+}
+
+// MARK: - DashboardCardInnerErrorViewDelegate
+
+extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
+    func retry() {
+        viewModel.retry()
     }
 }
 

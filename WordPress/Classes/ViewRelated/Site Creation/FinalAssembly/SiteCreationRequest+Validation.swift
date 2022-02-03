@@ -8,7 +8,7 @@ extension SiteCreationRequest {
 
     // MARK: Unvalidated
 
-    /// Convenience initializer, which applies sensible defaults for language ID, client ID & client secret.
+    /// Convenience initializer, which applies sensible defaults for language ID, client ID, client secret and timezone.
     /// The request is marked as pending validation.
     ///
     /// - Parameters:
@@ -38,7 +38,8 @@ extension SiteCreationRequest {
                   languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
                   shouldValidate: true,
                   clientIdentifier: ApiCredentials.client,
-                  clientSecret: ApiCredentials.secret
+                  clientSecret: ApiCredentials.secret,
+                  timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier
         )
     }
 
@@ -59,7 +60,8 @@ extension SiteCreationRequest {
                   languageIdentifier: request.languageIdentifier,
                   shouldValidate: false,
                   clientIdentifier: request.clientIdentifier,
-                  clientSecret: request.clientSecret
+                  clientSecret: request.clientSecret,
+                  timezoneIdentifier: request.timezoneIdentifier
         )
     }
 }

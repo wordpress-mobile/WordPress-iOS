@@ -16,18 +16,25 @@ extension BlogDetailsViewController {
             self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
-            if let element = QuickStartTourElement(rawValue: QuickStartTourGuide.shared.currentElementInt()) {
-                self?.scroll(to: element)
-            }
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
                 case .noSuchElement:
-                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                    if FeatureFlag.mySiteDashboard.enabled,
+                       let parentVC = self?.parent as? MySiteViewController {
+                        parentVC.additionalSafeAreaInsets = .zero
+                    } else {
+                        self?.additionalSafeAreaInsets = .zero
+                    }
+
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view
                     self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                case .pages, .editHomepage, .sharing, .stats:
+                    self?.scroll(to: info)
                 case .viewSite:
+                    self?.scroll(to: info)
+
                     guard let self = self,
                         let navigationController = self.navigationController,
                         navigationController.visibleViewController != self else {

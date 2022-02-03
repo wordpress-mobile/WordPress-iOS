@@ -12,4 +12,3 @@ gem 'fastlane-plugin-wpmreleasetoolkit', '~> 2.3'
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
-gem 'fastlane-plugin-test_center'

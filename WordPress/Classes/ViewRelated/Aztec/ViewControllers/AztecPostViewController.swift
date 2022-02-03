@@ -69,6 +69,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
 
+    var entryPoint: PostEditorEntryPoint = .unknown {
+        didSet {
+            editorSession.entryPoint = entryPoint
+        }
+    }
+
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
