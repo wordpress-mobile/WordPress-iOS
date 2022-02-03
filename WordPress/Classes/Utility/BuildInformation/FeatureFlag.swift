@@ -66,7 +66,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .postDetailsComments:
             return true
         case .commentThreadModerationMenu:
-            return false
+            return true
         case .mySiteDashboard:
             return false
         case .markAllNotificationsAsRead:
