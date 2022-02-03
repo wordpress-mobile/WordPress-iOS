@@ -14,8 +14,11 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
-                webView.alpha = 0
-                webView.reload()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webView.alpha = 0
+                }, completion: { _ in
+                    self.webView.reload()
+                })
             }
             showLabel(device: selectedDevice)
         }
@@ -292,6 +295,8 @@ extension PreviewWebKitViewController {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.alpha = 1
+        UIView.animate(withDuration: 0.2) {
+            self.webView.alpha = 1
+        }
     }
 }

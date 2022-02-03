@@ -26,7 +26,11 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     internal var selectedPreviewDevice: PreviewDevice {
         didSet {
             if selectedPreviewDevice != oldValue {
-                webView.reload()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webView.alpha = 0
+                }, completion: { _ in
+                    self.webView.reload()
+                })
             }
         }
     }
@@ -87,6 +91,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     private func configureWebView() {
+        webView.alpha = 0
         guard let demoURL = URL(string: demoURL) else { return }
         let request = URLRequest(url: demoURL)
         webView.customUserAgent = WPUserAgent.wordPress()
@@ -164,6 +169,10 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        UIView.animate(withDuration: 0.2) {
+            self.webView.alpha = 1
+        }
+
         delegate?.previewLoaded()
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
