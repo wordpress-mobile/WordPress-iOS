@@ -327,13 +327,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
     
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        _tableView = [[IntrinsicTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
-        self.tableView.scrollEnabled = false;
-    } else {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
-    }
-
+    _tableView = [[IntrinsicTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
+    self.tableView.scrollEnabled = false;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
@@ -377,67 +372,33 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
 
-    [self configureBlogDetailHeader];
-    [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-        
-        [self.createButtonCoordinator addTo:parentVC.view
-                             trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
-                               bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
-    } else {
-        [self.createButtonCoordinator addTo:self.view
-                             trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor
-                               bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    }
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
     
+    [self.createButtonCoordinator addTo:parentVC.view
+                         trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
+                           bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
+
 }
 
-/// Resizes the `tableHeaderView` as necessary whenever its size changes.
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
     [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
-    
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        return;
-    }
-    
-    UIView *headerView = self.tableView.tableHeaderView;
-    
-    CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    if (headerView.frame.size.height != size.height) {
-        headerView.frame = CGRectMake(headerView.frame.origin.x, headerView.frame.origin.y, headerView.frame.size.width, size.height);
-        
-        self.tableView.tableHeaderView = headerView;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
 
     if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        
-        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-            parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-        } else {
-            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-        }
-        
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
     } else {
-        
-        if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-            MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-            parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        } else {
-            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        }
-        
+        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -1112,98 +1073,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
 }
 
-#pragma mark - Configuration
-
-- (void)configureBlogDetailHeader
-{
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        return;
-    }
-    
-    BlogDetailHeaderView *headerView = [self configureHeaderView];
-    headerView.delegate = self;
-
-    self.headerView = headerView;
-
-    self.tableView.tableHeaderView = headerView;
-    
-    [self.headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [NSLayoutConstraint activateConstraints:@[
-        [self.headerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.headerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
-    ]];
-}
-
-#pragma mark BlogDetailHeaderViewDelegate
-
-- (void)siteIconTapped
-{
-    if (![self siteIconShouldAllowDroppedImages]) {
-        // Gracefully ignore the tap for users that can not upload files or
-        // blogs that do not have capabilities since those will not support the REST API icon update
-        return;
-    }
-    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
-    
-    [NoticesDispatch lock];
-
-    if (![Feature enabled:FeatureFlagSiteIconCreator]) {
-        [self showUpdateSiteIconAlert];
-    }
-    
-    if (@available(iOS 14.0, *)) {
-        [self showSiteIconSelectionAlert];
-    } else {
-        [self showUpdateSiteIconAlert];
-    }
-}
-
-- (void)siteIconReceivedDroppedImage:(UIImage *)image
-{
-    if (![self siteIconShouldAllowDroppedImages]) {
-        // Gracefully ignore the drop for users that can not upload files or
-        // blogs that do not have capabilities since those will not support the REST API icon update
-        self.headerView.updatingIcon = NO;
-        return;
-    }
-    [self presentCropViewControllerForDroppedSiteIcon:image];
-}
-
-- (BOOL)siteIconShouldAllowDroppedImages
-{
-    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)siteTitleTapped
-{
-    [self showSiteTitleSettings];
-}
-
-- (void)siteSwitcherTapped
-{
-    BlogListViewController* blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
-    __weak __typeof(self) weakSelf = self;
-    blogListViewController.blogSelected = ^(BlogListViewController* blogListViewController, Blog *blog) {
-        [weakSelf switchToBlog:blog];
-        [blogListViewController dismissViewControllerAnimated:true completion:nil];
-    };
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:true completion:nil];
-
-    [WPAnalytics trackEvent:WPAnalyticsEventMySiteSiteSwitcherTapped];
-}
-
-- (void)visitSiteTapped
-{
-    [self showViewSiteFromSource:BlogDetailsNavigationSourceButton];
-}
-
 #pragma mark Site Switching
 
 - (void)switchToBlog:(Blog*)blog
@@ -1222,205 +1091,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
-}
-
-#pragma mark Site Icon Update Management
-
-- (void)showUpdateSiteIconAlert
-{
-    UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                       message:nil
-                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
-
-    updateIconAlertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
-    updateIconAlertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
-    updateIconAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-
-    [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
-                                                 handler:^(UIAlertAction *action) {
-                                                     [NoticesDispatch unlock];
-                                                     [self updateSiteIcon];
-                                                 }];
-    if (self.blog.hasIcon) {
-        [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
-                                                         handler:^(UIAlertAction *action) {
-                                                             [NoticesDispatch unlock];
-                                                             [self removeSiteIcon];
-                                                         }];
-    }
-    [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                handler:^(UIAlertAction *action) {
-                                                    [NoticesDispatch unlock];
-                                                    [self startAlertTimer];
-                                                }];
-
-    [self presentViewController:updateIconAlertController animated:YES completion:nil];
-}
-
-- (void)showSiteIconSelectionAlert
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                       message:nil
-                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
-
-    alertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
-    alertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
-    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-
-    [alertController setTitle:NSLocalizedString(@"Update Site Icon", @"Title for sheet displayed allowing user to update their site icon")];
-
-    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Choose Image From My Device", @"Button allowing the user to choose an image from their device to use as their site icon")
-                                       handler:^(UIAlertAction *action) {
-        [NoticesDispatch unlock];
-        [self updateSiteIcon];
-    }];
-
-    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Create With Emoji", @"Button allowing the user to create a site icon by choosing an emoji character")
-                                       handler:^(UIAlertAction *action) {
-        [NoticesDispatch unlock];
-        [self showEmojiPicker];
-    }];
-
-    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
-                                           handler:^(UIAlertAction *action) {
-        [NoticesDispatch unlock];
-        [self removeSiteIcon];
-    }];
-
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                      handler:^(UIAlertAction *action) {
-        [NoticesDispatch unlock];
-        [self startAlertTimer];
-    }];
-
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
-{
-    self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
-    self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
-    self.imageCropViewController.shouldShowCancelButton = YES;
-
-    __weak __typeof(self) weakSelf = self;
-    self.imageCropViewController.onCancel = ^(void) {
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        weakSelf.headerView.updatingIcon = NO;
-    };
-
-    self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        [weakSelf uploadDroppedSiteIcon:image onCompletion:^{
-            weakSelf.headerView.blavatarImageView.image = image;
-            weakSelf.headerView.updatingIcon = NO;
-        }];
-    };
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)uploadDroppedSiteIcon:(UIImage *)image onCompletion:(void(^)(void))completion
-{
-    if (self.blog.objectID == nil) {
-        return;
-    }
-
-    __weak __typeof(self) weakSelf = self;
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    NSProgress *mediaCreateProgress;
-    [mediaService createMediaWith:image blog:self.blog post:nil progress:&mediaCreateProgress thumbnailCallback:nil completion:^(Media *media, NSError *error) {
-        if (media == nil || error != nil) {
-            return;
-        }
-        NSProgress *uploadProgress;
-        [mediaService uploadMedia:media
-                   automatedRetry:false
-                         progress:&uploadProgress
-                          success:^{
-            [weakSelf updateBlogIconWithMedia:media];
-            completion();
-        } failure:^(NSError * _Nonnull error) {
-            [weakSelf showErrorForSiteIconUpdate];
-            completion();
-        }];
-    }];
-}
-
-- (void)updateSiteIcon
-{
-    self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
-    __weak __typeof(self) weakSelf = self;
-    self.siteIconPickerPresenter.onCompletion = ^(Media *media, NSError *error) {
-        if (error) {
-            [weakSelf showErrorForSiteIconUpdate];
-        } else if (media) {
-            [weakSelf updateBlogIconWithMedia:media];
-        } else {
-            // If no media and no error the picker was canceled
-            [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        }
-        weakSelf.siteIconPickerPresenter = nil;
-        [weakSelf startAlertTimer];
-    };
-    self.siteIconPickerPresenter.onIconSelection = ^() {
-        weakSelf.headerView.updatingIcon = YES;
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-    };
-    [self.siteIconPickerPresenter presentPickerFrom:self];
-}
-
-- (void)removeSiteIcon
-{
-    self.headerView.updatingIcon = YES;
-    self.blog.settings.iconMediaID = @0;
-    [self updateBlogSettingsAndRefreshIcon];
-    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
-}
-
-- (void)refreshSiteIcon
-{
-    [self.headerView refreshIconImage];
-}
-
-- (void)toggleSpotlightForSiteTitle
-{
-    [self.headerView toggleSpotlightOnSiteTitle];
-}
-
-- (void)toggleSpotlightOnHeaderView
-{
-    [self.headerView toggleSpotlightOnSiteTitle];
-    [self.headerView toggleSpotlightOnSiteIcon];
-}
-
-- (void)updateBlogIconWithMedia:(Media *)media
-{
-    [[QuickStartTourGuide shared] completeSiteIconTourForBlog:self.blog];
-
-    self.blog.settings.iconMediaID = media.mediaID;
-    [self updateBlogSettingsAndRefreshIcon];
-}
-
-- (void)updateBlogSettingsAndRefreshIcon
-{
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService updateSettingsForBlog:self.blog
-                               success:^{
-        [blogService syncBlog:self.blog
-                      success:^{
-            self.headerView.updatingIcon = NO;
-            [self.headerView refreshIconImage];
-        } failure:nil];
-     } failure:^(NSError *error){
-         [self showErrorForSiteIconUpdate];
-     }];
-}
-
-- (void)showErrorForSiteIconUpdate
-{
-    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Icon update failed", @"Message to show when site icon update failed")];
-    self.headerView.updatingIcon = NO;
 }
 
 #pragma mark - Table view data source
@@ -1717,18 +1387,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                
-                if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-                    parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                    [parentVC.scrollView scrollToView:cell animated:true];
-                } else {
-                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-                    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
-                }
-                
+                parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+                [parentVC.scrollView scrollToView:cell animated:true];
             }
             rowCount++;
         }
@@ -1934,9 +1596,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self presentViewController:navController
                        animated:YES
-                     completion:^(void) {
-        [self toggleSpotlightOnHeaderView];
-    }];
+                     completion:nil];
 
     QuickStartTourGuide *guide = [QuickStartTourGuide shared];
 
@@ -1948,12 +1608,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    } else {
-        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    }    
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
