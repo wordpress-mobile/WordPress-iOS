@@ -155,16 +155,16 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
         handleError(error)
     }
 
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        webView.evaluateJavaScript(selectedPreviewDevice.viewportScript)
+    }
+
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         handleError(error)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript(selectedPreviewDevice.viewportScript, completionHandler: { [weak self] (_, _) in
-            guard let self = self else { return }
-            self.delegate?.previewLoaded()
-        })
-
+        delegate?.previewLoaded()
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
     }
