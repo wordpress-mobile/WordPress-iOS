@@ -1,5 +1,6 @@
 19.2
 -----
+* [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
 * [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
 * [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
 * [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
@@ -10,7 +11,6 @@
 19.1
 -----
 * [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
-* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17758]
 * [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
 * [**] Accessibility: VoiceOver and Dynamic Type improvements on Activity Log and Schedule Post calendars [#17756, #17761, #17780]
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]

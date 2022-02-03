@@ -21,7 +21,7 @@ extension UIScrollView {
                                         height: safeAreaLayoutGuide.layoutFrame.height)
                 scrollRectToVisible(targetRect, animated: animated)
             } else {
-                scrollToBottom()
+                scrollToBottom(animated: true)
             }
 
             // This ensures scrolling to the correct position, especially when there are layout changes
@@ -32,10 +32,15 @@ extension UIScrollView {
         }
     }
 
-    @objc func scrollToBottom() {
+    @objc func scrollToTop(animated: Bool) {
+        let topOffset = CGPoint(x: 0, y: -adjustedContentInset.top)
+        setContentOffset(topOffset, animated: animated)
+    }
+
+    @objc func scrollToBottom(animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + adjustedContentInset.bottom)
         if bottomOffset.y > 0 {
-            setContentOffset(bottomOffset, animated: true)
+            setContentOffset(bottomOffset, animated: animated)
         }
     }
 

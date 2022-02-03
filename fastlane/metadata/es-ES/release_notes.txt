@@ -1,0 +1,25 @@
+Hemos resuelto un problema por el que los sitios autoalojados se bloqueaban al intentar cargar medios sin conexión a Internet. Un gran problema, pero una gran corrección.
+
+Hablando de medios, sabemos que podrías haberle dado a la aplicación un acceso limitado a tu biblioteca de medios. No es un gran problema, pero hemos añadido un aviso al selector de medios en caso de que quieras cambiar tus ajustes y permitir más acceso. El aviso viene incluso en tipo dinámico para facilitar la lectura.
+
+También hemos hecho que VoiceOver y Dynamic Type sean más precisos en los calendarios de registro de actividades y de entradas programadas. Nos complace informar que esto mejora la experiencia del usuario para las personas que necesitan una mejor accesibilidad visual.
+
+Grandes noticias para los comentarios: Ahora puedes seguir una conversación usando un botón en la cabecera de los comentarios y moderar los comentarios individuales a través de un menú desplegable.
+
+Hemos realizado algunas actualizaciones útiles en el editor de bloques.
+
+- Hemos resuelto un problema por el que los botones no se justificaban a la izquierda, a la derecha o al centro en el bloque de botones.
+- Hemos añadido la traducción de los ajustes de color en el bloque de cubierta.
+- Al seleccionar una imagen ya no se mostrará una miniatura de vídeo y viceversa.
+- Hemos ocultado el botón de ayuda en la parte inferior derecha del editor de bloques no compatibles para evitar confusiones.
+- Cuando uses diferentes colores de texto y fondo en los bloques de texto, recibirás un aviso si la combinación de colores puede dificultar la lectura a algunas personas.
+- Hemos solucionado un puñado de problemas de casos extremos al cambiar el color del texto no seleccionado.
+
+También hemos resuelto algunos problemas menores y caídas.
+
+- Los avisos del resumen semanal no siempre se mostraban para todos los usuarios, pero ahora sí.
+- La pantalla de selección del nombre de usuario ya no se carga dos veces.
+- Cuando conectes tu cuenta de Facebook a Publicize, ahora se iniciará la sesión correctamente.
+- Las imágenes con un símbolo de copyright en el nombre del archivo ahora se cargarán o aparecerán en la hoja de compartir correctamente.
+
+Por último, pero no menos importante, hemos mejorado los mensajes de error en la pantalla de acceso para las webs autoalojadas.

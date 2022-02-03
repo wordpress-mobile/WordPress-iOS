@@ -93,10 +93,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         get {
-            guard FeatureFlag.mySiteDashboard.enabled else {
-                return blogDetailsViewController?.blog
-            }
-
             return sitePickerViewController?.blog
         }
     }
@@ -164,35 +160,23 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func updateSegmentedControl(for blog: Blog) {
-        guard FeatureFlag.mySiteDashboard.enabled else {
-            return
-        }
-
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
     }
 
     private func setupView() {
         view.backgroundColor = .listBackground
     }
 
-    /// If the My Site Dashboard feature flag is enabled, then this method builds a layout with the following
-    /// view hierarchy:
+    /// This method builds a layout with the following view hierarchy:
     ///
     /// - Scroll view
     ///   - Stack view
     ///     - Segmented control container view
     ///       - Segmented control
     ///     - Child view controller
-    ///
-    /// Otherwise, if the My Site Dashboard feature flag is disabled, this method does nothing and the
-    /// child vc is added directly to the root view of the view controller in showBlogDetails.
     /// 
     private func setupConstraints() {
-        guard FeatureFlag.mySiteDashboard.enabled else {
-            return
-        }
-
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
         scrollView.addSubview(stackView)
@@ -527,13 +511,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        if FeatureFlag.mySiteDashboard.enabled {
-            embedChildInStackView(blogDetailsViewController)
-        } else {
-            add(blogDetailsViewController)
-            blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            view.pinSubviewToAllEdges(blogDetailsViewController.view)
-        }
+        embedChildInStackView(blogDetailsViewController)
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }
@@ -557,10 +535,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func addSitePickerIfNeeded(for blog: Blog) {
-        guard FeatureFlag.mySiteDashboard.enabled else {
-            return
-        }
-
         guard sitePickerViewController == nil else {
             return
         }
