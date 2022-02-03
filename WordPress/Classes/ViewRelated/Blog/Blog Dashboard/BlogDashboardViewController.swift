@@ -4,41 +4,14 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog?
 
-    enum Section: CaseIterable {
-        case quickLinks
-        case posts
-    }
+    private var viewModel: BlogDashboardViewModel!
 
-    // FIXME: temporary placeholder
-    private let quickLinks = ["Quick Links"]
-    private let posts = ["Posts"]
-
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
-    private lazy var collectionView: IntrinsicCollectionView = {
+    lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
-    }()
-
-    private lazy var dataSource: DataSource = {
-        return DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier in
-            switch identifier {
-            case self.quickLinks.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-                cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
-                return cell
-            case self.posts.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
-                cell?.configure(self, blog: self.blog!)
-                return cell
-            default:
-                break
-            }
-            return UICollectionViewCell()
-        }
     }()
 
     deinit {
@@ -48,7 +21,8 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        applySnapshotForInitialData()
+        viewModel = BlogDashboardViewModel(viewController: self)
+        viewModel.applySnapshotForInitialData(collectionView)
         addHeightObservers()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -63,14 +37,6 @@ final class BlogDashboardViewController: UIViewController {
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
-    }
-
-    private func applySnapshotForInitialData() {
-        var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(quickLinks, toSection: Section.quickLinks)
-        snapshot.appendItems(posts, toSection: Section.posts)
-        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     private func addHeightObservers() {
