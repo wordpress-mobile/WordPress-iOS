@@ -14,6 +14,10 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        UIActivityIndicatorView()
+    }()
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -27,6 +31,17 @@ final class BlogDashboardViewController: UIViewController {
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
         collectionView.layoutIfNeeded()
+    }
+
+    func showLoading() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewAtCenter(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+
+    func stopLoading() {
+        activityIndicatorView.stopAnimating()
     }
 
     private func setupCollectionView() {

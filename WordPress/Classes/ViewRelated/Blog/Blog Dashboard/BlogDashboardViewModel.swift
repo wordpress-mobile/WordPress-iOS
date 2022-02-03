@@ -58,9 +58,11 @@ class BlogDashboardViewModel {
 
     /// Call the API to return cards for the current blog
     func start() {
+        viewController?.showLoading()
         applySnapshotForInitialData()
 
         service.fetch(cards: ["posts", "todays_stats"], forBlogID: blog.dotComID as! Int, success: { [weak self] _ in
+            self?.viewController?.stopLoading()
             self?.applySnapshotWithMockedData()
         }, failure: { _ in
 
