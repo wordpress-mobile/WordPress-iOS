@@ -484,6 +484,8 @@ platform :ios do
   #####################################################################################
   desc 'Builds and uploads for distribution to App Store Connect'
   lane :build_and_upload_app_store_connect do |options|
+    UI.user_error! "Failing the build for test purpose. Beta param was: #{options[:beta_release]}"
+
     ios_build_prechecks(
       skip_confirm: options[:skip_confirm],
       internal: options[:beta_release],
