@@ -1,0 +1,18 @@
+Vous n’avez donné à l’application qu’un accès limité à votre bibliothèque de médias ? Ce n’est pas grand-chose, mais nous avons ajouté une invite vers le sélecteur de média au cas où vous souhaiteriez modifier vos réglages et accroître l’accès. L’invite se décline même au format de saisie dynamique pour faciliter la lecture.
+
+Nous avons également affûté la précision de VoiceOver et de la saisie dynamique dans le journal d’activité et le calendrier de planification des articles. Nous sommes heureux d’annoncer que cette évolution améliore l’expérience utilisateur pour les personnes qui nécessitent une meilleure accessibilité visuelle.
+
+Nous avons apporté quelques modifications utiles à l’éditeur de blocs.
+
+- Nous avons résolu un problème qui entravait la justification des boutons à gauche, à droite ou au centre dans le bloc de boutons.
+- Nous avons intégré des traductions pour les réglages de couleurs dans les blocs Bannière.
+- Lors de la sélection d’une image, vous ne verrez plus s’afficher de miniature vidéo, et vice versa.
+- Nous avons masqué le bouton « aide » en bas à droite de l’éditeur de blocs non pris en charge pour éviter toute confusion.
+- Lors de l’utilisation de différentes couleurs de texte et d’arrière-plan dans les blocs paragraphes, vous serez alerté si la combinaison de couleurs choisie risque de nuire à la bonne lisibilité du contenu.
+- Nous avons corrigé plusieurs problèmes de cas limites lors du changement de couleur d’un texte non sélectionné.
+
+Nous avons également résolu de plus petits problèmes et incidents.
+
+- Des notifications de résumé hebdomadaire s’affichent désormais pour vous tenir plus facilement au courant des dernières actualités.
+- La connexion de votre compte Facebook à Publicize se déroulera désormais sans encombre.
+- Les images disposant d’un symbole copyright dans leur nom de fichier se chargeront ou s’afficheront désormais correctement dans la feuille de partage.

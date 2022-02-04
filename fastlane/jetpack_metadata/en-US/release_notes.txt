@@ -2,8 +2,6 @@ Only gave the app limited access to your media library? No big deal, but we adde
 
 We also made VoiceOver and Dynamic Type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
 
-Speaking of better user experience, you can now moderate individual comments on a post through a drop-down menu.
-
 We made some useful updates to the Block Editor.
 
 - We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
