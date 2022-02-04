@@ -776,12 +776,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_beta_build do |options|
-    buildkite_trigger_build(
-      buildkite_organization: 'automattic',
-      buildkite_pipeline: 'wordpress-ios',
-      branch: options[:branch_to_build],
-      pipeline_file: 'release-builds.yml'
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build])
   end
 
   #####################################################################################
@@ -794,12 +789,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_release_build do |options|
-    buildkite_trigger_build(
-      buildkite_organization: 'automattic',
-      buildkite_pipeline: 'wordpress-ios',
-      branch: options[:branch_to_build],
-      pipeline_file: 'release-builds.yml'
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build])
   end
 
   ########################################################################
@@ -976,6 +966,15 @@ def generate_installable_build_number
 
     return "#{branch}-#{commit}"
   end
+end
+
+def trigger_buildkite_release_build(branch:)
+  buildkite_trigger_build(
+    buildkite_organization: 'automattic',
+    buildkite_pipeline: 'wordpress-ios',
+    branch: branch,
+    pipeline_file: 'release-builds.yml'
+  )
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also
