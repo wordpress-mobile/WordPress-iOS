@@ -2,11 +2,13 @@
 -----
 * [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
 * [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
+* [***] Block editor: Font size and line-height support for text-based blocks used in block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4519]
 * [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
 * [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
 * [**] People: you can now manage Email Followers on the People section! [#17854]
 * [*] Stats: fix navigation between Stats tab. [#17856]
 * [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855] 
+* [*] Stats: can now add insights card from navigation bar [#17867]
 
 19.1
 -----
