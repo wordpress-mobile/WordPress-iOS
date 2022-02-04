@@ -2,9 +2,11 @@ import UIKit
 
 final class BlogDashboardViewController: UIViewController {
 
-    var blog: Blog?
+    var blog: Blog
 
-    private var viewModel: BlogDashboardViewModel!
+    private lazy var viewModel: BlogDashboardViewModel = {
+        BlogDashboardViewModel(viewController: self, blog: blog)
+    }()
 
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
@@ -18,6 +20,15 @@ final class BlogDashboardViewController: UIViewController {
         UIActivityIndicatorView()
     }()
 
+    init(blog: Blog) {
+        self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -25,7 +36,6 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        viewModel = BlogDashboardViewModel(viewController: self, blog: blog!)
         viewModel.start()
         addHeightObservers()
 
