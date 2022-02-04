@@ -376,7 +376,8 @@ private extension StatsTotalRow {
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
-        if let statSection = rowData?.statSection {
+        if let statSection = rowData?.statSection,
+               statSection != .insightsAddInsight {
             captureAnalyticsEventsFor(statSection)
         }
 

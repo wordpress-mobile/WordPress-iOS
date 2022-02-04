@@ -74,7 +74,7 @@ class SiteStatsDashboardViewController: UIViewController {
                 image: .gridicon(.cog),
                 style: .plain,
                 target: self,
-                action: #selector(addStatsCardButtonTapped))
+                action: #selector(manageInsightsButtonTapped))
         button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
         return button
     }()
@@ -95,7 +95,7 @@ class SiteStatsDashboardViewController: UIViewController {
         parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
     }
 
-    @objc func addStatsCardButtonTapped() {
+    @objc func manageInsightsButtonTapped() {
         insightsTableViewController.showAddInsightView(source: "nav_bar")
     }
 
