@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-02 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-02-03 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -709,7 +709,7 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "クラッシュログを常に送信";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "HTTP エラーコード%iが返されました。";
+"An HTTP error code %i was returned." = "HTTP エラーコード %i が返されました。";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "HTTP エラーコードが返されました。";
@@ -6267,7 +6267,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "国名を選択";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "もっと選択";
+"Select More" = "さらに選択";
 
 /* Blog Picker's Title */
 "Select Site" = "サイトを選択";
@@ -6333,10 +6333,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "選択したメディアがありません。";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "選択した範囲: %1$@ のみ";
+"Selected range: %1$@ only" = "選択した範囲: %1$@のみ";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "選択した範囲: %1$@ 〜 %2$@";
+"Selected range: %1$@ to %2$@" = "選択した範囲: %1$@〜%2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
