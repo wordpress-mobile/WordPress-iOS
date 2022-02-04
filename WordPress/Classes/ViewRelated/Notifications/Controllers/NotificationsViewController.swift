@@ -743,9 +743,9 @@ extension NotificationsViewController {
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
                     self.view.isUserInteractionEnabled = true
-
-                    return
                 }
+
+                return
             }
 
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
