@@ -468,26 +468,6 @@ platform :ios do
   end
 
   #####################################################################################
-  # build_and_upload_stable_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds a stable release of the app and optionally uploads
-  # it for distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>]
-  #   [create_gh_release:<create release on GH>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_stable_release
-  # bundle exec fastlane build_and_upload_stable_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_stable_release create_gh_release:true
-  #####################################################################################
-  desc 'Builds and uploads a stable release for distribution'
-  lane :build_and_upload_stable_release do |options|
-    build_and_upload_app_store_connect(options)
-  end
-
-  #####################################################################################
   # build_and_upload_app_store_connect
   # -----------------------------------------------------------------------------------
   # This lane builds the app and uploads it for App Store Connect
