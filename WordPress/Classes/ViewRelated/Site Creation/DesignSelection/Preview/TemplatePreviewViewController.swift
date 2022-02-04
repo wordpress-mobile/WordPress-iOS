@@ -29,6 +29,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
                 UIView.animate(withDuration: 0.2, animations: {
                     self.webView.alpha = 0
                 }, completion: { _ in
+                    self.progressBar.animatableSetIsHidden(false)
                     self.webView.reload()
                 })
             }
@@ -145,7 +146,6 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         configureAndDisplayNoResults(on: webView,
                                      title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
-        removeProgressObserver()
     }
 }
 
@@ -175,7 +175,6 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
 
         delegate?.previewLoaded()
         progressBar.animatableSetIsHidden(true)
-        removeProgressObserver()
     }
 }
 
