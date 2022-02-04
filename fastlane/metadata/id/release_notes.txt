@@ -1,0 +1,25 @@
+Kami memperbaiki masalah situs yang dihosting sendiri akan tidak berfungsi saat mengunggah media tanpa koneksi Internet.
+
+Berbicara tentang media, kami tahu Anda mungkin telah memberikan akses terbatas ke pustaka media pada aplikasi. Hal itu bukan masalah besar, kami telah menambahkan opsi ke pemilih media jika Anda ingin mengubah pengaturan dan mengizinkan akses lebih banyak. Pemberitahuan tersedia dalam Dynamic Type agar mudah dibaca.
+
+Kami juga membuat VoiceOver dan Dynamic Type lebih akurat pada Log Aktivitas dan kalender Jadwal Posting. Kami yakin hal ini meningkatkan pengalaman pengguna bagi orang-orang yang membutuhkan aksesibilitas visual yang lebih baik.               
+
+Kabar baik mengenai Komentar: Anda sekarang dapat mengikuti percakapan menggunakan tombol di header Komentar.       
+
+Kami menambahkan beberapa pembaruan yang berguna untuk Editor Blok.      
+
+- Kami memecahkan masalah di mana tombol tidak dapat rata kiri, kanan, atau tengah di blok Tombol.
+- Kami menambahkan terjemahan untuk pengaturan warna di blok Sampul.
+- Memilih gambar tidak akan lagi menampilkan gambar thumbnail video, dan sebaliknya.
+- Kami menyembunyikan tombol bantuan di kanan bawah editor blok yang tidak didukung untuk menghindari kebingungan.
+- Saat Anda menggunakan teks dan warna latar belakang yang berbeda dalam blok teks, Anda akan mendapatkan pemberitahuan jika kombinasi warna sulit dibaca.
+- Kami memperbaiki beberapa masalah saat mengubah warna teks yang tidak dipilih.  
+
+Kami juga memecahkan beberapa masalah kecil.       
+
+- Kumpulan notifikasi mingguan sebelumnya tidak pernah ditampilkan untuk semua pengguna, tetapi sekarang ditampilkan.
+- Layar pemilihan nama pengguna tidak lagi dimuat dua kali.
+- Anda sekarang dapat login saat Anda menghubungkan akun Facebook Anda ke fitur Publikasikan.
+- Gambar dengan simbol hak cipta dalam nama berkas sekarang akan diunggah atau muncul di Lembar Bagikan dengan benar.        
+
+Terakhir, tetapi tidak kalah penting, kami memperbarui pesan eror pada layar login untuk situs web yang dihosting sendiri.
