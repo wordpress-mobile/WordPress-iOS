@@ -57,6 +57,9 @@ before_all do |lane|
   # Ensure we use the latest version of the toolkit
   check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
 
+  # Fixes weird Keychain bugs
+  setup_ci
+
   # Check that the env files exist
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
