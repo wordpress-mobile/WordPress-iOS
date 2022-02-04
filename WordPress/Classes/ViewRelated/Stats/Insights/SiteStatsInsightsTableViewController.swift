@@ -561,6 +561,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
         updateView()
+        scrollToNewCard()
     }
 
     func addInsightDismissed() {
@@ -570,6 +571,14 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         updateView()
         viewNeedsUpdating = false
+    }
+
+    func scrollToNewCard() {
+        let lastSection = max(tableView.numberOfSections - 1, 0)
+
+        // newly added card will be penultimate row
+        let idxNewCardRow = max(tableView.numberOfRows(inSection: lastSection) - 2, 0)
+        tableView.scrollToRow(at: IndexPath(row: idxNewCardRow, section: lastSection), at: .bottom, animated: true)
     }
 
     func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
