@@ -776,7 +776,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_beta_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch_to_build])
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: true)
   end
 
   #####################################################################################
@@ -789,7 +789,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_release_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch_to_build])
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 
   ########################################################################
@@ -968,11 +968,12 @@ def generate_installable_build_number
   end
 end
 
-def trigger_buildkite_release_build(branch:)
+def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
     buildkite_organization: 'automattic',
     buildkite_pipeline: 'wordpress-ios',
     branch: branch,
+    environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml'
   )
 end
