@@ -73,6 +73,8 @@ class BlogDashboardViewModel {
 // MARK: - Private methods
 
 private extension BlogDashboardViewModel {
+    // This is necessary when using an IntrinsicCollectionView
+    // Otherwise, the collection view will never update its height
     func applySnapshotForInitialData() {
         let snapshot = Snapshot()
         dataSource?.apply(snapshot, animatingDifferences: false)
