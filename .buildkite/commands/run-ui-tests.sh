@@ -35,5 +35,5 @@ set -e
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
 
-echo "--- 🚦 Report Tests Exit Status
+echo "--- 🚦 Report Tests Exit Status"
 exit $TESTS_EXIT_STATUS
