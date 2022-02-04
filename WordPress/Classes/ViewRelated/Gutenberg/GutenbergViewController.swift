@@ -6,7 +6,6 @@ import WordPressFlux
 import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
-
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -15,6 +14,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case more
         case switchBlog
         case autoSave
+        case continueFromHomepageEditing
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
@@ -67,6 +67,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         get {
             return post.postTitle ?? ""
+        }
+    }
+
+    var entryPoint: PostEditorEntryPoint = .unknown {
+        didSet {
+            editorSession.entryPoint = entryPoint
         }
     }
 
@@ -223,7 +229,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     ///
     var loadAutosaveRevision: Bool
 
-    let navigationBarManager = PostEditorNavigationBarManager()
+    let navigationBarManager: PostEditorNavigationBarManager
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
@@ -299,11 +305,17 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }()
 
     // MARK: - Initializers
+    required convenience init(post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorCallback, editorSession: PostEditorAnalyticsSession?) {
+        self.init(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor, editorSession: editorSession)
+    }
+
     required init(
         post: AbstractPost,
         loadAutosaveRevision: Bool = false,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
-        editorSession: PostEditorAnalyticsSession? = nil) {
+        replaceEditor: @escaping ReplaceEditorCallback,
+        editorSession: PostEditorAnalyticsSession? = nil,
+        navigationBarManager: PostEditorNavigationBarManager? = nil
+    ) {
 
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
@@ -311,13 +323,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         super.init(nibName: nil, bundle: nil)
 
         addObservers(toPost: post)
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
-        navigationBarManager.delegate = self
+        self.navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -697,7 +710,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
         }
 
-        if presentedViewController != nil {
+        if let viewController = presentedViewController, !viewController.isBeingDismissed {
             dismiss(animated: false, completion: presentAlert)
         } else {
             presentAlert()
@@ -705,16 +718,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
-        let alertController = UIAlertController(title: NSLocalizedString("Featured Image Already Set", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
-                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+        let alertController = UIAlertController(title: NSLocalizedString("Replace current featured image?", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep current", comment: "Button to cancel the replacement of a featured image."))
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = view.bounds
@@ -882,8 +895,17 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 blogPickerWasPressed()
             case .autoSave:
                 break
+                // Inelegant :(
+            case .continueFromHomepageEditing:
+                continueFromHomepageEditing()
+                break
             }
         }
+    }
+
+    // Not ideal, but seems the least bad of the alternatives
+    @objc func continueFromHomepageEditing() {
+        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {

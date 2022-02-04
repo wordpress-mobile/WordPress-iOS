@@ -228,23 +228,29 @@ extension SiteAssemblyWizardContent: NetworkStatusDelegate {
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
 
-        guard let blog = createdBlog else {
+        guard let blog = createdBlog, let navigationController = navigationController else {
             return
         }
 
-        if let onDismiss = onDismiss {
-            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = onDismiss
-            navigationController?.pushViewController(quickstartPrompt, animated: true)
-            return
-        }
+        LandInTheEditorHelper.landInTheEditorOrContinue(for: blog, navigationController: navigationController) { [weak self] in
 
-        dismissTapped(viaDone: true) { [blog, weak self] in
-            SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
-            WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+            guard let self = self else {
+                return
+            }
 
-            self?.showQuickStartPrompt(for: blog)
+            if let onDismiss = self.onDismiss {
+                let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+                quickstartPrompt.onDismiss = onDismiss
+                navigationController.pushViewController(quickstartPrompt, animated: true)
+                return
+            }
+
+            self.dismissTapped(viaDone: true) { [blog, weak self] in
+                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                self?.showQuickStartPrompt(for: blog)
+            }
         }
     }
 

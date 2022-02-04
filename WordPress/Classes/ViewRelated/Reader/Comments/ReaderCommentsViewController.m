@@ -144,6 +144,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor murielBasicBackground];
+    self.commentModified = NO;
 
     [self checkIfLoggedIn];
 
@@ -195,6 +196,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewWillDisappear:animated];
     [self dismissNotice];
+    
+    if (self.commentModified) {
+        // Don't post the notification until the view is being dismissed to avoid purging cached comments prematurely.
+        [self postCommentModifiedNotification];
+    }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
@@ -933,6 +939,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
+- (void)refreshAfterCommentModeration
+{
+    [self.tableViewHandler refreshTableView];
+    [self refreshNoResultsView];
+}
+
 - (void)updateTableViewForAttachments
 {
     [self.tableView performBatchUpdates:nil completion:nil];
@@ -1199,9 +1211,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return nil;
     }
 
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", self.post];
+    // Moderated comments could still be cached, so filter out non-approved comments.
+    NSString *approvedStatus = [Comment descriptionFor:CommentStatusTypeApproved];
 
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND status = %@", self.post, approvedStatus];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"hierarchy" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
@@ -1225,12 +1239,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    // The user may have moderated a comment, but it is not removed from the post yet.
-    // So check the status to be sure only Approved comments are displayed.
-    if (![comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]]) {
-        return;
-    }
-    
     if ([self newCommentThreadEnabled]) {
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
@@ -1289,8 +1297,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:commentURL];
         };
     }
-
-
 
     NSAttributedString *attrStr = [self cacheContentForComment:comment];
     [cell configureCellWithComment:comment attributedString:attrStr];

@@ -7,6 +7,10 @@ import WordPressAuthenticator
 //
 class LoginEpilogueTableViewController: UITableViewController {
 
+    /// Currently selected cell
+    ///
+    private(set) weak var selectedCell: LoginEpilogueBlogCell?
+
     /// TableView's Datasource
     ///
     private let blogDataSource = BlogListDataSource()
@@ -185,13 +189,14 @@ extension LoginEpilogueTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let parent = parent as? LoginEpilogueViewController,
-              tableView.cellForRow(at: indexPath) is LoginEpilogueBlogCell else {
+              let cell = tableView.cellForRow(at: indexPath) as? LoginEpilogueBlogCell else {
             return
         }
 
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let blog = blogDataSource.blog(at: wrappedPath)
 
+        selectedCell = cell
         parent.blogSelected(blog)
     }
 
