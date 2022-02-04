@@ -11,7 +11,7 @@
 * [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
 * [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]
 * [*] Site creation: The checkbox that appears when choosing a design no longer flickers when toggled. [#17868]
-* [*] Site previews: Reduced visual flickering when previewing sites. [#17861]
+* [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
 
 19.1
 -----
