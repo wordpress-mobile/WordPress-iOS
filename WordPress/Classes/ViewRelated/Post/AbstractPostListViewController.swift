@@ -1061,6 +1061,14 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
+    @objc func copyPostLink(_ apost: AbstractPost) {
+        let pasteboard = UIPasteboard.general
+        guard let link = apost.permaLink else { return }
+        pasteboard.string = link as String
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+        self.showToast(message: noticeTitle, font: .systemFont(ofSize: 12.0))
+    }
+
     @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         assert(false, "You should implement this method in the subclass")
     }

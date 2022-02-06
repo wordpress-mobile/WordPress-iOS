@@ -1833,6 +1833,10 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Sürümü bu uygulamadan kopyala";
 
+/* Label for page copy link option. Tapping copies of the page URL to clipboard.
+   Label for post copy link option. Tapping copies of the post URL to clipboard. */
+"Copy Link" = "Bağlantıyı kopyala";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Daha iyi olabilir";
 

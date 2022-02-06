@@ -759,6 +759,8 @@
 		40F50B80221310D400CBBB73 /* FollowersStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F50B7F221310D400CBBB73 /* FollowersStatsRecordValueTests.swift */; };
 		40F50B82221310F000CBBB73 /* StatsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F50B81221310F000CBBB73 /* StatsTestCase.swift */; };
 		40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FC6B7E2072E3EB00B9A1CD /* ActivityDetailViewController.swift */; };
+		41BB9B4527B05FC600BAA673 /* UIViewController+ToastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB9B4427B05FC600BAA673 /* UIViewController+ToastMessage.swift */; };
+		41BB9B4627B05FC600BAA673 /* UIViewController+ToastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB9B4427B05FC600BAA673 /* UIViewController+ToastMessage.swift */; };
 		430693741DD25F31009398A2 /* PostPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430693731DD25F31009398A2 /* PostPost.storyboard */; };
 		430D50BE212B7AAE008F15F4 /* NoticeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D50BD212B7AAE008F15F4 /* NoticeStyle.swift */; };
 		43134379217954F100DA2176 /* QuickStartSkipAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43134378217954F100DA2176 /* QuickStartSkipAllCell.xib */; };
@@ -5350,6 +5352,7 @@
 		40F50B81221310F000CBBB73 /* StatsTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTestCase.swift; sourceTree = "<group>"; };
 		40FC6B7E2072E3EB00B9A1CD /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
 		41341F0000A9A65A3326F2EC /* Pods-WordPressAllTimeWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAllTimeWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAllTimeWidget/Pods-WordPressAllTimeWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
+		41BB9B4427B05FC600BAA673 /* UIViewController+ToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToastMessage.swift"; sourceTree = "<group>"; };
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
 		430D50BD212B7AAE008F15F4 /* NoticeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStyle.swift; sourceTree = "<group>"; };
 		43134378217954F100DA2176 /* QuickStartSkipAllCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartSkipAllCell.xib; sourceTree = "<group>"; };
@@ -12717,6 +12720,7 @@
 				FE02F95E269DC14A00752A44 /* Comment+Interface.swift */,
 				C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */,
 				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
+				41BB9B4427B05FC600BAA673 /* UIViewController+ToastMessage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -18004,6 +18008,7 @@
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
+				41BB9B4527B05FC600BAA673 /* UIViewController+ToastMessage.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
@@ -20575,6 +20580,7 @@
 				FABB255D2602FC2C00C8785C /* AbstractPost.swift in Sources */,
 				171713A0265FE59700F3A022 /* ButtonStyles.swift in Sources */,
 				FABB255E2602FC2C00C8785C /* WhatIsNewScenePresenter.swift in Sources */,
+				41BB9B4627B05FC600BAA673 /* UIViewController+ToastMessage.swift in Sources */,
 				FABB255F2602FC2C00C8785C /* CalendarViewController.swift in Sources */,
 				FABB25602602FC2C00C8785C /* GutenbergViewController+Localization.swift in Sources */,
 				FABB25612602FC2C00C8785C /* MarkAsSpam.swift in Sources */,
