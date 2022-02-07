@@ -78,15 +78,23 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
-            return self.createQuickLinksSection()
+            guard let section = BlogDashboardViewModel.Section(rawValue: sectionIndex) else {
+                return nil
+            }
+
+            switch section {
+            case .quickLinks:
+                return nil
+            case .posts:
+                return self.createPostsSection()
+            }
         }
-        return layout
     }
 
-    private func createQuickLinksSection() -> NSCollectionLayoutSection {
+    private func createPostsSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
