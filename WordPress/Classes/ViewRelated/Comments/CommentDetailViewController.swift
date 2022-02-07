@@ -230,7 +230,6 @@ class CommentDetailViewController: UIViewController {
         configureReplyView()
         setupKeyboardManager()
         configureSuggestionsView()
-        configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
