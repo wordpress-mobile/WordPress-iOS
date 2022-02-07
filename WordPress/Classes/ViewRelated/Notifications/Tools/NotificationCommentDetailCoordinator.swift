@@ -9,7 +9,9 @@ class NotificationCommentDetailCoordinator: NSObject {
     private let notification: Notification
     private var comment: Comment?
     private let managedObjectContext = ContextManager.shared.mainContext
-    private(set) var viewController: CommentDetailViewController?
+    private var viewController: CommentDetailViewController?
+    private var commentID: NSNumber?
+    private var blog: Blog?
 
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
@@ -19,8 +21,34 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     init(notification: Notification) {
         self.notification = notification
+        commentID = notification.metaCommentID
+
+        if let siteID = notification.metaSiteID {
+            blog = Blog.lookup(withID: siteID, in: managedObjectContext)
+        }
+
         super.init()
-        loadCommentFromCache()
+    }
+
+    // MARK: - Public Methods
+
+    func createViewController(completion: @escaping (CommentDetailViewController?) -> Void) {
+        if let comment = loadCommentFromCache() {
+            createViewController(comment: comment)
+            completion(viewController)
+            return
+        }
+
+        fetchComment(completion: { comment in
+            guard let comment = comment else {
+                // TODO: show error view
+                completion(nil)
+                return
+            }
+
+            self.createViewController(comment: comment)
+            completion(self.viewController)
+        })
     }
 
 }
@@ -29,15 +57,36 @@ class NotificationCommentDetailCoordinator: NSObject {
 
 private extension NotificationCommentDetailCoordinator {
 
-    func loadCommentFromCache() {
-        guard let siteID = notification.metaSiteID,
-              let commentID = notification.metaCommentID,
-              let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
-              let comment = commentService.findComment(withID: commentID, in: blog) else {
-                  DDLogError("Notification Comment: failed loading comment from cache.")
+    func loadCommentFromCache() -> Comment? {
+        guard let commentID = commentID,
+              let blog = blog else {
+                  DDLogError("Notification Comment: unable to load comment due to missing information.")
+                  // TODO: show error view
+                  return nil
+              }
+
+        return commentService.findComment(withID: commentID, in: blog)
+    }
+
+    func fetchComment(completion: @escaping (Comment?) -> Void) {
+        guard let commentID = commentID,
+              let blog = blog else {
+                  DDLogError("Notification Comment: unable to fetch comment due to missing information.")
+                  // TODO: show error view
+                  completion(nil)
                   return
               }
 
+        // TODO: show loading view
+
+        commentService.loadComment(withID: commentID, for: blog, success: { comment in
+            completion(comment)
+        }, failure: { error in
+            // TODO: show error view
+        })
+    }
+
+    func createViewController(comment: Comment) {
         self.comment = comment
         viewController = CommentDetailViewController(comment: comment,
                                                      notification: notification,
