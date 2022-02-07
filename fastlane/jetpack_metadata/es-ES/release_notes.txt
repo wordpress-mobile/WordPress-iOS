@@ -1,0 +1,18 @@
+¿Quieres que la aplicación solo tenga acceso limitado a tu biblioteca de medios? Ningún problema. Aunque hemos añadido un mensaje en el selector de medios por si decides cambiar los ajustes y permitir más acceso. Además, el mensaje viene en "Dynamic Type" para facilitar la lectura.
+
+También hemos conseguido que las tecnologías de "VoiceOver" y "Dynamic Type" sean más precisas en los calendarios de programación de entradas y registro de actividad. Nos complace comunicarte que esta acción mejora la experiencia de usuario para todos los que necesitan una mejor accesibilidad visual.
+
+Hemos realizado algunas actualizaciones útiles en el editor de bloques.
+
+- Hemos corregido un problema por el que los botones no se justificaban a la izquierda, derecha o centro en el bloque de botón.
+- Hemos añadido la traducción de los ajustes de color en los bloques de fondo.
+- Al seleccionar una imagen ya no se mostrará una miniatura de video (ni a la inversa).
+- Hemos ocultado el botón de ayuda que aparecía en la parte inferior derecha del editor de bloque no compatible para evitar confusiones.
+- Cuando utilices diferentes colores de texto y fondo en los bloques de texto, recibirás una notificación si la combinación de colores puede dificultar la lectura para algunos usuarios.
+- Hemos corregido algunos problemas de situaciones limítrofes que se producían al cambiar el color del texto no seleccionado.
+
+También hemos corregido algunos problemas y errores de menor importancia.
+
+- Ahora, aparecen notificaciones de resúmenes semanales, lo que te permite estar al día de las últimas noticias.
+- Actualmente, cuando conectes tu cuenta de Facebook para Difundir, se iniciará sesión correctamente.
+- Además, las imágenes con un símbolo de copyright en el nombre del archivo se cargarán o aparecerán de forma debida en Compartir Hoja de cálculo.

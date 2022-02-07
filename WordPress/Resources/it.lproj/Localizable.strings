@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-02 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-02-03 18:08:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "Inoltra";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "Quattro";
 
 /* Browse free themes selection title */
 "Free" = "Gratuito";
@@ -4530,7 +4530,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Next Steps" = "Passi successivi";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
+"Next month" = "Mese successivo";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Prossima notifica";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Una volta creato un sito WordPress.com, puoi ripubblicare il contenuto che ti piace sul tuo sito.";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "Uno";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Vedi solo le statistiche più pertinenti. Aggiungi la panoramica secondo le tue esigenze.";
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "Visualizza un’anteprima del to nuovo sito per scoprire cosa vedono i tuoi visitatori.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "Mese precedente";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notifica precedente";
@@ -7502,7 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "Minaccia ignorata.";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "Tre";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatura";
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "Nome utente su Twitter";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "Due";
 
 /* Type menu item in share extension. */
 "Type" = "Tipo";

@@ -4,7 +4,7 @@ Hablando de medios, sabemos que podrías haberle dado a la aplicación un acceso
 
 También hemos hecho que VoiceOver y Dynamic Type sean más precisos en los calendarios de registro de actividades y de entradas programadas. Nos complace informar que esto mejora la experiencia del usuario para las personas que necesitan una mejor accesibilidad visual.
 
-Grandes noticias para los comentarios: Ahora puedes seguir una conversación usando un botón en la cabecera de los comentarios y moderar los comentarios individuales a través de un menú desplegable.
+Grandes noticias para los comentarios: Ahora puedes seguir una conversación usando un botón en la cabecera de los comentarios.
 
 Hemos realizado algunas actualizaciones útiles en el editor de bloques.
 

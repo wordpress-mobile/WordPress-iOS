@@ -101,8 +101,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// Please keep this in mind when making modifications.
     ///
     private(set) var blogDetailsViewController: BlogDetailsViewController?
-
-    private let blogDashboardViewController = BlogDashboardViewController()
+    private(set) var blogDashboardViewController: BlogDashboardViewController?
 
     private(set) var sitePickerViewController: SitePickerViewController?
 
@@ -314,15 +313,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
-            remove(blogDashboardViewController)
+            hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
-            guard let blogDetailVC = blogDetailsViewController else {
-                return
-            }
-            remove(blogDetailVC)
-            blogDashboardViewController.blog = blog
-            embedChildInStackView(blogDashboardViewController)
+            hideBlogDetails()
+            showDashboard(for: blog)
         }
     }
 
@@ -587,6 +582,28 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     func presentCreateSheet() {
         blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
+    }
+
+    // MARK: Dashboard UI Logic
+
+    private func hideDashboard() {
+        guard let blogDashboardViewController = blogDashboardViewController else {
+            return
+        }
+
+        remove(blogDashboardViewController)
+    }
+
+    /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// of creating it.
+    ///
+    /// - Parameters:
+    ///         - blog: The blog to show the details of.
+    ///
+    private func showDashboard(for blog: Blog) {
+        let blogDashboardViewController = self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog)
+        embedChildInStackView(blogDashboardViewController)
+        self.blogDashboardViewController = blogDashboardViewController
     }
 
     // MARK: - Model Changes
