@@ -744,8 +744,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
-
-    [marr addObject:[self quickActionsSectionViewModel]];
+    
+    if (AppConfiguration.showsQuickActions) {
+        [marr addObject:[self quickActionsSectionViewModel]];
+    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
