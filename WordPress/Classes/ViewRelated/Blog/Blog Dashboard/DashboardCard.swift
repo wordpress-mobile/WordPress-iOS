@@ -12,7 +12,7 @@ enum DashboardCard: String, CaseIterable {
     case posts
     case todaysStats = "todays_stats"
 
-    /// If the card is backed by the API
+    /// If the card is backed by API data
     var isRemote: Bool {
         switch self {
         case .quickActions:
