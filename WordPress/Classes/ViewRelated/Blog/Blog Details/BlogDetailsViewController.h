@@ -153,7 +153,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
-- (void)updateTableViewAndHeader;
+- (void)updateTableView:(nullable void(^)(void))completion;
 - (void)preloadMetadata;
 - (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl  onCompletion:(nullable void(^)(void))completion;
 @end

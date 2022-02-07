@@ -1711,12 +1711,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)updateTableViewAndHeader
 {
-    [self updateTableViewAndHeader:^{}];
+    [self updateTableView:^{}];
 }
 
-/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+/// This method syncs the blog and its metadata, then reloads the table view.
 ///
-- (void)updateTableViewAndHeader:(void(^)(void))onComplete
+- (void)updateTableView:(void(^)(void))completion
 {
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
@@ -1724,7 +1724,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
      ^{
         [weakSelf configureTableViewData];
         [weakSelf reloadTableViewPreservingSelection];
-        onComplete();
+        completion();
     }];
 }
 
@@ -1735,7 +1735,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
-    [self updateTableViewAndHeader: ^{
+    [self updateTableView: ^{
         // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
         // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
         // down to refresh the site.
