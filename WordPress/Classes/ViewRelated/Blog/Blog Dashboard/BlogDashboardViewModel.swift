@@ -5,13 +5,13 @@ import CoreData
 class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
-    enum Section: CaseIterable {
-        case quickLinks
+    enum Section: Int, CaseIterable {
+        case quickActions
         case posts
     }
 
     // FIXME: temporary placeholder
-    private let quickLinks = ["Quick Links"]
+    private let quickActions = ["Stats", "Posts", "Media", "Pages"]
     private let posts = ["Posts"]
 
     typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
@@ -34,19 +34,23 @@ class BlogDashboardViewModel {
         }
 
         return DataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, identifier in
-            switch identifier {
-            case self.quickLinks.first:
+
+            guard let section = Section(rawValue: indexPath.section) else {
+                return UICollectionViewCell()
+            }
+
+            switch section {
+            case .quickLinks:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
                 cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
                 return cell
-            case self.posts.first:
+            case .posts:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
                 cell?.configure(viewController, blog: blog)
                 return cell
             default:
                 break
             }
-            return UICollectionViewCell()
         }
     }()
 
