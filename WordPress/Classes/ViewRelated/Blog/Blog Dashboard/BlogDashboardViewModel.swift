@@ -65,7 +65,11 @@ class BlogDashboardViewModel {
         viewController?.showLoading()
         applySnapshotForInitialData()
 
-        service.fetch(cards: ["posts", "todays_stats"], forBlogID: dotComID, success: { [weak self] _ in
+        let cardsToFetch: [String] = DashboardCard.allCases
+            .filter { $0.isRemote }
+            .map { $0.rawValue }
+
+        service.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] _ in
             self?.viewController?.stopLoading()
             self?.applySnapshotWithMockedData()
         }, failure: { _ in
