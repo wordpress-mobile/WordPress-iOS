@@ -213,7 +213,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -406,8 +405,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     self.navigationItem.title = NSLocalizedString(@"My Site", @"Title of My Site tab");
-
-    [self.headerView setBlog:self.blog];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
@@ -1079,7 +1076,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)switchToBlog:(Blog*)blog
 {
-    self.headerView.blog = blog;
     self.blog = blog;
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
@@ -1728,7 +1724,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
      ^{
         [weakSelf configureTableViewData];
         [weakSelf reloadTableViewPreservingSelection];
-        [weakSelf.headerView setBlog:weakSelf.blog];
         onComplete();
     }];
 }
