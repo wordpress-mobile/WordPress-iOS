@@ -1,3 +1,7 @@
+19.3
+-----
+
+
 19.2
 -----
 * [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
