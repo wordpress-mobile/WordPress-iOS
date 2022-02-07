@@ -2,44 +2,32 @@ import UIKit
 
 final class BlogDashboardViewController: UIViewController {
 
-    var blog: Blog?
+    var blog: Blog
 
-    enum Section: CaseIterable {
-        case quickLinks
-        case posts
-    }
+    private lazy var viewModel: BlogDashboardViewModel = {
+        BlogDashboardViewModel(viewController: self, blog: blog)
+    }()
 
-    // FIXME: temporary placeholder
-    private let quickLinks = ["Quick Links"]
-    private let posts = ["Posts"]
-
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
-    private lazy var collectionView: IntrinsicCollectionView = {
+    lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
-    private lazy var dataSource: DataSource = {
-        return DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier in
-            switch identifier {
-            case self.quickLinks.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-                cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
-                return cell
-            case self.posts.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
-                cell?.configure(self, blog: self.blog!)
-                return cell
-            default:
-                break
-            }
-            return UICollectionViewCell()
-        }
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        UIActivityIndicatorView()
     }()
+
+    init(blog: Blog) {
+        self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -48,11 +36,22 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        applySnapshotForInitialData()
+        viewModel.start()
         addHeightObservers()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
         collectionView.layoutIfNeeded()
+    }
+
+    func showLoading() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewAtCenter(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+
+    func stopLoading() {
+        activityIndicatorView.stopAnimating()
     }
 
     private func setupCollectionView() {
@@ -63,14 +62,6 @@ final class BlogDashboardViewController: UIViewController {
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
-    }
-
-    private func applySnapshotForInitialData() {
-        var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(quickLinks, toSection: Section.quickLinks)
-        snapshot.appendItems(posts, toSection: Section.posts)
-        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     private func addHeightObservers() {

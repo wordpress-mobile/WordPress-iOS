@@ -27,4 +27,13 @@ install_cocoapods
 echo "--- 🧪 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
+set +e
 bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+TESTS_EXIT_STATUS=$?
+set -e
+
+echo "--- 📦 Zipping test results"
+cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+
+echo "--- 🚦 Report Tests Exit Status"
+exit $TESTS_EXIT_STATUS
