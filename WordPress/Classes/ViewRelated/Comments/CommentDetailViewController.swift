@@ -247,7 +247,7 @@ class CommentDetailViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureNavBarButtons()
+        configureNavigationBar()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
