@@ -59,8 +59,9 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
-        collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
-        collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
+        DashboardCard.allCases.forEach {
+            collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
+        }
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
