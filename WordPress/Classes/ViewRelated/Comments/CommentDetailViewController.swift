@@ -180,18 +180,18 @@ class CommentDetailViewController: UIViewController {
         return button
     }()
 
-    private lazy var previousButton: UIButton = {
+    private lazy var nextButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(.gridicon(.arrowUp), for: .normal)
-        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         return button
     }()
 
-    private lazy var nextButton: UIButton = {
+    private lazy var previousButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(.gridicon(.arrowDown), for: .normal)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
         return button
     }()
@@ -348,7 +348,7 @@ private extension CommentDetailViewController {
         var barButtonItems: [UIBarButtonItem] = []
 
         if isNotificationComment && splitViewControllerIsHorizontallyCompact {
-            barButtonItems.append(navigationButtons())
+            barButtonItems.append(makeNavigationButtons())
         }
 
         if comment.allowsModeration() {
@@ -358,9 +358,9 @@ private extension CommentDetailViewController {
         navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
     }
 
-    func navigationButtons() -> UIBarButtonItem {
+    func makeNavigationButtons() -> UIBarButtonItem {
         // Create custom view to match that in NotificationDetailsViewController.
-        let buttonStackView = UIStackView(arrangedSubviews: [previousButton, nextButton])
+        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = Constants.arrowButtonSpacing
 
