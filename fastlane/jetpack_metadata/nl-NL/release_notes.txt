@@ -1,0 +1,18 @@
+Heb je de app slechts beperkte toegang tot je mediabibliotheek gegeven? Dat is niet erg, maar we hebben een prompt aan de mediakiezer toegevoegd voor het geval dat je je instellingen wil veranderen en de app meer toegang wil geven. Deze is zelfs in Dynamic Type, zodat deze nog makkelijker te lezen is.
+
+Ook hebben we Voiceover en Dynamic Type nog nauwkeuriger gemaakt met de activiteitenlog en de kalender om berichten in te planner. We zijn trots om te zeggen dat dit de gebruikerservaring van slechtzienden verbetert.
+
+We hebben enkele nuttige aanpassingen aangebracht in de blokeditor.
+
+- We hebben een probleem opgelost waarbij knoppen niet naar links, rechts of in het midden van de knopblok werden uitgelijnd.
+- We hebben een vertaling van de kleurinstellingen in omslagafbeeldingblokken toegevoegd.
+- Je krijgt niet langer een videominiatuur te zijn als je een afbeelding selecteert, en andersom.
+- Om verwarring tegen te gaan hebben we de help-knop rechtsonder in de niet-ondersteunde blokeditor weggestopt.
+- Als je in een tekstblok verschillende kleuren voor de tekst en de achtergrond gebruikt, krijg je vanaf nu een melding als die kleurencombinatie het voor sommigen lastiger maakt om te lezen.
+- We hebben ook een aantal problemen opgelost die voorkwamen bij het veranderen van de kleur van niet-geselecteerde tekst.
+
+We hebben ook een paar andere kleine problemen opgelost.
+
+- De meldingen van het weekoverzicht doen het nu, waardoor je makkelijker op de hoogte blijft van het laatste nieuws.
+- Je wordt nu aangemeld wanneer je je Facebook-account met Publicize verbindt.
+- Afbeeldingen met een copyrightteken in de bestandsnaam uploaden of verschijnen nu correct in de Share Sheet.

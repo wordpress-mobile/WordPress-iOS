@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-21 12:20:46+0000 */
+/* Translation-Revision-Date: 2022-02-03 22:33:22+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -767,7 +767,7 @@ translators: Block name. %s: The localized block name */
 "An error occurred." = "出现错误。";
 
 /* A failure reason for when the error that occured wasn't able to be determined. */
-"An unknown error occurred." = "An unknown error occurred.";
+"An unknown error occurred." = "发生了未知错误。";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "发生了未知错误。请重试。";
@@ -1297,7 +1297,7 @@ translators: Block name. %s: The localized block name */
 "Change Password" = "修改密码";
 
 /* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
+"Change Settings" = "更改设置";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "更改站点";
@@ -3204,7 +3204,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "转发";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "四";
 
 /* Browse free themes selection title */
 "Free" = "免费";
@@ -4909,7 +4909,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "一";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "仅查看相关性较大的统计信息。添加数据分析以符合您的需求。";
@@ -5507,7 +5507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "预览新网站以查看访问者将看到的内容。";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "上一个";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一条通知";
@@ -6617,7 +6617,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "站点语言";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "网站菜单";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "站点重定向";
@@ -7511,7 +7511,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "缩图不可用。";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "平铺画廊设置";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7748,7 +7748,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "Twitter 用户名";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "二";
 
 /* Type menu item in share extension. */
 "Type" = "类型";
@@ -8593,7 +8593,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "每周综述";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "每周综述：%@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "周";

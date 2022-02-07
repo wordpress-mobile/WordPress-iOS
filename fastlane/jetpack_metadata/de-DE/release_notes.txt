@@ -1,0 +1,18 @@
+Du hast der App nur eingeschränkten Zugriff auf deine Mediathek gegeben? Kein Problem. Wir haben der Medienauswahl eine Aufforderung hinzugefügt, falls du deine Einstellungen ändern und mehr Zugriffsrechte erteilen möchtest. Für bessere Lesbarkeit nutzt die Aufforderung Dynamic Type.
+
+Außerdem haben wir VoiceOver und Dynamic Type für das Aktivitätsprotokoll und den Kalender für geplante Beiträge optimiert. Das verbessert das Erlebnis für Benutzer, die mehr visuelle Bedienfreundlichkeit benötigen.
+
+Wir haben einige nützliche Updates am Block-Editor vorgenommen.
+
+- Wir haben ein Problem behoben, bei dem Buttons im Button-Block nicht links, rechts oder mittig ausgerichtet wurden.
+- Wir haben Übersetzungen für Farbeinstellungen in Cover-Blocks hinzugefügt.
+- Wenn du ein Bild auswählst, wird kein Video-Vorschaubild mehr angezeigt und umgekehrt.
+- Wir haben den Hilfe-Button unten rechts vom ungenutzten Block-Editor ausgeblendet, um dich nicht zu verwirren.
+- Wenn du unterschiedliche Text- und Hintergrundfarben in Text-Blöcken verwendest, erhältst du eine Benachrichtigung, wenn die Farbkombination für einige Personen schwer lesbar ist.
+- Wir haben eine Reihe seltener Probleme beim Wechseln der Farbe von nicht ausgewähltem Text behoben.
+
+Außerdem haben wir einige kleinere Probleme und Abstürze behoben.
+
+- Es werden jetzt Benachrichtigungen mit wöchentlichen Zusammenfassungen angezeigt. Das macht es einfacher, über aktuelle Neuigkeiten auf dem Laufenden zu bleiben.
+- Wenn du dein Facebook-Konto mit Publicize verknüpfst, wirst du jetzt erfolgreich angemeldet.
+- Bilder mit Copyright-Symbol im Dateinamen werden jetzt korrekt hochgeladen und im Share Sheet angezeigt.
