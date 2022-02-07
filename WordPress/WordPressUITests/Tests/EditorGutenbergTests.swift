@@ -21,6 +21,9 @@ class EditorGutenbergTests: XCTestCase {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
+        if editorScreen == nil {
+            closeEditorDiscardChanges()
+        }
         try LoginFlow.logoutIfNeeded()
         try super.tearDownWithError()
     }
