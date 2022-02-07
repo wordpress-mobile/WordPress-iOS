@@ -23,4 +23,15 @@ enum DashboardCard: String, CaseIterable {
             return true
         }
     }
+
+    var cell: DashboardCollectionViewCell.Type {
+        switch self {
+        case .quickActions:
+            return HostCollectionViewCell<QuickLinksView>.self
+        case .posts:
+            return DashboardPostsCardCell.self
+        case .todaysStats:
+            return HostCollectionViewCell<QuickLinksView>.self
+        }
+    }
 }

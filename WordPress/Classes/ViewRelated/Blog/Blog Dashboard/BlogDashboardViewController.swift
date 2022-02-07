@@ -1,5 +1,7 @@
 import UIKit
 
+typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable
+
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
