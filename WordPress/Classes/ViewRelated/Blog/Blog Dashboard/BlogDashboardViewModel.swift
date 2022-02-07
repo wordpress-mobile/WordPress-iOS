@@ -12,7 +12,7 @@ class BlogDashboardViewModel {
 
     // FIXME: temporary placeholder
     private let quickActions = ["Stats", "Posts", "Media", "Pages"]
-    private let posts = ["Posts"]
+    private let posts = ["Posts placeholder"]
 
     typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
