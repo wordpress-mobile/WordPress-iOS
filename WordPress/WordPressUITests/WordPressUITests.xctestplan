@@ -22,7 +22,6 @@
     {
       "skippedTests" : [
         "EditorAztecTests",
-        "EditorGutenbergTests",
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
         "LoginTests\/testEmailPasswordLoginLogout()",
