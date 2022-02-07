@@ -2,6 +2,9 @@ import Foundation
 import UIKit
 import CoreData
 
+typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardCardSection, DashboardCardModel>
+typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardCardSection, DashboardCardModel>
+
 class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
