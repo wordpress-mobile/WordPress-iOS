@@ -8,8 +8,6 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
-
     lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +55,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
-        collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
+        collectionView.register(QuickActionsCardCell.self, forCellWithReuseIdentifier: QuickActionsCardCell.defaultReuseID)
         collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
 
         view.addSubview(collectionView)
@@ -87,11 +85,30 @@ extension BlogDashboardViewController {
 
             switch section {
             case .quickActions:
-                return nil
+                return self.createQuickActionsSection()
             case .posts:
                 return self.createPostsSection()
             }
         }
+    }
+
+    private func createQuickActionsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(Constants.estimatedWidth),
+                                              heightDimension: .estimated(Constants.estimatedHeight))
+
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
+                                                        leading: Constants.sectionInset,
+                                                        bottom: 0,
+                                                        trailing: Constants.sectionInset)
+        section.interGroupSpacing = Constants.interGroupSpacing
+        section.orthogonalScrollingBehavior = .continuous
+
+        return section
     }
 
     private func createPostsSection() -> NSCollectionLayoutSection {
@@ -107,7 +124,6 @@ extension BlogDashboardViewController {
                                                         leading: Constants.sectionInset,
                                                         bottom: Constants.sectionInset,
                                                         trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
 
         return section
     }
@@ -116,8 +132,9 @@ extension BlogDashboardViewController {
 extension BlogDashboardViewController {
 
     private enum Constants {
+        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 16
-        static let interGroupSpacing: CGFloat = 8
+        static let sectionInset: CGFloat = 20
+        static let interGroupSpacing: CGFloat = 12
     }
 }

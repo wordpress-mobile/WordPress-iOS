@@ -41,8 +41,8 @@ class BlogDashboardViewModel {
 
             switch section {
             case .quickActions:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-                cell?.hostedView = QuickLinksView(title: self.quickActions[indexPath.item])
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickActionsCardCell.defaultReuseID, for: indexPath) as? QuickActionsCardCell
+                cell?.configure(title: self.quickActions[indexPath.item])
                 return cell
             case .posts:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
