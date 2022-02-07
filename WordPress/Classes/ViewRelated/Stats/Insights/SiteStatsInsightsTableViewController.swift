@@ -574,11 +574,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func scrollToNewCard() {
-        let lastSection = max(tableView.numberOfSections - 1, 0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            guard let self = self else { return }
+            let lastSection = max(self.tableView.numberOfSections - 1, 0)
 
-        // newly added card will be penultimate row
-        let idxNewCardRow = max(tableView.numberOfRows(inSection: lastSection) - 2, 0)
-        tableView.scrollToRow(at: IndexPath(row: idxNewCardRow, section: lastSection), at: .bottom, animated: true)
+            // newly added card will be penultimate row, above the 'Add Stats Card' row
+            let newCardRow = max(self.tableView.numberOfRows(inSection: lastSection) - 2, 0)
+
+            self.tableView.scrollToRow(at: IndexPath(row: newCardRow, section: lastSection), at: .middle, animated: true)
+        }
     }
 
     func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
