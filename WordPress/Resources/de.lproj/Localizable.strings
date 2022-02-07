@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-01 13:54:07+0000 */
+/* Translation-Revision-Date: 2022-02-03 09:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -2751,7 +2751,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "Gib oben andere Wörter ein und wir suchen nach einer passenden Adresse.";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Öffne den Bearbeitungsmodus, um Mehrfachauswahl und Mehrfachlöschen zu aktivieren";
+"Enter edit mode to enable multi select to delete" = "Öffne den Bearbeitungsmodus, um die Mehrfachauswahl zum Löschen zu aktivieren";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -4456,7 +4456,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Navigiert zum Anpassen des Verlaufs";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigiert zur Layout-Auswahlbildschirm";
+"Navigates to layout selection screen" = "Navigiert zum Layout-Auswahlbildschirm";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -9128,7 +9128,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Deine Zugangsdaten werden nicht gespeichert und werden nur für die Installation von Jetpack verwendet.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Deine wöchentliche Zusammenfassung ist fertig! Tipp hier, um Details zu sehen.";
+"Your weekly roundup is ready, tap here to see the details!" = "Deine wöchentliche Zusammenfassung ist fertig! Tippe hier, um Details zu sehen.";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Du folgst dieser Unterhaltung. Du erhältst eine E-Mail und eine Benachrichtigung, sobald ein neuer Kommentar hinzugefügt wird.";

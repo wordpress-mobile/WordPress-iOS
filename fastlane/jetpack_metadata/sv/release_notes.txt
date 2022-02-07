@@ -1,0 +1,18 @@
+Har du bara gett appen begränsad tillgång till ditt mediabibliotek? Det är ingen stor sak, men vi har lagt till en prompt till mediaväljaren om du vill ändra dina inställningar och tillåta mer åtkomst. Prompten är till och med tillgänglig i Dynamic Type för enkel läsning.
+
+Vi har även gjort VoiceOver och Dynamic Type mer exakta i kalendrarna för aktivitetsloggen och schemalagda inlägg. Vi är glada att kunna rapportera att detta förbättrar användarupplevelsen för personer som behöver bättre visuell tillgänglighet.
+
+Vi har gjort några användbara uppdateringar av blockredigeraren.
+
+- Vi har åtgärdat ett problem som gjorde att knappar inte vänsterjusterades, högerjusterades eller centrerades i blocket Knappar.
+- Vi har lagt till översättning av färginställningarna i blocket Omslag.
+- När du väljer en bild visas inte längre en videominiatyr, och vice versa.
+- Vi har dolt hjälpknappen längst ned till höger i blockredigeraren som inte stöds för att undvika förvirring.
+- När du använder olika text- och bakgrundsfärger i textblock får du en notis om färgkombinationen kan göra det svårt för vissa människor att läsa texten.
+- Vi har åtgärdat en handfull skiftlägesproblem som uppstod vid färgändring av ej markerad text.
+
+Vi har dessutom åtgärdat ett antal mindre problem och krascher.
+
+- Notiser för veckosammanfattningar visas nu, vilket gör det enklare att hålla koll på de senaste nyheterna.
+- När du ansluter ditt Facebook-konto till Offentliggör kommer du nu att loggas in.
+- Bilder med en copyright-symbol i filnamnet kommer nu att laddas upp eller visas korrekt i Share Sheet.
