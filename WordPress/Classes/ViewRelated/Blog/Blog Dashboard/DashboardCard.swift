@@ -31,7 +31,7 @@ enum DashboardCard: String, CaseIterable {
         case .posts:
             return DashboardPostsCardCell.self
         case .todaysStats:
-            return HostCollectionViewCell<QuickLinksView>.self
+            return DashboardStatsCardCell.self
         }
     }
 }
