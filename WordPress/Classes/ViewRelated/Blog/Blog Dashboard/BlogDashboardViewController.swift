@@ -86,7 +86,7 @@ extension BlogDashboardViewController {
             }
 
             switch section {
-            case .quickLinks:
+            case .quickActions:
                 return nil
             case .posts:
                 return self.createPostsSection()

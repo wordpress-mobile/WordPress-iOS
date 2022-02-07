@@ -40,16 +40,14 @@ class BlogDashboardViewModel {
             }
 
             switch section {
-            case .quickLinks:
+            case .quickActions:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-                cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
+                cell?.hostedView = QuickLinksView(title: self.quickActions[indexPath.item])
                 return cell
             case .posts:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
                 cell?.configure(viewController, blog: blog)
                 return cell
-            default:
-                break
             }
         }
     }()
@@ -91,7 +89,7 @@ private extension BlogDashboardViewModel {
     func applySnapshotWithMockedData() {
         var snapshot = Snapshot()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(quickLinks, toSection: Section.quickLinks)
+        snapshot.appendItems(quickActions, toSection: Section.quickActions)
         snapshot.appendItems(posts, toSection: Section.posts)
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
