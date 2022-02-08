@@ -466,9 +466,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                                                   canCreateWPComSite: defaultAccount() != nil,
                                                                   createWPComSite: { [weak self] in
             self?.launchSiteCreation(source: "my_site_no_sites")
-        },
-                                                                  canAddSelfHostedSite: canAddSelfHostedSite,
-                                                                  addSelfHostedSite:  {
+        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite:  {
             WordPressAuthenticator.showLoginForSelfHostedSite(self)
         })
 
