@@ -460,11 +460,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
+        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
+                                                                  canCreateWPComSite: defaultAccount() != nil,
+                                                                  createWPComSite: { [weak self] in
             self?.launchSiteCreation(source: "my_site_no_sites")
-        } addSelfHostedSite: {
+        },
+                                                                  canAddSelfHostedSite: canAddSelfHostedSite,
+                                                                  addSelfHostedSite:  {
             WordPressAuthenticator.showLoginForSelfHostedSite(self)
-        }
+        })
 
         if let sourceView = noResultsViewController.actionButton,
            let popoverPresentationController = addSiteAlert.popoverPresentationController {

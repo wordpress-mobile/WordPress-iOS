@@ -996,11 +996,11 @@ static NSInteger HideSearchMinSites = 3;
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
         BOOL canCreateWPComSite = [self defaultWordPressComAccount] ? YES : NO;
-        UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site"
-                                                              canCreateWPComSite:canCreateWPComSite
-                                                                 createWPComSite:^{
+        BOOL canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton;
+
+        UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site" canCreateWPComSite:canCreateWPComSite createWPComSite:^{
             [self launchSiteCreation];
-        } addSelfHostedSite:^{
+        } canAddSelfHostedSite:canAddSelfHostedSite addSelfHostedSite:^{
             [self showLoginControllerForAddingSelfHostedSite];
         }];
 
@@ -1017,7 +1017,7 @@ static NSInteger HideSearchMinSites = 3;
         self.addSiteAlertController = alertController;
 
         [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherAddSiteTapped];
-
+//
     }
 }
 
