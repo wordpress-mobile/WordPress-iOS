@@ -28,6 +28,16 @@ echo "--- 🧪 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
+
+echo "--- 1 – Test run 1"
+bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+echo "--- 2 – Test run 2"
+bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+echo "--- 3 – Test run 3"
+bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+echo "--- 4 – Test run 4"
+bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+echo "--- 5 – Test run 5"
 bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
 TESTS_EXIT_STATUS=$?
 set -e
