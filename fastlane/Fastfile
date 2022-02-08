@@ -905,7 +905,7 @@ platform :ios do
       test_without_building: true,
       xctestrun: test_plan_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      #reset_simulator: true,
+      reset_simulator: true,
       result_bundle: true
     )
   end
