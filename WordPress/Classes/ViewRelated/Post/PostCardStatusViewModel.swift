@@ -191,7 +191,9 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.moveToDraft)
             }
 
-            buttons.append(.copyLink)
+            if post.status != .trash {
+                buttons.append(.copyLink)
+            }
 
             buttons.append(.trash)
 
