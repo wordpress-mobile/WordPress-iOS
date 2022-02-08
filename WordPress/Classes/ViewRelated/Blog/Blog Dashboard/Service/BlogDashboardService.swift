@@ -63,17 +63,22 @@ private extension BlogDashboardService {
         var sections: [DashboardCardSection] = []
         var items: [DashboardCardModel] = []
 
-        let hasDrafts = (posts["draft"] as? Array<Any>)?.count ?? 0 > 0
-        let hasScheduled = (posts["scheduled"] as? Array<Any>)?.count ?? 0 > 0
+        let draftsCount = (posts["draft"] as? Array<Any>)?.count ?? 0
+        let scheduledCount = (posts["scheduled"] as? Array<Any>)?.count ?? 0
+
+        let hasDrafts = draftsCount > 0
+        let hasScheduled = scheduledCount > 0
 
         if hasDrafts && hasScheduled {
-            var drafts = posts.copy() as? [String: Any]
-            drafts?["scheduled"] = []
+            var draft = posts.copy() as? [String: Any]
+            draft?["show_drafts"] = true
+            draft?["show_scheduled"] = false
             sections.append(DashboardCardSection(id: "posts", subtype: "draft"))
-            items.append(DashboardCardModel(id: .posts, cellViewModel: drafts as NSDictionary?))
+            items.append(DashboardCardModel(id: .posts, cellViewModel: draft as NSDictionary?))
 
             var scheduled = posts.copy() as? [String: Any]
-            scheduled?["draft"] = []
+            scheduled?["show_drafts"] = false
+            scheduled?["show_scheduled"] = true
             sections.append(DashboardCardSection(id: "posts", subtype: "scheduled"))
             items.append(DashboardCardModel(id: .posts, cellViewModel: scheduled as NSDictionary?))
         } else {

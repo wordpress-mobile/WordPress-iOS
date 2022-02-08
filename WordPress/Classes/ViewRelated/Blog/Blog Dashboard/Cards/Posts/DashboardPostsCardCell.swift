@@ -6,8 +6,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             return
         }
 
-        let hasDrafts = (dataModel["draft"] as? Array<Any>)?.count ?? 0 > 0
-        let hasScheduled = (dataModel["scheduled"] as? Array<Any>)?.count ?? 0 > 0
+        let hasDrafts = dataModel["show_drafts"] as? Bool ?? false
+        let hasScheduled = dataModel["show_scheduled"] as? Bool ?? false
 
         let postsViewController = PostsCardViewController(blog: blog)
 

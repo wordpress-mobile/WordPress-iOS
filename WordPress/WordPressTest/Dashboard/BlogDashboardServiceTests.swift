@@ -40,11 +40,13 @@ class BlogDashboardServiceTests: XCTestCase {
             // The id is posts
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection!).first?.id, .posts)
 
-            // For Drafts section, scheduled has 0 posts
-            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["scheduled"] as? [Any])?.count, 0)
+            // For Drafts section
+            XCTAssertFalse(snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["show_scheduled"] as! Bool)
+            XCTAssertTrue(snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["show_drafts"] as! Bool)
 
-            // For Scheduled, draft has 0 posts
-            XCTAssertEqual((snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["draft"] as? [Any])?.count, 0)
+            // For Scheduled section
+            XCTAssertFalse(snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["show_drafts"] as! Bool)
+            XCTAssertTrue(snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["show_scheduled"] as! Bool)
             expect.fulfill()
         }
 
@@ -63,11 +65,11 @@ class BlogDashboardServiceTests: XCTestCase {
             // The item identifier id is posts
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.id, .posts)
 
-            // For Drafts section, scheduled has 0 posts
-            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["scheduled"] as? [Any])?.count, 0)
+            // For Drafts section, showScheduled is nil
+            XCTAssertFalse(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["show_scheduled"] as! Bool)
 
             // For Drafts section, scheduled has 1 post
-            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["draft"] as? [Any])?.count, 1)
+            XCTAssertTrue(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["show_drafts"] as! Bool)
 
             expect.fulfill()
         }
