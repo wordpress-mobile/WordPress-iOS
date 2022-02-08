@@ -16,7 +16,6 @@ class BlogDashboardViewModel {
 
     typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
     private let managedObjectContext: NSManagedObjectContext
     private let blog: Blog
