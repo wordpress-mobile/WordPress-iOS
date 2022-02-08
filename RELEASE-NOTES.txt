@@ -1,6 +1,6 @@
 19.3
 -----
-
+* [*] Stats: fix navigation between Stats tab. [#17894]
 
 19.2
 -----
