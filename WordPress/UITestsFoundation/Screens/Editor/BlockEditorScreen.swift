@@ -106,6 +106,16 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
+    // Sometimes ScreenObject times out due to long loading time making the Editor Screen evaluate to `nil`.
+    // This function adds the ability to still close the Editor Screen when that happens.
+    public static func closeEditorDiscardingChanges(app: XCUIApplication = XCUIApplication()) {
+        let closeButton = app.buttons["Close"]
+        if closeButton.waitForIsHittable() { closeButton.tap() }
+
+        let discardChangesButton = app.buttons["Discard"]
+        if discardChangesButton.waitForIsHittable() { discardChangesButton.tap() }
+    }
+
     public func publish() throws -> EditorNoticeComponent {
         let publishButton = app.buttons["Publish"]
         let publishNowButton = app.buttons["Publish Now"]

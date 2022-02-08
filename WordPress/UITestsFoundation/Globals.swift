@@ -24,17 +24,6 @@ public func navigateBack() {
     }
 }
 
-// Generic function for cases where ScreenObject times out due to long loading time
-// making the Editor Screen evaluate to 'nil'
-public func closeEditorDiscardChanges() {
-    let app = XCUIApplication()
-    let closeButton = app.buttons["Close"]
-    let discardChangesButton = app.buttons["Discard"]
-
-    if closeButton.waitForIsHittable() { closeButton.tap() }
-    if discardChangesButton.waitForIsHittable() { discardChangesButton.tap() }
-}
-
 extension ScreenObject {
 
     // TODO: This was implemented on the original `BaseScreen` and is here just as a copy-paste for the transition.
