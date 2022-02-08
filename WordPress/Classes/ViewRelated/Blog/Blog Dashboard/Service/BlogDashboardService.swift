@@ -33,6 +33,9 @@ class BlogDashboardService {
 }
 
 private extension BlogDashboardService {
+    /// Cards are a special case: they might not be a 1-1 relation
+    /// If the user has draft and scheduled posts, we show two cards
+    /// One for each. This function takes care of this
     func parsePostCard(_ posts: NSDictionary) -> ([DashboardCardSection], [DashboardCardModel]) {
         var sections: [DashboardCardSection] = []
         var items: [DashboardCardModel] = []
