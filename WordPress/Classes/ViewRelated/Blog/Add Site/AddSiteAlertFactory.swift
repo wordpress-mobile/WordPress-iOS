@@ -10,6 +10,7 @@ class AddSiteAlertFactory: NSObject {
         source: String?,
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
+        canAddSelfHostedSite: Bool,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -18,7 +19,10 @@ class AddSiteAlertFactory: NSObject {
             alertController.addAction(createWPComSiteAction(handler: createWPComSite))
         }
 
-        alertController.addAction(addSelfHostedSiteAction(handler: addSelfHostedSite))
+        if canAddSelfHostedSite {
+            alertController.addAction(addSelfHostedSiteAction(handler: addSelfHostedSite))
+        }
+
         alertController.addAction(cancelAction())
 
         WPAnalytics.track(.addSiteAlertDisplayed, properties: ["source": source ?? "unknown"])
