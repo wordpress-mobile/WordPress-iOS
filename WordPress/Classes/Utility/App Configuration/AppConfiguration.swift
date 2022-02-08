@@ -13,6 +13,7 @@ import Foundation
     @objc static let allowsCustomAppIcons: Bool = true
     @objc static let showsReader: Bool = true
     @objc static let showsCreateButton: Bool = true
+    @objc static let showAddSelfHostedSiteButton: Bool = true
     @objc static let showsQuickActions: Bool = true
     @objc static let showsFollowedSitesSettings: Bool = true
     @objc static let showsWhatIsNew: Bool = true
