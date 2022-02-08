@@ -1,5 +1,7 @@
 import UIKit
 
-class DashboardStatsCardCell: UICollectionViewCell, Reusable {
-    
+class DashboardStatsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?) {
+        
+    }
 }

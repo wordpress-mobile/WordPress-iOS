@@ -47,3 +47,9 @@ class HostCollectionViewCell<Content>: UICollectionViewCell, Hostable where Cont
 }
 
 extension HostCollectionViewCell: Reusable { }
+
+extension HostCollectionViewCell: BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?) {
+        hostedView = QuickLinksView(title: "Quick Links") as? Content
+    }
+}

@@ -1,6 +1,10 @@
 import UIKit
 
-typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable
+typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
+
+protocol BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?)
+}
 
 final class BlogDashboardViewController: UIViewController {
 
