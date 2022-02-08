@@ -76,7 +76,7 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
             guard let section = BlogDashboardViewModel.Section(rawValue: sectionIndex) else {
