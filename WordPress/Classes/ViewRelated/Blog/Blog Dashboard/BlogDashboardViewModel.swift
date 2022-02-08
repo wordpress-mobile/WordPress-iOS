@@ -81,13 +81,7 @@ private extension BlogDashboardViewModel {
     // This is necessary when using an IntrinsicCollectionView
     // Otherwise, the collection view will never update its height
     func applySnapshotForInitialData() {
-        var snapshot = Snapshot()
-
-        if AppConfiguration.showsQuickActions {
-            snapshot.appendSections([Section.quickActions])
-            snapshot.appendItems(quickActions, toSection: Section.quickActions)
-        }
-
+        let snapshot = Snapshot()
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
 
@@ -95,6 +89,12 @@ private extension BlogDashboardViewModel {
         guard var snapshot = dataSource?.snapshot() else {
             return
         }
+
+        if AppConfiguration.showsQuickActions {
+            snapshot.appendSections([Section.quickActions])
+            snapshot.appendItems(quickActions, toSection: Section.quickActions)
+        }
+
         snapshot.appendSections([Section.posts])
         snapshot.appendItems(posts, toSection: Section.posts)
         dataSource?.apply(snapshot, animatingDifferences: false)
