@@ -1,7 +1,7 @@
 import UIKit
 
 class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
         guard let viewController = viewController else {
             return
         }

@@ -3,7 +3,7 @@ import UIKit
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
 protocol BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?)
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?)
 }
 
 final class BlogDashboardViewController: UIViewController {

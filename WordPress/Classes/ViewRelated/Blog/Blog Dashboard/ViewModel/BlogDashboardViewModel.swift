@@ -35,7 +35,7 @@ class BlogDashboardViewModel {
 
             let cellType = identifier.id.cell
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
-            (cell as? BlogDashboardCardConfigurable)?.configure(blog: blog, viewController: viewController)
+            (cell as? BlogDashboardCardConfigurable)?.configure(blog: blog, viewController: viewController, dataModel: identifier.cellViewModel)
             return cell
 
         }
