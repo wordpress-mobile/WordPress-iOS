@@ -28,6 +28,7 @@ class BlogDashboardServiceTests: XCTestCase {
 
     func testCreateSectionForDraftsAndScheduled() {
         let expect = expectation(description: "Parse drafts and scheduled")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         service.fetch(wpComID: 123456) { snapshot in
             // Drafts and Scheduled section exists
@@ -49,9 +50,40 @@ class BlogDashboardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testCreateSectionForDraftOnly() {
+        let expect = expectation(description: "Parse drafts and scheduled")
+        remoteServiceMock.respondWith = .withDraftsOnly
+
+        service.fetch(wpComID: 123456) { snapshot in
+            // Drafts and Scheduled section exists
+            let draftsSection = snapshot.sectionIdentifiers.filter { $0.id == "posts" && $0.subtype == nil }
+            XCTAssertEqual(draftsSection.count, 1)
+
+            // The item identifier id is posts
+            XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.id, .posts)
+
+            // For Drafts section, scheduled has 0 posts
+            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["scheduled"] as? [Any])?.count, 0)
+
+            // For Drafts section, scheduled has 1 post
+            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["draft"] as? [Any])?.count, 1)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
 }
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
+    enum Response: String {
+        case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
+        case withDraftsOnly = "dashboard-200-with-drafts-only.json"
+    }
+
+    var respondWith: Response = .withDraftAndSchedulePosts
+
     var didCallWithBlogID: Int?
     var didRequestCards: [String]?
 
@@ -59,7 +91,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
         didCallWithBlogID = blogID
         didRequestCards = cards
 
-        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: "dashboard-200-with-drafts-and-scheduled.json", withExtension: nil),
+        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
         let data: Data = try? Data(contentsOf: fileURL),
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)
