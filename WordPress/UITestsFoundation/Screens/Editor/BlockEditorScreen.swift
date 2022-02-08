@@ -11,7 +11,7 @@ public class BlockEditorScreen: ScreenObject {
     var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
 
     let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["add-block-button"] // Uses a testID
+        $0.buttons["this-does-not-exist"] // Uses a testID
     }
 
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
