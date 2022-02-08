@@ -32,8 +32,8 @@ class BlogDashboardServiceTests: XCTestCase {
 
         service.fetch(wpComID: 123456) { snapshot in
             // Drafts and Scheduled section exists
-            let draftsSection = snapshot.sectionIdentifiers.first(where:  { $0.subtype == "draft" })
-            let scheduledSection = snapshot.sectionIdentifiers.first(where:  { $0.subtype == "scheduled" })
+            let draftsSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "draft" })
+            let scheduledSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "scheduled" })
             XCTAssertNotNil(draftsSection)
             XCTAssertNotNil(scheduledSection)
 
