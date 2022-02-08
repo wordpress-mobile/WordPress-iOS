@@ -12,7 +12,11 @@ public class MySitesScreen: ScreenObject {
         $0.buttons["add-site-button"]
     }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    let addSelfHostedSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Add self-hosted site"]
+    }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 // swiftlint:disable:next opening_brace
@@ -27,7 +31,7 @@ public class MySitesScreen: ScreenObject {
 
     public func addSelfHostedSite() throws -> LoginSiteAddressScreen {
         plusButtonGetter(app).tap()
-        app.buttons["Add self-hosted site"].tap()
+        addSelfHostedSiteButtonGetter(app).tap()
         return try LoginSiteAddressScreen()
     }
 
@@ -40,5 +44,14 @@ public class MySitesScreen: ScreenObject {
     public func switchToSite(withTitle title: String) throws -> MySiteScreen {
         app.cells[title].tap()
         return try MySiteScreen()
+    }
+
+    public func closeModalIfNeeded() {
+        if addSelfHostedSiteButtonGetter(app).isHittable {
+            addSelfHostedSiteButtonGetter(app).tap()
+        }
+        if cancelButtonGetter(app).isHittable {
+            cancelButtonGetter(app).tap()
+        }
     }
 }
