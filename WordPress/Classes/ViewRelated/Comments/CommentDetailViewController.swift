@@ -170,6 +170,32 @@ class CommentDetailViewController: UIViewController {
         }
     }
 
+    // MARK: Nav Bar Buttons
+
+    private lazy var editBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .edit,
+                               target: self,
+                               action: #selector(editButtonTapped))
+        button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
+        return button
+    }()
+
+    private lazy var nextButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(.gridicon(.arrowUp), for: .normal)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        return button
+    }()
+
+    private lazy var previousButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(.gridicon(.arrowDown), for: .normal)
+        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+        return button
+    }()
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -204,7 +230,6 @@ class CommentDetailViewController: UIViewController {
         configureReplyView()
         setupKeyboardManager()
         configureSuggestionsView()
-        configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
@@ -218,6 +243,11 @@ class CommentDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardManager?.stopListeningToKeyboardNotifications()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureNavigationBar()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -259,6 +289,8 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let arrowButtonSize: CGFloat = 24
+        static let arrowButtonSpacing: CGFloat = 12
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -301,7 +333,7 @@ private extension CommentDetailViewController {
         navigationController?.navigationBar.isTranslucent = true
         title = viewTitle
 
-        configureEditButtonItem()
+        configureNavBarButtons()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -311,10 +343,30 @@ private extension CommentDetailViewController {
         navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
     }
 
-    func configureEditButtonItem() {
-        navigationItem.rightBarButtonItem = comment.allowsModeration() ? UIBarButtonItem(barButtonSystemItem: .edit,
-                                                                                         target: self,
-                                                                                         action: #selector(editButtonTapped)) : nil
+    func configureNavBarButtons() {
+        var barButtonItems: [UIBarButtonItem] = []
+
+        if isNotificationComment && splitViewControllerIsHorizontallyCompact {
+            barButtonItems.append(makeNavigationButtons())
+        }
+
+        if comment.allowsModeration() {
+            barButtonItems.append(editBarButtonItem)
+        }
+
+        navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
+    }
+
+    func makeNavigationButtons() -> UIBarButtonItem {
+        // Create custom view to match that in NotificationDetailsViewController.
+        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.spacing = Constants.arrowButtonSpacing
+
+        let width = (Constants.arrowButtonSize * 2) + Constants.arrowButtonSpacing
+        buttonStackView.frame = CGRect(x: 0, y: 0, width: width, height: Constants.arrowButtonSize)
+
+        return UIBarButtonItem(customView: buttonStackView)
     }
 
     func configureTable() {
@@ -372,7 +424,7 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
-        configureEditButtonItem()
+        configureNavBarButtons()
         configureRows()
         tableView.reloadData()
     }
@@ -554,6 +606,16 @@ private extension CommentDetailViewController {
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
         navigationControllerToPresent.modalPresentationStyle = .fullScreen
         present(navigationControllerToPresent, animated: true)
+    }
+
+    @objc func previousButtonTapped() {
+        // TODO: handle notification change
+        DDLogInfo("previousButtonTapped")
+    }
+
+    @objc func nextButtonTapped() {
+        // TODO: handle notification change
+        DDLogInfo("nextButtonTapped")
     }
 
     func deleteButtonTapped() {
