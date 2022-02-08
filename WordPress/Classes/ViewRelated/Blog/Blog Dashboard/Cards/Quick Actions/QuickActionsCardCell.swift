@@ -24,6 +24,7 @@ class QuickActionsCardCell: UICollectionViewCell, Reusable {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.font = WPStyleGuide.serifFontForTextStyle(.body, fontWeight: .semibold)
+        label.textColor = .text
         return label
     }()
 
@@ -44,7 +45,7 @@ class QuickActionsCardCell: UICollectionViewCell, Reusable {
 extension QuickActionsCardCell {
 
     private func setup() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .listForeground
         contentView.layer.cornerRadius = Constants.contentViewCornerRadius
 
         contentView.addSubview(stackView)
