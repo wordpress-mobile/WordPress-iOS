@@ -13,10 +13,6 @@ class BlogDashboardViewModel {
         case posts
     }
 
-    // FIXME: temporary placeholder
-    private let quickLinks = ["Quick Links"]
-    private let posts = ["Posts"]
-
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
     private let managedObjectContext: NSManagedObjectContext
