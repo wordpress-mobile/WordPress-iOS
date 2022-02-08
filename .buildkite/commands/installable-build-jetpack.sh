@@ -4,6 +4,10 @@
 echo "--- :rubygems: Fixing Ruby Setup"
 gem install bundler
 
+# FIXIT-13.1: Installable Builds want the latest version of Sentry CLI
+brew update
+brew upgrade sentry-cli
+
 echo "--- :rubygems: Setting up Gems"
 install_gems
 

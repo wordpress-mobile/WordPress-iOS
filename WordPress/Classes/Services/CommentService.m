@@ -358,6 +358,49 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
+- (void)loadCommentWithID:(NSNumber *)commentID
+                  forBlog:(Blog *)blog
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *))failure {
+    
+    NSManagedObjectID *blogID = blog.objectID;
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+    
+    [remote getCommentWithID:commentID
+                     success:^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            if (!blog) {
+                return;
+            }
+            
+            Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+            if (!comment) {
+                comment = [self createCommentForBlog:blog];
+            }
+            
+            [self updateComment:comment withRemoteComment:remoteComment];
+            
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success(comment);
+                    });
+                }
+            }];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error loading comment for blog: %@", error);
+        [self.managedObjectContext performBlock:^{
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
+    }];
+}
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success

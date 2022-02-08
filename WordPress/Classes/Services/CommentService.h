@@ -64,7 +64,13 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                      withStatus:(CommentStatusFilter)status
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure;
-    
+
+// Load a single comment
+- (void)loadCommentWithID:(NSNumber *_Nonnull)commentID
+                  forBlog:(Blog *_Nonnull)blog
+                  success:(void (^_Nullable)(Comment *_Nullable))success
+                  failure:(void (^_Nullable)(NSError *_Nullable))failure;
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success

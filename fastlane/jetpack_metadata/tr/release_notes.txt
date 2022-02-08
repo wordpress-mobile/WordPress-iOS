@@ -1,0 +1,18 @@
+Uygulamaya ortam kütüphaneniz için yalnızca sınırlı erişim mi verdiniz? Önemli değil, ayarlarınızı değiştirmek ve daha fazla erişime izin vermek istemeniz durumunda kullanmanız için medya seçiciye bir istem ekledik. İstem, kolay okunması için Dinamik Türde bile olabilmektedir.
+
+Ayrıca Etkinlik Günlüğü ve Gönderi Zamanlama takvimlerinde VoiceOver ve Dinamik Türü daha doğru hale getirdik. Bunun, daha iyi düzeyde görsel erişilebilirliğe ihtiyaç duyan kişiler için kullanıcı deneyimini iyileştirdiğini bildirmekten mutluluk duyuyoruz.
+
+Blok Düzenleyicide bazı faydalı güncellemeler yaptık.
+
+- Düğmeler blokunda düğmelerin sola, sağa veya merkeze yaslanmasını engelleyen bir sorunu çözdük.
+- Kapak bloklarında renk ayarları için çeviri ekledik.
+- Bir görsel seçtiğinizde artık size bir video küçük resmi gösterilmez; bunun tersi de geçerlidir.
+- Karışıklığı önlemek için desteklenmeyen blok düzenleyicinin sağ alt kısmındaki yardım butonunu gizledik.
+- Metin bloklarında farklı metin ve arka plan renkleri kullandığınızda, renk kombinasyonu bazı kişilerin okumasını zorlaştırıyorsa bir bildirim alırsınız.
+- Seçilmeyen metnin rengini değiştirirken kenarda meydana gelen birkaç sorunu düzelttik.
+
+Ayrıca birkaç küçük sorunla birlikte kilitlenme sorununu da çözdük.
+
+- Haftalık özet bildirimler artık gösteriliyor, bu da her şeyden haberdar olmayı kolaylaştırıyor.
+- Facebook hesabınızı Duyuru'ya bağladığınızda artık başarıyla oturum yapabileceksiniz.
+- Dosya adında telif hakkı sembolü olan görseller artık düzgün bir şekilde yüklenecek veya Paylaşım Sayfasında görünecektir.
