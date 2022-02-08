@@ -1,6 +1,7 @@
 import UIKit
 
 extension BlogDetailsViewController {
+
     @objc func quickActionsSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {}
@@ -12,6 +13,35 @@ extension BlogDetailsViewController {
 
     @objc func isAccessibilityCategoryEnabled() -> Bool {
         tableView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    @objc func configureQuickActions(cell: QuickActionsCell) {
+        let actionItems = createActionItems()
+
+        cell.configure(with: actionItems)
+    }
+
+    private func createActionItems() -> [ActionRow.Item] {
+        let actionItems: [ActionRow.Item] = [
+            .init(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showStats(from: .button)
+            },
+            .init(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showPostList(from: .button)
+            },
+            .init(image: .gridicon(.image), title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showMediaLibrary(from: .button)
+            },
+            .init(image: .gridicon(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showPageList(from: .button)
+            }
+        ]
+
+        return actionItems
     }
 }
 
