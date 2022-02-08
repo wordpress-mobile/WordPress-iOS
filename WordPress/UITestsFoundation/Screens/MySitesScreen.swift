@@ -13,7 +13,7 @@ public class MySitesScreen: ScreenObject {
     }
 
     let addSelfHostedSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Add self-hosted site"]
+        $0.buttons["INTRODUCED_FAILURE"]
     }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
