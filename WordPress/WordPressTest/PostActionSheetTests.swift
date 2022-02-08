@@ -61,7 +61,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Move to Draft", "Copy Link", "Delete Permanently"], options)
+        XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
     }
 
     func testPublishedPostOptionsWithView() {
