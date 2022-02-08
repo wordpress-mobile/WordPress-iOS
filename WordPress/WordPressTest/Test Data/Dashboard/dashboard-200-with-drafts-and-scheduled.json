@@ -1,0 +1,37 @@
+{
+    "posts": {
+        "has_published": true,
+        "draft": [{
+            "id": 3246,
+            "title": "Foo",
+            "content": "",
+            "featured_image": null,
+            "date": "2022-01-13 00:30:56"
+        }, {
+            "id": 3120,
+            "title": "Bar",
+            "content": "",
+            "featured_image": null,
+            "date": "2021-03-05 21:04:44"
+        }, {
+            "id": 3109,
+            "title": "Foobar",
+            "content": "",
+            "featured_image": null,
+            "date": "0000-00-00 00:00:00"
+        }],
+        "scheduled": [{
+            "id": 3109,
+            "title": "Foobar",
+            "content": "",
+            "featured_image": null,
+            "date": "0000-00-00 00:00:00"
+        }]
+    },
+    "todays_stats": {
+        "views": 0,
+        "visitors": 0,
+        "likes": 0,
+        "comments": 0
+    }
+}

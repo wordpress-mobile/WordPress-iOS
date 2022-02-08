@@ -25,6 +25,30 @@ class BlogDashboardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testCreateSectionForDraftsAndScheduled() {
+        let expect = expectation(description: "Parse drafts and scheduled")
+
+        service.fetch(wpComID: 123456) { snapshot in
+            // Drafts and Scheduled section exists
+            let draftsSection = snapshot.sectionIdentifiers.first(where:  { $0.subtype == "draft" })
+            let scheduledSection = snapshot.sectionIdentifiers.first(where:  { $0.subtype == "scheduled" })
+            XCTAssertNotNil(draftsSection)
+            XCTAssertNotNil(scheduledSection)
+
+            // The id is posts
+            XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection!).first?.id, .posts)
+
+            // For Drafts section, scheduled has 0 posts
+            XCTAssertEqual((snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["scheduled"] as? [Any])?.count, 0)
+
+            // For Scheduled, draft has 0 posts
+            XCTAssertEqual((snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["draft"] as? [Any])?.count, 0)
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
 }
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
@@ -34,6 +58,13 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     override func fetch(cards: [String], forBlogID blogID: Int, success: @escaping (NSDictionary) -> Void, failure: @escaping (Error) -> Void) {
         didCallWithBlogID = blogID
         didRequestCards = cards
-        success([:])
+
+        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: "dashboard-200-with-drafts-and-scheduled.json", withExtension: nil),
+        let data: Data = try? Data(contentsOf: fileURL),
+           let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
+            success(jsonObject as! NSDictionary)
+        } else {
+            success([:])
+        }
     }
 }
