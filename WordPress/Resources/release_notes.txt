@@ -1,25 +1,12 @@
-We solved a problem where self-hosted sites would crash while trying to upload media without an Internet connection. Big yikes, but big fix.
+* [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
+* [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
+* [***] Block editor: Font size and line-height support for text-based blocks used in block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4519]
+* [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
+* [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
+* [**] People: you can now manage Email Followers on the People section! [#17854]
+* [*] Stats: fix navigation between Stats tab. [#17856]
+* [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855]
+* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
+* [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]
+* [*] Site creation: The checkbox that appears when choosing a design no longer flickers when toggled. [#17868]
 
-Speaking of media, we know you might have given the app limited access to your media library. No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in Dynamic Type for easy reading.
-
-We also made VoiceOver and Dynamic Type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
-
-Big news for Comments: you can now follow a conversation using a button in the Comments header.
-
-We made some useful updates to the Block Editor.
-
-- We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
-- We added translation for color settings in Cover blocks.
-- Selecting an image will no longer show you a video thumbnail, and vice versa.
-- We hid the help button in the bottom right of the unsupported block editor to avoid confusion.
-- When you’re using different text and background colors in text blocks, you’ll get a notification if the color combo might make it hard for some people to read.
-- We fixed a handful of edge case problems when changing the color of non-selected text.
-
-We also solved a few smaller issues and crashes.
-
-- Weekly roundup notifications weren’t always being displayed for all users, but now they are.
-- The username selection screen is no longer loading twice.
-- When you connect your Facebook account to Publicize, you’ll now be logged in successfully.
-- Images with a copyright symbol in the file name will now upload or appear in the Share Sheet properly.
-
-Last but not least, we improved error messages on the login screen for self-hosted websites.
