@@ -40,6 +40,12 @@ class BlogDashboardService {
 
                     }
 
+                } else {
+                    let section = DashboardCardSection(id: card.rawValue)
+                    let item = DashboardCardModel(id: card)
+
+                    snapshot.appendSections([section])
+                    snapshot.appendItems([item], toSection: section)
                 }
 
             }

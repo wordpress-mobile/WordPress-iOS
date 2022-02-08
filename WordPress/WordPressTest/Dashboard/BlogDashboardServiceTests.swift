@@ -95,6 +95,27 @@ class BlogDashboardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testLocalCards() {
+        let expect = expectation(description: "Return local cards stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        service.fetch(wpComID: 123456) { snapshot in
+            // Quick Actions exists
+            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == "quickActions" }
+            XCTAssertEqual(quickActionsSection.count, 1)
+
+            // The item identifier id is quick actions
+            XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
+
+            // It doesn't have a data source
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.cellViewModel)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
 }
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
