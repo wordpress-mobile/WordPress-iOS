@@ -9,9 +9,7 @@ class BlogDashboardService {
     }
 
     func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void) {
-        let cardsToFetch: [String] = DashboardCard.allCases
-            .filter { $0.isRemote }
-            .map { $0.rawValue }
+        let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cards in
 

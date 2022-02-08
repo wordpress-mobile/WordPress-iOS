@@ -34,4 +34,14 @@ enum DashboardCard: String, CaseIterable {
             return DashboardStatsCardCell.self
         }
     }
+
+    /// All cards that are remote
+    static var remoteCases: [DashboardCard] {
+        return DashboardCard.allCases.filter { $0.isRemote }
+    }
+
+    /// All cards that are local
+    static var localCases: [DashboardCard] {
+        return DashboardCard.allCases.filter { !$0.isRemote }
+    }
 }
