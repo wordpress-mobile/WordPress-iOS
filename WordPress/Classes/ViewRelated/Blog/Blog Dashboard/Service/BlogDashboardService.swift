@@ -17,12 +17,31 @@ class BlogDashboardService {
 
             var snapshot = DashboardSnapshot()
 
-            if let posts = cards["posts"] as? NSDictionary,
-               let (sections, items) = self?.parsePostCard(posts) {
-                snapshot.appendSections(sections)
-                sections.enumerated().forEach { key, section in
-                    snapshot.appendItems([items[key]], toSection: section)
+            DashboardCard.allCases.forEach { card in
+
+                if card.isRemote {
+
+                    if card == .posts,
+                       let posts = cards[DashboardCard.posts.rawValue] as? NSDictionary,
+                       let (sections, items) = self?.parsePostCard(posts) {
+                        snapshot.appendSections(sections)
+                        sections.enumerated().forEach { key, section in
+                            snapshot.appendItems([items[key]], toSection: section)
+                        }
+                    } else {
+
+                        if let viewModel = cards[card.rawValue] {
+                            let section = DashboardCardSection(id: card.rawValue)
+                            let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary)
+
+                            snapshot.appendSections([section])
+                            snapshot.appendItems([item], toSection: section)
+                        }
+
+                    }
+
                 }
+
             }
 
             completion(snapshot)

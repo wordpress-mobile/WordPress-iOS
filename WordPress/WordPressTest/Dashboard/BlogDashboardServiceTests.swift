@@ -74,6 +74,27 @@ class BlogDashboardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testTodaysStats() {
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        service.fetch(wpComID: 123456) { snapshot in
+            // Drafts and Scheduled section exists
+            let todaysStatsSection = snapshot.sectionIdentifiers.filter { $0.id == "todays_stats" }
+            XCTAssertEqual(todaysStatsSection.count, 1)
+
+            // The item identifier id is todaysStats
+            XCTAssertEqual(snapshot.itemIdentifiers(inSection: todaysStatsSection.first!).first?.id, .todaysStats)
+
+            // Todays Stats has the correct data source
+            XCTAssertEqual(snapshot.itemIdentifiers(inSection: todaysStatsSection.first!).first?.cellViewModel, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
 }
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
