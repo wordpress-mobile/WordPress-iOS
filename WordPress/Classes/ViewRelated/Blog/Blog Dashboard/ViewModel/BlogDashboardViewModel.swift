@@ -16,7 +16,7 @@ class BlogDashboardViewModel {
     typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
     private let managedObjectContext: NSManagedObjectContext
-    private let blog: Blog
+    var blog: Blog
 
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)

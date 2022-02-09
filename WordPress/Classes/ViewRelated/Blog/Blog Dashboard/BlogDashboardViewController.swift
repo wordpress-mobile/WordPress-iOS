@@ -60,6 +60,12 @@ final class BlogDashboardViewController: UIViewController {
         activityIndicatorView.stopAnimating()
     }
 
+    func update(blog: Blog) {
+        self.blog = blog
+        viewModel.blog = blog
+        viewModel.start()
+    }
+
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
