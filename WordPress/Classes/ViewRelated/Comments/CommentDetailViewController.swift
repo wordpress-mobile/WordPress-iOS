@@ -43,28 +43,7 @@ class CommentDetailViewController: UIViewController {
     }
 
     private var replyID: Int32 {
-        didSet {
-            // toggle reply indicator cell visibility only when the value changes from 0 to any positive number, or vice versa.
-            if oldValue == 0 && replyID > 0 {
-                // show the reply indicator row.
-                // update the rows first so replyIndicator is present in `rows`.
-                configureRows()
-                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
-                    tableView.reloadData()
-                    return
-                }
-                tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
-
-            } else if oldValue > 0 && replyID == 0 {
-                // hide the reply indicator row.
-                // get the reply indicator row first before it is removed via `configureRows`.
-                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
-                    return
-                }
-                configureRows()
-                tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
-            }
-        }
+        return comment.replyID
     }
 
     private var isCommentReplied: Bool {
@@ -204,7 +183,6 @@ class CommentDetailViewController: UIViewController {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
-        self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -214,7 +192,6 @@ class CommentDetailViewController: UIViewController {
         self.comment = comment
         self.notification = notification
         self.managedObjectContext = managedObjectContext
-        self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -266,6 +243,7 @@ class CommentDetailViewController: UIViewController {
         self.isLastInList = isLastInList
         replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
+        refreshCommentReplyIfNeeded()
     }
 }
 
@@ -527,13 +505,39 @@ private extension CommentDetailViewController {
             self.comment.replyID = Int32(replyID)
             ContextManager.sharedInstance().saveContextAndWait(context)
 
-            // update local replyID to trigger table view updates.
-            self.replyID = self.comment.replyID
+            self.updateReplyIndicator()
 
         } failure: { error in
             DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
         }
 
+    }
+
+    func updateReplyIndicator() {
+
+        // If there is a reply, add reply indicator if it is not being shown.
+        if replyID > 0 && !rows.contains(.replyIndicator) {
+            // Update the rows first so replyIndicator is present in `rows`.
+            configureRows()
+            guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                tableView.reloadData()
+                return
+            }
+
+            tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+            return
+        }
+
+        // If there is not a reply, remove reply indicator if it is being shown.
+        if replyID == 0 && rows.contains(.replyIndicator) {
+            // Get the reply indicator row first before it is removed via `configureRows`.
+            guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                return
+            }
+
+            configureRows()
+            tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+        }
     }
 
     // MARK: Actions and navigations
