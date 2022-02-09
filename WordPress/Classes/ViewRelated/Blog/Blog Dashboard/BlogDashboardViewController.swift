@@ -83,15 +83,37 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
-            return self.createQuickLinksSection()
+            if sectionIndex == 0 {
+                return self.createQuickActionsLayoutSection()
+            } else {
+                return self.createDefaultLayoutSection()
+            }
         }
-        return layout
     }
 
-    private func createQuickLinksSection() -> NSCollectionLayoutSection {
+    private func createQuickActionsLayoutSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(Constants.estimatedWidth),
+                                              heightDimension: .estimated(Constants.estimatedHeight))
+
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
+                                                        leading: Constants.sectionInset,
+                                                        bottom: 0,
+                                                        trailing: Constants.sectionInset)
+        section.interGroupSpacing = Constants.interGroupSpacing
+        section.orthogonalScrollingBehavior = .continuous
+
+        return section
+    }
+
+    private func createDefaultLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
@@ -113,8 +135,9 @@ extension BlogDashboardViewController {
 extension BlogDashboardViewController {
 
     private enum Constants {
+        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 16
-        static let interGroupSpacing: CGFloat = 8
+        static let sectionInset: CGFloat = 20
+        static let interGroupSpacing: CGFloat = 12
     }
 }
