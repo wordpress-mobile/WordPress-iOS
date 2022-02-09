@@ -366,15 +366,19 @@ private extension StatsInsightsStore {
 
     func refreshInsights(forceRefresh: Bool = false) {
         guard shouldFetchOverview() else {
-            DDLogInfo("Stats Insights Overview refresh triggered while one was in progress.")
+            DDLogInfo("Stats: Insights Overview refresh triggered while one was in progress.")
             return
         }
 
         if FeatureFlag.statsPerformanceImprovements.enabled {
             guard forceRefresh || hasCacheExpired else {
-                DDLogInfo("Stats Insights Overview refresh requested but we still have valid cache data.")
+                DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
                 return
             }
+        }
+
+        if forceRefresh {
+            DDLogInfo("Stats: Forcing an Insights refresh.")
         }
 
         persistToCoreData()
@@ -721,8 +725,9 @@ private extension StatsInsightsStore {
         let interval = Date().timeIntervalSince(date)
         let expired = interval > StatsInsightsStore.cacheTTL
 
-        DDLogInfo("Insights: Has cache for site \(siteID) expired? \(expired)")
-        DDLogInfo("Insights: Seconds since last refresh: \(interval) (TTL: \(StatsInsightsStore.cacheTTL))")
+        let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
+        DDLogInfo("Stats: Insights cache for site \(siteID) \(expired ? "has " : "")expired \(intervalLogMessage)")
+
         return expired
     }
 
