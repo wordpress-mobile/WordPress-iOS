@@ -13,8 +13,6 @@ class BlogDashboardViewModel {
         case posts
     }
 
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
-
     private let managedObjectContext: NSManagedObjectContext
     private let blog: Blog
 
