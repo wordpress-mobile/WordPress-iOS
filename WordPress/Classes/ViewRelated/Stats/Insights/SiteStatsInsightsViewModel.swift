@@ -59,9 +59,7 @@ class SiteStatsInsightsViewModel: Observable {
     /// of a pull to refresh action), you can pass a `forceRefresh` value of `true` here.
     ///
     func refreshInsights(forceRefresh: Bool = false) {
-        if !insightsStore.isFetchingOverview {
-            ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
-        }
+        ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
     }
 
     // MARK: - Table Model
@@ -71,7 +69,7 @@ class SiteStatsInsightsViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         if insightsToShow.isEmpty ||
-            (insightsStore.fetchingFailed(for: .insights) && !containsCachedData()) {
+            (fetchingFailed() && !containsCachedData()) {
             return ImmuTable.Empty
         }
 
