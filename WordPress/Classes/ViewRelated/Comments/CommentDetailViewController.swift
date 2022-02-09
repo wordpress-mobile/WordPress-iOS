@@ -1,7 +1,8 @@
 import UIKit
 import CoreData
 
-@objc protocol CommentDetailsDelegate: AnyObject {
+
+@objc protocol CommentDetailsModerationDelegate: AnyObject {
     func nextCommentSelected()
 }
 
@@ -23,7 +24,7 @@ class CommentDetailViewController: UIViewController {
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
-    @objc weak var delegate: CommentDetailsDelegate?
+    @objc weak var moderationDelegate: CommentDetailsModerationDelegate?
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
@@ -838,7 +839,7 @@ private extension CommentDetailViewController {
         }
 
         WPAnalytics.track(.commentSnackbarNext)
-        delegate?.nextCommentSelected()
+        moderationDelegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
