@@ -467,7 +467,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         guard canAddSelfHostedSite else {
             addSite()
-            return;
+            return
         }
         let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
                                                                   canCreateWPComSite: defaultAccount() != nil,
