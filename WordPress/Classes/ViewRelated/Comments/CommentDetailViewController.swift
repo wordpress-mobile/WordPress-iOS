@@ -264,6 +264,7 @@ class CommentDetailViewController: UIViewController {
     @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
         self.comment = comment
         self.isLastInList = isLastInList
+        replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
     }
 }
