@@ -38,7 +38,15 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
+        guard let dataModel = dataModel else {
+            return
+        }
 
+        let title = dataModel["title"] as? String
+        let icon = dataModel["icon"] as? UIImage
+
+        titleLabel.text = title
+        iconView.image = icon
     }
 }
 

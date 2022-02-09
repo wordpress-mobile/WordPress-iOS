@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import WordPressKit
 
 class BlogDashboardService {
@@ -39,13 +40,20 @@ class BlogDashboardService {
                     }
 
                 } else {
-                    let section = DashboardCardSection(id: card.rawValue)
-                    let item = DashboardCardModel(id: card)
 
-                    snapshot.appendSections([section])
-                    snapshot.appendItems([item], toSection: section)
+                    if card == .quickActions, let items = self?.createQuickActionsItems() {
+                        let section = DashboardCardSection(id: card.rawValue)
+                        snapshot.appendSections([section])
+                        snapshot.appendItems(items, toSection: section)
+                    } else {
+                        let section = DashboardCardSection(id: card.rawValue)
+                        let item = DashboardCardModel(id: card)
+
+                        snapshot.appendSections([section])
+                        snapshot.appendItems([item], toSection: section)
+                    }
+
                 }
-
             }
 
             completion(snapshot)
@@ -91,5 +99,21 @@ private extension BlogDashboardService {
         }
 
         return (sections, items)
+    }
+
+    func createQuickActionsItems() -> [DashboardCardModel] {
+        let stats = createQuickActionsCardModel(title: "Stats", icon: .gridicon(.statsAlt))
+        let posts = createQuickActionsCardModel(title: "Posts", icon: .gridicon(.posts))
+        let media = createQuickActionsCardModel(title: "Media", icon: .gridicon(.image))
+        let pages = createQuickActionsCardModel(title: "Pages", icon: .gridicon(.pages))
+        return [stats, posts, media, pages]
+    }
+
+    func createQuickActionsCardModel(title: String, icon: UIImage) -> DashboardCardModel {
+        let viewModel = [
+            "title": title,
+            "icon": icon
+        ] as NSDictionary
+        return DashboardCardModel(id: .quickActions, cellViewModel: viewModel)
     }
 }
