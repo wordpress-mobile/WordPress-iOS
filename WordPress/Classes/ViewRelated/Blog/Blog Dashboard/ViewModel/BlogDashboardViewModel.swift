@@ -8,11 +8,6 @@ typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardCard
 class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
-    enum Section: CaseIterable {
-        case quickLinks
-        case posts
-    }
-
     private let managedObjectContext: NSManagedObjectContext
     private let blog: Blog
 
