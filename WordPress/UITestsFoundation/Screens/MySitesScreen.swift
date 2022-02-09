@@ -47,11 +47,8 @@ public class MySitesScreen: ScreenObject {
     }
 
     public func closeModalIfNeeded() {
-        if addSelfHostedSiteButtonGetter(app).isHittable {
-            navigateBack()
-        }
-        if cancelButtonGetter(app).isHittable {
-            cancelButtonGetter(app).tap()
-        }
+        if addSelfHostedSiteButtonGetter(app).isHittable && XCUIDevice.isPhone { app.buttons["Cancel"].tap() }
+        if addSelfHostedSiteButtonGetter(app).isHittable && XCUIDevice.isPad { navigateBack() }
+        if cancelButtonGetter(app).isHittable { cancelButtonGetter(app).tap() }
     }
 }
