@@ -1,5 +1,11 @@
 import UIKit
 
+typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
+
+protocol BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?)
+}
+
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
@@ -57,8 +63,9 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
-        collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
-        collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
+        DashboardCard.allCases.forEach {
+            collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
+        }
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
