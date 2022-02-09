@@ -48,7 +48,7 @@ public class MySitesScreen: ScreenObject {
 
     public func closeModalIfNeeded() {
         if addSelfHostedSiteButtonGetter(app).isHittable {
-            addSelfHostedSiteButtonGetter(app).tap()
+            navigateBack()
         }
         if cancelButtonGetter(app).isHittable {
             cancelButtonGetter(app).tap()
