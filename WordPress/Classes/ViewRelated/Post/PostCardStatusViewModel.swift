@@ -18,6 +18,7 @@ class PostCardStatusViewModel: NSObject {
         case trash
         case cancelAutoUpload
         case share
+        case copyLink
     }
 
     struct ButtonGroups: Equatable {
@@ -188,6 +189,10 @@ class PostCardStatusViewModel: NSObject {
 
             if post.status != .draft {
                 buttons.append(.moveToDraft)
+            }
+
+            if post.status != .trash {
+                buttons.append(.copyLink)
             }
 
             buttons.append(.trash)

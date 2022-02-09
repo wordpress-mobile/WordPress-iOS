@@ -3,6 +3,7 @@ import Gridicons
 import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
+import WordPressFlux
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -1059,6 +1060,15 @@ class AbstractPostListViewController: UIViewController,
 
             strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
+    }
+
+    @objc func copyPostLink(_ apost: AbstractPost) {
+        let pasteboard = UIPasteboard.general
+        guard let link = apost.permaLink else { return }
+        pasteboard.string = link as String
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+        let notice = Notice(title: noticeTitle, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
