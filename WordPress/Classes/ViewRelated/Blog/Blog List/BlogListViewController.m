@@ -998,6 +998,12 @@ static NSInteger HideSearchMinSites = 3;
         BOOL canCreateWPComSite = [self defaultWordPressComAccount] ? YES : NO;
         BOOL canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton;
 
+        // Launch directly into the add site process if we're only going to show one button
+        if(canCreateWPComSite && !canAddSelfHostedSite) {
+            [self launchSiteCreation];
+            return;
+        }
+
         UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site" canCreateWPComSite:canCreateWPComSite createWPComSite:^{
             [self launchSiteCreation];
         } canAddSelfHostedSite:canAddSelfHostedSite addSelfHostedSite:^{
