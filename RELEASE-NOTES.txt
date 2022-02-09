@@ -1,3 +1,7 @@
+19.3
+-----
+
+
 19.2
 -----
 * [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
@@ -7,7 +11,10 @@
 * [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
 * [**] People: you can now manage Email Followers on the People section! [#17854]
 * [*] Stats: fix navigation between Stats tab. [#17856]
-* [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855] 
+* [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855]
+* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
+* [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]
+* [*] Site creation: The checkbox that appears when choosing a design no longer flickers when toggled. [#17868]
 
 19.1
 -----

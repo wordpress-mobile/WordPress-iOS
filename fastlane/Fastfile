@@ -947,7 +947,10 @@ def read_version_from_config
 end
 
 def ensure_sentry_installed
-    UI.user_error('sentry-cli not installed') unless sh('command -v sentry-cli')
+  # This is an action provided by the Sentry Fastlane plugin that verifies the
+  # CLI is installed and its version is compatible with the plugin's
+  # expectation.
+  sentry_check_cli_installed
 end
 
 # This function is Buildkite-specific

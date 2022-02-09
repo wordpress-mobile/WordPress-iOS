@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-02 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-02-03 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "ドメインを追加";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "左下のツールバーにある + アイコンをタップすることで、いつでも新しいブロックを追加できます。 ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "インストール型サイトを追加";
@@ -709,7 +709,7 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "クラッシュログを常に送信";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "HTTP エラーコード%iが返されました。";
+"An HTTP error code %i was returned." = "HTTP エラーコード %i が返されました。";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "HTTP エラーコードが返されました。";
@@ -875,6 +875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "この投稿を本当にゴミ箱へ移動してよいですか ?";
+
+/* Title of message shown when user taps continue during homepage editing in site creation. */
+"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "更新してもよいですか ?";
@@ -1093,6 +1096,9 @@ translators: Block name. %s: The localized block name */
 /* Create new Blog Post button title */
 "Blog post" = "ブログ投稿";
 
+/* Blog's Email Follower Profile. Displayed when the name is empty! */
+"Blog's Email Follower" = "Blog's Email Follower";
+
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "ブログのフォロワー";
 
@@ -1193,7 +1199,6 @@ translators: Block name. %s: The localized block name */
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1221,6 +1226,7 @@ translators: Block name. %s: The localized block name */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
+   Cancels the mark all as read action.
    Dismiss the post action sheet
    Editing GIF alert cancel action button.
    Label for a cancel button
@@ -1792,6 +1798,7 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "コンテンツの構造\nブロック数 : %1$li、単語数 : %2$li、文字数 : %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -2233,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "非承認";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "画像の目的を説明してください。画像が純粋に装飾的なものの場合は、空のままにします。";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2644,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "メールアドレス";
 
+/* Blog Email Followers */
+"Email Followers" = "Email Followers";
+
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2989,6 +2999,9 @@ translators: Block name. %s: The localized block name */
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "メディアのエクスポートに失敗しました";
 
+/* Message for mark all as read success notice */
+"Failed marking Notifications as read" = "Failed marking Notifications as read";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "音声ファイルの挿入に失敗しました。";
 
@@ -3028,9 +3041,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "アイキャッチ画像";
-
-/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "アイキャッチ画像はすでに設定されています";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "アイキャッチ画像のオプション";
@@ -3235,6 +3245,12 @@ translators: Block name. %s: The localized block name */
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "フルサイズ";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
+"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
+"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3520,9 +3536,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "アイコンを更新できませんでした";
-
-/* First line of remove follower warning in confirmation dialog. */
-"If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "削除すると、このフォロワーが再度フォローしない限り、このサイトの通知を受け取れなくなります。";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "すでにサイトがある場合は、無料の Jetpack プラグインをインストールし、WordPress.com アカウントに接続する必要があります。";
@@ -3834,6 +3847,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "ブログ投稿を継続し、サイトの訪問者を調べましょう。";
+
+/* Button to cancel the replacement of a featured image. */
+"Keep current" = "Keep current";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "続行する 「いいね」やコメントは、ネットワークを作るのに良い方法です。 他の投稿を探すには「Reader」に移動します。";
@@ -4174,11 +4190,20 @@ translators: Block name. %s: The localized block name */
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "マッピング済みドメイン";
 
+/* Marks all notifications under the filter as read */
+"Mark All As Read" = "Mark All As Read";
+
 /* Marks a notification as unread */
 "Mark Read" = "既読にする";
 
 /* Marks a notification as unread */
 "Mark Unread" = "未読にする";
+
+/* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
+"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+
+/* Confirmation title for marking all notifications as read. */
+"Mark all notifications as read?" = "Mark all notifications as read?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "スパムとしてマーク";
@@ -4832,6 +4857,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "未読通知";
 
+/* Title for mark all as read success notice */
+"Notifications marked as read" = "Notifications marked as read";
+
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "通知する";
 
@@ -4862,6 +4890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Confirmation of action
    Default action
    Dismisses the alert
+   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
@@ -5497,6 +5526,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title on display preview error */
 "Preview Unavailable" = "プレビューは利用できません";
 
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"Preview media" = "Preview media";
+
 /* No comment provided by engineer. */
 "Preview page" = "固定ページをプレビュー";
 
@@ -5779,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove @%@" = "@%@ を削除";
+"Remove %@" = "Remove %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "アイキャッチ画像を削除";
@@ -5841,17 +5873,24 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「次のステップ」を削除すると、このサイトのすべてのツアーが非表示になります。この操作を元に戻すことはできません。";
 
+/* First line of remove email follower warning in confirmation dialog.
+   First line of remove follower warning in confirmation dialog. */
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "%@に更新";
-
-/* Button to confirm the replacement of a featured image. */
-"Replace" = "置換";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "現在のブロックを置き換え";
 
 /* No comment provided by engineer. */
 "Replace audio" = "音声ファイルを置換";
+
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Replace current featured image?" = "Replace current featured image?";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace featured image" = "Replace featured image";
 
 /* No comment provided by engineer. */
 "Replace file" = "ファイルを置換";
@@ -6267,7 +6306,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "国名を選択";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "もっと選択";
+"Select More" = "さらに選択";
 
 /* Blog Picker's Title */
 "Select Site" = "サイトを選択";
@@ -6333,10 +6372,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "選択したメディアがありません。";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "選択した範囲: %1$@ のみ";
+"Selected range: %1$@ only" = "選択した範囲: %1$@のみ";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "選択した範囲: %1$@ 〜 %2$@";
+"Selected range: %1$@ to %2$@" = "選択した範囲: %1$@〜%2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -7038,7 +7077,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "タップして投稿のタグを折りたたむ";
 
-/* Accessibility hint */
+/* Accessibility hint
+   Accessibility hint to customize insights */
 "Tap to customize insights" = "タップして統計概要をカスタマイズします";
 
 /* Accessibility hint */
@@ -7046,6 +7086,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "タップしてリファラーの Web ページを表示します。";
+
+/* Accessibility hint prompting the user to tap a table row to edit its value. */
+"Tap to edit" = "Tap to edit";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "タップしてカスタム値を入力";
@@ -7058,6 +7101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as spam." = "タップしてリファラーをスパムとしてマークします。";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "タップして再試行";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "タップしてこの投稿のすべてのフラグを表示";
@@ -7073,6 +7119,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "タップして別のサイトに切り替え、または新しいサイトを追加";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"Tap to view media in full screen" = "Tap to view media in full screen";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "タップしてこのフラグが付いた投稿を表示";
@@ -7819,7 +7868,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "現在はページを読み込めません。";
 
-/* Title for No results full page screen displayedfrom post list when there is no connection */
+/* Message for when posts fail to load on the dashboard
+   Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "今は投稿を読み込めません。";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
@@ -8857,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "昨日";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "アイキャッチ画像はすでに設定されています。 他の画像に変更しますか ?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "ユーザー名を変更しようとしています。現在のユーザー名は %1$@ です。%2$@";
@@ -8915,6 +8965,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "メディアファイルがありません。";
+
+/* Displayed when the user views the dashboard posts card but they have no posts */
+"You don't have any posts" = "You don't have any posts";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "予約済みページはありません";
@@ -9181,6 +9234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "作成者: %@";
 
+/* Displayed in the confirmation alert when marking comment notifications as read. */
+"comment" = "comment";
+
 /* The menu item to select during a guided tour. */
 "connections" = "連携";
 
@@ -9201,8 +9257,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* Noun. Describes a site's follower. */
-"follower" = "フォロワー";
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"follow" = "follow";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
@@ -9221,6 +9277,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Later today */
 "later today" = "今日あとで";
+
+/* Displayed in the confirmation alert when marking like notifications as read. */
+"like" = "like";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "スパムとしてマーク";
@@ -9249,14 +9308,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "スパムとしてのマークを解除";
 
-/* Noun. Describes a site's user. */
-"user" = "ユーザー";
+/* Displayed in the confirmation alert when marking unread notifications as read. */
+"unread" = "unread";
 
 /* Label displayed on video media items. */
 "video" = "動画";
-
-/* Noun. Describes a site's viewer. */
-"viewer" = "読者";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "ドキュメントページに移動する";
