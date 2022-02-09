@@ -27,7 +27,7 @@ enum DashboardCard: String, CaseIterable {
     var cell: DashboardCollectionViewCell.Type {
         switch self {
         case .quickActions:
-            return HostCollectionViewCell<QuickLinksView>.self
+            return DashboardQuickActionsCardCell.self
         case .posts:
             return DashboardPostsCardCell.self
         case .todaysStats:
