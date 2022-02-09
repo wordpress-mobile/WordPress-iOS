@@ -12,12 +12,11 @@ import UIKit
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
     private var errorView: DashboardCardInnerErrorView?
+    private var status: BasePost.Status = .draft
 
-    var status: BasePost.Status = .draft
-
-    // TODO: add status as an init param
-    @objc init(blog: Blog) {
+    init(blog: Blog, status: BasePost.Status) {
         self.blog = blog
+        self.status = status
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,6 +41,12 @@ import UIKit
         tableView.dataSource = viewModel
         tableView.delegate = self
         viewModel.refresh()
+    }
+
+    func update(blog: Blog, status: BasePost.Status) {
+        self.blog = blog
+        self.status = status
+        viewModel?.update(blog: blog, status: status)
     }
 }
 
