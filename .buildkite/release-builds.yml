@@ -15,7 +15,7 @@ common_params:
 steps:
 
   - label: "🛠 WordPress Release Build (App Store Connect)"
-    command: ".buildkite/commands/release-build-wordpress.sh"
+    command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
     env: *common_env
     plugins: *common_plugins
     notify:
