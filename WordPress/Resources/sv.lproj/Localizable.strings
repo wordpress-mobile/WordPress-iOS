@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-31 19:34:41+0000 */
+/* Translation-Revision-Date: 2022-02-08 12:26:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Lägg till en domän";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
@@ -876,6 +876,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Är du säker på att du vill radera detta inlägg?";
 
+/* Title of message shown when user taps continue during homepage editing in site creation. */
+"Are you sure you want to update your homepage?" = "Är du säker på att du vill uppdatera startsidan?";
+
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Är du säker på att du vill uppdatera?";
 
@@ -1093,6 +1096,9 @@ translators: Block name. %s: The localized block name */
 /* Create new Blog Post button title */
 "Blog post" = "Blogginlägg";
 
+/* Blog's Email Follower Profile. Displayed when the name is empty! */
+"Blog's Email Follower" = "E-postprenumerant för blogg";
+
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Bloggens följare";
 
@@ -1193,7 +1199,6 @@ translators: Block name. %s: The localized block name */
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1221,6 +1226,7 @@ translators: Block name. %s: The localized block name */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
+   Cancels the mark all as read action.
    Dismiss the post action sheet
    Editing GIF alert cancel action button.
    Label for a cancel button
@@ -1792,6 +1798,7 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Innehållsstruktur\nBlock: %1$li, Ord: %2$li, Tecken: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -2233,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Neka";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Beskriv bildens syfte. Lämna tomt om bilden endast har dekorativ funktion.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Beskriv bildens syfte. Lämna tomt om bilden endast har dekorativ funktion.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2644,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-postadress";
 
+/* Blog Email Followers */
+"Email Followers" = "Skicka e-post till följare";
+
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2989,6 +2999,9 @@ translators: Block name. %s: The localized block name */
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "Export av mediafil misslyckades";
 
+/* Message for mark all as read success notice */
+"Failed marking Notifications as read" = "Lyckades inte markera aviseringarna som lästa";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "Misslyckades att infoga ljudfil.";
 
@@ -3028,9 +3041,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Utvald bild";
-
-/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Utvald bild är redan angett";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Alternativ för utvald bild";
@@ -3235,6 +3245,12 @@ translators: Block name. %s: The localized block name */
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Full storlek";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
+"Fullscreen view of image %@. Double tap to dismiss" = "Fullskärmsvy av bilden %@. Dubbeltryck för att stänga";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
+"Fullscreen view of image. Double tap to dismiss" = "Fullskärmsvy av bild. Dubbeltryck för att stänga";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3520,9 +3536,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Uppladdning av ikon misslyckades";
-
-/* First line of remove follower warning in confirmation dialog. */
-"If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Om denna följare tas bort kommer han\/hon inte längre att få några notifieringar från denna webbplats, om inte han\/hon börjar följa webbplatsen på nytt.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Om du redan har en webbplats behöver du installera gratis-tillägget Jetpack och koppla det till ditt konto hos WordPress.com.";
@@ -3834,6 +3847,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Fortsätt blogga och återkom senare för att hålla kolla på besökarna till din webbplats.";
+
+/* Button to cancel the replacement of a featured image. */
+"Keep current" = "Behåll den nuvarande";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Fortsätt så! Man kan på ett bra sätt utöka sitt nätverk genom att gilla och kommentera. Du hittar fler inlägg om du går till läsaren.";
@@ -4174,11 +4190,20 @@ translators: Block name. %s: The localized block name */
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Ompekad domän";
 
+/* Marks all notifications under the filter as read */
+"Mark All As Read" = "Markera allt som läst";
+
 /* Marks a notification as unread */
 "Mark Read" = "Markera som läst";
 
 /* Marks a notification as unread */
 "Mark Unread" = "Markera som oläst";
+
+/* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
+"Mark all %1$@ notifications as read?" = "Vill du markera alla %1$@-aviseringar som lästa?";
+
+/* Confirmation title for marking all notifications as read. */
+"Mark all notifications as read?" = "Markera alla aviseringar som lästa?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Markera som skräp";
@@ -4832,6 +4857,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Olästa notiser";
 
+/* Title for mark all as read success notice */
+"Notifications marked as read" = "Aviseringar har markerats som lästa";
+
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Avisera mig";
 
@@ -4862,6 +4890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Confirmation of action
    Default action
    Dismisses the alert
+   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
@@ -5497,6 +5526,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title on display preview error */
 "Preview Unavailable" = "Förhandsvisning inte tillgänglig";
 
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"Preview media" = "Förhandsvisa media";
+
 /* No comment provided by engineer. */
 "Preview page" = "Förhandsgranska sidan";
 
@@ -5779,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove @%@" = "Ta bort @%@";
+"Remove %@" = "Ta bort %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Ta bort utvald bild";
@@ -5841,17 +5873,24 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "När du tar bort återstående steg döljer detta alla rundvisningar på denna webbplats Åtgärden kan inte ångras.";
 
+/* First line of remove email follower warning in confirmation dialog.
+   First line of remove follower warning in confirmation dialog. */
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Borttagning av följare gör att de slutar ta emot uppdateringar från din webbplats. Om de vill, kan de fortfarande besöka din webbplats och följa den igen.";
+
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Förnyas %@";
-
-/* Button to confirm the replacement of a featured image. */
-"Replace" = "Ersätt";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ersätt aktuellt block";
 
 /* No comment provided by engineer. */
 "Replace audio" = "Ersätt ljudfilen";
+
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Replace current featured image?" = "Vill du ersätta den utvalda bilden?";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace featured image" = "Ersätt den utvalda bilden";
 
 /* No comment provided by engineer. */
 "Replace file" = "Ersätt filen";
@@ -7038,7 +7077,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Tryck här för att minimera inläggets etiketter";
 
-/* Accessibility hint */
+/* Accessibility hint
+   Accessibility hint to customize insights */
 "Tap to customize insights" = "Tryck för att anpassa insikterna";
 
 /* Accessibility hint */
@@ -7046,6 +7086,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "Tryck för att visa sidan som länkade.";
+
+/* Accessibility hint prompting the user to tap a table row to edit its value. */
+"Tap to edit" = "Tryck för att ändra";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Knacka för att mata in ett anpassat värde";
@@ -7058,6 +7101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as spam." = "Tryck för att märka den länkande sidan som skräp.";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "Tryck för att försöka igen";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Tryck här för att se inläggets alla etiketter";
@@ -7073,6 +7119,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Tryck för att växla till någon annan webbplats eller lägga till en ny.";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"Tap to view media in full screen" = "Tryck för att visa media i fullskärmsläge";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tryck här för att visa inlägg med denna etikett";
@@ -7819,7 +7868,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Kan inte ladda sidor just nu.";
 
-/* Title for No results full page screen displayedfrom post list when there is no connection */
+/* Message for when posts fail to load on the dashboard
+   Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Kan inte ladda inlägg just nu.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
@@ -8857,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "I går";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "Du har redan en utvald bild angiven. Vill du ersätta den?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "En utvald bild finns redan anguiven. Vill du ersätta den med den nya bilden?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du är på väg att ändra ditt användarnamn, som för närvarande är %1$@. %2$@";
@@ -8915,6 +8965,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Du har inga mediafiler.";
+
+/* Displayed when the user views the dashboard posts card but they have no posts */
+"You don't have any posts" = "Du har inga inlägg";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Du har inga schemalagda sidor";
@@ -9181,6 +9234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "av %@";
 
+/* Displayed in the confirmation alert when marking comment notifications as read. */
+"comment" = "kommentera";
+
 /* The menu item to select during a guided tour. */
 "connections" = "anslutningar";
 
@@ -9201,8 +9257,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* Noun. Describes a site's follower. */
-"follower" = "följare";
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"follow" = "följ";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/min-webbplats-adress (URL)";
@@ -9221,6 +9277,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Later today */
 "later today" = "senare idag";
+
+/* Displayed in the confirmation alert when marking like notifications as read. */
+"like" = "gilla";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "markerad som skräppost";
@@ -9249,14 +9308,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "spammarkering borttagen";
 
-/* Noun. Describes a site's user. */
-"user" = "användare";
+/* Displayed in the confirmation alert when marking unread notifications as read. */
+"unread" = "ej läst";
 
 /* Label displayed on video media items. */
 "video" = "video";
-
-/* Noun. Describes a site's viewer. */
-"viewer" = "tittare";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "besök vår dokumentationssida";
