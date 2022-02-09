@@ -1001,7 +1001,7 @@ static NSInteger HideSearchMinSites = 3;
         // Launch directly into the add site process if we're only going to show one button
         if(canCreateWPComSite && !canAddSelfHostedSite) {
             [self launchSiteCreation];
-            return;
+            return
         }
 
         UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site" canCreateWPComSite:canCreateWPComSite createWPComSite:^{
