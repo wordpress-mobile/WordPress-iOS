@@ -8,31 +8,41 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             return
         }
 
-        /// Create the child VC in case it doesn't exist
+        /// Create the Child VC in case it doesn't exist
         if postsViewController == nil {
-            let postsViewController = PostsCardViewController(blog: blog)
+            let postsViewController = PostsCardViewController(blog: blog, status: .draft)
             self.postsViewController = postsViewController
-            showDraftsOrScheduled(dataModel)
 
-            // Embed in this cell and configure as a child VC
-            viewController.addChild(postsViewController)
-            contentView.addSubview(postsViewController.view)
-            postsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            contentView.pinSubviewToAllEdges(postsViewController.view)
-            postsViewController.didMove(toParent: viewController)
+            // Update with the correct blog and status
+            updatePosts(dataModel, blog: blog)
+
+            embedChildPostsViewController(to: viewController)
         } else {
-            showDraftsOrScheduled(dataModel)
+            updatePosts(dataModel, blog: blog)
         }
     }
 
-    private func showDraftsOrScheduled(_ dataModel: NSDictionary) {
+    /// Updates the child VC to display draft or scheduled based on the dataModel
+    private func updatePosts(_ dataModel: NSDictionary, blog: Blog) {
         let hasDrafts = dataModel["show_drafts"] as? Bool ?? false
         let hasScheduled = dataModel["show_scheduled"] as? Bool ?? false
 
         if hasDrafts {
-            postsViewController?.status = .draft
+            postsViewController?.update(blog: blog, status: .draft)
         } else if hasScheduled {
-            postsViewController?.status = .scheduled
+            postsViewController?.update(blog: blog, status: .scheduled)
         }
+    }
+
+    private func embedChildPostsViewController(to viewController: UIViewController) {
+        guard let postsViewController = postsViewController else {
+            return
+        }
+
+        viewController.addChild(postsViewController)
+        contentView.addSubview(postsViewController.view)
+        postsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdges(postsViewController.view)
+        postsViewController.didMove(toParent: viewController)
     }
 }
