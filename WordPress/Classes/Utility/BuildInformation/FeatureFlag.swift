@@ -79,7 +79,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .notificationCommentDetails:
             return false
         case .statsPerformanceImprovements:
-            return true
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
