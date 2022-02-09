@@ -104,10 +104,10 @@ private extension NotificationCommentDetailCoordinator {
         updateNavigationButtonStates()
     }
 
-    func updateViewWith(newNotification: Notification) {
-        if newNotification.kind == .comment {
-            trackDetailsOpened(for: newNotification)
-            configureWith(notification: newNotification)
+    func updateViewWith(notification: Notification) {
+        if notification.kind == .comment {
+            trackDetailsOpened(for: notification)
+            configureWith(notification: notification)
             refreshViewController()
         } else {
             // TODO: handle other notification type
@@ -171,7 +171,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNaviga
               }
 
         WPAnalytics.track(.notificationsPreviousTapped)
-        updateViewWith(newNotification: previousNotification)
+        updateViewWith(notification: previousNotification)
     }
 
     func nextNotificationTapped(current: Notification?) {
@@ -181,7 +181,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNaviga
               }
 
         WPAnalytics.track(.notificationsNextTapped)
-        updateViewWith(newNotification: nextNotification)
+        updateViewWith(notification: nextNotification)
     }
 
 }
