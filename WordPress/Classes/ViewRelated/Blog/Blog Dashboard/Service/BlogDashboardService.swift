@@ -82,8 +82,12 @@ private extension BlogDashboardService {
             sections.append(DashboardCardSection(id: "posts", subtype: "scheduled"))
             items.append(DashboardCardModel(id: .posts, cellViewModel: scheduled as NSDictionary?))
         } else {
+            var postsWithFlags = posts.copy() as? [String: Any]
+            postsWithFlags?["show_drafts"] = hasDrafts
+            postsWithFlags?["show_scheduled"] = hasScheduled
+
             sections.append(DashboardCardSection(id: "posts"))
-            items.append(DashboardCardModel(id: .posts, cellViewModel: posts))
+            items.append(DashboardCardModel(id: .posts, cellViewModel: postsWithFlags as NSDictionary?))
         }
 
         return (sections, items)

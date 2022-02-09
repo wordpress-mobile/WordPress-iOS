@@ -65,7 +65,7 @@ class BlogDashboardServiceTests: XCTestCase {
             // The item identifier id is posts
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.id, .posts)
 
-            // For Drafts section, showScheduled is nil
+            // For Drafts section, showScheduled is false
             XCTAssertFalse(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["show_scheduled"] as! Bool)
 
             // For Drafts section, scheduled has 1 post
