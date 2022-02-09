@@ -19,9 +19,11 @@ class PostsCardViewModel: NSObject {
 
     private let postService: PostService
 
-    private let postListFilter: PostListFilter
+    private var postListFilter: PostListFilter = PostListFilter.draftFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
+
+    private var status: BasePost.Status = .draft
 
     private weak var viewController: PostsCardView?
 
@@ -30,15 +32,7 @@ class PostsCardViewModel: NSObject {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
-
-        switch status {
-        case .draft:
-            self.postListFilter = PostListFilter.draftFilter()
-        case .scheduled:
-            self.postListFilter = PostListFilter.scheduledFilter()
-        default:
-            fatalError("Post status not supported")
-        }
+        self.status = status
 
         super.init()
     }
@@ -60,9 +54,7 @@ class PostsCardViewModel: NSObject {
 
     /// Set up the view model to be ready for use
     func viewDidLoad() {
-        viewController?.showLoading()
-        createFetchedResultsController()
-        sync()
+        performInitialLoading()
     }
 
     /// Return the post at the given IndexPath
@@ -74,13 +66,28 @@ class PostsCardViewModel: NSObject {
     func currentPostStatus() -> String {
         postListFilter.title
     }
+
+    /// Update currently displayed posts for the given blog and status
+    func update(blog: Blog, status: BasePost.Status) {
+        self.blog = blog
+        self.status = status
+        performInitialLoading()
+        refresh()
+    }
 }
 
 // MARK: - Private methods
 
 private extension PostsCardViewModel {
-    private var numberOfPosts: Int {
+    var numberOfPosts: Int {
         fetchedResultsController.fetchedObjects?.count ?? 0
+    }
+
+    func performInitialLoading() {
+        viewController?.showLoading()
+        updateFilter()
+        createFetchedResultsController()
+        sync()
     }
 
     func createFetchedResultsController() {
@@ -140,6 +147,17 @@ private extension PostsCardViewModel {
                     self?.showLoadingFailureError()
                 }
         })
+    }
+
+    func updateFilter() {
+        switch status {
+        case .draft:
+            self.postListFilter = PostListFilter.draftFilter()
+        case .scheduled:
+            self.postListFilter = PostListFilter.scheduledFilter()
+        default:
+            fatalError("Post status not supported")
+        }
     }
 
     func showEmptyPostsError() {
