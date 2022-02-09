@@ -732,7 +732,7 @@ extension NotificationsViewController {
         DispatchQueue.main.async {
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
-                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
+                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note, notificationsNavigationDataSource: self)
 
                 notificationCommentDetailCoordinator.createViewController { commentDetailViewController in
                     guard let commentDetailViewController = commentDetailViewController else {

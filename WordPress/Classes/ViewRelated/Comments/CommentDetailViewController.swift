@@ -5,6 +5,11 @@ import CoreData
     func nextCommentSelected()
 }
 
+protocol CommentDetailsNotificationNavigationDelegate: AnyObject {
+    func previousNotificationTapped(current: Notification?)
+    func nextNotificationTapped(current: Notification?)
+}
+
 class CommentDetailViewController: UIViewController {
 
     // MARK: Properties
@@ -25,6 +30,9 @@ class CommentDetailViewController: UIViewController {
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
+
+    // This cannot be weak because by the time it is used for previous/next buttons, it will be nil.
+    private var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -175,6 +183,17 @@ class CommentDetailViewController: UIViewController {
         return button
     }()
 
+    var previousButtonEnabled = false {
+        didSet {
+            previousButton.isEnabled = previousButtonEnabled
+        }
+    }
+    var nextButtonEnabled = false {
+        didSet {
+            nextButton.isEnabled = nextButtonEnabled
+        }
+    }
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -187,10 +206,12 @@ class CommentDetailViewController: UIViewController {
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: Notification?,
+         notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.notification = notification
+        self.notificationNavigationDelegate = notificationNavigationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
     }
@@ -207,6 +228,7 @@ class CommentDetailViewController: UIViewController {
         configureReplyView()
         setupKeyboardManager()
         configureSuggestionsView()
+        configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
@@ -224,7 +246,7 @@ class CommentDetailViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureNavigationBar()
+        configureNavBarButtons()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -238,13 +260,21 @@ class CommentDetailViewController: UIViewController {
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
     }
 
-    @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
+    // Update the Comment being displayed.
+    @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
         replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
+
+    // Update the Notification Comment being displayed.
+    func refreshView(comment: Comment, notification: Notification?) {
+        self.notification = notification
+        displayComment(comment)
+    }
+
 }
 
 // MARK: - Private Helpers
@@ -311,8 +341,6 @@ private extension CommentDetailViewController {
 
         navigationController?.navigationBar.isTranslucent = true
         title = viewTitle
-
-        configureNavBarButtons()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -614,13 +642,11 @@ private extension CommentDetailViewController {
     }
 
     @objc func previousButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("previousButtonTapped")
+        notificationNavigationDelegate?.previousNotificationTapped(current: notification)
     }
 
     @objc func nextButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("nextButtonTapped")
+        notificationNavigationDelegate?.nextNotificationTapped(current: notification)
     }
 
     func deleteButtonTapped() {
