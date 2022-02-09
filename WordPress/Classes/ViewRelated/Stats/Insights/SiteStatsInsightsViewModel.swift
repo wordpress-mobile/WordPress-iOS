@@ -53,9 +53,14 @@ class SiteStatsInsightsViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshInsights() {
+    /// This method will trigger a refresh of insights data, provided that we're not already
+    /// performing a refresh and that we haven't refreshed within the last 5 minutes.
+    /// To override this caching and request the latest data (for example, when as the result
+    /// of a pull to refresh action), you can pass a `forceRefresh` value of `true` here.
+    ///
+    func refreshInsights(forceRefresh: Bool = false) {
         if !insightsStore.isFetchingOverview {
-            ActionDispatcher.dispatch(InsightAction.refreshInsights)
+            ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
         }
     }
 

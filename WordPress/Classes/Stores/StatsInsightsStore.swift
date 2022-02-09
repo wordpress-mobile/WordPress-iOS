@@ -16,7 +16,7 @@ enum InsightAction: Action {
     case receivedTodaysStats(_ todaysStats: StatsTodayInsight?, _ error: Error?)
     case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?, _ error: Error?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
-    case refreshInsights
+    case refreshInsights(forceRefresh: Bool)
 
     // Insights details
     case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?)
@@ -119,6 +119,8 @@ struct InsightStoreState {
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
+    fileprivate static let cacheTTL: TimeInterval = 300 // 5 minutes
+
     init() {
         super.init(initialState: InsightStoreState())
     }
@@ -150,8 +152,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedPostingActivity(postingActivity, error)
         case .receivedTagsAndCategories(let tagsAndCategories, let error):
             receivedTagsAndCategories(tagsAndCategories, error)
-        case .refreshInsights:
-            refreshInsights()
+        case .refreshInsights(let forceRefresh):
+            refreshInsights(forceRefresh: forceRefresh)
         case .receivedAllDotComFollowers(let allDotComFollowers, let error):
             receivedAllDotComFollowers(allDotComFollowers, error)
         case .receivedAllEmailFollowers(let allEmailFollowers, let error):
@@ -201,6 +203,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         _ = state.topTagsAndCategories.flatMap { StatsRecord.record(from: $0, for: blog) }
 
         try? ContextManager.shared.mainContext.save()
+        setLastRefreshDate(Date(), for: siteID)
     }
 
 }
@@ -361,10 +364,17 @@ private extension StatsInsightsStore {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
-    func refreshInsights() {
+    func refreshInsights(forceRefresh: Bool = false) {
         guard shouldFetchOverview() else {
             DDLogInfo("Stats Insights Overview refresh triggered while one was in progress.")
             return
+        }
+
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            guard forceRefresh || hasCacheExpired else {
+                DDLogInfo("Stats Insights Overview refresh requested but we still have valid cache data.")
+                return
+            }
         }
 
         persistToCoreData()
@@ -700,6 +710,41 @@ private extension StatsInsightsStore {
         return !isFetchingAnnual
     }
 
+    // MARK: - Cache expiry
+
+    var hasCacheExpired: Bool {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+              let date = lastRefreshDate(for: siteID) else {
+                  return true
+              }
+
+        let interval = Date().timeIntervalSince(date)
+        let expired = interval > StatsInsightsStore.cacheTTL
+
+        DDLogInfo("Insights: Has cache for site \(siteID) expired? \(expired)")
+        DDLogInfo("Insights: Seconds since last refresh: \(interval) (TTL: \(StatsInsightsStore.cacheTTL))")
+        return expired
+    }
+
+    func lastRefreshDate(for siteID: NSNumber) -> Date? {
+        if let date = UserDefaults.standard.object(forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)") as? Date {
+            return date
+        }
+
+        return nil
+    }
+
+    func setLastRefreshDate(_ date: Date, for siteID: NSNumber) {
+        guard FeatureFlag.statsPerformanceImprovements.enabled else {
+            return
+        }
+
+        UserDefaults.standard.set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
+    }
+
+    private enum CacheUserDefaultsKeys {
+        static let lastRefreshDatePrefix: String = "StatsStoreLastRefreshDate-"
+    }
 }
 
 // MARK: - Public Accessors
