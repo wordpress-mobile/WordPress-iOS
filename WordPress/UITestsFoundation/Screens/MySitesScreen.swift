@@ -29,10 +29,8 @@ public class MySitesScreen: ScreenObject {
         )
     }
 
-    public func addSelfHostedSite() throws -> LoginSiteAddressScreen {
+    public func addSelfHostedSite() throws {
         plusButtonGetter(app).tap()
-        addSelfHostedSiteButtonGetter(app).tap()
-        return try LoginSiteAddressScreen()
     }
 
     public func closeModal() throws -> MySiteScreen {
