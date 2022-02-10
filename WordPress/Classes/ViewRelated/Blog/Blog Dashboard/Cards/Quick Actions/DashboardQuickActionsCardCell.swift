@@ -25,25 +25,25 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     }()
 
     private lazy var statsButton: QuickActionButton = {
-        let button = QuickActionButton(title: "Stats", image: .gridicon(.statsAlt))
+        let button = QuickActionButton(title: Strings.stats, image: .gridicon(.statsAlt))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
     private lazy var postsButton: QuickActionButton = {
-        let button = QuickActionButton(title: "Posts", image: .gridicon(.posts))
+        let button = QuickActionButton(title: Strings.posts, image: .gridicon(.posts))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
     private lazy var mediaButton: QuickActionButton = {
-        let button = QuickActionButton(title: "Media", image: .gridicon(.image))
+        let button = QuickActionButton(title: Strings.media, image: .gridicon(.image))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
     private lazy var pagesButton: QuickActionButton = {
-        let button = QuickActionButton(title: "Pages", image: .gridicon(.pages))
+        let button = QuickActionButton(title: Strings.pages, image: .gridicon(.pages))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -80,6 +80,13 @@ extension DashboardQuickActionsCardCell {
 }
 
 extension DashboardQuickActionsCardCell {
+
+    private enum Strings {
+        static let stats = NSLocalizedString("Stats", comment: "Noun. Title for stats button.")
+        static let posts = NSLocalizedString("Posts", comment: "Noun. Title for posts button.")
+        static let media = NSLocalizedString("Media", comment: "Noun. Title for media button.")
+        static let pages = NSLocalizedString("Pages", comment: "Noun. Title for pages button.")
+    }
 
     private enum Constants {
         static let contentViewCornerRadius = 8.0
