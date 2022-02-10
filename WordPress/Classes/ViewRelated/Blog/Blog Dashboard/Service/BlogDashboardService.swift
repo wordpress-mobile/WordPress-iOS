@@ -1,5 +1,4 @@
 import Foundation
-import Gridicons
 import WordPressKit
 
 class BlogDashboardService {
