@@ -3,29 +3,49 @@ import WordPressShared
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.alwaysBounceHorizontal = false
+        return scrollView
+    }()
+
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [iconView, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [
+            statsButton,
+            postsButton,
+            mediaButton,
+            pagesButton
+        ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.stackViewSpacing
         return stackView
     }()
 
-    private lazy var iconView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        imageView.tintColor = .listIcon
-        return imageView
+    private lazy var statsButton: QuickActionButton = {
+        let button = QuickActionButton(title: "Stats", image: .gridicon(.statsAlt))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
-        label.font = WPStyleGuide.serifFontForTextStyle(.body, fontWeight: .semibold)
-        label.textColor = .text
-        return label
+    private lazy var postsButton: QuickActionButton = {
+        let button = QuickActionButton(title: "Posts", image: .gridicon(.posts))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var mediaButton: QuickActionButton = {
+        let button = QuickActionButton(title: "Media", image: .gridicon(.image))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var pagesButton: QuickActionButton = {
+        let button = QuickActionButton(title: "Pages", image: .gridicon(.pages))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     override init(frame: CGRect) {
@@ -38,31 +58,23 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
-        guard let dataModel = dataModel else {
-            return
-        }
-
-        let title = dataModel["title"] as? String
-        let icon = dataModel["icon"] as? UIImage
-
-        titleLabel.text = title
-        iconView.image = icon
+        // TODO: hook up to buttons to vc
     }
 }
 
 extension DashboardQuickActionsCardCell {
 
     private func setup() {
-        contentView.backgroundColor = .listForeground
-        contentView.layer.cornerRadius = Constants.contentViewCornerRadius
-
-        contentView.addSubview(stackView)
+        contentView.addSubview(scrollView)
+        contentView.pinSubviewToAllEdges(scrollView)
+        scrollView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leadingPadding),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.trailingPadding),
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.verticalPadding),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalPadding)
+            stackView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.stackViewHorizontalPadding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.stackViewHorizontalPadding),
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
 }
@@ -72,8 +84,6 @@ extension DashboardQuickActionsCardCell {
     private enum Constants {
         static let contentViewCornerRadius = 8.0
         static let stackViewSpacing = 16.0
-        static let leadingPadding = 16.0
-        static let trailingPadding = 24.0
-        static let verticalPadding = 12.0
+        static let stackViewHorizontalPadding = 20.0
     }
 }
