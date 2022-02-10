@@ -55,7 +55,7 @@ class BlogDashboardViewModel {
     }
 
     /// Call the API to return cards for the current blog
-    func start() {
+    func loadCards() {
         guard let dotComID = blog.dotComID?.intValue else {
             return
         }

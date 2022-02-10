@@ -52,7 +52,7 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        viewModel.start()
+        viewModel.loadCards()
     }
 
     func showLoading() {
@@ -70,7 +70,7 @@ final class BlogDashboardViewController: UIViewController {
         self.blog = blog
         viewModel.blog = blog
         viewModel.applySnapshotForInitialData()
-        viewModel.start()
+        viewModel.loadCards()
     }
 
     private func setupCollectionView() {
