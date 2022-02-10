@@ -576,7 +576,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.preloadMetadata()
         case .dashboard:
             blogDashboardViewController?.update(blog: blog)
-            break
         }
     }
 
