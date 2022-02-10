@@ -31,6 +31,9 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             postsViewController?.update(blog: blog, status: .draft)
         } else if hasScheduled {
             postsViewController?.update(blog: blog, status: .scheduled)
+        } else {
+            // Temporary: it should display "write your next post"
+            postsViewController?.update(blog: blog, status: .draft)
         }
     }
 
