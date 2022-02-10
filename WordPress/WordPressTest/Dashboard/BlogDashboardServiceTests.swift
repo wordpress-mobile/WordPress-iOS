@@ -110,8 +110,8 @@ class BlogDashboardServiceTests: XCTestCase {
             // The item identifier id is quick actions
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
 
-            // Quick Actions has the correct data source
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.cellViewModel?["title"] as! String, "Stats")
+            // It doesn't have a data source
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.cellViewModel)
 
             expect.fulfill()
         }
