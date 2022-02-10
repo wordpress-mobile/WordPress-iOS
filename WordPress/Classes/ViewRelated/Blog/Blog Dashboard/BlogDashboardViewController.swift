@@ -1,5 +1,11 @@
 import UIKit
 
+typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
+
+protocol BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?)
+}
+
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
@@ -7,8 +13,6 @@ final class BlogDashboardViewController: UIViewController {
     private lazy var viewModel: BlogDashboardViewModel = {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
-
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
 
     lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -57,8 +61,9 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
-        collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
-        collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
+        DashboardCard.allCases.forEach {
+            collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
+        }
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
@@ -78,15 +83,12 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            return self.createQuickLinksSection()
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            self?.createLayoutSection(for: sectionIndex)
         }
-        return layout
     }
 
-    private func createQuickLinksSection() -> NSCollectionLayoutSection {
+    private func createLayoutSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
@@ -95,12 +97,12 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
+        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
-                                                        leading: Constants.sectionInset,
-                                                        bottom: Constants.sectionInset,
-                                                        trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
-
+                                                        leading: horizontalInset,
+                                                        bottom: 0,
+                                                        trailing: horizontalInset)
         return section
     }
 }
@@ -108,8 +110,9 @@ extension BlogDashboardViewController {
 extension BlogDashboardViewController {
 
     private enum Constants {
+        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 16
-        static let interGroupSpacing: CGFloat = 8
+        static let sectionInset: CGFloat = 20
+        static let interGroupSpacing: CGFloat = 12
     }
 }

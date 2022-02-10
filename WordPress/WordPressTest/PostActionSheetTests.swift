@@ -25,7 +25,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Share", "Duplicate", "Move to Draft", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "Stats", "Share", "Duplicate", "Move to Draft", "Copy Link", "Move to Trash"], options)
     }
 
     func testLocallyPublishedPostShowsCancelAutoUploadOption() {
@@ -34,7 +34,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual([Titles.cancel, Titles.cancelAutoUpload, Titles.duplicate, Titles.draft, Titles.trash], options)
+        XCTAssertEqual([Titles.cancel, Titles.cancelAutoUpload, Titles.duplicate, Titles.draft, Titles.copyLink, Titles.trash], options)
     }
 
     func testDraftedPostOptions() {
@@ -43,7 +43,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Publish Now", "Duplicate", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "Publish Now", "Duplicate", "Copy Link", "Move to Trash"], options)
     }
 
     func testScheduledPostOptions() {
@@ -52,7 +52,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Move to Draft", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "Move to Draft", "Copy Link", "Move to Trash"], options)
     }
 
     func testTrashedPostOptions() {
@@ -70,7 +70,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "View", "Stats", "Share", "Duplicate", "Move to Draft", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "View", "Stats", "Share", "Duplicate", "Move to Draft", "Copy Link", "Move to Trash"], options)
     }
 
     func testCallDelegateWhenStatsTapped() {
@@ -116,6 +116,15 @@ class PostActionSheetTests: XCTestCase {
         tap("Delete Permanently", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
+    func testCallDelegateWhenCopyLink() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+
+        postActionSheet.show(for: viewModel, from: view)
+        tap("Copy Link", in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallCopyLink)
     }
 
     func testCallDelegateWhenMoveToTrashTapped() {
@@ -188,6 +197,7 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     private(set) var didCallRetry = false
     private(set) var didCallCancelAutoUpload = false
     private(set) var didCallShare = false
+    private(set) var didCallCopyLink = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -231,5 +241,9 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func share(_ post: AbstractPost, fromView view: UIView) {
         didCallShare = true
+    }
+
+    func copyLink(_ post: AbstractPost) {
+        didCallCopyLink = true
     }
 }

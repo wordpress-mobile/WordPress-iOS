@@ -1,18 +1,9 @@
-Only gave the app limited access to your media library? No big deal, but we added a prompt to the media picker in case you want to change your settings and allow more access. The prompt even comes in Dynamic Type for easy reading.
+With this latest version of Jetpack, we made some design changes to help make your user experience even better.
 
-We also made VoiceOver and Dynamic Type more accurate on Activity Log and Schedule Post calendars. We’re happy to report that this improves the user experience for folks who need better visual accessibility.
-
-We made some useful updates to the Block Editor.
-
-- We solved an issue where buttons weren’t justifying left, right, or center in the Buttons block.
-- We added translation for color settings in Cover blocks.
-- Selecting an image will no longer show you a video thumbnail, and vice versa.
-- We hid the help button in the bottom right of the unsupported block editor to avoid confusion.
-- When you’re using different text and background colors in text blocks, you’ll get a notification if the color combo might make it hard for some people to read.
-- We fixed a handful of edge case problems when changing the color of non-selected text.
-
-We also solved a few smaller issues and crashes.
-
-- Weekly roundup notifications are now showing up, making it easier to stay on top of the latest news.
-- When you connect your Facebook account to Publicize, you’ll now be logged in successfully.
-- Images with a copyright symbol in the file name will now upload or appear in the Share Sheet properly.
+- Text blocks in the block editor now adjust along with the text as you change the font size and line height.
+- We redesigned some of the screens in the app, including My Site. Looking fresh!
+- We love a clean inbox, so we added a button that lets you mark all filtered notifications as read.
+- In the site tab’s Configure > People menu, we added an email filter that allows you to see, learn more about, and even remove email followers.
+- In threaded comments, we removed the Share icon and instead added the ability to moderate comments within a thread.
+- If you change the media in an Image block that’s also used as a post’s Featured Image, you’ll see a prompt asking if you’d like to replace the Featured Image while you’re at it.
+- We improved the Stats navigation so you can move between Days and Insights more easily. You can also create new stat cards directly from the Stats screen using our new navigation icon.

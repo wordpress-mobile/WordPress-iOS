@@ -1,6 +1,8 @@
 19.3
 -----
 * [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
+* [*] Stats: fix navigation between Stats tab. [#17894]
+* [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
 
 19.2
 -----

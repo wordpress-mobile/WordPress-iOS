@@ -13,7 +13,7 @@ import UIKit
     private var ghostableTableView: UITableView?
     private var errorView: DashboardCardInnerErrorView?
 
-    private let status: BasePost.Status = .draft
+    var status: BasePost.Status = .draft
 
     // TODO: add status as an init param
     @objc init(blog: Blog) {
