@@ -42,11 +42,17 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        viewModel.start()
         addHeightObservers()
+        viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
         collectionView.layoutIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        viewModel.start()
     }
 
     func showLoading() {
@@ -63,6 +69,7 @@ final class BlogDashboardViewController: UIViewController {
     func update(blog: Blog) {
         self.blog = blog
         viewModel.blog = blog
+        viewModel.applySnapshotForInitialData()
         viewModel.start()
     }
 
