@@ -726,7 +726,7 @@ private extension StatsInsightsStore {
         let expired = interval > StatsInsightsStore.cacheTTL
 
         let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
-        DDLogInfo("Stats: Insights cache for site \(siteID) \(expired ? "has " : "")expired \(intervalLogMessage)")
+        DDLogInfo("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage)")
 
         return expired
     }
