@@ -460,26 +460,26 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { _ in
-            self.tableView.performBatchUpdates({})
+        cell.configure(with: comment) { [weak self] _ in
+            self?.tableView.performBatchUpdates({})
         }
 
-        cell.contentLinkTapAction = { url in
+        cell.contentLinkTapAction = { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
-            self.openWebView(for: url)
+            self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonAction = { senderView in
-            self.shareCommentURL(senderView)
+        cell.accessoryButtonAction = { [weak self] senderView in
+            self?.shareCommentURL(senderView)
         }
 
-        cell.likeButtonAction = {
-            self.toggleCommentLike()
+        cell.likeButtonAction = { [weak self] in
+            self?.toggleCommentLike()
         }
 
-        cell.replyButtonAction = {
-            self.showReplyView()
+        cell.replyButtonAction = { [weak self] in
+            self?.showReplyView()
         }
     }
 
