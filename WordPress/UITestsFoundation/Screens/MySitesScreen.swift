@@ -48,7 +48,7 @@ public class MySitesScreen: ScreenObject {
 
     public func closeModalIfNeeded() {
         if addSelfHostedSiteButtonGetter(app).isHittable && XCUIDevice.isPhone {
-            app.buttons.matching(identifier: "Cancel").element(boundBy: 1)
+            app.buttons.matching(identifier: "Cancel").element(boundBy: 1).tap()
         }
         if addSelfHostedSiteButtonGetter(app).isHittable && XCUIDevice.isPad { navigateBack() }
         if cancelButtonGetter(app).isHittable { cancelButtonGetter(app).tap() }
