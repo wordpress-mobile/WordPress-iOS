@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
+import UIKit
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
@@ -542,6 +543,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         present(editorViewController, animated: false)
     }
 
+    fileprivate func copyLink(_ page: Page) {
+        let pasteboard = UIPasteboard.general
+        guard let link = page.permaLink else { return }
+        pasteboard.string = link as String
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+        let notice = Notice(title: noticeTitle, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+    }
+
     fileprivate func retryPage(_ apost: AbstractPost) {
         PostCoordinator.shared.save(apost)
     }
@@ -680,6 +690,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 }
             }
 
+            addCopyLinkAction(to: alertController, for: page)
+
             if !isHomepage {
                 alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -724,6 +736,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.publishPost(page)
                 })
             }
+
+            addCopyLinkAction(to: alertController, for: page)
 
             alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                 guard let strongSelf = self,
@@ -789,6 +803,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 self?.copyPage(page)
             }
         })
+    }
+
+    private func addCopyLinkAction(to controller: UIAlertController, for page: AbstractPost) {
+        let buttonTitle = NSLocalizedString("Copy Link", comment: "Label for page copy link. Tapping copy the url of page")
+        controller.addActionWithTitle(buttonTitle, style: .default) { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.copyLink(page)
+            }
+        }
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {

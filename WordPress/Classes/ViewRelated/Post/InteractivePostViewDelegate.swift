@@ -12,4 +12,5 @@ import Foundation
     func retry(_ post: AbstractPost)
     func cancelAutoUpload(_ post: AbstractPost)
     func share(_ post: AbstractPost, fromView view: UIView)
+    func copyLink(_ post: AbstractPost)
 }

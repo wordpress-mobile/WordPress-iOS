@@ -1,6 +1,7 @@
 19.3
 -----
 * [*] Stats: fix navigation between Stats tab. [#17894]
+* [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
 
 19.2
 -----

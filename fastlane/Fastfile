@@ -57,6 +57,9 @@ before_all do |lane|
   # Ensure we use the latest version of the toolkit
   check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
 
+  # Fixes weird Keychain bugs
+  setup_ci
+
   # Check that the env files exist
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
@@ -65,11 +68,6 @@ before_all do |lane|
   unless File.file?(PROJECT_ENV_FILE_PATH)
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
-
-  # This allows code signing to work on CircleCI
-  # It is skipped if this isn't running on CI
-  # See https://circleci.com/docs/2.0/ios-codesigning/
-  setup_circle_ci
 end
 
 platform :ios do
@@ -470,75 +468,6 @@ platform :ios do
   end
 
   #####################################################################################
-  # build_and_upload_beta_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds a beta release of the app and optionally uploads
-  # it for both internal and external distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>]
-  #   [create_gh_release:<create release on GH>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_beta_release
-  # bundle exec fastlane build_and_upload_beta_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_beta_release create_gh_release:true
-  #####################################################################################
-  desc 'Builds and uploads a beta release for distribution'
-  lane :build_and_upload_beta_release do |options|
-    build_and_upload_release(
-      skip_confirm: options[:skip_confirm],
-      create_gh_release: options[:create_gh_release],
-      beta_release: true
-    )
-  end
-
-  #####################################################################################
-  # build_and_upload_stable_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds a stable release of the app and optionally uploads
-  # it for distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>]
-  #   [create_gh_release:<create release on GH>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_stable_release
-  # bundle exec fastlane build_and_upload_stable_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_stable_release create_gh_release:true
-  #####################################################################################
-  desc 'Builds and uploads a stable release for distribution'
-  lane :build_and_upload_stable_release do |options|
-    build_and_upload_release(
-      skip_confirm: options[:skip_confirm],
-      create_gh_release: options[:create_gh_release],
-      beta_release: false
-    )
-  end
-
-  #####################################################################################
-  # build_and_upload_release [Deprecated - Can be removed once CircleCI is no longer in use]
-  # -----------------------------------------------------------------------------------
-  # This lane builds the app and uploads it for both internal and external distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
-  #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_release
-  # bundle exec fastlane build_and_upload_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_release create_gh_release:true
-  # bundle exec fastlane build_and_upload_release beta_release:true
-  #####################################################################################
-  desc 'Builds and uploads for distribution'
-  lane :build_and_upload_release do |options|
-    build_and_upload_app_center(options) if options[:beta_release]
-    build_and_upload_app_store_connect(options)
-  end
-
-  #####################################################################################
   # build_and_upload_app_store_connect
   # -----------------------------------------------------------------------------------
   # This lane builds the app and uploads it for App Store Connect
@@ -847,12 +776,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_beta_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
-      branch: options[:branch_to_build],
-      job_params: { 'beta_build' => true }
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: true)
   end
 
   #####################################################################################
@@ -865,12 +789,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_release_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
-      branch: options[:branch_to_build],
-      job_params: { 'release_build' => true }
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 
   ########################################################################
@@ -961,6 +880,7 @@ platform :ios do
       test_without_building: true,
       xctestrun: test_plan_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
+      reset_simulator: true,
       result_bundle: true
     )
   end
@@ -1028,7 +948,10 @@ def read_version_from_config
 end
 
 def ensure_sentry_installed
-    UI.user_error('sentry-cli not installed') unless sh('command -v sentry-cli')
+  # This is an action provided by the Sentry Fastlane plugin that verifies the
+  # CLI is installed and its version is compatible with the plugin's
+  # expectation.
+  sentry_check_cli_installed
 end
 
 # This function is Buildkite-specific
@@ -1047,6 +970,16 @@ def generate_installable_build_number
 
     return "#{branch}-#{commit}"
   end
+end
+
+def trigger_buildkite_release_build(branch:, beta:)
+  buildkite_trigger_build(
+    buildkite_organization: 'automattic',
+    buildkite_pipeline: 'wordpress-ios',
+    branch: branch,
+    environment: { BETA_RELEASE: beta },
+    pipeline_file: 'release-builds.yml'
+  )
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also

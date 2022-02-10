@@ -126,7 +126,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
 
     [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
@@ -622,7 +622,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
     
     [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
 

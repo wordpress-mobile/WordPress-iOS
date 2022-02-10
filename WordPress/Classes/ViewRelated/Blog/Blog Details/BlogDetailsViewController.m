@@ -211,9 +211,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -406,8 +405,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     self.navigationItem.title = NSLocalizedString(@"My Site", @"Title of My Site tab");
-
-    [self.headerView setBlog:self.blog];
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
@@ -744,8 +741,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
-
-    [marr addObject:[self quickActionsSectionViewModel]];
+    
+    if (AppConfiguration.showsQuickActions) {
+        [marr addObject:[self quickActionsSectionViewModel]];
+    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1077,7 +1076,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)switchToBlog:(Blog*)blog
 {
-    self.headerView.blog = blog;
     self.blog = blog;
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
@@ -1713,12 +1711,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)updateTableViewAndHeader
 {
-    [self updateTableViewAndHeader:^{}];
+    [self updateTableView:^{}];
 }
 
-/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+/// This method syncs the blog and its metadata, then reloads the table view.
 ///
-- (void)updateTableViewAndHeader:(void(^)(void))onComplete
+- (void)updateTableView:(void(^)(void))completion
 {
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
@@ -1726,8 +1724,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
      ^{
         [weakSelf configureTableViewData];
         [weakSelf reloadTableViewPreservingSelection];
-        [weakSelf.headerView setBlog:weakSelf.blog];
-        onComplete();
+        completion();
     }];
 }
 
@@ -1738,7 +1735,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
-    [self updateTableViewAndHeader: ^{
+    [self updateTableView: ^{
         // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
         // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
         // down to refresh the site.
