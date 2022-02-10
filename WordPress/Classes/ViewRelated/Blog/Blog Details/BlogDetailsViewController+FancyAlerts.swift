@@ -12,22 +12,26 @@ extension BlogDetailsViewController {
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
-            self?.toggleSpotlightForSiteTitle()
-            self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
-            if let element = QuickStartTourElement(rawValue: QuickStartTourGuide.shared.currentElementInt()) {
-                self?.scroll(to: element)
-            }
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
                 case .noSuchElement:
-                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                    guard let parentVC = self?.parent as? MySiteViewController else {
+                        return
+                    }
+
+                    parentVC.additionalSafeAreaInsets = .zero
+
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view
                     self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                case .pages, .editHomepage, .sharing, .stats:
+                    self?.scroll(to: info)
                 case .viewSite:
+                    self?.scroll(to: info)
+
                     guard let self = self,
                         let navigationController = self.navigationController,
                         navigationController.visibleViewController != self else {
@@ -108,9 +112,7 @@ extension BlogDetailsViewController {
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true) { [weak self] in
-            self?.toggleSpotlightOnHeaderView()
-        }
+        present(navigationViewController, animated: true)
 
         QuickStartTourGuide.shared.visited(.checklist)
 

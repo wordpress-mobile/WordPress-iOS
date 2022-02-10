@@ -73,6 +73,7 @@ class ActionRow: UIStackView {
 
     enum Constants {
         static let minimumSpacing: CGFloat = 8
+        static let margins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 
     struct Item {
@@ -93,6 +94,9 @@ class ActionRow: UIStackView {
         spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
         refreshStackViewVisibility()
+
+        layoutMargins = Constants.margins
+        isLayoutMarginsRelativeArrangement = true
     }
 
     // MARK: - Accessibility

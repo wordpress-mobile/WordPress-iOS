@@ -4,6 +4,7 @@ default_platform(:ios)
 fastlane_require 'xcodeproj'
 fastlane_require 'dotenv'
 fastlane_require 'open-uri'
+fastlane_require 'git'
 
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
@@ -56,6 +57,9 @@ before_all do |lane|
   # Ensure we use the latest version of the toolkit
   check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
 
+  # Fixes weird Keychain bugs
+  setup_ci
+
   # Check that the env files exist
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
@@ -64,11 +68,6 @@ before_all do |lane|
   unless File.file?(PROJECT_ENV_FILE_PATH)
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
-
-  # This allows code signing to work on CircleCI
-  # It is skipped if this isn't running on CI
-  # See https://circleci.com/docs/2.0/ios-codesigning/
-  setup_circle_ci
 end
 
 platform :ios do
@@ -469,78 +468,65 @@ platform :ios do
   end
 
   #####################################################################################
-  # build_and_upload_beta_release
+  # build_and_upload_app_store_connect
   # -----------------------------------------------------------------------------------
-  # This lane builds a beta release of the app and optionally uploads
-  # it for both internal and external distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>]
-  #   [create_gh_release:<create release on GH>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_beta_release
-  # bundle exec fastlane build_and_upload_beta_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_beta_release create_gh_release:true
-  #####################################################################################
-  desc 'Builds and uploads a beta release for distribution'
-  lane :build_and_upload_beta_release do |options|
-    build_and_upload_release(
-      skip_confirm: options[:skip_confirm],
-      create_gh_release: options[:create_gh_release],
-      beta_release: true
-    )
-  end
-
-  #####################################################################################
-  # build_and_upload_stable_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds a stable release of the app and optionally uploads
-  # it for distribution
+  # This lane builds the app and uploads it for App Store Connect
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>]
-  #   [create_gh_release:<create release on GH>]
-  #
-  # Example:
-  # bundle exec fastlane build_and_upload_stable_release
-  # bundle exec fastlane build_and_upload_stable_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_stable_release create_gh_release:true
-  #####################################################################################
-  desc 'Builds and uploads a stable release for distribution'
-  lane :build_and_upload_stable_release do |options|
-    build_and_upload_release(
-      skip_confirm: options[:skip_confirm],
-      create_gh_release: options[:create_gh_release],
-      beta_release: false
-    )
-  end
-
-  #####################################################################################
-  # build_and_upload_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds the app and uploads it for both internal and external distribution
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
+  # bundle exec fastlane build_and_upload_app_store_connect [skip_confirm:<skip confirm>]
   #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
   #
   # Example:
-  # bundle exec fastlane build_and_upload_release
-  # bundle exec fastlane build_and_upload_release skip_confirm:true
-  # bundle exec fastlane build_and_upload_release create_gh_release:true
-  # bundle exec fastlane build_and_upload_release beta_release:true
+  # bundle exec fastlane build_and_upload_app_store_connect
+  # bundle exec fastlane build_and_upload_app_store_connect skip_confirm:true
+  # bundle exec fastlane build_and_upload_app_store_connect create_gh_release:true
+  # bundle exec fastlane build_and_upload_app_store_connect beta_release:true
   #####################################################################################
-  desc 'Builds and uploads for distribution'
-  lane :build_and_upload_release do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm],
-                        internal: options[:beta_release],
-                        external: true)
+  desc 'Builds and uploads for distribution to App Store Connect'
+  lane :build_and_upload_app_store_connect do |options|
+    ios_build_prechecks(
+      skip_confirm: options[:skip_confirm],
+      internal: options[:beta_release],
+      external: true
+    )
+
     ios_build_preflight
 
-    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
-    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm],
-                         beta_release: options[:beta_release], create_release: options[:create_gh_release])
+    build_and_upload_itc(
+      skip_prechecks: true,
+      skip_confirm: options[:skip_confirm],
+      beta_release: options[:beta_release],
+      create_release: options[:create_gh_release]
+    )
+
+  end
+
+  #####################################################################################
+  # build_and_upload_app_center
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and uploads it for App Center
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_app_center [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_app_center
+  # bundle exec fastlane build_and_upload_app_center skip_confirm:true
+  #####################################################################################
+  desc 'Builds and uploads for distribution to App Center'
+  lane :build_and_upload_app_center do |options|
+    ios_build_prechecks(
+      skip_confirm: options[:skip_confirm],
+      internal: true,
+      external: true
+    )
+
+    ios_build_preflight
+
+    build_and_upload_internal(
+      skip_prechecks: true,
+      skip_confirm: options[:skip_confirm]
+    )
   end
 
   #####################################################################################
@@ -557,22 +543,18 @@ platform :ios do
   #####################################################################################
   desc 'Builds and uploads an installable build'
   lane :build_and_upload_installable_build do |options|
+    ensure_sentry_installed
+
     alpha_code_signing
 
     # Get the current build version, and update it if needed
     version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = versions['VERSION_LONG']
-
-    if options.key?(:build_number)
-      build_number = options[:build_number]
-
-      UI.message("Updating build version to #{build_number}")
-
-      versions['VERSION_LONG'] = build_number
-      new_config = Xcodeproj::Config.new(versions)
-      new_config.save_as(Pathname.new(version_config_path))
-    end
+    build_number = generate_installable_build_number
+    UI.message("Updating build version to #{build_number}")
+    versions['VERSION_LONG'] = build_number
+    new_config = Xcodeproj::Config.new(versions)
+    new_config.save_as(Pathname.new(version_config_path))
 
     gym(
       scheme: 'WordPress Alpha',
@@ -597,9 +579,6 @@ platform :ios do
       notify_testers: false
     )
 
-    # Install SentryCLI prior to trying to upload dSYMs
-    sh('curl -sL https://sentry.io/get-cli/ | bash')
-
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: 'a8c',
@@ -607,13 +586,20 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
     install_url = 'https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/'
 
-    # Create a comment.json file so that Peril to comment with the build details, if this is running on CI
-    comment_body = "You can test the changes on this Pull Request by downloading it from AppCenter [here](#{install_url}) with build number: #{build_number}. IPA is available [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
-    File.write('comment.json', { body: comment_body }.to_json)
+    comment_body = "You can test the <strong>WordPress</strong> changes on this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
+
+    comment_on_pr(
+      project: 'wordpress-mobile/wordpress-ios',
+      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      reuse_identifier: 'installable-build-link',
+      body: comment_body
+    )
   end
 
   #####################################################################################
@@ -632,6 +618,8 @@ platform :ios do
   lane :build_and_upload_internal do |options|
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
+
+    ensure_sentry_installed
 
     internal_code_signing
 
@@ -684,6 +672,7 @@ platform :ios do
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
 
+    ensure_sentry_installed
     appstore_code_signing
 
     gym(
@@ -787,12 +776,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_beta_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
-      branch: options[:branch_to_build],
-      job_params: { 'beta_build' => true }
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: true)
   end
 
   #####################################################################################
@@ -805,12 +789,7 @@ platform :ios do
   #
   #####################################################################################
   lane :trigger_release_build do |options|
-    circleci_trigger_job(
-      circle_ci_token: ENV['CIRCLE_CI_AUTH_TOKEN'],
-      repository: REPOSITORY_NAME,
-      branch: options[:branch_to_build],
-      job_params: { 'release_build' => true }
-    )
+    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 
   ########################################################################
@@ -965,6 +944,41 @@ def read_version_from_config
     configuration = Xcodeproj::Config.new(config)
     configuration.attributes['VERSION_SHORT']
   end
+end
+
+def ensure_sentry_installed
+  # This is an action provided by the Sentry Fastlane plugin that verifies the
+  # CLI is installed and its version is compatible with the plugin's
+  # expectation.
+  sentry_check_cli_installed
+end
+
+# This function is Buildkite-specific
+def generate_installable_build_number
+
+  if ENV['BUILDKITE']
+    commit = ENV['BUILDKITE_COMMIT'][0,7]
+    branch = ENV['BUILDKITE_BRANCH']
+    pr_num = ENV['BUILDKITE_PULL_REQUEST']
+
+    return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
+  else
+    repo = Git.open(PROJECT_ROOT_FOLDER)
+    commit = repo.current_branch
+    branch = repo.revparse('HEAD')[0, 7]
+
+    return "#{branch}-#{commit}"
+  end
+end
+
+def trigger_buildkite_release_build(branch:, beta:)
+  buildkite_trigger_build(
+    buildkite_organization: 'automattic',
+    buildkite_pipeline: 'wordpress-ios',
+    branch: branch,
+    environment: { BETA_RELEASE: beta },
+    pipeline_file: 'release-builds.yml'
+  )
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also

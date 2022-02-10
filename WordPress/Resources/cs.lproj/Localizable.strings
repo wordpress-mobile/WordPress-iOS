@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-26 08:42:49+0000 */
+/* Translation-Revision-Date: 2022-02-08 20:07:02+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Přidat doménu";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Nový blok můžete kdykoli přidat klepnutím na ikonu + na panelu nástrojů vlevo dole.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Nový blok můžete kdykoli přidat klepnutím na ikonu + na panelu nástrojů vlevo dole.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Přidejte web s vlastním hostitelem";
@@ -876,6 +876,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Opravdu chcete odstranit tento příspěvek?";
 
+/* Title of message shown when user taps continue during homepage editing in site creation. */
+"Are you sure you want to update your homepage?" = "Opravdu chcete aktualizovat svou domovskou stránku?";
+
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Opravdu chcete provést aktualizaci?";
 
@@ -1093,6 +1096,9 @@ translators: Block name. %s: The localized block name */
 /* Create new Blog Post button title */
 "Blog post" = "Blogový příspěvek";
 
+/* Blog's Email Follower Profile. Displayed when the name is empty! */
+"Blog's Email Follower" = "E-mailový fanoušci blogu";
+
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Sledovatel blogu";
 
@@ -1193,7 +1199,6 @@ translators: Block name. %s: The localized block name */
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1221,6 +1226,7 @@ translators: Block name. %s: The localized block name */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
+   Cancels the mark all as read action.
    Dismiss the post action sheet
    Editing GIF alert cancel action button.
    Label for a cancel button
@@ -1792,6 +1798,7 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktura obsahu\nBloky: %1$li, Slova: %2$li, Znaky: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -2233,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Odmítnout";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Popište účel obrázku. Pokud je obrázek čistě dekorativní, ponechte toto pole prázdné.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Popište účel obrázku. Pokud je obrázek čistě dekorativní, ponechte toto pole prázdné.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2644,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Emailová adresa";
 
+/* Blog Email Followers */
+"Email Followers" = "E-maily fanoušků";
+
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2989,6 +2999,9 @@ translators: Block name. %s: The localized block name */
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "Export médií se nezdařil";
 
+/* Message for mark all as read success notice */
+"Failed marking Notifications as read" = "Oznámení se nepodařilo označit jako přečtené";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "Vložení zvukového souboru se nezdařilo.";
 
@@ -3028,9 +3041,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Náhledový obrázek";
-
-/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Náhledový obrázek je již nastaven";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Vybrané možnosti obrázku";
@@ -3235,6 +3245,12 @@ translators: Block name. %s: The localized block name */
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Původní velikost";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
+"Fullscreen view of image %@. Double tap to dismiss" = "Zobrazení obrázku %@ na celou obrazovku. Dvojitým klepnutím zavřete";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
+"Fullscreen view of image. Double tap to dismiss" = "Zobrazení obrázku na celé obrazovce. Dvojitým klepnutím zavřete";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3520,9 +3536,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Aktualizace ikony se nezdařila";
-
-/* First line of remove follower warning in confirmation dialog. */
-"If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Pokud bude tento sledovatel odstraněn, přestane dostávat oznámení o tomto webu, pokud jej nebude znovu sledovat.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Pokud již web máte, budete si muset nainstalovat bezplatný plugin Jetpack a připojit ho ke svému účtu WordPress.com.";
@@ -3834,6 +3847,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Pokračujte v blogování a vraťte se, abyste viděli návštěvníky přicházející na vaše stránky.";
+
+/* Button to cancel the replacement of a featured image. */
+"Keep current" = "Udržujte aktuální";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Pokračuj! Lajkování a komentování je dobrý způsob, jak budovat síť. Přejděte na Reader a vyhledejte další příspěvky.";
@@ -4174,11 +4190,20 @@ translators: Block name. %s: The localized block name */
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Zmapované domény";
 
+/* Marks all notifications under the filter as read */
+"Mark All As Read" = "Označit vše jako přečtené";
+
 /* Marks a notification as unread */
 "Mark Read" = "Označit jako přečtené";
 
 /* Marks a notification as unread */
 "Mark Unread" = "Označit nepřečtené";
+
+/* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
+"Mark all %1$@ notifications as read?" = "Označit všechna oznámení %1$@ jako přečtená?";
+
+/* Confirmation title for marking all notifications as read. */
+"Mark all notifications as read?" = "Označit všechna oznámení jako přečtená?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Označit jako spam";
@@ -4832,6 +4857,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Nepřečtená oznámení";
 
+/* Title for mark all as read success notice */
+"Notifications marked as read" = "Upozornění označeno jako přečtené";
+
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Informujte mě";
 
@@ -4862,6 +4890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Confirmation of action
    Default action
    Dismisses the alert
+   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
@@ -5497,6 +5526,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title on display preview error */
 "Preview Unavailable" = "Náhled není k dispozici";
 
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"Preview media" = "Náhled média";
+
 /* No comment provided by engineer. */
 "Preview page" = "Náhled stránky";
 
@@ -5779,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove @%@" = "Odstranit @%@";
+"Remove %@" = "Odstranit %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Odstranit náhledový obrázek";
@@ -5841,17 +5873,24 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Odebráním dalších kroků skryjete všechny prohlídky na tomto webu. Tuto akci nelze vrátit zpět.";
 
+/* First line of remove email follower warning in confirmation dialog.
+   First line of remove follower warning in confirmation dialog. */
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Odebráním sledujících přestanou dostávat aktualizace z vašeho webu. Pokud se rozhodnou, mohou stále navštívit váš web a znovu jej sledovat.";
+
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Obnovení na %@";
-
-/* Button to confirm the replacement of a featured image. */
-"Replace" = "Nahradit";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Vyměňte aktuální blok";
 
 /* No comment provided by engineer. */
 "Replace audio" = "Nahradit zvuk";
+
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Replace current featured image?" = "Nahradit aktuální náhledový obrázek?";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace featured image" = "Nahradit náhledový obrázek";
 
 /* No comment provided by engineer. */
 "Replace file" = "Nahradit soubor";
@@ -7038,7 +7077,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Klepnutím sbalíte značky příspěvku";
 
-/* Accessibility hint */
+/* Accessibility hint
+   Accessibility hint to customize insights */
 "Tap to customize insights" = "Klepnutím upravíte statistiky";
 
 /* Accessibility hint */
@@ -7046,6 +7086,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "Klepnutím zobrazíte webovou stránku odkazujícího zdroje.";
+
+/* Accessibility hint prompting the user to tap a table row to edit its value. */
+"Tap to edit" = "Klepnutím upravte";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Klepnutím zadejte vlastní hodnotu";
@@ -7058,6 +7101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as spam." = "Klepnutím označíte odkazujícího jako spam.";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "Zmáčkni pro opakování";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Klepnutím zobrazíte všechny značky pro tento příspěvek";
@@ -7073,6 +7119,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Klepnutím přepnete na jiný web nebo přidáte nový web";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"Tap to view media in full screen" = "Klepnutím zobrazíte média na celé obrazovce";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Klepnutím zobrazíte příspěvky pro tuto značku";
@@ -7819,7 +7868,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Stránky teď nelze načíst.";
 
-/* Title for No results full page screen displayedfrom post list when there is no connection */
+/* Message for when posts fail to load on the dashboard
+   Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Momentálně nelze načíst příspěvky.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
@@ -8857,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Včera";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "Již máte sadu doporučených obrázků. Chceš to vyměnit?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Již máte sadu doporučených obrázků. Chcete jej nahradit novým obrázkem?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Chystáte se změnit své uživatelské jméno, které je aktuálně k dispozici %1$@. %2$@";
@@ -8915,6 +8965,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Nemáte žádná média.";
+
+/* Displayed when the user views the dashboard posts card but they have no posts */
+"You don't have any posts" = "Nemáte žádné příspěvky";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Zatím nemáte žádné naplánované stránky.";
@@ -9181,6 +9234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "od %@";
 
+/* Displayed in the confirmation alert when marking comment notifications as read. */
+"comment" = "komentář";
+
 /* The menu item to select during a guided tour. */
 "connections" = "připojení";
 
@@ -9201,8 +9257,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* Noun. Describes a site's follower. */
-"follower" = "fanoušek";
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"follow" = "sledovat";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moje-webova-adresa (URL)";
@@ -9221,6 +9277,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Later today */
 "later today" = "Dnes později";
+
+/* Displayed in the confirmation alert when marking like notifications as read. */
+"like" = "líbí se";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "Označeno jako spam";
@@ -9249,14 +9308,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "neoznačené jako spam";
 
-/* Noun. Describes a site's user. */
-"user" = "uživatel";
+/* Displayed in the confirmation alert when marking unread notifications as read. */
+"unread" = "nepřečtené";
 
 /* Label displayed on video media items. */
 "video" = "video";
-
-/* Noun. Describes a site's viewer. */
-"viewer" = "návštěvník ";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "navštivte naši stránku s dokumentací";

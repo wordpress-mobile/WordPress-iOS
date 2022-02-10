@@ -45,7 +45,7 @@ import WordPressShared
     /// - Parameter blog: The blog for which we want to configure Homepage settings
     ///
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
 
         self.blog = blog
 

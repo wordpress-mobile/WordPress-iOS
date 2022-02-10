@@ -22,10 +22,14 @@ extension SitePickerViewController {
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
                 case .noSuchElement:
-                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                    self?.additionalSafeAreaInsets = .zero
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view
-                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                    guard let parentVC = self?.parent as? MySiteViewController else {
+                        return
+                    }
+                    parentVC.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
+                    parentVC.scrollView.scrollToTop(animated: true)
                 default:
                     break
                 }
@@ -57,5 +61,9 @@ extension SitePickerViewController {
         if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
+    }
+
+    private enum Constants {
+        static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
     }
 }

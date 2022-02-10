@@ -21,6 +21,7 @@ final class PersonViewController: UITableViewController {
         case User      = "user"
         case Follower  = "follower"
         case Viewer    = "viewer"
+        case Email     = "email"
 
         var title: String {
             switch self {
@@ -30,50 +31,54 @@ final class PersonViewController: UITableViewController {
                 return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
             case .Viewer:
                 return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
-            }
-        }
-
-        var name: String {
-            switch self {
-            case .User:
-                return NSLocalizedString("user", comment: "Noun. Describes a site's user.")
-            case .Follower:
-                return NSLocalizedString("follower", comment: "Noun. Describes a site's follower.")
-            case .Viewer:
-                return NSLocalizedString("viewer", comment: "Noun. Describes a site's viewer.")
+            case .Email:
+                return NSLocalizedString("Blog's Email Follower", comment: "Blog's Email Follower Profile. Displayed when the name is empty!")
             }
         }
     }
 
-    // MARK: - Public Properties
 
     /// Blog to which the Person belongs
     ///
-    @objc var blog: Blog!
+    private let blog: Blog
 
     /// Core Data Context that should be used
     ///
-    @objc var context: NSManagedObjectContext!
+    private let context: NSManagedObjectContext
 
     /// Person to be displayed
     ///
-    var person: Person! {
+    private var person: Person {
         didSet {
             refreshInterfaceIfNeeded()
         }
     }
 
-    /// Mode: User / Follower / Viewer
+    /// Mode: User / Follower / Viewer / Email Follower
     ///
-    var screenMode: ScreenMode = .User
+    private let screenMode: ScreenMode
 
+    private let service: PeopleService?
+
+    // MARK: - Initializers
+
+    init?(coder: NSCoder, blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) {
+        self.blog = blog
+        self.context = context
+        self.person = person
+        self.screenMode = screenMode
+        self.service = PeopleService(blog: blog, context: context)
+
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View Lifecyle Methods
 
     override func viewDidLoad() {
-        assert(person != nil)
-        assert(blog != nil)
-
         super.viewDidLoad()
 
         title = person.fullName.nonEmptyString() ?? screenMode.title
@@ -202,9 +207,9 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
-        let titleFormat = NSLocalizedString("Remove @%@", comment: "Remove Person Alert Title")
-        let titleText = String(format: titleFormat, person.username)
-        let name = person.firstName?.nonEmptyString() ?? person.username
+        let titleFormat = NSLocalizedString("Remove %@", comment: "Remove Person Alert Title")
+        let titleText = String(format: titleFormat, isEmailFollower ? person.displayName : "@" + person.username)
+        let name = person.firstName?.nonEmptyString() ?? (isEmailFollower ? person.displayName : person.username)
         let message = warningTextForRemovingPerson(name)
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
@@ -226,6 +231,8 @@ private extension PersonViewController {
             case .Viewer:
                 strongSelf.deleteViewer()
                 return
+            case .Email:
+                strongSelf.deleteEmailFollower()
             }
         }
 
@@ -240,11 +247,14 @@ private extension PersonViewController {
                                          comment: "First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string.")
             messageFirstLine = String.localizedStringWithFormat(text, name, name)
         case .Follower:
-            messageFirstLine = NSLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
                                                  comment: "First line of remove follower warning in confirmation dialog.")
         case .Viewer:
             messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
+        case .Email:
+            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
+                                                 comment: "First line of remove email follower warning in confirmation dialog.")
         }
 
         let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
@@ -260,18 +270,14 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteUser(user, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
-            guard let personWithError = strongSelf.person else {
-                return
-            }
 
-            strongSelf.handleRemoveUserError(error, userName: "@" + personWithError.username)
+            strongSelf.handleRemoveUserError(error, userName: "@" + strongSelf.person.username)
         })
         _ = navigationController?.popViewController(animated: true)
     }
@@ -283,8 +289,24 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as NSError? else {
+                return
+            }
+
+            strongSelf.handleRemoveViewerOrFollowerError(error)
+        })
+        _ = navigationController?.popViewController(animated: true)
+    }
+
+    func deleteEmailFollower() {
+        guard let emailFollower = emailFollower, isEmailFollower else {
+            DDLogError("Error: Only email followers can be deleted here")
+            assertionFailure()
+            return
+        }
+
+        service?.deleteEmailFollower(emailFollower, failure: { [weak self] error in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
@@ -301,7 +323,6 @@ private extension PersonViewController {
             return
         }
 
-        let service = PeopleService(blog: blog, context: context)
         service?.deleteViewer(viewer, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
@@ -344,7 +365,7 @@ private extension PersonViewController {
             return
         }
 
-        guard let service = PeopleService(blog: blog, context: context) else {
+        guard let service = service else {
             DDLogError("Couldn't instantiate People Service")
             return
         }
@@ -399,11 +420,11 @@ private extension PersonViewController {
         }
         headerCell.fullNameLabel.font = WPStyleGuide.tableviewTextFont()
         headerCell.fullNameLabel.textColor = .text
-        headerCell.fullNameLabel.text = person.fullName
+        headerCell.fullNameLabel.text = isEmailFollower ? person.displayName : person.fullName
 
         headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
         headerCell.userNameLabel.textColor = .primary
-        headerCell.userNameLabel.text = "@" + person.username
+        headerCell.userNameLabel.text = person.username.count > 0 ? "@" + person.username : ""
 
         refreshGravatarImage(in: headerCell.gravatarImageView)
     }
@@ -427,8 +448,8 @@ private extension PersonViewController {
 
     func configureRemoveCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-        let removeFormat     = NSLocalizedString("Remove @%@", comment: "Remove User. Verb")
-        let removeText       = String(format: removeFormat, person.username)
+        let removeFormat     = NSLocalizedString("Remove %@", comment: "Remove User. Verb")
+        let removeText       = String(format: removeFormat, isEmailFollower ? person.displayName : "@" + person.username)
         cell.textLabel?.text = removeText as String
         cell.isHidden        = !isRemoveEnabled
     }
@@ -530,6 +551,8 @@ private extension PersonViewController {
             return isFollower == true
         case .Viewer:
             return isViewer == true
+        case .Email:
+            return isEmailFollower
         }
     }
 
@@ -547,6 +570,14 @@ private extension PersonViewController {
 
     var follower: Follower? {
         return person as? Follower
+    }
+
+    var isEmailFollower: Bool {
+        return person is EmailFollower
+    }
+
+    var emailFollower: EmailFollower? {
+        return person as? EmailFollower
     }
 
     var isViewer: Bool {
@@ -568,6 +599,8 @@ private extension PersonViewController {
                 return nil
             }
             return service.getRole(slug: person.role)?.toUnmanaged()
+        case .Email:
+            return .follower
         }
     }
 }

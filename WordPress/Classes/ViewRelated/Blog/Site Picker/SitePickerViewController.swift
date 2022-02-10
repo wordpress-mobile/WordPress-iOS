@@ -10,7 +10,7 @@ final class SitePickerViewController: UIViewController {
 
     var siteIconPresenter: SiteIconPickerPresenter?
     var siteIconPickerPresenter: SiteIconPickerPresenter?
-    var onBlogSwitched: (() -> Void)?
+    var onBlogSwitched: ((Blog) -> Void)?
 
     let meScenePresenter: ScenePresenter
     let blogService: BlogService
@@ -134,14 +134,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 extension SitePickerViewController {
 
     private func switchToBlog(_ blog: Blog) {
-        guard let parent = parent as? MySiteViewController else {
-            return
-        }
-
         self.blog = blog
-        parent.blog = blog
         blogDetailHeaderView.blog = blog
-        onBlogSwitched?()
+        onBlogSwitched?(blog)
     }
 
     private func showSiteTitleSettings() {
@@ -247,7 +242,10 @@ extension SitePickerViewController {
             tourGuide.completeViewSiteTour(forBlog: blog)
         }
 
-        additionalSafeAreaInsets = .zero
+        guard let parentVC = parent as? MySiteViewController else {
+            return
+        }
+        parentVC.additionalSafeAreaInsets = .zero
     }
 }
 

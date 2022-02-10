@@ -33,6 +33,8 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     babosa (1.0.4)
     bigdecimal (1.4.4)
+    buildkit (1.4.5)
+      sawyer (>= 0.6)
     chroma (0.2.0)
     claide (1.1.0)
     cocoapods (1.11.2)
@@ -161,9 +163,10 @@ GEM
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-appcenter (1.11.1)
     fastlane-plugin-sentry (1.11.0)
-    fastlane-plugin-wpmreleasetoolkit (2.3.0)
+    fastlane-plugin-wpmreleasetoolkit (3.0.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
+      buildkit (~> 1.4)
       chroma (= 0.2.0)
       diffy (~> 3.3)
       git (~> 1.3)
@@ -245,7 +248,7 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    octokit (4.21.0)
+    octokit (4.22.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
     oj (3.13.10)
@@ -325,17 +328,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (~> 1.10)
+  cocoapods (~> 1.11)
   commonmarker
   dotenv
   fastlane (~> 2.174)
   fastlane-plugin-appcenter (~> 1.8)
   fastlane-plugin-sentry
-  fastlane-plugin-wpmreleasetoolkit (~> 2.3)
+  fastlane-plugin-wpmreleasetoolkit (~> 3.0)
   octokit (~> 4.0)
   rake
   rmagick (~> 3.2.0)
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.2.32
+   2.3.6

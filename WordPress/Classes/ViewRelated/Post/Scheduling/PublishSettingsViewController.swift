@@ -129,7 +129,7 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     @objc class func viewController(post: AbstractPost) -> ImmuTableViewController {
         let controller = PublishSettingsController(post: post)
-        let viewController = ImmuTableViewController(controller: controller)
+        let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
         controller.viewController = viewController
         return viewController
     }

@@ -2,6 +2,11 @@ import Foundation
 import UIKit
 import WordPressShared
 
+// Notification sent when a comment is moderated/edited to allow views that display Comments to update if necessary.
+// Specifically, the Comments snippet on ReaderDetailViewController.
+extension NSNotification.Name {
+    static let ReaderCommentModifiedNotification = NSNotification.Name(rawValue: "ReaderCommentModifiedNotification")
+}
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -137,6 +142,12 @@ import WordPressShared
         WPAnalytics.trackReader(.readerArticleCommentsOpened, properties: properties)
     }
 
+    // MARK: - Notification
+
+    @objc func postCommentModifiedNotification() {
+        NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
+    }
+
 }
 
 // MARK: - Popover Presentation Delegate
@@ -185,13 +196,13 @@ private extension ReaderCommentsViewController {
         return [
             [
                 .unapprove { [weak self] in
-                    self?.moderateComment(comment, status: .pending, handler: handler)
+                    self?.moderateComment(comment, status: .pending)
                 },
                 .spam { [weak self] in
-                    self?.moderateComment(comment, status: .spam, handler: handler)
+                    self?.moderateComment(comment, status: .spam)
                 },
                 .trash { [weak self] in
-                    self?.moderateComment(comment, status: .unapproved, handler: handler)
+                    self?.moderateComment(comment, status: .unapproved)
                 }
             ],
             [
@@ -218,6 +229,8 @@ private extension ReaderCommentsViewController {
             CommentAnalytics.trackCommentEdited(comment: comment)
 
             self?.commentService.uploadComment(comment, success: {
+                self?.commentModified = true
+
                 // update the thread again in case the approval status changed.
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }, failure: { _ in
@@ -230,21 +243,18 @@ private extension ReaderCommentsViewController {
         present(navigationControllerToPresent, animated: true)
     }
 
-    func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
+    func moderateComment(_ comment: Comment, status: CommentStatusType) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            // Adjust the ReaderPost's comment count.
-            if let post = self?.post, let commentCount = post.commentCount?.intValue {
-                let adjustment = (status == .approved) ? 1 : -1
-                post.commentCount = NSNumber(value: commentCount + adjustment)
-            }
+            self?.commentModified = true
+            self?.refreshAfterCommentModeration()
 
-            // Refresh the UI. The table view handler is needed because the fetched results delegate is set to nil.
-            handler.refreshTableViewPreservingOffset()
+            // Dismiss any old notices to avoid stacked Undo notices.
+            self?.dismissNotice()
 
             // If the status is Approved, the user has undone a comment moderation.
             // So don't show the Undo option in this case.
             (status == .approved) ? self?.displayNotice(title: noticeText) :
-                                    self?.showActionableNotice(title: noticeText, comment: comment, handler: handler)
+                                    self?.showActionableNotice(title: noticeText, comment: comment)
         }
 
         switch status {
@@ -279,12 +289,12 @@ private extension ReaderCommentsViewController {
         }
     }
 
-    func showActionableNotice(title: String, comment: Comment, handler: WPTableViewHandler) {
+    func showActionableNotice(title: String, comment: Comment) {
         displayActionableNotice(title: title,
                                 actionTitle: .undoActionTitle,
                                 actionHandler: { [weak self] _ in
             // Set the Comment's status back to Approved when the user selects Undo on the notice.
-            self?.moderateComment(comment, status: .approved, handler: handler)
+            self?.moderateComment(comment, status: .approved)
         })
     }
 
