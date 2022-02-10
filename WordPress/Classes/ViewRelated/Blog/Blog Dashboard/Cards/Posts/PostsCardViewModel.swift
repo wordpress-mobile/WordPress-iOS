@@ -25,6 +25,8 @@ class PostsCardViewModel: NSObject {
 
     private var status: BasePost.Status = .draft
 
+    private var syncing: (NSNumber?, BasePost.Status)?
+
     private weak var viewController: PostsCardView?
 
     init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
@@ -134,6 +136,12 @@ private extension PostsCardViewModel {
         options.number = Constants.numberOfPostsToSync
         options.purgesLocalSync = true
 
+        guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
+            return
+        }
+
+        syncing = (blog.dotComID, status)
+
         postService.syncPosts(
             ofType: .post,
             with: options,
@@ -142,10 +150,14 @@ private extension PostsCardViewModel {
                 if self?.numberOfPosts == 0 {
                     self?.showEmptyPostsError()
                 }
+
+                self?.syncing = nil
             }, failure: { [weak self] _ in
                 if self?.numberOfPosts == 0 {
                     self?.showLoadingFailureError()
                 }
+
+                self?.syncing = nil
         })
     }
 
