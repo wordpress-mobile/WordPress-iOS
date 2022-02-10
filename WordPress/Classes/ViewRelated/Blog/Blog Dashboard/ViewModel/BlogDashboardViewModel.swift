@@ -64,6 +64,7 @@ class BlogDashboardViewModel {
     func applySnapshotForInitialData() {
         let snapshot = DashboardSnapshot()
         apply(snapshot: snapshot)
+    }
 
     func card(for sectionIndex: Int) -> DashboardCard? {
         dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))?.id
