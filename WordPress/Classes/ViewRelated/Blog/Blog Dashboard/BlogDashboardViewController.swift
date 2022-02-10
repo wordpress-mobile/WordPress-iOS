@@ -83,37 +83,12 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            if sectionIndex == 0 {
-                return self.createQuickActionsLayoutSection()
-            } else {
-                return self.createDefaultLayoutSection()
-            }
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            self?.createLayoutSection(for: sectionIndex)
         }
     }
 
-    private func createQuickActionsLayoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(Constants.estimatedWidth),
-                                              heightDimension: .estimated(Constants.estimatedHeight))
-
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
-                                                        leading: Constants.sectionInset,
-                                                        bottom: 0,
-                                                        trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
-        section.orthogonalScrollingBehavior = .continuous
-
-        return section
-    }
-
-    private func createDefaultLayoutSection() -> NSCollectionLayoutSection {
+    private func createLayoutSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
@@ -122,12 +97,12 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        let isQuickActionSection = sectionIndex == 0
+        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
-                                                        leading: Constants.sectionInset,
-                                                        bottom: Constants.sectionInset,
-                                                        trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
-
+                                                        leading: horizontalInset,
+                                                        bottom: 0,
+                                                        trailing: horizontalInset)
         return section
     }
 }
