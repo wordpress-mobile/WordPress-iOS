@@ -68,6 +68,10 @@ private extension PostsCardViewController {
     }
 
     func configureGhostableTableView() {
+        guard ghostableTableView?.superview == nil else {
+            return
+        }
+
         let ghostableTableView = PostCardTableView()
 
         view.addSubview(ghostableTableView)
