@@ -31,7 +31,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     func createViewController(with notification: Notification,
                               completion: @escaping (CommentDetailViewController?) -> Void) {
-        configureWith(notification: notification)
+        configure(with: notification)
 
         if let comment = loadCommentFromCache() {
             createViewController(comment: comment)
@@ -57,7 +57,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
 private extension NotificationCommentDetailCoordinator {
 
-    func configureWith(notification: Notification) {
+    func configure(with notification: Notification) {
         self.notification = notification
         commentID = notification.metaCommentID
 
@@ -108,7 +108,7 @@ private extension NotificationCommentDetailCoordinator {
     func updateViewWith(notification: Notification) {
         if notification.kind == .comment {
             trackDetailsOpened(for: notification)
-            configureWith(notification: notification)
+            configure(with: notification)
             refreshViewController()
         } else {
             // TODO: handle other notification type
