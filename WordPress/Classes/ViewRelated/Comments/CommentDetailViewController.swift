@@ -32,8 +32,7 @@ class CommentDetailViewController: UIViewController {
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
 
-    // This cannot be weak because by the time it is used for previous/next buttons, it will be nil.
-    private var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
+    private weak var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
 
     private var isNotificationComment: Bool {
         notification != nil

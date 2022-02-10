@@ -83,6 +83,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
+        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+    }()
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -729,12 +733,14 @@ extension NotificationsViewController {
 
         view.isUserInteractionEnabled = false
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
-                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note, notificationsNavigationDataSource: self)
-
-                notificationCommentDetailCoordinator.createViewController { commentDetailViewController in
+                self.notificationCommentDetailCoordinator.createViewController(with: note) { commentDetailViewController in
                     guard let commentDetailViewController = commentDetailViewController else {
                         // TODO: show error view
                         return

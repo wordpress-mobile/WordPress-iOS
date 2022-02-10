@@ -22,16 +22,17 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Init
 
-    init(notification: Notification,
-         notificationsNavigationDataSource: NotificationsNavigationDataSource? = nil) {
+    init(notificationsNavigationDataSource: NotificationsNavigationDataSource? = nil) {
         self.notificationsNavigationDataSource = notificationsNavigationDataSource
         super.init()
-        configureWith(notification: notification)
     }
 
     // MARK: - Public Methods
 
-    func createViewController(completion: @escaping (CommentDetailViewController?) -> Void) {
+    func createViewController(with notification: Notification,
+                              completion: @escaping (CommentDetailViewController?) -> Void) {
+        configureWith(notification: notification)
+
         if let comment = loadCommentFromCache() {
             createViewController(comment: comment)
             completion(viewController)
