@@ -8,13 +8,6 @@ typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardCard
 class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
-    enum Section: CaseIterable {
-        case quickLinks
-        case posts
-    }
-
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
-
     private let managedObjectContext: NSManagedObjectContext
     private let blog: Blog
 
@@ -60,6 +53,10 @@ class BlogDashboardViewModel {
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
         })
+    }
+
+    func card(for sectionIndex: Int) -> DashboardCard? {
+        dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))?.id
     }
 }
 
