@@ -55,7 +55,7 @@ class BlogDashboardViewModel {
         })
     }
 
-    func getDashboardCard(for sectionIndex: Int) -> DashboardCard? {
+    func card(for sectionIndex: Int) -> DashboardCard? {
         dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))?.id
     }
 }

@@ -97,7 +97,7 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        let isQuickActionSection = viewModel.getDashboardCard(for: sectionIndex) == .quickActions
+        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
         let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
                                                         leading: horizontalInset,
