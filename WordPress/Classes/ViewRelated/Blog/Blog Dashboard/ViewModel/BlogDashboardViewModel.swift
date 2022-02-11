@@ -42,9 +42,7 @@ class BlogDashboardViewModel {
 
     /// Apply the initial configuration when the view loaded
     func viewDidLoad() {
-        // This is necessary when using an IntrinsicCollectionView
-        // Otherwise, the collection view will never update its height
-        applySnapshotForInitialData()
+        loadCardsFromCache()
     }
 
     /// Call the API to return cards for the current blog
@@ -58,12 +56,19 @@ class BlogDashboardViewModel {
         service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
+        }, failure: { [weak self] in
+            self?.viewController?.stopLoading()
         })
     }
 
-    func applySnapshotForInitialData() {
-        let snapshot = DashboardSnapshot()
+    func loadCardsFromCache() {
+        guard let dotComID = blog.dotComID?.intValue else {
+            return
+        }
+
+        let snapshot = service.fetchLocal(wpComID: dotComID)
         apply(snapshot: snapshot)
+    }
 
     func card(for sectionIndex: Int) -> DashboardCard? {
         dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))?.id

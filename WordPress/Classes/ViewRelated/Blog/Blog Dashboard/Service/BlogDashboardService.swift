@@ -11,7 +11,7 @@ class BlogDashboardService {
     }
 
     /// Fetch cards from remote
-    func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void) {
+    func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
         let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cards in
@@ -25,7 +25,7 @@ class BlogDashboardService {
             completion(snapshot)
 
         }, failure: { _ in
-
+            failure?()
         })
     }
 

@@ -67,7 +67,7 @@ final class BlogDashboardViewController: UIViewController {
     func update(blog: Blog) {
         self.blog = blog
         viewModel.blog = blog
-        viewModel.applySnapshotForInitialData()
+        viewModel.loadCardsFromCache()
         viewModel.loadCards()
     }
 
