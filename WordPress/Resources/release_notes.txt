@@ -1,6 +1,6 @@
 With this latest version of WordPress, we made some design changes to help make your user experience even better.
 
-- Text blocks in the block editor now adjust along with the text as you change the font size and line height.
+- Text blocks in the block editor now adjust along with the text as you change the font size and line height for block themes.
 - We redesigned some of the screens in the app, including My Site. Looking fresh!
 - We love a clean inbox, so we added a button that lets you mark all filtered notifications as read.
 - In the site tab’s Configure > People menu, we added an email filter that allows you to see, learn more about, and even remove email followers.
