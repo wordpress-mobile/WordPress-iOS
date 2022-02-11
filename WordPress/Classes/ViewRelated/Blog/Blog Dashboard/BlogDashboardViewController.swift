@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
@@ -83,7 +84,7 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     func showStats() {
-        // TODO: Track event / source
+        trackQuickActionsEvent(.statsAccessed)
 
         let controller = StatsViewController()
         controller.blog = blog
@@ -94,7 +95,7 @@ extension BlogDashboardViewController {
     }
 
     func showPostList() {
-        // TODO: Track event / source
+        trackQuickActionsEvent(.openedPosts)
 
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -104,7 +105,7 @@ extension BlogDashboardViewController {
     }
 
     func showMediaLibrary() {
-        // TODO: Track event / source
+        trackQuickActionsEvent(.openedMediaLibrary)
 
         let controller = MediaLibraryViewController(blog: blog)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -114,13 +115,17 @@ extension BlogDashboardViewController {
     }
 
     func showPageList() {
-        // TODO: Track event / source
+        trackQuickActionsEvent(.openedPages)
 
         let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         showDetailViewController(controller, sender: self)
 
         QuickStartTourGuide.shared.visited(.pages)
+    }
+
+    private func trackQuickActionsEvent(_ event: WPAnalyticsStat) {
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTapSource: "dashboard"], with: blog)
     }
 }
 
