@@ -586,8 +586,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.tableView.reloadData()
             blogDetailsViewController?.preloadMetadata()
         case .dashboard:
-            // TODO: Update blog dashboard vc
-            break
+            blogDashboardViewController?.update(blog: blog)
         }
     }
 

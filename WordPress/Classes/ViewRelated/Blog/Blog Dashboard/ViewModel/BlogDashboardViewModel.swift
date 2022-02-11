@@ -9,7 +9,7 @@ class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
-    private let blog: Blog
+    var blog: Blog
 
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
@@ -40,19 +40,30 @@ class BlogDashboardViewModel {
         self.blog = blog
     }
 
+    /// Apply the initial configuration when the view loaded
+    func viewDidLoad() {
+        // This is necessary when using an IntrinsicCollectionView
+        // Otherwise, the collection view will never update its height
+        applySnapshotForInitialData()
+    }
+
     /// Call the API to return cards for the current blog
-    func start() {
+    func loadCards() {
         guard let dotComID = blog.dotComID?.intValue else {
             return
         }
 
         viewController?.showLoading()
-        applySnapshotForInitialData()
 
         service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
         })
+    }
+
+    func applySnapshotForInitialData() {
+        let snapshot = DashboardSnapshot()
+        apply(snapshot: snapshot)
     }
 
     func card(for sectionIndex: Int) -> DashboardCard? {
@@ -63,12 +74,6 @@ class BlogDashboardViewModel {
 // MARK: - Private methods
 
 private extension BlogDashboardViewModel {
-    // This is necessary when using an IntrinsicCollectionView
-    // Otherwise, the collection view will never update its height
-    func applySnapshotForInitialData() {
-        let snapshot = DashboardSnapshot()
-        dataSource?.apply(snapshot, animatingDifferences: false)
-    }
 
     func apply(snapshot: DashboardSnapshot) {
         dataSource?.apply(snapshot, animatingDifferences: false)
