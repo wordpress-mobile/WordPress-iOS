@@ -62,10 +62,75 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
             return
         }
 
-        statsButton.onTap = viewController.showStats
-        postsButton.onTap = viewController.showPostList
-        mediaButton.onTap = viewController.showMediaLibrary
-        pagesButton.onTap = viewController.showPageList
+        configureQuickActionButtons(for: blog, with: viewController)
+    }
+}
+
+// MARK: - Button Actions
+
+extension DashboardQuickActionsCardCell {
+
+    private func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+        statsButton.onTap = { [weak self] in
+            self?.showStats(for: blog, from: sourceController)
+        }
+
+        postsButton.onTap = { [weak self] in
+            self?.showPostList(for: blog, from: sourceController)
+        }
+
+        mediaButton.onTap = { [weak self] in
+            self?.showMediaLibrary(for: blog, from: sourceController)
+        }
+
+        pagesButton.onTap = { [weak self] in
+            self?.showPageList(for: blog, from: sourceController)
+        }
+    }
+
+    private func showStats(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.statsAccessed, blog: blog)
+
+        let controller = StatsViewController()
+        controller.blog = blog
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.stats)
+    }
+
+    private func showPostList(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedPosts, blog: blog)
+
+        let controller = PostListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+    }
+
+    private func showMediaLibrary(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
+
+        let controller = MediaLibraryViewController(blog: blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+    }
+
+    private func showPageList(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedPages, blog: blog)
+
+        let controller = PageListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.pages)
+    }
+
+    private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTapSource: "dashboard"], with: blog)
     }
 }
 

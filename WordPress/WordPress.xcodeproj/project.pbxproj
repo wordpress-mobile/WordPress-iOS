@@ -2815,8 +2815,6 @@
 		FAB9826F2697038700B172A3 /* StatsViewController+JetpackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */; };
 		FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */; };
 		FAB985C22697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */; };
-		FABA5DE427B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABA5DE327B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift */; };
-		FABA5DE527B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABA5DE327B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift */; };
 		FABB1FAB2602FC2C00C8785C /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
 		FABB1FAC2602FC2C00C8785C /* PostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */; };
 		FABB1FAE2602FC2C00C8785C /* QuickStartCongratulationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DDFE8F21785EAC008BE72F /* QuickStartCongratulationsCell.xib */; };
@@ -7585,7 +7583,6 @@
 		FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupService.swift; sourceTree = "<group>"; };
 		FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsViewController+JetpackSettings.swift"; sourceTree = "<group>"; };
 		FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+StatsModule.swift"; sourceTree = "<group>"; };
-		FABA5DE327B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDashboardViewController+QuickActions.swift"; sourceTree = "<group>"; };
 		FABB26522602FC2C00C8785C /* Jetpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jetpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABB26872602FCCA00C8785C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FABB28462603067C00C8785C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -14654,7 +14651,6 @@
 				8B6214E127B1B2D6001DF7B6 /* Service */,
 				8BEE845B27B1DD8E0001A93C /* ViewModel */,
 				FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */,
-				FABA5DE327B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift */,
 				8BF9E03227B1A8A800915B27 /* DashboardCard.swift */,
 			);
 			path = "Blog Dashboard";
@@ -17600,7 +17596,6 @@
 				F16C35DA23F3F76C00C81331 /* PostAutoUploadMessageProvider.swift in Sources */,
 				91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */,
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
-				FABA5DE427B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift in Sources */,
 				4313437B217956DB00DA2176 /* QuickStartSkipAllCell.swift in Sources */,
 				74989B8C2088E3650054290B /* BlogDetailsViewController+Activity.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
@@ -19578,7 +19573,6 @@
 				FABB21302602FC2C00C8785C /* PostCardStatusViewModel.swift in Sources */,
 				03216EC7279946CA00D444CA /* SchedulingDatePickerViewController.swift in Sources */,
 				FAD2544226116CEA00EDAF88 /* AppStyleGuide.swift in Sources */,
-				FABA5DE527B6865800EAF827 /* BlogDashboardViewController+QuickActions.swift in Sources */,
 				FABB21312602FC2C00C8785C /* SharingAuthorizationHelper.m in Sources */,
 				FABB21332602FC2C00C8785C /* TwoColumnCell.swift in Sources */,
 				C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */,
