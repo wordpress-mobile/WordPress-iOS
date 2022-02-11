@@ -397,8 +397,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
         if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service)
-        {
+           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
             authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
             return
         }
