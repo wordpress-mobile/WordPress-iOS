@@ -78,6 +78,52 @@ final class BlogDashboardViewController: UIViewController {
     }
 }
 
+// MARK: - Quick Actions
+
+extension BlogDashboardViewController {
+
+    func showStats() {
+        // TODO: Track event / source
+
+        let controller = StatsViewController()
+        controller.blog = blog
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(controller, sender: self)
+
+        QuickStartTourGuide.shared.visited(.stats)
+    }
+
+    func showPostList() {
+        // TODO: Track event / source
+
+        let controller = PostListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(controller, sender: self)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+    }
+
+    func showMediaLibrary() {
+        // TODO: Track event / source
+
+        let controller = MediaLibraryViewController(blog: blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(controller, sender: self)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+    }
+
+    func showPageList() {
+        // TODO: Track event / source
+
+        let controller = PageListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(controller, sender: self)
+
+        QuickStartTourGuide.shared.visited(.pages)
+    }
+}
+
 // MARK: - Collection view layout
 
 extension BlogDashboardViewController {

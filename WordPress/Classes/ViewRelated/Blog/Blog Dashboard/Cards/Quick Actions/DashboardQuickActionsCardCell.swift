@@ -58,7 +58,14 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
-        // TODO: hook up to buttons to vc
+        guard let viewController = viewController else {
+            return
+        }
+
+        statsButton.onTap = viewController.showStats
+        postsButton.onTap = viewController.showPostList
+        mediaButton.onTap = viewController.showMediaLibrary
+        pagesButton.onTap = viewController.showPageList
     }
 }
 
