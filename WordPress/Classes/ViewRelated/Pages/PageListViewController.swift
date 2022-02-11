@@ -86,6 +86,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return controller
     }
 
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
+        let controller = PageListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.pages)
+    }
+
     // MARK: - UIViewControllerRestoration
 
     class func viewController(withRestorationIdentifierPath identifierComponents: [String],

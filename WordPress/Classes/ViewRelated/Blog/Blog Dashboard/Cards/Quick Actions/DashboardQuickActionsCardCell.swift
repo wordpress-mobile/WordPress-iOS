@@ -90,43 +90,22 @@ extension DashboardQuickActionsCardCell {
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.statsAccessed, blog: blog)
-
-        let controller = StatsViewController()
-        controller.blog = blog
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.stats)
+        StatsViewController.show(for: blog, from: sourceController)
     }
 
     private func showPostList(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.openedPosts, blog: blog)
-
-        let controller = PostListViewController.controllerWithBlog(blog)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+        PostListViewController.showForBlog(blog, from: sourceController)
     }
 
     private func showMediaLibrary(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
-
-        let controller = MediaLibraryViewController(blog: blog)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+        MediaLibraryViewController.showForBlog(blog, from: sourceController)
     }
 
     private func showPageList(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.openedPages, blog: blog)
-
-        let controller = PageListViewController.controllerWithBlog(blog)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.pages)
+        PageListViewController.showForBlog(blog, from: sourceController)
     }
 
     private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
