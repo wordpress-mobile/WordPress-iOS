@@ -24,13 +24,13 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController, let dataModel = dataModel else {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        guard let viewController = viewController, let apiResponse = apiResponse else {
             return
         }
 
-        let hasDrafts = (dataModel.posts?.draft?.count ?? 0) > 0
-        let hasScheduled = (dataModel.posts?.scheduled?.count ?? 0) > 0
+        let hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
+        let hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
 
         removeAllChildVCs()
 
