@@ -95,7 +95,7 @@ class BlogDashboardServiceTests: XCTestCase {
 
         service.fetch(wpComID: 123456) { snapshot in
             // Quick Actions exists
-            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickAction }
+            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickActions }
             XCTAssertEqual(quickActionsSection.count, 1)
 
             // The item identifier id is quick actions
