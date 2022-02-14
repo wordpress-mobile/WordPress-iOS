@@ -21,9 +21,9 @@ public class BlockEditorScreen: ScreenObject {
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter ],
+            expectedElementGetters: [ editorCloseButtonGetter, addBlockButtonGetter ],
             app: app,
-            waitTimeout: 7
+            waitTimeout: 10
         )
     }
 
@@ -104,6 +104,16 @@ public class BlockEditorScreen: ScreenObject {
             let waitForEditorToClose = editorNavBar.waitFor(predicateString: "isEnabled == false")
             XCTAssertEqual(waitForEditorToClose, .completed, "Block editor should be closed but is still loaded.")
         }
+    }
+
+    // Sometimes ScreenObject times out due to long loading time making the Editor Screen evaluate to `nil`.
+    // This function adds the ability to still close the Editor Screen when that happens.
+    public static func closeEditorDiscardingChanges(app: XCUIApplication = XCUIApplication()) {
+        let closeButton = app.buttons["Close"]
+        if closeButton.waitForIsHittable() { closeButton.tap() }
+
+        let discardChangesButton = app.buttons["Discard"]
+        if discardChangesButton.waitForIsHittable() { discardChangesButton.tap() }
     }
 
     public func publish() throws -> EditorNoticeComponent {

@@ -16,7 +16,9 @@ class EditorGutenbergTests: XCTestCase {
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
 
-        if editorScreen != nil && !TabNavComponent.isVisible() {
+        if editorScreen == nil {
+            BlockEditorScreen.closeEditorDiscardingChanges()
+        } else if TabNavComponent.isVisible() == false {
             editorScreen.dismissBlocksPickerIfNeeded()
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
