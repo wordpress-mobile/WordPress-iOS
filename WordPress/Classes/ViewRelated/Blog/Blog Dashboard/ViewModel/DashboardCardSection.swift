@@ -2,9 +2,9 @@ import Foundation
 
 /// Represents a section in the Dashboard Collection View
 class DashboardCardSection: Hashable {
-    let id: String
+    let id: DashboardCard
 
-    init(id: String) {
+    init(id: DashboardCard) {
         self.id = id
     }
 

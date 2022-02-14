@@ -33,7 +33,7 @@ class BlogDashboardServiceTests: XCTestCase {
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         service.fetch(wpComID: 123456) { snapshot in
-            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "posts" })
+            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
             let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
 
             // Posts section exists
@@ -65,7 +65,7 @@ class BlogDashboardServiceTests: XCTestCase {
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         service.fetch(wpComID: 123456) { snapshot in
-            let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "todays_stats" })
+            let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .todaysStats })
             let todaysStatsItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: todaysStatsSection!).first!
 
             // Todays stats section exists
@@ -95,7 +95,7 @@ class BlogDashboardServiceTests: XCTestCase {
 
         service.fetch(wpComID: 123456) { snapshot in
             // Quick Actions exists
-            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == "quickActions" }
+            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickAction }
             XCTAssertEqual(quickActionsSection.count, 1)
 
             // The item identifier id is quick actions
@@ -133,7 +133,7 @@ class BlogDashboardServiceTests: XCTestCase {
 
         let snapshot = service.fetchLocal(wpComID: 123456)
 
-        let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "posts" })
+        let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
         XCTAssertNotNil(postsSection)
         XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, 123456)
     }
