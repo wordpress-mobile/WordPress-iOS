@@ -16,20 +16,16 @@ class BlogDashboardService {
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cardsDictionary in
 
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let data = try JSONSerialization.data(withJSONObject: cardsDictionary, options: [])
-                let cards = try decoder.decode(BlogDashboardRemoteEntity.self, from: data)
+            if let cards = self?.decode(cardsDictionary) {
 
                 self?.persistence.persist(cards: cardsDictionary, for: wpComID)
 
-                guard let snapshot = self?.parse(cardsDictionary) else {
+                guard let snapshot = self?.parse(cardsDictionary, cards: cards) else {
                     return
                 }
 
                 completion(snapshot)
-            } catch {
+            } else {
                 failure?()
             }
 
@@ -40,8 +36,10 @@ class BlogDashboardService {
 
     /// Fetch cards from local
     func fetchLocal(wpComID: Int) -> DashboardSnapshot {
-        if let cards = persistence.getCards(for: wpComID) {
-            let snapshot = parse(cards)
+        if let cardsDictionary = persistence.getCards(for: wpComID),
+            let cards = decode(cardsDictionary) {
+
+            let snapshot = parse(cardsDictionary, cards: cards)
             return snapshot
         }
 
@@ -50,32 +48,21 @@ class BlogDashboardService {
 }
 
 private extension BlogDashboardService {
-    func parse(_ cardsDictionary: NSDictionary) -> DashboardSnapshot {
+    /// We use the `BlogDashboardRemoteEntity` to inject it into cells
+    /// The `NSDictionary` is used for `Hashable` purposes
+    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases.forEach { card in
 
             if card.isRemote {
+                if let viewModel = cardsDictionary[card.rawValue] {
+                    let section = DashboardCardSection(id: card.rawValue)
+                    let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary, entity: cards)
 
-                if card == .posts,
-                   let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary {
-                    let (sections, items) = parsePostCard(posts)
-                    snapshot.appendSections(sections)
-                    sections.enumerated().forEach { key, section in
-                        snapshot.appendItems([items[key]], toSection: section)
-                    }
-                } else {
-
-                    if let viewModel = cardsDictionary[card.rawValue] {
-                        let section = DashboardCardSection(id: card.rawValue)
-                        let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary)
-
-                        snapshot.appendSections([section])
-                        snapshot.appendItems([item], toSection: section)
-                    }
-
+                    snapshot.appendSections([section])
+                    snapshot.appendItems([item], toSection: section)
                 }
-
             } else {
                 let section = DashboardCardSection(id: card.rawValue)
                 let item = DashboardCardModel(id: card)
@@ -89,40 +76,13 @@ private extension BlogDashboardService {
         return snapshot
     }
 
-    /// Posts are a special case: they might not be a 1-1 relation
-    /// If the user has draft and scheduled posts, we show two cards
-    /// One for each. This function takes care of this
-    func parsePostCard(_ posts: NSDictionary) -> ([DashboardCardSection], [DashboardCardModel]) {
-        var sections: [DashboardCardSection] = []
-        var items: [DashboardCardModel] = []
-
-        let draftsCount = (posts["draft"] as? Array<Any>)?.count ?? 0
-        let scheduledCount = (posts["scheduled"] as? Array<Any>)?.count ?? 0
-
-        let hasDrafts = draftsCount > 0
-        let hasScheduled = scheduledCount > 0
-
-        if hasDrafts && hasScheduled {
-            var draft = posts.copy() as? [String: Any]
-            draft?["show_drafts"] = true
-            draft?["show_scheduled"] = false
-            sections.append(DashboardCardSection(id: "posts", subtype: "draft"))
-            items.append(DashboardCardModel(id: .posts, cellViewModel: draft as NSDictionary?))
-
-            var scheduled = posts.copy() as? [String: Any]
-            scheduled?["show_drafts"] = false
-            scheduled?["show_scheduled"] = true
-            sections.append(DashboardCardSection(id: "posts", subtype: "scheduled"))
-            items.append(DashboardCardModel(id: .posts, cellViewModel: scheduled as NSDictionary?))
-        } else {
-            var postsWithFlags = posts.copy() as? [String: Any]
-            postsWithFlags?["show_drafts"] = hasDrafts
-            postsWithFlags?["show_scheduled"] = hasScheduled
-
-            sections.append(DashboardCardSection(id: "posts"))
-            items.append(DashboardCardModel(id: .posts, cellViewModel: postsWithFlags as NSDictionary?))
+    func decode(_ cardsDictionary: NSDictionary) -> BlogDashboardRemoteEntity? {
+        guard let data = try? JSONSerialization.data(withJSONObject: cardsDictionary, options: []) else {
+            return nil
         }
 
-        return (sections, items)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 }

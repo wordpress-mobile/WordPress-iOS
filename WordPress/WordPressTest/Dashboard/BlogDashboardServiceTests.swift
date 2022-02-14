@@ -28,50 +28,31 @@ class BlogDashboardServiceTests: XCTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
-    func testCreateSectionForDraftsAndScheduled() {
+    func testCreateSectionForPosts() {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         service.fetch(wpComID: 123456) { snapshot in
-            // Drafts and Scheduled section exists
-            let draftsSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "draft" })
-            let scheduledSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "scheduled" })
-            XCTAssertNotNil(draftsSection)
-            XCTAssertNotNil(scheduledSection)
+            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "posts" })
+            let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
 
-            // The id is posts
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection!).first?.id, .posts)
+            // Posts section exists
+            XCTAssertNotNil(postsSection)
 
-            // For Drafts section
-            XCTAssertFalse(snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["show_scheduled"] as! Bool)
-            XCTAssertTrue(snapshot.itemIdentifiers(inSection: draftsSection!).first?.cellViewModel?["show_drafts"] as! Bool)
+            // Item id is posts
+            XCTAssertEqual(postsCardItem.id, .posts)
 
-            // For Scheduled section
-            XCTAssertFalse(snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["show_drafts"] as! Bool)
-            XCTAssertTrue(snapshot.itemIdentifiers(inSection: scheduledSection!).first?.cellViewModel?["show_scheduled"] as! Bool)
-            expect.fulfill()
-        }
+            // Has published is `true`
+            XCTAssertTrue(postsCardItem.entity!.posts!.hasPublished!)
 
-        waitForExpectations(timeout: 3, handler: nil)
-    }
+            // 3 scheduled item
+            XCTAssertEqual(postsCardItem.entity!.posts!.draft!.count, 3)
 
-    func testCreateSectionForDraftOnly() {
-        let expect = expectation(description: "Parse drafts and scheduled")
-        remoteServiceMock.respondWith = .withDraftsOnly
+            // 1 scheduled item
+            XCTAssertEqual(postsCardItem.entity!.posts!.scheduled!.count, 1)
 
-        service.fetch(wpComID: 123456) { snapshot in
-            // Drafts and Scheduled section exists
-            let draftsSection = snapshot.sectionIdentifiers.filter { $0.id == "posts" && $0.subtype == nil }
-            XCTAssertEqual(draftsSection.count, 1)
-
-            // The item identifier id is posts
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.id, .posts)
-
-            // For Drafts section, showScheduled is false
-            XCTAssertFalse(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["show_scheduled"] as! Bool)
-
-            // For Drafts section, scheduled has 1 post
-            XCTAssertTrue(snapshot.itemIdentifiers(inSection: draftsSection.first!).first?.cellViewModel?["show_drafts"] as! Bool)
+            // cell view model is a `NSDictionary`
+            XCTAssertTrue(postsCardItem.cellViewModel!["has_published"] as! Bool)
 
             expect.fulfill()
         }
@@ -84,15 +65,23 @@ class BlogDashboardServiceTests: XCTestCase {
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         service.fetch(wpComID: 123456) { snapshot in
-            // Drafts and Scheduled section exists
-            let todaysStatsSection = snapshot.sectionIdentifiers.filter { $0.id == "todays_stats" }
-            XCTAssertEqual(todaysStatsSection.count, 1)
+            let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "todays_stats" })
+            let todaysStatsItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: todaysStatsSection!).first!
+
+            // Todays stats section exists
+            XCTAssertNotNil(todaysStatsSection)
 
             // The item identifier id is todaysStats
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: todaysStatsSection.first!).first?.id, .todaysStats)
+            XCTAssertEqual(todaysStatsItem.id, .todaysStats)
 
-            // Todays Stats has the correct data source
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: todaysStatsSection.first!).first?.cellViewModel, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+            // Entity has the correct values
+            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.views, 0)
+            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.visitors, 0)
+            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.likes, 0)
+            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.comments, 0)
+
+            // Todays Stats has the correct NSDictionary
+            XCTAssertEqual(todaysStatsItem.cellViewModel, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
 
             expect.fulfill()
         }
@@ -114,6 +103,9 @@ class BlogDashboardServiceTests: XCTestCase {
 
             // It doesn't have a data source
             XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.cellViewModel)
+
+            // It doesn't have an entity
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.entity)
 
             expect.fulfill()
         }
@@ -141,10 +133,8 @@ class BlogDashboardServiceTests: XCTestCase {
 
         let snapshot = service.fetchLocal(wpComID: 123456)
 
-        let draftsSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "draft" })
-        let scheduledSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "scheduled" })
-        XCTAssertNotNil(draftsSection)
-        XCTAssertNotNil(scheduledSection)
+        let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == "posts" })
+        XCTAssertNotNil(postsSection)
         XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, 123456)
     }
 
