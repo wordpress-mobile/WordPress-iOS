@@ -45,6 +45,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBOutlet weak var createSiteButton: UIButton!
     @IBOutlet weak var addSelfHostedButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
 
     enum DismissAction {
         case none
@@ -65,6 +66,11 @@ class PostSignUpInterstitialViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .listBackground
+
+        // Update the banner image for Jetpack
+        if AppConfiguration.isJetpack, let image = UIImage(named: "wp-illustration-construct-site-jetpack") {
+            imageView.image = image
+        }
 
         configureI18N()
 
