@@ -52,7 +52,7 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
 
             // cell view model is a `NSDictionary`
-            XCTAssertTrue(postsCardItem.cellViewModel!["has_published"] as! Bool)
+            XCTAssertTrue(postsCardItem.apiResponseDictionary!["has_published"] as! Bool)
 
             expect.fulfill()
         }
@@ -81,7 +81,7 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
 
             // Todays Stats has the correct NSDictionary
-            XCTAssertEqual(todaysStatsItem.cellViewModel, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+            XCTAssertEqual(todaysStatsItem.apiResponseDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
 
             expect.fulfill()
         }
@@ -101,11 +101,11 @@ class BlogDashboardServiceTests: XCTestCase {
             // The item identifier id is quick actions
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
 
-            // It doesn't have a data source
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.cellViewModel)
+            // It doesn't have an api response dictionary
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponseDictionary)
 
-            // It doesn't have an entity
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.entity)
+            // It doesn't have an api response entity
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponse)
 
             expect.fulfill()
         }

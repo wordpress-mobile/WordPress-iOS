@@ -3,20 +3,22 @@ import Foundation
 /// Represents a card in the dashboard collection view
 class DashboardCardModel: Hashable {
     let id: DashboardCard
-    let cellViewModel: NSDictionary?
     let apiResponse: BlogDashboardRemoteEntity?
 
-    init(id: DashboardCard, cellViewModel: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
+    // Used as the `Hashable` to check if the cell should be updated or not
+    let apiResponseDictionary: NSDictionary?
+
+    init(id: DashboardCard, apiResponseDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
         self.id = id
-        self.cellViewModel = cellViewModel
+        self.apiResponseDictionary = apiResponseDictionary
         self.apiResponse = entity
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
-        lhs.cellViewModel == rhs.cellViewModel
+        lhs.apiResponseDictionary == rhs.apiResponseDictionary
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(cellViewModel)
+        hasher.combine(apiResponseDictionary)
     }
 }
