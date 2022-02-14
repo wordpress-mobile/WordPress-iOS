@@ -324,6 +324,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         if let authenticationHandler = authenticationHandler,
+           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
            authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
             return
         }
@@ -395,7 +396,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
-        if let authenticationHandler = authenticationHandler {
+        if let authenticationHandler = authenticationHandler,
+           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
             authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
             return
         }

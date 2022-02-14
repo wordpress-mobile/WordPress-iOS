@@ -27,9 +27,8 @@ import WordPressKit
 // MARK: - Tab bar order
 @objc enum WPTab: Int {
     case mySites
-    case notifications
-    // Reader on Jetpack is not displayed, but we keep it here to avoid adding conditionals on existing code
     case reader
+    case notifications
 }
 
 // MARK: - Localized Strings
