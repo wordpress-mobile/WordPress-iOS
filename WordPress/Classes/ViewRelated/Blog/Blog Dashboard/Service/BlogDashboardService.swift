@@ -2,60 +2,84 @@ import Foundation
 import WordPressKit
 
 class BlogDashboardService {
-    let remoteService: DashboardServiceRemote
+    private let remoteService: DashboardServiceRemote
+    private let persistence: BlogDashboardPersistence
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil) {
+    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
+        self.persistence = persistence
     }
 
-    func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void) {
+    /// Fetch cards from remote
+    func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
         let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cards in
 
-            var snapshot = DashboardSnapshot()
+            self?.persistence.persist(cards: cards, for: wpComID)
 
-            DashboardCard.allCases.forEach { card in
-
-                if card.isRemote {
-
-                    if card == .posts,
-                       let posts = cards[DashboardCard.posts.rawValue] as? NSDictionary,
-                       let (sections, items) = self?.parsePostCard(posts) {
-                        snapshot.appendSections(sections)
-                        sections.enumerated().forEach { key, section in
-                            snapshot.appendItems([items[key]], toSection: section)
-                        }
-                    } else {
-
-                        if let viewModel = cards[card.rawValue] {
-                            let section = DashboardCardSection(id: card.rawValue)
-                            let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary)
-
-                            snapshot.appendSections([section])
-                            snapshot.appendItems([item], toSection: section)
-                        }
-
-                    }
-
-                } else {
-
-                    let section = DashboardCardSection(id: card.rawValue)
-                    let item = DashboardCardModel(id: card)
-
-                    snapshot.appendSections([section])
-                    snapshot.appendItems([item], toSection: section)
-                }
+            guard let snapshot = self?.parse(cards) else {
+                return
             }
 
             completion(snapshot)
-        }, failure: { _ in
 
+        }, failure: { _ in
+            failure?()
         })
+    }
+
+    /// Fetch cards from local
+    func fetchLocal(wpComID: Int) -> DashboardSnapshot {
+        if let cards = persistence.getCards(for: wpComID) {
+            let snapshot = parse(cards)
+            return snapshot
+        }
+
+        return DashboardSnapshot()
     }
 }
 
 private extension BlogDashboardService {
+    func parse(_ cards: NSDictionary) -> DashboardSnapshot {
+        var snapshot = DashboardSnapshot()
+
+        DashboardCard.allCases.forEach { card in
+
+            if card.isRemote {
+
+                if card == .posts,
+                   let posts = cards[DashboardCard.posts.rawValue] as? NSDictionary {
+                    let (sections, items) = parsePostCard(posts)
+                    snapshot.appendSections(sections)
+                    sections.enumerated().forEach { key, section in
+                        snapshot.appendItems([items[key]], toSection: section)
+                    }
+                } else {
+
+                    if let viewModel = cards[card.rawValue] {
+                        let section = DashboardCardSection(id: card.rawValue)
+                        let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary)
+
+                        snapshot.appendSections([section])
+                        snapshot.appendItems([item], toSection: section)
+                    }
+
+                }
+
+            } else {
+                let section = DashboardCardSection(id: card.rawValue)
+                let item = DashboardCardModel(id: card)
+
+                snapshot.appendSections([section])
+                snapshot.appendItems([item], toSection: section)
+            }
+
+        }
+
+        return snapshot
+    }
+
     /// Posts are a special case: they might not be a 1-1 relation
     /// If the user has draft and scheduled posts, we show two cards
     /// One for each. This function takes care of this

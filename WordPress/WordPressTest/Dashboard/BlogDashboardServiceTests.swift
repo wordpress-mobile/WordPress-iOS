@@ -6,12 +6,14 @@ import Nimble
 class BlogDashboardServiceTests: XCTestCase {
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
+    private var persistenceMock: BlogDashboardPersistenceMock!
 
     override func setUp() {
         super.setUp()
 
         remoteServiceMock = DashboardServiceRemoteMock()
-        service = BlogDashboardService(managedObjectContext: TestContextManager().newDerivedContext(), remoteService: remoteServiceMock)
+        persistenceMock = BlogDashboardPersistenceMock()
+        service = BlogDashboardService(managedObjectContext: TestContextManager().newDerivedContext(), remoteService: remoteServiceMock, persistence: persistenceMock)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -118,7 +120,42 @@ class BlogDashboardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testPersistCardsResponse() {
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        service.fetch(wpComID: 123456) { snapshot in
+            XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
+                           self.dictionary(from: "dashboard-200-with-drafts-and-scheduled.json"))
+            XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, 123456)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testFetchCardsFromPersistence() {
+        persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
+
+        let snapshot = service.fetchLocal(wpComID: 123456)
+
+        let draftsSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "draft" })
+        let scheduledSection = snapshot.sectionIdentifiers.first(where: { $0.subtype == "scheduled" })
+        XCTAssertNotNil(draftsSection)
+        XCTAssertNotNil(scheduledSection)
+        XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, 123456)
+    }
+
+    func dictionary(from file: String) -> NSDictionary? {
+        let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
+        let data: Data = try! Data(contentsOf: fileURL)
+        return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
+    }
 }
+
+// MARK: - Mocks
 
 class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
@@ -142,5 +179,24 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
         } else {
             success([:])
         }
+    }
+}
+
+class BlogDashboardPersistenceMock: BlogDashboardPersistence {
+    var didCallPersistWithCards: NSDictionary?
+    var didCallPersistWithWpComID: Int?
+
+    override func persist(cards: NSDictionary, for wpComID: Int) {
+        didCallPersistWithCards = cards
+        didCallPersistWithWpComID = wpComID
+    }
+
+    var didCallGetCardsWithWpComID: Int?
+    var respondWith: NSDictionary = [:]
+
+    override func getCards(for wpComID: Int) -> NSDictionary? {
+        didCallGetCardsWithWpComID = wpComID
+
+        return respondWith
     }
 }
