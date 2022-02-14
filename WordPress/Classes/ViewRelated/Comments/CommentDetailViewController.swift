@@ -1,8 +1,14 @@
 import UIKit
 import CoreData
 
-@objc protocol CommentDetailsDelegate: AnyObject {
+
+@objc protocol CommentDetailsModerationDelegate: AnyObject {
     func nextCommentSelected()
+}
+
+protocol CommentDetailsNotificationNavigationDelegate: AnyObject {
+    func previousNotificationTapped(current: Notification?)
+    func nextNotificationTapped(current: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -18,13 +24,15 @@ class CommentDetailViewController: UIViewController {
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
-    @objc weak var delegate: CommentDetailsDelegate?
+    @objc weak var moderationDelegate: CommentDetailsModerationDelegate?
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
+
+    private weak var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -175,6 +183,17 @@ class CommentDetailViewController: UIViewController {
         return button
     }()
 
+    var previousButtonEnabled = false {
+        didSet {
+            previousButton.isEnabled = previousButtonEnabled
+        }
+    }
+    var nextButtonEnabled = false {
+        didSet {
+            nextButton.isEnabled = nextButtonEnabled
+        }
+    }
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -187,10 +206,12 @@ class CommentDetailViewController: UIViewController {
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: Notification?,
+         notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.notification = notification
+        self.notificationNavigationDelegate = notificationNavigationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
     }
@@ -207,6 +228,7 @@ class CommentDetailViewController: UIViewController {
         configureReplyView()
         setupKeyboardManager()
         configureSuggestionsView()
+        configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
@@ -224,7 +246,7 @@ class CommentDetailViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureNavigationBar()
+        configureNavBarButtons()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -238,13 +260,21 @@ class CommentDetailViewController: UIViewController {
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
     }
 
-    @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
+    // Update the Comment being displayed.
+    @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
         replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
+
+    // Update the Notification Comment being displayed.
+    func refreshView(comment: Comment, notification: Notification?) {
+        self.notification = notification
+        displayComment(comment)
+    }
+
 }
 
 // MARK: - Private Helpers
@@ -311,8 +341,6 @@ private extension CommentDetailViewController {
 
         navigationController?.navigationBar.isTranslucent = true
         title = viewTitle
-
-        configureNavBarButtons()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -432,26 +460,26 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { _ in
-            self.tableView.performBatchUpdates({})
+        cell.configure(with: comment) { [weak self] _ in
+            self?.tableView.performBatchUpdates({})
         }
 
-        cell.contentLinkTapAction = { url in
+        cell.contentLinkTapAction = { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
-            self.openWebView(for: url)
+            self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonAction = { senderView in
-            self.shareCommentURL(senderView)
+        cell.accessoryButtonAction = { [weak self] senderView in
+            self?.shareCommentURL(senderView)
         }
 
-        cell.likeButtonAction = {
-            self.toggleCommentLike()
+        cell.likeButtonAction = { [weak self] in
+            self?.toggleCommentLike()
         }
 
-        cell.replyButtonAction = {
-            self.showReplyView()
+        cell.replyButtonAction = { [weak self] in
+            self?.showReplyView()
         }
     }
 
@@ -614,13 +642,11 @@ private extension CommentDetailViewController {
     }
 
     @objc func previousButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("previousButtonTapped")
+        notificationNavigationDelegate?.previousNotificationTapped(current: notification)
     }
 
     @objc func nextButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("nextButtonTapped")
+        notificationNavigationDelegate?.nextNotificationTapped(current: notification)
     }
 
     func deleteButtonTapped() {
@@ -812,7 +838,7 @@ private extension CommentDetailViewController {
         }
 
         WPAnalytics.track(.commentSnackbarNext)
-        delegate?.nextCommentSelected()
+        moderationDelegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
