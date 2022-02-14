@@ -35,6 +35,16 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
++ (void)showForBlog:(Blog *)blog from:(UIViewController *)controller
+{
+    StatsViewController *statsController = [StatsViewController new];
+    statsController.blog = blog;
+    statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [controller.navigationController pushViewController:statsController animated:YES];
+    
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

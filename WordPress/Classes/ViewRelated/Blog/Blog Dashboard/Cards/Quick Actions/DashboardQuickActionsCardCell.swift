@@ -58,7 +58,58 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
-        // TODO: hook up to buttons to vc
+        guard let viewController = viewController else {
+            return
+        }
+
+        configureQuickActionButtons(for: blog, with: viewController)
+    }
+}
+
+// MARK: - Button Actions
+
+extension DashboardQuickActionsCardCell {
+
+    private func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+        statsButton.onTap = { [weak self] in
+            self?.showStats(for: blog, from: sourceController)
+        }
+
+        postsButton.onTap = { [weak self] in
+            self?.showPostList(for: blog, from: sourceController)
+        }
+
+        mediaButton.onTap = { [weak self] in
+            self?.showMediaLibrary(for: blog, from: sourceController)
+        }
+
+        pagesButton.onTap = { [weak self] in
+            self?.showPageList(for: blog, from: sourceController)
+        }
+    }
+
+    private func showStats(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.statsAccessed, blog: blog)
+        StatsViewController.show(for: blog, from: sourceController)
+    }
+
+    private func showPostList(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedPosts, blog: blog)
+        PostListViewController.showForBlog(blog, from: sourceController)
+    }
+
+    private func showMediaLibrary(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
+        MediaLibraryViewController.showForBlog(blog, from: sourceController)
+    }
+
+    private func showPageList(for blog: Blog, from sourceController: UIViewController) {
+        trackQuickActionsEvent(.openedPages, blog: blog)
+        PageListViewController.showForBlog(blog, from: sourceController)
+    }
+
+    private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTapSource: "dashboard"], with: blog)
     }
 }
 
