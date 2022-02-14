@@ -3,7 +3,7 @@ import UIKit
 class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
     private var postsViewController: PostsCardViewController?
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: BlogDashboardRemoteEntity?) {
         guard let viewController = viewController, let dataModel = dataModel else {
             return
         }
@@ -14,11 +14,11 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             self.postsViewController = postsViewController
 
             // Update with the correct blog and status
-            updatePosts(dataModel, blog: blog)
+//            updatePosts(dataModel, blog: blog)
 
             embedChildPostsViewController(to: viewController)
         } else {
-            updatePosts(dataModel, blog: blog)
+//            updatePosts(dataModel, blog: blog)
         }
     }
 

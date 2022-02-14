@@ -57,7 +57,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
         fatalError("Not implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: BlogDashboardRemoteEntity?) {
         guard let viewController = viewController else {
             return
         }
