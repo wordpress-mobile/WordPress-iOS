@@ -14,15 +14,24 @@ class BlogDashboardService {
     func fetch(wpComID: Int, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
         let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
 
-        remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cards in
+        remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cardsDictionary in
 
-            self?.persistence.persist(cards: cards, for: wpComID)
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let data = try JSONSerialization.data(withJSONObject: cardsDictionary, options: [])
+                let cards = try decoder.decode(BlogDashboardRemoteEntity.self, from: data)
 
-            guard let snapshot = self?.parse(cards) else {
-                return
+                self?.persistence.persist(cards: cardsDictionary, for: wpComID)
+
+                guard let snapshot = self?.parse(cardsDictionary) else {
+                    return
+                }
+
+                completion(snapshot)
+            } catch {
+                failure?()
             }
-
-            completion(snapshot)
 
         }, failure: { _ in
             failure?()
@@ -41,7 +50,7 @@ class BlogDashboardService {
 }
 
 private extension BlogDashboardService {
-    func parse(_ cards: NSDictionary) -> DashboardSnapshot {
+    func parse(_ cardsDictionary: NSDictionary) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases.forEach { card in
@@ -49,7 +58,7 @@ private extension BlogDashboardService {
             if card.isRemote {
 
                 if card == .posts,
-                   let posts = cards[DashboardCard.posts.rawValue] as? NSDictionary {
+                   let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary {
                     let (sections, items) = parsePostCard(posts)
                     snapshot.appendSections(sections)
                     sections.enumerated().forEach { key, section in
@@ -57,7 +66,7 @@ private extension BlogDashboardService {
                     }
                 } else {
 
-                    if let viewModel = cards[card.rawValue] {
+                    if let viewModel = cardsDictionary[card.rawValue] {
                         let section = DashboardCardSection(id: card.rawValue)
                         let item = DashboardCardModel(id: card, cellViewModel: viewModel as? NSDictionary)
 
