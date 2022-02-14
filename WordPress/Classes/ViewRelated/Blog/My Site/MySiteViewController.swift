@@ -349,6 +349,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
             return
@@ -492,7 +493,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         remove(blogDetailsViewController)
-        self.blogDetailsViewController = nil
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
