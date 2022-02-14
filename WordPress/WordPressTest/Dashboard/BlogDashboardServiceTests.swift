@@ -43,13 +43,13 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(postsCardItem.id, .posts)
 
             // Has published is `true`
-            XCTAssertTrue(postsCardItem.entity!.posts!.hasPublished!)
+            XCTAssertTrue(postsCardItem.apiResponse!.posts!.hasPublished!)
 
             // 3 scheduled item
-            XCTAssertEqual(postsCardItem.entity!.posts!.draft!.count, 3)
+            XCTAssertEqual(postsCardItem.apiResponse!.posts!.draft!.count, 3)
 
             // 1 scheduled item
-            XCTAssertEqual(postsCardItem.entity!.posts!.scheduled!.count, 1)
+            XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
 
             // cell view model is a `NSDictionary`
             XCTAssertTrue(postsCardItem.cellViewModel!["has_published"] as! Bool)
@@ -75,10 +75,10 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(todaysStatsItem.id, .todaysStats)
 
             // Entity has the correct values
-            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.views, 0)
-            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.visitors, 0)
-            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.likes, 0)
-            XCTAssertEqual(todaysStatsItem.entity!.todaysStats!.comments, 0)
+            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.views, 0)
+            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.visitors, 0)
+            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.likes, 0)
+            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
 
             // Todays Stats has the correct NSDictionary
             XCTAssertEqual(todaysStatsItem.cellViewModel, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])

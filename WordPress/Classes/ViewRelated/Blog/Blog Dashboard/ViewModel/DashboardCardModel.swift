@@ -4,12 +4,12 @@ import Foundation
 class DashboardCardModel: Hashable {
     let id: DashboardCard
     let cellViewModel: NSDictionary?
-    let entity: BlogDashboardRemoteEntity?
+    let apiResponse: BlogDashboardRemoteEntity?
 
     init(id: DashboardCard, cellViewModel: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
         self.id = id
         self.cellViewModel = cellViewModel
-        self.entity = entity
+        self.apiResponse = entity
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
