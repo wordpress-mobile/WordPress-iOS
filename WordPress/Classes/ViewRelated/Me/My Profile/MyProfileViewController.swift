@@ -13,7 +13,7 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
-    let viewController = ImmuTableViewController(controller: controller)
+    let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
     headerView.onAddUpdatePhoto = { [weak controller, weak viewController] in
         if let viewController = viewController {
             controller?.presentGravatarPicker(viewController)

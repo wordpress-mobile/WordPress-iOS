@@ -7,6 +7,7 @@ protocol PostsCardView: AnyObject {
 
     func showLoading()
     func hideLoading()
+    func showError(message: String, retry: Bool)
 }
 
 /// Responsible for populating a table view with posts
@@ -18,19 +19,27 @@ class PostsCardViewModel: NSObject {
 
     private let postService: PostService
 
-    lazy var filterSettings: PostListFilterSettings = {
-        PostListFilterSettings(blog: blog, postType: .post)
-    }()
+    private let postListFilter: PostListFilter
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
+
+        switch status {
+        case .draft:
+            self.postListFilter = PostListFilter.draftFilter()
+        case .scheduled:
+            self.postListFilter = PostListFilter.scheduledFilter()
+        default:
+            fatalError("Post status not supported")
+        }
+
         super.init()
     }
 
@@ -44,21 +53,37 @@ class PostsCardViewModel: NSObject {
         }
     }
 
+    func retry() {
+        viewController?.showLoading()
+        sync()
+    }
+
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         viewController?.showLoading()
         createFetchedResultsController()
         sync()
     }
+
+    /// Return the post at the given IndexPath
+    func postAt(_ indexPath: IndexPath) -> Post {
+        fetchedResultsController.object(at: indexPath)
+    }
+
+    /// The status of post being presented (Draft, Published)
+    func currentPostStatus() -> String {
+        postListFilter.title
+    }
 }
 
 // MARK: - Private methods
 
 private extension PostsCardViewModel {
-    func createFetchedResultsController() {
-        // 0 = published, 1 = draft, 2 = scheduled
-        filterSettings.setCurrentFilterIndex(1)
+    private var numberOfPosts: Int {
+        fetchedResultsController.fetchedObjects?.count ?? 0
+    }
 
+    func createFetchedResultsController() {
         fetchedResultsController?.delegate = nil
         fetchedResultsController = nil
 
@@ -83,7 +108,7 @@ private extension PostsCardViewModel {
         let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
         predicates.append(basePredicate)
 
-        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -91,11 +116,11 @@ private extension PostsCardViewModel {
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        return filterSettings.currentPostListFilter().sortDescriptors
+        return postListFilter.sortDescriptors
     }
 
     func sync() {
-        let filter = filterSettings.currentPostListFilter()
+        let filter = postListFilter
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
@@ -106,16 +131,35 @@ private extension PostsCardViewModel {
             ofType: .post,
             with: options,
             for: blog,
-            success: { _ in
-
-            }, failure: { (error: Error?) -> () in
-
+            success: { [weak self] _ in
+                if self?.numberOfPosts == 0 {
+                    self?.showEmptyPostsError()
+                }
+            }, failure: { [weak self] _ in
+                if self?.numberOfPosts == 0 {
+                    self?.showLoadingFailureError()
+                }
         })
+    }
+
+    func showEmptyPostsError() {
+        viewController?.hideLoading()
+        viewController?.showError(message: Strings.noPostsMessage, retry: false)
+    }
+
+    func showLoadingFailureError() {
+        viewController?.hideLoading()
+        viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 4
+    }
+
+    enum Strings {
+        static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
+        static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
     }
 }
 
@@ -141,11 +185,11 @@ extension PostsCardViewModel: UITableViewDataSource {
 
         let post: Post = fetchedResultsController.object(at: indexPath)
 
-        guard let configurablePostView = cell as? ConfigurablePostView else {
-                fatalError("Cell does not implement the required protocols")
+        guard let configurablePostView = cell as? PostCompactCell else {
+                fatalError("Cell is not a PostCompactCell")
         }
 
-        configurablePostView.configure(with: post)
+        configurablePostView.configureForDashboard(with: post)
     }
 }
 

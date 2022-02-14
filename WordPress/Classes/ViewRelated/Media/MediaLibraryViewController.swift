@@ -123,6 +123,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
 
             let trashButton = UIBarButtonItem(image: .gridicon(.trash), style: .plain, target: self, action: #selector(trashTapped))
+            trashButton.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash button to delete items from the user's media library")
+            trashButton.accessibilityHint = NSLocalizedString("Trash selected media", comment: "Accessibility hint for trash button to delete items from the user's media library")
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
@@ -132,11 +134,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             if blog.userCanUploadMedia && assetCount > 0 {
                 let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+                addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
+                addButton.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
+
                 barButtonItems.append(addButton)
             }
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
                 let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
+                editButton.accessibilityLabel = NSLocalizedString("Edit", comment: "Accessibility label for edit button to enable multi selection mode in the user's media library")
+                editButton.accessibilityHint = NSLocalizedString("Enter edit mode to enable multi select to delete", comment: "Accessibility hint for edit button to enable multi selection mode in the user's media library")
+
                 barButtonItems.append(editButton)
 
                 navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
@@ -509,6 +517,37 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         }
 
         return false
+    }
+
+    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
+        guard #available(iOS 14.0, *),
+              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+              picker != self else {
+            return false
+        }
+
+        // Show the device media permissions header if photo library access is limited
+        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
+    }
+
+    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
+        guard #available(iOS 14.0, *) else {
+            return .zero
+        }
+
+        let header = DeviceMediaPermissionsHeader()
+        header.translatesAutoresizingMaskIntoConstraints = false
+
+        return header.referenceSizeInView(picker.view)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
+        guard #available(iOS 14.0, *),
+              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+            return
+        }
+
+        headerView.presenter = picker
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {

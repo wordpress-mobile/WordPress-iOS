@@ -59,7 +59,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     // Being shown in a modal window
     if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
-        self.navigationItem.rightBarButtonItem = doneButton;
+        self.navigationItem.leftBarButtonItem = doneButton;
         self.title = self.blog.settings.name;
     }
 

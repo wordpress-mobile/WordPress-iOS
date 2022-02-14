@@ -104,7 +104,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
         _username = blog.usernameForSite;

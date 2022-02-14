@@ -330,10 +330,11 @@ class PrepublishingViewController: UITableViewController {
 
     func didTapSchedule(_ indexPath: IndexPath) {
         transitionIfVoiceOverDisabled(to: .hidden)
-        SchedulingCalendarViewController.present(
-            from: self,
+        let viewController = PresentableSchedulingViewControllerProvider.viewController(
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
+            sourceRect: nil,
             viewModel: publishSettingsViewModel,
+            transitioningDelegate: nil,
             updated: { [weak self] date in
                 WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
                 self?.publishSettingsViewModel.setDate(date)
@@ -345,6 +346,7 @@ class PrepublishingViewController: UITableViewController {
                 self?.transitionIfVoiceOverDisabled(to: .collapsed)
             }
         )
+        present(viewController, animated: true)
     }
 
     // MARK: - Publish Button

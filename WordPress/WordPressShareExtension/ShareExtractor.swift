@@ -308,7 +308,7 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func copyToSharedContainer(url: URL) -> URL? {
-        guard let newPath = tempPath(for: url.lastPathComponent) else {
+        guard let newPath = tempPath(for: url.pathExtension) else {
             return nil
         }
 

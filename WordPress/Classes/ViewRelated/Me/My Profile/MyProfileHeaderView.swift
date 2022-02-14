@@ -1,6 +1,6 @@
 import Foundation
 
-class MyProfileHeaderView: WPTableViewCell {
+class MyProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Public Properties and Outlets
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
@@ -25,10 +25,6 @@ class MyProfileHeaderView: WPTableViewCell {
                 gravatarImageView.downloadGravatarWithEmail(email, rating: UIImageView.GravatarRatings.x)
             }
         }
-    }
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
     required init?(coder aDecoder: NSCoder) {

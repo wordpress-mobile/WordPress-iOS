@@ -607,7 +607,7 @@ private enum TextContent {
     static let settingsPrompt = NSLocalizedString("Select the days you want to blog on",
                                                   comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
-    static let settingsUpdatePrompt = NSLocalizedString("You can update this anytime",
+    static let settingsUpdatePrompt = NSLocalizedString("You can update this any time",
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")

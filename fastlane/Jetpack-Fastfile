@@ -16,17 +16,16 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
   #####################################################################################
   desc "Builds and uploads a Jetpack installable build"
   lane :build_and_upload_jetpack_installable_build do | options |
+    ensure_sentry_installed
+
     jetpack_alpha_code_signing
 
     # Get the current build version, and update it if needed
-    version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
+    version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-
-    build_number = Time.new.strftime("%Y-%m-%d-%H")
+    build_number = generate_installable_build_number
     UI.message("Updating build version to #{build_number}")
-
-    versions["VERSION_SHORT"] = "0.1"
-    versions["VERSION_LONG"] = build_number
+    versions['VERSION_LONG'] = build_number
     new_config = Xcodeproj::Config.new(versions)
     new_config.save_as(Pathname.new(version_config_path))
 
@@ -54,14 +53,26 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
       notify_testers: false
     )
 
-    # Install SentryCLI prior to trying to upload dSYMs
-    sh("curl -sL https://sentry.io/get-cli/ | bash") unless sh("which sentry-cli")
-
     sentry_upload_dsym(
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'jetpack-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+    )
+
+    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+
+    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
+    UI.message("Successfully built and uploaded installable build here: #{download_url}")
+    install_url = 'https://install.appcenter.ms/orgs/automattic/apps/jetpack-installable-builds/'
+
+    comment_body = "You can test the <strong>Jetpack</strong> changes on this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
+
+    comment_on_pr(
+      project: 'wordpress-mobile/wordpress-ios',
+      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      reuse_identifier: 'jetpack-installable-build-link',
+      body: comment_body
     )
   end
 
@@ -158,7 +169,14 @@ lane :download_jetpack_localized_app_store_metadata do
   # internally.
   sh './download_metadata.swift jetpack'
 
-  jetpack_metadata_glob = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata/**/*.txt')
+  # GlotPress doesn't have the English notes because, being already in English,
+  # they do not require a translation. As such, we simply copy the source of
+  # truth file into the Fastlane metadata folder.
+  metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
+  release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+  FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
+
+  jetpack_metadata_glob = File.join(metadata_directory, '**/*.txt')
 
   no_files_changed = sh "git status #{jetpack_metadata_glob}" do |_, output, _|
     output.include? 'nothing to commit'

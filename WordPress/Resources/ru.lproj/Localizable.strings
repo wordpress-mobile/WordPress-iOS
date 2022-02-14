@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-10 15:07:42+0000 */
+/* Translation-Revision-Date: 2022-02-08 22:27:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -468,7 +468,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Тип активности (%1$d)";
 
-/* Remove asset from media picker list */
+/* Accessibility label for add button to add items to the user's media library
+   Remove asset from media picker list */
 "Add" = "Добавить";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -514,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Добавить домен";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Добавьте новый блок в любое время, нажав на значок + на панели инструментов внизу слева. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Добавьте новый блок в любое время, нажав на значок + на панели инструментов внизу слева.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
@@ -563,6 +564,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Добавить элемент меню к дочерним объектам";
+
+/* Accessibility hint for add button to add items to the user's media library */
+"Add new media" = "Добавить медиафайл";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Добавить новое меню";
@@ -704,6 +708,12 @@ translators: Block name. %s: The localized block name */
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Всегда отсылать отчеты о падениях";
 
+/* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
+"An HTTP error code %i was returned." = "Получен %i HTTP код ответа.";
+
+/* A failure reason for when an error HTTP status code was returned from the site. */
+"An HTTP error code was returned." = "Получен статус ошибки HTTP.";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Требуется активное интернет подключение";
 
@@ -755,6 +765,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Произошла ошибка.";
+
+/* A failure reason for when the error that occured wasn't able to be determined. */
+"An unknown error occurred." = "Произошла неизвестная ошибка.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Произошла неизвестная ошибка. Повторите попытку.";
@@ -817,17 +830,8 @@ translators: Block name. %s: The localized block name */
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Вы уверены, что хотите отключить Jetpack от этого сайта?";
 
-/* Message asking for confirmation before marking a comment as spam */
-"Are you sure you want to mark this comment as Spam?" = "Пометить этот комментарий как спам?";
-
-/* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Вы уверены, что хотите переместить комментарий в корзину?";
-
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Вы уверены, что хотите безвозвратно удалить выбранное?";
-
-/* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Вы уверены, что хотите удалить этот комментарий навсегда?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Вы хотите навсегда удалить этот элемент?";
@@ -871,6 +875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Вы уверены, что хотите удалить эту запись?";
+
+/* Title of message shown when user taps continue during homepage editing in site creation. */
+"Are you sure you want to update your homepage?" = "Уверены, что хотите обновить главную страницу?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
@@ -1089,6 +1096,9 @@ translators: Block name. %s: The localized block name */
 /* Create new Blog Post button title */
 "Blog post" = "Запись блога";
 
+/* Blog's Email Follower Profile. Displayed when the name is empty! */
+"Blog's Email Follower" = "Общее количество подписчиков по электронной почте";
+
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Читатель блога";
 
@@ -1189,7 +1199,6 @@ translators: Block name. %s: The localized block name */
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1217,6 +1226,7 @@ translators: Block name. %s: The localized block name */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
+   Cancels the mark all as read action.
    Dismiss the post action sheet
    Editing GIF alert cancel action button.
    Label for a cancel button
@@ -1291,6 +1301,9 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Изменить пароль";
+
+/* Title of button that takes user to the system Settings section for the app */
+"Change Settings" = "Изменить настройки";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "Сменить сайт";
@@ -1587,6 +1600,9 @@ translators: Block name. %s: The localized block name */
  My First Post */
 "Comment on" = "Комментарий на";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment set to approved." = "Комментарий одобрен.";
+
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Статус комментария установлен как ожидающий одобрения.";
 
@@ -1677,8 +1693,7 @@ translators: Block name. %s: The localized block name */
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Настроить";
 
-/* Confirm
-   Verb. Title for Jetpack Restore confirm button. */
+/* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Подтвердить";
 
 /* Close Account alert title */
@@ -1783,6 +1798,7 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Структура содержимого\nБлоки: %1$li, Слова: %2$li, Символы: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -2117,7 +2133,8 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Тёмное оформление";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
+   Title for dashboard view on the My Site screen */
 "Dashboard" = "Консоль";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -2174,7 +2191,6 @@ translators: Block name. %s: The localized block name */
 "Defaults for New Posts" = "Параметры по умолчанию для новых записей";
 
 /* Delete
-   Delete button title
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
@@ -2224,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Отклонить";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Опишите назначение изображения. Оставьте пустым, если изображение является только элементом декора. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Опишите назначение изображения. Оставьте пустым, если изображение является только элементом декора.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2533,7 +2549,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "У каждого блока свои настройки. Чтобы найти их, нажмите на блок. Его настройки появятся на панели инструментов внизу экрана.";
 
-/* Edit the post.
+/* Accessibility label for edit button to enable multi selection mode in the user's media library
+   Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
    Edits the comment
@@ -2633,6 +2650,9 @@ translators: Block name. %s: The localized block name */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Адрес электронной почты";
+
+/* Blog Email Followers */
+"Email Followers" = "Подписчики по электронной почте";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -2740,6 +2760,9 @@ translators: Block name. %s: The localized block name */
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Введите другие слова выше и мы поищем адреса совпадающие с ними.";
 
+/* Accessibility hint for edit button to enable multi selection mode in the user's media library */
+"Enter edit mode to enable multi select to delete" = "Перейдите в режим редактирования, чтобы включить множественный выбор для удаления";
+
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Введите пароль";
@@ -2790,9 +2813,6 @@ translators: Block name. %s: The localized block name */
 /* There was an error activating a plugin, placeholder is the plugin name */
 "Error activating %@." = "Ошибка активации %@.";
 
-/* Message shown when approving a Comment fails. */
-"Error approving comment" = "Ошибка при одобрении комментария";
-
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "Ошибка при одобрении комментария.";
 
@@ -2801,9 +2821,6 @@ translators: Block name. %s: The localized block name */
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
 "Error deactivating %@." = "Ошибка деактивации %@.";
-
-/* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Ошибка при удалении комментария";
 
 /* Message displayed when deleting a comment fails. */
 "Error deleting comment." = "Ошибка при удалении комментария.";
@@ -2831,9 +2848,6 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Ошибка загрузки плагинов";
-
-/* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Ошибка отметки комментария как спам";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Ошибка отметки комментария как спам.";
@@ -2874,11 +2888,11 @@ translators: Block name. %s: The localized block name */
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "При отправке письма для подтверждения произошла ошибка. Проверьте подключение и повторите попытку.";
 
+/* Message displayed when approving a comment fails. */
+"Error setting comment to approved." = "Ошибка одобрения комментария.";
+
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "Ошибка установки статуса комментария как ожидающего одобрения.";
-
-/* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Ошибка отклонения комментария";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Ошибка обновления %@.";
@@ -2985,6 +2999,9 @@ translators: Block name. %s: The localized block name */
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "Экспорт медиа неудачен";
 
+/* Message for mark all as read success notice */
+"Failed marking Notifications as read" = "Ошибка отметки всех уведомлений как прочитанных";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "Не удалось вставить аудиофайл.";
 
@@ -3024,9 +3041,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Миниатюра записи";
-
-/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Изображение записи уже установлено";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Настройки изображения записи";
@@ -3199,6 +3213,9 @@ translators: Block name. %s: The localized block name */
 /* Next web page */
 "Forward" = "Направить";
 
+/* No comment provided by engineer. */
+"Four" = "Четыре";
+
 /* Browse free themes selection title */
 "Free" = "Бесплатно";
 
@@ -3229,11 +3246,20 @@ translators: Block name. %s: The localized block name */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Полный";
 
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
+"Fullscreen view of image %@. Double tap to dismiss" = "Просмотр изображения %@ на полном экране. Нажмите дважды для выхода";
+
+/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
+"Fullscreen view of image. Double tap to dismiss" = "Просмотр изображения на полном экране. Нажмите дважды для выхода";
+
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Подпись галереи. %s";
+
+/* No comment provided by engineer. */
+"Gallery style" = "Стиль галереи";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Садоводство";
@@ -3510,9 +3536,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Не удалось обновить значок";
-
-/* First line of remove follower warning in confirmation dialog. */
-"If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Если удалить этого читателя, он больше не будет получать уведомления об изменениях на этом сайте, пока не восстановит подписку.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Если у вас уже есть сайт, вам необходимо установить бесплатный плагин Jetpack и подключить его к вашей учетной записи WordPress.com.";
@@ -3825,6 +3848,9 @@ translators: Block name. %s: The localized block name */
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Продолжайте писать в блог и следите как посетители прибывают на вашем сайте.";
 
+/* Button to cancel the replacement of a featured image. */
+"Keep current" = "Сохранить текущее";
+
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Продолжайте в том же духе! Отмечая понравившиеся и комментируя вы создаете свою сеть. Перейдите в Чтиво, чтобы найти еще записи.";
 
@@ -3852,6 +3878,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Фамилия";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "За последнюю неделю сайт просмотрели %1$d раз, оставили %2$d комментариев и %3$d отметок нравится.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Сводка по последней записи";
@@ -4161,11 +4190,20 @@ translators: Block name. %s: The localized block name */
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Привязанный домен";
 
+/* Marks all notifications under the filter as read */
+"Mark All As Read" = "Отметить все как прочитанные";
+
 /* Marks a notification as unread */
 "Mark Read" = "Пометить как прочитанное";
 
 /* Marks a notification as unread */
 "Mark Unread" = "Отметить непрочитанным";
+
+/* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
+"Mark all %1$@ notifications as read?" = "Отметить все уведомления типа %1$@ как прочитанные?";
+
+/* Confirmation title for marking all notifications as read. */
+"Mark all notifications as read?" = "Отметить все уведомления как прочитанные?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Пометить как спам";
@@ -4442,6 +4480,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Переход к настройкам градиента";
 
+/* No comment provided by engineer. */
+"Navigates to layout selection screen" = "Навигация к экрану выбора макета";
+
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Навигация для выделения %s";
@@ -4512,6 +4553,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Table view title for the quick start section. */
 "Next Steps" = "Следующие шаги";
+
+/* Accessibility label for the button which shows the previous month in the monthly calendar view */
+"Next month" = "Следующий месяц";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Следующее уведомление";
@@ -4610,6 +4654,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed when an Insights stat section has no data.
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Пока нет данных";
+
+/* Accessibility label for no currently selected range. */
+"No date range selected" = "Диапазон данных не выбран";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Устранённых угроз нет";
@@ -4810,6 +4857,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Непрочитанные уведомления";
 
+/* Title for mark all as read success notice */
+"Notifications marked as read" = "Все уведомления помечены как прочитанные";
+
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Уведомить меня";
 
@@ -4840,6 +4890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Confirmation of action
    Default action
    Dismisses the alert
+   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
@@ -4886,11 +4937,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "После создания сайта на WordPress.com вы сможете сделать перепубликацию понравившегося содержимого на своем сайте.";
 
+/* No comment provided by engineer. */
+"One" = "Один";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Смотрите только интересующую вас статистику. Добавьте тенденции, которые вам нужны.";
 
 /* No comment provided by engineer. */
 "Only show excerpt" = "Показывать только отрывок";
+
+/* Message telling the user that they've only enabled limited photo library permissions for the app. */
+"Only the selected photos you've given access to are available." = "Доступны только выбранные фотографии, к которым вы предоставили доступ.";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5469,6 +5526,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title on display preview error */
 "Preview Unavailable" = "Предварительный просмотр недоступен";
 
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"Preview media" = "Предварительный просмотр медиафайла";
+
 /* No comment provided by engineer. */
 "Preview page" = "Предварительный просмотр страницы";
 
@@ -5477,6 +5537,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Посмотрите ваш сайт перед тем, как его увидят посетители.";
+
+/* Accessibility label for the button which shows the previous month in the monthly calendar view */
+"Previous month" = "Предыдущий месяц";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Предыдущее уведомление";
@@ -5748,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove @%@" = "Удалить @%@";
+"Remove %@" = "Удалить %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Удалить миниатюру записи";
@@ -5775,7 +5838,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "Удалить значок сайта";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Удалить как избранное изображение ";
+"Remove as Featured Image" = "Удалить как избранное изображение";
 
 /* No comment provided by engineer. */
 "Remove block" = "Удалить блок";
@@ -5810,17 +5873,24 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Пропуск следующих шагов отключит все гиды по этому сайту. Действие не может быть отменено.";
 
+/* First line of remove email follower warning in confirmation dialog.
+   First line of remove follower warning in confirmation dialog. */
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Если вы удалите подписчиков, они перестанут получать обновления с вашего сайта. При желании они по-прежнему смогут посещать ваш сайт и повторно подписаться на него.";
+
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Будет продлен %@";
-
-/* Button to confirm the replacement of a featured image. */
-"Replace" = "Заменить";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Заменить текущий блок";
 
 /* No comment provided by engineer. */
 "Replace audio" = "Заменить аудиофайл";
+
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Replace current featured image?" = "Заменить текущее изображение записи?";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace featured image" = "Заменить изображение записи";
 
 /* No comment provided by engineer. */
 "Replace file" = "Заменить файл";
@@ -6235,6 +6305,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Выберите страну";
 
+/* Title of button that allows the user to select more photos to access within the app */
+"Select More" = "Выбрать ещё";
+
 /* Blog Picker's Title */
 "Select Site" = "Выбрать сайт";
 
@@ -6298,6 +6371,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Выбранный медиафайл недоступен.";
 
+/* Accessibility label for summary of currently single date. %1$@ is the date */
+"Selected range: %1$@ only" = "Выбранный диапазон: только %1$@";
+
+/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
+"Selected range: %1$@ to %2$@" = "Выбранный диапазон: %1$@ - %2$@";
+
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Выбрано: %s";
@@ -6358,7 +6437,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "Назначить родителя";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Установить как избранное изображение";
+"Set as Featured Image" = "Установить как избранное изображение";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Установить как главную страницу";
@@ -6576,6 +6655,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Язык сайта";
 
+/* Title for the site menu view on the My Site screen */
+"Site Menu" = "Меню сайта";
+
 /* Describes a site redirect domain */
 "Site Redirect" = "Перенаправление сайта";
 
@@ -6763,7 +6845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for Spam comment state.
    Marks comment as spam.
-   Spam
    Title of spam Comments filter. */
 "Spam" = "Спам";
 
@@ -6996,7 +7077,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Нажмите, чтобы свернуть метки записи";
 
-/* Accessibility hint */
+/* Accessibility hint
+   Accessibility hint to customize insights */
 "Tap to customize insights" = "Нажмите, для настройки экрана на виду.";
 
 /* Accessibility hint */
@@ -7004,6 +7086,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "Нажмите для отображения ссылающейся веб страницы.";
+
+/* Accessibility hint prompting the user to tap a table row to edit its value. */
+"Tap to edit" = "Нажмите для редактирования";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Нажмите чтобы ввести пользовательское значение";
@@ -7016,6 +7101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as spam." = "Нажмите для отметки ссылающейся страницы как спам.";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "Коснитесь для повтора";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Нажмите, чтобы развернуть все метки записи";
@@ -7031,6 +7119,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Нажмите для переключения на другой сайт или для добавления нового сайта";
+
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"Tap to view media in full screen" = "Нажмите для просмотра медиафайла на полном экране";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Нажмите, чтобы посмотреть записи с этой меткой";
@@ -7106,7 +7197,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Учетная запись Google \"%@\" не соответствует ни одной учетной записи WordPress.com";
 
-/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet.
+   Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Похоже, что нет связи с Интернетом.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -7145,8 +7237,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Невозможно добавить изображение в «Библиотеку медиафайлов».";
 
-/* Error message shown when a media upload fails because the user isn't connected to the internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Интернет-соединение недоступно.";
 
 /* Message shown when an asset failed to load while trying to add it to the Media library. */
@@ -7181,6 +7272,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Быстрый старт поможет вам быстро создать базовый сайт. Вы точно хотите пропустить его?";
+
+/* A failure reason for when the request couldn't be serialized. */
+"The serialization of the request failed." = "Сериализация запроса не удалась.";
+
+/* A failure reason for when the response couldn't be serialized. */
+"The serialization of the response failed." = "Сериализация ответа не удалась.";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Сервером был дан пустой ответ. Обычно это означает, что необходимо повысить лимит памяти для сайта. Сервером был дан пустой ответ. Обычно это означает, что необходимо повысить лимит памяти для сайта.";
@@ -7281,6 +7378,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message informing the user that there was a problem blocking posts from a site from their reader. */
 "There was a problem blocking posts from the specified site." = "При блокировке записей на указанном веб-сайте произошла ошибка.";
+
+/* A general error message shown to the user when there was an API communication failure. */
+"There was a problem communicating with the site." = "Возникла проблема при подключении к сайту.";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "При подключении к WordPress.com произошла ошибка. Войдите заново.";
@@ -7450,11 +7550,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Угроза проигнорирована.";
 
+/* No comment provided by engineer. */
+"Three" = "Три";
+
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Миниатюра";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Миниатюра недоступна.";
+
+/* No comment provided by engineer. */
+"Tiled gallery settings" = "Настройки плиточной галереи";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7600,12 +7706,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Преобразовать блок...";
 
-/* Accessibility label for trash buttons in nav bars
+/* Accessibility label for trash button to delete items from the user's media library
+   Accessibility label for trash buttons in nav bars
    Button title for Trash comment state.
-   Trash button title
    Trashes a comment
    Trashes the comment */
 "Trash" = "В корзину";
+
+/* Accessibility hint for trash button to delete items from the user's media library */
+"Trash selected media" = "Удалить выбранный медиафайл в корзину";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "Удалить страницу в корзину?";
@@ -7687,6 +7796,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Имя пользователя Twitter";
 
+/* No comment provided by engineer. */
+"Two" = "Два";
+
 /* Type menu item in share extension. */
 "Type" = "Тип";
 
@@ -7756,7 +7868,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Сейчас невозможно загрузить страницы.";
 
-/* Title for No results full page screen displayedfrom post list when there is no connection */
+/* Message for when posts fail to load on the dashboard
+   Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Сейчас невозможно загрузить записи.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
@@ -7783,7 +7896,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "Невозможно вопроизвести видео";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Не удалось найти веб-сайт WordPress по этому URL-адресу. Нажмите кнопку «Нужна помощь?», чтобы просмотреть ответы на часто задаваемые вопросы.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Не удалось найти веб-сайт WordPress по этому URL-адресу. Нажмите кнопку «Нужна помощь?», чтобы просмотреть ответы на часто задаваемые вопросы.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Не удалось восстановить сайт";
@@ -7866,6 +7979,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "Подчеркнутый";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
@@ -8524,8 +8638,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "День начала недели";
 
-/* Setting: indicates if the site reports its Weekly Roundup */
+/* Setting: indicates if the site reports its Weekly Roundup
+   Title of Weekly Roundup push notification */
 "Weekly Roundup" = "За неделю";
+
+/* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
+"Weekly Roundup: %@" = "За неделю: %@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Недели";
@@ -8789,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Вчера";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "Вы уже установили избранное изображение. Хотите заменить его?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Вы уже установили избранное изображение. Хотите заменить его новым?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Вы собираетесь сменить имя пользователя, %1$@. %2$@";
@@ -8830,11 +8948,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Вы можете переключить сайт в любое время.";
 
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time" = "Вы можете обновить это в любое время";
+
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Вы можете обновить это в любое время в Мой сайт > Настройки сайта";
-
-/* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "Вы можете обновить это в любое время";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Этот почтовый адрес нельзя использовать для регистрации. Некоторые из наших писем блокируются данной почтовой службой. Пожалуйста, используйте другую службу.";
@@ -8847,6 +8965,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Медиафайлы отсутствуют.";
+
+/* Displayed when the user views the dashboard posts card but they have no posts */
+"You don't have any posts" = "У вас нет записей";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Нет запланированных к публикации страниц";
@@ -9059,6 +9180,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Ваши данные входа на сайт не сохраняются и будут использованы только для установки Jetpack.";
 
+/* Prompt displayed as part of the stats Weekly Roundup push notification. */
+"Your weekly roundup is ready, tap here to see the details!" = "Сводка за неделю готова, нажмите тут для того, чтобы посмотреть!";
+
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Вы подписаны на эту беседу. Вы получите уведомление и сообщение по Email при появлении новых комментариев.";
 
@@ -9110,6 +9234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "автора %@";
 
+/* Displayed in the confirmation alert when marking comment notifications as read. */
+"comment" = "комментарий";
+
 /* The menu item to select during a guided tour. */
 "connections" = "подключения";
 
@@ -9130,8 +9257,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* Noun. Describes a site's follower. */
-"follower" = "читатель";
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"follow" = "подписка";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/мой-адрес-сайта (URL)";
@@ -9150,6 +9277,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Later today */
 "later today" = "позже сегодня";
+
+/* Displayed in the confirmation alert when marking like notifications as read. */
+"like" = "нравится";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
@@ -9178,14 +9308,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "отметка \"спам\" удалена";
 
-/* Noun. Describes a site's user. */
-"user" = "пользователь";
+/* Displayed in the confirmation alert when marking unread notifications as read. */
+"unread" = "непрочитано";
 
 /* Label displayed on video media items. */
 "video" = "видео";
-
-/* Noun. Describes a site's viewer. */
-"viewer" = "обозреватель";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "посетите нашу страницу документации";

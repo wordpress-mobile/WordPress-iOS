@@ -16,6 +16,7 @@ enum EditMode {
 }
 
 typealias EditorViewController = UIViewController & PostEditor
+typealias ReplaceEditorCallback = (EditorViewController, EditorViewController) -> ()
 
 /// Common interface to all editors
 ///
@@ -40,7 +41,7 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     init(
         post: AbstractPost,
         loadAutosaveRevision: Bool,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession?)
 
     /// Media items to be inserted on the post after creation
@@ -97,11 +98,15 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 
     /// Closure to call when the editor needs to be replaced with a different editor
     /// First argument is the existing editor, second argument is the replacement editor
-    var replaceEditor: (EditorViewController, EditorViewController) -> () { get }
+    var replaceEditor: ReplaceEditorCallback { get }
 
     var autosaver: Autosaver { get set }
+
     /// true if the post is the result of a reblog
     var postIsReblogged: Bool { get set }
+
+    /// From where the editor was shown (for analytics reporting)
+    var entryPoint: PostEditorEntryPoint { get set }
 }
 
 extension PostEditor {
@@ -143,4 +148,10 @@ extension PostEditor {
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
         return [.visibility, .schedule, .tags, .categories]
     }
+}
+
+enum PostEditorEntryPoint: String {
+    case unknown
+    case postsList
+    case dashboard
 }

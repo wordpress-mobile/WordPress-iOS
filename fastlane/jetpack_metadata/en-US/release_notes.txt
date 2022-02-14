@@ -1,6 +1,8 @@
-Made a New Year's resolution to publish more content on your site? We made a few updates to the Block Editor to help you do just that.
-
-- When you're editing Paragraph blocks, you can highlight specific text in any color you'd like.
-- Brand-new Gallery blocks will default to the new design. You can also auto-convert any old galleries to the new format without a hitch.
-- The editor now auto-scrolls, so you can always see what you're typing. No more disappearing text, no more guesswork.
-- We squashed a bug where the background color wasn't showing up for pre-formatted blocks on sites that use standard themes.
+* [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
+* [***] Block editor: Font size and line-height support for text-based blocks used in block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4519]
+* [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
+* [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
+* [**] People: you can now manage Email Followers on the People section! [#17854]
+* [*] Stats: fix navigation between Stats tab. [#17856]
+* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
+* [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]

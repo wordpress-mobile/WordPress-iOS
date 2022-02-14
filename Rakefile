@@ -345,10 +345,7 @@ namespace :install do
       end
 
       def get_ci_xcode_version
-        ci_config = File.read(".circleci/config.yml")
-        specs = YAML.load(ci_config)
-
-        ci_version = specs["jobs"]["Build Tests"]["executor"]["xcode-version"]
+        ci_version = File.read(".xcversion")
       end
     end
 

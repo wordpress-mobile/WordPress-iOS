@@ -158,19 +158,23 @@ class MeViewController: UITableViewController {
             // middle section
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                } else if isRecommendAppRowEnabled {
+
+                if isRecommendAppRowEnabled {
                     rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
                                                   icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
                                                   accessoryType: accessoryType,
                                                   action: displayShareFlow(),
                                                   loading: sharePresenter.isLoading))
                 }
+
+                if FeatureFlag.aboutScreen.enabled {
+                    rows.append(NavigationItemRow(title: RowTitles.about,
+                                                  icon: UIImage.gridicon(.mySites),
+                                                  accessoryType: .disclosureIndicator,
+                                                  action: pushAbout(),
+                                                  accessibilityIdentifier: "About"))
+                }
+
                 return rows
             }()),
 
@@ -244,7 +248,7 @@ class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportTableViewController()
+            let controller = SupportTableViewController(style: .insetGrouped)
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)
@@ -429,9 +433,9 @@ class MeViewController: UITableViewController {
     }
 
     /// Convenience property to determine whether the recomend app row should be displayed or not.
-    private var isRecommendAppRowEnabled: Bool {
-        FeatureFlag.recommendAppToOthers.enabled && !AppConfiguration.isJetpack
-    }
+        private var isRecommendAppRowEnabled: Bool {
+            !AppConfiguration.isJetpack
+        }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
@@ -526,8 +530,8 @@ private extension MeViewController {
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
         guard isRecommendAppRowEnabled else {
-            return
-        }
+             return
+         }
 
         reloadViewModel()
     }
