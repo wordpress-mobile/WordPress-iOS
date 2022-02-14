@@ -28,12 +28,22 @@ echo "--- 🧪 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
-TESTS_EXIT_STATUS=$?
-set -e
 
-echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+RUN=2
+TESTS_EXIT_STATUS=0
+for i in $(seq $RUN); do
+    bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+    INDIVIDUAL_EXIT_STATUS=$?
+
+    echo "--- 📦 Zipping test results Count: $RUN Status: $INDIVIDUAL_EXIT_STATUS"
+    cd build/results/ && zip -rq WordPress-run-"$RUN"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
+    rm WordPress.xcresult
+
+    if [ $INDIVIDUAL_EXIT_STATUS ]; then
+        TESTS_EXIT_STATUS=$INDIVIDUAL_EXIT_STATUS
+    fi
+done
+set -e
 
 echo "--- 🚦 Report Tests Exit Status"
 exit $TESTS_EXIT_STATUS
