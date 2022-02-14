@@ -14,8 +14,6 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
-
     lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,11 +40,17 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        viewModel.start()
         addHeightObservers()
+        viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
         collectionView.layoutIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        viewModel.loadCards()
     }
 
     func showLoading() {
@@ -58,6 +62,13 @@ final class BlogDashboardViewController: UIViewController {
 
     func stopLoading() {
         activityIndicatorView.stopAnimating()
+    }
+
+    func update(blog: Blog) {
+        self.blog = blog
+        viewModel.blog = blog
+        viewModel.applySnapshotForInitialData()
+        viewModel.loadCards()
     }
 
     private func setupCollectionView() {
@@ -85,15 +96,12 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            return self.createQuickLinksSection()
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            self?.createLayoutSection(for: sectionIndex)
         }
-        return layout
     }
 
-    private func createQuickLinksSection() -> NSCollectionLayoutSection {
+    private func createLayoutSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
@@ -102,12 +110,12 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
+        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
-                                                        leading: Constants.sectionInset,
-                                                        bottom: Constants.sectionInset,
-                                                        trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
-
+                                                        leading: horizontalInset,
+                                                        bottom: 0,
+                                                        trailing: horizontalInset)
         return section
     }
 }
@@ -115,8 +123,9 @@ extension BlogDashboardViewController {
 extension BlogDashboardViewController {
 
     private enum Constants {
+        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 16
-        static let interGroupSpacing: CGFloat = 8
+        static let sectionInset: CGFloat = 20
+        static let interGroupSpacing: CGFloat = 12
     }
 }

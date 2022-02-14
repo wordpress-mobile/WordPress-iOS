@@ -78,9 +78,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         writeInsightsToUserDefaults()
     }
 
-    func refreshInsights() {
+    func refreshInsights(forceRefresh: Bool = false) {
         addViewModelListeners()
-        viewModel?.refreshInsights()
+        viewModel?.refreshInsights(forceRefresh: forceRefresh)
     }
 
     func showAddInsightView(source: String = "table_row") {
@@ -180,7 +180,7 @@ private extension SiteStatsInsightsTableViewController {
 
         refreshControl?.beginRefreshing()
         clearExpandedRows()
-        refreshInsights()
+        refreshInsights(forceRefresh: true)
         hideNoResults()
     }
 
