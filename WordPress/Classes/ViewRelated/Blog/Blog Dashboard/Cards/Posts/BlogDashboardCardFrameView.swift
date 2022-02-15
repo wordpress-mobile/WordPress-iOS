@@ -93,7 +93,7 @@ class BlogDashboardCardFrameView: UIView {
     }
 
     @objc private func buttonTapped() {
-        print("tapped")
+        print("todo: header tapped")
     }
 
     required init?(coder: NSCoder) {
