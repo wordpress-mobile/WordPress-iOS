@@ -784,7 +784,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHouse]
                                                      callback:^{
-                                                         // TODO: show dashboard
+                                                        [weakSelf showDashboard];
                                                      }]];
     }
     
@@ -831,7 +831,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHouse]
                                                      callback:^{
-                                                         // TODO: show dashboard
+                                                        [weakSelf showDashboard];
                                                      }]];
     }
     
@@ -1546,6 +1546,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
+}
+
+- (void)showDashboard
+{
+    BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showActivity
