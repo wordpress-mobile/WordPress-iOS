@@ -87,7 +87,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// Used to present CommentDetailViewController when previous/next notification is a Comment.
     ///
-    var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator?
+    weak var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator?
 
     /// Notification being displayed
     ///
