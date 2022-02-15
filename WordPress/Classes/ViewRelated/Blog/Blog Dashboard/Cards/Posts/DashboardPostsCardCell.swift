@@ -1,51 +1,86 @@
 import UIKit
 
 class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
-    private var postsViewController: PostsCardViewController?
+    private var draftPostsViewController: PostsCardViewController?
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, dataModel: NSDictionary?) {
-        guard let viewController = viewController, let dataModel = dataModel else {
+    private var scheduledPostsViewController: PostsCardViewController?
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 20
+        return stackView
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.addSubview(stackView)
+        contentView.pinSubviewToAllEdges(stackView)
+    }
+
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        guard let viewController = viewController, let apiResponse = apiResponse else {
             return
         }
 
-        /// Create the Child VC in case it doesn't exist
-        if postsViewController == nil {
-            let postsViewController = PostsCardViewController(blog: blog, status: .draft)
-            self.postsViewController = postsViewController
+        let hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
+        let hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
 
-            // Update with the correct blog and status
-            updatePosts(dataModel, blog: blog)
+        removeAllChildVCs()
 
-            embedChildPostsViewController(to: viewController)
-        } else {
-            updatePosts(dataModel, blog: blog)
-        }
-    }
-
-    /// Updates the child VC to display draft or scheduled based on the dataModel
-    private func updatePosts(_ dataModel: NSDictionary, blog: Blog) {
-        let hasDrafts = dataModel["show_drafts"] as? Bool ?? false
-        let hasScheduled = dataModel["show_scheduled"] as? Bool ?? false
-
-        if hasDrafts {
-            postsViewController?.update(blog: blog, status: .draft)
-        } else if hasScheduled {
-            postsViewController?.update(blog: blog, status: .scheduled)
-        } else {
+        if !hasDrafts && !hasScheduled {
             // Temporary: it should display "write your next post"
-            postsViewController?.update(blog: blog, status: .draft)
+            let postsViewController = PostsCardViewController(blog: blog, status: .draft)
+            draftPostsViewController = postsViewController
+
+            embed(child: postsViewController, to: viewController)
+        } else {
+            if hasDrafts {
+                let postsViewController = PostsCardViewController(blog: blog, status: .draft)
+                draftPostsViewController = postsViewController
+
+                embed(child: postsViewController, to: viewController)
+            }
+
+            if hasScheduled {
+                let postsViewController = PostsCardViewController(blog: blog, status: .scheduled)
+                scheduledPostsViewController = postsViewController
+
+                embed(child: postsViewController, to: viewController)
+            }
         }
     }
 
-    private func embedChildPostsViewController(to viewController: UIViewController) {
-        guard let postsViewController = postsViewController else {
-            return
+    private func removeAllChildVCs() {
+        stackView.removeAllSubviews()
+
+        if let draftPostsViewController = draftPostsViewController {
+            remove(child: draftPostsViewController)
         }
 
-        viewController.addChild(postsViewController)
-        contentView.addSubview(postsViewController.view)
-        postsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(postsViewController.view)
-        postsViewController.didMove(toParent: viewController)
+        if let schedulePostsViewController = scheduledPostsViewController {
+            remove(child: schedulePostsViewController)
+        }
+
+        draftPostsViewController = nil
+        scheduledPostsViewController = nil
+    }
+
+    private func embed(child childViewController: UIViewController, to viewController: UIViewController) {
+        viewController.addChild(childViewController)
+        stackView.addArrangedSubview(childViewController.view)
+        childViewController.didMove(toParent: viewController)
+    }
+
+    private func remove(child childViewController: UIViewController) {
+        childViewController.willMove(toParent: nil)
+        childViewController.view.removeFromSuperview()
+        childViewController.removeFromParent()
     }
 }
