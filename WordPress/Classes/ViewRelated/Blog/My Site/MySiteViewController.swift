@@ -97,13 +97,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
-    /// Please keep this in mind when making modifications.
-    ///
+    private(set) var sitePickerViewController: SitePickerViewController?
     private(set) var blogDetailsViewController: BlogDetailsViewController?
     private(set) var blogDashboardViewController: BlogDashboardViewController?
-
-    private(set) var sitePickerViewController: SitePickerViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -349,6 +345,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
             return
@@ -492,7 +489,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         remove(blogDetailsViewController)
-        self.blogDetailsViewController = nil
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
