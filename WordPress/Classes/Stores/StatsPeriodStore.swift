@@ -1094,7 +1094,7 @@ private extension StatsPeriodStore {
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
-        if FeatureFlag.statsPerformanceImprovements {
+        if FeatureFlag.statsPerformanceImprovements.enabled {
             transaction { state in
                 state.summaryStatus = status
                 state.summaryLikesStatus = status
