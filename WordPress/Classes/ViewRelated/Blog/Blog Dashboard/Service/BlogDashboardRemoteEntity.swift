@@ -7,11 +7,11 @@ struct BlogDashboardRemoteEntity: Decodable {
 
     struct BlogDashboardPosts: Decodable {
         var hasPublished: Bool?
-        var draft: [BlogDashboardPosts]?
-        var scheduled: [BlogDashboardPosts]?
+        var draft: [BlogDashboardPost]?
+        var scheduled: [BlogDashboardPost]?
 
         // We don't rely on the data from the API to show posts
-        struct BlogDashboardPosts: Decodable { }
+        struct BlogDashboardPost: Decodable { }
     }
 
     struct BlogDashboardStats: Decodable {
