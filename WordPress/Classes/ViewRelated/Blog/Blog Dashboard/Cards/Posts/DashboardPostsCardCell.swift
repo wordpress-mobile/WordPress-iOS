@@ -3,7 +3,7 @@ import UIKit
 class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
     private var draftPostsViewController: PostsCardViewController?
 
-    private var schedulePostsViewController: PostsCardViewController?
+    private var scheduledPostsViewController: PostsCardViewController?
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -50,7 +50,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
 
             if hasScheduled {
                 let postsViewController = PostsCardViewController(blog: blog, status: .scheduled)
-                schedulePostsViewController = postsViewController
+                scheduledPostsViewController = postsViewController
 
                 embed(child: postsViewController, to: viewController)
             }
@@ -64,12 +64,12 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             remove(child: draftPostsViewController)
         }
 
-        if let schedulePostsViewController = schedulePostsViewController {
+        if let schedulePostsViewController = scheduledPostsViewController {
             remove(child: schedulePostsViewController)
         }
 
         draftPostsViewController = nil
-        schedulePostsViewController = nil
+        scheduledPostsViewController = nil
     }
 
     private func embed(child childViewController: UIViewController, to viewController: UIViewController) {
