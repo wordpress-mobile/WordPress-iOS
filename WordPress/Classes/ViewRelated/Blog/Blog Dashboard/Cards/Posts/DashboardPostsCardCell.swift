@@ -73,8 +73,13 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
     }
 
     private func embed(child childViewController: UIViewController, to viewController: UIViewController) {
+        let frame = BlogDashboardCardFrameView()
+        frame.title = "Posts"
+        frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+        frame.add(subview: childViewController.view)
+
         viewController.addChild(childViewController)
-        stackView.addArrangedSubview(childViewController.view)
+        stackView.addArrangedSubview(frame)
         childViewController.didMove(toParent: viewController)
     }
 
