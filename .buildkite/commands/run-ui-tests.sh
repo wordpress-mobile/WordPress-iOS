@@ -32,12 +32,12 @@ set +e
 RUN=2
 TESTS_EXIT_STATUS=0
 for i in $(seq $RUN); do
-    echo "--- RUN $RUN"
+    echo "---- RUN $i"
     bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
     INDIVIDUAL_EXIT_STATUS=$?
 
-    echo "--- 📦 Zipping test results Count: $RUN Status: $INDIVIDUAL_EXIT_STATUS"
-    cd build/results/ && zip -rq WordPress-run-"$RUN"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
+    echo "---- 📦 Zipping test results Run: $i Status: $INDIVIDUAL_EXIT_STATUS"
+    cd build/results/ && zip -rq WordPress-run-"$i"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
     rmdir WordPress.xcresult
 
     if [ $INDIVIDUAL_EXIT_STATUS != 0 ]; then
