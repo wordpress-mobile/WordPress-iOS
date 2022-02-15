@@ -39,7 +39,7 @@ for i in $(seq $RUN); do
     cd build/results/ && zip -rq WordPress-run-"$RUN"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
     rm WordPress.xcresult
 
-    if [ $INDIVIDUAL_EXIT_STATUS ]; then
+    if [ $INDIVIDUAL_EXIT_STATUS != 0 ]; then
         TESTS_EXIT_STATUS=$INDIVIDUAL_EXIT_STATUS
     fi
 done
