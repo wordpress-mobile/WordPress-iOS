@@ -1076,7 +1076,7 @@ private extension NotificationsViewController {
                    scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
-        // also ensure that the index path returned does not contain negative values.
+        // also ensure that the index path returned from results controller does not have negative row index.
         // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
         guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification),
               indexPath != tableView.indexPathForSelectedRow,
