@@ -38,7 +38,7 @@ for i in $(seq $RUN); do
 
     echo "---- 📦 Zipping test results Run: $i Status: $INDIVIDUAL_EXIT_STATUS"
     cd build/results/ && zip -rq WordPress-run-"$i"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
-    rmdir -r WordPress.xcresult
+    rm -r WordPress.xcresult
 
     if [ $INDIVIDUAL_EXIT_STATUS != 0 ]; then
         TESTS_EXIT_STATUS=$INDIVIDUAL_EXIT_STATUS
