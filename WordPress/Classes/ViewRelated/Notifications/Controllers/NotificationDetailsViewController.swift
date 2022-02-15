@@ -1389,6 +1389,7 @@ extension NotificationDetailsViewController {
                 return
             }
 
+            self.notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
             weak var navigationController = self.navigationController
 
             self.dismiss(animated: true, completion: {

@@ -16,6 +16,10 @@ class NotificationCommentDetailCoordinator: NSObject {
     // Arrow navigation data source
     private weak var notificationsNavigationDataSource: NotificationsNavigationDataSource?
 
+    // Closure to be executed whenever the notification that's being currently displayed, changes.
+    // This happens due to Navigation Events (Next / Previous)
+    var onSelectedNoteChange: ((Notification) -> Void)?
+
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
     }()
@@ -108,6 +112,7 @@ private extension NotificationCommentDetailCoordinator {
     func updateViewWith(notification: Notification) {
         if notification.kind == .comment {
             trackDetailsOpened(for: notification)
+            onSelectedNoteChange?(notification)
             configure(with: notification)
             refreshViewController()
         } else {

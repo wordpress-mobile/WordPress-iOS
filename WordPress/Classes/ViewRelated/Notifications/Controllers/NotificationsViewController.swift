@@ -475,6 +475,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.dataSource = self
+        detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -746,6 +747,10 @@ extension NotificationsViewController {
                         return
                     }
 
+                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { note in
+                        self.selectRow(for: note)
+                    }
+
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
                     self.view.isUserInteractionEnabled = true
@@ -798,7 +803,7 @@ extension NotificationsViewController {
     }
 
     /// Will display an Undelete button on top of a given notification.
-    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// On timeout, the destructive action (received via parameter) will be executed, and the notification
     /// will (supposedly) get deleted.
     ///
     /// -   Parameters:
