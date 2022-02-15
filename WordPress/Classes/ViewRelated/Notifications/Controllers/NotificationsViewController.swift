@@ -747,8 +747,8 @@ extension NotificationsViewController {
                         return
                     }
 
-                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { note in
-                        self.selectRow(for: note)
+                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+                        self?.selectRow(for: note)
                     }
 
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
