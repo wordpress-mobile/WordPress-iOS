@@ -120,6 +120,12 @@ private extension PostsCardViewModel {
         let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
+        let myAuthorID = blog.userID ?? 0
+
+        // Brand new local drafts have an authorID of 0.
+        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+        predicates.append(authorPredicate)
+
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
        return predicate
     }
@@ -133,6 +139,7 @@ private extension PostsCardViewModel {
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
+        options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
         options.purgesLocalSync = true
 
