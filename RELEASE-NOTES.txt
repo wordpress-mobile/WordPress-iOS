@@ -14,6 +14,7 @@
 * [*] [Jetpack-only] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
 * [*] Block editor: Additional error messages for media upload failures. [#17971]
 * [**] Adds animated Gif support in notifications and comments [#17981]
+* [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#17844]
 
 19.2
 -----
