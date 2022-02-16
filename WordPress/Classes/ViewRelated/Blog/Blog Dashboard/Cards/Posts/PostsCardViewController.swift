@@ -1,5 +1,10 @@
 import UIKit
 
+protocol PostsCardViewControllerDelegate: AnyObject {
+    func didShowNextPostPrompt()
+    func didHideNextPostPrompt()
+}
+
 /// Render a small list of posts for a given blog and post status (drafts or scheduled)
 ///
 /// This class handles showing posts from the database, syncing and interacting with them
@@ -14,6 +19,8 @@ import UIKit
     private var errorView: DashboardCardInnerErrorView?
     private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
+
+    weak var delegate: PostsCardViewControllerDelegate?
 
     init(blog: Blog, status: BasePost.Status) {
         self.blog = blog
@@ -149,6 +156,8 @@ extension PostsCardViewController: PostsCardView {
 
     func showNextPostPrompt() {
         guard nextPostView == nil else {
+            // Force the table view to recalculate its height
+            _ = tableView.intrinsicContentSize
             return
         }
 
@@ -161,11 +170,14 @@ extension PostsCardViewController: PostsCardView {
 
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
+
+        delegate?.didShowNextPostPrompt()
     }
 
     func hideNextPrompt() {
         nextPostView?.removeFromSuperview()
         nextPostView = nil
+        delegate?.didHideNextPostPrompt()
     }
 }
 

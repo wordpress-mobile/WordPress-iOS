@@ -5,6 +5,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
 
     private var scheduledPostsViewController: PostsCardViewController?
 
+    private var cardFrameView: BlogDashboardCardFrameView?
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -38,10 +40,11 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             let hasPublished = apiResponse.posts?.hasPublished ?? true
             // Temporary: it should display "write your next post"
             let postsViewController = PostsCardViewController(blog: blog, status: .draft)
+            postsViewController.delegate = self
             draftPostsViewController = postsViewController
 
             let cardTitle = hasPublished ? Strings.nextPostTitle : Strings.firstPostTitle
-            embed(child: postsViewController, to: viewController, with: nil)
+            embed(child: postsViewController, to: viewController, with: Strings.draftsTitle)
         } else {
             if hasDrafts {
                 let postsViewController = PostsCardViewController(blog: blog, status: .draft)
@@ -89,6 +92,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         viewController.addChild(childViewController)
         stackView.addArrangedSubview(frame)
         childViewController.didMove(toParent: viewController)
+
+        self.cardFrameView = frame
     }
 
     private func remove(child childViewController: UIViewController) {
@@ -102,5 +107,15 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
         static let nextPostTitle = NSLocalizedString("Create your next post", comment: "Title for the card prompting the user to create a new post.")
         static let firstPostTitle = NSLocalizedString("Create your first post", comment: "Title for the card prompting the user to create their first post.")
+    }
+}
+
+extension DashboardPostsCardCell: PostsCardViewControllerDelegate {
+    func didShowNextPostPrompt() {
+        cardFrameView?.hideHeader()
+    }
+
+    func didHideNextPostPrompt() {
+        cardFrameView?.showHeader()
     }
 }
