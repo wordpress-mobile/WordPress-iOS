@@ -110,14 +110,39 @@ private extension NotificationCommentDetailCoordinator {
     }
 
     func updateViewWith(notification: Notification) {
-        if notification.kind == .comment {
-            trackDetailsOpened(for: notification)
-            onSelectedNoteChange?(notification)
-            configure(with: notification)
-            refreshViewController()
-        } else {
-            // TODO: handle other notification type
+        trackDetailsOpened(for: notification)
+        onSelectedNoteChange?(notification)
+
+        guard notification.kind == .comment else {
+            showNotificationDetails(with: notification)
+            return
         }
+
+        configure(with: notification)
+        refreshViewController()
+    }
+
+    func showNotificationDetails(with notification: Notification) {
+        let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: nil)
+
+        guard let viewController = viewController,
+        let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
+            DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
+            return
+        }
+
+        notificationDetailsViewController.note = notification
+        notificationDetailsViewController.notificationCommentDetailCoordinator = self
+        notificationDetailsViewController.dataSource = notificationsNavigationDataSource
+        notificationDetailsViewController.onSelectedNoteChange = onSelectedNoteChange
+
+        weak var navigationController = viewController.navigationController
+
+        viewController.dismiss(animated: true, completion: {
+            notificationDetailsViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.popViewController(animated: false)
+            navigationController?.pushViewController(notificationDetailsViewController, animated: false)
+        })
     }
 
     func refreshViewController() {
@@ -162,6 +187,11 @@ private extension NotificationCommentDetailCoordinator {
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+    }
+
+    enum Notifications {
+        static let storyboardName = "Notifications"
+        static let viewControllerName = NotificationDetailsViewController.classNameWithoutNamespaces()
     }
 
 }
