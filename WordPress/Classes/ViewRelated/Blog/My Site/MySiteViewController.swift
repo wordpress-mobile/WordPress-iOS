@@ -181,7 +181,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
