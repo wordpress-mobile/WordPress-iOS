@@ -37,7 +37,6 @@ class BlogDashboardCardFrameView: UIView {
     /// Card's title
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Card title"
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
