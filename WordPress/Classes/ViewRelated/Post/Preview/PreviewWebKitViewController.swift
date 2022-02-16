@@ -14,7 +14,11 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
-                webView.reload()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webView.alpha = 0
+                }, completion: { _ in
+                    self.webView.reload()
+                })
             }
             showLabel(device: selectedDevice)
         }
@@ -93,6 +97,8 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     override func viewDidLoad() {
+        webView.alpha = 0
+
         super.viewDidLoad()
         if webView.url?.absoluteString == Constants.blankURL?.absoluteString {
             showNoResults(withTitle: Constants.noPreviewTitle)
@@ -286,5 +292,11 @@ extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         setWidth(selectedDevice.width)
         webView.evaluateJavaScript(selectedDevice.viewportScript, completionHandler: nil)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        UIView.animate(withDuration: 0.2) {
+            self.webView.alpha = 1
+        }
     }
 }

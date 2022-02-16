@@ -115,6 +115,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
+        presentedViewController?.dismiss(animated: true)
         SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
     }

@@ -48,6 +48,11 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         onCompletion(authenticationResult)
     }
 
+    func willHandlePresentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials) -> Bool {
+        // Don't display the "no sites" epilogue if we allow site creation
+        return !AppConfiguration.allowSiteCreation
+    }
+
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, windowManager: WindowManager, onDismiss: @escaping () -> Void) -> Bool {
         if AccountHelper.hasBlogs {
             return false
@@ -63,6 +68,11 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         windowManager.show(controller, completion: nil)
 
         return true
+    }
+
+    func willHandlePresentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) -> Bool {
+        // Don't display the "no sites" epilogue if we allow site creation
+        return !AppConfiguration.allowSiteCreation
     }
 
     // If the user signs up using the Jetpack app (through SIWA, for example)

@@ -83,11 +83,11 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavBar()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
+        configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 

@@ -12,12 +12,11 @@ import UIKit
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
     private var errorView: DashboardCardInnerErrorView?
+    private var status: BasePost.Status = .draft
 
-    private let status: BasePost.Status = .draft
-
-    // TODO: add status as an init param
-    @objc init(blog: Blog) {
+    init(blog: Blog, status: BasePost.Status) {
         self.blog = blog
+        self.status = status
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -43,6 +42,12 @@ import UIKit
         tableView.delegate = self
         viewModel.refresh()
     }
+
+    func update(blog: Blog, status: BasePost.Status) {
+        self.blog = blog
+        self.status = status
+        viewModel?.update(blog: blog, status: status)
+    }
 }
 
 // MARK: - Private methods
@@ -63,6 +68,10 @@ private extension PostsCardViewController {
     }
 
     func configureGhostableTableView() {
+        guard ghostableTableView?.superview == nil else {
+            return
+        }
+
         let ghostableTableView = PostCardTableView()
 
         view.addSubview(ghostableTableView)
