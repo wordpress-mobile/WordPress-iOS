@@ -113,6 +113,11 @@ private extension PostsCardViewController {
             .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
     }
 
+    func presentEditor() {
+        let editor = EditPostViewController(blog: blog)
+        present(editor, animated: true)
+    }
+
     enum Constants {
         static let numberOfPosts = 3
     }
@@ -162,6 +167,9 @@ extension PostsCardViewController: PostsCardView {
         }
 
         let nextPostView = BlogDashboardNextPostView()
+        nextPostView.onTap = { [weak self] in
+            self?.presentEditor()
+        }
         nextPostView.translatesAutoresizingMaskIntoConstraints = false
         tableView.addSubview(withFadeAnimation: nextPostView)
         tableView.pinSubviewToSafeArea(nextPostView)

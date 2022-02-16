@@ -47,6 +47,8 @@ class BlogDashboardNextPostView: UIView {
         return imageView
     }()
 
+    var onTap: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -62,6 +64,13 @@ class BlogDashboardNextPostView: UIView {
             titleLabel,
             descriptionLabel
         ])
+        // Add tap gesture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(promptTapped))
+        addGestureRecognizer(tap)
+    }
+
+    @objc private func promptTapped() {
+        onTap?()
     }
 
     required init?(coder: NSCoder) {
