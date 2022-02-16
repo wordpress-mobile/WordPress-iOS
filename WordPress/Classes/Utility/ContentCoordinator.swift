@@ -41,14 +41,15 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
-        guard let postID = postID, let siteID = siteID else {
-            throw DisplayError.missingParameter
-        }
+        guard let postID = postID,
+              let siteID = siteID,
+              let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source) else {
+                  throw DisplayError.missingParameter
+              }
 
-        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source)
-        commentsViewController?.navigateToCommentID = commentID
-        commentsViewController?.allowsPushingPostDetails = true
-        controller?.navigationController?.pushViewController(commentsViewController!, animated: true)
+        commentsViewController.navigateToCommentID = commentID
+        commentsViewController.allowsPushingPostDetails = true
+        controller?.navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
