@@ -12,6 +12,7 @@ import UIKit
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
     private var errorView: DashboardCardInnerErrorView?
+    private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
 
     init(blog: Blog, status: BasePost.Status) {
@@ -61,6 +62,7 @@ private extension PostsCardViewController {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
+        tableView.backgroundColor = nil
         view.pinSubviewToAllEdges(tableView)
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
@@ -143,6 +145,27 @@ extension PostsCardViewController: PostsCardView {
 
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
+    }
+
+    func showNextPostPrompt() {
+        guard nextPostView == nil else {
+            return
+        }
+
+        let nextPostView = BlogDashboardNextPostView()
+        nextPostView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(withFadeAnimation: nextPostView)
+        tableView.pinSubviewToSafeArea(nextPostView)
+
+        self.nextPostView = nextPostView
+
+        // Force the table view to recalculate its height
+        _ = tableView.intrinsicContentSize
+    }
+
+    func hideNextPrompt() {
+        nextPostView?.removeFromSuperview()
+        nextPostView = nil
     }
 }
 

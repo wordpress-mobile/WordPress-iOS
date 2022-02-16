@@ -71,7 +71,7 @@ class BlogDashboardNextPostView: UIView {
     private enum Constants {
         static let horizontalSpacing: CGFloat = 16
         static let verticalSpacing: CGFloat = 10
-        static let padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let padding = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         static let imageSize = CGSize(width: 100, height: 70)
     }
 }

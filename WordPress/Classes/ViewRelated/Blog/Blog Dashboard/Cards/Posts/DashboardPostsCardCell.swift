@@ -41,7 +41,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             draftPostsViewController = postsViewController
 
             let cardTitle = hasPublished ? Strings.nextPostTitle : Strings.firstPostTitle
-            embed(child: postsViewController, to: viewController, with: cardTitle)
+            embed(child: postsViewController, to: viewController, with: nil)
         } else {
             if hasDrafts {
                 let postsViewController = PostsCardViewController(blog: blog, status: .draft)
@@ -74,10 +74,16 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         scheduledPostsViewController = nil
     }
 
-    private func embed(child childViewController: UIViewController, to viewController: UIViewController, with title: String) {
+    private func embed(child childViewController: UIViewController, to viewController: UIViewController, with title: String?) {
         let frame = BlogDashboardCardFrameView()
-        frame.title = title
-        frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+
+        if let title = title {
+            frame.title = title
+            frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+        } else {
+            frame.hideHeader()
+        }
+
         frame.add(subview: childViewController.view)
 
         viewController.addChild(childViewController)

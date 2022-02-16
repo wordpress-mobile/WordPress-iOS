@@ -8,6 +8,8 @@ protocol PostsCardView: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(message: String, retry: Bool)
+    func showNextPostPrompt()
+    func hideNextPrompt()
 }
 
 /// Responsible for populating a table view with posts
@@ -44,6 +46,7 @@ class PostsCardViewModel: NSObject {
         do {
             try fetchedResultsController.performFetch()
             viewController?.tableView.reloadData()
+            showNextPostPromptIfNeeded()
         } catch {
             print("Fetch failed")
         }
@@ -189,6 +192,15 @@ private extension PostsCardViewModel {
         viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
+    func showNextPostPromptIfNeeded() {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count,
+           postsCount == 0 {
+            viewController?.showNextPostPrompt()
+        } else {
+            viewController?.hideNextPrompt()
+        }
+    }
+
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 4
@@ -239,6 +251,8 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         viewController?.tableView.endUpdates()
+
+        showNextPostPromptIfNeeded()
 
         // When going to the post list all displayed posts there will be displayed
         // here too. This check ensures that we never display more than what

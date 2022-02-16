@@ -88,6 +88,11 @@ class BlogDashboardCardFrameView: UIView {
         mainStackView.addArrangedSubview(subview)
     }
 
+    /// Hide the header
+    func hideHeader() {
+        headerStackView.isHidden = true
+    }
+
     private func configureStackViews() {
         addSubview(mainStackView)
         pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPadding, right: 0))
