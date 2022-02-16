@@ -1,0 +1,15 @@
+Con questa ultima versione di WordPress, abbiamo apportato alcune modifiche al design per migliorare ulteriormente la tua esperienza utente.
+
+- I blocchi di testo nell'editor a blocchi ora si adattano al testo mentre modifichi la dimensione del carattere e l'altezza della linea per i temi dei blocchi.
+- Abbiamo riprogettato alcune schermate dell'app, inclusa Il mio sito. Sembra nuova.
+- Ci piace avere una casella di posta pulita, quindi abbiamo aggiunto un pulsante che ti consente di contrassegnare come lette tutte le notifiche filtrate.
+- Nel menu Configura > Persone della scheda del sito, abbiamo aggiunto un filtro per le e-mail che ti consente di vedere, avere ulteriori informazioni e persino rimuovere i follower tramite e-mail.
+- Nei commenti in thread, abbiamo rimosso l'icona Condividi aggiungendo la possibilità di moderare i commenti all'interno di un thread.
+- Se modifichi l'elemento multimediale in un blocco Immagine che viene usato anche come immagine in evidenza in un articolo, visualizzerai un messaggio in cui ti viene chiesto se desideri sostituire l'immagine in evidenza mentre sei posizionato li.
+- Abbiamo migliorato la navigazione di Statistiche in modo che tu possa spostarti più facilmente tra Giorni e Panoramica. Puoi anche creare nuove carte statistiche direttamente dalla schermata Statistiche usando la nostra nuova icona di navigazione.
+
+Abbiamo anche smazzato una manciata di fastidiosi bug nel processo di avvio del nostro sito.
+
+- Abbiamo corretto un bug nel processo di creazione del sito che assegnava il fuso orario sbagliato al sito. Ciò causava alcuni problemi con gli articoli programmati. Non preoccuparti: tutti gli articoli programmati verranno ora pubblicati in orario, al momento giusto.
+- Sessione di orientamento non viene più mostrato agli utenti che accedono a un sito ospitato personalmente, non Jetpack, anche dopo aver detto "no, grazie" alla richiesta di Sessione di orientamento. Difficile passarci su.
+- Quando scegli un design o un layout durante la creazione del sito, la casella di controllo non sfarfalla più quando passi da un'opzione all'altra.
