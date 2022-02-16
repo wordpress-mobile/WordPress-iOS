@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-03 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-02-15 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "도메인 추가";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "왼쪽 하단의 도구 모음에서 + 아이콘을 눌러 언제든지 새 블록을 추가하세요.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "독립 호스트 사이트 추가";
@@ -877,7 +877,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to trash this post?" = "정말로 이 글을 삭제하기를 원하시나요?";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
+"Are you sure you want to update your homepage?" = "홈페이지를 업데이트하시겠습니까?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "업데이트하시겠습니까?";
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "블로그 글";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
+"Blog's Email Follower" = "블로그의 이메일 팔로워";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "블로그 팔로워";
@@ -2240,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "거부하기";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "이미지의 용도를 설명합니다. 이미지가 장식용이면 비워둡니다.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "이메일 주소";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "이메일 팔로워";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3000,7 +3000,7 @@ translators: Block name. %s: The localized block name */
 "Failed Media Export" = "미디어 내보내기 실패";
 
 /* Message for mark all as read success notice */
-"Failed marking Notifications as read" = "Failed marking Notifications as read";
+"Failed marking Notifications as read" = "알림을 읽음으로 표시 실패";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "오디오 파일 삽입에 실패했습니다.";
@@ -3247,10 +3247,10 @@ translators: Block name. %s: The localized block name */
 "Full Size" = "전체 크기";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+"Fullscreen view of image %@. Double tap to dismiss" = "이미지 %@ 전체 화면 보기 두 번 눌러 무시하기";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
+"Fullscreen view of image. Double tap to dismiss" = "이미지 전체 화면 보기 두 번 눌러 무시하기";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3849,7 +3849,7 @@ translators: Block name. %s: The localized block name */
 "Keep blogging and check back to see visitors arriving at your site." = "블로깅을 계속하고 방문자가 회원님의 사이트를 찾아오는지 다시 확인하세요.";
 
 /* Button to cancel the replacement of a featured image. */
-"Keep current" = "Keep current";
+"Keep current" = "현재 상태 유지";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "계속 이용하세요! 좋아요 표시와 댓글 달기는 네트워크를 구축하는 좋은 방법입니다. 뉴스피드로 이동하여 글을 더 찾아보세요.";
@@ -4191,7 +4191,7 @@ translators: Block name. %s: The localized block name */
 "Mapped Domain" = "매핑된 도메인";
 
 /* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
+"Mark All As Read" = "모두 읽음으로 표시";
 
 /* Marks a notification as unread */
 "Mark Read" = "읽음으로 표시";
@@ -4200,10 +4200,10 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "읽지 않은 상태로 표시";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
-"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+"Mark all %1$@ notifications as read?" = "모든 %1$@ 알림을 읽음으로 표시하나요?";
 
 /* Confirmation title for marking all notifications as read. */
-"Mark all notifications as read?" = "Mark all notifications as read?";
+"Mark all notifications as read?" = "모든 알림을 읽음으로 표시하나요?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "스팸으로 표시";
@@ -4858,7 +4858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Notifications Unread" = "알림 읽지 않음";
 
 /* Title for mark all as read success notice */
-"Notifications marked as read" = "Notifications marked as read";
+"Notifications marked as read" = "알림이 읽음으로 표시됨";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "알림 받기";
@@ -5527,7 +5527,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Unavailable" = "미리보기를 사용할 수 없음";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
+"Preview media" = "미디어 미리보기";
 
 /* No comment provided by engineer. */
 "Preview page" = "페이지 미리 보기";
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "%@ 제거";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "특성 이미지 삭제";
@@ -5875,7 +5875,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* First line of remove email follower warning in confirmation dialog.
    First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "팔로워를 제거하면 회원님의 사이트에서 업데이트를 받지 못하게 됩니다. 팔로워 본인이 선택한 경우에는 회원님의 사이트를 방문하여 다시 팔로우할 수 있습니다.";
 
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "%@에 갱신";
@@ -5887,10 +5887,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Replace audio" = "오디오 교체";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Replace current featured image?" = "Replace current featured image?";
+"Replace current featured image?" = "현재 특성 이미지를 교체하시나요?";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace featured image" = "Replace featured image";
+"Replace featured image" = "특성 이미지 교체";
 
 /* No comment provided by engineer. */
 "Replace file" = "파일 바꾸기";
@@ -7088,7 +7088,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to display referrer web page." = "참조자 웹 페이지를 표시하려면 누릅니다.";
 
 /* Accessibility hint prompting the user to tap a table row to edit its value. */
-"Tap to edit" = "Tap to edit";
+"Tap to edit" = "눌러서 편집하기";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "사용자 정의 값을 입력하려면 탭하세요.";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to switch to another site, or add a new site" = "눌러서 다른 사이트로 전환하거나 새 사이트 추가하기";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
+"Tap to view media in full screen" = "미디어를 눌러 전체 화면에서 보기";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "이 태그의 글을 보려면 누르기";
@@ -8907,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "어제";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "이미 특성 이미지가 설정되어 있습니다. 새 이미지로 바꾸시나요?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "현재 %1$@인 사용자명을 바꾸려고 합니다. %2$@";
@@ -8967,7 +8967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You don't have any media." = "미디어가 없습니다.";
 
 /* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "You don't have any posts";
+"You don't have any posts" = "글이 없습니다.";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "예약한 페이지가 없습니다.";
@@ -9235,7 +9235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "제작자: %@";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "댓글";
 
 /* The menu item to select during a guided tour. */
 "connections" = "연결";
@@ -9258,7 +9258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "example.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "팔로우";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
@@ -9279,7 +9279,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "오늘 중";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "좋아요";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
@@ -9309,7 +9309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "스팸 표시 취소됨";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "읽지 않음";
 
 /* Label displayed on video media items. */
 "video" = "비디오";
