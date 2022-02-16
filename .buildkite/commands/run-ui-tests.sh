@@ -24,7 +24,7 @@ install_gems
 echo "--- :cocoapods: Setting up Pods"
 install_cocoapods
 
-echo "--- 🧪 Testing"
+echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
@@ -36,4 +36,8 @@ echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
 
 echo "--- 🚦 Report Tests Exit Status"
+if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
+  echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
+  echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artefacts."
+fi
 exit $TESTS_EXIT_STATUS
