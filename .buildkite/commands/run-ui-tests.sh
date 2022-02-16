@@ -39,5 +39,7 @@ echo "--- 🚦 Report Tests Exit Status"
 if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artefacts."
+else
+  echo "UI Tests seems to have passed (exit code 0). All good 👍"
 fi
 exit $TESTS_EXIT_STATUS
