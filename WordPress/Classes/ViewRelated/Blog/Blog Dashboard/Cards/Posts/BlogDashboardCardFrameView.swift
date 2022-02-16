@@ -21,6 +21,7 @@ class BlogDashboardCardFrameView: UIView {
         topStackView.isLayoutMarginsRelativeArrangement = true
         topStackView.spacing = Constants.headerHorizontalSpacing
         topStackView.alignment = .center
+        topStackView.axis = .horizontal
         return topStackView
     }()
 
@@ -75,24 +76,7 @@ class BlogDashboardCardFrameView: UIView {
 
         layer.cornerRadius = Constants.cornerRadius
 
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPadding, right: 0))
-
-        mainStackView.addArrangedSubview(headerStackView)
-
-        headerStackView.addArrangedSubview(iconImageView)
-
-        headerStackView.addArrangedSubview(titleLabel)
-
-        headerStackView.addArrangedSubview(chevronImageView)
-
-        // Add tap gesture
-        let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
-        headerStackView.addGestureRecognizer(tap)
-    }
-
-    @objc private func buttonTapped() {
-        print("todo: header tapped")
+        configureStackViews()
     }
 
     required init?(coder: NSCoder) {
@@ -102,6 +86,27 @@ class BlogDashboardCardFrameView: UIView {
     /// Add a subview inside the card frame
     func add(subview: UIView) {
         mainStackView.addArrangedSubview(subview)
+    }
+
+    private func configureStackViews() {
+        addSubview(mainStackView)
+        pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPadding, right: 0))
+
+        mainStackView.addArrangedSubview(headerStackView)
+
+        headerStackView.addArrangedSubviews([
+            iconImageView,
+            titleLabel,
+            chevronImageView
+        ])
+
+        // Add tap gesture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+        headerStackView.addGestureRecognizer(tap)
+    }
+
+    @objc private func buttonTapped() {
+        print("todo: header tapped")
     }
 
     private enum Constants {
