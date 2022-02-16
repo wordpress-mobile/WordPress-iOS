@@ -119,7 +119,7 @@ class CommentDetailViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
-    private lazy var parentComment: Comment? = {
+    private var parentComment: Comment? {
         guard comment.hasParentComment(),
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
@@ -127,7 +127,7 @@ class CommentDetailViewController: UIViewController {
               }
 
         return parentComment
-    }()
+    }
 
     // transparent navigation bar style with visual blur effect.
     private lazy var blurredBarAppearance: UINavigationBarAppearance = {
