@@ -35,24 +35,26 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         removeAllChildVCs()
 
         if !hasDrafts && !hasScheduled {
+            let hasPublished = apiResponse.posts?.hasPublished ?? true
             // Temporary: it should display "write your next post"
             let postsViewController = PostsCardViewController(blog: blog, status: .draft)
             draftPostsViewController = postsViewController
 
-            embed(child: postsViewController, to: viewController)
+            let cardTitle = hasPublished ? Strings.nextPostTitle : Strings.firstPostTitle
+            embed(child: postsViewController, to: viewController, with: cardTitle)
         } else {
             if hasDrafts {
                 let postsViewController = PostsCardViewController(blog: blog, status: .draft)
                 draftPostsViewController = postsViewController
 
-                embed(child: postsViewController, to: viewController)
+                embed(child: postsViewController, to: viewController, with: Strings.draftsTitle)
             }
 
             if hasScheduled {
                 let postsViewController = PostsCardViewController(blog: blog, status: .scheduled)
                 scheduledPostsViewController = postsViewController
 
-                embed(child: postsViewController, to: viewController)
+                embed(child: postsViewController, to: viewController, with: Strings.scheduledTitle)
             }
         }
     }
@@ -72,9 +74,14 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         scheduledPostsViewController = nil
     }
 
-    private func embed(child childViewController: UIViewController, to viewController: UIViewController) {
+    private func embed(child childViewController: UIViewController, to viewController: UIViewController, with title: String) {
+        let frame = BlogDashboardCardFrameView()
+        frame.title = title
+        frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+        frame.add(subview: childViewController.view)
+
         viewController.addChild(childViewController)
-        stackView.addArrangedSubview(childViewController.view)
+        stackView.addArrangedSubview(frame)
         childViewController.didMove(toParent: viewController)
     }
 
@@ -82,5 +89,12 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         childViewController.willMove(toParent: nil)
         childViewController.view.removeFromSuperview()
         childViewController.removeFromParent()
+    }
+
+    private enum Strings {
+        static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
+        static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
+        static let nextPostTitle = NSLocalizedString("Create your next post", comment: "Title for the card prompting the user to create a new post.")
+        static let firstPostTitle = NSLocalizedString("Create your first post", comment: "Title for the card prompting the user to create their first post.")
     }
 }
