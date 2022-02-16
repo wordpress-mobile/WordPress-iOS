@@ -238,6 +238,7 @@ class GutenbergMediaInserterHelper: NSObject {
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
         case .thumbnailReady(let url):
             guard ReachabilityUtils.isInternetReachable() else {
+            guard ReachabilityUtils.isInternetReachable() && media.remoteStatus != .failed else {
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
                 return
             }
