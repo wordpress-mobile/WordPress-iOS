@@ -32,7 +32,7 @@ class BlogDashboardNextPostView: UIView {
 
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
-        descriptionLabel.text = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!"
+        descriptionLabel.text = Strings.nextPostDescription
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = .textSubtle
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
@@ -51,6 +51,13 @@ class BlogDashboardNextPostView: UIView {
     }()
 
     var onTap: (() -> Void)?
+
+    var hasPublishedPosts: Bool = true {
+        didSet {
+            titleLabel.text = hasPublishedPosts ? Strings.nextPostTitle : Strings.firstPostTitle
+            descriptionLabel.text = hasPublishedPosts ? Strings.nextPostDescription : Strings.firstPostDescription
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,5 +92,12 @@ class BlogDashboardNextPostView: UIView {
         static let verticalSpacing: CGFloat = 10
         static let padding = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         static let imageSize = CGSize(width: 70, height: 70)
+    }
+
+    private enum Strings {
+        static let nextPostTitle = NSLocalizedString("Create your next post", comment: "Title for the card prompting the user to create a new post.")
+        static let nextPostDescription = NSLocalizedString("Posting regularly helps build your audience!", comment: "Description for the card prompting the user to create a new post.")
+        static let firstPostTitle = NSLocalizedString("Create your first post", comment: "Title for the card prompting the user to create their first post.")
+        static let firstPostDescription = NSLocalizedString("Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!", comment: "Description for the card prompting the user to create their first post.")
     }
 }

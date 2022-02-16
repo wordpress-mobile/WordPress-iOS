@@ -19,12 +19,14 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     private var errorView: DashboardCardInnerErrorView?
     private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
+    private var hasPublishedPosts: Bool
 
     weak var delegate: PostsCardViewControllerDelegate?
 
-    init(blog: Blog, status: BasePost.Status) {
+    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true) {
         self.blog = blog
         self.status = status
+        self.hasPublishedPosts = hasPublishedPosts
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -167,6 +169,7 @@ extension PostsCardViewController: PostsCardView {
         }
 
         let nextPostView = BlogDashboardNextPostView()
+        nextPostView.hasPublishedPosts = hasPublishedPosts
         nextPostView.onTap = { [weak self] in
             self?.presentEditor()
         }

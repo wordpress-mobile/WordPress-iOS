@@ -38,12 +38,10 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
 
         if !hasDrafts && !hasScheduled {
             let hasPublished = apiResponse.posts?.hasPublished ?? true
-            // Temporary: it should display "write your next post"
-            let postsViewController = PostsCardViewController(blog: blog, status: .draft)
+            let postsViewController = PostsCardViewController(blog: blog, status: .draft, hasPublishedPosts: hasPublished)
             postsViewController.delegate = self
             draftPostsViewController = postsViewController
 
-            let cardTitle = hasPublished ? Strings.nextPostTitle : Strings.firstPostTitle
             embed(child: postsViewController, to: viewController, with: Strings.draftsTitle)
         } else {
             if hasDrafts {
@@ -105,8 +103,6 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
     private enum Strings {
         static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
-        static let nextPostTitle = NSLocalizedString("Create your next post", comment: "Title for the card prompting the user to create a new post.")
-        static let firstPostTitle = NSLocalizedString("Create your first post", comment: "Title for the card prompting the user to create their first post.")
     }
 }
 
