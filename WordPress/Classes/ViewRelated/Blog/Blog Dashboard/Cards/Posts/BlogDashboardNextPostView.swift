@@ -26,6 +26,7 @@ class BlogDashboardNextPostView: UIView {
         titleLabel.text = "Create your first post"
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.title3)
         titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.accessibilityTraits = .button
         return titleLabel
     }()
 
@@ -35,6 +36,7 @@ class BlogDashboardNextPostView: UIView {
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = .textSubtle
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        descriptionLabel.accessibilityTraits = .button
         return descriptionLabel
     }()
 
@@ -44,6 +46,7 @@ class BlogDashboardNextPostView: UIView {
         imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height).isActive = true
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "wp-illustration-first-post")
+        imageView.isAccessibilityElement = false
         return imageView
     }()
 
