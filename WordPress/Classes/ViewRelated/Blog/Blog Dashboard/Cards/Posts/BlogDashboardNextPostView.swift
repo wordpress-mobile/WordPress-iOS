@@ -43,7 +43,7 @@ class BlogDashboardNextPostView: UIView {
         imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height).isActive = true
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "wp-illustration-hand-write")
+        imageView.image = UIImage(named: "wp-illustration-first-post")
         return imageView
     }()
 
@@ -72,6 +72,6 @@ class BlogDashboardNextPostView: UIView {
         static let horizontalSpacing: CGFloat = 16
         static let verticalSpacing: CGFloat = 10
         static let padding = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        static let imageSize = CGSize(width: 100, height: 70)
+        static let imageSize = CGSize(width: 70, height: 70)
     }
 }
