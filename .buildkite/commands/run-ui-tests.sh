@@ -32,14 +32,19 @@ bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:
 TESTS_EXIT_STATUS=$?
 set -e
 
+if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
+  echo "^^^ +++"
+  echo "UI Tests failed!"
+fi
+
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
 
 echo "--- 🚦 Report Tests Exit Status"
-if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
+if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
+  echo "UI Tests seems to have passed (exit code 0). All good 👍"
+else
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artefacts."
-else
-  echo "UI Tests seems to have passed (exit code 0). All good 👍"
 fi
 exit $TESTS_EXIT_STATUS
