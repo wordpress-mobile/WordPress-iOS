@@ -97,6 +97,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    /// If set, when the post list appear it will show the tab for this status
+    var initialFilterWithPostStatus: BasePost.Status?
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -168,6 +171,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        configureInitialFilterIfNeeded()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
@@ -363,6 +368,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             tableView.reloadSections([0], with: .automatic)
             ghostableTableView.reloadSections([0], with: .automatic)
         }
+    }
+
+    private func configureInitialFilterIfNeeded() {
+        guard let initialFilterWithPostStatus = initialFilterWithPostStatus else {
+            return
+        }
+
+        filterSettings.setFilterWithPostStatus(initialFilterWithPostStatus)
     }
 
     // Mark - Layout Methods
