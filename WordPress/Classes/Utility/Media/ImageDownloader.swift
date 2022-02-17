@@ -89,7 +89,6 @@ class ImageDownloader {
 /// to better render the gifs in text views.
 class AnimatedImageWrapper: RCTAnimatedImage {
     var gifData: Data? = nil
-    var beenResized: Bool = false
     var targetSize: CGSize? = nil
 
     private static let playbackStrategy: GIFPlaybackStrategy = LargeGIFPlaybackStrategy()
