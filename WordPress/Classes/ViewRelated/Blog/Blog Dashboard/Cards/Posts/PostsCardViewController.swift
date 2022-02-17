@@ -197,6 +197,11 @@ extension PostsCardViewController: PostsCardView {
         nextPostView = nil
         delegate?.didHideNextPostPrompt()
     }
+
+    func firstPostPublished() {
+        hasPublishedPosts = true
+        nextPostView?.hasPublishedPosts = true
+    }
 }
 
 // MARK: - EditorAnalyticsProperties

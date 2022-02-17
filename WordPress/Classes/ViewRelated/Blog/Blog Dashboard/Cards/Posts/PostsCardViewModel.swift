@@ -10,6 +10,7 @@ protocol PostsCardView: AnyObject {
     func showError(message: String, retry: Bool)
     func showNextPostPrompt()
     func hideNextPrompt()
+    func firstPostPublished()
 }
 
 /// Responsible for populating a table view with posts
@@ -201,6 +202,15 @@ private extension PostsCardViewModel {
         }
     }
 
+    /// If a post is published we want to let the viewController know
+    /// So the prompt can be updated
+    func checkIfPostIsPublished() {
+        if let post = fetchedResultsController.fetchedObjects?.first,
+           post.status == .publish || post.status == .publishPrivate {
+            viewController?.firstPostPublished()
+        }
+    }
+
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 4
@@ -252,6 +262,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         viewController?.tableView.endUpdates()
 
         showNextPostPromptIfNeeded()
+        checkIfPostIsPublished()
 
         // When going to the post list all displayed posts there will be displayed
         // here too. This check ensures that we never display more than what
