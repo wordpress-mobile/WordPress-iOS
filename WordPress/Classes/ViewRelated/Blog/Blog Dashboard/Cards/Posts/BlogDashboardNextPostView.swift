@@ -43,7 +43,9 @@ class BlogDashboardNextPostView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height).isActive = true
+        let heightAnchor = imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height)
+        heightAnchor.priority = UILayoutPriority(rawValue: 999)
+        heightAnchor.isActive = true
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "wp-illustration-first-post")
         imageView.isAccessibilityElement = false
