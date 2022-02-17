@@ -78,10 +78,35 @@ class ImageDownloader {
         guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
             return nil
         }
-        return RCTAnimatedImage(data: data, scale: 1)
+
+        return AnimatedImageWrapper(gifData: data)
     }
 }
 
+// MARK: - AnimatedImageWrapper
+
+/// This is a wrapper around `RCTAnimatedImage` that allows padding of extra information
+/// to better render the gifs in text views.
+class AnimatedImageWrapper: RCTAnimatedImage {
+    var gifData: Data? = nil
+    var beenResized: Bool = false
+    var targetSize: CGSize? = nil
+
+    private static let playbackStrategy: GIFPlaybackStrategy = LargeGIFPlaybackStrategy()
+
+    convenience init?(gifData: Data) {
+        self.init(data: gifData, scale: 1)
+
+        // Don't store the gifdata if they're too large
+        // We still allow the the RCTAnimatedImage to be rendered since it will still render
+        // the first frame, but not eat up data
+        guard gifData.count < Self.playbackStrategy.maxSize else {
+            return
+        }
+
+        self.gifData = gifData
+    }
+}
 
 // MARK: - Error Types
 //
