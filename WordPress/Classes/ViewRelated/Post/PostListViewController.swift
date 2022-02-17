@@ -112,9 +112,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return controller
     }
 
-    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
+        controller.initialFilterWithPostStatus = postStatus
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.blogDetailNavigation)

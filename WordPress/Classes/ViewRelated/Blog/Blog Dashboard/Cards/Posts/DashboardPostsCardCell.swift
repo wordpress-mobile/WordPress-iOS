@@ -1,11 +1,12 @@
 import UIKit
 
 class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
-    private var draftPostsViewController: PostsCardViewController?
-
-    private var scheduledPostsViewController: PostsCardViewController?
-
     private var cardFrameView: BlogDashboardCardFrameView?
+
+    /// The VC presenting this cell
+    private weak var viewController: UIViewController?
+
+    private var blog: Blog?
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -31,60 +32,55 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
             return
         }
 
+        self.viewController = viewController
+        self.blog = blog
+
         let hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
         let hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
+        let hasPublished = apiResponse.posts?.hasPublished ?? true
 
         removeAllChildVCs()
 
         if !hasDrafts && !hasScheduled {
-            let hasPublished = apiResponse.posts?.hasPublished ?? true
-            let postsViewController = PostsCardViewController(blog: blog, status: .draft, hasPublishedPosts: hasPublished)
-            postsViewController.delegate = self
-            draftPostsViewController = postsViewController
-
-            embed(child: postsViewController, to: viewController, with: Strings.draftsTitle)
+            showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished)
         } else {
             if hasDrafts {
-                let postsViewController = PostsCardViewController(blog: blog, status: .draft)
-                draftPostsViewController = postsViewController
-
-                embed(child: postsViewController, to: viewController, with: Strings.draftsTitle)
+                showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished)
             }
 
             if hasScheduled {
-                let postsViewController = PostsCardViewController(blog: blog, status: .scheduled)
-                scheduledPostsViewController = postsViewController
-
-                embed(child: postsViewController, to: viewController, with: Strings.scheduledTitle)
+                showCard(forBlog: blog, status: .scheduled, to: viewController, hasPublishedPosts: hasPublished)
             }
         }
     }
 
     private func removeAllChildVCs() {
+        let childVcs = viewController?.children.filter { $0 is PostsCardViewController }
+
         stackView.removeAllSubviews()
 
-        if let draftPostsViewController = draftPostsViewController {
-            remove(child: draftPostsViewController)
-        }
-
-        if let schedulePostsViewController = scheduledPostsViewController {
-            remove(child: schedulePostsViewController)
-        }
-
-        draftPostsViewController = nil
-        scheduledPostsViewController = nil
+        childVcs?.forEach { remove(child: $0) }
     }
 
-    private func embed(child childViewController: UIViewController, to viewController: UIViewController, with title: String?) {
-        let frame = BlogDashboardCardFrameView()
+    private func showCard(forBlog blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hiddenHeader: Bool = false) {
+        // Create the VC to present posts
+        let childViewController = PostsCardViewController(blog: blog, status: status, hasPublishedPosts: hasPublishedPosts)
+        childViewController.delegate = self
 
-        if let title = title {
-            frame.title = title
-            frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
-        } else {
+        // Create the card frame and configure
+        let frame = BlogDashboardCardFrameView()
+        frame.title = status == .draft ? Strings.draftsTitle : Strings.scheduledTitle
+        frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+
+        if hiddenHeader {
             frame.hideHeader()
         }
 
+        frame.onHeaderTap = { [weak self] in
+            self?.presentPostList(with: status)
+        }
+
+        // Add the VC to the card frame and configure as a child VC
         frame.add(subview: childViewController.view)
 
         viewController.addChild(childViewController)
@@ -98,6 +94,14 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         childViewController.willMove(toParent: nil)
         childViewController.view.removeFromSuperview()
         childViewController.removeFromParent()
+    }
+
+    private func presentPostList(with status: BasePost.Status) {
+        guard let blog = blog, let viewController = viewController else {
+            return
+        }
+
+        PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
     }
 
     private enum Strings {
