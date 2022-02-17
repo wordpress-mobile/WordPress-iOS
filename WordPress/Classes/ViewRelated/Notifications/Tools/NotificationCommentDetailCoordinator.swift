@@ -10,8 +10,10 @@ class NotificationCommentDetailCoordinator: NSObject {
     private var comment: Comment?
     private let managedObjectContext = ContextManager.shared.mainContext
     private var viewController: CommentDetailViewController?
-    private var commentID: NSNumber?
     private var blog: Blog?
+    private var commentID: NSNumber? {
+        notification?.metaCommentID
+    }
 
     // Arrow navigation data source
     private weak var notificationsNavigationDataSource: NotificationsNavigationDataSource?
@@ -64,8 +66,11 @@ class NotificationCommentDetailCoordinator: NSObject {
 private extension NotificationCommentDetailCoordinator {
 
     func configure(with notification: Notification) {
+        // Clear previous notification's properties.
+        blog = nil
+        comment = nil
+
         self.notification = notification
-        commentID = notification.metaCommentID
 
         if let siteID = notification.metaSiteID {
             blog = Blog.lookup(withID: siteID, in: managedObjectContext)
@@ -106,7 +111,6 @@ private extension NotificationCommentDetailCoordinator {
         // If the comment has a parent and it is not cached, fetch it so the details header is correct.
         guard let notification = notification,
               let parentID = notification.metaParentID,
-              let blog = blog,
               loadCommentFromCache(parentID) == nil else {
                   completion()
                   return
@@ -176,6 +180,7 @@ private extension NotificationCommentDetailCoordinator {
 
     func refreshViewController() {
         if let comment = loadCommentFromCache(commentID) {
+            self.comment = comment
             viewController?.refreshView(comment: comment, notification: notification)
             updateNavigationButtonStates()
             return
@@ -187,6 +192,7 @@ private extension NotificationCommentDetailCoordinator {
                 return
             }
 
+            self.comment = comment
             self.viewController?.refreshView(comment: comment, notification: self.notification)
             self.updateNavigationButtonStates()
         })
