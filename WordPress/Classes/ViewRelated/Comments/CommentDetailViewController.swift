@@ -119,7 +119,7 @@ class CommentDetailViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
-    private lazy var parentComment: Comment? = {
+    private var parentComment: Comment? {
         guard comment.hasParentComment(),
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
@@ -127,7 +127,7 @@ class CommentDetailViewController: UIViewController {
               }
 
         return parentComment
-    }()
+    }
 
     // transparent navigation bar style with visual blur effect.
     private lazy var blurredBarAppearance: UINavigationBarAppearance = {
@@ -570,6 +570,26 @@ private extension CommentDetailViewController {
 
     // MARK: Actions and navigations
 
+    // Shows the comment thread with the Notification comment highlighted.
+    func navigateToNotificationComment() {
+        guard let siteID = siteID,
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI) else {
+                  openWebView(for: comment.commentURL())
+                  return
+              }
+
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: siteID,
+                                                          commentID: NSNumber(value: comment.commentID),
+                                                          source: .commentNotification)
+    }
+
+
+
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment = parentComment,
@@ -596,7 +616,7 @@ private extension CommentDetailViewController {
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
                                                           commentID: NSNumber(value: replyID),
-                                                          source: .mySiteComment)
+                                                          source: isNotificationComment ? .commentNotification : .mySiteComment)
     }
 
     func navigateToPost() {
@@ -915,14 +935,15 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
         switch rows[indexPath.row] {
         case .header:
-            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-
+            if isNotificationComment {
+                navigateToNotificationComment()
+            } else {
+                comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+            }
         case .replyIndicator:
             navigateToReplyComment()
-
         case .text(let title, _, _) where title == .webAddressLabelText:
             visitAuthorURL()
-
         default:
             break
         }
