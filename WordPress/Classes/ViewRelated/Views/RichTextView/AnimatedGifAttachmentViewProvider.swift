@@ -17,7 +17,6 @@ class AnimatedGifAttachmentViewProvider: NSTextAttachmentViewProvider {
 
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
-        
         guard let contents = textAttachment.contents else {
             return
         }
