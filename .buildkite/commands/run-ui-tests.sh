@@ -33,6 +33,7 @@ TESTS_EXIT_STATUS=$?
 set -e
 
 if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
+  # Keep the (otherwise collapsed) current "Testing" section open in Buildkite logs on error. See https://buildkite.com/docs/pipelines/managing-log-output#collapsing-output
   echo "^^^ +++"
   echo "UI Tests failed!"
 fi
