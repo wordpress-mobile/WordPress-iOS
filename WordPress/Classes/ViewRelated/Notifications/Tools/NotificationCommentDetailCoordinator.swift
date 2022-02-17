@@ -38,8 +38,9 @@ class NotificationCommentDetailCoordinator: NSObject {
         configure(with: notification)
 
         if let comment = loadCommentFromCache(commentID) {
-            createViewController(comment: comment)
-            completion(viewController)
+            createViewController(comment: comment, completion: {
+                completion(self.viewController)
+            })
             return
         }
 
@@ -50,8 +51,9 @@ class NotificationCommentDetailCoordinator: NSObject {
                 return
             }
 
-            self.createViewController(comment: comment)
-            completion(self.viewController)
+            self.createViewController(comment: comment, completion: {
+                completion(self.viewController)
+            })
         })
     }
 
@@ -115,7 +117,7 @@ private extension NotificationCommentDetailCoordinator {
         })
     }
 
-    func createViewController(comment: Comment) {
+    func createViewController(comment: Comment, completion: @escaping () -> Void) {
         self.comment = comment
 
         fetchParentCommentIfNeeded(completion: { [weak self] in
@@ -129,6 +131,7 @@ private extension NotificationCommentDetailCoordinator {
                                                               managedObjectContext: self.managedObjectContext)
 
             self.updateNavigationButtonStates()
+            completion()
         })
     }
 
