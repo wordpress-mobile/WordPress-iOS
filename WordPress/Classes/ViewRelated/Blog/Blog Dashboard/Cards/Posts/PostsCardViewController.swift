@@ -120,6 +120,10 @@ private extension PostsCardViewController {
         present(editor, animated: true)
     }
 
+    func forceTableViewToRecalculateHeight() {
+        _ = tableView.intrinsicContentSize
+    }
+
     enum Constants {
         static let numberOfPosts = 3
     }
@@ -150,6 +154,11 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func showError(message: String, retry: Bool) {
+        guard nextPostView == nil else {
+            forceTableViewToRecalculateHeight()
+            return
+        }
+
         let errorView = DashboardCardInnerErrorView(message: message, canRetry: retry)
         errorView.delegate = self
         errorView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,8 +172,7 @@ extension PostsCardViewController: PostsCardView {
 
     func showNextPostPrompt() {
         guard nextPostView == nil else {
-            // Force the table view to recalculate its height
-            _ = tableView.intrinsicContentSize
+            forceTableViewToRecalculateHeight()
             return
         }
 
@@ -179,8 +187,7 @@ extension PostsCardViewController: PostsCardView {
 
         self.nextPostView = nextPostView
 
-        // Force the table view to recalculate its height
-        _ = tableView.intrinsicContentSize
+        forceTableViewToRecalculateHeight()
 
         delegate?.didShowNextPostPrompt()
     }
