@@ -1,0 +1,15 @@
+Om je gebruikerservaring nóg beter te maken hebben we het ontwerp van WordPress wat veranderd in deze nieuwste versie.
+
+- Tekstblokken in de blokeditor passen nu met de tekst mee aan als je de lettertypegrootte en regelafstand voor je blokthema’s aanpast.
+- Sommige schermen in de app, waaronder Mijn site, hebben een nieuw ontwerp. Ziet er goed uit!
+- Iedereen houdt wel van een opgeruimde inbox. Daarom hebben we een knop toegevoegd die je alle gefilterde meldingen als gelezen laat markeren.
+- In het menu in het tabblad Configureren > Mensen hebben we een e-mailfilter toegevoegd waardoor je e-mailvolgers kunt zien, informatie over ze kunt bekijken en ze zelfs kunt verwijderen.
+- Bij reacties in threads hebben we het Deel-pictogram verwijderd en de mogelijkheid toegevoegd om reacties binnen een thread te beheren.
+- Als je de media verandert in een afbeeldingblok dat ook als de uitgelichte afbeelding van een bericht wordt gebruikt, krijg je vanaf nu een prompt of je de uitgelichte afbeelding ook wilt vervangen.
+- We hebben de navigatie in het Statistiekenvenster verbeterd zodat je makkelijker tussen Dagen en Inzichten kunt bewegen. Je kunt ook direct uit het Statistiekenvenster nieuwe statistiekenkaarten toevoegen met ons nieuwe navigatiepictogram.
+
+We hebben ook een aantal vervelende bugs uit ons opstartproces van sites verwijderd.
+
+We hebben een bug in het aanmaakproces van sites opgelost die de verkeerde tijdzone aan een site toewees. Dit veroorzaakte wat problemen met ingeplande berichten. Maar je hoeft je geen zorgen te maken—alle ingeplande berichten worden nu op de juiste tijd gepubliceerd.
+- Snelstart verschijnt nu niet meer voor gebruikers die inloggen in een zelf-gehoste site die niet van Jetpack is, ook als ze 'nee, bedankt' aangeven in de prompt voor Snelstart. Dat hoeft echt niet.
+- Als je een ontwerp of lay-out kiest tijdens het aanmaken van de site zal het selectievak niet meer knipperen als je van optie wisselt.

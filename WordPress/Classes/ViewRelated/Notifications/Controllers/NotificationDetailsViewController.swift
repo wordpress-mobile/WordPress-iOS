@@ -1369,6 +1369,7 @@ extension NotificationDetailsViewController {
 
     private func refreshView(with note: Notification) {
         onSelectedNoteChange?(note)
+        trackDetailsOpened(for: note)
 
         if FeatureFlag.notificationCommentDetails.enabled,
            note.kind == .comment {
@@ -1379,7 +1380,6 @@ extension NotificationDetailsViewController {
         hideNoResults()
         self.note = note
         showConfettiIfNeeded()
-        trackDetailsOpened(for: note)
     }
 
     private func showCommentDetails(with note: Notification) {

@@ -37,13 +37,13 @@ class NotificationCommentDetailCoordinator: NSObject {
                               completion: @escaping (CommentDetailViewController?) -> Void) {
         configure(with: notification)
 
-        if let comment = loadCommentFromCache() {
+        if let comment = loadCommentFromCache(commentID) {
             createViewController(comment: comment)
             completion(viewController)
             return
         }
 
-        fetchComment(completion: { comment in
+        fetchComment(commentID, completion: { comment in
             guard let comment = comment else {
                 // TODO: show error view
                 completion(nil)
@@ -70,7 +70,7 @@ private extension NotificationCommentDetailCoordinator {
         }
     }
 
-    func loadCommentFromCache() -> Comment? {
+    func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
         guard let commentID = commentID,
               let blog = blog else {
                   DDLogError("Notification Comment: unable to load comment due to missing information.")
@@ -81,7 +81,7 @@ private extension NotificationCommentDetailCoordinator {
         return commentService.findComment(withID: commentID, in: blog)
     }
 
-    func fetchComment(completion: @escaping (Comment?) -> Void) {
+    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
         guard let commentID = commentID,
               let blog = blog else {
                   DDLogError("Notification Comment: unable to fetch comment due to missing information.")
@@ -96,38 +96,89 @@ private extension NotificationCommentDetailCoordinator {
             completion(comment)
         }, failure: { error in
             // TODO: show error view
+            completion(nil)
+        })
+    }
+
+    func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
+        // If the comment has a parent and it is not cached, fetch it so the details header is correct.
+        guard let notification = notification,
+              let parentID = notification.metaParentID,
+              let blog = blog,
+              loadCommentFromCache(parentID) == nil else {
+                  completion()
+                  return
+              }
+
+        fetchComment(parentID, completion: { _ in
+            completion()
         })
     }
 
     func createViewController(comment: Comment) {
         self.comment = comment
-        viewController = CommentDetailViewController(comment: comment,
-                                                     notification: notification,
-                                                     notificationNavigationDelegate: self,
-                                                     managedObjectContext: managedObjectContext)
 
-        updateNavigationButtonStates()
+        fetchParentCommentIfNeeded(completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.viewController = CommentDetailViewController(comment: comment,
+                                                              notification: self.notification,
+                                                              notificationNavigationDelegate: self,
+                                                              managedObjectContext: self.managedObjectContext)
+
+            self.updateNavigationButtonStates()
+        })
     }
 
     func updateViewWith(notification: Notification) {
-        if notification.kind == .comment {
-            trackDetailsOpened(for: notification)
-            onSelectedNoteChange?(notification)
-            configure(with: notification)
-            refreshViewController()
-        } else {
-            // TODO: handle other notification type
+        trackDetailsOpened(for: notification)
+        onSelectedNoteChange?(notification)
+
+        guard notification.kind == .comment else {
+            showNotificationDetails(with: notification)
+            return
         }
+
+        configure(with: notification)
+
+        fetchParentCommentIfNeeded(completion: { [weak self] in
+            self?.refreshViewController()
+        })
+    }
+
+    func showNotificationDetails(with notification: Notification) {
+        let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: nil)
+
+        guard let viewController = viewController,
+        let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
+            DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
+            return
+        }
+
+        notificationDetailsViewController.note = notification
+        notificationDetailsViewController.notificationCommentDetailCoordinator = self
+        notificationDetailsViewController.dataSource = notificationsNavigationDataSource
+        notificationDetailsViewController.onSelectedNoteChange = onSelectedNoteChange
+
+        weak var navigationController = viewController.navigationController
+
+        viewController.dismiss(animated: true, completion: {
+            notificationDetailsViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.popViewController(animated: false)
+            navigationController?.pushViewController(notificationDetailsViewController, animated: false)
+        })
     }
 
     func refreshViewController() {
-        if let comment = loadCommentFromCache() {
+        if let comment = loadCommentFromCache(commentID) {
             viewController?.refreshView(comment: comment, notification: notification)
             updateNavigationButtonStates()
             return
         }
 
-        fetchComment(completion: { comment in
+        fetchComment(commentID, completion: { comment in
             guard let comment = comment else {
                 // TODO: show error view
                 return
@@ -162,6 +213,11 @@ private extension NotificationCommentDetailCoordinator {
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+    }
+
+    enum Notifications {
+        static let storyboardName = "Notifications"
+        static let viewControllerName = NotificationDetailsViewController.classNameWithoutNamespaces()
     }
 
 }
