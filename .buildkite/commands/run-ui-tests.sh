@@ -28,6 +28,7 @@ echo "--- 🧪 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
+
 RUN=10
 TESTS_EXIT_STATUS=0
 for i in $(seq $RUN); do
