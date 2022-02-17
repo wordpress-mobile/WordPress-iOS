@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-08 12:42:45+0000 */
+/* Translation-Revision-Date: 2022-02-15 18:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Tambah domain";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Tambahkan blok baru kapan saja dengan mengetuk ikon + pada bilah peralatan di kiri bawah.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Tambahkan situs hosting sendiri";
@@ -877,7 +877,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to trash this post?" = "Anda yakin ingin membuang pos ini?";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
+"Are you sure you want to update your homepage?" = "Anda yakin ingin memperbarui beranda?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "Pos blog";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
+"Blog's Email Follower" = "Pengikut Email Blog";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Pengikut Blog";
@@ -2240,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Tolak";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Jelaskan maksud gambar tersebut. Biarkan kosong jika gambar hanya hiasan.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "Alamat Surel";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "Pengikut Email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3000,7 +3000,7 @@ translators: Block name. %s: The localized block name */
 "Failed Media Export" = "Ekspor Media Gagal";
 
 /* Message for mark all as read success notice */
-"Failed marking Notifications as read" = "Failed marking Notifications as read";
+"Failed marking Notifications as read" = "Gagal menandai Pemberitahuan sebagai sudah dibaca";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "Gagal memasukkan file audio.";
@@ -3247,10 +3247,10 @@ translators: Block name. %s: The localized block name */
 "Full Size" = "Ukuran Penuh";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+"Fullscreen view of image %@. Double tap to dismiss" = "Tampilan gambar %@ layar penuh. Ketuk dua kali untuk menutup";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
+"Fullscreen view of image. Double tap to dismiss" = "Tampilan gambar layar penuh. Ketuk dua kali untuk menutup";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3849,7 +3849,7 @@ translators: Block name. %s: The localized block name */
 "Keep blogging and check back to see visitors arriving at your site." = "Teruskan blogging dan lihat jumlah pengunjung situs Anda.";
 
 /* Button to cancel the replacement of a featured image. */
-"Keep current" = "Keep current";
+"Keep current" = "Pertahankan";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Terus lanjutkan! Memberikan suka dan berkomentar adalah cara yang baik untuk membangun jaringan. Buka Pembaca untuk menemukan lebih banyak pos.";
@@ -4191,7 +4191,7 @@ translators: Block name. %s: The localized block name */
 "Mapped Domain" = "Domain Dipetakan";
 
 /* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
+"Mark All As Read" = "Tandai Semua Sebagai Sudah Dibaca";
 
 /* Marks a notification as unread */
 "Mark Read" = "Tandai Sudah Dibaca";
@@ -4200,10 +4200,10 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Tandai Belum Dibaca";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
-"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+"Mark all %1$@ notifications as read?" = "Tandai semua pemberitahuan %1$@ sebagai sudah dibaca?";
 
 /* Confirmation title for marking all notifications as read. */
-"Mark all notifications as read?" = "Mark all notifications as read?";
+"Mark all notifications as read?" = "Tandai semua pemberitahuan sebagai sudah dibaca?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Tandai sebagai Spam";
@@ -4858,7 +4858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Notifications Unread" = "Pemberitahuan Tidak Terbaca";
 
 /* Title for mark all as read success notice */
-"Notifications marked as read" = "Notifications marked as read";
+"Notifications marked as read" = "Pemberitahuan ditandai sebagai sudah dibaca";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Beri tahu saya";
@@ -5527,7 +5527,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Unavailable" = "Pratinjau Tidak Tersedia";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
+"Preview media" = "Pratinjau media";
 
 /* No comment provided by engineer. */
 "Preview page" = "Pratinjau halaman";
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "Buang %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Singkirkan Gambar Terfitur";
@@ -5875,7 +5875,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* First line of remove email follower warning in confirmation dialog.
    First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Jika pengikut dibuang, mereka akan berhenti menerima pembaruan dari situs Anda. Mereka tetap bebas mengunjungi dan mengikuti kembali situs Anda.";
 
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Diperbarui pada %@";
@@ -5887,7 +5887,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Replace audio" = "Ganti audio";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Replace current featured image?" = "Replace current featured image?";
+"Replace current featured image?" = "Ganti gambar andalan saat ini?";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace featured image" = "Ganti gambar unggulan";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to switch to another site, or add a new site" = "Ketuk untuk beralih ke situs lain, atau menambahkan situs baru";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
+"Tap to view media in full screen" = "Ketuk untuk melihat media dalam layar penuh";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Ketuk untuk melihat pos untuk tag ini";
@@ -8907,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Kemarin";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Sudah ada gambar andalan yang diatur. Apakah Anda ingin menggantinya dengan gambar baru?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Anda akan mengubah nama pengguna Anda, yang saat ini adalah %1$@. %2$@";
@@ -8967,7 +8967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You don't have any media." = "Anda tidak memiliki media apa pun.";
 
 /* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "You don't have any posts";
+"You don't have any posts" = "Anda tidak memiliki pos";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Anda tidak punya halaman yang dijadwalkan";
@@ -9235,7 +9235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "oleh %@";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "komentar";
 
 /* The menu item to select during a guided tour. */
 "connections" = "sambungan";
@@ -9258,7 +9258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "contoh.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "ikuti";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/alamat-situs-saya (URL)";
@@ -9279,7 +9279,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "belakangan hari ini";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "suka";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "ditandai sebagai spam";
@@ -9309,7 +9309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "tanda sebagai spam dihilangkan";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "belum dibaca";
 
 /* Label displayed on video media items. */
 "video" = "video";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-25 18:25:06+0000 */
+/* Translation-Revision-Date: 2022-02-09 09:57:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Alan adı ekle";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Sol alttaki araç çubuğundaki + simgesine dokunarak istediğiniz zaman yeni bir blok ekleyin.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Barındırılan site ekle";
@@ -877,7 +877,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to trash this post?" = "Bu yazıyı çöpe taşımak istediğinize emin misiniz?";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
+"Are you sure you want to update your homepage?" = "Ana sayfa güncellemesini iptal etmek istediğinizden emin misiniz?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Güncellemek istediğinizden emin misiniz?";
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "Blog yazısı";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
+"Blog's Email Follower" = "Blogun e-posta takipçileri";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Blogun takipçisi";
@@ -2240,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Reddet";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Görselin amacını açıklayın. Görsel tamamen dekoratif amaçlıysa boş bırakın.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "E-posta adresi";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "E-posta takipçileri";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3000,7 +3000,7 @@ translators: Block name. %s: The localized block name */
 "Failed Media Export" = "Medya Dışa Aktarılamadı";
 
 /* Message for mark all as read success notice */
-"Failed marking Notifications as read" = "Failed marking Notifications as read";
+"Failed marking Notifications as read" = "Bildirim okundu olarak işaretlenirken hata oluştu";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "Ses dosyası eklenemedi.";
@@ -3247,10 +3247,10 @@ translators: Block name. %s: The localized block name */
 "Full Size" = "Tam boy";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+"Fullscreen view of image %@. Double tap to dismiss" = "%@ görselinin tam ekran görünümü. Kapatmak için çift dokunun";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
+"Fullscreen view of image. Double tap to dismiss" = "Görselin tam ekran görünümü. Kapatmak için çift dokunun";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3849,7 +3849,7 @@ translators: Block name. %s: The localized block name */
 "Keep blogging and check back to see visitors arriving at your site." = "Blog yazmaya devam edin ve sitenize gelen ziyaretçileri görmek için tekrar kontrol edin.";
 
 /* Button to cancel the replacement of a featured image. */
-"Keep current" = "Keep current";
+"Keep current" = "Şu ankini kullan";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Devam edin! Beğenmek ve yorum yapmak, ağ oluşturmanın iyi bir yoludur. Daha fazla gönderi bulmak için Okuyucu'ya gidin.";
@@ -4191,7 +4191,7 @@ translators: Block name. %s: The localized block name */
 "Mapped Domain" = "Alan adını yönet";
 
 /* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
+"Mark All As Read" = "Tümünü okundu olarak işaretle";
 
 /* Marks a notification as unread */
 "Mark Read" = "Okundu olarak işaretle";
@@ -4200,10 +4200,10 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Okunmadı olarak işaretle";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
-"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+"Mark all %1$@ notifications as read?" = "Tüm %1$@ bildirimlerini okundu olarak işaretle?";
 
 /* Confirmation title for marking all notifications as read. */
-"Mark all notifications as read?" = "Mark all notifications as read?";
+"Mark all notifications as read?" = "Tüm bildirimleri okundu olarak işaretle?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Spam Olarak İşaretle";
@@ -4858,7 +4858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Notifications Unread" = "Okunmamış bildirimler";
 
 /* Title for mark all as read success notice */
-"Notifications marked as read" = "Notifications marked as read";
+"Notifications marked as read" = "Bildirimler okundu olarak işaretlendi";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Bana bildir";
@@ -5527,7 +5527,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Unavailable" = "Önizleme kullanılamıyor";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
+"Preview media" = "Ortam dosyasını önizleme";
 
 /* No comment provided by engineer. */
 "Preview page" = "Sayfa önizleme";
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "Kaldır %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Öne çıkarılan görseli kaldır";
@@ -5875,7 +5875,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* First line of remove email follower warning in confirmation dialog.
    First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Takipçileri takipten çıkarırsanız sitenizden güncelleme alamazlar. İsterlerse sitenizi yine ziyaret edip takip edebilirler.";
 
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Yenilenme tarihi: %@";
@@ -5887,10 +5887,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Replace audio" = "Sesi değiştir";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Replace current featured image?" = "Replace current featured image?";
+"Replace current featured image?" = "Şu anki öne çıkan görsel değiştirilsin mi?";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace featured image" = "Replace featured image";
+"Replace featured image" = "Öne çıkan görseli değiştir";
 
 /* No comment provided by engineer. */
 "Replace file" = "Dosyayı değiştir";
@@ -7088,7 +7088,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to display referrer web page." = "Yönlendiren web sayfasını görüntülemek için dokunun.";
 
 /* Accessibility hint prompting the user to tap a table row to edit its value. */
-"Tap to edit" = "Tap to edit";
+"Tap to edit" = "Düzenlemek için dokunun";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Özel bir değer girmek için dokunun";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to switch to another site, or add a new site" = "Başka bir siteye geçmek için dokunun veya yeni bir site ekleyin";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
+"Tap to view media in full screen" = "Ortam dosyasını tam ekran görmek için dokunun";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Bu etiketle ilgili yazıları görüntülemek için dokunun";
@@ -8907,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Dün";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Zaten öne çıkan bir görsel grubunuz var. Değiştirmek ister misiniz?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Şu anda %1$@. %2$@ olan kullanıcı adınızı değiştirmek üzeresiniz";
@@ -8967,7 +8967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You don't have any media." = "Hiç ortam dosyanız yok.";
 
 /* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "You don't have any posts";
+"You don't have any posts" = "Hiç yazınız yok";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Takvime eklenmiş sayfanız yok";
@@ -9235,7 +9235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "%@ tarafından";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "yorum";
 
 /* The menu item to select during a guided tour. */
 "connections" = "bağlantılar";
@@ -9258,7 +9258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "example.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "takip et";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/benim-site-adresim (URL)";
@@ -9279,7 +9279,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "bugün daha sonra";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "beğen";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "spam olarak işaretlendi";
@@ -9309,7 +9309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "istenmeyen posta işaretini kaldır";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "okunmamış";
 
 /* Label displayed on video media items. */
 "video" = "video";
