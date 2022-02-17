@@ -119,6 +119,18 @@ class CommentDetailViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
+    // Sometimes the parent information of a comment reply notification is in the meta block.
+    private var notificationParentComment: Comment? {
+        guard let parentID = notification?.metaParentID,
+              let siteID = notification?.metaSiteID,
+              let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
+              let parentComment = commentService.findComment(withID: parentID, in: blog) else {
+                  return nil
+              }
+
+        return parentComment
+    }
+
     private var parentComment: Comment? {
         guard comment.hasParentComment(),
               let blog = comment.blog,
@@ -450,7 +462,7 @@ private extension CommentDetailViewController {
 
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
-        if let parentComment = self.parentComment {
+        if let parentComment = self.parentComment ?? notificationParentComment {
             return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
                                         subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
         }
