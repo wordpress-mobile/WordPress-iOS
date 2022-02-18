@@ -862,10 +862,17 @@ private extension CommentDetailViewController {
     }
 
     func showActionableNotice(title: String) {
+        guard !isNotificationComment else {
+            return
+        }
+
         guard viewIsVisible, !isLastInList else {
             displayNotice(title: title)
             return
         }
+
+        // Dismiss any old notices to avoid stacked Next notices.
+        dismissNotice()
 
         displayActionableNotice(title: title,
                                 style: NormalNoticeStyle(showNextArrow: true),
