@@ -40,9 +40,9 @@ class NotificationCommentDetailCoordinator: NSObject {
         configure(with: notification)
 
         if let comment = loadCommentFromCache(commentID) {
-            createViewController(comment: comment, completion: {
+            createViewController(comment: comment) {
                 completion(self.viewController)
-            })
+            }
             return
         }
 
