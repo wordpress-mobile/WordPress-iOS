@@ -53,9 +53,9 @@ class NotificationCommentDetailCoordinator: NSObject {
                 return
             }
 
-            self.createViewController(comment: comment, completion: {
+            self.createViewController(comment: comment) {
                 completion(self.viewController)
-            })
+            }
         })
     }
 
