@@ -9,6 +9,7 @@ import CoreData
 protocol CommentDetailsNotificationNavigationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)
+    func commentWasModerated(for notification: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -770,6 +771,8 @@ private extension String {
 extension CommentDetailViewController: CommentModerationBarDelegate {
     func statusChangedTo(_ commentStatus: CommentStatusType) {
 
+        notifyDelegateCommentModerated()
+
         switch commentStatus {
         case .pending:
             unapproveComment()
@@ -848,6 +851,14 @@ private extension CommentDetailViewController {
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             completion?(false)
         })
+    }
+
+    func notifyDelegateCommentModerated() {
+        guard let notification = notification else {
+            return
+        }
+
+        notificationNavigationDelegate?.commentWasModerated(for: notification)
     }
 
     func showActionableNotice(title: String) {

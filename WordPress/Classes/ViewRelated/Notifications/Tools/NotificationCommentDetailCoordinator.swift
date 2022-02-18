@@ -22,6 +22,10 @@ class NotificationCommentDetailCoordinator: NSObject {
     // This happens due to Navigation Events (Next / Previous)
     var onSelectedNoteChange: ((Notification) -> Void)?
 
+    // Keep track of Notifications that have moderated Comments so they can be updated
+    // the next time the Notifications list is displayed.
+    var notificationsCommentModerated: [Notification] = []
+
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
     }()
@@ -253,6 +257,15 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNaviga
 
         WPAnalytics.track(.notificationsNextTapped)
         updateViewWith(notification: nextNotification)
+    }
+
+    func commentWasModerated(for notification: Notification?) {
+        guard let notification = notification,
+        !notificationsCommentModerated.contains(notification) else {
+            return
+        }
+
+        notificationsCommentModerated.append(notification)
     }
 
 }
