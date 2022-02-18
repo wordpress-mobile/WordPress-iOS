@@ -230,7 +230,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         self.data = data
         if data.isEmpty {
-            if (invalidQuery) {
+            if invalidQuery {
                 noResultsLabel.text = Strings.invalidQuery
             } else {
                 noResultsLabel.text = Strings.noResults
@@ -454,7 +454,7 @@ private extension WebAddressWizardContent {
 
     func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool, invalidQuery: Bool) {
         var message: String
-        if (listIsEmpty) {
+        if listIsEmpty {
             message = invalidQuery ? Strings.invalidQuery : Strings.noResults
         } else {
             message = Strings.suggestionsUpdated
