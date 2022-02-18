@@ -156,7 +156,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func updateSegmentedControl(for blog: Blog) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
     }
 
     private func setupView() {
