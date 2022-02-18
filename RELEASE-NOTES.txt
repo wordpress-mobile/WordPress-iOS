@@ -1,3 +1,7 @@
+19.4
+-----
+* [**] Adds animated Gif support in notifications and comments [#17981]
+
 19.3
 -----
 * [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
