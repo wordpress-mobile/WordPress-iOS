@@ -565,7 +565,7 @@ DEPENDENCIES:
   - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.71.1`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.19.8)
+  - WordPress-Editor-iOS (~> 1.19.7)
   - WordPressAuthenticator (~> 1.43.0)
   - WordPressKit (~> 4.48.0-beta.1)
   - WordPressMocks (~> 0.0.15)
@@ -847,6 +847,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: dadd70aa323da19ea464ca27762767c3015f93d8
+PODFILE CHECKSUM: afee6ce349aa1cefb5f0de243323d39e2cfa1470
 
 COCOAPODS: 1.11.2
