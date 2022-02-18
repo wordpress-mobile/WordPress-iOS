@@ -75,6 +75,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         fatalError("Initializer not implemented!")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Blog
 
     /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
@@ -115,6 +119,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
+        subscribeToContentSizeCategory()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +154,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupTransparentNavBar()
     }
 
+    private func subscribeToContentSizeCategory() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
+    }
+
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
@@ -161,6 +173,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupView() {
         view.backgroundColor = .listBackground
+        configureSegmentedControlFont()
     }
 
     /// This method builds a layout with the following view hierarchy:
@@ -181,7 +194,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
@@ -460,6 +473,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         present(addSiteAlert, animated: true)
+    }
+
+    @objc
+    func didChangeDynamicType() {
+        configureSegmentedControlFont()
+    }
+
+    private func configureSegmentedControlFont() {
+        let font = WPStyleGuide.fontForTextStyle(.subheadline)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
 
     @objc
