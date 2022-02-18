@@ -6,11 +6,17 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Properties
 
-    private var notification: Notification?
     private var comment: Comment?
     private let managedObjectContext = ContextManager.shared.mainContext
     private var viewController: CommentDetailViewController?
     private var blog: Blog?
+
+    private var notification: Notification? {
+        didSet {
+            markNotificationReadIfNeeded()
+        }
+    }
+
     private var commentID: NSNumber? {
         notification?.metaCommentID
     }
@@ -75,6 +81,14 @@ private extension NotificationCommentDetailCoordinator {
         if let siteID = notification.metaSiteID {
             blog = Blog.lookup(withID: siteID, in: managedObjectContext)
         }
+    }
+
+    func markNotificationReadIfNeeded() {
+        guard let notification = notification, !notification.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(notification)
     }
 
     func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
@@ -217,7 +231,6 @@ private extension NotificationCommentDetailCoordinator {
         }
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
-
 
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
