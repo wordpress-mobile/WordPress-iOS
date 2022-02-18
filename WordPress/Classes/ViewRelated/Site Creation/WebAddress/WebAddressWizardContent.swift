@@ -196,6 +196,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         data = []
         lastSearchQuery = nil
         setAddressHintVisibility(isHidden: false)
+        noResultsLabel.isHidden = true
         expandHeader()
     }
 
@@ -216,11 +217,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             handleError(error)
         case .success(let data):
             hasExactMatch = data.hasExactMatch
-            handleData(data.domainSuggestions)
+            handleData(data.domainSuggestions, data.invalidQuery)
         }
     }
 
-    private func handleData(_ data: [DomainSuggestion]) {
+    private func handleData(_ data: [DomainSuggestion], _ invalidQuery: Bool) {
         setAddressHintVisibility(isHidden: true)
         let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
@@ -229,11 +230,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         self.data = data
         if data.isEmpty {
+            if (invalidQuery) {
+                noResultsLabel.text = Strings.invalidQuery
+            } else {
+                noResultsLabel.text = Strings.noResults
+            }
             noResultsLabel.isHidden = false
         } else {
             noResultsLabel.isHidden = true
         }
-        postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty)
+        postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty, invalidQuery: invalidQuery)
     }
 
     private func handleError(_ error: Error) {
@@ -395,6 +401,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                           comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
+        static let invalidQuery = NSLocalizedString("Your search includes characters not supported in WordPress.com domains. Only alphanumeric characters are allowed.",
+                                                 comment: "This is shown to the user when their domain search query contains invalid characters.")
         static let noConnection: String = NSLocalizedString("No connection",
                                                             comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
         static let serverError: String = NSLocalizedString("There was a problem",
@@ -444,8 +452,13 @@ private extension WebAddressWizardContent {
         UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 
-    func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool) {
-        let message: String = listIsEmpty ? Strings.noResults : Strings.suggestionsUpdated
+    func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool, invalidQuery: Bool) {
+        var message: String
+        if (listIsEmpty) {
+            message = invalidQuery ? Strings.invalidQuery : Strings.noResults
+        } else {
+            message = Strings.suggestionsUpdated
+        }
         UIAccessibility.post(notification: .announcement, argument: message)
     }
 }
