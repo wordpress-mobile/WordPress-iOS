@@ -74,7 +74,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     required init?(coder: NSCoder) {
         fatalError("Initializer not implemented!")
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
