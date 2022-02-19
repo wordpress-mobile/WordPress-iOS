@@ -6,11 +6,17 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Properties
 
-    private var notification: Notification?
     private var comment: Comment?
     private let managedObjectContext = ContextManager.shared.mainContext
     private var viewController: CommentDetailViewController?
     private var blog: Blog?
+
+    private var notification: Notification? {
+        didSet {
+            markNotificationReadIfNeeded()
+        }
+    }
+
     private var commentID: NSNumber? {
         notification?.metaCommentID
     }
@@ -44,9 +50,9 @@ class NotificationCommentDetailCoordinator: NSObject {
         configure(with: notification)
 
         if let comment = loadCommentFromCache(commentID) {
-            createViewController(comment: comment, completion: {
+            createViewController(comment: comment) {
                 completion(self.viewController)
-            })
+            }
             return
         }
 
@@ -57,9 +63,9 @@ class NotificationCommentDetailCoordinator: NSObject {
                 return
             }
 
-            self.createViewController(comment: comment, completion: {
+            self.createViewController(comment: comment) {
                 completion(self.viewController)
-            })
+            }
         })
     }
 
@@ -79,6 +85,14 @@ private extension NotificationCommentDetailCoordinator {
         if let siteID = notification.metaSiteID {
             blog = Blog.lookup(withID: siteID, in: managedObjectContext)
         }
+    }
+
+    func markNotificationReadIfNeeded() {
+        guard let notification = notification, !notification.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(notification)
     }
 
     func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
@@ -221,7 +235,6 @@ private extension NotificationCommentDetailCoordinator {
         }
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
-
 
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
