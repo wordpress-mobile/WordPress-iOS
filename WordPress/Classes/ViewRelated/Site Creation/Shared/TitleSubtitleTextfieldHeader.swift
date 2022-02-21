@@ -76,6 +76,10 @@ final class SearchTextField: UITextField {
         autocorrectionType = .no
         adjustsFontForContentSizeCategory = true
 
+        if effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            textAlignment = .right
+        }
+
         setIconImage(view: searchIconImageView)
 
         NSLayoutConstraint.activate([
