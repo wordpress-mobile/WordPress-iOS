@@ -1,4 +1,5 @@
 * [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
 * [*] Stats: Scroll to new Insights card when added. [#17894]
 * [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
+* [*] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
 * [*] Block editor: Additional error messages for media upload failures. [#17971]
