@@ -47,7 +47,7 @@ final class SearchTextField: UITextField {
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         let iconX = bounds.width - Constants.iconInset - Constants.iconDimension
         let iconY = (bounds.height - Constants.iconDimension) / 2
-        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: bounds.height)
+        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: Constants.iconDimension)
     }
 
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
