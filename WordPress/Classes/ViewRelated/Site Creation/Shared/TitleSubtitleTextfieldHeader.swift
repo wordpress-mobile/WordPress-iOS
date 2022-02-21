@@ -127,10 +127,6 @@ final class SearchTextField: UITextField {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13, *) {
-            setIconImage(view: searchIconImageView)
-        }
     }
 }
 
