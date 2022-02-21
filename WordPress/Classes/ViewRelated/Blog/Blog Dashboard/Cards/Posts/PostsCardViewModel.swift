@@ -157,11 +157,12 @@ private extension PostsCardViewModel {
             ofType: .post,
             with: options,
             for: blog,
-            success: { [weak self] _ in
-                if self?.numberOfPosts == 0 {
-                    self?.showEmptyPostsError()
+            success: { [weak self] posts in
+                if posts?.count == 0 {
+                    self?.showNextPostPrompt()
                 }
 
+                self?.hideLoading()
                 self?.syncing = nil
             }, failure: { [weak self] _ in
                 if self?.numberOfPosts == 0 {
@@ -183,7 +184,7 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showEmptyPostsError() {
+    func showNextPostPrompt() {
         viewController?.hideLoading()
         viewController?.showNextPostPrompt()
     }
@@ -193,9 +194,13 @@ private extension PostsCardViewModel {
         viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
+    func hideLoading() {
+        viewController?.hideLoading()
+    }
+
     func showNextPostPromptIfNeeded() {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count,
-           postsCount == 0 {
+           postsCount == 0, !isSyncing() {
             viewController?.showNextPostPrompt()
         } else {
             viewController?.hideNextPrompt()
@@ -209,6 +214,10 @@ private extension PostsCardViewModel {
            post.status == .publish || post.status == .publishPrivate {
             viewController?.firstPostPublished()
         }
+    }
+
+    func isSyncing() -> Bool {
+        syncing != nil
     }
 
     enum Constants {
