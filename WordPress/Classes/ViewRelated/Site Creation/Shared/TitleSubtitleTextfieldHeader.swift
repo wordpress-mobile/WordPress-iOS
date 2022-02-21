@@ -52,7 +52,14 @@ final class SearchTextField: UITextField {
 
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
         let originalClearButtonRect = super.clearButtonRect(forBounds: bounds)
-        return originalClearButtonRect.offsetBy(dx: Constants.clearButtonInset, dy: 0)
+
+        var offsetX = Constants.clearButtonInset
+
+        if effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            offsetX = -offsetX
+        }
+
+        return originalClearButtonRect.offsetBy(dx: offsetX, dy: 0)
     }
 
     // MARK: Private behavior
