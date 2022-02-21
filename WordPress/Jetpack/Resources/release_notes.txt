@@ -1,9 +1,6 @@
-With this latest version of Jetpack, we made some design changes to help make your user experience even better.
+* [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
+* [*] Stats: Scroll to new Insights card when added. [#17894]
+* [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
+* [*] [Jetpack-only] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
+* [*] Block editor: Additional error messages for media upload failures. [#17971]
 
-- Text blocks in the block editor now adjust along with the text as you change the font size and line height for block themes.
-- We redesigned some of the screens in the app, including My Site. Looking fresh!
-- We love a clean inbox, so we added a button that lets you mark all filtered notifications as read.
-- In the site tab’s Configure > People menu, we added an email filter that allows you to see, learn more about, and even remove email followers.
-- In threaded comments, we removed the Share icon and instead added the ability to moderate comments within a thread.
-- If you change the media in an Image block that’s also used as a post’s Featured Image, you’ll see a prompt asking if you’d like to replace the Featured Image while you’re at it.
-- We improved the Stats navigation so you can move between Days and Insights more easily. You can also create new stat cards directly from the Stats screen using our new navigation icon.
