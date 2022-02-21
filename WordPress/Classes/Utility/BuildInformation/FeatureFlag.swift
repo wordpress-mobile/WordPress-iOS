@@ -77,7 +77,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .statsPerformanceImprovements:
             return BuildConfiguration.current == .localDeveloper
         }
