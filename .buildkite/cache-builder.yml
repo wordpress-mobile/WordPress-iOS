@@ -26,6 +26,9 @@ steps:
   - label: ":cocoapods: Rebuild CocoaPods cache"
     command: |
       echo "--- :rubygems: Setting up Gems"
+      # See https://github.com/Automattic/bash-cache-buildkite-plugin/issues/16
+      gem install bundler:2.3.6
+
       install_gems
 
       echo "--- :cocoapods: Rebuilding Pod Cache"

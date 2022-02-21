@@ -83,6 +83,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
+        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+    }()
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -471,6 +475,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.dataSource = self
+        detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -706,7 +711,9 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
+        if let postID = note.metaPostID,
+            let siteID = note.metaSiteID,
+            note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             showDetailViewController(readerViewController, sender: nil)
@@ -714,34 +721,45 @@ extension NotificationsViewController {
             return
         }
 
+        presentCommentDetail(for: note)
+    }
+
+    private func presentCommentDetail(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
-        //
+
         view.isUserInteractionEnabled = false
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
-                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
+                self.notificationCommentDetailCoordinator.createViewController(with: note) { commentDetailViewController in
+                    guard let commentDetailViewController = commentDetailViewController else {
+                        // TODO: show error view
+                        return
+                    }
 
-                // For now, NotificationCommentDetailCoordinator only loads the Comment if it is cached.
-                // If the comment is not cached, fall back to showing the old comment view.
-                // This is temporary until NotificationCommentDetailCoordinator can fetch the comment from the endpoint.
+                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+                        self?.selectRow(for: note)
+                    }
 
-                if let commentDetailViewController = notificationCommentDetailCoordinator.viewController {
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
-                } else {
-                    // TODO: remove when NotificationCommentDetailCoordinator updated to fetch comment.
-                    self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+                    self.view.isUserInteractionEnabled = true
                 }
-            } else {
-                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+
+                return
             }
+
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
             self.view.isUserInteractionEnabled = true
         }
     }
@@ -785,7 +803,7 @@ extension NotificationsViewController {
     }
 
     /// Will display an Undelete button on top of a given notification.
-    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// On timeout, the destructive action (received via parameter) will be executed, and the notification
     /// will (supposedly) get deleted.
     ///
     /// -   Parameters:
@@ -1069,10 +1087,16 @@ private extension NotificationsViewController {
                    scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
-            DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
-            tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
-        }
+        // also ensure that the index path returned from results controller does not have negative row index.
+        // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
+        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification),
+              indexPath != tableView.indexPathForSelectedRow,
+              0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
+                  return
+              }
+
+        DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
+        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 
     func reloadTableViewPreservingSelection() {

@@ -57,6 +57,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
+        let controller = MediaLibraryViewController(blog: blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+    }
+
     deinit {
         unregisterChangeObserver()
         unregisterUploadCoordinatorObserver()

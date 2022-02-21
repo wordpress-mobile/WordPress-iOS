@@ -214,6 +214,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
+        // Always cancel ongoing image downloads, just in case. This is to prevent comment cells being displayed with the wrong avatar image,
+        // likely resulting from previous download operation before the cell is reused.
+        //
+        // Note that when downloading an image, any ongoing operation will be cancelled in UIImageView+Networking.
+        // This is more of a preventative step where the cancellation is made to happen as early as possible.
+        //
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17972
+        avatarImageView.cancelImageDownload()
+
         if let avatarURL = URL(string: comment.authorAvatarURL) {
             configureImage(with: avatarURL)
         } else {

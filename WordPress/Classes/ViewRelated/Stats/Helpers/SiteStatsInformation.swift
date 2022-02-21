@@ -26,5 +26,4 @@ import Foundation
     func timeZoneMatchesDevice() -> Bool {
         return siteTimeZone == TimeZone.current
     }
-
 }

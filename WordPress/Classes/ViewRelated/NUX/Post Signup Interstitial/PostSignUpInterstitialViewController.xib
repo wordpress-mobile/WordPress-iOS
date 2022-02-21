@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,6 +13,7 @@
                 <outlet property="addSelfHostedButton" destination="JzC-d5-c3A" id="32W-0f-Xl2"/>
                 <outlet property="cancelButton" destination="kkA-2A-oQc" id="8c3-7h-dBg"/>
                 <outlet property="createSiteButton" destination="r6K-uZ-29W" id="7AY-Mm-WeY"/>
+                <outlet property="imageView" destination="eYR-bH-2jT" id="1KO-P6-LzI"/>
                 <outlet property="subTitleLabel" destination="qaw-pG-rKU" id="JPQ-AV-SRz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="welcomeLabel" destination="4Zg-pY-BXB" id="Cjg-0o-iCM"/>
@@ -29,7 +30,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aWd-hf-9Yb">
                             <rect key="frame" x="0.0" y="280" width="327" height="164"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6K-uZ-29W" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6K-uZ-29W" customClass="NUXButton" customModule="WordPressAuthenticator">
                                     <rect key="frame" x="0.0" y="0.0" width="327" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="umu-lG-4yV"/>
@@ -40,7 +41,7 @@
                                         <action selector="createSite:" destination="-1" eventType="touchUpInside" id="PvC-HP-RQK"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JzC-d5-c3A" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JzC-d5-c3A" customClass="NUXButton" customModule="WordPressAuthenticator">
                                     <rect key="frame" x="0.0" y="60" width="327" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="xFj-m5-SMx"/>
@@ -51,7 +52,7 @@
                                         <action selector="addSelfHosted:" destination="-1" eventType="touchUpInside" id="igX-Gf-1No"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkA-2A-oQc">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkA-2A-oQc">
                                     <rect key="frame" x="0.0" y="120" width="327" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Q2e-2m-ELz"/>
@@ -98,6 +99,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Vgl-ir-q3p" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4cW-ud-JFW"/>
@@ -105,7 +107,6 @@
                 <constraint firstItem="Vgl-ir-q3p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" priority="999" constant="24" id="GMi-uW-igj"/>
                 <constraint firstItem="Vgl-ir-q3p" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="k5v-HX-Ggv"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="-2445" y="-60"/>
         </view>
     </objects>

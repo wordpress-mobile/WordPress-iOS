@@ -75,6 +75,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         fatalError("Initializer not implemented!")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Blog
 
     /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
@@ -97,14 +101,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
-    /// Please keep this in mind when making modifications.
-    ///
-    private(set) var blogDetailsViewController: BlogDetailsViewController?
-
-    private let blogDashboardViewController = BlogDashboardViewController()
-
     private(set) var sitePickerViewController: SitePickerViewController?
+    private(set) var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var blogDashboardViewController: BlogDashboardViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -120,6 +119,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
+        subscribeToContentSizeCategory()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -154,6 +154,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupTransparentNavBar()
     }
 
+    private func subscribeToContentSizeCategory() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
+    }
+
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
@@ -161,11 +168,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func updateSegmentedControl(for blog: Blog) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
     }
 
     private func setupView() {
         view.backgroundColor = .listBackground
+        configureSegmentedControlFont()
     }
 
     /// This method builds a layout with the following view hierarchy:
@@ -186,7 +194,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
@@ -314,15 +322,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
-            remove(blogDashboardViewController)
+            hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
-            guard let blogDetailVC = blogDetailsViewController else {
-                return
-            }
-            remove(blogDetailVC)
-            blogDashboardViewController.blog = blog
-            embedChildInStackView(blogDashboardViewController)
+            hideBlogDetails()
+            showDashboard(for: blog)
         }
     }
 
@@ -354,6 +358,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
             return
@@ -442,11 +447,22 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
-            self?.launchSiteCreation(source: "my_site_no_sites")
-        } addSelfHostedSite: {
-            WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+        let addSite = {
+            self.launchSiteCreation(source: "my_site_no_sites")
         }
+
+        guard canAddSelfHostedSite else {
+            addSite()
+            return
+        }
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
+                                                                  canCreateWPComSite: defaultAccount() != nil,
+                                                                  createWPComSite: {
+            addSite()
+        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite: {
+            WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        })
 
         if let sourceView = noResultsViewController.actionButton,
            let popoverPresentationController = addSiteAlert.popoverPresentationController {
@@ -457,6 +473,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         present(addSiteAlert, animated: true)
+    }
+
+    @objc
+    func didChangeDynamicType() {
+        configureSegmentedControlFont()
+    }
+
+    private func configureSegmentedControlFont() {
+        let font = WPStyleGuide.fontForTextStyle(.subheadline)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
 
     @objc
@@ -486,7 +512,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         remove(blogDetailsViewController)
-        self.blogDetailsViewController = nil
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
@@ -583,13 +608,34 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.tableView.reloadData()
             blogDetailsViewController?.preloadMetadata()
         case .dashboard:
-            // TODO: Update blog dashboard vc
-            break
+            blogDashboardViewController?.update(blog: blog)
         }
     }
 
     func presentCreateSheet() {
         blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
+    }
+
+    // MARK: Dashboard UI Logic
+
+    private func hideDashboard() {
+        guard let blogDashboardViewController = blogDashboardViewController else {
+            return
+        }
+
+        remove(blogDashboardViewController)
+    }
+
+    /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// of creating it.
+    ///
+    /// - Parameters:
+    ///         - blog: The blog to show the details of.
+    ///
+    private func showDashboard(for blog: Blog) {
+        let blogDashboardViewController = self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog)
+        embedChildInStackView(blogDashboardViewController)
+        self.blogDashboardViewController = blogDashboardViewController
     }
 
     // MARK: - Model Changes

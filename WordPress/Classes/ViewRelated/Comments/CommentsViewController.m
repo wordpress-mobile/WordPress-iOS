@@ -14,7 +14,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsModerationDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -233,7 +233,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
                                                                                isLastInList:[self isLastRow:indexPath]
                                                                        managedObjectContext:[ContextManager sharedInstance].mainContext];
-    self.commentDetailViewController.delegate = self;
+    self.commentDetailViewController.moderationDelegate = self;
     [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
@@ -752,7 +752,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshNoConnectionView];
 }
 
-#pragma mark - CommentDetailsDelegate
+#pragma mark - CommentDetailsModerationDelegate
 
 - (void)nextCommentSelected
 {

@@ -452,7 +452,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.7)
   - WordPress-Editor-iOS (1.19.7):
     - WordPress-Aztec-iOS (= 1.19.7)
-  - WordPressAuthenticator (1.43.0):
+  - WordPressAuthenticator (1.43.1):
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 6.0.1)
@@ -463,7 +463,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.47.0):
+  - WordPressKit (4.48.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -565,9 +565,9 @@ DEPENDENCIES:
   - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.71.1`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.19.7)
-  - WordPressAuthenticator (~> 1.43.0)
-  - WordPressKit (~> 4.47.0)
+  - WordPress-Editor-iOS (= 1.19.7)
+  - WordPressAuthenticator (~> 1.43.1)
+  - WordPressKit (~> 4.48.0)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.4)
@@ -830,8 +830,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 144f124148079084860368dfd27cb96e0952853e
   WordPress-Editor-iOS: 20551d5a5e51f29832064f08faaaae8e1da7e1e2
-  WordPressAuthenticator: e4a43745a647e4dc4b35d21b1353bc4f07f9f3c9
-  WordPressKit: 46f0580eb097ddfab7ab143208f94b44def42632
+  WordPressAuthenticator: aa53a5339e241852252e16199e23bd9c3364b983
+  WordPressKit: 824c51fdf4a09fae1b060629cb208abd25a92a83
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
   WordPressUI: 9e470758bc3a4a25e94478c2babe106f4ae7315a
@@ -847,6 +847,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: e35962eb2f9697185b3b444f426f95a47e8d1d02
+PODFILE CHECKSUM: b04dc4ef232ae321ab227ad0acff6cb2b35f6c3b
 
 COCOAPODS: 1.11.2

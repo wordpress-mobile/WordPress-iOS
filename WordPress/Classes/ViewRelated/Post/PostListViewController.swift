@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import Gridicons
+import UIKit
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -106,6 +107,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.restorationClass = self
 
         return controller
+    }
+
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
+        let controller = PostListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
     }
 
     // MARK: - UIViewControllerRestoration
@@ -674,6 +683,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                                           source: .publishFlow,
                                           alwaysShow: false)
         }
+    }
+
+    func copyLink(_ post: AbstractPost) {
+        copyPostLink(post)
     }
 
     func trash(_ post: AbstractPost) {

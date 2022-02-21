@@ -1,45 +1,37 @@
 import UIKit
 
+typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
+
+protocol BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?)
+}
+
 final class BlogDashboardViewController: UIViewController {
 
-    var blog: Blog?
+    var blog: Blog
 
-    enum Section: CaseIterable {
-        case quickLinks
-        case posts
-    }
+    private lazy var viewModel: BlogDashboardViewModel = {
+        BlogDashboardViewModel(viewController: self, blog: blog)
+    }()
 
-    // FIXME: temporary placeholder
-    private let quickLinks = ["Quick Links"]
-    private let posts = ["Posts"]
-
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
-    typealias QuickLinksHostCell = HostCollectionViewCell<QuickLinksView>
-
-    private lazy var collectionView: IntrinsicCollectionView = {
+    lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
-    private lazy var dataSource: DataSource = {
-        return DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier in
-            switch identifier {
-            case self.quickLinks.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-                cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
-                return cell
-            case self.posts.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
-                cell?.configure(self, blog: self.blog!)
-                return cell
-            default:
-                break
-            }
-            return UICollectionViewCell()
-        }
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        UIActivityIndicatorView()
     }()
+
+    @objc init(blog: Blog) {
+        self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -47,30 +39,52 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigation()
         setupCollectionView()
-        applySnapshotForInitialData()
         addHeightObservers()
+        viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
         collectionView.layoutIfNeeded()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        viewModel.loadCards()
+    }
+
+    func showLoading() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewAtCenter(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+
+    func stopLoading() {
+        activityIndicatorView.stopAnimating()
+    }
+
+    func update(blog: Blog) {
+        self.blog = blog
+        viewModel.blog = blog
+        viewModel.loadCardsFromCache()
+        viewModel.loadCards()
+    }
+
+    private func setupNavigation() {
+        title = Strings.home
+    }
+
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
-        collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
-        collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
+        DashboardCard.allCases.forEach {
+            collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
+        }
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
-    }
-
-    private func applySnapshotForInitialData() {
-        var snapshot = Snapshot()
-        snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(quickLinks, toSection: Section.quickLinks)
-        snapshot.appendItems(posts, toSection: Section.posts)
-        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     private func addHeightObservers() {
@@ -87,15 +101,12 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            return self.createQuickLinksSection()
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            self?.createLayoutSection(for: sectionIndex)
         }
-        return layout
     }
 
-    private func createQuickLinksSection() -> NSCollectionLayoutSection {
+    private func createLayoutSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(Constants.estimatedHeight))
 
@@ -104,21 +115,27 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
+        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
-                                                        leading: Constants.sectionInset,
-                                                        bottom: Constants.sectionInset,
-                                                        trailing: Constants.sectionInset)
-        section.interGroupSpacing = Constants.interGroupSpacing
-
+                                                        leading: horizontalInset,
+                                                        bottom: 0,
+                                                        trailing: horizontalInset)
         return section
     }
 }
 
 extension BlogDashboardViewController {
 
+    private enum Strings {
+        static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
+    }
+
+
     private enum Constants {
+        static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 16
-        static let interGroupSpacing: CGFloat = 8
+        static let sectionInset: CGFloat = 20
+        static let interGroupSpacing: CGFloat = 12
     }
 }

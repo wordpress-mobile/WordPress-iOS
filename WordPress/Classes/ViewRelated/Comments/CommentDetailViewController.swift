@@ -1,8 +1,14 @@
 import UIKit
 import CoreData
 
-@objc protocol CommentDetailsDelegate: AnyObject {
+
+@objc protocol CommentDetailsModerationDelegate: AnyObject {
     func nextCommentSelected()
+}
+
+protocol CommentDetailsNotificationNavigationDelegate: AnyObject {
+    func previousNotificationTapped(current: Notification?)
+    func nextNotificationTapped(current: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -18,13 +24,15 @@ class CommentDetailViewController: UIViewController {
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
-    @objc weak var delegate: CommentDetailsDelegate?
+    @objc weak var moderationDelegate: CommentDetailsModerationDelegate?
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
+
+    private weak var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -43,28 +51,7 @@ class CommentDetailViewController: UIViewController {
     }
 
     private var replyID: Int32 {
-        didSet {
-            // toggle reply indicator cell visibility only when the value changes from 0 to any positive number, or vice versa.
-            if oldValue == 0 && replyID > 0 {
-                // show the reply indicator row.
-                // update the rows first so replyIndicator is present in `rows`.
-                configureRows()
-                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
-                    tableView.reloadData()
-                    return
-                }
-                tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
-
-            } else if oldValue > 0 && replyID == 0 {
-                // hide the reply indicator row.
-                // get the reply indicator row first before it is removed via `configureRows`.
-                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
-                    return
-                }
-                configureRows()
-                tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
-            }
-        }
+        return comment.replyID
     }
 
     private var isCommentReplied: Bool {
@@ -132,7 +119,19 @@ class CommentDetailViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
-    private lazy var parentComment: Comment? = {
+    // Sometimes the parent information of a comment reply notification is in the meta block.
+    private var notificationParentComment: Comment? {
+        guard let parentID = notification?.metaParentID,
+              let siteID = notification?.metaSiteID,
+              let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
+              let parentComment = commentService.findComment(withID: parentID, in: blog) else {
+                  return nil
+              }
+
+        return parentComment
+    }
+
+    private var parentComment: Comment? {
         guard comment.hasParentComment(),
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
@@ -140,7 +139,7 @@ class CommentDetailViewController: UIViewController {
               }
 
         return parentComment
-    }()
+    }
 
     // transparent navigation bar style with visual blur effect.
     private lazy var blurredBarAppearance: UINavigationBarAppearance = {
@@ -170,6 +169,43 @@ class CommentDetailViewController: UIViewController {
         }
     }
 
+    // MARK: Nav Bar Buttons
+
+    private lazy var editBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .edit,
+                               target: self,
+                               action: #selector(editButtonTapped))
+        button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
+        return button
+    }()
+
+    private lazy var nextButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(.gridicon(.arrowUp), for: .normal)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        return button
+    }()
+
+    private lazy var previousButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(.gridicon(.arrowDown), for: .normal)
+        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+        return button
+    }()
+
+    var previousButtonEnabled = false {
+        didSet {
+            previousButton.isEnabled = previousButtonEnabled
+        }
+    }
+    var nextButtonEnabled = false {
+        didSet {
+            nextButton.isEnabled = nextButtonEnabled
+        }
+    }
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -178,17 +214,17 @@ class CommentDetailViewController: UIViewController {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
-        self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: Notification?,
+         notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.notification = notification
+        self.notificationNavigationDelegate = notificationNavigationDelegate
         self.managedObjectContext = managedObjectContext
-        self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -220,6 +256,11 @@ class CommentDetailViewController: UIViewController {
         keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureNavBarButtons()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -231,11 +272,21 @@ class CommentDetailViewController: UIViewController {
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
     }
 
-    @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
+    // Update the Comment being displayed.
+    @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
+        replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
+        refreshCommentReplyIfNeeded()
     }
+
+    // Update the Notification Comment being displayed.
+    func refreshView(comment: Comment, notification: Notification?) {
+        self.notification = notification
+        displayComment(comment)
+    }
+
 }
 
 // MARK: - Private Helpers
@@ -259,6 +310,8 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let arrowButtonSize: CGFloat = 24
+        static let arrowButtonSpacing: CGFloat = 12
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -300,8 +353,6 @@ private extension CommentDetailViewController {
 
         navigationController?.navigationBar.isTranslucent = true
         title = viewTitle
-
-        configureEditButtonItem()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -311,10 +362,30 @@ private extension CommentDetailViewController {
         navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
     }
 
-    func configureEditButtonItem() {
-        navigationItem.rightBarButtonItem = comment.allowsModeration() ? UIBarButtonItem(barButtonSystemItem: .edit,
-                                                                                         target: self,
-                                                                                         action: #selector(editButtonTapped)) : nil
+    func configureNavBarButtons() {
+        var barButtonItems: [UIBarButtonItem] = []
+
+        if isNotificationComment && splitViewControllerIsHorizontallyCompact {
+            barButtonItems.append(makeNavigationButtons())
+        }
+
+        if comment.allowsModeration() {
+            barButtonItems.append(editBarButtonItem)
+        }
+
+        navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
+    }
+
+    func makeNavigationButtons() -> UIBarButtonItem {
+        // Create custom view to match that in NotificationDetailsViewController.
+        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.spacing = Constants.arrowButtonSpacing
+
+        let width = (Constants.arrowButtonSize * 2) + Constants.arrowButtonSpacing
+        buttonStackView.frame = CGRect(x: 0, y: 0, width: width, height: Constants.arrowButtonSize)
+
+        return UIBarButtonItem(customView: buttonStackView)
     }
 
     func configureTable() {
@@ -372,7 +443,7 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
-        configureEditButtonItem()
+        configureNavBarButtons()
         configureRows()
         tableView.reloadData()
     }
@@ -391,7 +462,7 @@ private extension CommentDetailViewController {
 
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
-        if let parentComment = self.parentComment {
+        if let parentComment = self.parentComment ?? notificationParentComment {
             return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
                                         subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
         }
@@ -401,26 +472,26 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { _ in
-            self.tableView.performBatchUpdates({})
+        cell.configure(with: comment) { [weak self] _ in
+            self?.tableView.performBatchUpdates({})
         }
 
-        cell.contentLinkTapAction = { url in
+        cell.contentLinkTapAction = { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
-            self.openWebView(for: url)
+            self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonAction = { senderView in
-            self.shareCommentURL(senderView)
+        cell.accessoryButtonAction = { [weak self] senderView in
+            self?.shareCommentURL(senderView)
         }
 
-        cell.likeButtonAction = {
-            self.toggleCommentLike()
+        cell.likeButtonAction = { [weak self] in
+            self?.toggleCommentLike()
         }
 
-        cell.replyButtonAction = {
-            self.showReplyView()
+        cell.replyButtonAction = { [weak self] in
+            self?.showReplyView()
         }
     }
 
@@ -474,8 +545,7 @@ private extension CommentDetailViewController {
             self.comment.replyID = Int32(replyID)
             ContextManager.sharedInstance().saveContextAndWait(context)
 
-            // update local replyID to trigger table view updates.
-            self.replyID = self.comment.replyID
+            self.updateReplyIndicator()
 
         } failure: { error in
             DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
@@ -483,7 +553,54 @@ private extension CommentDetailViewController {
 
     }
 
+    func updateReplyIndicator() {
+
+        // If there is a reply, add reply indicator if it is not being shown.
+        if replyID > 0 && !rows.contains(.replyIndicator) {
+            // Update the rows first so replyIndicator is present in `rows`.
+            configureRows()
+            guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                tableView.reloadData()
+                return
+            }
+
+            tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+            return
+        }
+
+        // If there is not a reply, remove reply indicator if it is being shown.
+        if replyID == 0 && rows.contains(.replyIndicator) {
+            // Get the reply indicator row first before it is removed via `configureRows`.
+            guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                return
+            }
+
+            configureRows()
+            tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+        }
+    }
+
     // MARK: Actions and navigations
+
+    // Shows the comment thread with the Notification comment highlighted.
+    func navigateToNotificationComment() {
+        guard let siteID = siteID,
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI) else {
+                  openWebView(for: comment.commentURL())
+                  return
+              }
+
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: siteID,
+                                                          commentID: NSNumber(value: comment.commentID),
+                                                          source: .commentNotification)
+    }
+
+
 
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
@@ -511,7 +628,7 @@ private extension CommentDetailViewController {
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
                                                           commentID: NSNumber(value: replyID),
-                                                          source: .mySiteComment)
+                                                          source: isNotificationComment ? .commentNotification : .mySiteComment)
     }
 
     func navigateToPost() {
@@ -554,6 +671,14 @@ private extension CommentDetailViewController {
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
         navigationControllerToPresent.modalPresentationStyle = .fullScreen
         present(navigationControllerToPresent, animated: true)
+    }
+
+    @objc func previousButtonTapped() {
+        notificationNavigationDelegate?.previousNotificationTapped(current: notification)
+    }
+
+    @objc func nextButtonTapped() {
+        notificationNavigationDelegate?.nextNotificationTapped(current: notification)
     }
 
     func deleteButtonTapped() {
@@ -745,7 +870,7 @@ private extension CommentDetailViewController {
         }
 
         WPAnalytics.track(.commentSnackbarNext)
-        delegate?.nextCommentSelected()
+        moderationDelegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
@@ -822,14 +947,15 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
         switch rows[indexPath.row] {
         case .header:
-            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-
+            if isNotificationComment {
+                navigateToNotificationComment()
+            } else {
+                comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+            }
         case .replyIndicator:
             navigateToReplyComment()
-
         case .text(let title, _, _) where title == .webAddressLabelText:
             visitAuthorURL()
-
         default:
             break
         }
