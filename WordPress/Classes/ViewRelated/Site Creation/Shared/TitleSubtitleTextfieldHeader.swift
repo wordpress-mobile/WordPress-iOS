@@ -116,13 +116,9 @@ final class SearchTextField: UITextField {
     }
 
     private func setIconImage(view: UIView) {
-        if traitCollection.layoutDirection == .rightToLeft {
-            rightView = view
-            rightViewMode = .always
-        } else {
-            leftView = view
-            leftViewMode = .always
-        }
+        // Since the RTL layout is already handled elsewhere updating leftVIew is enough here
+        leftView = view
+        leftViewMode = .always
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
