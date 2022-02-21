@@ -91,7 +91,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            addSitePickerIfNeeded(for: newBlog)
+            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateSegmentedControl(for: newBlog)
         }
@@ -279,7 +279,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        addSitePickerIfNeeded(for: mainBlog)
+        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
         updateSegmentedControl(for: mainBlog)
     }
@@ -559,17 +559,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return blogDetailsViewController
     }
 
-    private func addSitePickerIfNeeded(for blog: Blog) {
-        guard sitePickerViewController == nil else {
+    private func showSitePicker(for blog: Blog) {
+        guard let sitePickerViewController = sitePickerViewController else {
+
+            let sitePickerViewController = makeSitePickerViewController(for: blog)
+            self.sitePickerViewController = sitePickerViewController
+
+            addChild(sitePickerViewController)
+            stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+            sitePickerViewController.didMove(toParent: self)
+
             return
         }
 
-        let sitePickerViewController = makeSitePickerViewController(for: blog)
-        self.sitePickerViewController = sitePickerViewController
-
-        addChild(sitePickerViewController)
-        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
-        sitePickerViewController.didMove(toParent: self)
+        sitePickerViewController.blog = blog
     }
 
     private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
