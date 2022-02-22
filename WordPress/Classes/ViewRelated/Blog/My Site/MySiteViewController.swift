@@ -59,6 +59,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return refreshControl
     }()
 
+    private lazy var siteMenuSpotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the site menu.
+    var siteMenuSpotlightIsShown: Bool = false {
+        didSet {
+            siteMenuSpotlightView.isHidden = !siteMenuSpotlightIsShown
+        }
+    }
+
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
@@ -120,6 +134,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
+        startObservingQuickStart()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -191,6 +206,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         scrollView.pinSubviewToAllEdges(stackView)
         segmentedControlContainerView.addSubview(segmentedControl)
         stackView.addArrangedSubviews([segmentedControlContainerView])
+        view.addSubview(siteMenuSpotlightView)
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -199,7 +215,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
                                                   constant: Constants.segmentedControlYOffset),
-            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor)
+            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor),
+            segmentedControl.heightAnchor.constraint(equalToConstant: Constants.segmentedControlHeight),
+            siteMenuSpotlightView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: -Constants.siteMenuSpotlightOffset),
+            siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
         ])
     }
 
@@ -713,6 +732,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private enum Constants {
         static let segmentedControlXOffset: CGFloat = 20
         static let segmentedControlYOffset: CGFloat = 24
+        static let segmentedControlHeight: CGFloat = 32
+        static let siteMenuSpotlightOffset: CGFloat = 8
     }
 }
 
