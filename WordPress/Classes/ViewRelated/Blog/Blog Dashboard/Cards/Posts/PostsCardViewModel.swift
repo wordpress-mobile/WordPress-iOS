@@ -28,16 +28,19 @@ class PostsCardViewModel: NSObject {
 
     private var status: BasePost.Status = .draft
 
+    private var shouldSync: Bool
+
     private var syncing: (NSNumber?, BasePost.Status)?
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
+        self.shouldSync = shouldSync
 
         super.init()
     }
@@ -84,7 +87,7 @@ private extension PostsCardViewModel {
     func performInitialLoading() {
         updateFilter()
         createFetchedResultsController()
-        sync()
+        syncIfNeeded()
         showLoadingIfNeeded()
     }
 
@@ -128,6 +131,12 @@ private extension PostsCardViewModel {
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return postListFilter.sortDescriptors
+    }
+
+    func syncIfNeeded() {
+        if shouldSync {
+            sync()
+        }
     }
 
     func sync() {
@@ -211,7 +220,7 @@ private extension PostsCardViewModel {
 
     func showLoadingIfNeeded() {
         // Only show loading state if there are no posts at all
-        if numberOfPosts == 0 {
+        if numberOfPosts == 0 && shouldSync {
             viewController?.showLoading()
         }
     }

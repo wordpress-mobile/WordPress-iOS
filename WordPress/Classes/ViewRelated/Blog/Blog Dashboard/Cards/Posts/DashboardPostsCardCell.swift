@@ -42,7 +42,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         removeAllChildVCs()
 
         if !hasDrafts && !hasScheduled {
-            showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished, hiddenHeader: true)
+            showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished, hiddenHeader: true, shouldSync: false)
         } else {
             if hasDrafts {
                 showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished)
@@ -62,9 +62,9 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         childVcs?.forEach { remove(child: $0) }
     }
 
-    private func showCard(forBlog blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hiddenHeader: Bool = false) {
+    private func showCard(forBlog blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hiddenHeader: Bool = false, shouldSync: Bool = true) {
         // Create the VC to present posts
-        let childViewController = PostsCardViewController(blog: blog, status: status, hasPublishedPosts: hasPublishedPosts)
+        let childViewController = PostsCardViewController(blog: blog, status: status, hasPublishedPosts: hasPublishedPosts, shouldSync: shouldSync)
         childViewController.delegate = self
 
         // Create the card frame and configure

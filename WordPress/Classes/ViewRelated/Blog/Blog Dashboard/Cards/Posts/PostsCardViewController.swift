@@ -20,13 +20,15 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
     private var hasPublishedPosts: Bool
+    private var shouldSync: Bool
 
     weak var delegate: PostsCardViewControllerDelegate?
 
-    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true) {
+    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true, shouldSync: Bool = true) {
         self.blog = blog
         self.status = status
         self.hasPublishedPosts = hasPublishedPosts
+        self.shouldSync = shouldSync
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -37,7 +39,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self)
+        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self, shouldSync: shouldSync)
         viewModel.viewDidLoad()
     }
 
