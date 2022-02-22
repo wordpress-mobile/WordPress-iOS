@@ -17,7 +17,7 @@ bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
 TESTS_EXIT_STATUS=$?
 set -e
 
-if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
+if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
   # Keep the (otherwise collapsed) current "Testing" section open in Buildkite logs on error. See https://buildkite.com/docs/pipelines/managing-log-output#collapsing-output
   echo "^^^ +++"
   echo "Unit Tests failed!"
@@ -31,6 +31,6 @@ if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
   echo "Unit Tests seems to have passed (exit code 0). All good 👍"
 else
   echo "The Unit Tests, ran during the '🔬 Testing' step above, have failed."
-  echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artefacts."
+  echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
 exit $TESTS_EXIT_STATUS
