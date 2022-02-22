@@ -1,6 +1,6 @@
 19.4
 -----
-
+* [*] Block editor: Additional error messages for media upload failures. [#18006]
 
 19.3
 -----
