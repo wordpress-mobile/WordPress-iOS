@@ -882,9 +882,21 @@ private extension NotificationsViewController {
     // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
     // Those Notifications are updated here when the view is shown to update the list accordingly.
     func syncNotificationsWithModeratedComments() {
-        if let selectedNotification = selectedNotification,
+        // If the currently selected notification is about to be removed, find the next available and select it.
+        // This is only necessary for split view to prevent the details from showing for removed notifications.
+        if !splitViewControllerIsHorizontallyCompact,
+           let selectedNotification = selectedNotification,
            notificationCommentDetailCoordinator.notificationsCommentModerated.contains(selectedNotification) {
-            self.selectedNotification = nil
+
+            guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
+                  let nextAvailable = notifications.first(where: { !notificationCommentDetailCoordinator.notificationsCommentModerated.contains($0) }),
+                  let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
+                      self.selectedNotification = nil
+                      return
+                  }
+
+            self.selectedNotification = nextAvailable
+            tableView(tableView, didSelectRowAt: indexPath)
         }
 
         notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
