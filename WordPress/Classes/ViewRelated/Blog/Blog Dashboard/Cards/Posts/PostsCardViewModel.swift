@@ -153,6 +153,12 @@ private extension PostsCardViewModel {
 
         syncing = (blog.dotComID, status)
 
+        // If the userID is nil we need to sync authors
+        if blog.userID == nil {
+            syncAuthors()
+            return
+        }
+
         postService.syncPosts(
             ofType: .post,
             with: options,
@@ -170,6 +176,18 @@ private extension PostsCardViewModel {
                 }
 
                 self?.syncing = nil
+        })
+    }
+
+    func syncAuthors() {
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        blogService.syncAuthors(for: blog, success: { [weak self] in
+            self?.syncing = nil
+            self?.performInitialLoading()
+            self?.refresh()
+        }, failure: { [weak self] _ in
+            self?.syncing = nil
+            self?.showLoadingFailureError()
         })
     }
 
