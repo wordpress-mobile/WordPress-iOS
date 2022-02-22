@@ -42,7 +42,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         removeAllChildVCs()
 
         if !hasDrafts && !hasScheduled {
-            showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished)
+            showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished, hiddenHeader: true)
         } else {
             if hasDrafts {
                 showCard(forBlog: blog, status: .draft, to: viewController, hasPublishedPosts: hasPublished)
