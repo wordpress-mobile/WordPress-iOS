@@ -172,7 +172,7 @@ private extension PostsCardViewModel {
                 self?.syncing = nil
             }, failure: { [weak self] _ in
                 self?.syncing = nil
-                
+
                 if self?.numberOfPosts == 0 {
                     self?.showNextPostPromptIfNeeded()
                     self?.showLoadingFailureError()
