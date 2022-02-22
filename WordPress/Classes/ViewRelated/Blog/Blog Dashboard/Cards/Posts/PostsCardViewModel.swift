@@ -54,7 +54,7 @@ class PostsCardViewModel: NSObject {
     }
 
     func retry() {
-        viewController?.showLoading()
+        showLoadingIfNeeded()
         sync()
     }
 
@@ -90,10 +90,10 @@ private extension PostsCardViewModel {
     }
 
     func performInitialLoading() {
-        viewController?.showLoading()
         updateFilter()
         createFetchedResultsController()
         sync()
+        showLoadingIfNeeded()
     }
 
     func createFetchedResultsController() {
@@ -215,6 +215,13 @@ private extension PostsCardViewModel {
 
     func hideLoading() {
         viewController?.hideLoading()
+    }
+
+    func showLoadingIfNeeded() {
+        // Only show loading state if there are no posts at all
+        if numberOfPosts == 0 {
+            viewController?.showLoading()
+        }
     }
 
     func showNextPostPromptIfNeeded() {
