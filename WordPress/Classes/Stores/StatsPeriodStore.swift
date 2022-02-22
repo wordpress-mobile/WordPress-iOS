@@ -1094,17 +1094,33 @@ private extension StatsPeriodStore {
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
-        state.summaryStatus = status
-        state.summaryLikesStatus = status
-        state.topPostsAndPagesStatus = status
-        state.topReferrersStatus = status
-        state.topPublishedStatus = status
-        state.topClicksStatus = status
-        state.topAuthorsStatus = status
-        state.topSearchTermsStatus = status
-        state.topCountriesStatus = status
-        state.topVideosStatus = status
-        state.topFileDownloadsStatus = status
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            transaction { state in
+                state.summaryStatus = status
+                state.summaryLikesStatus = status
+                state.topPostsAndPagesStatus = status
+                state.topReferrersStatus = status
+                state.topPublishedStatus = status
+                state.topClicksStatus = status
+                state.topAuthorsStatus = status
+                state.topSearchTermsStatus = status
+                state.topCountriesStatus = status
+                state.topVideosStatus = status
+                state.topFileDownloadsStatus = status
+            }
+        } else {
+            state.summaryStatus = status
+            state.summaryLikesStatus = status
+            state.topPostsAndPagesStatus = status
+            state.topReferrersStatus = status
+            state.topPublishedStatus = status
+            state.topClicksStatus = status
+            state.topAuthorsStatus = status
+            state.topSearchTermsStatus = status
+            state.topCountriesStatus = status
+            state.topVideosStatus = status
+            state.topFileDownloadsStatus = status
+        }
     }
 
     func shouldFetchPostsAndPages() -> Bool {

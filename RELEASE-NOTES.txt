@@ -2,12 +2,14 @@
 -----
 * [**] Adds animated Gif support in notifications and comments [#17981]
 
+
 19.3
 -----
 * [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
-* [*] Stats: fix navigation between Stats tab. [#17894]
+* [*] Stats: Scroll to new Insights card when added. [#17894]
 * [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
 * [*] [Jetpack-only] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
+* [*] Block editor: Additional error messages for media upload failures. [#17971]
 
 19.2
 -----

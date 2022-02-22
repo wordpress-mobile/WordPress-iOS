@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-25 15:11:14+0000 */
+/* Translation-Revision-Date: 2022-02-13 17:41:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Shtoni përkatësi";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Shtoni një bllok të ri në çfarëdo kohe, duke prekur mbi ikonën + te paneli poshtë majtas.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Shtoni një sajt të vetëstrehuar";
@@ -877,7 +877,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to trash this post?" = "Jeni i sigurt se doni të shpihet ky postim te hedhurinat?";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
+"Are you sure you want to update your homepage?" = "Jeni i sigurt se doni të përditësohet faqja juaj hyrëse?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "Postim blogu";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
+"Blog's Email Follower" = "Ndjekës të Email-it të Blogut";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Ndjekës Blogu";
@@ -2240,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Mohoje";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Përshkruani qëllimin e figurës. Lëreni të zbrazët, nëse figura është thjesht dekorative.  ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "Adresë Email";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "Ndjekës Me Email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3000,7 +3000,7 @@ translators: Block name. %s: The localized block name */
 "Failed Media Export" = "Eksportimi i Medias Dështoi";
 
 /* Message for mark all as read success notice */
-"Failed marking Notifications as read" = "Failed marking Notifications as read";
+"Failed marking Notifications as read" = "S’u arrit t’u vihej shenjë Njoftimeve si të lexuara";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "S’u arrit të futej kartelë audio.";
@@ -3247,10 +3247,10 @@ translators: Block name. %s: The localized block name */
 "Full Size" = "Madhësi e Plotë";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+"Fullscreen view of image %@. Double tap to dismiss" = "Pamje sa krejt ekrani e figurës %@. Prekeni dy herë që të hidhet tej";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
+"Fullscreen view of image. Double tap to dismiss" = "Pamje e figurës sa krejt ekrani. Prekeni dy herë që të hidhet tej";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3849,7 +3849,7 @@ translators: Block name. %s: The localized block name */
 "Keep blogging and check back to see visitors arriving at your site." = "Vazhdoni blogimin dhe rikontrolloni për të parë vizitorët që vijnë në sajtin tuaj.";
 
 /* Button to cancel the replacement of a featured image. */
-"Keep current" = "Keep current";
+"Keep current" = "Mbaj të tanishmen";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Vazhdoni! Pëlqimi dhe komentimi është një rrugë e mirë për të ngritur një rrjet. Kaloni te Lexuesi, për të gjetur më tepër postime.";
@@ -4191,7 +4191,7 @@ translators: Block name. %s: The localized block name */
 "Mapped Domain" = "Përkatësi e Përshoqëruar";
 
 /* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
+"Mark All As Read" = "Vëru Krejt Shenjë Si të Lexuar";
 
 /* Marks a notification as unread */
 "Mark Read" = "Shënoje Si të Lexuar";
@@ -4200,10 +4200,10 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Vëri Shenjë Si të Palexuar";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
-"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+"Mark all %1$@ notifications as read?" = "T’u vihet si të lexuara krejt njoftimeve me %1$@?";
 
 /* Confirmation title for marking all notifications as read. */
-"Mark all notifications as read?" = "Mark all notifications as read?";
+"Mark all notifications as read?" = "T’u vihet shenjë krejt njoftimeve si të lexuara?";
 
 /* Marks comment as spam */
 "Mark as Spam" = "Vëri shenjë si të padëshiruar";
@@ -4858,7 +4858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Notifications Unread" = "Njoftime të Palexuara";
 
 /* Title for mark all as read success notice */
-"Notifications marked as read" = "Notifications marked as read";
+"Notifications marked as read" = "Njoftimeve iu vu shenjë si të lexuara";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Njoftomë";
@@ -5527,7 +5527,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Unavailable" = "S’bëhet dot Paraparje";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
+"Preview media" = "Bëni paraparje të medias";
 
 /* No comment provided by engineer. */
 "Preview page" = "Parashihni faqen";
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "Hiqe %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Hiqe Figurën e Zgjedhur";
@@ -5875,7 +5875,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* First line of remove email follower warning in confirmation dialog.
    First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Heqja e ndjekësve bën që ata të reshtin së marri përditësime nga sajti juaj. Nëse vendosin kështu, prapë mund të vizitojnë sajtin tuaj dhe ta ndjekin sërish.";
 
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Rinovohet më %@";
@@ -5887,10 +5887,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Replace audio" = "Zëvendësoni audio";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Replace current featured image?" = "Replace current featured image?";
+"Replace current featured image?" = "Të zëvendësohet figura e zgjedhur e tanishme?";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace featured image" = "Replace featured image";
+"Replace featured image" = "Zëvendësoje figurën e zgjedhur";
 
 /* No comment provided by engineer. */
 "Replace file" = "Zëvendësoni kartelë";
@@ -7088,7 +7088,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to display referrer web page." = "Prekeni që të shfaqet faqe web e referuesit.";
 
 /* Accessibility hint prompting the user to tap a table row to edit its value. */
-"Tap to edit" = "Tap to edit";
+"Tap to edit" = "Prekeni që ta përpunoni";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Prekeni që të jepni një vlerë vetjake";
@@ -7103,7 +7103,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to mark referrer as spam." = "Prekeni që referuesit t’i vihet shenjë si i padëshiruar.";
 
 /* Label for a button to retry loading posts */
-"Tap to retry" = "Tap to retry";
+"Tap to retry" = "Që të riprovohet, prekeni";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Prekeni që të shihni krejt etiketat për këtë postim";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to switch to another site, or add a new site" = "Prekeni që të kalohet te një sajt tjetër, ose për të shtuar një sajt të ri";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
+"Tap to view media in full screen" = "Prekni që të shihni median sa krejt ekrani";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Prekeni që të shihni postimet për këtë etiketë";
@@ -8907,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Dje";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Keni tashmë një grup të zgjedhur figurash. Doni t’i zëvendësoni me figurën e re?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Ju ndan një hap nga ndryshimi i emrit tuaj të përdoruesit, i cili aktualisht është %1$@. %2$@";
@@ -8967,7 +8967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You don't have any media." = "S’keni ndonjë media.";
 
 /* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "You don't have any posts";
+"You don't have any posts" = "S’keni ndonjë postim";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "S’keni faqe të planifikuara për botim";
@@ -9235,7 +9235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "nga %@";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "koment";
 
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
@@ -9258,7 +9258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "example.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "ndjekje";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/adresa-e-sajtit-tim (URL)";
@@ -9279,7 +9279,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "më vonë, sot";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "pëlqim";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
@@ -9309,7 +9309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "iu hoq shenja si i padëshiruar";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "të palexuar";
 
 /* Label displayed on video media items. */
 "video" = "video";

@@ -1,0 +1,15 @@
+Con esta última versión de WordPress hemos realizado algunos cambios para ayudar a que tu experiencia de usuario sea aún mejor.
+
+- Los bloques de texto del editor ahora se ajustan con el texto a medida que cambias el tamaño de fuente y altura de línea.
+- Hemos rediseñado algunas pantallas de la aplicación, incluyendo «Mi sitio» ¡Se ve más renovada!
+- Nos encanta tener una bandeja de entrada limpia, así que hemos añadido un botón que te permite marcar todos avisos filtrados como leídos.
+- En el menú de la pestaña del sitio Configurar > Gente hemos añadido un filtro de correo electrónico que te permite ver, aprender más e incluso eliminar seguidores por correo electrónico.
+- En los comentarios anidados, hemos eliminado el icono de compartir y en su lugar hemos añadido la posibilidad de moderar comentarios del hilo.
+- Si cambias los medios en un bloque de imagen que también se use como imagen destacada de la entrada, verás un aviso que te preguntará si quieres reemplazar la imagen destacada mientras estés en ello.
+- Hemos mejorado la navegación por las estadísticas para que puedas moverte más fácilmente entre días y datos. También puedes crear nuevas tarjetas de estadísticas directamente desde la pantalla de estadísticas, usando el nuevo icono de navegación.
+
+También nos hemos puesto con un puñado de molestos fallos en el proceso de inicio del sitio.
+
+- Hemos corregido un fallo en el proceso de creación del sitio que asignaba la zona horaria incorrecta al sitio. Esto provocaba algunos problemas con las entradas programadas. Pero no te preocupes —cualquier entrada programada ahora se publicará a tiempo, a la hora correcta.
+- El inicio rápido ya no se muestra e los usuarios que acceden a un sitio alojado por su cuenta, sitios que no usan Jetpack, e incluso después de que digan «no gracias» al aviso del inicio rápido. Ha sido duro arreglar esto.
+- Cuando estamos eligiendo un diseño o plantilla durante la creación del sitio, la casilla ya no se mueve cuando cambias entre opciones.

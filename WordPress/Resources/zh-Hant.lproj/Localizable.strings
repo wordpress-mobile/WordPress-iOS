@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-21 12:20:56+0000 */
+/* Translation-Revision-Date: 2022-02-15 19:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "新增網域";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "點選左下角工具列的「+」號圖示，即可隨時新增區塊。";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "新增一個自助託管網站";
@@ -566,7 +566,7 @@ translators: Block name. %s: The localized block name */
 "Add menu item to children" = "將選單項目新增至子項目";
 
 /* Accessibility hint for add button to add items to the user's media library */
-"Add new media" = "Add new media";
+"Add new media" = "新增媒體";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "新增選單";
@@ -709,10 +709,10 @@ translators: Block name. %s: The localized block name */
 "Always Send Crash Logs" = "一律傳送故障記錄";
 
 /* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
-"An HTTP error code %i was returned." = "An HTTP error code %i was returned.";
+"An HTTP error code %i was returned." = "已傳回 HTTP 錯誤代碼 %i。";
 
 /* A failure reason for when an error HTTP status code was returned from the site. */
-"An HTTP error code was returned." = "An HTTP error code was returned.";
+"An HTTP error code was returned." = "已傳回 HTTP 錯誤代碼。";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "需要有效的網際網路連線";
@@ -767,7 +767,7 @@ translators: Block name. %s: The localized block name */
 "An error occurred." = "發生錯誤。";
 
 /* A failure reason for when the error that occured wasn't able to be determined. */
-"An unknown error occurred." = "An unknown error occurred.";
+"An unknown error occurred." = "發生未知的錯誤。";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "發生不明的錯誤。請再試一次。";
@@ -877,7 +877,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to trash this post?" = "你確定要將這篇文章移至垃圾桶嗎？";
 
 /* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
+"Are you sure you want to update your homepage?" = "確定要更新首頁嗎？";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否確定要更新？";
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "網誌文章";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
+"Blog's Email Follower" = "網誌的電子郵件追蹤者";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "網誌的關注者";
@@ -1303,7 +1303,7 @@ translators: Block name. %s: The localized block name */
 "Change Password" = "變更密碼";
 
 /* Title of button that takes user to the system Settings section for the app */
-"Change Settings" = "Change Settings";
+"Change Settings" = "變更設定";
 
 /* Title of an alert prompting the user that they are about to change the blog they are posting to. */
 "Change Site" = "變更網站";
@@ -1601,7 +1601,7 @@ translators: Block name. %s: The localized block name */
 "Comment on" = "對以下文章的留言：";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment set to approved." = "Comment set to approved.";
+"Comment set to approved." = "留言已設為核准。";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "已將留言設為待審核。";
@@ -2240,7 +2240,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "拒絕";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "請說明圖片用途。 如果圖片只是為了裝飾，請保留空白。";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "電子郵件地址";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "電子郵件追蹤者";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -2761,7 +2761,7 @@ translators: Block name. %s: The localized block name */
 "Enter different words above and we'll look for an address that matches it." = "請在上方輸入其他文字，我們會尋找與其相符的地址。";
 
 /* Accessibility hint for edit button to enable multi selection mode in the user's media library */
-"Enter edit mode to enable multi select to delete" = "Enter edit mode to enable multi select to delete";
+"Enter edit mode to enable multi select to delete" = "若要刪除，請進入編輯模式以啟用多選功能";
 
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
@@ -2889,7 +2889,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "傳送驗證電子郵件時發生錯誤。請檢查你的連線並再試一次。";
 
 /* Message displayed when approving a comment fails. */
-"Error setting comment to approved." = "Error setting comment to approved.";
+"Error setting comment to approved." = "將留言設為已核准時發生錯誤。";
 
 /* Message displayed when pending a comment fails. */
 "Error setting comment to pending." = "將留言設為待審核時發生錯誤。";
@@ -3000,7 +3000,7 @@ translators: Block name. %s: The localized block name */
 "Failed Media Export" = "無法匯出媒體";
 
 /* Message for mark all as read success notice */
-"Failed marking Notifications as read" = "Failed marking Notifications as read";
+"Failed marking Notifications as read" = "無法將全部通知標示為已讀";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file." = "無法插入音訊檔案。";
@@ -3214,7 +3214,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "轉寄";
 
 /* No comment provided by engineer. */
-"Four" = "Four";
+"Four" = "肆";
 
 /* Browse free themes selection title */
 "Free" = "免費";
@@ -3247,10 +3247,10 @@ translators: Block name. %s: The localized block name */
 "Full Size" = "完整大小";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Fullscreen view of image %@. Double tap to dismiss";
+"Fullscreen view of image %@. Double tap to dismiss" = "全螢幕檢視圖片 %@。 點選兩下以關閉";
 
 /* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Fullscreen view of image. Double tap to dismiss";
+"Fullscreen view of image. Double tap to dismiss" = "全螢幕檢視圖片。 點選兩下以關閉";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -3259,7 +3259,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "圖庫標題。%s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "圖庫樣式";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "園藝";
@@ -3849,7 +3849,7 @@ translators: Block name. %s: The localized block name */
 "Keep blogging and check back to see visitors arriving at your site." = "持續寫網誌，稍後再回來查看哪些訪客造訪你的網站。";
 
 /* Button to cancel the replacement of a featured image. */
-"Keep current" = "Keep current";
+"Keep current" = "保持現狀";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "繼續！ 按讚和留言是建立人脈網路的好方法。 前往閱讀器尋找更多文章。";
@@ -3880,7 +3880,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "姓氏";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$d views, %2$d comments and %3$d likes." = "上週你有 %1$d 次瀏覽、%2$d 則留言和 %3$d 次按讚。";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新文章摘要";
@@ -4191,7 +4191,7 @@ translators: Block name. %s: The localized block name */
 "Mapped Domain" = "對應網域";
 
 /* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
+"Mark All As Read" = "將全部標示為已讀";
 
 /* Marks a notification as unread */
 "Mark Read" = "標記為已讀";
@@ -4203,7 +4203,7 @@ translators: Block name. %s: The localized block name */
 "Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
 
 /* Confirmation title for marking all notifications as read. */
-"Mark all notifications as read?" = "Mark all notifications as read?";
+"Mark all notifications as read?" = "要將所有通知標示為已讀嗎？";
 
 /* Marks comment as spam */
 "Mark as Spam" = "標記為垃圾";
@@ -4481,7 +4481,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
 
 /* No comment provided by engineer. */
-"Navigates to layout selection screen" = "Navigates to layout selection screen";
+"Navigates to layout selection screen" = "導覽至版面配置選取畫面";
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
@@ -4555,7 +4555,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Next Steps" = "後續步驟";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Next month";
+"Next month" = "下個月";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "下一則通知";
@@ -4656,7 +4656,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No data yet" = "尚無日期";
 
 /* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
+"No date range selected" = "未選取任何日期範圍";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "沒有已修正的威脅";
@@ -4858,7 +4858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Notifications Unread" = "未讀通知";
 
 /* Title for mark all as read success notice */
-"Notifications marked as read" = "Notifications marked as read";
+"Notifications marked as read" = "通知已標示為已讀";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "通知我";
@@ -4938,7 +4938,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "建立 WordPress.com 網站後，可以將喜歡的內容轉發到自己的網站。";
 
 /* No comment provided by engineer. */
-"One" = "One";
+"One" = "壹";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "只查看最相關的統計資料。新增洞察報告，滿足您的需求。";
@@ -4947,7 +4947,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only show excerpt" = "只顯示摘要";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
-"Only the selected photos you've given access to are available." = "Only the selected photos you've given access to are available.";
+"Only the selected photos you've given access to are available." = "只能查看你已授權存取的選定照片。";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
@@ -5527,7 +5527,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Unavailable" = "無法預覽";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
-"Preview media" = "Preview media";
+"Preview media" = "預覽媒體";
 
 /* No comment provided by engineer. */
 "Preview page" = "閱覽頁面";
@@ -5539,7 +5539,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview your new site to see what your visitors will see." = "預覽你的新網站即可查看訪客將會看到的內容。";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Previous month";
+"Previous month" = "上個月";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一則通知";
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "移除 %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "移除特色圖片";
@@ -5838,7 +5838,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "移除網站圖示";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "移除特色圖片";
 
 /* No comment provided by engineer. */
 "Remove block" = "移除區塊";
@@ -5875,7 +5875,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* First line of remove email follower warning in confirmation dialog.
    First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
+"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "移除追蹤者，使其停止接收網站的更新內容。 如果他們願意，仍可造訪你的網站並再次追蹤。";
 
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "更新時間：%@";
@@ -5887,10 +5887,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Replace audio" = "替換音訊";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Replace current featured image?" = "Replace current featured image?";
+"Replace current featured image?" = "要取代目前的特色圖片嗎？";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace featured image" = "Replace featured image";
+"Replace featured image" = "取代特色圖片";
 
 /* No comment provided by engineer. */
 "Replace file" = "取代檔案";
@@ -6306,7 +6306,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select Country" = "選取國家\/地區";
 
 /* Title of button that allows the user to select more photos to access within the app */
-"Select More" = "Select More";
+"Select More" = "選取更多";
 
 /* Blog Picker's Title */
 "Select Site" = "選取網站";
@@ -6372,10 +6372,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Selected media is unavailable." = "無法使用已選取的媒體。";
 
 /* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
+"Selected range: %1$@ only" = "選取範圍：僅限 %1$@";
 
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
+"Selected range: %1$@ to %2$@" = "選取範圍：%1$@ 到 %2$@";
 
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
@@ -6437,7 +6437,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "設定上層項目";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "設為特色圖片";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "設為首頁";
@@ -6656,7 +6656,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site Language" = "網站語言";
 
 /* Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
+"Site Menu" = "網站選單";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "網站重新導向";
@@ -7088,7 +7088,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to display referrer web page." = "點選即可顯示推薦連結網頁。";
 
 /* Accessibility hint prompting the user to tap a table row to edit its value. */
-"Tap to edit" = "Tap to edit";
+"Tap to edit" = "點選以編輯";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "點選以輸入自訂值";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to switch to another site, or add a new site" = "點選即可切換到其他網站或新增網站";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
-"Tap to view media in full screen" = "Tap to view media in full screen";
+"Tap to view media in full screen" = "點選以全螢幕檢視媒體";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "點選以檢視有此標籤的文章";
@@ -7274,10 +7274,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "快速入門導覽將引導你建立基本網站。確定要略過？";
 
 /* A failure reason for when the request couldn't be serialized. */
-"The serialization of the request failed." = "The serialization of the request failed.";
+"The serialization of the request failed." = "要求序列化失敗。";
 
 /* A failure reason for when the response couldn't be serialized. */
-"The serialization of the response failed." = "The serialization of the response failed.";
+"The serialization of the response failed." = "回應序列化失敗。";
 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "伺服器傳回空白回應。這通常代表你必須增加網站的記憶體限制。";
@@ -7380,7 +7380,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was a problem blocking posts from the specified site." = "封鎖指定網站的文章時發生問題。";
 
 /* A general error message shown to the user when there was an API communication failure. */
-"There was a problem communicating with the site." = "There was a problem communicating with the site.";
+"There was a problem communicating with the site." = "與網站通訊時發生問題。";
 
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "連線到 WordPress.com 時發生問題。請重新登入。";
@@ -7551,7 +7551,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Threat ignored." = "已忽略威脅。";
 
 /* No comment provided by engineer. */
-"Three" = "Three";
+"Three" = "參";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "縮圖";
@@ -7560,7 +7560,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail unavailable." = "無法檢視縮圖。";
 
 /* No comment provided by engineer. */
-"Tiled gallery settings" = "Tiled gallery settings";
+"Tiled gallery settings" = "並排圖庫設定";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7714,7 +7714,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Trash" = "移至垃圾桶";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
-"Trash selected media" = "Trash selected media";
+"Trash selected media" = "將選取的媒體移至垃圾桶";
 
 /* Title of the trash page confirmation alert. */
 "Trash this page?" = "是否要清除此頁面？";
@@ -7797,7 +7797,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Twitter Username" = "Twitter 使用者名稱";
 
 /* No comment provided by engineer. */
-"Two" = "Two";
+"Two" = "貳";
 
 /* Type menu item in share extension. */
 "Type" = "類型";
@@ -7896,7 +7896,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to play video" = "無法播放影片";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "無法透過該 URL 讀取 WordPress 網站。 點選「需要更多說明？」即可檢視常見問題。";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "無法還原網站";
@@ -8643,7 +8643,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weekly Roundup" = "每週綜合整理";
 
 /* Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites. */
-"Weekly Roundup: %@" = "Weekly Roundup: %@";
+"Weekly Roundup: %@" = "每週綜合整理：%@";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "週";
@@ -8907,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "昨天";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "You already have a featured image set. Do you want to replace it with the new image?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "你已設定特色圖片。 是否要取代為新圖片？";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "你即將變更你的使用者名稱 (目前為 %1$@)。%2$@";
@@ -8949,7 +8949,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "你可以隨時切換網站。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "你可以隨時更新此設定";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";
@@ -8967,7 +8967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You don't have any media." = "你沒有任何媒體。";
 
 /* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "You don't have any posts";
+"You don't have any posts" = "你沒有任何文章";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "你沒有任何已排程頁面";
@@ -9181,7 +9181,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "我們不會儲存你的網站憑證，而且只會將其用於安裝 Jetpack。";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
-"Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+"Your weekly roundup is ready, tap here to see the details!" = "你的每週綜合整理已準備就緒，點選此處即可查看詳細資訊！";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "你正在追蹤此討論。 有留言時，你會收到電子郵件和通知。";
@@ -9235,7 +9235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "作者：%@";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "留言";
 
 /* The menu item to select during a guided tour. */
 "connections" = "連線";
@@ -9258,7 +9258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "example.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "追蹤";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (網址)";
@@ -9279,7 +9279,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "今日稍晚";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "喜歡";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
@@ -9309,7 +9309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "取消垃圾訊息的標示";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "未讀";
 
 /* Label displayed on video media items. */
 "video" = "影片";
