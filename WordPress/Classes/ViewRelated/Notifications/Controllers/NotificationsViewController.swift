@@ -728,10 +728,10 @@ extension NotificationsViewController {
             return
         }
 
-        presentCommentDetail(for: note)
+        presentDetails(for: note)
     }
 
-    private func presentCommentDetail(for note: Notification) {
+    private func presentDetails(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
