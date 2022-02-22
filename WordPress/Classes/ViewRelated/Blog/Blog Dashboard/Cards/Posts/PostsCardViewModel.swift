@@ -203,13 +203,13 @@ private extension PostsCardViewModel {
     }
 
     func showNextPostPrompt() {
-        viewController?.hideLoading()
         viewController?.showNextPostPrompt()
+        viewController?.hideLoading()
     }
 
     func showLoadingFailureError() {
-        viewController?.hideLoading()
         viewController?.showError(message: Strings.loadingFailure, retry: true)
+        viewController?.hideLoading()
     }
 
     func hideLoading() {
