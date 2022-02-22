@@ -1,6 +1,6 @@
 19.4
 -----
-* [*] Block editor: Additional error messages for media upload failures. [#18006]
+* [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 
 19.3
 -----
@@ -9,7 +9,6 @@
 * [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
 * [*] [Jetpack-only] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
 * [*] Block editor: Additional error messages for media upload failures. [#17971]
-* [*] Site Creation: Fixed layout of domain input field for RTL languages. [#13597]
 
 19.2
 -----
