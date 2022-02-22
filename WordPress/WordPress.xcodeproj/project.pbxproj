@@ -2317,6 +2317,8 @@
 		D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */; };
 		D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */; };
+		DC06DFF927BD52BE00969974 /* WeeklyRoundupBackgroundTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC06DFF827BD52BE00969974 /* WeeklyRoundupBackgroundTaskTests.swift */; };
+		DC06DFFC27BD679700969974 /* BlogTitleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC06DFFB27BD679700969974 /* BlogTitleTests.swift */; };
 		DC3B9B2C27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2B27739760003F7249 /* TimeZoneSelectorViewModel.swift */; };
 		DC3B9B2D27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2B27739760003F7249 /* TimeZoneSelectorViewModel.swift */; };
 		DC3B9B2F27739887003F7249 /* TimeZoneSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2E27739887003F7249 /* TimeZoneSelectorViewModelTests.swift */; };
@@ -7034,6 +7036,8 @@
 		D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+SiteCreation.swift"; sourceTree = "<group>"; };
 		DA67DF58196D8F6A005B5BC8 /* WordPress 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 20.xcdatamodel"; sourceTree = "<group>"; };
 		DB915AD54243A8AE0039B0C7 /* Pods-WordPressScreenshotGeneration.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release.xcconfig"; sourceTree = "<group>"; };
+		DC06DFF827BD52BE00969974 /* WeeklyRoundupBackgroundTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRoundupBackgroundTaskTests.swift; sourceTree = "<group>"; };
+		DC06DFFB27BD679700969974 /* BlogTitleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogTitleTests.swift; sourceTree = "<group>"; };
 		DC3B9B2B27739760003F7249 /* TimeZoneSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewModel.swift; sourceTree = "<group>"; };
 		DC3B9B2E27739887003F7249 /* TimeZoneSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewModelTests.swift; sourceTree = "<group>"; };
 		DC76668126FD9AC8009254DD /* TimeZoneRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneRow.swift; sourceTree = "<group>"; };
@@ -11121,6 +11125,7 @@
 		852416D01A12ED2D0030700C /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				DC06DFF727BD52A100969974 /* BackgroundTasks */,
 				F15D1FB8265C40EA00854EE5 /* Blogging Reminders */,
 				174C116D2624601000346EC6 /* Deep Linking */,
 				F93735F422D53C1800A3C312 /* Logging */,
@@ -11606,6 +11611,7 @@
 		937E3AB41E3EBDC900CDA01A /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				DC06DFFA27BD678100969974 /* Prepublishing Nudge */,
 				57E3C98223835A57004741DB /* Controllers */,
 				57DF04BF2314895E00CC93D6 /* Views */,
 				5749984522FA0EB900CE86ED /* Utils */,
@@ -13728,6 +13734,22 @@
 				D8225407219AB0520014D0E2 /* SiteInformation.swift */,
 			);
 			name = "Site Creation";
+			sourceTree = "<group>";
+		};
+		DC06DFF727BD52A100969974 /* BackgroundTasks */ = {
+			isa = PBXGroup;
+			children = (
+				DC06DFF827BD52BE00969974 /* WeeklyRoundupBackgroundTaskTests.swift */,
+			);
+			path = BackgroundTasks;
+			sourceTree = "<group>";
+		};
+		DC06DFFA27BD678100969974 /* Prepublishing Nudge */ = {
+			isa = PBXGroup;
+			children = (
+				DC06DFFB27BD679700969974 /* BlogTitleTests.swift */,
+			);
+			name = "Prepublishing Nudge";
 			sourceTree = "<group>";
 		};
 		DC590CFE26F205C400EB0F73 /* Time Zone */ = {
@@ -19336,6 +19358,7 @@
 				D88A64B0208DA093008AE9BC /* StockPhotosResultsPageTests.swift in Sources */,
 				0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */,
 				B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */,
+				DC06DFF927BD52BE00969974 /* WeeklyRoundupBackgroundTaskTests.swift in Sources */,
 				24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */,
 				8B6BD55024293FBE00DB8F28 /* PrepublishingNudgesViewControllerTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
@@ -19420,6 +19443,7 @@
 				3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,
+				DC06DFFC27BD679700969974 /* BlogTitleTests.swift in Sources */,
 				FAE8EE9C273AD0A800A65307 /* QuickStartSettingsTests.swift in Sources */,
 				400A2C912217B308000A8A59 /* CountryStatsRecordValueTests.swift in Sources */,
 				8BD8201D24BF9E5200FF25FD /* ReaderWelcomeBannerTests.swift in Sources */,
