@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 
 /// The purpose of this class is to provide a simple API to download assets from the web.
@@ -97,7 +98,7 @@ class NotificationMediaDownloader: NSObject {
             let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
             let resizedImage    = resizedImagesMap[url]
 
-            if resizedImage == nil || resizedImage?.size == targetSize {
+            if resizedImage == nil || resizedImage?.size == targetSize || resizedImage as? AnimatedImageWrapper != nil {
                 continue
             }
 
@@ -191,6 +192,12 @@ class NotificationMediaDownloader: NSObject {
     ///     - callback: A closure to be called, on the main thread, on completion
     ///
     private func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping (UIImage) -> Void) {
+        // Animated images aren't actually resized, so return the image itself if we've already recorded the target size
+        if let animatedImage = image as? AnimatedImageWrapper, animatedImage.targetSize != nil {
+            callback(animatedImage)
+            return
+        }
+
         let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
         if image.size == targetSize {
             callback(image)
@@ -198,7 +205,17 @@ class NotificationMediaDownloader: NSObject {
         }
 
         resizeQueue.async {
-            let resizedImage = image.resizedImage(targetSize, interpolationQuality: .high)
+            let resizedImage: UIImage?
+
+            // If we try to resize the animate image it will lose all of its frames
+            // Instead record the target size so we can properly set the bounds of the view later
+            if let animatedImage = image as? AnimatedImageWrapper, animatedImage.gifData != nil {
+                animatedImage.targetSize = targetSize
+                resizedImage = animatedImage
+            } else {
+                resizedImage = image.resizedImage(targetSize, interpolationQuality: .high)
+            }
+
             DispatchQueue.main.async {
                 callback(resizedImage!)
             }
