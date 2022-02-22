@@ -74,7 +74,7 @@ public class StatsScreen: ScreenObject {
     }
 
     public func refreshStatsIfNeeded() -> StatsScreen {
-        let errorMessage = NSPredicate(format: "label == 'An error occurred.'");
+        let errorMessage = NSPredicate(format: "label == 'An error occurred.'")
         let isErrorMessagePresent = app.staticTexts.element(matching: errorMessage).exists
 
         if isErrorMessagePresent { pullToRefresh() }
