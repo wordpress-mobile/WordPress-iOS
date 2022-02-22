@@ -124,6 +124,10 @@ private extension PostsCardViewController {
         _ = tableView.intrinsicContentSize
     }
 
+    func trackPostsDisplayed() {
+        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+    }
+
     enum Constants {
         static let numberOfPosts = 3
     }
@@ -149,8 +153,16 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func hideLoading() {
+        guard ghostableTableView?.superview != nil else {
+            return
+        }
+
         errorView?.removeFromSuperview()
         removeGhostableTableView()
+
+        if nextPostView == nil && errorView == nil {
+            trackPostsDisplayed()
+        }
     }
 
     func showError(message: String, retry: Bool) {
@@ -168,6 +180,8 @@ extension PostsCardViewController: PostsCardView {
 
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
+
+        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
     }
 
     func showNextPostPrompt() {
@@ -190,12 +204,20 @@ extension PostsCardViewController: PostsCardView {
         forceTableViewToRecalculateHeight()
 
         delegate?.didShowNextPostPrompt()
+
+        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
     }
 
     func hideNextPrompt() {
+        guard nextPostView != nil else {
+            return
+        }
+
         nextPostView?.removeFromSuperview()
         nextPostView = nil
         delegate?.didHideNextPostPrompt()
+
+        trackPostsDisplayed()
     }
 
     func firstPostPublished() {
