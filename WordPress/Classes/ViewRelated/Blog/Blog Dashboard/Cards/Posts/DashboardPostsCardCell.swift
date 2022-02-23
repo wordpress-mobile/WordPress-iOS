@@ -1,5 +1,18 @@
 import UIKit
 
+/// A cell that can display 4 different types of cards:
+/// * Write your first post
+/// * Write our next post
+/// * Show your latest drafts
+/// * Show the upcoming scheduled posts
+///
+/// This cell uses PostsCardViewController to display the list of posts
+///
+/// One important thing to keep in mind is that we take into account what
+/// comes from the API but we rely on local data to decide which card to show.
+///
+/// Eg.: The API might return that the user has no posts at all but
+/// they actually have a draft saved locally. In this case we show the drafts.
 class DashboardPostsCardCell: UICollectionViewCell, Reusable {
     private var cardFrameView: BlogDashboardCardFrameView?
 
