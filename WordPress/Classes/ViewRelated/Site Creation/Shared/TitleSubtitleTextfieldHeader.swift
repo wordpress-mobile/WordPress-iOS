@@ -116,7 +116,7 @@ final class SearchTextField: UITextField {
     }
 
     private func setIconImage(view: UIView) {
-        // Since the RTL layout is already handled elsewhere updating leftVIew is enough here
+        // Since the RTL layout is already handled elsewhere updating leftView is enough here
         leftView = view
         leftViewMode = .always
     }
