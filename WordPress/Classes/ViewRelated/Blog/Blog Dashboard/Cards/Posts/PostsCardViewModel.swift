@@ -14,6 +14,7 @@ protocol PostsCardView: AnyObject {
 }
 
 /// Responsible for populating a table view with posts
+/// And syncing them if needed.
 ///
 class PostsCardViewModel: NSObject {
     var blog: Blog
