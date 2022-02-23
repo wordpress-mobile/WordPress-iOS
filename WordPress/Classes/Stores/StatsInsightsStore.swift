@@ -264,7 +264,7 @@ private extension StatsInsightsStore {
             fetchLastPostSummary()
             return
         }
-        updateFetchingStatusForActiveCards(.loading)
+        updateFetchingStatusForVisibleCards(.loading)
         fetchInsightsCards()
     }
 
@@ -654,6 +654,21 @@ private extension StatsInsightsStore {
             }
             state.tagsAndCategoriesStatus = error != nil ? .error : .success
         }
+    }
+
+    /// Updates the current fetching status on data types associated with visible cards. Other data types status will remain unchanged.
+    /// - Parameter status: the new status to set
+    func updateFetchingStatusForVisibleCards( _ status: StoreFetchingStatus) {
+        state.lastPostSummaryStatus = currentDataTypes.contains(.latestPost) ? status : state.lastPostSummaryStatus
+        state.allTimeStatus = currentDataTypes.contains(.allTime) ? status : state.allTimeStatus
+        state.annualAndMostPopularTimeStatus = currentDataTypes.contains(.annualAndMostPopular) ? status : state.annualAndMostPopularTimeStatus
+        state.dotComFollowersStatus = currentDataTypes.contains(.followers) ? status : state.dotComFollowersStatus
+        state.emailFollowersStatus = currentDataTypes.contains(.followers) ? status : state.emailFollowersStatus
+        state.todaysStatsStatus = currentDataTypes.contains(.today) ? status : state.todaysStatsStatus
+        state.tagsAndCategoriesStatus = currentDataTypes.contains(.tagsAndCategories) ? status : state.tagsAndCategoriesStatus
+        state.publicizeFollowersStatus = currentDataTypes.contains(.publicize) ? status : state.publicizeFollowersStatus
+        state.commentsInsightStatus = currentDataTypes.contains(.comments) ? status : state.commentsInsightStatus
+        state.postingActivityStatus = currentDataTypes.contains(.postingActivity) ? status : state.postingActivityStatus
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
