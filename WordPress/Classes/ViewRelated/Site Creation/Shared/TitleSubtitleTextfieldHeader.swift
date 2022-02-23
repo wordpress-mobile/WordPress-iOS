@@ -120,10 +120,6 @@ final class SearchTextField: UITextField {
         leftView = view
         leftViewMode = .always
     }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-    }
 }
 
 // MARK: - TitleSubtitleTextfieldHeader
