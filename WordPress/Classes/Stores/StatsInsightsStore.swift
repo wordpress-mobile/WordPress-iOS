@@ -125,6 +125,16 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         super.init(initialState: InsightStoreState())
     }
 
+    /// A set containing all the data types associated with the currently visible Insights cards
+    /// which defines the number and type of api calls we need to perform.
+    var currentDataTypes: Set<InsightDataType> {
+        Set(SiteStatsInformation.sharedInstance
+                .getCurrentSiteInsights()  // The current visible cards
+                .reduce(into: [InsightDataType]()) {
+            $0.append(contentsOf: $1.insightsDataForSection)
+        }) // And the respective associated data
+    }
+
     override func onDispatch(_ action: Action) {
 
         guard let insightAction = action as? InsightAction else {
