@@ -526,6 +526,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching last posts insights: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
+            DDLogInfo("Stats: Insights - successfully fetched latest post summary.")
         }
     }
 
