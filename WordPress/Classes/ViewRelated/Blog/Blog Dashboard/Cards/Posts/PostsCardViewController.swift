@@ -1,5 +1,10 @@
 import UIKit
 
+protocol PostsCardViewControllerDelegate: AnyObject {
+    func didShowNextPostPrompt()
+    func didHideNextPostPrompt()
+}
+
 /// Render a small list of posts for a given blog and post status (drafts or scheduled)
 ///
 /// This class handles showing posts from the database, syncing and interacting with them
@@ -12,11 +17,16 @@ import UIKit
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
     private var errorView: DashboardCardInnerErrorView?
+    private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
+    private var hasPublishedPosts: Bool
 
-    init(blog: Blog, status: BasePost.Status) {
+    weak var delegate: PostsCardViewControllerDelegate?
+
+    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true) {
         self.blog = blog
         self.status = status
+        self.hasPublishedPosts = hasPublishedPosts
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -61,6 +71,7 @@ private extension PostsCardViewController {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
+        tableView.backgroundColor = nil
         view.pinSubviewToAllEdges(tableView)
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
@@ -104,6 +115,15 @@ private extension PostsCardViewController {
             .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
     }
 
+    func presentEditor() {
+        let editor = EditPostViewController(blog: blog)
+        present(editor, animated: true)
+    }
+
+    func forceTableViewToRecalculateHeight() {
+        _ = tableView.intrinsicContentSize
+    }
+
     enum Constants {
         static let numberOfPosts = 3
     }
@@ -134,6 +154,11 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func showError(message: String, retry: Bool) {
+        guard nextPostView == nil else {
+            forceTableViewToRecalculateHeight()
+            return
+        }
+
         let errorView = DashboardCardInnerErrorView(message: message, canRetry: retry)
         errorView.delegate = self
         errorView.translatesAutoresizingMaskIntoConstraints = false
@@ -143,6 +168,39 @@ extension PostsCardViewController: PostsCardView {
 
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
+    }
+
+    func showNextPostPrompt() {
+        guard nextPostView == nil else {
+            forceTableViewToRecalculateHeight()
+            return
+        }
+
+        let nextPostView = BlogDashboardNextPostView()
+        nextPostView.hasPublishedPosts = hasPublishedPosts
+        nextPostView.onTap = { [weak self] in
+            self?.presentEditor()
+        }
+        nextPostView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(withFadeAnimation: nextPostView)
+        tableView.pinSubviewToSafeArea(nextPostView)
+
+        self.nextPostView = nextPostView
+
+        forceTableViewToRecalculateHeight()
+
+        delegate?.didShowNextPostPrompt()
+    }
+
+    func hideNextPrompt() {
+        nextPostView?.removeFromSuperview()
+        nextPostView = nil
+        delegate?.didHideNextPostPrompt()
+    }
+
+    func firstPostPublished() {
+        hasPublishedPosts = true
+        nextPostView?.hasPublishedPosts = true
     }
 }
 
