@@ -54,6 +54,14 @@ protocol PostsCardViewControllerDelegate: AnyObject {
         tableView.delegate = self
         viewModel.refresh()
     }
+
+    func update(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool, shouldSync: Bool) {
+        self.blog = blog
+        self.status = status
+        self.hasPublishedPosts = hasPublishedPosts
+        self.shouldSync = shouldSync
+        viewModel?.update(blog: blog, status: status)
+    }
 }
 
 // MARK: - Private methods
