@@ -1,5 +1,4 @@
 import Foundation
-import WordPressKit
 
 enum InsightType: Int, SiteStatsPinnable {
     case growAudience
