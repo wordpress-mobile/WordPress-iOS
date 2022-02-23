@@ -538,14 +538,16 @@ private extension StatsInsightsStore {
         }
 
         api.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
-            if error != nil {
-                DDLogInfo("Insights: Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
+            if let error = error {
+                DDLogError("Insights: Error fetching Post Stats: \(error.localizedDescription)")
             }
-            DDLogInfo("Insights: Finished fetching post stats.")
+            DDLogInfo("Stats: Insights - successfully fetched latest post details.")
 
             DispatchQueue.main.async {
                 self.receivedPostStats(postStats, error)
-                self.fetchOverview()
+                if !FeatureFlag.statsPerformanceImprovements.enabled {
+                    self.fetchOverview()
+                }
             }
         }
     }
