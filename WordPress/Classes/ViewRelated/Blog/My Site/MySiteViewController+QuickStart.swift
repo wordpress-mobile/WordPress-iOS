@@ -10,6 +10,8 @@ extension MySiteViewController {
             if let info = notification.userInfo,
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch element {
+                case .siteMenu:
+                    self?.siteMenuSpotlightIsShown = true
                 default:
                     self?.siteMenuSpotlightIsShown = false
                 }

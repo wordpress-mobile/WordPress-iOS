@@ -1,5 +1,7 @@
 import WordPressFlux
 import Gridicons
+import Foundation
+import UIKit
 
 open class QuickStartTourGuide: NSObject {
     var navigationSettings = QuickStartNavigationSettings()
@@ -120,12 +122,26 @@ open class QuickStartTourGuide: NSObject {
         endCurrentTour()
         dismissSuggestion()
 
-        switch tour {
-        case let tour as QuickStartFollowTour:
-            tour.setupReaderTab()
+        let adjustedTour = addSiteMenuWayPointIfNeeded(for: tour)
+
+        switch adjustedTour {
+        case let adjustedTour as QuickStartFollowTour:
+            adjustedTour.setupReaderTab()
             fallthrough
         default:
-            currentTourState = TourState(tour: tour, blog: blog, step: 0)
+            currentTourState = TourState(tour: adjustedTour, blog: blog, step: 0)
+        }
+    }
+
+    private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
+
+        if tour.shownInBlogDetails && !UIDevice.isPad() {
+            var tourToAdjust = tour
+            let siteMenuWaypoint = QuickStartSiteMenu.waypoint
+            tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)
+            return tourToAdjust
+        } else {
+            return tour
         }
     }
 
