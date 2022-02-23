@@ -149,7 +149,7 @@ private extension NotificationCommentDetailCoordinator {
 
             self.viewController = CommentDetailViewController(comment: comment,
                                                               notification: self.notification,
-                                                              notificationNavigationDelegate: self,
+                                                              notificationDelegate: self,
                                                               managedObjectContext: self.managedObjectContext)
 
             self.updateNavigationButtonStates()
@@ -248,9 +248,9 @@ private extension NotificationCommentDetailCoordinator {
 
 }
 
-// MARK: - CommentDetailsNotificationNavigationDelegate
+// MARK: - CommentDetailsNotificationDelegate
 
-extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNavigationDelegate {
+extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
     func previousNotificationTapped(current: Notification?) {
         guard let current = current,

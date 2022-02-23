@@ -8,6 +8,9 @@ protocol PostsCardView: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(message: String, retry: Bool)
+    func showNextPostPrompt()
+    func hideNextPrompt()
+    func firstPostPublished()
 }
 
 /// Responsible for populating a table view with posts
@@ -44,6 +47,7 @@ class PostsCardViewModel: NSObject {
         do {
             try fetchedResultsController.performFetch()
             viewController?.tableView.reloadData()
+            showNextPostPromptIfNeeded()
         } catch {
             print("Fetch failed")
         }
@@ -120,6 +124,12 @@ private extension PostsCardViewModel {
         let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
+        let myAuthorID = blog.userID ?? 0
+
+        // Brand new local drafts have an authorID of 0.
+        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+        predicates.append(authorPredicate)
+
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
        return predicate
     }
@@ -133,6 +143,7 @@ private extension PostsCardViewModel {
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
+        options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
         options.purgesLocalSync = true
 
@@ -142,22 +153,42 @@ private extension PostsCardViewModel {
 
         syncing = (blog.dotComID, status)
 
+        // If the userID is nil we need to sync authors
+        if blog.userID == nil {
+            syncAuthors()
+            return
+        }
+
         postService.syncPosts(
             ofType: .post,
             with: options,
             for: blog,
-            success: { [weak self] _ in
-                if self?.numberOfPosts == 0 {
-                    self?.showEmptyPostsError()
+            success: { [weak self] posts in
+                if posts?.count == 0 {
+                    self?.showNextPostPrompt()
                 }
 
+                self?.hideLoading()
                 self?.syncing = nil
             }, failure: { [weak self] _ in
+                self?.syncing = nil
+
                 if self?.numberOfPosts == 0 {
+                    self?.showNextPostPromptIfNeeded()
                     self?.showLoadingFailureError()
                 }
+        })
+    }
 
-                self?.syncing = nil
+    func syncAuthors() {
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        blogService.syncAuthors(for: blog, success: { [weak self] in
+            self?.syncing = nil
+            self?.performInitialLoading()
+            self?.refresh()
+        }, failure: { [weak self] _ in
+            self?.syncing = nil
+            self?.showLoadingFailureError()
         })
     }
 
@@ -172,9 +203,9 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showEmptyPostsError() {
+    func showNextPostPrompt() {
         viewController?.hideLoading()
-        viewController?.showError(message: Strings.noPostsMessage, retry: false)
+        viewController?.showNextPostPrompt()
     }
 
     func showLoadingFailureError() {
@@ -182,13 +213,38 @@ private extension PostsCardViewModel {
         viewController?.showError(message: Strings.loadingFailure, retry: true)
     }
 
+    func hideLoading() {
+        viewController?.hideLoading()
+    }
+
+    func showNextPostPromptIfNeeded() {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count,
+           postsCount == 0, !isSyncing() {
+            viewController?.showNextPostPrompt()
+        } else {
+            viewController?.hideNextPrompt()
+        }
+    }
+
+    /// If a post is published we want to let the viewController know
+    /// So the prompt can be updated
+    func checkIfPostIsPublished() {
+        if let post = fetchedResultsController.fetchedObjects?.first,
+           post.status == .publish || post.status == .publishPrivate {
+            viewController?.firstPostPublished()
+        }
+    }
+
+    func isSyncing() -> Bool {
+        syncing != nil
+    }
+
     enum Constants {
         static let numberOfPosts = 3
-        static let numberOfPostsToSync: NSNumber = 4
+        static let numberOfPostsToSync: NSNumber = 3
     }
 
     enum Strings {
-        static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
         static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
     }
 }
@@ -232,6 +288,9 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         viewController?.tableView.endUpdates()
+
+        showNextPostPromptIfNeeded()
+        checkIfPostIsPublished()
 
         // When going to the post list all displayed posts there will be displayed
         // here too. This check ensures that we never display more than what
