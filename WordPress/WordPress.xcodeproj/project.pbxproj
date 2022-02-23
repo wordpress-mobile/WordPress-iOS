@@ -8211,8 +8211,6 @@
 			isa = PBXGroup;
 			children = (
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
-				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
-				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 				FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */,
 			);
 			path = "My Site";
@@ -14685,6 +14683,8 @@
 				FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */,
 				FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */,
 				FA73D7EB27987E4500DF24B3 /* SitePickerViewController+QuickStart.swift */,
+				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
+				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 			);
 			path = "Site Picker";
 			sourceTree = "<group>";
