@@ -2,3 +2,4 @@
 * [*] Stats: Scroll to new Insights card when added. [#17894]
 * [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
 * [*] Block editor: Additional error messages for media upload failures. [#17971]
+* [**] Adds animated Gif support in notifications and comments [#17981]
