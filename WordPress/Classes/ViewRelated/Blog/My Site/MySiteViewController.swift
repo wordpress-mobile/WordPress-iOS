@@ -357,6 +357,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         child.didMove(toParent: self)
     }
 
+    private func removeChildFromStackView(_ child: UIViewController) {
+        guard child.parent != nil else {
+            return
+        }
+
+        child.willMove(toParent: nil)
+        stackView.removeArrangedSubview(child.view)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+    }
+
     // MARK: - No Sites UI logic
 
     private func hideNoSites() {
@@ -530,7 +541,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        remove(blogDetailsViewController)
+        removeChildFromStackView(blogDetailsViewController)
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
@@ -642,7 +653,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        remove(blogDashboardViewController)
+        removeChildFromStackView(blogDashboardViewController)
     }
 
     /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
