@@ -206,7 +206,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         if element != currentElement {
-            let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
+            let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing, .siteMenu]
             let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
 
             if blogDetailEvents.contains(element) {
@@ -226,9 +226,24 @@ open class QuickStartTourGuide: NSObject {
             // TODO: we could put a nice animation here
             return
         }
-        currentTourState = nextStep
 
+        if element == .siteMenu {
+            showNextStepWithDelay(nextStep)
+        } else {
+            showNextStep(nextStep)
+        }
+    }
+
+    private func showNextStep(_ nextStep: TourState) {
+        currentTourState = nextStep
         showCurrentStep()
+    }
+
+    private func showNextStepWithDelay(_ nextStep: TourState) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            self.currentTourState = nextStep
+            self.showCurrentStep()
+        }
     }
 
     func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
