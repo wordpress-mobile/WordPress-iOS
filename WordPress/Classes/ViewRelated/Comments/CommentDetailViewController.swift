@@ -10,6 +10,7 @@ protocol CommentDetailsNotificationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)
     func commentWasModerated(for notification: Notification?)
+    func commentWasDeleted(for notification: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -685,6 +686,7 @@ private extension CommentDetailViewController {
     func deleteButtonTapped() {
         deleteComment() { [weak self] success in
             if success {
+                self?.notifyDelegateCommentDeleted()
                 // Dismiss the view since the Comment no longer exists.
                 self?.navigationController?.popViewController(animated: true)
             }
@@ -859,6 +861,14 @@ private extension CommentDetailViewController {
         }
 
         notificationDelegate?.commentWasModerated(for: notification)
+    }
+
+    func notifyDelegateCommentDeleted() {
+        guard let notification = notification else {
+            return
+        }
+
+        notificationDelegate?.commentWasDeleted(for: notification)
     }
 
     func showActionableNotice(title: String) {
