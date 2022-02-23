@@ -304,6 +304,7 @@ import Foundation
     case changeUsernameDismissed
 
     // My Site Dashboard
+    case dashboardCardShown
     case dashboardCardItemTapped
 
     /// A String that represents the event
@@ -815,6 +816,8 @@ import Foundation
             return "change_username_dismissed"
 
         // My Site Dashboard
+        case .dashboardCardShown:
+            return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
 
