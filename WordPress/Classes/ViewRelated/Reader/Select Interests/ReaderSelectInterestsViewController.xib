@@ -69,7 +69,7 @@
                             </subviews>
                             <edgeInsets key="layoutMargins" top="12" left="20" bottom="0.0" right="20"/>
                         </stackView>
-                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4F-fc-WqY" userLabel="Button Container View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4F-fc-WqY" userLabel="Button Container View">
                             <rect key="frame" x="0.0" y="670" width="414" height="66"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kh-rf-B5P" customClass="FancyButton" customModule="WordPressUI">
