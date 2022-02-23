@@ -146,6 +146,8 @@ private extension PostsCardViewModel {
         options.statuses = filter.statuses.strings
         options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
+        options.order = .descending
+        options.orderBy = .byModified
         options.purgesLocalSync = true
 
         guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
@@ -322,8 +324,8 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             }
             break
         case .update:
-            if let indexPath = indexPath, let cell = viewController?.tableView.cellForRow(at: indexPath) {
-                configureCell(cell, at: indexPath)
+            if let indexPath = indexPath {
+                viewController?.tableView.reloadRows(at: [indexPath], with: .fade)
             }
             break
         case .move:
