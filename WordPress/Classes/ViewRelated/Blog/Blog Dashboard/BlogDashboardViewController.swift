@@ -24,7 +24,7 @@ final class BlogDashboardViewController: UIViewController {
         UIActivityIndicatorView()
     }()
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,6 +39,7 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigation()
         setupCollectionView()
         addHeightObservers()
         viewModel.viewDidLoad()
@@ -69,6 +70,10 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.blog = blog
         viewModel.loadCardsFromCache()
         viewModel.loadCards()
+    }
+
+    private func setupNavigation() {
+        title = Strings.home
     }
 
     private func setupCollectionView() {
@@ -121,6 +126,11 @@ extension BlogDashboardViewController {
 }
 
 extension BlogDashboardViewController {
+
+    private enum Strings {
+        static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
+    }
+
 
     private enum Constants {
         static let estimatedWidth: CGFloat = 100

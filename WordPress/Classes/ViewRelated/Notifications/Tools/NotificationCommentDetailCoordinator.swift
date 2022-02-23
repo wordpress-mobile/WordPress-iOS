@@ -6,12 +6,20 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Properties
 
-    private var notification: Notification?
     private var comment: Comment?
     private let managedObjectContext = ContextManager.shared.mainContext
     private var viewController: CommentDetailViewController?
-    private var commentID: NSNumber?
     private var blog: Blog?
+
+    private var notification: Notification? {
+        didSet {
+            markNotificationReadIfNeeded()
+        }
+    }
+
+    private var commentID: NSNumber? {
+        notification?.metaCommentID
+    }
 
     // Arrow navigation data source
     private weak var notificationsNavigationDataSource: NotificationsNavigationDataSource?
@@ -19,6 +27,10 @@ class NotificationCommentDetailCoordinator: NSObject {
     // Closure to be executed whenever the notification that's being currently displayed, changes.
     // This happens due to Navigation Events (Next / Previous)
     var onSelectedNoteChange: ((Notification) -> Void)?
+
+    // Keep track of Notifications that have moderated Comments so they can be updated
+    // the next time the Notifications list is displayed.
+    var notificationsCommentModerated: [Notification] = []
 
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
@@ -38,8 +50,9 @@ class NotificationCommentDetailCoordinator: NSObject {
         configure(with: notification)
 
         if let comment = loadCommentFromCache(commentID) {
-            createViewController(comment: comment)
-            completion(viewController)
+            createViewController(comment: comment) {
+                completion(self.viewController)
+            }
             return
         }
 
@@ -50,8 +63,9 @@ class NotificationCommentDetailCoordinator: NSObject {
                 return
             }
 
-            self.createViewController(comment: comment)
-            completion(self.viewController)
+            self.createViewController(comment: comment) {
+                completion(self.viewController)
+            }
         })
     }
 
@@ -62,12 +76,23 @@ class NotificationCommentDetailCoordinator: NSObject {
 private extension NotificationCommentDetailCoordinator {
 
     func configure(with notification: Notification) {
+        // Clear previous notification's properties.
+        blog = nil
+        comment = nil
+
         self.notification = notification
-        commentID = notification.metaCommentID
 
         if let siteID = notification.metaSiteID {
             blog = Blog.lookup(withID: siteID, in: managedObjectContext)
         }
+    }
+
+    func markNotificationReadIfNeeded() {
+        guard let notification = notification, !notification.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(notification)
     }
 
     func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
@@ -104,7 +129,6 @@ private extension NotificationCommentDetailCoordinator {
         // If the comment has a parent and it is not cached, fetch it so the details header is correct.
         guard let notification = notification,
               let parentID = notification.metaParentID,
-              let blog = blog,
               loadCommentFromCache(parentID) == nil else {
                   completion()
                   return
@@ -115,7 +139,7 @@ private extension NotificationCommentDetailCoordinator {
         })
     }
 
-    func createViewController(comment: Comment) {
+    func createViewController(comment: Comment, completion: @escaping () -> Void) {
         self.comment = comment
 
         fetchParentCommentIfNeeded(completion: { [weak self] in
@@ -125,10 +149,11 @@ private extension NotificationCommentDetailCoordinator {
 
             self.viewController = CommentDetailViewController(comment: comment,
                                                               notification: self.notification,
-                                                              notificationNavigationDelegate: self,
+                                                              notificationDelegate: self,
                                                               managedObjectContext: self.managedObjectContext)
 
             self.updateNavigationButtonStates()
+            completion()
         })
     }
 
@@ -173,6 +198,7 @@ private extension NotificationCommentDetailCoordinator {
 
     func refreshViewController() {
         if let comment = loadCommentFromCache(commentID) {
+            self.comment = comment
             viewController?.refreshView(comment: comment, notification: notification)
             updateNavigationButtonStates()
             return
@@ -184,6 +210,7 @@ private extension NotificationCommentDetailCoordinator {
                 return
             }
 
+            self.comment = comment
             self.viewController?.refreshView(comment: comment, notification: self.notification)
             self.updateNavigationButtonStates()
         })
@@ -209,7 +236,6 @@ private extension NotificationCommentDetailCoordinator {
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
 
-
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
@@ -222,9 +248,9 @@ private extension NotificationCommentDetailCoordinator {
 
 }
 
-// MARK: - CommentDetailsNotificationNavigationDelegate
+// MARK: - CommentDetailsNotificationDelegate
 
-extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNavigationDelegate {
+extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
     func previousNotificationTapped(current: Notification?) {
         guard let current = current,
@@ -244,6 +270,15 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNaviga
 
         WPAnalytics.track(.notificationsNextTapped)
         updateViewWith(notification: nextNotification)
+    }
+
+    func commentWasModerated(for notification: Notification?) {
+        guard let notification = notification,
+        !notificationsCommentModerated.contains(notification) else {
+            return
+        }
+
+        notificationsCommentModerated.append(notification)
     }
 
 }

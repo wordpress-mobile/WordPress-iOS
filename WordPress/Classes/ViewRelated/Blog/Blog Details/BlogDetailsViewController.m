@@ -755,6 +755,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
+    if ([Feature enabled:FeatureFlagMySiteDashboard] && [self.blog isAccessibleThroughWPCom] && ![self splitViewControllerIsHorizontallyCompact]) {
+        [marr addObject:[self homeSectionViewModel]];
+    }
     if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
         [marr addObject:[self jetpackSectionViewModel]];
     } else {
@@ -775,11 +778,26 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
+- (BlogDetailsSection *)homeSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
+                                  accessibilityIdentifier:@"Home Row"
+                                                    image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                 callback:^{
+                                                    [weakSelf showDashboard];
+                                                 }]];
+    
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryHome];
+}
+
 - (BlogDetailsSection *)generalSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-
+    
     BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                   accessibilityIdentifier:@"Stats Row"
                                                     image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
@@ -1003,7 +1021,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                                  image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                                  image:[UIImage gridiconOfType:GridiconTypeGlobe]
                                                                callback:^{
         [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -1530,6 +1548,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
+}
+
+- (void)showDashboard
+{
+    BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showActivity

@@ -156,6 +156,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        syncNotificationsWithModeratedComments()
         setupInlinePrompt()
 
         // Manually deselect the selected row.
@@ -241,6 +242,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -381,6 +383,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         selectedNotification = note
         showDetails(for: note)
+
+        if !splitViewControllerIsHorizontallyCompact {
+            syncNotificationsWithModeratedComments()
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -721,10 +728,10 @@ extension NotificationsViewController {
             return
         }
 
-        presentCommentDetail(for: note)
+        presentDetails(for: note)
     }
 
-    private func presentCommentDetail(for note: Notification) {
+    private func presentDetails(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
@@ -869,6 +876,36 @@ private extension NotificationsViewController {
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
+
+    // With the `notificationCommentDetails` feature, Comment moderation is handled by the view.
+    // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
+    // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
+    // Those Notifications are updated here when the view is shown to update the list accordingly.
+    func syncNotificationsWithModeratedComments() {
+        // If the currently selected notification is about to be removed, find the next available and select it.
+        // This is only necessary for split view to prevent the details from showing for removed notifications.
+        if !splitViewControllerIsHorizontallyCompact,
+           let selectedNotification = selectedNotification,
+           notificationCommentDetailCoordinator.notificationsCommentModerated.contains(selectedNotification) {
+
+            guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
+                  let nextAvailable = notifications.first(where: { !notificationCommentDetailCoordinator.notificationsCommentModerated.contains($0) }),
+                  let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
+                      self.selectedNotification = nil
+                      return
+                  }
+
+            self.selectedNotification = nextAvailable
+            tableView(tableView, didSelectRowAt: indexPath)
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
+            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated = []
+    }
+
 }
 
 

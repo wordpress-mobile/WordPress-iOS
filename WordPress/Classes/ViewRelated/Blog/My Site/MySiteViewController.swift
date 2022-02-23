@@ -12,7 +12,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             case .siteMenu:
                 return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             case .dashboard:
-                return NSLocalizedString("Dashboard", comment: "Title for dashboard view on the My Site screen")
+                return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
             }
         }
     }
@@ -75,6 +75,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         fatalError("Initializer not implemented!")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Blog
 
     /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
@@ -87,7 +91,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            addSitePickerIfNeeded(for: newBlog)
+            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateSegmentedControl(for: newBlog)
         }
@@ -115,6 +119,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
+        subscribeToContentSizeCategory()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +154,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupTransparentNavBar()
     }
 
+    private func subscribeToContentSizeCategory() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
+    }
+
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
@@ -156,11 +168,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func updateSegmentedControl(for blog: Blog) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || UIDevice.isPad()
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
     }
 
     private func setupView() {
         view.backgroundColor = .listBackground
+        configureSegmentedControlFont()
     }
 
     /// This method builds a layout with the following view hierarchy:
@@ -181,7 +194,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
@@ -266,7 +279,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        addSitePickerIfNeeded(for: mainBlog)
+        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
         updateSegmentedControl(for: mainBlog)
     }
@@ -463,6 +476,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
+    func didChangeDynamicType() {
+        configureSegmentedControlFont()
+    }
+
+    private func configureSegmentedControlFont() {
+        let font = WPStyleGuide.fontForTextStyle(.subheadline)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
+    }
+
+    @objc
     func launchSiteCreationFromNotification() {
         self.launchSiteCreation(source: "signup_epilogue")
     }
@@ -536,17 +559,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return blogDetailsViewController
     }
 
-    private func addSitePickerIfNeeded(for blog: Blog) {
-        guard sitePickerViewController == nil else {
+    private func showSitePicker(for blog: Blog) {
+        guard let sitePickerViewController = sitePickerViewController else {
+
+            let sitePickerViewController = makeSitePickerViewController(for: blog)
+            self.sitePickerViewController = sitePickerViewController
+
+            addChild(sitePickerViewController)
+            stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+            sitePickerViewController.didMove(toParent: self)
+
             return
         }
 
-        let sitePickerViewController = makeSitePickerViewController(for: blog)
-        self.sitePickerViewController = sitePickerViewController
-
-        addChild(sitePickerViewController)
-        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
-        sitePickerViewController.didMove(toParent: self)
+        sitePickerViewController.blog = blog
     }
 
     private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {

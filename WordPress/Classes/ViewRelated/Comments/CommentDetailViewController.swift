@@ -2,13 +2,14 @@ import UIKit
 import CoreData
 
 
-@objc protocol CommentDetailsModerationDelegate: AnyObject {
+@objc protocol CommentDetailsDelegate: AnyObject {
     func nextCommentSelected()
 }
 
-protocol CommentDetailsNotificationNavigationDelegate: AnyObject {
+protocol CommentDetailsNotificationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)
+    func commentWasModerated(for notification: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -24,15 +25,15 @@ class CommentDetailViewController: UIViewController {
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
-    @objc weak var moderationDelegate: CommentDetailsModerationDelegate?
+    @objc weak var commentDelegate: CommentDetailsDelegate?
+    private weak var notificationDelegate: CommentDetailsNotificationDelegate?
+
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
-
-    private weak var notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -219,11 +220,11 @@ class CommentDetailViewController: UIViewController {
 
     init(comment: Comment,
          notification: Notification?,
-         notificationNavigationDelegate: CommentDetailsNotificationNavigationDelegate?,
+         notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.notification = notification
-        self.notificationNavigationDelegate = notificationNavigationDelegate
+        self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
     }
@@ -674,11 +675,11 @@ private extension CommentDetailViewController {
     }
 
     @objc func previousButtonTapped() {
-        notificationNavigationDelegate?.previousNotificationTapped(current: notification)
+        notificationDelegate?.previousNotificationTapped(current: notification)
     }
 
     @objc func nextButtonTapped() {
-        notificationNavigationDelegate?.nextNotificationTapped(current: notification)
+        notificationDelegate?.nextNotificationTapped(current: notification)
     }
 
     func deleteButtonTapped() {
@@ -770,6 +771,8 @@ private extension String {
 extension CommentDetailViewController: CommentModerationBarDelegate {
     func statusChangedTo(_ commentStatus: CommentStatusType) {
 
+        notifyDelegateCommentModerated()
+
         switch commentStatus {
         case .pending:
             unapproveComment()
@@ -850,11 +853,26 @@ private extension CommentDetailViewController {
         })
     }
 
+    func notifyDelegateCommentModerated() {
+        guard let notification = notification else {
+            return
+        }
+
+        notificationDelegate?.commentWasModerated(for: notification)
+    }
+
     func showActionableNotice(title: String) {
+        guard !isNotificationComment else {
+            return
+        }
+
         guard viewIsVisible, !isLastInList else {
             displayNotice(title: title)
             return
         }
+
+        // Dismiss any old notices to avoid stacked Next notices.
+        dismissNotice()
 
         displayActionableNotice(title: title,
                                 style: NormalNoticeStyle(showNextArrow: true),
@@ -870,7 +888,7 @@ private extension CommentDetailViewController {
         }
 
         WPAnalytics.track(.commentSnackbarNext)
-        moderationDelegate?.nextCommentSelected()
+        commentDelegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
