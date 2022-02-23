@@ -3,6 +3,12 @@ import Gridicons
 import Foundation
 import UIKit
 
+@objc enum QuickStartTourOrigin: Int {
+    case unknown
+    case blogDetails
+    case blogDashboard
+}
+
 open class QuickStartTourGuide: NSObject {
     var navigationSettings = QuickStartNavigationSettings()
     private var currentSuggestion: QuickStartTour?
@@ -13,6 +19,8 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
+    /// Represents the origin from which the current tour is triggered
+    @objc var currentTourOrigin: QuickStartTourOrigin = .unknown
 
     @objc static let shared = QuickStartTourGuide()
 
@@ -135,7 +143,7 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if tour.shownInBlogDetails && !UIDevice.isPad() {
+        if currentTourOrigin == .blogDashboard && tour.shownInBlogDetails && !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
             tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)

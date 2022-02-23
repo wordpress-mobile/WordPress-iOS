@@ -437,6 +437,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([tourGuide currentElementInt] == QuickStartTourElementSiteMenu) {
         [tourGuide visited: QuickStartTourElementSiteMenu];
     }
+    
+    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator

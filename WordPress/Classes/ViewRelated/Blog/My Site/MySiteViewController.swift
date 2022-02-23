@@ -341,7 +341,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
-            spotlightIsShown = false
+            siteMenuSpotlightIsShown = false
             hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
