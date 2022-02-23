@@ -844,11 +844,13 @@ private extension CommentDetailViewController {
 
     func deleteComment(completion: ((Bool) -> Void)? = nil) {
         CommentAnalytics.trackCommentTrashed(comment: comment)
+        deleteButtonCell.isLoading = true
 
         commentService.delete(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
             completion?(true)
         }, failure: { [weak self] error in
+            self?.deleteButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.deleteFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             completion?(false)
