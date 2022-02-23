@@ -543,14 +543,7 @@ class WeeklyRoundupNotificationScheduler {
                 return
             }
 
-            let title: String = {
-                if let siteTitle = siteTitle {
-                    return String(format: TextContent.dynamicNotificationTitle, siteTitle)
-                } else {
-                    return TextContent.staticNotificationTitle
-                }
-            }()
-
+        let title = notificationTitle(siteTitle)
         let body = String(format: TextContent.dynamicNotificationBody, views, comments, likes)
 
         // The dynamic notification date is defined by when the background task is run.
@@ -645,6 +638,14 @@ class WeeklyRoundupNotificationScheduler {
             }
 
             completion(true)
+        }
+    }
+
+    func notificationTitle(_ siteTitle: String?) -> String {
+        if let siteTitle = siteTitle {
+            return String(format: TextContent.dynamicNotificationTitle, siteTitle)
+        } else {
+            return TextContent.staticNotificationTitle
         }
     }
 
