@@ -76,6 +76,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         stackView.removeAllSubviews()
     }
 
+    /// Embed the post list into a "card frame" and display it
     private func showCard(forBlog blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hidesHeader: Bool = false, shouldSync: Bool = true) {
         // Get the VC to present posts
         let childViewController = createOrDequeueVC(blog: blog,
