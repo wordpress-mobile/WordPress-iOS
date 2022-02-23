@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 enum InsightType: Int, SiteStatsPinnable {
     case growAudience
@@ -65,4 +66,33 @@ enum InsightType: Int, SiteStatsPinnable {
             return nil
         }
     }
+    /// returns the data to fetch for each card type. Some cards may require more than one type.
+    /// The same type might be needed for more than one card.
+    var insightsDataForSection: [InsightDataType] {
+        switch self {
+        case .mostPopularTime, .annualSiteStats:
+            return [.annualAndMostPopular]
+        case .followers:
+            return [.followers]
+        case .followersTotals:
+            return [.followers, .publicize]
+        case .publicize:
+            return [.publicize]
+        case .growAudience, .allTimeStats:
+            return [.allTime]
+        case .todaysStats:
+            return [.today]
+        case .comments:
+            return [.comments]
+        case .postingActivity:
+            return [.postingActivity]
+        case .latestPostSummary:
+            return [.latestPost]
+        case .tagsAndCategories:
+            return [.tagsAndCategories]
+        default:
+            return []
+        }
+    }
 }
+
