@@ -14,6 +14,7 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get set }
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
+    var shownInBlogDetails: Bool { get }
 }
 
 extension QuickStartTour {
@@ -24,6 +25,12 @@ extension QuickStartTour {
     }
 
     var showWaypointNotices: Bool {
+        get {
+            return true
+        }
+    }
+
+    var shownInBlogDetails: Bool {
         get {
             return true
         }
@@ -166,6 +173,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -200,6 +208,7 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let icon = UIImage.gridicon(.pencil)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -220,6 +229,7 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
