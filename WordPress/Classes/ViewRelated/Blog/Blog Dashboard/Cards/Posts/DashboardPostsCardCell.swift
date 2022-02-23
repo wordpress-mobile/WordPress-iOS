@@ -56,16 +56,16 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         clearFrames()
 
         if !hasDrafts && !hasScheduled {
-            showCard(forBlog: blog, status: .draft, to: viewController,
+            showCard(for: blog, status: .draft, to: viewController,
                      hasPublishedPosts: hasPublished, hidesHeader: true, shouldSync: false)
         } else {
             if hasDrafts {
-                showCard(forBlog: blog, status: .draft, to: viewController,
+                showCard(for: blog, status: .draft, to: viewController,
                          hasPublishedPosts: hasPublished)
             }
 
             if hasScheduled {
-                showCard(forBlog: blog, status: .scheduled, to: viewController,
+                showCard(for: blog, status: .scheduled, to: viewController,
                          hasPublishedPosts: hasPublished)
             }
         }
@@ -77,7 +77,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
     }
 
     /// Embed the post list into a "card frame" and display it
-    private func showCard(forBlog blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hidesHeader: Bool = false, shouldSync: Bool = true) {
+    private func showCard(for blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hidesHeader: Bool = false, shouldSync: Bool = true) {
         // Get the VC to present posts
         let childViewController = createOrDequeueVC(blog: blog,
                                                     status: status,
