@@ -25,7 +25,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 20
+        stackView.spacing = Constants.spacing
         return stackView
     }()
 
@@ -88,7 +88,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         // Create the card frame and configure
         let frame = BlogDashboardCardFrameView()
         frame.title = status == .draft ? Strings.draftsTitle : Strings.scheduledTitle
-        frame.icon = UIImage.gridicon(.posts, size: CGSize(width: 18, height: 18))
+        frame.icon = UIImage.gridicon(.posts, size: Constants.iconSize)
 
         if hidesHeader {
             frame.hideHeader()
@@ -138,6 +138,11 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
     private enum Strings {
         static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
+    }
+
+    private enum Constants {
+        static let spacing: CGFloat = 20
+        static let iconSize = CGSize(width: 18, height: 18)
     }
 }
 
