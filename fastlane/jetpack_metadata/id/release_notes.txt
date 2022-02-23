@@ -1,9 +1,0 @@
-Dengan versi Jetpack terbaru ini, kami melakukan perubahan desain untuk memberikan pengalaman pengguna lebih baik bagi Anda.
-
-- Sekarang blok teks di editor blok akan menyesuaikan teks saat Anda mengubah ukuran font dan tinggi baris untuk tema blok.
-- Kami mendesain ulang beberapa layar di aplikasi, termasuk Situs Saya. Tampilan baru!
-- Kami sangat suka bila kotak masuk bersih, jadi kami menambahkan tombol untuk menandai semua pemberitahuan yang telah disaring sebagai sudah dibaca.
-- Di menu tab situs Konfigurasi > Orang, kami menambahkan penyaring email untuk melihat, mempelajari lebih lanjut, dan bahkan membuang pengikut email.
-- Pada komentar berutas, kami menghapus ikon Bagikan dan menggantinya dengan fungsi untuk memoderasi komentar dalam utas.
-- Jika Anda mengubah media pada blok Gambar yang juga digunakan sebagai Gambar Andalan pos, Anda akan melihat permintaan konfirmasi untuk mengganti Gambar Andalan.
-- Kami meningkatkan navigasi Statistik sehingga Anda dapat lebih mudah beralih antara Hari dan Wawasan. Anda juga dapat membuat kartu statistik baru langsung dari layar Statistik menggunakan ikon navigasi baru kami.
