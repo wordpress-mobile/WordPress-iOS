@@ -570,7 +570,9 @@ private extension StatsInsightsStore {
         transaction { state in
             state.lastPostSummaryStatus = error != nil ? .error : .success
         }
-        fetchOverview()
+        if !FeatureFlag.statsPerformanceImprovements.enabled {
+            fetchOverview()
+        }
     }
 
     func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?, _ error: Error?) {
