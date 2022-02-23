@@ -258,10 +258,118 @@ private extension StatsInsightsStore {
 
     // MARK: - Insights Overview
 
-    func fetchInsights() {
-        setAllFetchingStatus(.loading)
-        fetchLastPostSummary()
+    func fetchInsights(_ newInsightsFeatureFlag: Bool) {
+        guard newInsightsFeatureFlag else {
+            setAllFetchingStatus(.loading)
+            fetchLastPostSummary()
+            return
+        }
+        updateFetchingStatusForActiveCards(.loading)
+        fetchInsightsCards()
     }
+
+    func fetchInsightsCards() {
+
+        guard let api = statsRemote() else {
+            setAllFetchingStatus(.idle)
+            return
+        }
+
+        currentDataTypes.forEach {
+            fetchInsightsForCard(type: $0, api: api)
+        }
+    }
+
+    func fetchInsightsForCard(type: InsightDataType, api: StatsServiceRemoteV2) {
+        switch type {
+        case .latestPost:
+            api.getInsight { (lastPost: StatsLastPostInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching last posts insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
+                DDLogInfo("Stats: Insights - successfully fetched latest post summary")
+            }
+        case .allTime:
+            api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching all time insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
+                DDLogInfo("Stats: Insights - successfully fetched all time")
+            }
+
+        case .annualAndMostPopular:
+            api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching annual/most popular time: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
+                DDLogInfo("Stats: Insights - successfully fetched annual and most popular")
+            }
+        case .tagsAndCategories:
+            api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching tags and categories insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched tags and categories")
+            }
+
+        case .comments:
+            api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching comment insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
+                DDLogInfo("Stats: Insights - successfully fetched comments")
+            }
+        case .followers:
+            api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching WP.com followers: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
+                DDLogInfo("Stats: Insights - successfully fetched wp.com followers")
+            }
+
+            api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching email followers: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
+                DDLogInfo("Stats: Insights - successfully fetched email followers")
+            }
+        case .today:
+            api.getInsight { (todayInsight: StatsTodayInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching today's insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched today")
+            }
+        case .postingActivity:
+            api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching posting activity insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
+                DDLogInfo("Stats: Insights - successfully fetched posting activity")
+            }
+        case .publicize:
+            api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching publicize insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched publicize")
+            }
+        }
+    }
+
 
     func fetchOverview() {
         guard let api = statsRemote() else {
