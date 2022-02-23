@@ -9,6 +9,8 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 ///
 /// This class handles showing posts from the database, syncing and interacting with them
 ///
+/// If posts are not available, a "write your next post" prompt is shown.
+///
 @objc class PostsCardViewController: UIViewController {
     var blog: Blog
 
