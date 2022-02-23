@@ -511,7 +511,7 @@ private extension StatsInsightsStore {
         }
 
         persistToCoreData()
-        fetchInsights()
+        fetchInsights(FeatureFlag.statsPerformanceImprovements.enabled)
     }
 
     func fetchLastPostSummary() {
