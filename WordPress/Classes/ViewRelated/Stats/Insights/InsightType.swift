@@ -95,3 +95,17 @@ enum InsightType: Int, SiteStatsPinnable {
     }
 }
 
+/// Represents the api to be called by one (or more) insight card(s)
+/// It's used to support cases like two or more cards that need the same api call,
+/// as well as cards that need more than one api call
+enum InsightDataType: Int {
+    case latestPost
+    case allTime
+    case annualAndMostPopular
+    case followers
+    case publicize
+    case tagsAndCategories
+    case comments
+    case today
+    case postingActivity
+}
