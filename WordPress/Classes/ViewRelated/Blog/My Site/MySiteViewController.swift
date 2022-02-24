@@ -162,10 +162,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupTransparentNavBar()
 
         createFABIfNeeded()
-
-        if let blog = blog, tabBarController is WPTabBarController {
-            createButtonCoordinator?.showCreateButton(for: blog)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -482,10 +478,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - FAB
 
     private func createFABIfNeeded() {
+        createButtonCoordinator?.removeCreateButton()
         createButtonCoordinator = makeCreateButtonCoordinator()
         createButtonCoordinator?.add(to: view,
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if let blog = blog, tabBarController is WPTabBarController {
+            createButtonCoordinator?.showCreateButton(for: blog)
+        }
     }
 
 // MARK: - Add Site Alert
