@@ -269,7 +269,6 @@ private extension StatsInsightsStore {
     }
 
     func fetchInsightsCards() {
-
         guard let api = statsRemote() else {
             setAllFetchingStatus(.idle)
             return
