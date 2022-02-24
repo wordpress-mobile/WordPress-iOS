@@ -6,6 +6,6 @@ We fixed the flickering effect in Preview mode when you’re toggling between di
 
 When you add a new Insights card on the Stats screen, your screen view will jump down to show your brand-new card.
 
-You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Trash button. We also translated the button text into Turkish. Delightful.
+You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Trash button. Delightful.
 
 Finally, you’ll see an error message if a media upload fails for reasons other than not being connected to the Internet. This is much better than the infinitely loading progress bar you might have seen previously.
