@@ -84,6 +84,7 @@ class PostsCardViewModel: NSObject {
             self.blog = blog
             self.status = status
             self.shouldSync = shouldSync
+            self.syncing = nil
             performInitialLoading()
             refresh()
         } else {
