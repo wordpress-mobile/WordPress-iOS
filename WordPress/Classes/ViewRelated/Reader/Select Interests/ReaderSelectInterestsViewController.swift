@@ -35,7 +35,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonContainerView: UIView!
     @IBOutlet weak var nextButton: FancyButton!
-    @IBOutlet weak var contentContainerView: UIView!
+    @IBOutlet weak var contentContainerView: UIStackView!
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var loadingLabel: UILabel!
@@ -219,9 +219,9 @@ class ReaderSelectInterestsViewController: UIViewController {
         if let buttonTitle = configuration.buttonTitle {
             nextButton.setTitle(buttonTitle.enabled, for: .normal)
             nextButton.setTitle(buttonTitle.disabled, for: .disabled)
-            nextButton.isHidden = false
+            buttonContainerView.isHidden = false
         } else {
-            nextButton.isHidden = true
+            buttonContainerView.isHidden = true
         }
 
         loadingLabel.text = configuration.loading
