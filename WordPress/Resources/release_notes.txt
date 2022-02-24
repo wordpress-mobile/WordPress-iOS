@@ -1,5 +1,9 @@
-* [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
-* [*] Stats: Scroll to new Insights card when added. [#17894]
-* [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
-* [*] Block editor: Additional error messages for media upload failures. [#17971]
-* [**] Adds animated Gif support in notifications and comments [#17981]
+Dust off your .gif collection—notifications and comments now support your favorite animated files! (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif.”)
+
+We fixed the flickering effect in Preview mode when you’re toggling between different screen sizes or orientations.
+
+When you add a new Insights card on the Stats screen, your screen view will jump down to show your brand-new card.
+
+You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Trash button. We also translated the button text into Turkish. Delightful.
+
+Finally, you’ll see an error message if a media upload fails for reasons other than not being connected to the Internet. This is much better than the infinitely loading progress bar you might have seen previously.
