@@ -64,9 +64,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return refreshControl
     }()
 
-    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        makeCreateButtonCoordinator()
-    }()
+    private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -129,9 +127,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
-        createButtonCoordinator.add(to: view,
-                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
-                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -148,7 +143,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewWillDisappear(animated)
 
         setupOpaqueNavBar()
-        createButtonCoordinator.hideCreateButton()
+        createButtonCoordinator?.hideCreateButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -166,19 +161,21 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         setupTransparentNavBar()
 
+        createFABIfNeeded()
+
         if let blog = blog, tabBarController is WPTabBarController {
-            createButtonCoordinator.showCreateButton(for: blog)
+            createButtonCoordinator?.showCreateButton(for: blog)
         }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        createButtonCoordinator.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        createButtonCoordinator.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
     }
 
     private func subscribeToContentSizeCategory() {
@@ -482,6 +479,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         noResultsScrollView = nil
     }
 
+    // MARK: - FAB
+
+    private func createFABIfNeeded() {
+        createButtonCoordinator = makeCreateButtonCoordinator()
+        createButtonCoordinator?.add(to: view,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
 // MARK: - Add Site Alert
 
     @objc
@@ -630,6 +636,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
+            self.createFABIfNeeded()
         }
 
         return sitePickerViewController
