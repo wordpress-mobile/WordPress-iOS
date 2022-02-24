@@ -528,6 +528,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
+        writeInsightsToUserDefaults()
+        refreshInsights(forceRefresh: true)
         updateView()
         scrollToNewCard()
     }
