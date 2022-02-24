@@ -217,7 +217,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
         navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
 
         // Workaround:
@@ -242,10 +242,18 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupTransparentNavBar() {
         navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
+        if FeatureFlag.mySiteDashboard.enabled {
+            let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
+            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
+        }
     }
 
     private func setupOpaqueNavBar() {
         navigationController?.navigationBar.scrollEdgeAppearance?.configureWithOpaqueBackground()
+        if FeatureFlag.mySiteDashboard.enabled {
+            let solidTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appBarText]
+            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = solidTitleAttributes
+        }
     }
 
     // MARK: - Account
