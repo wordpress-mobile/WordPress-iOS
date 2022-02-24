@@ -78,17 +78,19 @@ class PostsCardViewModel: NSObject {
     }
 
     /// Update currently displayed posts for the given blog and status
-    func update(blog: Blog, status: BasePost.Status) {
+    func update(blog: Blog, status: BasePost.Status, shouldSync: Bool) {
         if self.blog != blog || self.status != status {
             // If blog and/or status is different, reset the VC
             self.blog = blog
             self.status = status
+            self.shouldSync = shouldSync
             performInitialLoading()
             refresh()
         } else {
             // If they're the same, just sync if needed
             self.blog = blog
             self.status = status
+            self.shouldSync = shouldSync
             syncIfNeeded()
         }
 

@@ -62,7 +62,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
         self.status = status
         self.hasPublishedPosts = hasPublishedPosts
         self.shouldSync = shouldSync
-        viewModel?.update(blog: blog, status: status)
+        viewModel?.update(blog: blog, status: status, shouldSync: shouldSync)
     }
 }
 
