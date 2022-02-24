@@ -1,6 +1,11 @@
 import UIKit
 import CoreData
 
+// Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
+extension NSNotification.Name {
+    static let NotificationCommentDeletedNotification = NSNotification.Name(rawValue: "NotificationCommentDeletedNotification")
+}
+let userInfoCommentIdKey = "commentID"
 
 @objc protocol CommentDetailsDelegate: AnyObject {
     func nextCommentSelected()
@@ -10,7 +15,6 @@ protocol CommentDetailsNotificationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)
     func commentWasModerated(for notification: Notification?)
-    func commentWasDeleted(for notification: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -684,9 +688,10 @@ private extension CommentDetailViewController {
     }
 
     func deleteButtonTapped() {
+        let commentID = comment.commentID
         deleteComment() { [weak self] success in
             if success {
-                self?.notifyDelegateCommentDeleted()
+                self?.postNotificationCommentDeleted(commentID)
                 // Dismiss the view since the Comment no longer exists.
                 self?.navigationController?.popViewController(animated: true)
             }
@@ -858,19 +863,13 @@ private extension CommentDetailViewController {
     }
 
     func notifyDelegateCommentModerated() {
-        guard let notification = notification else {
-            return
-        }
-
         notificationDelegate?.commentWasModerated(for: notification)
     }
 
-    func notifyDelegateCommentDeleted() {
-        guard let notification = notification else {
-            return
-        }
-
-        notificationDelegate?.commentWasDeleted(for: notification)
+    func postNotificationCommentDeleted(_ commentID: Int32) {
+        NotificationCenter.default.post(name: .NotificationCommentDeletedNotification,
+                                        object: nil,
+                                        userInfo: [userInfoCommentIdKey: commentID])
     }
 
     func showActionableNotice(title: String) {
