@@ -1123,7 +1123,6 @@
 		73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */; };
 		73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC5E212622B200ADDDD2 /* Localizable.strings */; };
 		73D86969223AF4040064920F /* StatsChartLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D86968223AF4040064920F /* StatsChartLegendView.swift */; };
-		73E32389212CD8B5001B735C /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		73E4E376227A033A0007D752 /* PostChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E4E375227A033A0007D752 /* PostChart.swift */; };
@@ -2118,6 +2117,8 @@
 		C72A4F8E26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */; };
 		C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */; };
 		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
+		C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
+		C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
 		C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */; };
 		C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */; };
 		C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */; };
@@ -6817,6 +6818,7 @@
 		C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNoSitesErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackWindowManager.swift; sourceTree = "<group>"; };
 		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
+		C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedGifAttachmentViewProvider.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
 		C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanStatusCell.xib; sourceTree = "<group>"; };
 		C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryViewController.swift; sourceTree = "<group>"; };
@@ -10220,6 +10222,7 @@
 				5D6C4B0E1B604190005E3C43 /* NSAttributedString+RichTextView.swift */,
 				5D6C4B0F1B604190005E3C43 /* RichTextView.swift */,
 				5D6C4B101B604190005E3C43 /* UITextView+RichTextView.swift */,
+				C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */,
 			);
 			path = RichTextView;
 			sourceTree = "<group>";
@@ -17686,6 +17689,7 @@
 				9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */,
 				1759F1701FE017BF0003EC81 /* Queue.swift in Sources */,
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
+				C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
 				B543D2B520570B5A00D3D4CC /* WordPressComSyncService.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
@@ -18930,7 +18934,6 @@
 				73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */,
 				73F6DD45212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
 				73EDC70A212E5D6700E5E3ED /* RemoteNotificationStyles.swift in Sources */,
-				73E32389212CD8B5001B735C /* NSAttributedString+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -20007,6 +20010,7 @@
 				FABB22862602FC2C00C8785C /* RegisterDomainSuggestionsViewController.swift in Sources */,
 				FABB22872602FC2C00C8785C /* PostService+MarkAsFailedAndDraftIfNeeded.swift in Sources */,
 				FABB22882602FC2C00C8785C /* UserSuggestion+CoreDataProperties.swift in Sources */,
+				C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */,
 				FABB22892602FC2C00C8785C /* FollowersCountStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB228A2602FC2C00C8785C /* ReaderHeaderAction.swift in Sources */,
 				C72A4F8E26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift in Sources */,

@@ -1,9 +1,0 @@
-Om je gebruikerservaring nóg beter te maken hebben we het ontwerp van Jetpack wat veranderd in deze nieuwste versie.
-
-- Tekstblokken in de blokeditor passen nu met de tekst mee aan als je de lettertypegrootte en regelafstand voor je blokthema’s aanpast.
-- Sommige schermen in de app, waaronder Mijn site, hebben een nieuw ontwerp. Ziet er goed uit!
-- Iedereen houdt wel van een opgeruimde inbox. Daarom hebben we een knop toegevoegd die je alle gefilterde meldingen als gelezen laat markeren.
-- In het menu in het tabblad Configureren > Mensen hebben we een e-mailfilter toegevoegd waardoor je e-mailvolgers kunt zien, informatie over ze kunt bekijken en ze zelfs kunt verwijderen.
-- Bij reacties in threads hebben we het Deel-pictogram verwijderd en de mogelijkheid toegevoegd om reacties binnen een thread te beheren.
-- Als je de media verandert in een afbeeldingblok dat ook als de uitgelichte afbeelding van een bericht wordt gebruikt, krijg je vanaf nu een prompt of je de uitgelichte afbeelding ook wilt vervangen.
-- We hebben de navigatie in het Statistiekenvenster verbeterd zodat je makkelijker tussen Dagen en Inzichten kunt bewegen. Je kunt ook direct uit het Statistiekenvenster nieuwe statistiekenkaarten toevoegen met ons nieuwe navigatiepictogram.
