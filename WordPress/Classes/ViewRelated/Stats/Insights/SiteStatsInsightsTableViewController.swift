@@ -27,12 +27,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     private let insightsStore = StoreContainer.shared.statsInsights
 
-    // Store Insights settings for all sites.
-    // Used when writing to/reading from User Defaults.
-    // A single site's dictionary contains the InsightType values for that site.
-    private var allSitesInsights = [SiteInsights]()
-    private typealias SiteInsights = [String: [Int]]
-
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false
 
@@ -202,38 +196,12 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: User Defaults
 
     func loadInsightsFromUserDefaults() {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            insightsToShow = InsightType.defaultInsights
-            loadPinnedCards()
-            return
-        }
-
-        // Get Insights from User Defaults, and extract those for the current site.
-        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [SiteInsights] ?? []
-        let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
-
-        // If no Insights for the current site, use the default Insights.
-        let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
-        insightsToShow = InsightType.typesForValues(insightTypesValues)
-
+        insightsToShow = SiteStatsInformation.sharedInstance.getCurrentSiteInsights()
         loadPinnedCards()
     }
 
     func writeInsightsToUserDefaults() {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            return
-        }
-
-        let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
-        let currentSiteInsights = [siteID: insightTypesValues]
-
-        // Remove existing dictionary from array, and add the updated one.
-        allSitesInsights = allSitesInsights.filter { $0.keys.first != siteID }
-        allSitesInsights.append(currentSiteInsights)
-
-        UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
+        SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(insightsToShow)
     }
 
     func loadPinnedCards() {
