@@ -129,13 +129,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        setupTransparentNavBar()
+        setupNavBarAppearance()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        setupOpaqueNavBar()
+        resetNavBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -151,7 +151,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         trackNoSitesVisibleIfNeeded()
 
-        setupTransparentNavBar()
+        setupNavBarAppearance()
     }
 
     private func subscribeToContentSizeCategory() {
@@ -240,7 +240,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
-    private func setupTransparentNavBar() {
+    private func setupNavBarAppearance() {
         navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
         if FeatureFlag.mySiteDashboard.enabled {
             let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
@@ -248,12 +248,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private func setupOpaqueNavBar() {
-        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithOpaqueBackground()
-        if FeatureFlag.mySiteDashboard.enabled {
-            let solidTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appBarText]
-            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = solidTitleAttributes
-        }
+    private func resetNavBarAppearance() {
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     // MARK: - Account
