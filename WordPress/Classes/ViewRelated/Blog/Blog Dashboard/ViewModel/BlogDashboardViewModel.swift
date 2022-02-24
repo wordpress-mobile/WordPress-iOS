@@ -26,7 +26,7 @@ class BlogDashboardViewModel {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
 
             if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
-                cellConfigurable.configure(blog: blog, viewController: viewController, dataModel: identifier.cellViewModel)
+                cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: identifier.apiResponse)
             }
 
             return cell
@@ -42,9 +42,7 @@ class BlogDashboardViewModel {
 
     /// Apply the initial configuration when the view loaded
     func viewDidLoad() {
-        // This is necessary when using an IntrinsicCollectionView
-        // Otherwise, the collection view will never update its height
-        applySnapshotForInitialData()
+        loadCardsFromCache()
     }
 
     /// Call the API to return cards for the current blog
@@ -58,11 +56,17 @@ class BlogDashboardViewModel {
         service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
+        }, failure: { [weak self] in
+            self?.viewController?.stopLoading()
         })
     }
 
-    func applySnapshotForInitialData() {
-        let snapshot = DashboardSnapshot()
+    func loadCardsFromCache() {
+        guard let dotComID = blog.dotComID?.intValue else {
+            return
+        }
+
+        let snapshot = service.fetchLocal(wpComID: dotComID)
         apply(snapshot: snapshot)
     }
 

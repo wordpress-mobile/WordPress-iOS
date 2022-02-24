@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-08 12:26:45+0000 */
+/* Translation-Revision-Date: 2022-02-11 10:17:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -1097,7 +1097,7 @@ translators: Block name. %s: The localized block name */
 "Blog post" = "Blogginlägg";
 
 /* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-postprenumerant för blogg";
+"Blog's Email Follower" = "E-postföljare för bloggen";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
 "Blog's Follower" = "Bloggens följare";
@@ -2652,7 +2652,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "E-postadress";
 
 /* Blog Email Followers */
-"Email Followers" = "Skicka e-post till följare";
+"Email Followers" = "E-postföljare";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.

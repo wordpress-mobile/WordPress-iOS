@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import Gridicons
+import UIKit
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -96,6 +97,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    /// If set, when the post list appear it will show the tab for this status
+    var initialFilterWithPostStatus: BasePost.Status?
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -106,6 +110,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.restorationClass = self
 
         return controller
+    }
+
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
+        let controller = PostListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.initialFilterWithPostStatus = postStatus
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
     }
 
     // MARK: - UIViewControllerRestoration
@@ -159,6 +172,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        configureInitialFilterIfNeeded()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
@@ -354,6 +369,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             tableView.reloadSections([0], with: .automatic)
             ghostableTableView.reloadSections([0], with: .automatic)
         }
+    }
+
+    private func configureInitialFilterIfNeeded() {
+        guard let initialFilterWithPostStatus = initialFilterWithPostStatus else {
+            return
+        }
+
+        filterSettings.setFilterWithPostStatus(initialFilterWithPostStatus)
     }
 
     // Mark - Layout Methods

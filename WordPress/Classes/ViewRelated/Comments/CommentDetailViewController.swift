@@ -1,8 +1,16 @@
 import UIKit
 import CoreData
 
+
 @objc protocol CommentDetailsDelegate: AnyObject {
     func nextCommentSelected()
+}
+
+protocol CommentDetailsNotificationDelegate: AnyObject {
+    func previousNotificationTapped(current: Notification?)
+    func nextNotificationTapped(current: Notification?)
+    func commentWasModerated(for notification: Notification?)
+    func commentWasDeleted(for notification: Notification?)
 }
 
 class CommentDetailViewController: UIViewController {
@@ -18,7 +26,9 @@ class CommentDetailViewController: UIViewController {
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
-    @objc weak var delegate: CommentDetailsDelegate?
+    @objc weak var commentDelegate: CommentDetailsDelegate?
+    private weak var notificationDelegate: CommentDetailsNotificationDelegate?
+
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
@@ -111,7 +121,19 @@ class CommentDetailViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
-    private lazy var parentComment: Comment? = {
+    // Sometimes the parent information of a comment reply notification is in the meta block.
+    private var notificationParentComment: Comment? {
+        guard let parentID = notification?.metaParentID,
+              let siteID = notification?.metaSiteID,
+              let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
+              let parentComment = commentService.findComment(withID: parentID, in: blog) else {
+                  return nil
+              }
+
+        return parentComment
+    }
+
+    private var parentComment: Comment? {
         guard comment.hasParentComment(),
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
@@ -119,7 +141,7 @@ class CommentDetailViewController: UIViewController {
               }
 
         return parentComment
-    }()
+    }
 
     // transparent navigation bar style with visual blur effect.
     private lazy var blurredBarAppearance: UINavigationBarAppearance = {
@@ -175,6 +197,17 @@ class CommentDetailViewController: UIViewController {
         return button
     }()
 
+    var previousButtonEnabled = false {
+        didSet {
+            previousButton.isEnabled = previousButtonEnabled
+        }
+    }
+    var nextButtonEnabled = false {
+        didSet {
+            nextButton.isEnabled = nextButtonEnabled
+        }
+    }
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -187,10 +220,12 @@ class CommentDetailViewController: UIViewController {
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: Notification?,
+         notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
         self.notification = notification
+        self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
     }
@@ -207,6 +242,7 @@ class CommentDetailViewController: UIViewController {
         configureReplyView()
         setupKeyboardManager()
         configureSuggestionsView()
+        configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
@@ -224,7 +260,7 @@ class CommentDetailViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureNavigationBar()
+        configureNavBarButtons()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -238,13 +274,21 @@ class CommentDetailViewController: UIViewController {
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
     }
 
-    @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
+    // Update the Comment being displayed.
+    @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
         replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
+
+    // Update the Notification Comment being displayed.
+    func refreshView(comment: Comment, notification: Notification?) {
+        self.notification = notification
+        displayComment(comment)
+    }
+
 }
 
 // MARK: - Private Helpers
@@ -311,8 +355,6 @@ private extension CommentDetailViewController {
 
         navigationController?.navigationBar.isTranslucent = true
         title = viewTitle
-
-        configureNavBarButtons()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -422,7 +464,7 @@ private extension CommentDetailViewController {
 
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
-        if let parentComment = self.parentComment {
+        if let parentComment = self.parentComment ?? notificationParentComment {
             return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
                                         subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
         }
@@ -432,26 +474,26 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { _ in
-            self.tableView.performBatchUpdates({})
+        cell.configure(with: comment) { [weak self] _ in
+            self?.tableView.performBatchUpdates({})
         }
 
-        cell.contentLinkTapAction = { url in
+        cell.contentLinkTapAction = { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
-            self.openWebView(for: url)
+            self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonAction = { senderView in
-            self.shareCommentURL(senderView)
+        cell.accessoryButtonAction = { [weak self] senderView in
+            self?.shareCommentURL(senderView)
         }
 
-        cell.likeButtonAction = {
-            self.toggleCommentLike()
+        cell.likeButtonAction = { [weak self] in
+            self?.toggleCommentLike()
         }
 
-        cell.replyButtonAction = {
-            self.showReplyView()
+        cell.replyButtonAction = { [weak self] in
+            self?.showReplyView()
         }
     }
 
@@ -542,6 +584,26 @@ private extension CommentDetailViewController {
 
     // MARK: Actions and navigations
 
+    // Shows the comment thread with the Notification comment highlighted.
+    func navigateToNotificationComment() {
+        guard let siteID = siteID,
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI) else {
+                  openWebView(for: comment.commentURL())
+                  return
+              }
+
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: siteID,
+                                                          commentID: NSNumber(value: comment.commentID),
+                                                          source: .commentNotification)
+    }
+
+
+
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment = parentComment,
@@ -568,7 +630,7 @@ private extension CommentDetailViewController {
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
                                                           commentID: NSNumber(value: replyID),
-                                                          source: .mySiteComment)
+                                                          source: isNotificationComment ? .commentNotification : .mySiteComment)
     }
 
     func navigateToPost() {
@@ -614,18 +676,17 @@ private extension CommentDetailViewController {
     }
 
     @objc func previousButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("previousButtonTapped")
+        notificationDelegate?.previousNotificationTapped(current: notification)
     }
 
     @objc func nextButtonTapped() {
-        // TODO: handle notification change
-        DDLogInfo("nextButtonTapped")
+        notificationDelegate?.nextNotificationTapped(current: notification)
     }
 
     func deleteButtonTapped() {
         deleteComment() { [weak self] success in
             if success {
+                self?.notifyDelegateCommentDeleted()
                 // Dismiss the view since the Comment no longer exists.
                 self?.navigationController?.popViewController(animated: true)
             }
@@ -712,6 +773,8 @@ private extension String {
 extension CommentDetailViewController: CommentModerationBarDelegate {
     func statusChangedTo(_ commentStatus: CommentStatusType) {
 
+        notifyDelegateCommentModerated()
+
         switch commentStatus {
         case .pending:
             unapproveComment()
@@ -781,22 +844,47 @@ private extension CommentDetailViewController {
 
     func deleteComment(completion: ((Bool) -> Void)? = nil) {
         CommentAnalytics.trackCommentTrashed(comment: comment)
+        deleteButtonCell.isLoading = true
 
         commentService.delete(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
             completion?(true)
         }, failure: { [weak self] error in
+            self?.deleteButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.deleteFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             completion?(false)
         })
     }
 
+    func notifyDelegateCommentModerated() {
+        guard let notification = notification else {
+            return
+        }
+
+        notificationDelegate?.commentWasModerated(for: notification)
+    }
+
+    func notifyDelegateCommentDeleted() {
+        guard let notification = notification else {
+            return
+        }
+
+        notificationDelegate?.commentWasDeleted(for: notification)
+    }
+
     func showActionableNotice(title: String) {
+        guard !isNotificationComment else {
+            return
+        }
+
         guard viewIsVisible, !isLastInList else {
             displayNotice(title: title)
             return
         }
+
+        // Dismiss any old notices to avoid stacked Next notices.
+        dismissNotice()
 
         displayActionableNotice(title: title,
                                 style: NormalNoticeStyle(showNextArrow: true),
@@ -812,7 +900,7 @@ private extension CommentDetailViewController {
         }
 
         WPAnalytics.track(.commentSnackbarNext)
-        delegate?.nextCommentSelected()
+        commentDelegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
@@ -889,14 +977,15 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
         switch rows[indexPath.row] {
         case .header:
-            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-
+            if isNotificationComment {
+                navigateToNotificationComment()
+            } else {
+                comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+            }
         case .replyIndicator:
             navigateToReplyComment()
-
         case .text(let title, _, _) where title == .webAddressLabelText:
             visitAuthorURL()
-
         default:
             break
         }

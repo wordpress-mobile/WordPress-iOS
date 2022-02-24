@@ -26,6 +26,44 @@ class BorderedButtonTableViewCell: UITableViewCell {
     private var highlightedColor = Defaults.highlightedColor
     private var borderColor = Defaults.normalColor
 
+    // Toggles the loading state of the cell.
+    var isLoading: Bool = false {
+        didSet {
+            toggleLoading(isLoading)
+        }
+    }
+
+    // MARK: - Activity Indicator
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = false
+        return indicator
+    }()
+
+    private lazy var loadingBackgroundView: UIImageView = {
+        // Bordered background matching the button
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage.renderBackgroundImage(fill: .clear, border: borderColor)
+        return imageView
+    }()
+
+    private lazy var loadingOverlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .basicBackground
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(loadingBackgroundView)
+        view.pinSubviewToAllEdges(loadingBackgroundView)
+
+        view.addSubview(activityIndicator)
+        view.pinSubviewAtCenter(activityIndicator)
+
+        return view
+    }()
+
     // MARK: - Configure
 
     func configure(buttonTitle: String,
@@ -92,7 +130,7 @@ private extension BorderedButtonTableViewCell {
     }
 
     func updateButtonBorderColors() {
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: borderColor), for: .normal)
+        button.setBackgroundImage(.renderBackgroundImage(fill: .clear, border: borderColor), for: .normal)
         button.setBackgroundImage(.renderBackgroundImage(fill: borderColor, border: borderColor), for: .highlighted)
     }
 
@@ -101,6 +139,23 @@ private extension BorderedButtonTableViewCell {
         static let titleFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let normalColor: UIColor = .text
         static let highlightedColor: UIColor = .textInverted
+    }
+
+    func toggleLoading(_ loading: Bool) {
+        if loadingOverlayView.superview == nil {
+            button.addSubview(loadingOverlayView)
+            button.pinSubviewToAllEdges(loadingOverlayView)
+        }
+
+        if loading {
+            activityIndicator.startAnimating()
+            bringSubviewToFront(loadingOverlayView)
+        } else {
+            activityIndicator.stopAnimating()
+            sendSubviewToBack(loadingOverlayView)
+        }
+
+        loadingOverlayView.isHidden = !loading
     }
 
 }

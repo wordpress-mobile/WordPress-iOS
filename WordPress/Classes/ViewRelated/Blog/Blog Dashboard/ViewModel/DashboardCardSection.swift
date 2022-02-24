@@ -2,20 +2,17 @@ import Foundation
 
 /// Represents a section in the Dashboard Collection View
 class DashboardCardSection: Hashable {
-    let id: String
-    let subtype: String?
+    let id: DashboardCard
 
-    init(id: String, subtype: String? = nil) {
+    init(id: DashboardCard) {
         self.id = id
-        self.subtype = subtype
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-        hasher.combine(subtype)
     }
 
     static func == (lhs: DashboardCardSection, rhs: DashboardCardSection) -> Bool {
-        lhs.id == rhs.id && lhs.subtype == rhs.subtype
+        lhs.id == rhs.id
     }
 }

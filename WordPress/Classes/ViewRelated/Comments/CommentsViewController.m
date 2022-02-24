@@ -233,7 +233,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
                                                                                isLastInList:[self isLastRow:indexPath]
                                                                        managedObjectContext:[ContextManager sharedInstance].mainContext];
-    self.commentDetailViewController.delegate = self;
+    self.commentDetailViewController.commentDelegate = self;
     [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }

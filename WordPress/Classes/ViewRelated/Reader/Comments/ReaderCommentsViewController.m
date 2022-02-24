@@ -935,7 +935,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.noResultsViewController.view.frame = self.tableView.frame;
     }
 
-    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.replyTextView];
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 

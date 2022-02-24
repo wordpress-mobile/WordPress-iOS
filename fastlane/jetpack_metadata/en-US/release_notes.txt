@@ -1,8 +1,9 @@
-* [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
-* [***] Block editor: Font size and line-height support for text-based blocks used in block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4519]
-* [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
-* [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
-* [**] People: you can now manage Email Followers on the People section! [#17854]
-* [*] Stats: fix navigation between Stats tab. [#17856]
-* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
-* [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]
+With this latest version of Jetpack, we made some design changes to help make your user experience even better.
+
+- Text blocks in the block editor now adjust along with the text as you change the font size and line height for block themes.
+- We redesigned some of the screens in the app, including My Site. Looking fresh!
+- We love a clean inbox, so we added a button that lets you mark all filtered notifications as read.
+- In the site tab’s Configure > People menu, we added an email filter that allows you to see, learn more about, and even remove email followers.
+- In threaded comments, we removed the Share icon and instead added the ability to moderate comments within a thread.
+- If you change the media in an Image block that’s also used as a post’s Featured Image, you’ll see a prompt asking if you’d like to replace the Featured Image while you’re at it.
+- We improved the Stats navigation so you can move between Days and Insights more easily. You can also create new stat cards directly from the Stats screen using our new navigation icon.

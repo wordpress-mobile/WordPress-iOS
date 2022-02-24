@@ -1,0 +1,9 @@
+Nous avons modifié le design dans la dernière version de JetPack afin d’améliorer au maximum votre expérience utilisateur.
+
+- Les blocs paragraphe de l’éditeur de blocs s’adaptent désormais au texte lorsque vous changez la taille de police et la hauteur de ligne des thèmes de blog.
+- Nous avons repensé le design de certains écrans de l’application, dont l’écran Mon site Un tout nouveau look !
+- Rien ne vaut une boîte de réception bien organisée. C’est pourquoi nous avons ajouté une option qui vous permet de marquer toutes les notifications qui vous avez filtrées comme lues.
+- Dans le menu Configurer > Personnes, nous avons ajouté un filtre d’adresses e-mail qui vous permet de savoir qui sont vos abonnés par e-mails et même de les supprimer.
+- Nous avons supprimé l’icône Partager des fils de commentaires et avons ajouté à la place une option permettant de modérer les commentaires depuis le fil correspondant.
+- Lorsque vous remplacez le média d’un bloc d’image qui correspond à l’image mise en avant d’un article, un message s’affiche pour vous demander de confirmer le changement.
+- Nous avons amélioré la navigation dans les statistiques afin de vous permettre de parcourir les catégories Jours et Tendances plus facilement. La nouvelle icône de navigation vous permet également de créer de nouvelles cartes de statistiques depuis l’écran des statistiques.

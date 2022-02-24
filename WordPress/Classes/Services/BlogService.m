@@ -350,6 +350,22 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     }];
 }
 
+- (void)syncAuthorsForBlog:(Blog *)blog
+                    success:(void (^)(void))success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+
+    [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+        [self updateMultiAuthor:users forBlog:blogObjectID];
+        success();
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        failure(error);
+    }];
+}
+
 - (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure

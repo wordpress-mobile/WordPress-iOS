@@ -83,6 +83,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
+        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+    }()
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -147,11 +151,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupConstraints()
 
         reloadTableViewPreservingSelection()
+        startListeningToCommentDeletedNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        syncNotificationsWithModeratedComments()
         setupInlinePrompt()
 
         // Manually deselect the selected row.
@@ -237,6 +243,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -377,6 +384,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         selectedNotification = note
         showDetails(for: note)
+
+        if !splitViewControllerIsHorizontallyCompact {
+            syncNotificationsWithModeratedComments()
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -471,6 +483,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.dataSource = self
+        detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -602,6 +615,13 @@ private extension NotificationsViewController {
                        object: nil)
     }
 
+    func startListeningToCommentDeletedNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(syncNotificationsWithModeratedComments),
+                                               name: .NotificationCommentDeletedNotification,
+                                               object: nil)
+    }
+
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self,
@@ -716,10 +736,10 @@ extension NotificationsViewController {
             return
         }
 
-        presentCommentDetail(for: note)
+        presentDetails(for: note)
     }
 
-    private func presentCommentDetail(for note: Notification) {
+    private func presentDetails(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
@@ -729,15 +749,21 @@ extension NotificationsViewController {
 
         view.isUserInteractionEnabled = false
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
-                let notificationCommentDetailCoordinator = NotificationCommentDetailCoordinator(notification: note)
-
-                notificationCommentDetailCoordinator.createViewController { commentDetailViewController in
+                self.notificationCommentDetailCoordinator.createViewController(with: note) { commentDetailViewController in
                     guard let commentDetailViewController = commentDetailViewController else {
                         // TODO: show error view
                         return
+                    }
+
+                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+                        self?.selectRow(for: note)
                     }
 
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
@@ -792,7 +818,7 @@ extension NotificationsViewController {
     }
 
     /// Will display an Undelete button on top of a given notification.
-    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// On timeout, the destructive action (received via parameter) will be executed, and the notification
     /// will (supposedly) get deleted.
     ///
     /// -   Parameters:
@@ -858,6 +884,36 @@ private extension NotificationsViewController {
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
+
+    // With the `notificationCommentDetails` feature, Comment moderation is handled by the view.
+    // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
+    // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
+    // Those Notifications are updated here when the view is shown to update the list accordingly.
+    @objc func syncNotificationsWithModeratedComments() {
+        // If the currently selected notification is about to be removed, find the next available and select it.
+        // This is only necessary for split view to prevent the details from showing for removed notifications.
+        if !splitViewControllerIsHorizontallyCompact,
+           let selectedNotification = selectedNotification,
+           notificationCommentDetailCoordinator.notificationsCommentModerated.contains(selectedNotification) {
+
+            guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
+                  let nextAvailable = notifications.first(where: { !notificationCommentDetailCoordinator.notificationsCommentModerated.contains($0) }),
+                  let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
+                      self.selectedNotification = nil
+                      return
+                  }
+
+            self.selectedNotification = nextAvailable
+            tableView(tableView, didSelectRowAt: indexPath)
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
+            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated = []
+    }
+
 }
 
 
@@ -1076,10 +1132,16 @@ private extension NotificationsViewController {
                    scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
-            DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
-            tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
-        }
+        // also ensure that the index path returned from results controller does not have negative row index.
+        // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
+        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification),
+              indexPath != tableView.indexPathForSelectedRow,
+              0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
+                  return
+              }
+
+        DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
+        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 
     func reloadTableViewPreservingSelection() {
