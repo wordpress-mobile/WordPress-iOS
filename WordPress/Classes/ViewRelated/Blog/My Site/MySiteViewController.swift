@@ -64,6 +64,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return refreshControl
     }()
 
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        makeCreateButtonCoordinator()
+    }()
+
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
@@ -125,6 +129,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
+        createButtonCoordinator.add(to: view,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +148,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewWillDisappear(animated)
 
         setupOpaqueNavBar()
+        createButtonCoordinator.hideCreateButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -157,6 +165,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         trackNoSitesVisibleIfNeeded()
 
         setupTransparentNavBar()
+
+        if let blog = blog, tabBarController is WPTabBarController {
+            createButtonCoordinator.showCreateButton(for: blog)
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createButtonCoordinator.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        createButtonCoordinator.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
     }
 
     private func subscribeToContentSizeCategory() {
@@ -762,5 +784,13 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - QuickStart
+//
+extension MySiteViewController {
+    func startAlertTimer() {
+        blogDetailsViewController?.startAlertTimer()
     }
 }
