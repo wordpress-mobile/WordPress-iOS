@@ -8208,6 +8208,7 @@
 			isa = PBXGroup;
 			children = (
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
+				F56A33322538C0ED00E2AEF3 /* MySiteViewController+FAB.swift */,
 				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
 				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 			);
@@ -9276,7 +9277,6 @@
 			children = (
 				462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */,
 				462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */,
-				F56A33322538C0ED00E2AEF3 /* MySiteViewController+FAB.swift */,
 				74989B8B2088E3650054290B /* BlogDetailsViewController+Activity.swift */,
 				02AC3091226FFFAA0018D23B /* BlogDetailsViewController+DomainCredit.swift */,
 				8B33BC9427A0C14C00DB5985 /* BlogDetailsViewController+QuickActions.swift */,
