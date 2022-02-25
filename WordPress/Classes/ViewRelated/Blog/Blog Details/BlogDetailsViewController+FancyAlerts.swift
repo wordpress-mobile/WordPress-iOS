@@ -17,16 +17,6 @@ extension BlogDetailsViewController {
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
-                case .noSuchElement:
-                    guard let parentVC = self?.parent as? MySiteViewController else {
-                        return
-                    }
-
-                    parentVC.additionalSafeAreaInsets = .zero
-
-                case .siteIcon, .siteTitle:
-                    // handles the padding in case the element is not in the table view
-                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
                 case .pages, .editHomepage, .sharing, .stats:
                     self?.scroll(to: info)
                 case .viewSite:
