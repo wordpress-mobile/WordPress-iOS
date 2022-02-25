@@ -1,5 +1,5 @@
-import Foundation
-
+import UIKit
+import MobileCoreServices
 
 @objc public protocol RichTextViewDataSource {
     @objc optional func textView(_ textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
@@ -160,6 +160,11 @@ import Foundation
         // Setup Layout
         textView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(textView)
+
+        // Allow animatable gifs to be displayed
+        if #available(iOS 15.0, *) {
+            NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: kUTTypeGIF as String)
+        }
     }
 
     fileprivate func renderAttachments() {

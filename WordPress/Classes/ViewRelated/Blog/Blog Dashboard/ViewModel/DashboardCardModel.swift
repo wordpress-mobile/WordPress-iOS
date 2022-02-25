@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents a card in the dashboard collection view
-class DashboardCardModel: Hashable {
+struct DashboardCardModel: Hashable {
     let id: DashboardCard
     let apiResponse: BlogDashboardRemoteEntity?
 

@@ -1,9 +1,0 @@
-Med den senaste versionen av Jetpack har vi genomfört ett antal designändringar för att ge dig en ännu bättre användarupplevelse.
-
-- Textblock i blockredigeraren justeras nu tillsammans med texten när du ändrar textstorlek och radhöjd för blockteman.
-- Vi har gjort om några av skärmarna i appen, bland annat Min webbplats. Det ser fräscht ut!
-- Vi älskar en ren inkorg, så vi har lagt till en knapp som gör det möjligt att markera alla filtrerade notiser som lästa.
-- I menyn Konfigurera > Personer på webbplatsfliken har vi lagt till ett e-postfilter som gör det möjligt att visa, läsa mer om och till och med ta bort följare.
-- I kommentarer i trådar har vi tagit bort Dela-ikonen och istället lagt till möjligheten att moderera kommentarer inuti en tråd.
-- Om du ändrar media i ett bildblock som också används som utvald bild för ett inlägg visas en prompt som frågar om du vill även vill byta ut den utvalda bilden.
-- Vi har förbättrat webbplatsnavigeringen så att du kan växla mellan Dagar och Insikter på ett enklare sätt. Du kan dessutom skapa nya statistikkort direkt från skärmen Statistik med hjälp av vår nya navigeringsikon.

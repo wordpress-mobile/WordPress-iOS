@@ -1,5 +1,6 @@
 import WordPressAuthenticator
 import UIKit
+import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
@@ -19,6 +20,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private var isShowingDashboard: Bool {
         return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+    }
+
+    private var currentSection: Section? {
+        Section(rawValue: segmentedControl.selectedSegmentIndex)
     }
 
     @objc
@@ -72,6 +77,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             siteMenuSpotlightView.isHidden = !siteMenuSpotlightIsShown
         }
     }
+
+    private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -144,13 +151,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        setupTransparentNavBar()
+        setupNavBarAppearance()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        setupOpaqueNavBar()
+        resetNavBarAppearance()
+        createButtonCoordinator?.hideCreateButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -166,7 +174,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         trackNoSitesVisibleIfNeeded()
 
-        setupTransparentNavBar()
+        setupNavBarAppearance()
+
+        createFABIfNeeded()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
     }
 
     private func subscribeToContentSizeCategory() {
@@ -236,7 +256,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
         navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
 
         // Workaround:
@@ -259,12 +279,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
-    private func setupTransparentNavBar() {
+    private func setupNavBarAppearance() {
         navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
+        if FeatureFlag.mySiteDashboard.enabled {
+            let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
+            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
+        }
     }
 
-    private func setupOpaqueNavBar() {
-        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithOpaqueBackground()
+    private func resetNavBarAppearance() {
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     // MARK: - Account
@@ -322,20 +346,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+        guard let section = currentSection else {
+            return
         }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+            }
+        case .dashboard:
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
+                self?.refreshControl.endRefreshing()
+            }
+        }
+
     }
 
     // MARK: - Segmented Control
 
     @objc private func segmentedControlValueChanged(_ sender: Any) {
         guard let blog = blog,
-              let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+              let section = currentSection else {
             return
         }
 
@@ -472,6 +508,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         noResultsScrollView?.refreshControl = nil
         noResultsScrollView?.removeFromSuperview()
         noResultsScrollView = nil
+    }
+
+    // MARK: - FAB
+
+    private func createFABIfNeeded() {
+        createButtonCoordinator?.removeCreateButton()
+        createButtonCoordinator = makeCreateButtonCoordinator()
+        createButtonCoordinator?.add(to: view,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if let blog = blog, tabBarController is WPTabBarController {
+            createButtonCoordinator?.showCreateButton(for: blog)
+        }
     }
 
 // MARK: - Add Site Alert
@@ -622,13 +672,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
+            self.createFABIfNeeded()
         }
 
         return sitePickerViewController
     }
 
     private func updateChildViewController(for blog: Blog) {
-        guard let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+        guard let section = currentSection else {
             return
         }
 
@@ -778,5 +829,13 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - QuickStart
+//
+extension MySiteViewController {
+    func startAlertTimer() {
+        blogDetailsViewController?.startAlertTimer()
     }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-15 18:54:08+0000 */
+/* Translation-Revision-Date: 2022-02-21 13:18:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Voeg een domein toe";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Voeg een zelf-gehoste site toe";
@@ -1834,6 +1834,10 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Copied block" = "Gekopieerd blok";
 
+/* Copy the post url and paste anywhere in phone
+   Label for page copy link. Tapping copy the url of page */
+"Copy Link" = "Link kopiëren";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopieer link naar reactie";
 
@@ -2031,6 +2035,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "Maak link";
+
+/* Title for the card prompting the user to create their first post. */
+"Create your first post" = "Create your first post";
+
+/* Title for the card prompting the user to create a new post. */
+"Create your next post" = "Create your next post";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
@@ -2240,7 +2250,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Weigeren";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Beschrijf het doel van de afbeelding. Laat leeg als de afbeelding puur decoratief is. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2586,6 +2596,9 @@ translators: Block name. %s: The localized block name */
    Opens the editor to edit an existing post. */
 "Edit Post" = "Bewerk bericht";
 
+/* Accessibility label for button to edit a comment from a notification */
+"Edit comment" = "Reactie bewerken";
+
 /* No comment provided by engineer. */
 "Edit cover media" = "Omslagmedia bewerken";
 
@@ -2652,7 +2665,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "E-mailadres";
 
 /* Blog Email Followers */
-"Email Followers" = "Email Followers";
+"Email Followers" = "E-mailvolgers";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3488,6 +3501,10 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Inhouden voor moderatie";
 
+/* Noun. Links to a blog's dashboard screen.
+   Title for the dashboard screen. */
+"Home" = "Home";
+
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
@@ -4247,7 +4264,8 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ik";
 
-/* Noun. Title. Links to the blog's Media library.
+/* Noun. Title for media button.
+   Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
@@ -5122,7 +5140,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Pagina bijgewerkt";
 
-/* Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title for pages button.
+   Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5465,6 +5484,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Regelmatig publiceren kan je lezers betrokken houden en nieuwe bezoekers naar je site aantrekken.";
 
 /* All Time Stats 'Posts' label
+   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
@@ -5811,7 +5831,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove %@" = "Remove %@";
+"Remove %@" = "Verwijder %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Uitgelichte afbeelding verwijderen";
@@ -6879,6 +6899,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
+   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8069,6 +8090,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Logs worden zeven dagen lang opgeslagen.";
 
+/* Title for the card displaying upcoming scheduled posts. */
+"Upcoming scheduled posts" = "Upcoming scheduled posts";
+
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -8853,6 +8877,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Werk met ons samen";
 
+/* Title for the card displaying draft posts. */
+"Work on a draft post" = "Work on a draft post";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Wereldkaart die het aantal weergaven per land toont.";
 
@@ -9235,7 +9262,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "by %@" = "door %@";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
-"comment" = "comment";
+"comment" = "reactie";
 
 /* The menu item to select during a guided tour. */
 "connections" = "verbindingen";
@@ -9258,7 +9285,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "example.com" = "voorbeeld.nl";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
+"follow" = "volgen";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/mijn-site-adres (URL)";
@@ -9279,7 +9306,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "later today" = "later vandaag";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
-"like" = "like";
+"like" = "vind ik leuk";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "gemarkeerd als spam";
@@ -9309,7 +9336,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "unmarked as spam" = "niet meer als spam gemarkeerd";
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
-"unread" = "unread";
+"unread" = "ongelezen";
 
 /* Label displayed on video media items. */
 "video" = "video";

@@ -151,6 +151,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupConstraints()
 
         reloadTableViewPreservingSelection()
+        startListeningToCommentDeletedNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -614,6 +615,13 @@ private extension NotificationsViewController {
                        object: nil)
     }
 
+    func startListeningToCommentDeletedNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(syncNotificationsWithModeratedComments),
+                                               name: .NotificationCommentDeletedNotification,
+                                               object: nil)
+    }
+
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self,
@@ -881,7 +889,7 @@ private extension NotificationsViewController {
     // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
     // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
     // Those Notifications are updated here when the view is shown to update the list accordingly.
-    func syncNotificationsWithModeratedComments() {
+    @objc func syncNotificationsWithModeratedComments() {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
         if !splitViewControllerIsHorizontallyCompact,

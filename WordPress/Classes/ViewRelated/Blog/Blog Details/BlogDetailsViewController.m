@@ -226,8 +226,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
 
-@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
-
 @end
 
 @implementation BlogDetailsViewController
@@ -375,17 +373,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
     MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-    
-    [self.createButtonCoordinator addTo:parentVC.view
-                         trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
-                           bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
 
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -417,10 +405,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self cancelCompletedToursIfNeeded];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] &&
-        AppConfiguration.showsCreateButton) {
-        [self.createButtonCoordinator showCreateButtonFor:self.blog];
-    }
     [self createUserActivity];
     [self startAlertTimer];
 
@@ -441,28 +425,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
 }
 
-- (CreateButtonCoordinator *)createButtonCoordinator
-{
-    if (!_createButtonCoordinator) {
-        _createButtonCoordinator = [self makeCreateButtonCoordinator];
-    }
-    
-    return _createButtonCoordinator;
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [self.createButtonCoordinator hideCreateButton];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated

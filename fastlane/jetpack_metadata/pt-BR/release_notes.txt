@@ -1,9 +1,0 @@
-Com esta versão mais recente do Jetpack, fizemos algumas mudanças no design para melhorar ainda mais a experiência do usuário.
-
-- Os blocos de texto no editor agora se ajustam aos textos à medida que você muda o tamanho da fonte e a altura da linha nos temas de bloco.
-- Fizemos um novo design para algumas telas no aplicativo, incluindo Meu site. Novinho em folha!
-- Como adoramos uma caixa de mensagens organizada, adicionamos um botão que permite marcar todas as notificações filtradas como lidas.
-- Na guia do menu Configurar > Pessoas do site, adicionamos um filtro de e-mail que permite ver, saber mais e até mesmo remover seguidores por e-mail.
-- Nos comentários em sequência, removemos o ícone Compartilhar, e agora você pode moderar comentários em uma sequência.
-- Se você alterar uma mídia no bloco de imagem que também é usada como uma imagem destacada em um post, aparecerá uma mensagem perguntando se você quer substituir a imagem destacada enquanto está fazendo isso.
-- Aprimoramos a navegação pelas estatísticas para que você alterne entre Dias e Informações com mais facilidade. Também é possível criar novos cartões de estatística na tela Estatísticas usando nosso novo ícone de navegação.

@@ -42,6 +42,7 @@ final class BlogDashboardViewController: UIViewController {
         setupNavigation()
         setupCollectionView()
         addHeightObservers()
+        addWillEnterForegroundObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -73,6 +74,12 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
+    func pulledToRefresh(completion: (() -> Void)? = nil) {
+        viewModel.loadCards {
+            completion?()
+        }
+    }
+
     private func setupNavigation() {
         title = Strings.home
     }
@@ -92,8 +99,21 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateCollectionViewHeight(notification:)), name: .postCardTableViewSizeChanged, object: nil)
     }
 
+    private func addWillEnterForegroundObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    /// Load cards if view is appearing
+    @objc private func loadCards() {
+        guard view.superview != nil else {
+            return
+        }
+
+        viewModel.loadCards()
     }
 }
 
