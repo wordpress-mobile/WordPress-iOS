@@ -331,6 +331,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        var pulledFrom: String
+
         switch section {
         case .siteMenu:
             blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
@@ -340,12 +342,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
             }
+
+            pulledFrom = "site_menu"
         case .dashboard:
             blogDashboardViewController?.pulledToRefresh { [weak self] in
                 self?.refreshControl.endRefreshing()
             }
+
+            pulledFrom = "dashboard"
         }
 
+        WPAnalytics.track(.mySitePullToRefresh, properties: ["source": pulledFrom])
     }
 
     // MARK: - Segmented Control
