@@ -557,7 +557,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         pasteboard.string = link as String
         let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
         let notice = Notice(title: noticeTitle, feedbackType: .success)
-        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+        ActionDispatcher.dispatch(NoticeAction.dismiss) // Dismiss any old notices
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     fileprivate func retryPage(_ apost: AbstractPost) {
