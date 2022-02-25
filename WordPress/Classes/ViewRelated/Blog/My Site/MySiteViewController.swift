@@ -16,6 +16,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
             }
         }
+
+        var analyticsDescription: String {
+            switch self {
+            case .siteMenu:
+                return "site_menu"
+            case .dashboard:
+                return "dashboard"
+            }
+        }
     }
 
     private var isShowingDashboard: Bool {
@@ -331,8 +340,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        var pulledFrom: String
-
         switch section {
         case .siteMenu:
             blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
@@ -343,16 +350,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
             }
 
-            pulledFrom = "site_menu"
         case .dashboard:
             blogDashboardViewController?.pulledToRefresh { [weak self] in
                 self?.refreshControl.endRefreshing()
             }
-
-            pulledFrom = "dashboard"
         }
 
-        WPAnalytics.track(.mySitePullToRefresh, properties: ["source": pulledFrom])
+        WPAnalytics.track(.mySitePullToRefresh, properties: ["source": section.analyticsDescription])
     }
 
     // MARK: - Segmented Control
