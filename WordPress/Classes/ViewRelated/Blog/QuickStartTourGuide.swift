@@ -248,7 +248,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     private func showNextStepWithDelay(_ nextStep: TourState) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.nextStepDelay) {
             self.currentTourState = nextStep
             self.showCurrentStep()
         }
@@ -462,6 +462,7 @@ private extension QuickStartTourGuide {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
+        static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
     }
 }
 
