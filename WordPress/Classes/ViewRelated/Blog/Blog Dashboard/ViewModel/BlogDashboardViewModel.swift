@@ -12,7 +12,7 @@ class BlogDashboardViewModel {
     var blog: Blog
 
     private lazy var service: BlogDashboardService = {
-        return BlogDashboardService(managedObjectContext: managedObjectContext)
+        return BlogDashboardService(blog: blog, managedObjectContext: managedObjectContext)
     }()
 
     private lazy var dataSource: DashboardDataSource? = {

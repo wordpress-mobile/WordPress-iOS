@@ -2,10 +2,13 @@ import Foundation
 import WordPressKit
 
 class BlogDashboardService {
+
+    private let blog: Blog
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
+    init(blog: Blog, managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
+        self.blog = blog
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
     }
@@ -64,6 +67,12 @@ private extension BlogDashboardService {
                     snapshot.appendItems([item], toSection: section)
                 }
             } else {
+
+                // Don't add the Quick Start card if we shouldn't show Quick Start
+                if card == .quickStart && !QuickStartTourGuide.shouldShowChecklist(for: blog) {
+                    return
+                }
+
                 let section = DashboardCardSection(id: card)
                 let item = DashboardCardModel(id: card)
 
