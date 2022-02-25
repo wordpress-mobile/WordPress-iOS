@@ -35,7 +35,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
-
+        webView.configuration.allowsInlineMediaPlayback = true
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
 
         return webView

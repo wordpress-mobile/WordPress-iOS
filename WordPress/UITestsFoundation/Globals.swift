@@ -24,6 +24,13 @@ public func navigateBack() {
     }
 }
 
+public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
+    let top = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+    let bottom = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+
+    top.press(forDuration: 0.01, thenDragTo: bottom)
+}
+
 extension ScreenObject {
 
     // TODO: This was implemented on the original `BaseScreen` and is here just as a copy-paste for the transition.

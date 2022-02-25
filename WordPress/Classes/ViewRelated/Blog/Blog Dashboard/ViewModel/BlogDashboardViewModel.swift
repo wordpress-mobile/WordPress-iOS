@@ -46,7 +46,7 @@ class BlogDashboardViewModel {
     }
 
     /// Call the API to return cards for the current blog
-    func loadCards() {
+    func loadCards(completion: (() -> Void)? = nil) {
         guard let dotComID = blog.dotComID?.intValue else {
             return
         }
@@ -56,8 +56,10 @@ class BlogDashboardViewModel {
         service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
+            completion?()
         }, failure: { [weak self] in
             self?.viewController?.stopLoading()
+            completion?()
         })
     }
 
