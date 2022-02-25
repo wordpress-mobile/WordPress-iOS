@@ -1,6 +1,6 @@
 19.4
 -----
-* [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed
+* [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
 
 19.3
 -----
