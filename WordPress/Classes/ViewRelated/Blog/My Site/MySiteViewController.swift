@@ -64,6 +64,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return refreshControl
     }()
 
+    private var createButtonCoordinator: CreateButtonCoordinator?
+
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
@@ -141,6 +143,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewWillDisappear(animated)
 
         resetNavBarAppearance()
+        createButtonCoordinator?.hideCreateButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -157,6 +160,18 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         trackNoSitesVisibleIfNeeded()
 
         setupNavBarAppearance()
+
+        createFABIfNeeded()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
     }
 
     private func subscribeToContentSizeCategory() {
@@ -464,6 +479,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         noResultsScrollView = nil
     }
 
+    // MARK: - FAB
+
+    private func createFABIfNeeded() {
+        createButtonCoordinator?.removeCreateButton()
+        createButtonCoordinator = makeCreateButtonCoordinator()
+        createButtonCoordinator?.add(to: view,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if let blog = blog, tabBarController is WPTabBarController {
+            createButtonCoordinator?.showCreateButton(for: blog)
+        }
+    }
+
 // MARK: - Add Site Alert
 
     @objc
@@ -612,6 +641,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
+            self.createFABIfNeeded()
         }
 
         return sitePickerViewController
@@ -766,5 +796,13 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - QuickStart
+//
+extension MySiteViewController {
+    func startAlertTimer() {
+        blogDetailsViewController?.startAlertTimer()
     }
 }
