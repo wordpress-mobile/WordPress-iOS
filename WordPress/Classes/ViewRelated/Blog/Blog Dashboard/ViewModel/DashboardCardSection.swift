@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents a section in the Dashboard Collection View
-class DashboardCardSection: Hashable {
+struct DashboardCardSection: Hashable {
     let id: DashboardCard
 
     init(id: DashboardCard) {

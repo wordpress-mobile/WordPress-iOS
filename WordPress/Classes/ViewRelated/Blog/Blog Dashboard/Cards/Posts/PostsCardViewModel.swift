@@ -14,6 +14,7 @@ protocol PostsCardView: AnyObject {
 }
 
 /// Responsible for populating a table view with posts
+/// And syncing them if needed.
 ///
 class PostsCardViewModel: NSObject {
     var blog: Blog
@@ -28,16 +29,19 @@ class PostsCardViewModel: NSObject {
 
     private var status: BasePost.Status = .draft
 
+    private var shouldSync: Bool
+
     private var syncing: (NSNumber?, BasePost.Status)?
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
+        self.shouldSync = shouldSync
 
         super.init()
     }
@@ -54,7 +58,7 @@ class PostsCardViewModel: NSObject {
     }
 
     func retry() {
-        viewController?.showLoading()
+        showLoadingIfNeeded()
         sync()
     }
 
@@ -74,11 +78,23 @@ class PostsCardViewModel: NSObject {
     }
 
     /// Update currently displayed posts for the given blog and status
-    func update(blog: Blog, status: BasePost.Status) {
-        self.blog = blog
-        self.status = status
-        performInitialLoading()
-        refresh()
+    func update(blog: Blog, status: BasePost.Status, shouldSync: Bool) {
+        if self.blog != blog || self.status != status {
+            // If blog and/or status is different, reset the VC
+            self.blog = blog
+            self.status = status
+            self.shouldSync = shouldSync
+            self.syncing = nil
+            performInitialLoading()
+            refresh()
+        } else {
+            // If they're the same, just sync if needed
+            self.blog = blog
+            self.status = status
+            self.shouldSync = shouldSync
+            syncIfNeeded()
+        }
+
     }
 }
 
@@ -90,10 +106,10 @@ private extension PostsCardViewModel {
     }
 
     func performInitialLoading() {
-        viewController?.showLoading()
         updateFilter()
         createFetchedResultsController()
-        sync()
+        syncIfNeeded()
+        showLoadingIfNeeded()
     }
 
     func createFetchedResultsController() {
@@ -138,6 +154,12 @@ private extension PostsCardViewModel {
         return postListFilter.sortDescriptors
     }
 
+    func syncIfNeeded() {
+        if shouldSync {
+            sync()
+        }
+    }
+
     func sync() {
         let filter = postListFilter
 
@@ -145,6 +167,8 @@ private extension PostsCardViewModel {
         options.statuses = filter.statuses.strings
         options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
+        options.order = .descending
+        options.orderBy = .byModified
         options.purgesLocalSync = true
 
         guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
@@ -215,6 +239,13 @@ private extension PostsCardViewModel {
 
     func hideLoading() {
         viewController?.hideLoading()
+    }
+
+    func showLoadingIfNeeded() {
+        // Only show loading state if there are no posts at all
+        if numberOfPosts == 0 && shouldSync {
+            viewController?.showLoading()
+        }
     }
 
     func showNextPostPromptIfNeeded() {
@@ -314,8 +345,8 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             }
             break
         case .update:
-            if let indexPath = indexPath, let cell = viewController?.tableView.cellForRow(at: indexPath) {
-                configureCell(cell, at: indexPath)
+            if let indexPath = indexPath {
+                viewController?.tableView.reloadRows(at: [indexPath], with: .fade)
             }
             break
         case .move:
