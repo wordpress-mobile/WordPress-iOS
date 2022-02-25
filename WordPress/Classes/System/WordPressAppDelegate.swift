@@ -163,9 +163,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
-        // Let the app finish any uploads that are in progress
         let app = UIApplication.shared
+
+        // Let the app finish any uploads that are in progress
         if let task = bgTask, bgTask != .invalid {
+            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task)")
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
@@ -175,11 +177,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // the task actually finishes at around the same time.
             DispatchQueue.main.async { [weak self] in
                 if let task = self?.bgTask, task != .invalid {
+                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task)")
                     app.endBackgroundTask(task)
                     self?.bgTask = .invalid
                 }
             }
         })
+
+        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask)")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
