@@ -1,5 +1,6 @@
 import WordPressAuthenticator
 import UIKit
+import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
@@ -19,6 +20,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private var isShowingDashboard: Bool {
         return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+    }
+
+    private var currentSection: Section? {
+        Section(rawValue: segmentedControl.selectedSegmentIndex)
     }
 
     @objc
@@ -307,20 +312,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+        guard let section = currentSection else {
+            return
         }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+            }
+        case .dashboard:
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
+                self?.refreshControl.endRefreshing()
+            }
+        }
+
     }
 
     // MARK: - Segmented Control
 
     @objc private func segmentedControlValueChanged(_ sender: Any) {
         guard let blog = blog,
-              let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+              let section = currentSection else {
             return
         }
 
@@ -601,7 +618,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func updateChildViewController(for blog: Blog) {
-        guard let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+        guard let section = currentSection else {
             return
         }
 

@@ -73,6 +73,12 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
+    func pulledToRefresh(completion: (() -> Void)? = nil) {
+        viewModel.loadCards {
+            completion?()
+        }
+    }
+
     private func setupNavigation() {
         title = Strings.home
     }
