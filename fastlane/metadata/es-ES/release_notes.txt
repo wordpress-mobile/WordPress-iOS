@@ -1,0 +1,9 @@
+Desempolva tu colección de archivos «.gif»: ¡los avisos y comentarios ahora son compatibles con tus archivos animados favoritos! (Por desgracia, esta actualización no corrige el problema de si se pronuncia «gif» o «jif»).
+
+Hemos corregido el efecto de parpadeo en el modo de vista previa cuando cambias de tamaño de pantalla o de orientación.
+
+Cuando añadas una nueva tarjeta Insights en la pantalla de estadísticas, la vista de la pantalla saltará hacia abajo para mostrar tu nueva tarjeta.
+
+Ahora puedes copiar enlaces a entradas y páginas publicadas, programadas y en borrador utilizando el botón «Copiar enlace» situado encima del botón de la papelera. Es un placer.
+
+Por último, verás un mensaje de error si falla una subida de medios por razones distintas a no estar conectado a Internet. Esto es mucho mejor que la barra de progreso de carga infinita que podías ver anteriormente.
