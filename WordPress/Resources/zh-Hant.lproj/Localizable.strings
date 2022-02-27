@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-20 08:44:42+0000 */
+/* Translation-Revision-Date: 2022-02-24 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "建立連結";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "建立你的首篇文章";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "建立下一篇文章";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "建立你專屬的自訂儀表板，並選擇要查看的報告。把重心放在你最關心的資料。";
@@ -3503,7 +3503,7 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Links to a blog's dashboard screen.
    Title for the dashboard screen. */
-"Home" = "Home";
+"Home" = "首頁";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -8091,7 +8091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "可儲存最多七天的記錄。";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "即將發表的排程文章";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8878,7 +8878,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "與我們合作";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "編輯草稿文章";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "依國家顯示世界地圖的檢視次數。";

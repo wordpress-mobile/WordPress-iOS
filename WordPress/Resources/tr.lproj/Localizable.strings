@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-09 09:57:00+0000 */
+/* Translation-Revision-Date: 2022-02-24 10:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "Bağlantı oluştur";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "İlk yazınızı oluşturun";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "Bir sonraki gönderinizi oluşturun";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -3503,7 +3503,7 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Links to a blog's dashboard screen.
    Title for the dashboard screen. */
-"Home" = "Home";
+"Home" = "Ana Sayfa";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -8091,7 +8091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "Yedi güne kadar kayıtlar saklanır.";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "Yaklaşan zamanlanmış gönderiler";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8878,7 +8878,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "Bizimle Çalışın";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "Bir taslak yazı üzerinde çalışın";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren dünya haritası.";
