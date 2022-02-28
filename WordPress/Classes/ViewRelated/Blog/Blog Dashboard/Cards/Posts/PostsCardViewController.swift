@@ -9,6 +9,8 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 ///
 /// This class handles showing posts from the database, syncing and interacting with them
 ///
+/// If posts are not available, a "write your next post" prompt is shown.
+///
 @objc class PostsCardViewController: UIViewController {
     var blog: Blog
 
@@ -20,13 +22,15 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     private var nextPostView: BlogDashboardNextPostView?
     private var status: BasePost.Status = .draft
     private var hasPublishedPosts: Bool
+    private var shouldSync: Bool
 
     weak var delegate: PostsCardViewControllerDelegate?
 
-    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true) {
+    init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true, shouldSync: Bool = true) {
         self.blog = blog
         self.status = status
         self.hasPublishedPosts = hasPublishedPosts
+        self.shouldSync = shouldSync
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -37,7 +41,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self)
+        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self, shouldSync: shouldSync)
         viewModel.viewDidLoad()
     }
 
@@ -53,10 +57,12 @@ protocol PostsCardViewControllerDelegate: AnyObject {
         viewModel.refresh()
     }
 
-    func update(blog: Blog, status: BasePost.Status) {
+    func update(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool, shouldSync: Bool) {
         self.blog = blog
         self.status = status
-        viewModel?.update(blog: blog, status: status)
+        self.hasPublishedPosts = hasPublishedPosts
+        self.shouldSync = shouldSync
+        viewModel?.update(blog: blog, status: status, shouldSync: shouldSync)
     }
 }
 
@@ -185,10 +191,14 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func showNextPostPrompt() {
-        guard nextPostView == nil else {
+        guard nextPostView == nil ||
+              nextPostView?.hasPublishedPosts != hasPublishedPosts else {
             forceTableViewToRecalculateHeight()
             return
         }
+
+        self.nextPostView?.removeFromSuperview()
+        self.nextPostView = nil
 
         let nextPostView = BlogDashboardNextPostView()
         nextPostView.hasPublishedPosts = hasPublishedPosts

@@ -1,9 +1,0 @@
-Jetpack'in bu son sürümüyle, kullanıcı deneyiminizi daha da iyi hale getirmenize yardımcı olacak bazı tasarım değişiklikleri yaptık.
-
-- Blok düzenleyicideki metin blokları, siz blok temaları için yazı tipi boyutunu ve satır yüksekliğini değiştirdikçe artık metinle birlikte ayarlanacak.
-- "Sitem" de dahil olmak üzere uygulamadaki bazı ekranları yeniden tasarladık. Yepyeni görünüyor!
-- Gelen kutusunun temiz görünmesini istediğimiz için, filtrelenmiş tüm bildirimleri okundu olarak işaretlemenizi sağlayan bir düğme ekledik.
-- Site sekmesinin Yapılandır > Kişiler menüsüne, e-posta takipçilerini görmenize, kendileriyle ilgili daha fazla bilgi edinmenize, hatta istediklerinizi kaldırmanıza olanak tanıyan bir e-posta filtresi ekledik.
-- Yorum dizilerindeki Paylaş simgesini kaldırdık ve bunun yerine bir ileti dizisi içindeki yorumları denetleme özelliğini ekledik.
-- Bir gönderinin Öne Çıkan Görseli olarak da kullanılan bir Görsel blokundaki medyayı değiştirirseniz, Öne Çıkan Görseli değiştirmek isteyip istemediğinizi soran bir istem göreceksiniz.
-- Günler ve Tek Bakışta bölümü arasında daha kolay geçiş yapabilmeniz için İstatistikler'le ilgili gezinme işlevini iyileştirdik. Yeni gezinme simgemizi kullanarak doğrudan İstatistikler ekranından da yeni istatistik kartları oluşturabilirsiniz.

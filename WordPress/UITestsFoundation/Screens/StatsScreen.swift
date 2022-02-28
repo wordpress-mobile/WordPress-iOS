@@ -72,4 +72,12 @@ public class StatsScreen: ScreenObject {
         app.buttons[mode.rawValue].tap()
         return self
     }
+
+    public func refreshStatsIfNeeded() -> StatsScreen {
+        let errorMessage = NSPredicate(format: "label == 'An error occurred.'")
+        let isErrorMessagePresent = app.staticTexts.element(matching: errorMessage).exists
+
+        if isErrorMessagePresent { pullToRefresh() }
+        return self
+    }
 }

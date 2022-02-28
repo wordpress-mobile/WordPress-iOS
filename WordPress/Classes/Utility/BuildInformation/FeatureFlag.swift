@@ -13,6 +13,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIconCreator
     case weeklyRoundup
     case weeklyRoundupStaticNotification
+    case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
     case aboutScreen
@@ -56,6 +57,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
+        case .weeklyRoundupBGProcessingTask:
+            return true
         case .domains:
             return false
         case .timeZoneSuggester:
@@ -128,6 +131,8 @@ extension FeatureFlag {
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
             return "Weekly Roundup Static Notification"
+        case .weeklyRoundupBGProcessingTask:
+            return "Weekly Roundup BGProcessingTask"
         case .domains:
             return "Domain Purchases"
         case .timeZoneSuggester:

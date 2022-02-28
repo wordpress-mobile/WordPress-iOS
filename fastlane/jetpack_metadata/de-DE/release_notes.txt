@@ -1,9 +1,0 @@
-In dieser neuesten Jetpack-Version haben wir einige Änderungen am Design vorgenommen, um das Benutzererlebnis noch weiter zu verbessern.
-
-– Textblöcke im Block-Editor werden jetzt zusammen mit dem Text angepasst, wenn du die Schriftgröße und Zeilenhöhe für Block-Themes änderst.
-– Wir haben einige der Bildschirme in der App neu gestaltet, darunter auch „Meine Website“. Ein frischer Look!
-– Es geht doch nichts über einen aufgeräumten Posteingang! Deshalb haben wir einen Button hinzugefügt, mit dem du alle gefilterten Benachrichtigungen als gelesen markieren kannst.
-– Auf dem Website-Tab haben wir im Menü „Konfigurieren > Personen“ einen E-Mail-Filter hinzugefügt, mit dem du deine E-Mail-Follower sehen, mehr über sie erfahren und sie sogar entfernen kannst.
-– In Kommentar-Threads haben wir das Teilen-Icon entfernt und stattdessen die Option hinzugefügt, Kommentare innerhalb eines Threads zu moderieren.
-– Wenn du die Medien in einem Bildblock änderst, der auch als Beitragsbild verwendet wird, wirst du jetzt gefragt, ob du auch gleich das Beitragsbild ersetzen möchtest.
-– Wir haben die Navigation in den Statistiken verbessert, sodass du leichter zwischen Tagen und Einsichten wechseln kannst. Über das neue Navigations-Icon kannst du auch direkt im Statistikbildschirm neue Statistikkarten erstellen.

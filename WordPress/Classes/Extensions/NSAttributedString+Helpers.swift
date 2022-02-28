@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import MobileCoreServices
 
 @objc
 public extension NSAttributedString {
@@ -22,9 +23,28 @@ public extension NSAttributedString {
         var rangeDelta      = 0
 
         for (value, image) in unwrappedEmbeds {
-            let imageAttachment     = NSTextAttachment()
-            imageAttachment.bounds  = CGRect(origin: CGPoint.zero, size: image.size)
-            imageAttachment.image   = image
+            let imageAttachment = NSTextAttachment()
+            let gifType = kUTTypeGIF as String
+            var displayAnimatedGifs = false
+
+            // Check to see if the animated gif view provider is registered
+            if #available(iOS 15.0, *) {
+                displayAnimatedGifs = NSTextAttachment.textAttachmentViewProviderClass(forFileType: gifType) == AnimatedGifAttachmentViewProvider.self
+            }
+
+            // When displaying an animated gif pass the gif data instead of the image
+            if
+                displayAnimatedGifs,
+                let animatedImage = image as? AnimatedImageWrapper,
+                animatedImage.gifData != nil
+            {
+                imageAttachment.contents = animatedImage.gifData
+                imageAttachment.fileType = gifType
+                imageAttachment.bounds   = CGRect(origin: CGPoint.zero, size: animatedImage.targetSize ?? image.size)
+            } else {
+                imageAttachment.image  = image
+                imageAttachment.bounds = CGRect(origin: CGPoint.zero, size: image.size)
+            }
 
             // Each embed is expected to add 1 char to the string. Compensate for that
             let attachmentString    = NSAttributedString(attachment: imageAttachment)
