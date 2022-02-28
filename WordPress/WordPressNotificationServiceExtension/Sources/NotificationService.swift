@@ -139,7 +139,9 @@ class NotificationService: UNNotificationServiceExtension {
             // Only populate title / body for notification kinds with rich body content
             if !NotificationKind.omitsRichNotificationBody(notificationKind) {
                 notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
-                notificationContent.body = contentFormatter.body ?? ""
+
+                // Improve the notification body by trimming whitespace and reducing any multiple blank lines 
+                notificationContent.body = contentFormatter.body?.condenseWhitespace() ?? ""
             }
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
