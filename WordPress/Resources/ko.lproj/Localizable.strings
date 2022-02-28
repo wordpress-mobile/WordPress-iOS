@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-15 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-02-23 17:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "링크 생성";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "첫 번째 글 작성";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "다음 글 작성";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -3503,7 +3503,7 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Links to a blog's dashboard screen.
    Title for the dashboard screen. */
-"Home" = "Home";
+"Home" = "홈";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -8091,7 +8091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "최대 7일 상당의 로그가 저장됩니다.";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "공개 예정된 글";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8878,7 +8878,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "워드프레스닷컴 사용";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "임시글로 글 작업";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
