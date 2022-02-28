@@ -138,6 +138,48 @@ class BlogDashboardServiceTests: XCTestCase {
         XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, 123456)
     }
 
+    // MARK: - Ghost cards
+
+    /// Ghost cards shouldn't be displayed when parsing the API response
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
+        let expect = expectation(description: "Parse drafts and scheduled")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        service.fetch(wpComID: 123456) { snapshot in
+            let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+            XCTAssertNil(ghostSection)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    /// Ghost cards shouldn't be displayed when parsing the cached data
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromCachedData() {
+        persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
+
+        let snapshot = service.fetchLocal(wpComID: 123456)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNil(ghostSection)
+    }
+
+    /// Ghost cards SHOULD be displayed when there are no cached data
+    /// and the response didn't came from the API.
+    ///
+    func testReturnGhostCardsWhenNoCachedData() {
+        persistenceMock.respondWith = nil
+
+        let snapshot = service.fetchLocal(wpComID: 123456)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNotNil(ghostSection)
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 5)
+    }
+
     func dictionary(from file: String) -> NSDictionary? {
         let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
@@ -182,7 +224,7 @@ class BlogDashboardPersistenceMock: BlogDashboardPersistence {
     }
 
     var didCallGetCardsWithWpComID: Int?
-    var respondWith: NSDictionary = [:]
+    var respondWith: NSDictionary? = [:]
 
     override func getCards(for wpComID: Int) -> NSDictionary? {
         didCallGetCardsWithWpComID = wpComID

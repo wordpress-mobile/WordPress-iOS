@@ -41,9 +41,21 @@ class BlogDashboardService {
 
             let snapshot = parse(cardsDictionary, cards: cards)
             return snapshot
-        }
+        } else {
+            var snapshot = parse([:], cards: decode([:])!)
 
-        return DashboardSnapshot()
+            let section = DashboardCardSection(id: .ghost)
+
+            snapshot.appendSections([section])
+
+            var items: [DashboardCardModel] = []
+            Array(0...4).forEach {
+                items.append(DashboardCardModel(id: .ghost, apiResponseDictionary: ["diff": $0]))
+            }
+            snapshot.appendItems(items, toSection: section)
+
+            return snapshot
+        }
     }
 }
 
@@ -53,7 +65,9 @@ private extension BlogDashboardService {
     func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
-        DashboardCard.allCases.forEach { card in
+        DashboardCard.allCases
+            .filter { $0 != .ghost }
+            .forEach { card in
 
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
