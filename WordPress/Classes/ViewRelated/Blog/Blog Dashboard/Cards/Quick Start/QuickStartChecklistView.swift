@@ -10,7 +10,7 @@ final class QuickStartChecklistView: UIView {
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             labelStackView,
-            // TODO: custom circular progress view
+            progressIndicatorView
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -45,6 +45,18 @@ final class QuickStartChecklistView: UIView {
         label.font = WPStyleGuide.fontForTextStyle(.callout)
         label.textColor = .textSubtle
         return label
+    }()
+
+    private lazy var progressIndicatorView: ProgressIndicatorView = {
+        let appearance = ProgressIndicatorView.Appearance(
+            size: Metrics.progressIndicatorViewSize,
+            lineColor: .primary,
+            trackColor: .listBackground
+        )
+        let view = ProgressIndicatorView(appearance: appearance)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        return view
     }()
 
     override init(frame: CGRect) {
@@ -101,6 +113,9 @@ extension QuickStartChecklistView {
         }
 
         subtitleLabel.text = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
+
+        let progress = Double(completedToursCount) / Double(tours.count)
+        progressIndicatorView.updateProgressLayer(with: progress)
     }
 
     private func startObservingQuickStart() {
@@ -132,6 +147,7 @@ extension QuickStartChecklistView {
         static let mainStackViewHorizontalPadding = 16.0
         static let mainStackViewVerticalPadding = 8.0
         static let labelStackViewSpacing = 4.0
+        static let progressIndicatorViewSize = 24.0
     }
 
     private enum Strings {
