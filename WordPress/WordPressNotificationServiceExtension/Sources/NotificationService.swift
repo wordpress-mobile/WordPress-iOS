@@ -143,11 +143,40 @@ class NotificationService: UNNotificationServiceExtension {
                 // Improve the notification body by trimming whitespace and reducing any multiple blank lines 
                 notificationContent.body = contentFormatter.body?.condenseWhitespace() ?? ""
             }
+
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
             tracks.trackNotificationAssembled()
 
-            contentHandler(notificationContent)
+            // If the notification contains any image media, download it and attach it to the notification
+            guard let mediaURL = contentFormatter.mediaURL else {
+                contentHandler(notificationContent)
+                return
+            }
+
+            self.getMediaAttachment(for: mediaURL) { [weak self] data, fileExtension in
+                defer {
+                    contentHandler(notificationContent)
+                }
+
+                let identifier = UUID().uuidString
+
+                guard
+                    let self = self, let data = data, let fileExtension = fileExtension,
+                    let fileURL = self.saveMediaAttachment(data: data, fileName: String(format: "%@.%@", identifier, fileExtension))
+                else {
+                    return
+                }
+
+                let imageAttachment = try? UNNotificationAttachment(
+                    identifier: identifier,
+                    url: fileURL,
+                    options: nil)
+
+                if let imageAttachment = imageAttachment {
+                    notificationContent.attachments = [imageAttachment]
+                }
+            }
         }
     }
 
