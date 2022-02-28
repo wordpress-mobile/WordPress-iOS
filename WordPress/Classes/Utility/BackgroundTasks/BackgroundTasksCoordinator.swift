@@ -153,8 +153,7 @@ class BackgroundTasksCoordinator {
             return
         }
 
-        let request = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
-        request.earliestBeginDate = nextDate
+        let request = createBGTaskRequest(task, beginDate: nextDate)
 
         do {
             try self.scheduler.submit(request)
@@ -163,6 +162,20 @@ class BackgroundTasksCoordinator {
             completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
         }
     }
+
+    func createBGTaskRequest(_ task: BackgroundTask, beginDate: Date) -> BGTaskRequest {
+        if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
+            let bgProcessingTaskRequest = BGProcessingTaskRequest(identifier: type(of: task).identifier)
+            bgProcessingTaskRequest.requiresNetworkConnectivity = true
+            bgProcessingTaskRequest.earliestBeginDate = beginDate
+            return bgProcessingTaskRequest
+        }
+
+        let appRefreshTaskRequest = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
+        appRefreshTaskRequest.earliestBeginDate = beginDate
+        return appRefreshTaskRequest
+    }
+
 
     // MARK: - Querying Data
 
