@@ -12,8 +12,15 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     private var insightsChangeReceipt: Receipt?
 
     // Types of Insights to display. The array order dictates the display order.
-    private var insightsToShow = [InsightType]()
-    private let userDefaultsInsightTypesKey = "StatsInsightTypes"
+    private var insightsToShow: [InsightType] {
+        get {
+            SiteStatsInformation.sharedInstance.getCurrentSiteInsights()
+        }
+
+        set {
+            SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(newValue)
+        }
+    }
 
     // Local state for site current view count
     private var currentViewCount: Int?
@@ -26,12 +33,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     }()
 
     private let insightsStore = StoreContainer.shared.statsInsights
-
-    // Store Insights settings for all sites.
-    // Used when writing to/reading from User Defaults.
-    // A single site's dictionary contains the InsightType values for that site.
-    private var allSitesInsights = [SiteInsights]()
-    private typealias SiteInsights = [String: [Int]]
 
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false
@@ -65,17 +66,12 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        loadInsightsFromUserDefaults()
+        loadPinnedCards()
         initViewModel()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
         displayEmptyViewIfNecessary()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        writeInsightsToUserDefaults()
     }
 
     func refreshInsights(forceRefresh: Bool = false) {
@@ -199,43 +195,6 @@ private extension SiteStatsInsightsTableViewController {
         displayEmptyViewIfNecessary()
     }
 
-    // MARK: User Defaults
-
-    func loadInsightsFromUserDefaults() {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            insightsToShow = InsightType.defaultInsights
-            loadPinnedCards()
-            return
-        }
-
-        // Get Insights from User Defaults, and extract those for the current site.
-        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [SiteInsights] ?? []
-        let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
-
-        // If no Insights for the current site, use the default Insights.
-        let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
-        insightsToShow = InsightType.typesForValues(insightTypesValues)
-
-        loadPinnedCards()
-    }
-
-    func writeInsightsToUserDefaults() {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            return
-        }
-
-        let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
-        let currentSiteInsights = [siteID: insightTypesValues]
-
-        // Remove existing dictionary from array, and add the updated one.
-        allSitesInsights = allSitesInsights.filter { $0.keys.first != siteID }
-        allSitesInsights.append(currentSiteInsights)
-
-        UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
-    }
-
     func loadPinnedCards() {
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
         switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
@@ -297,9 +256,9 @@ private extension SiteStatsInsightsTableViewController {
                   return
               }
 
-        self.currentViewCount = count
-        self.loadInsightsFromUserDefaults()
-        self.updateView()
+        currentViewCount = count
+        loadPinnedCards()
+        updateView()
     }
 
     // MARK: - Insights Management
@@ -560,6 +519,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
+        refreshInsights(forceRefresh: true)
         updateView()
         scrollToNewCard()
     }
