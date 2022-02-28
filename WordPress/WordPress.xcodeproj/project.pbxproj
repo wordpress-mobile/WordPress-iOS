@@ -2806,6 +2806,8 @@
 		FA8E1F7725EEFA7300063673 /* ReaderPostService+RelatedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */; };
 		FA8E2FE027C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */; };
 		FA8E2FE127C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */; };
+		FA8E2FE527C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */; };
+		FA8E2FE627C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */; };
 		FA90EFEF262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
@@ -7590,6 +7592,7 @@
 		FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagsFooter.xib; sourceTree = "<group>"; };
 		FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPostService+RelatedPosts.swift"; sourceTree = "<group>"; };
 		FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickStartCardCell.swift; sourceTree = "<group>"; };
+		FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackWebViewControllerFactory.swift; path = Classes/Services/JetpackWebViewControllerFactory.swift; sourceTree = SOURCE_ROOT; };
 		FA978DDA26CEB37E009FB14F /* WordPress 132.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 132.xcdatamodel"; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
@@ -14726,6 +14729,7 @@
 			isa = PBXGroup;
 			children = (
 				FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */,
+				FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */,
 			);
 			path = "Quick Start";
 			sourceTree = "<group>";
@@ -17844,6 +17848,7 @@
 				4349B0AF218A477F0034118A /* RevisionsTableViewCell.swift in Sources */,
 				738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
+				FA8E2FE527C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */,
 				17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
@@ -20219,6 +20224,7 @@
 				FABB23242602FC2C00C8785C /* Pageable.swift in Sources */,
 				FABB23252602FC2C00C8785C /* AppIconViewController.swift in Sources */,
 				FABB23262602FC2C00C8785C /* ThemeBrowserCell.swift in Sources */,
+				FA8E2FE627C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */,
 				FABB23272602FC2C00C8785C /* ImageCropViewController.swift in Sources */,
 				FABB23282602FC2C00C8785C /* LoggingURLRedactor.swift in Sources */,
 				FABB23292602FC2C00C8785C /* SiteStatsTableViewCells.swift in Sources */,

@@ -2,9 +2,6 @@ import UIKit
 
 final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
-    private var onTapCustomize: (() -> Void)?
-    private var onTapGrow: (() -> Void)?
-
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.nextSteps
@@ -13,22 +10,28 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         return frameView
     }()
 
-    // FIXME: temporary placeholder view -- will refine design later
-    private lazy var customizeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Customize Your Site", for: .normal)
-        button.addTarget(self, action: #selector(didTapCustomizeButton), for: .touchUpInside)
-        return button
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            customizeChecklistView,
+            growChecklistView
+        ])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
     }()
 
-    // FIXME: temporary place holder view -- will refine design later
-    private lazy var growButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Grow Your Audience", for: .normal)
-        button.addTarget(self, action: #selector(didTapGrowButton), for: .touchUpInside)
-        return button
+    private lazy var customizeChecklistView: QuickStartChecklistView = {
+        let view = QuickStartChecklistView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.accessibilityHint = Strings.customizeHint
+        return view
+    }()
+
+    private lazy var growChecklistView: QuickStartChecklistView = {
+        let view = QuickStartChecklistView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.accessibilityHint = Strings.customizeHint
+        return view
     }()
 
     override init(frame: CGRect) {
@@ -45,36 +48,45 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
             return
         }
 
-        onTapCustomize = { [weak self] in
+        customizeChecklistView.configure(
+            tours: QuickStartTourGuide.customizeListTours,
+            blog: blog,
+            title: Strings.customizeTitle,
+            hint: Strings.customizeHint
+        )
+
+        customizeChecklistView.onTap = { [weak self] in
             self?.showQuickStart(with: .customize, from: viewController, for: blog)
         }
 
-        onTapGrow = { [weak self] in
+        growChecklistView.configure(
+            tours: QuickStartTourGuide.growListTours,
+            blog: blog,
+            title: Strings.growTitle,
+            hint: Strings.growHint
+        )
+
+        growChecklistView.onTap = { [weak self] in
             self?.showQuickStart(with: .grow, from: viewController, for: blog)
         }
     }
+}
+
+// MARK: - Setup
+
+extension DashboardQuickStartCardCell {
 
     private func setupViews() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView)
 
-        cardFrameView.add(subview: customizeButton)
-        cardFrameView.add(subview: growButton)
+        cardFrameView.add(subview: stackView)
     }
-
 }
 
 // MARK: - Actions
 
 extension DashboardQuickStartCardCell {
-
-    @objc private func didTapCustomizeButton() {
-        onTapCustomize?()
-    }
-
-    @objc private func didTapGrowButton() {
-        onTapGrow?()
-    }
 
     private func showQuickStart(with type: QuickStartType, from sourceController: UIViewController, for blog: Blog) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
@@ -91,6 +103,14 @@ extension DashboardQuickStartCardCell {
 
     private enum Strings {
         static let nextSteps = NSLocalizedString("Next Steps", comment: "Title for the Quick Start dashboard card.")
+        static let customizeTitle = NSLocalizedString("Customize Your Site",
+                                                      comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+        static let customizeHint = NSLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
+                                                     comment: "A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button.")
+        static let growTitle = NSLocalizedString("Grow Your Audience",
+                                                comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+        static let growHint = NSLocalizedString("A series of steps to assist with growing your site's audience.",
+                                                comment: "A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button.")
     }
 
     private enum Metrics {
