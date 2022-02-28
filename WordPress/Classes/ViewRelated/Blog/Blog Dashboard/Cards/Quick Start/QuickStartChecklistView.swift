@@ -50,10 +50,15 @@ final class QuickStartChecklistView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        startObservingQuickStart()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
+    }
+
+    deinit {
+        startObservingQuickStart()
     }
 
     func configure(tours: [QuickStartTour], blog: Blog, title: String, hint: String) {
@@ -62,23 +67,6 @@ final class QuickStartChecklistView: UIView {
         titleLabel.text = title
         accessibilityHint = hint
         updateViews()
-    }
-
-    func updateViews() {
-        guard let blog = blog,
-            let title = titleLabel.text else {
-            return
-        }
-
-        let completedToursCount = QuickStartTourGuide.shared.countChecklistCompleted(in: tours, for: blog)
-
-        if completedToursCount == tours.count {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-        } else {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
-        }
-
-        subtitleLabel.text = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
     }
 }
 
@@ -96,6 +84,40 @@ extension QuickStartChecklistView {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
         addGestureRecognizer(tap)
+    }
+
+    private func updateViews() {
+        guard let blog = blog,
+            let title = titleLabel.text else {
+            return
+        }
+
+        let completedToursCount = QuickStartTourGuide.shared.countChecklistCompleted(in: tours, for: blog)
+
+        if completedToursCount == tours.count {
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+        } else {
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
+        }
+
+        subtitleLabel.text = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
+    }
+
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            guard let userInfo = notification.userInfo,
+                let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+                element == .tourCompleted else {
+                    return
+            }
+
+            self?.updateViews()
+        }
+    }
+
+    private func stopObservingQuickStart() {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc private func didTap() {
