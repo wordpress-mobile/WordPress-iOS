@@ -177,14 +177,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // the task actually finishes at around the same time.
             DispatchQueue.main.async { [weak self] in
                 if let task = self?.bgTask, task != .invalid {
-                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task)")
+                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
                     app.endBackgroundTask(task)
                     self?.bgTask = .invalid
                 }
             }
         })
 
-        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask)")
+        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask?.rawValue)")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
