@@ -21,7 +21,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
             SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(newValue)
         }
     }
-    private let userDefaultsInsightTypesKey = "StatsInsightTypes"
 
     // Local state for site current view count
     private var currentViewCount: Int?
