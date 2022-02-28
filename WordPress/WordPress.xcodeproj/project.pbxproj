@@ -1823,6 +1823,8 @@
 		98DCF4A8275945E00008630F /* ReaderDetailNoCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98DCF4A4275945DF0008630F /* ReaderDetailNoCommentCell.xib */; };
 		98E0829F2637545C00537BF1 /* PostService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E0829E2637545C00537BF1 /* PostService+Likes.swift */; };
 		98E082A02637545C00537BF1 /* PostService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E0829E2637545C00537BF1 /* PostService+Likes.swift */; };
+		98E14A3C27C9712D007B0896 /* NotificationCommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E14A3B27C9712D007B0896 /* NotificationCommentDetailViewController.swift */; };
+		98E14A3D27C9712D007B0896 /* NotificationCommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E14A3B27C9712D007B0896 /* NotificationCommentDetailViewController.swift */; };
 		98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */; };
 		98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		98E54FF2265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */; };
@@ -6468,6 +6470,7 @@
 		98DD1EF2263337C400CF0440 /* WordPress 122.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 122.xcdatamodel"; sourceTree = "<group>"; };
 		98DE9A9E239835C800A88D01 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		98E0829E2637545C00537BF1 /* PostService+Likes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostService+Likes.swift"; sourceTree = "<group>"; };
+		98E14A3B27C9712D007B0896 /* NotificationCommentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCommentDetailViewController.swift; sourceTree = "<group>"; };
 		98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ThisWeekWidget.swift"; sourceTree = "<group>"; };
 		98E419E02399B6C300D8C822 /* ThisWeekWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThisWeekWidgetPrefix.pch; sourceTree = "<group>"; };
 		98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesView.swift; sourceTree = "<group>"; };
@@ -13162,6 +13165,7 @@
 		B5FD453E199D0F2800286FBB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				98E14A3B27C9712D007B0896 /* NotificationCommentDetailViewController.swift */,
 				7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */,
 				B5120B371D47CC6C0059361A /* NotificationDetailsViewController.swift */,
 				B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */,
@@ -18722,6 +18726,7 @@
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
 				4054F4602214F50300D261AB /* StreakInsightStatsRecordValue+CoreDataProperties.swift in Sources */,
+				98E14A3C27C9712D007B0896 /* NotificationCommentDetailViewController.swift in Sources */,
 				9A8ECE122254A3260043C8DA /* JetpackRemoteInstallState.swift in Sources */,
 				40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */,
 				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
@@ -20176,6 +20181,7 @@
 				FABB23162602FC2C00C8785C /* WPWebViewController.m in Sources */,
 				FABB23172602FC2C00C8785C /* ShadowView.swift in Sources */,
 				FABB23182602FC2C00C8785C /* Wizard.swift in Sources */,
+				98E14A3D27C9712D007B0896 /* NotificationCommentDetailViewController.swift in Sources */,
 				FABB23192602FC2C00C8785C /* Media+WPMediaAsset.m in Sources */,
 				FABB231A2602FC2C00C8785C /* GutenbergImgUploadProcessor.swift in Sources */,
 				FABB231B2602FC2C00C8785C /* PluginListViewModel.swift in Sources */,

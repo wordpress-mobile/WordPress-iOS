@@ -758,19 +758,17 @@ extension NotificationsViewController {
 
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
-                self.notificationCommentDetailCoordinator.createViewController(with: note) { commentDetailViewController in
-                    guard let commentDetailViewController = commentDetailViewController else {
-                        // TODO: show error view
-                        return
-                    }
-
-                    self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
-                        self?.selectRow(for: note)
-                    }
-
-                    commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-                    self.showDetailViewController(commentDetailViewController, sender: nil)
+                guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
+                    DDLogError("Notifications: failed creating Comment Detail view.")
+                    return
                 }
+
+                self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+                    self?.selectRow(for: note)
+                }
+
+                commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+                self.showDetailViewController(commentDetailViewController, sender: nil)
 
                 return
             }
