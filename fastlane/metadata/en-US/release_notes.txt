@@ -1,6 +1,4 @@
-Three, two, one, liftoff—the Jetpack app now allows you to use all of your WordPress.com sites, create new ones, and use the same Reader features as the WordPress app. The sky’s the limit.
-
-Almost as exciting, notifications and comments now support .gif files. (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif.”)
+Dust off your .gif collection—notifications and comments now support your favorite animated files! (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif.”)
 
 We fixed the flickering effect in Preview mode when you’re toggling between different screen sizes or orientations.
 
