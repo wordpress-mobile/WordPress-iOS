@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-16 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-02-24 11:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1836,7 +1836,7 @@ translators: Block name. %s: The localized block name */
 
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Copy Link";
+"Copy Link" = "نسخ الرابط";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "نسخ الرابط إلى التعليق";
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "إنشاء رابط";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "إنشاء تدوينتك الأولى";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "أنشئ تدوينتك التالية";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "إنشاء لوحة التحكم المخصصة الخاصة بك واختر ما تود رؤيته بالتقارير. ركّز على البيانات التي تُهمّك أكثر.";
@@ -2597,7 +2597,7 @@ translators: Block name. %s: The localized block name */
 "Edit Post" = "تحرير المقالة";
 
 /* Accessibility label for button to edit a comment from a notification */
-"Edit comment" = "Edit comment";
+"Edit comment" = "تعديل التعليق";
 
 /* No comment provided by engineer. */
 "Edit cover media" = "تحرير غلاف الوسائط";
@@ -3503,7 +3503,7 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Links to a blog's dashboard screen.
    Title for the dashboard screen. */
-"Home" = "Home";
+"Home" = "الرئيسية";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -8091,7 +8091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "تم حفظ عدد كبير من السجلات لفترة تصل إلى سبعة أيام.";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "التدوينات المجدولة القادمة";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8878,7 +8878,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "العمل معنا";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "العمل على مسودة تدوينة";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "تُظهر خريطة العالم المشاهدات حسب البلد.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-15 18:54:08+0000 */
+/* Translation-Revision-Date: 2022-02-24 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "创建链接";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "创建您的第一篇文章";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "撰写下一篇文章";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "创建专属于您的自定义控制面板并选择查看哪些报告。重点关注您最关心的数据。";
@@ -8091,7 +8091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "最多保存七天日志。";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "即将发布的预发布文章";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8878,7 +8878,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "加入我们";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "继续撰写文章草稿";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "按国家\/地区显示查看次数世界地图";
