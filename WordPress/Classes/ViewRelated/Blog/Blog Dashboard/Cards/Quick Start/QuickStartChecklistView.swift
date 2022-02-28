@@ -56,6 +56,7 @@ final class QuickStartChecklistView: UIView {
         let view = ProgressIndicatorView(appearance: appearance)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        view.isAccessibilityElement = false
         return view
     }()
 
