@@ -88,6 +88,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
+
     self.extendedLayoutIncludesOpaqueBars = YES;
 }
 

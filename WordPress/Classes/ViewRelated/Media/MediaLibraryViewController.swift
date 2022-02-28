@@ -90,6 +90,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         super.viewDidLoad()
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
+
         extendedLayoutIncludesOpaqueBars = true
 
         registerChangeObserver()
