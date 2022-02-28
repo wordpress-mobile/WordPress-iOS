@@ -201,7 +201,7 @@ private extension NotificationService {
     ///   - url: The URL for the image being downloaded
     ///   - completion: Returns the image data and the file extension derived from the returned mime type or nil if the request fails
     private func getMediaAttachment(for url: URL, completion: @escaping (Data?, String?) -> Void) {
-        var request = URLRequest(url: url);
+        var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
         // Allow private images to pulled from WordPress sites.
@@ -265,12 +265,11 @@ private extension NotificationService {
     /// - Returns: True if it's a WP.com site, False if not.
     private func isWPComSite(url: URL) -> Bool {
         guard let host = url.host else {
-            return false;
+            return false
         }
 
         return host.contains("wordpress.com") || host.contains("wp.com")
     }
-    
 }
 // MARK: - Keychain support
 
