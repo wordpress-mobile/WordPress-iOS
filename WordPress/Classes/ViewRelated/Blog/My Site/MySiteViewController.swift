@@ -278,7 +278,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func resetNavBarAppearance() {
-        WPStyleGuide.configureNavigationAppearance()
+        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
     }
 
     // MARK: - Account
