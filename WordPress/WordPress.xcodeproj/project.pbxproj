@@ -2117,6 +2117,9 @@
 		C72A4F7B26408943009CA633 /* JetpackNotWPErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F7A26408943009CA633 /* JetpackNotWPErrorViewModel.swift */; };
 		C72A4F8E26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */; };
 		C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */; };
+		C737553E27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */; };
+		C737553F27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */; };
+		C737554027C80F1300C6E9A1 /* String+CondenseWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */; };
 		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
 		C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
 		C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
@@ -6809,6 +6812,7 @@
 		C72A4F7A26408943009CA633 /* JetpackNotWPErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNotWPErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNoSitesErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackWindowManager.swift; sourceTree = "<group>"; };
+		C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CondenseWhitespace.swift"; sourceTree = "<group>"; };
 		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
 		C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedGifAttachmentViewProvider.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
@@ -12832,6 +12836,7 @@
 				AE2F3124270B6DA000B2A9C2 /* Scanner+QuotedText.swift */,
 				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
 				7360018E20A265C7001E5E31 /* String+Files.swift */,
+				C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */,
 				B55FFCF91F034F1A0070812C /* String+Ranges.swift */,
 				B54C02231F38F50100574572 /* String+RegEx.swift */,
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
@@ -17294,6 +17299,7 @@
 				175F99B52625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */,
 				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				8BD8201B24BCDBFF00FF25FD /* ReaderWelcomeBanner.swift in Sources */,
+				C737553E27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
 				3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */,
@@ -18859,6 +18865,7 @@
 				7335AC6921220ECE0012EF2D /* NotificationCommentRange.swift in Sources */,
 				7335AC6121220E580012EF2D /* NotificationContentFactory.swift in Sources */,
 				170BEC8B239153160017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
+				C737554027C80F1300C6E9A1 /* String+CondenseWhitespace.swift in Sources */,
 				7335AC6D21220F0F0012EF2D /* FormattableUserContent.swift in Sources */,
 				7335AC6221220E690012EF2D /* FormattableContentFactory.swift in Sources */,
 				433ADC1A223B2A7D00ED9DE1 /* TextBundleWrapper.m in Sources */,
@@ -19735,6 +19742,7 @@
 				FABB21C12602FC2C00C8785C /* MenuItemSourceFooterView.m in Sources */,
 				FABB21C22602FC2C00C8785C /* JetpackRestoreFailedViewController.swift in Sources */,
 				FABB21C32602FC2C00C8785C /* ActionSheetViewController.swift in Sources */,
+				C737553F27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */,
 				FABB21C42602FC2C00C8785C /* PostService+Revisions.swift in Sources */,
 				FABB21C52602FC2C00C8785C /* SourcePostAttribution.m in Sources */,
 				FABB21C62602FC2C00C8785C /* MySitesCoordinator.swift in Sources */,
