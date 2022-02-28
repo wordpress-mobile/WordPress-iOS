@@ -156,6 +156,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        self.extendedLayoutIncludesOpaqueBars = true
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
