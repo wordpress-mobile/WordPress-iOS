@@ -1,15 +1,9 @@
-With this latest version of WordPress, we made some design changes to help make your user experience even better.
+Dust off your .gif collection—notifications and comments now support your favorite animated files! (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif.”)
 
-- Text blocks in the block editor now adjust along with the text as you change the font size and line height for block themes.
-- We redesigned some of the screens in the app, including My Site. Looking fresh!
-- We love a clean inbox, so we added a button that lets you mark all filtered notifications as read.
-- In the site tab’s Configure > People menu, we added an email filter that allows you to see, learn more about, and even remove email followers.
-- In threaded comments, we removed the Share icon and instead added the ability to moderate comments within a thread.
-- If you change the media in an Image block that’s also used as a post’s Featured Image, you’ll see a prompt asking if you’d like to replace the Featured Image while you’re at it.
-- We improved the Stats navigation so you can move between Days and Insights more easily. You can also create new stat cards directly from the Stats screen using our new navigation icon.
+We fixed the flickering effect in Preview mode when you’re toggling between different screen sizes or orientations.
 
-We also dealt with a handful of pesky bugs in our site startup process.
+When you add a new Insights card on the Stats screen, your screen view will jump down to show your brand-new card.
 
-- We fixed a bug in the site creation process that assigned the wrong time zone to the site. This caused some trouble with scheduled posts. But not to worry—any scheduled posts will now publish on time, at the right time.
-- Quick Start no longer appears for users logging in to a self-hosted, non-Jetpack site, even after they say “no thanks” to the Quick Start prompt. Hard pass on that one.
-- When you’re choosing a design or layout during site creation, the checkbox won’t flicker anymore when you switch between options.
+You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Trash button. Delightful.
+
+Finally, you’ll see an error message if a media upload fails for reasons other than not being connected to the Internet. This is much better than the infinitely loading progress bar you might have seen previously.

@@ -1,5 +1,5 @@
 
-extension BlogDetailsViewController {
+extension MySiteViewController {
 
     /// Make a create button coordinator with
     /// - Returns: CreateButtonCoordinator with new post, page, and story actions.
@@ -40,6 +40,6 @@ extension BlogDetailsViewController {
     }
 
     private var shouldShowNewStory: Bool {
-        return blog.supports(.stories) && !UIDevice.isPad()
+        return (blog?.supports(.stories) ?? false) && !UIDevice.isPad()
     }
 }

@@ -67,8 +67,10 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    var background: UIView!
+
     private func commonInit() {
-        let background = UIView()
+        background = UIView()
         background.translatesAutoresizingMaskIntoConstraints = false
         background.backgroundColor = .invertedSystem5
         addSubview(background)
@@ -80,6 +82,7 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         outerStackView.axis = .horizontal
         outerStackView.alignment = .top
         outerStackView.spacing = Metrics.padding
+        outerStackView.distribution = .fill
         background.addSubview(outerStackView)
 
         let labelButtonsStackView = UIStackView()
@@ -93,12 +96,9 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         labelButtonsStackView.addArrangedSubviews([label, buttonStackView])
         buttonStackView.addArrangedSubviews([selectButton, settingsButton])
 
-        NSLayoutConstraint.activate([
-            background.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Metrics.padding),
-            background.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.padding),
-            background.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding),
-            background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.padding),
+        activateBackgroundConstraints()
 
+        NSLayoutConstraint.activate([
             outerStackView.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: Metrics.padding),
             outerStackView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -Metrics.padding),
             outerStackView.topAnchor.constraint(equalTo: background.topAnchor, constant: Metrics.padding),
@@ -118,6 +118,15 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.contentHorizontalAlignment = .leading
         button.setTitleColor(.invertedLink, for: .normal)
+    }
+
+    private func activateBackgroundConstraints() {
+        NSLayoutConstraint.activate([
+            background.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Metrics.padding),
+            background.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.padding),
+            background.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding),
+            background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.padding)
+        ])
     }
 
     private func configureViewsForContentSizeCategoryChange() {
@@ -152,16 +161,25 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
     /// Returns the correct size for the header view, accounting for multi-line labels.
     /// We constrain it to the same width as the host view itself, and ask the system for the appropriate size.
     func referenceSizeInView(_ view: UIView) -> CGSize {
-        let width = view.frame.size.width
-        let widthConstraint = widthAnchor.constraint(equalToConstant: width)
+        // We'll work with just the background view, as iOS 14 has issues if we attempt to layout the header view itself.
+        // We need to remove the background view from the header view while we do our calculations.
+        background.removeFromSuperview()
+
+        // Constrain the background view to match the width of the parent view
+        let width = view.frame.size.width - (Metrics.padding * 2)
+        let widthConstraint = background.widthAnchor.constraint(equalToConstant: width)
         widthConstraint.isActive = true
-        layoutIfNeeded()
+        background.layoutIfNeeded()
 
-        let size = systemLayoutSizeFitting(CGSize(width: width, height: .greatestFiniteMagnitude))
+        // Ask the system to calculate the correct height
+        let size = background.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
 
+        // Put everything back how we found it
         widthConstraint.isActive = false
+        addSubview(background)
+        activateBackgroundConstraints()
 
-        return size
+        return CGSize(width: size.width, height: size.height + (Metrics.padding * 2))
     }
 
     private enum Metrics {

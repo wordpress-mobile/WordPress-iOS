@@ -56,6 +56,8 @@ class BlogDashboardCardFrameView: UIView {
         return chevronImageView
     }()
 
+    weak var currentView: UIView?
+
     /// The title at the header
     var title: String? {
         didSet {
@@ -93,6 +95,7 @@ class BlogDashboardCardFrameView: UIView {
     /// Add a subview inside the card frame
     func add(subview: UIView) {
         mainStackView.addArrangedSubview(subview)
+        currentView = subview
     }
 
     /// Hide the header

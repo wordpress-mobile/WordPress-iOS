@@ -3,8 +3,8 @@ import WordPressShared
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
+    private lazy var scrollView: ButtonScrollView = {
+        let scrollView = ButtonScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.alwaysBounceHorizontal = false
