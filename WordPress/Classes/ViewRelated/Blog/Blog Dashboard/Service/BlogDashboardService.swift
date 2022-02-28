@@ -42,19 +42,7 @@ class BlogDashboardService {
             let snapshot = parse(cardsDictionary, cards: cards)
             return snapshot
         } else {
-            var snapshot = parse([:], cards: decode([:])!)
-
-            let section = DashboardCardSection(id: .ghost)
-
-            snapshot.appendSections([section])
-
-            var items: [DashboardCardModel] = []
-            Array(0...4).forEach {
-                items.append(DashboardCardModel(id: .ghost, apiResponseDictionary: ["diff": $0]))
-            }
-            snapshot.appendItems(items, toSection: section)
-
-            return snapshot
+            return localCardsAndGhostCards()
         }
     }
 }
@@ -98,5 +86,19 @@ private extension BlogDashboardService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
+    }
+
+    func localCardsAndGhostCards() -> DashboardSnapshot {
+        var snapshot = parse([:], cards: BlogDashboardRemoteEntity())
+
+        let section = DashboardCardSection(id: .ghost)
+
+        snapshot.appendSections([section])
+        Array(0...4).forEach {
+            snapshot.appendItems([DashboardCardModel(id: .ghost,
+                                                     apiResponseDictionary: ["diff": $0])], toSection: section)
+        }
+
+        return snapshot
     }
 }
