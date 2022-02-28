@@ -191,10 +191,14 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func showNextPostPrompt() {
-        guard nextPostView == nil else {
+        guard nextPostView == nil ||
+              nextPostView?.hasPublishedPosts != hasPublishedPosts else {
             forceTableViewToRecalculateHeight()
             return
         }
+
+        self.nextPostView?.removeFromSuperview()
+        self.nextPostView = nil
 
         let nextPostView = BlogDashboardNextPostView()
         nextPostView.hasPublishedPosts = hasPublishedPosts
