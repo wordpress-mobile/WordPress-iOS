@@ -167,7 +167,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Let the app finish any uploads that are in progress
         if let task = bgTask, bgTask != .invalid {
-            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task)")
+            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task.rawValue)")
             app.endBackgroundTask(task)
             bgTask = .invalid
         }

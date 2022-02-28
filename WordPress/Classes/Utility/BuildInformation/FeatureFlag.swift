@@ -58,7 +58,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
         case .weeklyRoundupBGProcessingTask:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .domains:
             return false
         case .timeZoneSuggester:
