@@ -10,6 +10,7 @@ class StatsTests: XCTestCase {
         statsScreen = try MySiteScreen()
             .goToStatsScreen()
             .switchTo(mode: .insights)
+            .refreshStatsIfNeeded()
             .dismissCustomizeInsightsNotice()
     }
 

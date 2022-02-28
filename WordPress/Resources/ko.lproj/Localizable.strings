@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-15 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-02-23 17:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -1834,6 +1834,10 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Copied block" = "복사된 블록";
 
+/* Copy the post url and paste anywhere in phone
+   Label for page copy link. Tapping copy the url of page */
+"Copy Link" = "링크 복사";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "댓글로 링크 복사";
 
@@ -2031,6 +2035,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "링크 생성";
+
+/* Title for the card prompting the user to create their first post. */
+"Create your first post" = "첫 번째 글 작성";
+
+/* Title for the card prompting the user to create a new post. */
+"Create your next post" = "다음 글 작성";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -2585,6 +2595,9 @@ translators: Block name. %s: The localized block name */
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "글 편집";
+
+/* Accessibility label for button to edit a comment from a notification */
+"Edit comment" = "댓글 편집";
 
 /* No comment provided by engineer. */
 "Edit cover media" = "커버 미디어 편집";
@@ -3488,6 +3501,10 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Moderation */
 "Hold for Moderation" = "중재를 위해 보관";
 
+/* Noun. Links to a blog's dashboard screen.
+   Title for the dashboard screen. */
+"Home" = "홈";
+
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
@@ -4247,7 +4264,8 @@ translators: Block name. %s: The localized block name */
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "나";
 
-/* Noun. Title. Links to the blog's Media library.
+/* Noun. Title for media button.
+   Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
@@ -5122,7 +5140,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "페이지가 업데이트됨";
 
-/* Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title for pages button.
+   Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -5465,6 +5484,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
 
 /* All Time Stats 'Posts' label
+   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
@@ -6879,6 +6899,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
+   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8069,6 +8090,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "최대 7일 상당의 로그가 저장됩니다.";
 
+/* Title for the card displaying upcoming scheduled posts. */
+"Upcoming scheduled posts" = "공개 예정된 글";
+
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -8852,6 +8876,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "워드프레스닷컴 사용";
+
+/* Title for the card displaying draft posts. */
+"Work on a draft post" = "임시글로 글 작업";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
