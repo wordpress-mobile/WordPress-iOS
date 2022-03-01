@@ -141,6 +141,9 @@ extension BlogDashboardViewController {
                                                         leading: horizontalInset,
                                                         bottom: 0,
                                                         trailing: horizontalInset)
+
+        section.interGroupSpacing = Constants.cellSpacing
+
         return section
     }
 }
@@ -157,5 +160,6 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 20
         static let interGroupSpacing: CGFloat = 12
+        static let cellSpacing: CGFloat = 20
     }
 }
