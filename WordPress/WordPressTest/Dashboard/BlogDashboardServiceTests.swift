@@ -4,6 +4,7 @@ import Nimble
 @testable import WordPress
 
 class BlogDashboardServiceTests: XCTestCase {
+    private var context: NSManagedObjectContext!
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
@@ -15,15 +16,16 @@ class BlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        let context = TestContextManager().newDerivedContext()
-        let blog = newTestBlog(id: wpComID, context: context)
-        service = BlogDashboardService(blog: blog, managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
+        context = TestContextManager().newDerivedContext()
+        service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
         let expect = expectation(description: "Request the correct ID")
 
-        service.fetch(wpComID: wpComID) { _ in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
             XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["posts", "todays_stats"])
             expect.fulfill()
@@ -36,7 +38,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: wpComID) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
             let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
 
@@ -68,7 +72,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: wpComID) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .todaysStats })
             let todaysStatsItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: todaysStatsSection!).first!
 
@@ -97,7 +103,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Return local cards stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: wpComID) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             // Quick Actions exists
             let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickActions }
             XCTAssertEqual(quickActionsSection.count, 1)
@@ -121,7 +129,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: wpComID) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
                            self.dictionary(from: "dashboard-200-with-drafts-and-scheduled.json"))
             XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, self.wpComID)
@@ -135,7 +145,9 @@ class BlogDashboardServiceTests: XCTestCase {
     func testFetchCardsFromPersistence() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
 
-        let snapshot = service.fetchLocal(wpComID: wpComID)
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
 
         let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
         XCTAssertNotNil(postsSection)

@@ -10,14 +10,10 @@ class BlogDashboardViewModel {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    var blog: Blog {
-        didSet {
-            service.blog = blog
-        }
-    }
+    var blog: Blog
 
     private lazy var service: BlogDashboardService = {
-        return BlogDashboardService(blog: blog, managedObjectContext: managedObjectContext)
+        return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
 
     private lazy var dataSource: DashboardDataSource? = {
@@ -52,13 +48,9 @@ class BlogDashboardViewModel {
 
     /// Call the API to return cards for the current blog
     func loadCards(completion: (() -> Void)? = nil) {
-        guard let dotComID = blog.dotComID?.intValue else {
-            return
-        }
-
         viewController?.showLoading()
 
-        service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
+        service.fetch(blog: blog, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
             completion?()
@@ -69,11 +61,7 @@ class BlogDashboardViewModel {
     }
 
     func loadCardsFromCache() {
-        guard let dotComID = blog.dotComID?.intValue else {
-            return
-        }
-
-        let snapshot = service.fetchLocal(wpComID: dotComID)
+        let snapshot = service.fetchLocal(blog: blog)
         apply(snapshot: snapshot)
     }
 
