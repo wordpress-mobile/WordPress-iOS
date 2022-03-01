@@ -86,16 +86,28 @@ private extension BlogDashboardViewModel {
     func apply(snapshot: DashboardSnapshot) {
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
+}
+
+// MARK: - Ghost/Skeleton cards and failures
+
+private extension BlogDashboardViewModel {
+
+    func isGhostCardsBeingShown() -> Bool {
+        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
+    }
 
     func loadingFailure() {
         if isGhostCardsBeingShown() {
-            // TODO: Remove ghost cells and show message
+            replaceGhostCardsWithFailureCard()
         } else {
             viewController?.loadingFailure()
         }
     }
 
-    func isGhostCardsBeingShown() -> Bool {
-        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
+    func replaceGhostCardsWithFailureCard() {
+        if var snapshot = dataSource?.snapshot() {
+            snapshot.deleteSections([DashboardCardSection(id: .ghost)])
+            apply(snapshot: snapshot)
+        }
     }
 }
