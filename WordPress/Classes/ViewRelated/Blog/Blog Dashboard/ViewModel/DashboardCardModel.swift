@@ -15,8 +15,8 @@ struct DashboardCardModel: Hashable {
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
-        return lhs.id == rhs.id &&
-            lhs.apiResponseDictionary == rhs.apiResponseDictionary
+        lhs.id == rhs.id &&
+        lhs.apiResponseDictionary == rhs.apiResponseDictionary
     }
 
     func hash(into hasher: inout Hasher) {
