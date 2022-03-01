@@ -66,7 +66,13 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        loadPinnedCards()
+
+        if FeatureFlag.statsRemoveCustomizeGrowCards.enabled {
+            SiteStatsInformation.sharedInstance.removeCustomizeGrowCards()
+        } else {
+            loadPinnedCards()
+        }
+
         initViewModel()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
@@ -123,7 +129,12 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            self?.refreshGrowAudienceCardIfNecessary()
+            if FeatureFlag.statsRemoveCustomizeGrowCards.enabled {
+                self?.updateView()
+            } else {
+                self?.refreshGrowAudienceCardIfNecessary()
+            }
+
             self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
