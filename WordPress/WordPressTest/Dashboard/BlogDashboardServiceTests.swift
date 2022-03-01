@@ -4,7 +4,9 @@ import Nimble
 @testable import WordPress
 
 class BlogDashboardServiceTests: XCTestCase {
+    private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
+
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
@@ -16,8 +18,15 @@ class BlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        context = TestContextManager().newDerivedContext()
+        contextManager = TestContextManager()
+        context = contextManager.newDerivedContext()
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        context = nil
+        contextManager = nil
     }
 
     func testCallServiceWithCorrectIDAndCards() {
