@@ -1,10 +1,5 @@
 import Foundation
 
-// Notification sent when a Notification Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
-extension NSNotification.Name {
-    static let NotificationCommentDeletedNotification = NSNotification.Name(rawValue: "NotificationCommentDeletedNotification")
-}
-
 // This facilitates showing the CommentDetailViewController within the context of Notifications.
 
 class NotificationCommentDetailCoordinator: NSObject {
@@ -284,10 +279,6 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
         }
 
         notificationsCommentModerated.append(notification)
-    }
-
-    func commentWasDeleted(for notification: Notification?) {
-        NotificationCenter.default.post(name: .NotificationCommentDeletedNotification, object: nil)
     }
 
 }

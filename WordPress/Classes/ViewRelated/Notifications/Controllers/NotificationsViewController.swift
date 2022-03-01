@@ -617,7 +617,7 @@ private extension NotificationsViewController {
 
     func startListeningToCommentDeletedNotifications() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(syncNotificationsWithModeratedComments),
+                                               selector: #selector(removeDeletedNotification),
                                                name: .NotificationCommentDeletedNotification,
                                                object: nil)
     }
@@ -754,6 +754,8 @@ extension NotificationsViewController {
                 return
             }
 
+            self.view.isUserInteractionEnabled = true
+
             if FeatureFlag.notificationCommentDetails.enabled,
                note.kind == .comment {
                 self.notificationCommentDetailCoordinator.createViewController(with: note) { commentDetailViewController in
@@ -768,14 +770,12 @@ extension NotificationsViewController {
 
                     commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
                     self.showDetailViewController(commentDetailViewController, sender: nil)
-                    self.view.isUserInteractionEnabled = true
                 }
 
                 return
             }
 
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
-            self.view.isUserInteractionEnabled = true
         }
     }
 
@@ -885,19 +885,62 @@ private extension NotificationsViewController {
         return notificationDeletionRequests[noteObjectID]
     }
 
+
+    // MARK: - Notifications Deletion from CommentDetailViewController
+
     // With the `notificationCommentDetails` feature, Comment moderation is handled by the view.
     // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
     // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
     // Those Notifications are updated here when the view is shown to update the list accordingly.
-    @objc func syncNotificationsWithModeratedComments() {
+    func syncNotificationsWithModeratedComments() {
+        selectNextAvailableNotification(ignoring: notificationCommentDetailCoordinator.notificationsCommentModerated)
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
+            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated = []
+    }
+
+    @objc func removeDeletedNotification(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
+              let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+                  return
+              }
+
+        let notification = notifications.first(where: { notification -> Bool in
+            guard let commentID = notification.metaCommentID else {
+                return false
+            }
+
+            return commentID.intValue == deletedCommentID
+        })
+
+        syncDeletedNotification(notification)
+    }
+
+    func syncDeletedNotification(_ notification: Notification?) {
+        guard let notification = notification else {
+            return
+        }
+
+        selectNextAvailableNotification(ignoring: [notification])
+
+        syncNotification(with: notification.notificationId, timeout: Syncing.pushMaxWait, success: { [weak self] notification in
+            self?.notificationCommentDetailCoordinator.notificationsCommentModerated.removeAll(where: { $0.notificationId == notification.notificationId })
+        })
+    }
+
+    func selectNextAvailableNotification(ignoring: [Notification]) {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
         if !splitViewControllerIsHorizontallyCompact,
            let selectedNotification = selectedNotification,
-           notificationCommentDetailCoordinator.notificationsCommentModerated.contains(selectedNotification) {
+           ignoring.contains(selectedNotification) {
 
             guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
-                  let nextAvailable = notifications.first(where: { !notificationCommentDetailCoordinator.notificationsCommentModerated.contains($0) }),
+                  let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
                   let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
                       self.selectedNotification = nil
                       return
@@ -906,12 +949,6 @@ private extension NotificationsViewController {
             self.selectedNotification = nextAvailable
             tableView(tableView, didSelectRowAt: indexPath)
         }
-
-        notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
-            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
-        }
-
-        notificationCommentDetailCoordinator.notificationsCommentModerated = []
     }
 
 }
