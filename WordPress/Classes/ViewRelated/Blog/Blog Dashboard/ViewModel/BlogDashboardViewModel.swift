@@ -9,7 +9,12 @@ class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
-    var blog: Blog
+
+    var blog: Blog {
+        didSet {
+            service.blog = blog
+        }
+    }
 
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(blog: blog, managedObjectContext: managedObjectContext)

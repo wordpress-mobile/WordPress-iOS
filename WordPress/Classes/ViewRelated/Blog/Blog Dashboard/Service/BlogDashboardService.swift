@@ -3,7 +3,8 @@ import WordPressKit
 
 class BlogDashboardService {
 
-    private let blog: Blog
+    var blog: Blog
+
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
 
