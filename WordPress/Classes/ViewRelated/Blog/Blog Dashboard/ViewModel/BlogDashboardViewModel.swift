@@ -59,6 +59,8 @@ class BlogDashboardViewModel {
             completion?()
         }, failure: { [weak self] in
             self?.viewController?.stopLoading()
+            self?.loadingFailure()
+
             completion?()
         })
     }
@@ -83,5 +85,17 @@ private extension BlogDashboardViewModel {
 
     func apply(snapshot: DashboardSnapshot) {
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+
+    func loadingFailure() {
+        if isGhostCardsBeingShown() {
+            // TODO: Remove ghost cells and show message
+        } else {
+            viewController?.loadingFailure()
+        }
+    }
+
+    func isGhostCardsBeingShown() -> Bool {
+        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
     }
 }

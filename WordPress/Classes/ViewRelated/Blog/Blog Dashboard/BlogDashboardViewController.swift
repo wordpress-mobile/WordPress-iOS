@@ -66,6 +66,10 @@ final class BlogDashboardViewController: UIViewController {
         activityIndicatorView.stopAnimating()
     }
 
+    func loadingFailure() {
+        displayActionableNotice(title: Strings.failureTitle, actionTitle: Strings.dismiss)
+    }
+
     func update(blog: Blog) {
         self.blog = blog
         viewModel.blog = blog
@@ -152,6 +156,8 @@ extension BlogDashboardViewController {
 
     private enum Strings {
         static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
+        static let failureTitle = NSLocalizedString("Couldn't update. Check that you're online and refresh.", comment: "Content show when the dashboard fails to load")
+        static let dismiss = NSLocalizedString("Dismiss", comment: "Action shown in a bottom notice to dismiss it.")
     }
 
 
