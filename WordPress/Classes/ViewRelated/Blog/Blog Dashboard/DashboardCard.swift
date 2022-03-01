@@ -40,6 +40,19 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
+    func shouldShow(for blog: Blog) -> Bool {
+        switch self {
+        case .quickActions:
+            return true
+        case .quickStart:
+            return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        case .posts:
+            return true
+        case .todaysStats:
+            return true
+        }
+    }
+
     /// All cards that are remote
     static var remoteCases: [DashboardCard] {
         return DashboardCard.allCases.filter { $0.isRemote }

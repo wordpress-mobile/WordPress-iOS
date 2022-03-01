@@ -69,8 +69,7 @@ private extension BlogDashboardService {
                 }
             } else {
 
-                // Don't add the Quick Start card if we shouldn't show Quick Start
-                if card == .quickStart && !QuickStartTourGuide.shouldShowChecklist(for: blog) {
+                guard card.shouldShow(for: blog) else {
                     return
                 }
 
