@@ -237,18 +237,30 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         stackView.addArrangedSubviews([segmentedControlContainerView])
         view.addSubview(siteMenuSpotlightView)
 
-        NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
+        let stackViewConstraints = [
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ]
+
+        let segmentedControlConstraints = [
             segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
                                                   constant: Constants.segmentedControlYOffset),
             segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor),
-            segmentedControl.heightAnchor.constraint(equalToConstant: Constants.segmentedControlHeight),
+            segmentedControl.heightAnchor.constraint(equalToConstant: Constants.segmentedControlHeight)
+        ]
+
+        let siteMenuSpotlightViewConstraints = [
             siteMenuSpotlightView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: -Constants.siteMenuSpotlightOffset),
             siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
-        ])
+        ]
+
+        NSLayoutConstraint.activate(
+            stackViewConstraints +
+            segmentedControlConstraints +
+            siteMenuSpotlightViewConstraints
+        )
     }
 
     // MARK: - Navigation Item
