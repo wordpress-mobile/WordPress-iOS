@@ -11,7 +11,7 @@ let userInfoCommentIdKey = "commentID"
     func nextCommentSelected()
 }
 
-class CommentDetailViewController: UIViewController {
+class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
@@ -247,8 +247,18 @@ class CommentDetailViewController: UIViewController {
 
     // Update the Notification Comment being displayed.
     func refreshView(comment: Comment, notification: Notification) {
+        hideNoResults()
         self.notification = notification
         displayComment(comment)
+    }
+
+    // Show an empty view with the given values.
+    func showNoResultsView(title: String, subtitle: String? = nil, accessoryView: UIView? = nil) {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: title,
+                                     subtitle: subtitle,
+                                     accessoryView: accessoryView)
     }
 
 }
