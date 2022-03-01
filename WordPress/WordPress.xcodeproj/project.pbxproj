@@ -1508,6 +1508,8 @@
 		8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */; };
 		8BF1C81A27BC00AF00F1C203 /* BlogDashboardCardFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */; };
 		8BF1C81B27BC00AF00F1C203 /* BlogDashboardCardFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */; };
+		8BF281F927CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */; };
+		8BF281FA27CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */; };
 		8BF9E03327B1A8A800915B27 /* DashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9E03227B1A8A800915B27 /* DashboardCard.swift */; };
 		8BF9E03427B1A8A800915B27 /* DashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9E03227B1A8A800915B27 /* DashboardCard.swift */; };
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
@@ -6176,6 +6178,7 @@
 		8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardModel.swift; sourceTree = "<group>"; };
 		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
 		8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardCardFrameView.swift; sourceTree = "<group>"; };
+		8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardGhostCardContent.xib; sourceTree = "<group>"; };
 		8BF9E03227B1A8A800915B27 /* DashboardCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCard.swift; sourceTree = "<group>"; };
 		8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLs.swift"; sourceTree = "<group>"; };
 		8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLsTests.swift"; sourceTree = "<group>"; };
@@ -11474,6 +11477,7 @@
 			isa = PBXGroup;
 			children = (
 				8B92D69527CD51FA001F5371 /* DashboardGhostCardCell.swift */,
+				8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */,
 			);
 			path = Ghost;
 			sourceTree = "<group>";
@@ -15807,6 +15811,7 @@
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				98712D1C23DA1C7E00555316 /* WidgetNoConnectionCell.xib in Resources */,
 				9826AE8321B5C6A700C851FA /* LatestPostSummaryCell.xib in Resources */,
+				8BF281F927CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
 				1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */,
 				40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */,
@@ -16119,6 +16124,7 @@
 				FABB1FCD2602FC2C00C8785C /* Posts.storyboard in Resources */,
 				FABB1FCE2602FC2C00C8785C /* StatsChildRowsView.xib in Resources */,
 				FABB1FD02602FC2C00C8785C /* xhtml1-transitional.dtd in Resources */,
+				8BF281FA27CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */,
 				FABB1FD22602FC2C00C8785C /* RestoreStatusView.xib in Resources */,
 				FABB1FD32602FC2C00C8785C /* PluginDetailViewHeaderCell.xib in Resources */,
 				FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */,
