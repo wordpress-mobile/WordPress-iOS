@@ -32,10 +32,11 @@ class InlineEditableSingleLineCell: UITableViewCell, NibReusable {
         configureCell()
     }
 
-    func configure(text: String? = nil, style: TextFieldStyle = .text) {
+    func configure(text: String? = nil, style: TextFieldStyle = .text, disabled: Bool = false) {
         textField.text = text
         textFieldStyle = style
         applyTextFieldStyle()
+        configureInteraction(disabled)
     }
 
     func showInvalidState(_ show: Bool = true) {
@@ -101,6 +102,11 @@ private extension InlineEditableSingleLineCell {
         }()
 
         delegate?.textUpdatedForCell(self)
+    }
+
+    func configureInteraction(_ disabled: Bool) {
+        isUserInteractionEnabled = !disabled
+        textField.textColor = disabled ? .neutral(.shade20) : .text
     }
 
 }
