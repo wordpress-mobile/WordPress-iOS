@@ -253,11 +253,12 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     // Show an empty view with the given values.
-    func showNoResultsView(title: String, subtitle: String? = nil, accessoryView: UIView? = nil) {
+    func showNoResultsView(title: String, subtitle: String? = nil, imageName: String? = nil, accessoryView: UIView? = nil) {
         hideNoResults()
         configureAndDisplayNoResults(on: tableView,
                                      title: title,
                                      subtitle: subtitle,
+                                     image: imageName,
                                      accessoryView: accessoryView)
     }
 

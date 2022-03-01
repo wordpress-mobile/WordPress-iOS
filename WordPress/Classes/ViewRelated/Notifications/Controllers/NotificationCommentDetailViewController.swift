@@ -229,30 +229,37 @@ private extension NotificationCommentDetailViewController {
 
     func showLoadingView() {
         if let commentDetailViewController = commentDetailViewController {
-            commentDetailViewController.showNoResultsView(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            commentDetailViewController.showNoResultsView(title: NoResults.loadingTitle,
+                                                          accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
             hideNoResults()
             configureAndDisplayNoResults(on: view,
-                                         title: NoResultsText.loadingTitle,
+                                         title: NoResults.loadingTitle,
                                          accessoryView: NoResultsViewController.loadingAccessoryView())
         }
     }
 
     func showErrorView() {
         if let commentDetailViewController = commentDetailViewController {
-            commentDetailViewController.showNoResultsView(title: NoResultsText.errorTitle, subtitle: NoResultsText.errorSubtitle)
+            commentDetailViewController.showNoResultsView(title: NoResults.errorTitle,
+                                                          subtitle: NoResults.errorSubtitle,
+                                                          imageName: NoResults.imageName)
         } else {
             hideNoResults()
             configureAndDisplayNoResults(on: view,
-                                         title: NoResultsText.errorTitle,
-                                         subtitle: NoResultsText.errorSubtitle)
+                                         title: NoResults.errorTitle,
+                                         subtitle: NoResults.errorSubtitle,
+                                         image: NoResults.imageName)
+
+
         }
     }
 
-    struct NoResultsText {
+    struct NoResults {
         static let loadingTitle = NSLocalizedString("Loading comment...", comment: "Displayed while a comment is being loaded.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
+        static let imageName = "wp-illustration-notifications"
     }
 
 }
