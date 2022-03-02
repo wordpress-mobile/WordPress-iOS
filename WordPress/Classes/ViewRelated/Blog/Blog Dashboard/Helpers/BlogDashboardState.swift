@@ -9,8 +9,9 @@ class BlogDashboardState {
     /// If loading the cards in the dashboard failed
     var loadingFailed = false
 
-    /// If the dashboard is currently being loaded for the first time
-    var isCurrentlyLoadingForFirstTime: Bool {
+    /// If the dashboard is currently being loaded for the very first time
+    /// aka: it has never been loaded before.
+    var isCurrentlyLoadingForTheVeryFirstTime: Bool {
         firstTimeLoading && !loadingFailed
     }
 

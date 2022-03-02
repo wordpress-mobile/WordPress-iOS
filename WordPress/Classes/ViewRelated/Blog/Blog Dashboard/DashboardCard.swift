@@ -63,7 +63,7 @@ enum DashboardCard: String, CaseIterable {
         case .todaysStats:
             return true
         case .ghost:
-            return BlogDashboardState.shared.isCurrentlyLoadingForFirstTime
+            return BlogDashboardState.shared.isCurrentlyLoadingForTheVeryFirstTime
         case .failure:
             return BlogDashboardState.shared.loadingFailed
         }
