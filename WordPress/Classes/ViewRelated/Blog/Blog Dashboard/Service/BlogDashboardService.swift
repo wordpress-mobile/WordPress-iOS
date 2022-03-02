@@ -49,7 +49,7 @@ class BlogDashboardService {
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
         } else {
-            return localCardsAndGhostCards()
+            return localCardsAndGhostCards(blog: blog)
         }
     }
 }
@@ -100,8 +100,8 @@ private extension BlogDashboardService {
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
-    func localCardsAndGhostCards() -> DashboardSnapshot {
-        var snapshot = localCards()
+    func localCardsAndGhostCards(blog: Blog) -> DashboardSnapshot {
+        var snapshot = localCards(blog: blog)
 
         let section = DashboardCardSection(id: .ghost)
 
@@ -114,7 +114,7 @@ private extension BlogDashboardService {
         return snapshot
     }
 
-    func localCards() -> DashboardSnapshot {
-        parse([:], cards: BlogDashboardRemoteEntity())
+    func localCards(blog: Blog) -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog)
     }
 }
