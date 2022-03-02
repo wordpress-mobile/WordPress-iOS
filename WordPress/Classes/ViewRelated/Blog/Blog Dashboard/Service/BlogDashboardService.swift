@@ -67,7 +67,7 @@ private extension BlogDashboardService {
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
                     let section = DashboardCardSection(id: card)
-                    let item = DashboardCardModel(id: card, apiResponseDictionary: viewModel as? NSDictionary, entity: cards)
+                    let item = DashboardCardModel(id: card, hashableDictionary: viewModel as? NSDictionary, entity: cards)
 
                     snapshot.appendSections([section])
                     snapshot.appendItems([item], toSection: section)
@@ -108,7 +108,7 @@ private extension BlogDashboardService {
         snapshot.appendSections([section])
         Array(0...4).forEach {
             snapshot.appendItems([DashboardCardModel(id: .ghost,
-                                                     apiResponseDictionary: ["diff": $0])], toSection: section)
+                                                     hashableDictionary: ["diff": $0])], toSection: section)
         }
 
         return snapshot

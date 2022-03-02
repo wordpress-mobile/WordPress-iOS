@@ -76,7 +76,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
 
             // cell view model is a `NSDictionary`
-            XCTAssertTrue(postsCardItem.apiResponseDictionary!["has_published"] as! Bool)
+            XCTAssertTrue(postsCardItem.hashableDictionary!["has_published"] as! Bool)
 
             expect.fulfill()
         }
@@ -107,7 +107,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
 
             // Todays Stats has the correct NSDictionary
-            XCTAssertEqual(todaysStatsItem.apiResponseDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+            XCTAssertEqual(todaysStatsItem.hashableDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
 
             expect.fulfill()
         }
@@ -130,7 +130,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
 
             // It doesn't have an api response dictionary
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponseDictionary)
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.hashableDictionary)
 
             // It doesn't have an api response entity
             XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponse)
