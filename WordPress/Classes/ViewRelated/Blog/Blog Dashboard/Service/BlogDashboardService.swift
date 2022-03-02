@@ -89,7 +89,7 @@ private extension BlogDashboardService {
     }
 
     func localCardsAndGhostCards() -> DashboardSnapshot {
-        var snapshot = parse([:], cards: BlogDashboardRemoteEntity())
+        var snapshot = localCards()
 
         let section = DashboardCardSection(id: .ghost)
 
@@ -100,5 +100,9 @@ private extension BlogDashboardService {
         }
 
         return snapshot
+    }
+
+    func localCards() -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity())
     }
 }
