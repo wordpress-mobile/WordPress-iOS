@@ -14,9 +14,7 @@ class BlogDashboardService {
     }
 
     /// Fetch cards from remote
-    func fetch(blog: Blog, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
-
-        state.loadingFailed = false
+    func fetch(blog: Blog, completion: @escaping (DashboardSnapshot) -> Void, failure: ((DashboardSnapshot?) -> Void)? = nil) {
 
         guard let dotComID = blog.dotComID?.intValue else {
             return
@@ -39,19 +37,18 @@ class BlogDashboardService {
                 completion(snapshot)
             } else {
                 self?.state.loadingFailed = true
-                failure?()
+                failure?(nil)
             }
 
         }, failure: { [weak self] _ in
             self?.state.loadingFailed = true
-            failure?()
+            let snapshot = self?.fetchLocal(blog: blog)
+            failure?(snapshot)
         })
     }
 
     /// Fetch cards from local
     func fetchLocal(blog: Blog) -> DashboardSnapshot {
-        state.loadingFailed = false
-        
         if let dotComID = blog.dotComID?.intValue,
             let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
