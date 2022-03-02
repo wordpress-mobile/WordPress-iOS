@@ -1481,6 +1481,7 @@
 		8BC6020923900D8400EFE3D0 /* NullBlogPropertySanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC6020823900D8400EFE3D0 /* NullBlogPropertySanitizer.swift */; };
 		8BC6020D2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC6020C2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift */; };
 		8BC81D6527CFC0DA0057F790 /* BlogDashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC81D6427CFC0DA0057F790 /* BlogDashboardState.swift */; };
+		8BC81D6627CFFC310057F790 /* BlogDashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC81D6427CFC0DA0057F790 /* BlogDashboardState.swift */; };
 		8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB83D024C21063001581BD /* ReaderStreamViewController+Ghost.swift */; };
 		8BCF957A24C6044000712056 /* ReaderTopicsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF957924C6044000712056 /* ReaderTopicsCardCell.swift */; };
 		8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */; };
@@ -20010,6 +20011,7 @@
 				FABB22462602FC2C00C8785C /* TagsCategoriesStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB22472602FC2C00C8785C /* KeychainTools.swift in Sources */,
 				FABB22482602FC2C00C8785C /* ReaderTagStreamHeader.swift in Sources */,
+				8BC81D6627CFFC310057F790 /* BlogDashboardState.swift in Sources */,
 				FABB22492602FC2C00C8785C /* FullScreenCommentReplyViewController.swift in Sources */,
 				FABB224A2602FC2C00C8785C /* ReaderFollowedSitesViewController.swift in Sources */,
 				FABB224B2602FC2C00C8785C /* AnnouncementsCache.swift in Sources */,
