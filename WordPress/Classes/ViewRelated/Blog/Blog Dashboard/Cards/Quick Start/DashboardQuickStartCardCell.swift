@@ -23,14 +23,12 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
     private lazy var customizeChecklistView: QuickStartChecklistView = {
         let view = QuickStartChecklistView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.accessibilityHint = Strings.customizeHint
         return view
     }()
 
     private lazy var growChecklistView: QuickStartChecklistView = {
         let view = QuickStartChecklistView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.accessibilityHint = Strings.customizeHint
         return view
     }()
 
