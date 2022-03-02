@@ -2807,12 +2807,16 @@
 		FA7F92CA25E61C9300502D2A /* ReaderTagsFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */; };
 		FA88EAD6260AE69C001D232B /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
 		FA8E1F7725EEFA7300063673 /* ReaderPostService+RelatedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */; };
+		FA8E2FE027C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */; };
+		FA8E2FE127C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */; };
 		FA90EFEF262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4012E27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
 		FAA4013527B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
+		FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
+		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE42726159B1300BF29FE /* AppConstants.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
@@ -7590,10 +7594,12 @@
 		FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsFooter.swift; sourceTree = "<group>"; };
 		FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagsFooter.xib; sourceTree = "<group>"; };
 		FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPostService+RelatedPosts.swift"; sourceTree = "<group>"; };
+		FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickStartCardCell.swift; sourceTree = "<group>"; };
 		FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackWebViewControllerFactory.swift; path = Classes/Services/JetpackWebViewControllerFactory.swift; sourceTree = SOURCE_ROOT; };
 		FA978DDA26CEB37E009FB14F /* WordPress 132.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 132.xcdatamodel"; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
 		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
+		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
@@ -8223,9 +8229,8 @@
 			isa = PBXGroup;
 			children = (
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
+				FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */,
 				F56A33322538C0ED00E2AEF3 /* MySiteViewController+FAB.swift */,
-				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
-				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -11385,6 +11390,7 @@
 			isa = PBXGroup;
 			children = (
 				FAA4012F27B405DF009E1137 /* Quick Actions */,
+				FA8E2FE327C6377D00DA0982 /* Quick Start */,
 				8BF9E03627B1AD2100915B27 /* Stats */,
 				8B4DDF24278F3AF60022494D /* Posts */,
 				8B8E50B427A468E800C89979 /* Helpers */,
@@ -14717,8 +14723,18 @@
 				FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */,
 				FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */,
 				FA73D7EB27987E4500DF24B3 /* SitePickerViewController+QuickStart.swift */,
+				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
+				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 			);
 			path = "Site Picker";
+			sourceTree = "<group>";
+		};
+		FA8E2FE327C6377D00DA0982 /* Quick Start */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */,
+			);
+			path = "Quick Start";
 			sourceTree = "<group>";
 		};
 		FAA4012F27B405DF009E1137 /* Quick Actions */ = {
@@ -18086,6 +18102,7 @@
 				590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */,
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
+				FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */,
 				3F2ABE16277037A9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */,
 				173DF291274522A1007C64B5 /* AppAboutScreenConfiguration.swift in Sources */,
@@ -18665,6 +18682,7 @@
 				E17780801C97FA9500FA7E14 /* StoreKit+Debug.swift in Sources */,
 				E1ADE0EB20A9EF6200D6AADC /* PrivacySettingsViewController.swift in Sources */,
 				E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */,
+				FA8E2FE027C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */,
 				40EC1F102249CA8400F6785E /* OtherAndTotalViewsCount+CoreDataProperties.swift in Sources */,
 				B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
@@ -19544,6 +19562,7 @@
 				FABB20DB2602FC2C00C8785C /* Routes+MySites.swift in Sources */,
 				FABB20DC2602FC2C00C8785C /* WPAppAnalytics+Media.swift in Sources */,
 				FABB20DD2602FC2C00C8785C /* Post.swift in Sources */,
+				FA8E2FE127C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */,
 				FABB20DE2602FC2C00C8785C /* GutenbergWebViewController.swift in Sources */,
 				FABB20DF2602FC2C00C8785C /* ContextManager.m in Sources */,
 				FABB20E02602FC2C00C8785C /* CookieJar.swift in Sources */,
@@ -19940,6 +19959,7 @@
 				FABB22392602FC2C00C8785C /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB223A2602FC2C00C8785C /* WidgetUrlCell.swift in Sources */,
 				FABB223B2602FC2C00C8785C /* AbstractPost+Searchable.swift in Sources */,
+				FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				FABB223C2602FC2C00C8785C /* EditCommentViewController.m in Sources */,
 				FABB223D2602FC2C00C8785C /* ThisWeekWidgetStats.swift in Sources */,
 				FABB223E2602FC2C00C8785C /* PostAutoUploadMessageProvider.swift in Sources */,
