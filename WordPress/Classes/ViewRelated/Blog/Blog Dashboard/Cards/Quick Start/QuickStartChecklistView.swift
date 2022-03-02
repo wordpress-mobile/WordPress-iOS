@@ -87,13 +87,7 @@ extension QuickStartChecklistView {
 
     private func setupViews() {
         addSubview(mainStackView)
-
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.mainStackViewVerticalPadding),
-            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.mainStackViewVerticalPadding),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.mainStackViewHorizontalPadding),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.mainStackViewHorizontalPadding)
-        ])
+        pinSubviewToAllEdges(mainStackView, insets: Metrics.mainStackViewInsets)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
         addGestureRecognizer(tap)
@@ -144,9 +138,8 @@ extension QuickStartChecklistView {
 extension QuickStartChecklistView {
 
     private enum Metrics {
+        static let mainStackViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         static let mainStackViewSpacing = 16.0
-        static let mainStackViewHorizontalPadding = 16.0
-        static let mainStackViewVerticalPadding = 8.0
         static let labelStackViewSpacing = 4.0
         static let progressIndicatorViewSize = 24.0
     }
