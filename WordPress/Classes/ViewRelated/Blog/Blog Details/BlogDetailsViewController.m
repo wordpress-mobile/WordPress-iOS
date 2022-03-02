@@ -1520,6 +1520,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    controller.extendedLayoutIncludesOpaqueBars = YES;
     [self showDetailViewController:controller sender:self];
 }
 
