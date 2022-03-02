@@ -9,5 +9,15 @@ class BlogDashboardState {
     /// If loading the cards in the dashboard failed
     var loadingFailed = false
 
+    /// If the dashboard is currently being loaded for the first time
+    var isCurrentlyLoadingForFirstTime: Bool {
+        firstTimeLoading && !loadingFailed
+    }
+
     private init() { }
+
+    func reset() {
+        firstTimeLoading = false
+        loadingFailed = false
+    }
 }
