@@ -183,6 +183,7 @@ import WordPressFlux
 
     func removeCreateButton() {
         button.removeFromSuperview()
+        noticeContainerView?.removeFromSuperview()
     }
 
     @objc func showCreateButton(for blog: Blog) {

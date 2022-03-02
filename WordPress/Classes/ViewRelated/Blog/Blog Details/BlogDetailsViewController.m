@@ -412,6 +412,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
+    
+    QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
+    
+    // Visiting the site menu element in viewDidAppear ensures that this view controller is visible when the next step
+    // in the tour is triggered. We want to avoid a situation where the next step in the tour is executed while this
+    // view controller isn't visible yet, as this can cause issues with scrolling to the correct quick start element.
+    if ([tourGuide currentElementInt] == QuickStartTourElementSiteMenu) {
+        [tourGuide visited: QuickStartTourElementSiteMenu];
+    }
+    
+    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1520,6 +1531,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    controller.extendedLayoutIncludesOpaqueBars = YES;
     [self showDetailViewController:controller sender:self];
 }
 
