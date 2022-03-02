@@ -660,9 +660,11 @@ private extension CommentDetailViewController {
         }
 
         if comment.isLiked {
-            CommentAnalytics.trackCommentUnLiked(comment: comment)
+            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: notification?.metaSiteID) :
+                                    CommentAnalytics.trackCommentUnLiked(comment: comment)
         } else {
-            CommentAnalytics.trackCommentLiked(comment: comment)
+            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: notification?.metaSiteID) :
+                                    CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
         commentService.toggleLikeStatus(for: comment, siteID: siteID, success: {}, failure: { _ in
@@ -739,7 +741,8 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
 private extension CommentDetailViewController {
 
     func unapproveComment() {
-        CommentAnalytics.trackCommentUnApproved(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentUnApproved(comment: comment)
 
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
@@ -751,7 +754,8 @@ private extension CommentDetailViewController {
     }
 
     func approveComment() {
-        CommentAnalytics.trackCommentApproved(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentApproved(comment: comment)
 
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
@@ -763,7 +767,8 @@ private extension CommentDetailViewController {
     }
 
     func spamComment() {
-        CommentAnalytics.trackCommentSpammed(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentSpammed(comment: comment)
 
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
@@ -775,7 +780,8 @@ private extension CommentDetailViewController {
     }
 
     func trashComment() {
-        CommentAnalytics.trackCommentTrashed(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentTrashed(comment: comment)
 
         commentService.trashComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
@@ -993,7 +999,8 @@ private extension CommentDetailViewController {
     }
 
     @objc func createReply(content: String) {
-        CommentAnalytics.trackCommentRepliedTo(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
+                                CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         guard let reply = commentService.createReply(for: comment) else {
             DDLogError("Failed creating comment reply.")
