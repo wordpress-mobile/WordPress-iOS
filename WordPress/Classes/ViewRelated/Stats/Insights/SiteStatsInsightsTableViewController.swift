@@ -67,8 +67,8 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
 
-        if FeatureFlag.statsRemoveCustomizeGrowCards.enabled {
-            SiteStatsInformation.sharedInstance.removeCustomizeGrowCards()
+        if FeatureFlag.statsRemoveCustomizeCard.enabled {
+            SiteStatsInformation.sharedInstance.removeInsight(.customize)
         } else {
             loadPinnedCards()
         }
@@ -129,12 +129,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            if FeatureFlag.statsRemoveCustomizeGrowCards.enabled {
-                self?.updateView()
-            } else {
-                self?.refreshGrowAudienceCardIfNecessary()
-            }
-
+            self?.refreshGrowAudienceCardIfNecessary()
             self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
@@ -223,14 +218,15 @@ private extension SiteStatsInsightsTableViewController {
                 }
 
             case InsightType.customize where !insightsToShow.contains(.customize):
-                insightsToShow = insightsToShow.filter { $0 != .growAudience }
-                insightsToShow.insert(.customize, at: 0)
+                if !FeatureFlag.statsRemoveCustomizeCard.enabled {
+                    insightsToShow = insightsToShow.filter { $0 != .growAudience }
+                    insightsToShow.insert(.customize, at: 0)
 
-                // Work around to make sure customize insights shown is tracked only once
-                if viewsCount != nil {
-                    WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
+                    // Work around to make sure customize insights shown is tracked only once
+                    if viewsCount != nil {
+                        WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
+                    }
                 }
-
             default:
                 break
             }
