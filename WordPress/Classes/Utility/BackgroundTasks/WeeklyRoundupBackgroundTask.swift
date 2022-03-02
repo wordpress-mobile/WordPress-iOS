@@ -228,7 +228,13 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     // MARK: - Misc Properties
 
-    static let identifier = "org.wordpress.bgtask.weeklyroundup"
+    static var identifier: String {
+        if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
+            return Constants.taskIdentifierProcessing
+        }
+
+        return Constants.taskIdentifier
+    }
     static private let secondsPerDay = 24 * 60 * 60
 
     private let store: Store
@@ -454,6 +460,11 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         operationQueue.addOperation(scheduleNotification)
         operationQueue.addOperation(completionOperation)
     }
+
+    enum Constants {
+        static let taskIdentifier = "org.wordpress.bgtask.weeklyroundup"
+        static let taskIdentifierProcessing = "org.wordpress.bgtask.weeklyroundup.processing"
+    }
 }
 
 class WeeklyRoundupNotificationScheduler {
@@ -543,14 +554,7 @@ class WeeklyRoundupNotificationScheduler {
                 return
             }
 
-            let title: String = {
-                if let siteTitle = siteTitle {
-                    return String(format: TextContent.dynamicNotificationTitle, siteTitle)
-                } else {
-                    return TextContent.staticNotificationTitle
-                }
-            }()
-
+        let title = notificationTitle(siteTitle)
         let body = String(format: TextContent.dynamicNotificationBody, views, comments, likes)
 
         // The dynamic notification date is defined by when the background task is run.
@@ -645,6 +649,14 @@ class WeeklyRoundupNotificationScheduler {
             }
 
             completion(true)
+        }
+    }
+
+    func notificationTitle(_ siteTitle: String?) -> String {
+        if let siteTitle = siteTitle {
+            return String(format: TextContent.dynamicNotificationTitle, siteTitle)
+        } else {
+            return TextContent.staticNotificationTitle
         }
     }
 

@@ -83,13 +83,15 @@ class EditCommentTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
+        let editingDisabled = !comment.canEditAuthorData()
+
         switch tableSection {
         case TableSections.name:
-            cell.configure(text: updatedName)
+            cell.configure(text: updatedName, disabled: editingDisabled)
         case TableSections.webAddress:
-            cell.configure(text: updatedWebAddress, style: .url)
+            cell.configure(text: updatedWebAddress, style: .url, disabled: editingDisabled)
         case TableSections.emailAddress:
-            cell.configure(text: updatedEmailAddress, style: .email)
+            cell.configure(text: updatedEmailAddress, style: .email, disabled: editingDisabled)
         default:
             DDLogError("Edit Comment: unsupported table section.")
             break
@@ -100,12 +102,27 @@ class EditCommentTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        // Make sure no SectionFooter is rendered
+        if needToShowRegisteredUserNotice(for: section) {
+            return UITableView.automaticDimension
+        }
+
         return CGFloat.leastNormalMagnitude
     }
 
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if needToShowRegisteredUserNotice(for: section) {
+            return NSLocalizedString("\nThis user is registered. Their name, web address, and email address cannot be edited.",
+                                     comment: "Notice shown on the Edit Comment view when the author is a registered user.")
+        }
+
+        return nil
+    }
+
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Make sure no SectionFooter is rendered
+        if needToShowRegisteredUserNotice(for: section) {
+            return super.tableView(tableView, viewForFooterInSection: section)
+        }
+
         return nil
     }
 
@@ -210,6 +227,11 @@ private extension EditCommentTableViewController {
             comment.author_email != updatedEmailAddress ||
             comment.author_url != updatedWebAddress ||
             comment.contentForEdit() != updatedContent
+    }
+
+    func needToShowRegisteredUserNotice(for section: Int) -> Bool {
+        // The notice is shown in the footer of the Email Address section
+        return !comment.canEditAuthorData() && TableSections(rawValue: section) == .emailAddress
     }
 
     // MARK: - Table sections

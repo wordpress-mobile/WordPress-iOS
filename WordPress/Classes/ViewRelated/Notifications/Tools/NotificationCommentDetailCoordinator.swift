@@ -2,16 +2,25 @@ import Foundation
 
 // This facilitates showing the CommentDetailViewController within the context of Notifications.
 
+
+protocol CommentDetailsNotificationDelegate: AnyObject {
+    func previousNotificationTapped(current: Notification?)
+    func nextNotificationTapped(current: Notification?)
+    func commentWasModerated(for notification: Notification?)
+}
+
 class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Properties
 
-    private var notification: Notification?
-    private var comment: Comment?
+    private var viewController: NotificationCommentDetailViewController?
     private let managedObjectContext = ContextManager.shared.mainContext
-    private var viewController: CommentDetailViewController?
-    private var commentID: NSNumber?
-    private var blog: Blog?
+
+    private var notification: Notification? {
+        didSet {
+            markNotificationReadIfNeeded()
+        }
+    }
 
     // Arrow navigation data source
     private weak var notificationsNavigationDataSource: NotificationsNavigationDataSource?
@@ -20,9 +29,9 @@ class NotificationCommentDetailCoordinator: NSObject {
     // This happens due to Navigation Events (Next / Previous)
     var onSelectedNoteChange: ((Notification) -> Void)?
 
-    private lazy var commentService: CommentService = {
-        return .init(managedObjectContext: managedObjectContext)
-    }()
+    // Keep track of Notifications that have moderated Comments so they can be updated
+    // the next time the Notifications list is displayed.
+    var notificationsCommentModerated: [Notification] = []
 
     // MARK: - Init
 
@@ -33,26 +42,11 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Public Methods
 
-    func createViewController(with notification: Notification,
-                              completion: @escaping (CommentDetailViewController?) -> Void) {
-        configure(with: notification)
-
-        if let comment = loadCommentFromCache(commentID) {
-            createViewController(comment: comment)
-            completion(viewController)
-            return
-        }
-
-        fetchComment(commentID, completion: { comment in
-            guard let comment = comment else {
-                // TODO: show error view
-                completion(nil)
-                return
-            }
-
-            self.createViewController(comment: comment)
-            completion(self.viewController)
-        })
+    func createViewController(with notification: Notification) -> NotificationCommentDetailViewController? {
+        self.notification = notification
+        viewController = NotificationCommentDetailViewController(notification: notification, notificationDelegate: self)
+        updateNavigationButtonStates()
+        return viewController
     }
 
 }
@@ -61,75 +55,12 @@ class NotificationCommentDetailCoordinator: NSObject {
 
 private extension NotificationCommentDetailCoordinator {
 
-    func configure(with notification: Notification) {
-        self.notification = notification
-        commentID = notification.metaCommentID
-
-        if let siteID = notification.metaSiteID {
-            blog = Blog.lookup(withID: siteID, in: managedObjectContext)
+    func markNotificationReadIfNeeded() {
+        guard let notification = notification, !notification.read else {
+            return
         }
-    }
 
-    func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
-        guard let commentID = commentID,
-              let blog = blog else {
-                  DDLogError("Notification Comment: unable to load comment due to missing information.")
-                  // TODO: show error view
-                  return nil
-              }
-
-        return commentService.findComment(withID: commentID, in: blog)
-    }
-
-    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
-        guard let commentID = commentID,
-              let blog = blog else {
-                  DDLogError("Notification Comment: unable to fetch comment due to missing information.")
-                  // TODO: show error view
-                  completion(nil)
-                  return
-              }
-
-        // TODO: show loading view
-
-        commentService.loadComment(withID: commentID, for: blog, success: { comment in
-            completion(comment)
-        }, failure: { error in
-            // TODO: show error view
-            completion(nil)
-        })
-    }
-
-    func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
-        // If the comment has a parent and it is not cached, fetch it so the details header is correct.
-        guard let notification = notification,
-              let parentID = notification.metaParentID,
-              let blog = blog,
-              loadCommentFromCache(parentID) == nil else {
-                  completion()
-                  return
-              }
-
-        fetchComment(parentID, completion: { _ in
-            completion()
-        })
-    }
-
-    func createViewController(comment: Comment) {
-        self.comment = comment
-
-        fetchParentCommentIfNeeded(completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.viewController = CommentDetailViewController(comment: comment,
-                                                              notification: self.notification,
-                                                              notificationNavigationDelegate: self,
-                                                              managedObjectContext: self.managedObjectContext)
-
-            self.updateNavigationButtonStates()
-        })
+        NotificationSyncMediator()?.markAsRead(notification)
     }
 
     func updateViewWith(notification: Notification) {
@@ -141,21 +72,17 @@ private extension NotificationCommentDetailCoordinator {
             return
         }
 
-        configure(with: notification)
-
-        fetchParentCommentIfNeeded(completion: { [weak self] in
-            self?.refreshViewController()
-        })
+        refreshViewControllerWith(notification)
     }
 
     func showNotificationDetails(with notification: Notification) {
         let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: nil)
 
         guard let viewController = viewController,
-        let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
-            DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
-            return
-        }
+              let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
+                  DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
+                  return
+              }
 
         notificationDetailsViewController.note = notification
         notificationDetailsViewController.notificationCommentDetailCoordinator = self
@@ -171,22 +98,10 @@ private extension NotificationCommentDetailCoordinator {
         })
     }
 
-    func refreshViewController() {
-        if let comment = loadCommentFromCache(commentID) {
-            viewController?.refreshView(comment: comment, notification: notification)
-            updateNavigationButtonStates()
-            return
-        }
-
-        fetchComment(commentID, completion: { comment in
-            guard let comment = comment else {
-                // TODO: show error view
-                return
-            }
-
-            self.viewController?.refreshView(comment: comment, notification: self.notification)
-            self.updateNavigationButtonStates()
-        })
+    func refreshViewControllerWith(_ notification: Notification) {
+        self.notification = notification
+        viewController?.refreshViewController(notification: notification)
+        updateNavigationButtonStates()
     }
 
     func updateNavigationButtonStates() {
@@ -209,7 +124,6 @@ private extension NotificationCommentDetailCoordinator {
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
 
-
     func trackDetailsOpened(for notification: Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
@@ -222,9 +136,9 @@ private extension NotificationCommentDetailCoordinator {
 
 }
 
-// MARK: - CommentDetailsNotificationNavigationDelegate
+// MARK: - CommentDetailsNotificationDelegate
 
-extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNavigationDelegate {
+extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
     func previousNotificationTapped(current: Notification?) {
         guard let current = current,
@@ -244,6 +158,15 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationNaviga
 
         WPAnalytics.track(.notificationsNextTapped)
         updateViewWith(notification: nextNotification)
+    }
+
+    func commentWasModerated(for notification: Notification?) {
+        guard let notification = notification,
+              !notificationsCommentModerated.contains(notification) else {
+                  return
+              }
+
+        notificationsCommentModerated.append(notification)
     }
 
 }

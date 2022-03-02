@@ -24,7 +24,7 @@ final class BlogDashboardViewController: UIViewController {
         UIActivityIndicatorView()
     }()
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,8 +39,10 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigation()
         setupCollectionView()
         addHeightObservers()
+        addWillEnterForegroundObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -71,6 +73,16 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
+    func pulledToRefresh(completion: (() -> Void)? = nil) {
+        viewModel.loadCards {
+            completion?()
+        }
+    }
+
+    private func setupNavigation() {
+        title = Strings.home
+    }
+
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .listBackground
@@ -86,8 +98,21 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateCollectionViewHeight(notification:)), name: .postCardTableViewSizeChanged, object: nil)
     }
 
+    private func addWillEnterForegroundObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    /// Load cards if view is appearing
+    @objc private func loadCards() {
+        guard view.superview != nil else {
+            return
+        }
+
+        viewModel.loadCards()
     }
 }
 
@@ -121,6 +146,11 @@ extension BlogDashboardViewController {
 }
 
 extension BlogDashboardViewController {
+
+    private enum Strings {
+        static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
+    }
+
 
     private enum Constants {
         static let estimatedWidth: CGFloat = 100

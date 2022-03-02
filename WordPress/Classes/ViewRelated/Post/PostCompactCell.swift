@@ -226,11 +226,14 @@ extension PostCompactCell {
     /// No "more" button and show a description, instead of a date
     func configureForDashboard(with post: Post) {
         configure(with: post)
-        configureExcerpt()
         separator.isHidden = true
         menuButton.isHidden = true
         trailingContentConstraint.constant = Constants.margin
         headerStackView.spacing = Constants.margin
+
+        if !post.isScheduled() {
+            configureExcerpt()
+        }
     }
 
     func hideSeparator() {

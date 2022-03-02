@@ -52,8 +52,11 @@ class BlogDashboardCardFrameView: UIView {
         chevronImageView.tintColor = .listIcon
         chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         chevronImageView.isAccessibilityElement = false
+        chevronImageView.isHidden = true
         return chevronImageView
     }()
+
+    weak var currentView: UIView?
 
     /// The title at the header
     var title: String? {
@@ -66,6 +69,12 @@ class BlogDashboardCardFrameView: UIView {
     var icon: UIImage? {
         didSet {
             iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
+        }
+    }
+
+    var onHeaderTap: (() -> Void)? {
+        didSet {
+            chevronImageView.isHidden = onHeaderTap == nil
         }
     }
 
@@ -86,6 +95,17 @@ class BlogDashboardCardFrameView: UIView {
     /// Add a subview inside the card frame
     func add(subview: UIView) {
         mainStackView.addArrangedSubview(subview)
+        currentView = subview
+    }
+
+    /// Hide the header
+    func hideHeader() {
+        headerStackView.isHidden = true
+    }
+
+    /// Hide the header
+    func showHeader() {
+        headerStackView.isHidden = false
     }
 
     private func configureStackViews() {
@@ -101,12 +121,12 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         // Add tap gesture
-        let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(headerTapped))
         headerStackView.addGestureRecognizer(tap)
     }
 
-    @objc private func buttonTapped() {
-        print("todo: header tapped")
+    @objc private func headerTapped() {
+        onHeaderTap?()
     }
 
     private enum Constants {

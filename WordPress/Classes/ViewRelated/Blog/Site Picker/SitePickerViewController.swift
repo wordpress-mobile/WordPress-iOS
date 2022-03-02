@@ -6,7 +6,11 @@ import SVProgressHUD
 
 final class SitePickerViewController: UIViewController {
 
-    var blog: Blog
+    var blog: Blog {
+        didSet {
+            blogDetailHeaderView.blog = blog
+        }
+    }
 
     var siteIconPresenter: SiteIconPickerPresenter?
     var siteIconPickerPresenter: SiteIconPickerPresenter?

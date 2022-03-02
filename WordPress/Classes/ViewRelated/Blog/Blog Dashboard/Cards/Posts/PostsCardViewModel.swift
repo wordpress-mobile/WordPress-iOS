@@ -8,9 +8,13 @@ protocol PostsCardView: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(message: String, retry: Bool)
+    func showNextPostPrompt()
+    func hideNextPrompt()
+    func firstPostPublished()
 }
 
 /// Responsible for populating a table view with posts
+/// And syncing them if needed.
 ///
 class PostsCardViewModel: NSObject {
     var blog: Blog
@@ -25,16 +29,19 @@ class PostsCardViewModel: NSObject {
 
     private var status: BasePost.Status = .draft
 
+    private var shouldSync: Bool
+
     private var syncing: (NSNumber?, BasePost.Status)?
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
+        self.shouldSync = shouldSync
 
         super.init()
     }
@@ -44,13 +51,14 @@ class PostsCardViewModel: NSObject {
         do {
             try fetchedResultsController.performFetch()
             viewController?.tableView.reloadData()
+            showNextPostPromptIfNeeded()
         } catch {
             print("Fetch failed")
         }
     }
 
     func retry() {
-        viewController?.showLoading()
+        showLoadingIfNeeded()
         sync()
     }
 
@@ -70,11 +78,23 @@ class PostsCardViewModel: NSObject {
     }
 
     /// Update currently displayed posts for the given blog and status
-    func update(blog: Blog, status: BasePost.Status) {
-        self.blog = blog
-        self.status = status
-        performInitialLoading()
-        refresh()
+    func update(blog: Blog, status: BasePost.Status, shouldSync: Bool) {
+        if self.blog != blog || self.status != status {
+            // If blog and/or status is different, reset the VC
+            self.blog = blog
+            self.status = status
+            self.shouldSync = shouldSync
+            self.syncing = nil
+            performInitialLoading()
+            refresh()
+        } else {
+            // If they're the same, just sync if needed
+            self.blog = blog
+            self.status = status
+            self.shouldSync = shouldSync
+            syncIfNeeded()
+        }
+
     }
 }
 
@@ -86,10 +106,10 @@ private extension PostsCardViewModel {
     }
 
     func performInitialLoading() {
-        viewController?.showLoading()
         updateFilter()
         createFetchedResultsController()
-        sync()
+        syncIfNeeded()
+        showLoadingIfNeeded()
     }
 
     func createFetchedResultsController() {
@@ -120,6 +140,12 @@ private extension PostsCardViewModel {
         let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
+        let myAuthorID = blog.userID ?? 0
+
+        // Brand new local drafts have an authorID of 0.
+        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+        predicates.append(authorPredicate)
+
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
        return predicate
     }
@@ -128,12 +154,21 @@ private extension PostsCardViewModel {
         return postListFilter.sortDescriptors
     }
 
+    func syncIfNeeded() {
+        if shouldSync {
+            sync()
+        }
+    }
+
     func sync() {
         let filter = postListFilter
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
+        options.authorID = blog.userID
         options.number = Constants.numberOfPostsToSync
+        options.order = .descending
+        options.orderBy = .byModified
         options.purgesLocalSync = true
 
         guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
@@ -142,22 +177,42 @@ private extension PostsCardViewModel {
 
         syncing = (blog.dotComID, status)
 
+        // If the userID is nil we need to sync authors
+        if blog.userID == nil {
+            syncAuthors()
+            return
+        }
+
         postService.syncPosts(
             ofType: .post,
             with: options,
             for: blog,
-            success: { [weak self] _ in
-                if self?.numberOfPosts == 0 {
-                    self?.showEmptyPostsError()
+            success: { [weak self] posts in
+                if posts?.count == 0 {
+                    self?.showNextPostPrompt()
                 }
 
+                self?.hideLoading()
                 self?.syncing = nil
             }, failure: { [weak self] _ in
+                self?.syncing = nil
+
                 if self?.numberOfPosts == 0 {
+                    self?.showNextPostPromptIfNeeded()
                     self?.showLoadingFailureError()
                 }
+        })
+    }
 
-                self?.syncing = nil
+    func syncAuthors() {
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        blogService.syncAuthors(for: blog, success: { [weak self] in
+            self?.syncing = nil
+            self?.performInitialLoading()
+            self?.refresh()
+        }, failure: { [weak self] _ in
+            self?.syncing = nil
+            self?.showLoadingFailureError()
         })
     }
 
@@ -172,23 +227,55 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showEmptyPostsError() {
+    func showNextPostPrompt() {
+        viewController?.showNextPostPrompt()
         viewController?.hideLoading()
-        viewController?.showError(message: Strings.noPostsMessage, retry: false)
     }
 
     func showLoadingFailureError() {
-        viewController?.hideLoading()
         viewController?.showError(message: Strings.loadingFailure, retry: true)
+        viewController?.hideLoading()
+    }
+
+    func hideLoading() {
+        viewController?.hideLoading()
+    }
+
+    func showLoadingIfNeeded() {
+        // Only show loading state if there are no posts at all
+        if numberOfPosts == 0 && shouldSync {
+            viewController?.showLoading()
+        }
+    }
+
+    func showNextPostPromptIfNeeded() {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count,
+           postsCount == 0, !isSyncing() {
+            viewController?.showNextPostPrompt()
+        } else {
+            viewController?.hideNextPrompt()
+        }
+    }
+
+    /// If a post is published we want to let the viewController know
+    /// So the prompt can be updated
+    func checkIfPostIsPublished() {
+        if let post = fetchedResultsController.fetchedObjects?.first,
+           post.status == .publish || post.status == .publishPrivate {
+            viewController?.firstPostPublished()
+        }
+    }
+
+    func isSyncing() -> Bool {
+        syncing != nil
     }
 
     enum Constants {
         static let numberOfPosts = 3
-        static let numberOfPostsToSync: NSNumber = 4
+        static let numberOfPostsToSync: NSNumber = 3
     }
 
     enum Strings {
-        static let noPostsMessage = NSLocalizedString("You don't have any posts", comment: "Displayed when the user views the dashboard posts card but they have no posts")
         static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
     }
 }
@@ -233,6 +320,9 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         viewController?.tableView.endUpdates()
 
+        showNextPostPromptIfNeeded()
+        checkIfPostIsPublished()
+
         // When going to the post list all displayed posts there will be displayed
         // here too. This check ensures that we never display more than what
         // is specified on the `fetchLimit` property
@@ -255,8 +345,8 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             }
             break
         case .update:
-            if let indexPath = indexPath, let cell = viewController?.tableView.cellForRow(at: indexPath) {
-                configureCell(cell, at: indexPath)
+            if let indexPath = indexPath {
+                viewController?.tableView.reloadRows(at: [indexPath], with: .fade)
             }
             break
         case .move:

@@ -215,6 +215,9 @@ import Foundation
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
 
+    // My Site
+    case mySitePullToRefresh
+
     // My Site: No sites view displayed
     case mySiteNoSitesViewDisplayed
     case mySiteNoSitesViewActionTapped
@@ -304,6 +307,7 @@ import Foundation
     case changeUsernameDismissed
 
     // My Site Dashboard
+    case dashboardCardShown
     case dashboardCardItemTapped
 
     /// A String that represents the event
@@ -681,6 +685,10 @@ import Foundation
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
 
+        // My Site
+        case .mySitePullToRefresh:
+            return "my_site_pull_to_refresh"
+
         // My Site No Sites View
         case .mySiteNoSitesViewDisplayed:
             return "my_site_no_sites_view_displayed"
@@ -815,6 +823,8 @@ import Foundation
             return "change_username_dismissed"
 
         // My Site Dashboard
+        case .dashboardCardShown:
+            return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
 

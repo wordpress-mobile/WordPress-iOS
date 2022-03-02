@@ -14,7 +14,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsModerationDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -88,6 +88,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
+
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (void)configureLoadMoreSpinner
@@ -233,7 +235,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
                                                                                isLastInList:[self isLastRow:indexPath]
                                                                        managedObjectContext:[ContextManager sharedInstance].mainContext];
-    self.commentDetailViewController.moderationDelegate = self;
+    self.commentDetailViewController.commentDelegate = self;
     [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
@@ -752,7 +754,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshNoConnectionView];
 }
 
-#pragma mark - CommentDetailsModerationDelegate
+#pragma mark - CommentDetailsDelegate
 
 - (void)nextCommentSelected
 {

@@ -5,6 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
+		<string>org.wordpress.bgtask.weeklyroundup.processing</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

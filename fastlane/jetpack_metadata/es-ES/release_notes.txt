@@ -1,9 +1,0 @@
-Hemos realizado algunos cambios de diseño en esta última versión de Jetpack para que tu experiencia de usuario sea aún mejor.
-
-- Ahora, los bloques de texto del editor de bloques se ajustan al texto al cambiar el tamaño de la fuente y la altura de la línea en los temas de bloques.
-- Hemos rediseñado algunas de las pantallas de la aplicación, incluida la de "Mi sitio". ¡Obtendrás una apariencia renovada!
-- Nos gusta que la bandeja de entrada esté limpia, así que hemos añadido un botón que permite marcar como leídas todas las notificaciones filtradas.
-- En la pestaña Configurar > Personas del menú de tu sitio, hemos añadido un filtro de correo electrónico que permite ver, obtener más información e incluso eliminar seguidores por correo electrónico.
-- Hemos eliminado el icono de Compartir de los comentarios anidados y, en su lugar, hemos añadido la posibilidad de moderar los comentarios que se encuentren en un hilo.
-- Al cambiar los archivos de medios en un bloque Imagen (que también se utiliza como imagen destacada de una entrada), se te preguntará si quieres sustituir la imagen destacada mientras realizas este proceso.
-- Hemos mejorado la navegación en la sección Estadísticas para que puedas moverte con facilidad entre los apartados de "Días" y "Detalles". Con nuestro nuevo icono de navegación, también puedes crear nuevas fichas de estadísticas directamente desde la pantalla de Estadísticas.

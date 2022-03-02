@@ -226,8 +226,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
 
-@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
-
 @end
 
 @implementation BlogDetailsViewController
@@ -375,17 +373,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
     MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-    
-    [self.createButtonCoordinator addTo:parentVC.view
-                         trailingAnchor:parentVC.view.safeAreaLayoutGuide.trailingAnchor
-                           bottomAnchor:parentVC.view.safeAreaLayoutGuide.bottomAnchor];
 
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -417,10 +405,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self cancelCompletedToursIfNeeded];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] &&
-        AppConfiguration.showsCreateButton) {
-        [self.createButtonCoordinator showCreateButtonFor:self.blog];
-    }
     [self createUserActivity];
     [self startAlertTimer];
 
@@ -430,28 +414,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
-- (CreateButtonCoordinator *)createButtonCoordinator
-{
-    if (!_createButtonCoordinator) {
-        _createButtonCoordinator = [self makeCreateButtonCoordinator];
-    }
-    
-    return _createButtonCoordinator;
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [self.createButtonCoordinator hideCreateButton];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -755,6 +721,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
+    if ([Feature enabled:FeatureFlagMySiteDashboard] && [self.blog isAccessibleThroughWPCom] && ![self splitViewControllerIsHorizontallyCompact]) {
+        [marr addObject:[self homeSectionViewModel]];
+    }
     if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
         [marr addObject:[self jetpackSectionViewModel]];
     } else {
@@ -775,11 +744,26 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
+- (BlogDetailsSection *)homeSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
+                                  accessibilityIdentifier:@"Home Row"
+                                                    image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                 callback:^{
+                                                    [weakSelf showDashboard];
+                                                 }]];
+    
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryHome];
+}
+
 - (BlogDetailsSection *)generalSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-
+    
     BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                   accessibilityIdentifier:@"Stats Row"
                                                     image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
@@ -1003,7 +987,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                                  image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                                  image:[UIImage gridiconOfType:GridiconTypeGlobe]
                                                                callback:^{
         [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -1530,6 +1514,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
+}
+
+- (void)showDashboard
+{
+    BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    controller.extendedLayoutIncludesOpaqueBars = YES;
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showActivity

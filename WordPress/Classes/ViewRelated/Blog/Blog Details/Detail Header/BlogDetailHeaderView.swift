@@ -128,6 +128,10 @@ class BlogDetailHeaderView: UIView {
             self?.delegate?.siteIconReceivedDroppedImage(images.first)
         }
 
+        titleView.subtitleButton.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
+        titleView.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
+        titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
+
         titleView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(titleView)
@@ -264,7 +268,6 @@ fileprivate extension BlogDetailHeaderView {
             }
 
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
 
             return button
         }()
@@ -287,7 +290,6 @@ fileprivate extension BlogDetailHeaderView {
 
             button.setTitleColor(.text, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
             return button
         }()
 
@@ -302,8 +304,6 @@ fileprivate extension BlogDetailHeaderView {
             button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
             button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
             button.accessibilityIdentifier = "SwitchSiteButton"
-
-            button.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
             return button
         }()
