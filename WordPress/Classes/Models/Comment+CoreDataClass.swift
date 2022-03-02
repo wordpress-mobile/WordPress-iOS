@@ -62,6 +62,11 @@ public class Comment: NSManagedObject {
         return !author_url.isEmpty
     }
 
+    func canEditAuthorData() -> Bool {
+        // If the authorID is zero, the user is unregistered. Therefore, the data can be edited.
+        return authorID == 0
+    }
+
     func hasParentComment() -> Bool {
         return parentID > 0
     }

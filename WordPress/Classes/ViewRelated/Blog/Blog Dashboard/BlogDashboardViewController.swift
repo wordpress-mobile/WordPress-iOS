@@ -53,6 +53,7 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
+        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
     func showLoading() {
@@ -165,7 +166,6 @@ extension BlogDashboardViewController {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 20
-        static let interGroupSpacing: CGFloat = 12
         static let cellSpacing: CGFloat = 20
     }
 }

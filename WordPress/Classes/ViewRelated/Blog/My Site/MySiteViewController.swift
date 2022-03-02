@@ -73,6 +73,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return refreshControl
     }()
 
+    private lazy var siteMenuSpotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the site menu.
+    var siteMenuSpotlightIsShown: Bool = false {
+        didSet {
+            siteMenuSpotlightView.isHidden = !siteMenuSpotlightIsShown
+        }
+    }
+
     private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let meScenePresenter: ScenePresenter
@@ -136,6 +150,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
+        startObservingQuickStart()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -220,16 +235,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         scrollView.pinSubviewToAllEdges(stackView)
         segmentedControlContainerView.addSubview(segmentedControl)
         stackView.addArrangedSubviews([segmentedControlContainerView])
+        view.addSubview(siteMenuSpotlightView)
 
-        NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
+        let stackViewConstraints = [
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ]
+
+        let segmentedControlConstraints = [
             segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.segmentedControlXOffset),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
                                                   constant: Constants.segmentedControlYOffset),
-            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor)
-        ])
+            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor),
+            segmentedControl.heightAnchor.constraint(equalToConstant: Constants.segmentedControlHeight)
+        ]
+
+        let siteMenuSpotlightViewConstraints = [
+            siteMenuSpotlightView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: -Constants.siteMenuSpotlightOffset),
+            siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
+        ]
+
+        NSLayoutConstraint.activate(
+            stackViewConstraints +
+            segmentedControlConstraints +
+            siteMenuSpotlightViewConstraints
+        )
     }
 
     // MARK: - Navigation Item
@@ -369,6 +400,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
+            siteMenuSpotlightIsShown = false
             hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
@@ -383,6 +415,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         addChild(child)
         stackView.addArrangedSubview(child.view)
         child.didMove(toParent: self)
+    }
+
+    private func removeChildFromStackView(_ child: UIViewController) {
+        guard child.parent != nil else {
+            return
+        }
+
+        child.willMove(toParent: nil)
+        stackView.removeArrangedSubview(child.view)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
     }
 
     // MARK: - No Sites UI logic
@@ -572,7 +615,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        remove(blogDetailsViewController)
+        removeChildFromStackView(blogDetailsViewController)
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
@@ -685,7 +728,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        remove(blogDashboardViewController)
+        removeChildFromStackView(blogDashboardViewController)
     }
 
     /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
@@ -775,6 +818,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private enum Constants {
         static let segmentedControlXOffset: CGFloat = 20
         static let segmentedControlYOffset: CGFloat = 24
+        static let segmentedControlHeight: CGFloat = 32
+        static let siteMenuSpotlightOffset: CGFloat = 8
     }
 }
 

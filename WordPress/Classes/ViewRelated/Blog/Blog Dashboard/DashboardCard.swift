@@ -9,6 +9,7 @@ import Foundation
 /// identifier on the backend.
 enum DashboardCard: String, CaseIterable {
     case quickActions
+    case quickStart
     case posts
     case todaysStats = "todays_stats"
 
@@ -20,6 +21,8 @@ enum DashboardCard: String, CaseIterable {
     var isRemote: Bool {
         switch self {
         case .quickActions:
+            return false
+        case .quickStart:
             return false
         case .posts:
             return true
@@ -36,6 +39,8 @@ enum DashboardCard: String, CaseIterable {
         switch self {
         case .quickActions:
             return DashboardQuickActionsCardCell.self
+        case .quickStart:
+            return DashboardQuickStartCardCell.self
         case .posts:
             return DashboardPostsCardCell.self
         case .todaysStats:
@@ -44,6 +49,21 @@ enum DashboardCard: String, CaseIterable {
             return DashboardGhostCardCell.self
         case .failure:
             return DashboardFailureCardCell.self
+        }
+    }
+
+    func shouldShow(for blog: Blog) -> Bool {
+        switch self {
+        case .quickActions:
+            return true
+        case .quickStart:
+            return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        case .posts:
+            return true
+        case .todaysStats:
+            return true
+        case .ghost:
+            return true
         }
     }
 
