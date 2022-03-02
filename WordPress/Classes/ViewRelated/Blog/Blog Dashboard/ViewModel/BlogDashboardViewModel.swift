@@ -9,6 +9,7 @@ class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
+    private let dashboardState: BlogDashboardState
 
     var blog: Blog
 
@@ -35,10 +36,11 @@ class BlogDashboardViewModel {
         }
     }()
 
-    init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
+    init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog, dashboardState: BlogDashboardState = BlogDashboardState.shared) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        self.dashboardState = dashboardState
     }
 
     /// Apply the initial configuration when the view loaded
@@ -94,7 +96,7 @@ private extension BlogDashboardViewModel {
     }
 
     func loadingFailure() {
-        if BlogDashboardState.shared.hasEverLoaded {
+        if dashboardState.hasEverLoaded {
             viewController?.loadingFailure()
         }
     }
