@@ -57,6 +57,8 @@ enum DashboardCard: String, CaseIterable {
             return true
         case .todaysStats:
             return true
+        case .ghost:
+            return true
         }
     }
 
