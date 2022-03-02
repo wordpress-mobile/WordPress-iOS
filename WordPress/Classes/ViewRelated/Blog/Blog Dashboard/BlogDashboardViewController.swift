@@ -73,6 +73,7 @@ final class BlogDashboardViewController: UIViewController {
 
     func update(blog: Blog) {
         self.blog = blog
+        BlogDashboardState.shared.reset()
         viewModel.blog = blog
         viewModel.loadCardsFromCache()
         viewModel.loadCards()
