@@ -218,14 +218,16 @@ private extension SiteStatsInsightsTableViewController {
                 }
 
             case InsightType.customize where !insightsToShow.contains(.customize):
-                if !FeatureFlag.statsRemoveCustomizeCard.enabled {
-                    insightsToShow = insightsToShow.filter { $0 != .growAudience }
-                    insightsToShow.insert(.customize, at: 0)
+                if FeatureFlag.statsRemoveCustomizeCard.enabled {
+                    break
+                }
 
-                    // Work around to make sure customize insights shown is tracked only once
-                    if viewsCount != nil {
-                        WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
-                    }
+                insightsToShow = insightsToShow.filter { $0 != .growAudience }
+                insightsToShow.insert(.customize, at: 0)
+
+                // Work around to make sure customize insights shown is tracked only once
+                if viewsCount != nil {
+                    WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
                 }
             default:
                 break
