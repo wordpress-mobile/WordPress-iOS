@@ -32,6 +32,7 @@ struct DashboardCardModel: Hashable {
     }
 
     func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
         hasher.combine(hashableDictionary)
     }
 }
