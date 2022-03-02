@@ -51,7 +51,7 @@ final class QuickStartChecklistView: UIView {
         let appearance = ProgressIndicatorView.Appearance(
             size: Metrics.progressIndicatorViewSize,
             lineColor: .primary,
-            trackColor: .listBackground
+            trackColor: .separator
         )
         let view = ProgressIndicatorView(appearance: appearance)
         view.translatesAutoresizingMaskIntoConstraints = false

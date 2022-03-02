@@ -354,6 +354,11 @@ final class ProgressIndicatorView: UIView {
         layer.isHidden = true
     }
 
+    private func updateColors() {
+        indeterminateLayer.strokeColor = appearance.lineColor.cgColor
+        progressTrackLayer.strokeColor = appearance.trackColor.cgColor
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -368,6 +373,12 @@ final class ProgressIndicatorView: UIView {
         if state == .indeterminate {
             startAnimating()
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateColors()
+        setNeedsDisplay()
     }
 
     private func stateDidChange() {
