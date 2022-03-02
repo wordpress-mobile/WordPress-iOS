@@ -28,6 +28,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
+        BlogDashboardState.shared.reset()
     }
 
     override func tearDown() {
@@ -212,7 +213,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
         XCTAssertNotNil(ghostSection)
-        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 5)
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 1)
     }
 
     func dictionary(from file: String) -> NSDictionary? {
