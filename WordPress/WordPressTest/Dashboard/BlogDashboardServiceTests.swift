@@ -177,8 +177,9 @@ class ZBlogDashboardServiceTests: XCTestCase {
     func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+        let blog = newTestBlog(id: wpComID, context: context)
 
-        service.fetch(wpComID: 123456) { snapshot in
+        service.fetch(blog: blog) { snapshot in
             let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
             XCTAssertNil(ghostSection)
 
@@ -192,8 +193,9 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testDontReturnGhostCardsWhenFetchingFromCachedData() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
+        let blog = newTestBlog(id: wpComID, context: context)
 
-        let snapshot = service.fetchLocal(wpComID: 123456)
+        let snapshot = service.fetchLocal(blog: blog)
 
         let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
         XCTAssertNil(ghostSection)
@@ -204,8 +206,9 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testReturnGhostCardsWhenNoCachedData() {
         persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: wpComID, context: context)
 
-        let snapshot = service.fetchLocal(wpComID: 123456)
+        let snapshot = service.fetchLocal(blog: blog)
 
         let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
         XCTAssertNotNil(ghostSection)
