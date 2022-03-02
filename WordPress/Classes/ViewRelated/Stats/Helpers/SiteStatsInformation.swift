@@ -60,9 +60,9 @@ extension SiteStatsInformation {
         userDefaults.set(updatedInsights, forKey: userDefaultsInsightTypesKey)
     }
 
-    func removeCustomizeGrowCards(_ userDefaults: UserDefaults = UserDefaults.standard) {
+    func removeInsight(_ insightType: InsightType, _ userDefaults: UserDefaults = UserDefaults.standard) {
         var insightTypes = getCurrentSiteInsights()
-        insightTypes.removeAll { $0 == .growAudience || $0 == .customize }
+        insightTypes.removeAll { $0 == insightType }
 
         saveCurrentSiteInsights(insightTypes, userDefaults)
     }

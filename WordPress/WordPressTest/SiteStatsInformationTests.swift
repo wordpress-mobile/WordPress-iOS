@@ -53,27 +53,24 @@ class SiteStatsInformationTests: XCTestCase {
         }
     }
 
-    func testRemoveCustomizeGrowCards() {
+    func testRemoveInsight() {
         // Given Current Inights with customize and growaudience cards
-        let userDefaults = UserDefaults(suiteName: "testRemoveCustomizeGrowCards")!
-        userDefaults.removePersistentDomain(forName: "testRemoveCustomizeGrowCards")
+        let userDefaults = UserDefaults(suiteName: "testRemoveInsight")!
+        userDefaults.removePersistentDomain(forName: "testRemoveInsight")
 
         SiteStatsInformation.sharedInstance.siteID = 3
         var defaultInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        defaultInsights.insert(.growAudience, at: 0)
         defaultInsights.insert(.customize, at: 0)
         SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(defaultInsights, userDefaults)
 
         let updatedInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        XCTAssertFalse( (updatedInsights.filter { $0 == .growAudience }).isEmpty )
         XCTAssertFalse( (updatedInsights.filter { $0 == .customize }).isEmpty )
 
         // When we remove customize and growaudience cards
-        SiteStatsInformation.sharedInstance.removeCustomizeGrowCards(userDefaults)
+        SiteStatsInformation.sharedInstance.removeInsight(.customize, userDefaults)
 
         // Then customize and growaudience cards should no long exist
         let removedInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        XCTAssertTrue( (removedInsights.filter { $0 == .growAudience }).isEmpty )
         XCTAssertTrue( (removedInsights.filter { $0 == .customize }).isEmpty )
     }
 }
