@@ -26,7 +26,7 @@ class BlogDashboardService {
 
             if let cards = self?.decode(cardsDictionary) {
 
-                self?.state.firstTimeLoading = false
+                self?.state.hasEverLoaded = true
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
@@ -53,11 +53,11 @@ class BlogDashboardService {
             let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
-            state.firstTimeLoading = false
+            state.hasEverLoaded = true
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
         } else {
-            state.firstTimeLoading = true
+            state.hasEverLoaded = false
             return localCards(blog: blog)
         }
     }

@@ -3,8 +3,8 @@ import Foundation
 class BlogDashboardState {
     static let shared = BlogDashboardState()
 
-    /// If the dashboard is being loaded for the first time
-    var firstTimeLoading = false
+    /// If the dashboard has ever loaded before
+    var hasEverLoaded = false
 
     /// If loading the cards in the dashboard failed
     var loadingFailed = false
@@ -12,13 +12,13 @@ class BlogDashboardState {
     /// If the dashboard is currently being loaded for the very first time
     /// aka: it has never been loaded before.
     var isCurrentlyLoadingForTheVeryFirstTime: Bool {
-        firstTimeLoading && !loadingFailed
+        !hasEverLoaded && !loadingFailed
     }
 
     private init() { }
 
     func reset() {
-        firstTimeLoading = false
+        hasEverLoaded = false
         loadingFailed = false
     }
 }
