@@ -108,20 +108,6 @@ private extension BlogDashboardService {
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
-    func localCardsAndGhostCards(blog: Blog) -> DashboardSnapshot {
-        var snapshot = localCards(blog: blog)
-
-        let section = DashboardCardSection(id: .ghost)
-
-        snapshot.appendSections([section])
-        Array(0...4).forEach {
-            snapshot.appendItems([DashboardCardModel(id: .ghost,
-                                                     hashableDictionary: ["diff": $0])], toSection: section)
-        }
-
-        return snapshot
-    }
-
     func localCards(blog: Blog) -> DashboardSnapshot {
         parse([:], cards: BlogDashboardRemoteEntity(), blog: blog)
     }
