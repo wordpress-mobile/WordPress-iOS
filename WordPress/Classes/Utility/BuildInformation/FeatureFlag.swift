@@ -26,6 +26,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
     case statsPerformanceImprovements
+    case siteIntentQuestion
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -83,6 +84,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .statsPerformanceImprovements:
             return true
+        case .siteIntentQuestion:
+            return false
         }
     }
 
@@ -157,6 +160,8 @@ extension FeatureFlag {
             return "Notification Comment Details"
         case .statsPerformanceImprovements:
             return "Stats Performance Improvements"
+        case .siteIntentQuestion:
+            return "Site Intent Question"
         }
     }
 
