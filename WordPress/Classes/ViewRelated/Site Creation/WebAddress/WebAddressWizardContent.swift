@@ -401,7 +401,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                           comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
-        static let invalidQuery = NSLocalizedString("Your search includes characters not supported in WordPress.com domains. Only alphanumeric characters are allowed.",
+        static let invalidQuery = NSLocalizedString("Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.",
                                                  comment: "This is shown to the user when their domain search query contains invalid characters.")
         static let noConnection: String = NSLocalizedString("No connection",
                                                             comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
