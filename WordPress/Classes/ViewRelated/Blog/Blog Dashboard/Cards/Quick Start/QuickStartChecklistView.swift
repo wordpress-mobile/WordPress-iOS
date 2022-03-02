@@ -71,7 +71,7 @@ final class QuickStartChecklistView: UIView {
     }
 
     deinit {
-        startObservingQuickStart()
+        stopObservingQuickStart()
     }
 
     func configure(tours: [QuickStartTour], blog: Blog, title: String, hint: String) {
