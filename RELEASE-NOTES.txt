@@ -2,7 +2,8 @@
 -----
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
-8 [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Stats: we re-organized the default view in Insights, presenting more interesting data at a glance [#18072]
 
 19.3
 -----
