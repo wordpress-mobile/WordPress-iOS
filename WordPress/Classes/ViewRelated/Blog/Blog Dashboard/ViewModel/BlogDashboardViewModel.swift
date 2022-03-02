@@ -54,9 +54,13 @@ class BlogDashboardViewModel {
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
             completion?()
-        }, failure: { [weak self] in
+        }, failure: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.loadingFailure()
+
+            if let snapshot = snapshot {
+                self?.apply(snapshot: snapshot)
+            }
 
             completion?()
         })
@@ -90,9 +94,7 @@ private extension BlogDashboardViewModel {
     }
 
     func loadingFailure() {
-        if isGhostCardsBeingShown() {
-            replaceGhostCardsWithFailureCard()
-        } else {
+        if BlogDashboardState.shared.hasEverLoaded {
             viewController?.loadingFailure()
         }
     }
