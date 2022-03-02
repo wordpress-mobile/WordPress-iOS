@@ -5,10 +5,12 @@ class BlogDashboardService {
 
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
+    private let state: BlogDashboardState
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
+    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence(), state: BlogDashboardState = BlogDashboardState.shared) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
+        self.state = state
     }
 
     /// Fetch cards from remote
@@ -24,6 +26,8 @@ class BlogDashboardService {
 
             if let cards = self?.decode(cardsDictionary) {
 
+                self?.state.firstTimeLoading = false
+
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
                 guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog) else {
@@ -32,10 +36,12 @@ class BlogDashboardService {
 
                 completion(snapshot)
             } else {
+                self?.state.loadingFailed = true
                 failure?()
             }
 
-        }, failure: { _ in
+        }, failure: { [weak self] _ in
+            self?.state.loadingFailed = true
             failure?()
         })
     }
@@ -46,10 +52,12 @@ class BlogDashboardService {
             let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
+            state.firstTimeLoading = false
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
         } else {
-            return localCardsAndGhostCards(blog: blog)
+            state.firstTimeLoading = true
+            return localCards(blog: blog)
         }
     }
 }
@@ -61,7 +69,6 @@ private extension BlogDashboardService {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
-            .filter { $0 != .ghost && $0 != .failure }
             .forEach { card in
 
             if card.isRemote {
