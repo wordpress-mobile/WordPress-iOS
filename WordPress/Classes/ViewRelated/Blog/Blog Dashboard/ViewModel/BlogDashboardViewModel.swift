@@ -100,15 +100,4 @@ private extension BlogDashboardViewModel {
             viewController?.loadingFailure()
         }
     }
-
-    func replaceGhostCardsWithFailureCard() {
-        if var snapshot = dataSource?.snapshot() {
-            snapshot.deleteSections([DashboardCardSection(id: .ghost)])
-            let section = DashboardCardSection(id: .failure)
-            let item = DashboardCardModel(id: .failure)
-            snapshot.appendSections([section])
-            snapshot.appendItems([item], toSection: section)
-            apply(snapshot: snapshot)
-        }
-    }
 }
