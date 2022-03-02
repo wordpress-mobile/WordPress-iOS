@@ -91,6 +91,9 @@ extension QuickStartChecklistView {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
         addGestureRecognizer(tap)
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
     }
 
     private func updateViews() {
@@ -107,7 +110,11 @@ extension QuickStartChecklistView {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
         }
 
-        subtitleLabel.text = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
+        let subtitle = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
+        subtitleLabel.text = subtitle
+
+        // VoiceOver: Adding a period after the title to create a pause between the title and the subtitle
+        accessibilityLabel = "\(title). \(subtitle)"
 
         let progress = Double(completedToursCount) / Double(tours.count)
         progressIndicatorView.updateProgressLayer(with: progress)
