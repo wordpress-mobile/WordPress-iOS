@@ -3,7 +3,7 @@
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
 * [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
-* [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#17844]
+* [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#18065]
 
 19.3
 -----
