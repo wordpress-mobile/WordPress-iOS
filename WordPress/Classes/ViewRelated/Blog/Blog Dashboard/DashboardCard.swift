@@ -14,6 +14,7 @@ enum DashboardCard: String, CaseIterable {
 
     // Card placeholder for when loading data
     case ghost
+    case failure
 
     /// If the card is backed by API data
     var isRemote: Bool {
@@ -25,6 +26,8 @@ enum DashboardCard: String, CaseIterable {
         case .todaysStats:
             return true
         case .ghost:
+            return false
+        case .failure:
             return false
         }
     }
@@ -39,6 +42,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardStatsCardCell.self
         case .ghost:
             return DashboardGhostCardCell.self
+        case .failure:
+            return DashboardFailureCardCell.self
         }
     }
 

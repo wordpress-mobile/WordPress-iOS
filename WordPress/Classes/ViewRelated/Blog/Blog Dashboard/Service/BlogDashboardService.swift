@@ -54,7 +54,7 @@ private extension BlogDashboardService {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
-            .filter { $0 != .ghost }
+            .filter { $0 != .ghost && $0 != .failure }
             .forEach { card in
 
             if card.isRemote {

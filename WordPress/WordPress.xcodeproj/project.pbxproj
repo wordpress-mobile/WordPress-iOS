@@ -1510,6 +1510,8 @@
 		8BF1C81B27BC00AF00F1C203 /* BlogDashboardCardFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */; };
 		8BF281F927CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */; };
 		8BF281FA27CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */; };
+		8BF281FC27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF281FB27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift */; };
+		8BF281FD27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF281FB27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift */; };
 		8BF9E03327B1A8A800915B27 /* DashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9E03227B1A8A800915B27 /* DashboardCard.swift */; };
 		8BF9E03427B1A8A800915B27 /* DashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9E03227B1A8A800915B27 /* DashboardCard.swift */; };
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
@@ -6179,6 +6181,7 @@
 		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
 		8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardCardFrameView.swift; sourceTree = "<group>"; };
 		8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardGhostCardContent.xib; sourceTree = "<group>"; };
+		8BF281FB27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardFailureCardCell.swift; sourceTree = "<group>"; };
 		8BF9E03227B1A8A800915B27 /* DashboardCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCard.swift; sourceTree = "<group>"; };
 		8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLs.swift"; sourceTree = "<group>"; };
 		8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLsTests.swift"; sourceTree = "<group>"; };
@@ -11478,6 +11481,7 @@
 			children = (
 				8B92D69527CD51FA001F5371 /* DashboardGhostCardCell.swift */,
 				8BF281F827CE8E4100AF8CF3 /* DashboardGhostCardContent.xib */,
+				8BF281FB27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift */,
 			);
 			path = Ghost;
 			sourceTree = "<group>";
@@ -18301,6 +18305,7 @@
 				B5552D831CD1062400B26DF6 /* String+Extensions.swift in Sources */,
 				469EB16824D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift in Sources */,
 				40247E022120FE3600AE1C3C /* AutomatedTransferHelper.swift in Sources */,
+				8BF281FC27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift in Sources */,
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
@@ -20318,6 +20323,7 @@
 				FABB237C2602FC2C00C8785C /* ReaderInterestsCoordinator.swift in Sources */,
 				FABB237D2602FC2C00C8785C /* ReaderSavedPostCellActions.swift in Sources */,
 				C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */,
+				8BF281FD27CEB69C00AF8CF3 /* DashboardFailureCardCell.swift in Sources */,
 				FABB237E2602FC2C00C8785C /* FormattableContentFormatter.swift in Sources */,
 				FABB237F2602FC2C00C8785C /* SearchAdsAttribution.swift in Sources */,
 				FABB23802602FC2C00C8785C /* ReaderCommentsViewController.m in Sources */,
