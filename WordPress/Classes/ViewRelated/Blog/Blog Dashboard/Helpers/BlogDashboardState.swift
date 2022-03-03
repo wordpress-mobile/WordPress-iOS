@@ -17,7 +17,7 @@ class BlogDashboardState {
 
     /// If the initial loading of the dashboard failed
     var isFirstLoadFailure: Bool {
-        hasEverLoaded && loadingFailed
+        !hasEverLoaded && loadingFailed
     }
 
     private init() { }
