@@ -1,5 +1,14 @@
+/* This sentence is shown when the app asks permission from the user to use their location. */
 NSLocationUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
 NSLocationWhenInUseUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
+
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
 NSCameraUsageDescription = "To take photos or videos to use in your posts.";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
 NSPhotoLibraryUsageDescription = "To add photos or videos to your posts.";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
 NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
