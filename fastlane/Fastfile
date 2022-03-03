@@ -41,6 +41,8 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
 
 ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
 
+require_relative 'lanes/localization-lanes'
+
 # Use this instead of getting values from ENV directly
 # It will throw an error if the requested value is missing
 def get_required_env(key)
@@ -317,21 +319,21 @@ platform :ios do
 
     UI.message('Checking app strings translation status...')
     check_translation_progress(
-      glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
+      glotpress_url: GLOTPRESS_APP_STRINGS_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
 
     UI.message('Checking WordPress release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/release-notes/',
+      glotpress_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
 
     UI.message('Checking Jetpack release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/',
+      glotpress_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
@@ -474,9 +476,8 @@ platform :ios do
     # Download `Localizable.strings` translations used within the app
     parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
     ios_download_strings_files_from_glotpress(
-      project_url: 'https://translate.wordpress.org/projects/apps/ios/dev/', # TODO: Use a constant to DRY stuff
-      # TODO: Fill this in
-      locales: { gp1: lproj1, gp2: lproj2, … }, # TODO: Provide a big constant for this list somewhere. (See `ALL_LANGS` from `update-translation.rb`)
+      project_url: GLOTPRESS_APP_STRINGS_URL,
+      locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
       download_dir: parent_dir_for_lprojs
     )
 
