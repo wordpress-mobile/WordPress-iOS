@@ -107,8 +107,10 @@ extension QuickStartChecklistView {
 
         if completedToursCount == tours.count {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+            titleLabel.textColor = .textSubtle
         } else {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
+            titleLabel.textColor = .text
         }
 
         let subtitle = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
