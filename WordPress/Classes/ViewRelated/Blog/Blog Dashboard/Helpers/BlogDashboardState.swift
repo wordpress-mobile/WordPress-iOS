@@ -7,23 +7,23 @@ class BlogDashboardState {
     var hasCachedData = false
 
     /// If loading the cards in the dashboard failed
-    var loadingFailed = false
+    var failedToLoad = false
 
     /// If the dashboard is currently being loaded for the very first time
     /// aka: it has never been loaded before.
     var isFirstLoad: Bool {
-        !hasCachedData && !loadingFailed
+        !hasCachedData && !failedToLoad
     }
 
     /// If the initial loading of the dashboard failed
     var isFirstLoadFailure: Bool {
-        !hasCachedData && loadingFailed
+        !hasCachedData && failedToLoad
     }
 
     private init() { }
 
     func reset() {
         hasCachedData = false
-        loadingFailed = false
+        failedToLoad = false
     }
 }

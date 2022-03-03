@@ -27,7 +27,7 @@ class BlogDashboardService {
             if let cards = self?.decode(cardsDictionary) {
 
                 self?.state.hasCachedData = true
-                self?.state.loadingFailed = false
+                self?.state.failedToLoad = false
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
@@ -37,12 +37,12 @@ class BlogDashboardService {
 
                 completion(snapshot)
             } else {
-                self?.state.loadingFailed = true
+                self?.state.failedToLoad = true
                 failure?(nil)
             }
 
         }, failure: { [weak self] _ in
-            self?.state.loadingFailed = true
+            self?.state.failedToLoad = true
             let snapshot = self?.fetchLocal(blog: blog)
             failure?(snapshot)
         })

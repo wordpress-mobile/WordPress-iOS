@@ -15,7 +15,7 @@ class BlogDashboardStateTests: XCTestCase {
     /// and has not cached data
     ///
     func testIsFirstLoadFailureIsTrue() {
-        BlogDashboardState.shared.loadingFailed = true
+        BlogDashboardState.shared.failedToLoad = true
         BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertTrue(BlogDashboardState.shared.isFirstLoadFailure)
@@ -25,7 +25,7 @@ class BlogDashboardStateTests: XCTestCase {
     /// but it has cached data
     ///
     func testIsFirstLoadFailureIsFalse() {
-        BlogDashboardState.shared.loadingFailed = true
+        BlogDashboardState.shared.failedToLoad = true
         BlogDashboardState.shared.hasCachedData = true
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoadFailure)
@@ -35,7 +35,7 @@ class BlogDashboardStateTests: XCTestCase {
     /// for the first time
     ///
     func testisFirstLoadIsTrue() {
-        BlogDashboardState.shared.loadingFailed = false
+        BlogDashboardState.shared.failedToLoad = false
         BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertTrue(BlogDashboardState.shared.isFirstLoad)
@@ -45,7 +45,7 @@ class BlogDashboardStateTests: XCTestCase {
     /// for the first time
     ///
     func testisFirstLoadIsFalseWhenNotLoadingForFirstTime() {
-        BlogDashboardState.shared.loadingFailed = false
+        BlogDashboardState.shared.failedToLoad = false
         BlogDashboardState.shared.hasCachedData = true
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
@@ -55,7 +55,7 @@ class BlogDashboardStateTests: XCTestCase {
     /// failure state
     ///
     func testisFirstLoadIsFalseWhenInFailureState() {
-        BlogDashboardState.shared.loadingFailed = true
+        BlogDashboardState.shared.failedToLoad = true
         BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
