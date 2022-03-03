@@ -15,6 +15,11 @@ class BlogDashboardState {
         !hasEverLoaded && !loadingFailed
     }
 
+    /// If the initial loading of the dashboard failed
+    var isFirstLoadFailure: Bool {
+        hasEverLoaded && loadingFailed
+    }
+
     private init() { }
 
     func reset() {
