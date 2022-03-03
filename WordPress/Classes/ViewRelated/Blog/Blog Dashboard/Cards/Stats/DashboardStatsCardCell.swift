@@ -29,14 +29,14 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let _ = viewController, let _ = apiResponse else {
+        guard let viewController = viewController else {
             return
         }
 
         // TODO: Use apiResponse to create a View Model and use it to populate the cell
 
         clearFrames()
-        addTodayStatsCard()
+        addTodayStatsCard(for: blog, in: viewController)
 
         // TODO: Add grow your audience card if needed
     }
@@ -46,14 +46,19 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         stackView.removeAllSubviews()
     }
 
-    private func addTodayStatsCard() {
+    private func addTodayStatsCard(for blog: Blog, in viewController: UIViewController) {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.statsTitle
         frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
-        stackView.addArrangedSubview(frameView)
+        frameView.onViewTap = { [weak self] in
+            self?.showStats(for: blog, from: viewController)
+        }
+
         let views = statsViews()
         let statsStackview = createStatsStackView(arrangedSubviews: views)
         frameView.add(subview: statsStackview)
+
+        stackView.addArrangedSubview(frameView)
     }
 
     private func createStatsStackView(arrangedSubviews: [UIView]) -> UIStackView {
@@ -73,6 +78,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         let visitorsStatsView = DashboardSingleStatView(countString: "885", title: Strings.visitorsTitle)
         let likesStatsView = DashboardSingleStatView(countString: "112", title: Strings.likesTitle)
         return [viewsStatsView, visitorsStatsView, likesStatsView]
+    }
+
+    private func showStats(for blog: Blog, from sourceController: UIViewController) {
+        StatsViewController.show(for: blog, from: sourceController)
     }
 }
 

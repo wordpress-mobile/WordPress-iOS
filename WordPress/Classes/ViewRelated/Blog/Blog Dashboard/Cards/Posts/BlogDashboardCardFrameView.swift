@@ -72,9 +72,20 @@ class BlogDashboardCardFrameView: UIView {
         }
     }
 
+    /// Closure to be called when anywhere in the view is tapped.
+    /// If set, the chevron image is displayed.
+    var onViewTap: (() -> Void)? {
+        didSet {
+            chevronImageView.isHidden = onViewTap == nil && onHeaderTap == nil
+        }
+    }
+
+    /// Closure to be called when the header view is tapped.
+    /// If set, this overrides the `onViewTap` closure if the tap is inside the header.
+    /// If set, the chevron image is displayed.
     var onHeaderTap: (() -> Void)? {
         didSet {
-            chevronImageView.isHidden = onHeaderTap == nil
+            chevronImageView.isHidden = onViewTap == nil && onHeaderTap == nil
         }
     }
 
@@ -120,13 +131,27 @@ class BlogDashboardCardFrameView: UIView {
             chevronImageView
         ])
 
-        // Add tap gesture
+        // Add frame tap gesture
+        let frameTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        self.addGestureRecognizer(frameTapGesture)
+
+        // Add header tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(headerTapped))
         headerStackView.addGestureRecognizer(tap)
     }
 
+    @objc private func viewTapped() {
+        onViewTap?()
+    }
+
     @objc private func headerTapped() {
-        onHeaderTap?()
+        if let onHeaderTap = onHeaderTap {
+            onHeaderTap()
+        }
+        else {
+            onViewTap?()
+        }
+
     }
 
     private enum Constants {
