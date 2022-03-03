@@ -216,6 +216,51 @@ class ZBlogDashboardServiceTests: XCTestCase {
         XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 1)
     }
 
+    // MARK: - Error card
+
+    /// If the first time load fails, show a failure card
+    ///
+    func testShowErrorCardWhenFailingToLoad() {
+        let expect = expectation(description: "Show error card")
+        remoteServiceMock.respondWith = .error
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { _ in } failure: { snapshot in
+            let failureSection = snapshot?.sectionIdentifiers.first(where: { $0.id == .failure })
+            XCTAssertNotNil(failureSection)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    /// If the first time load fails, but a subsequent try
+    /// succeeds, don't show the failure card
+    ///
+    func testNotShowErrorCardAfterFailureButThenSuccess() {
+        let expect = expectation(description: "Show error card")
+        remoteServiceMock.respondWith = .error
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        /// Call it once and fails
+        service.fetch(blog: blog) { _ in } failure: { snapshot in
+
+            self.remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+            /// Call again and succeeds
+            self.service.fetch(blog: blog) { snapshot in
+                let failureSection = snapshot.sectionIdentifiers.first(where: { $0.id == .failure })
+                XCTAssertNil(failureSection)
+
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     func dictionary(from file: String) -> NSDictionary? {
         let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
@@ -235,6 +280,11 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
+        case error = "error"
+    }
+
+    enum Errors: Error {
+        case unknown
     }
 
     var respondWith: Response = .withDraftAndSchedulePosts
@@ -251,7 +301,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)
         } else {
-            success([:])
+            failure(Errors.unknown)
         }
     }
 }
