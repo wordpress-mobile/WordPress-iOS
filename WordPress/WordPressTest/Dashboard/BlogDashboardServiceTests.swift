@@ -76,7 +76,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
 
             // cell view model is a `NSDictionary`
-            XCTAssertTrue(postsCardItem.apiResponseDictionary!["has_published"] as! Bool)
+            XCTAssertTrue(postsCardItem.hashableDictionary!["has_published"] as! Bool)
 
             expect.fulfill()
         }
@@ -107,7 +107,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
 
             // Todays Stats has the correct NSDictionary
-            XCTAssertEqual(todaysStatsItem.apiResponseDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+            XCTAssertEqual(todaysStatsItem.hashableDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
 
             expect.fulfill()
         }
@@ -130,7 +130,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
 
             // It doesn't have an api response dictionary
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponseDictionary)
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.hashableDictionary)
 
             // It doesn't have an api response entity
             XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponse)
@@ -168,6 +168,51 @@ class ZBlogDashboardServiceTests: XCTestCase {
         let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
         XCTAssertNotNil(postsSection)
         XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, wpComID)
+    }
+
+    // MARK: - Ghost cards
+
+    /// Ghost cards shouldn't be displayed when parsing the API response
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
+        let expect = expectation(description: "Parse drafts and scheduled")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
+            let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+            XCTAssertNil(ghostSection)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    /// Ghost cards shouldn't be displayed when parsing the cached data
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromCachedData() {
+        persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNil(ghostSection)
+    }
+
+    /// Ghost cards SHOULD be displayed when there are no cached data
+    /// and the response didn't came from the API.
+    ///
+    func testReturnGhostCardsWhenNoCachedData() {
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNotNil(ghostSection)
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 5)
     }
 
     func dictionary(from file: String) -> NSDictionary? {
@@ -220,7 +265,7 @@ class BlogDashboardPersistenceMock: BlogDashboardPersistence {
     }
 
     var didCallGetCardsWithWpComID: Int?
-    var respondWith: NSDictionary = [:]
+    var respondWith: NSDictionary? = [:]
 
     override func getCards(for wpComID: Int) -> NSDictionary? {
         didCallGetCardsWithWpComID = wpComID

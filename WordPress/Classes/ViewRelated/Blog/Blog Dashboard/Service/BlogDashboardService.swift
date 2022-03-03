@@ -48,9 +48,9 @@ class BlogDashboardService {
 
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
+        } else {
+            return localCardsAndGhostCards(blog: blog)
         }
-
-        return DashboardSnapshot()
     }
 }
 
@@ -60,12 +60,14 @@ private extension BlogDashboardService {
     func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
-        DashboardCard.allCases.forEach { card in
+        DashboardCard.allCases
+            .filter { $0 != .ghost }
+            .forEach { card in
 
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
                     let section = DashboardCardSection(id: card)
-                    let item = DashboardCardModel(id: card, apiResponseDictionary: viewModel as? NSDictionary, entity: cards)
+                    let item = DashboardCardModel(id: card, hashableDictionary: viewModel as? NSDictionary, entity: cards)
 
                     snapshot.appendSections([section])
                     snapshot.appendItems([item], toSection: section)
@@ -96,5 +98,23 @@ private extension BlogDashboardService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
+    }
+
+    func localCardsAndGhostCards(blog: Blog) -> DashboardSnapshot {
+        var snapshot = localCards(blog: blog)
+
+        let section = DashboardCardSection(id: .ghost)
+
+        snapshot.appendSections([section])
+        Array(0...4).forEach {
+            snapshot.appendItems([DashboardCardModel(id: .ghost,
+                                                     hashableDictionary: ["diff": $0])], toSection: section)
+        }
+
+        return snapshot
+    }
+
+    func localCards(blog: Blog) -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog)
     }
 }
