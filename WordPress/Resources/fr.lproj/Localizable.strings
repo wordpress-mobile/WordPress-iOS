@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-23 11:25:02+0000 */
+/* Translation-Revision-Date: 2022-03-02 14:58:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -2037,10 +2037,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "Créer un lien";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Créez votre premier article";
+"Create your first post" = "Créer votre premier article";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Créez votre prochain article";
+"Create your next post" = "Créer votre prochain article";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Créez votre propre tableau de bord personnalisé et choisissez quel rapport afficher. Concentrez-vous sur les données qui vous intéressent le plus.";
