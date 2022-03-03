@@ -37,8 +37,6 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
 
         clearFrames()
         addTodayStatsCard(for: blog, in: viewController)
-
-        // TODO: Add grow your audience card if needed
     }
 
     /// Remove any card frame, if present
@@ -72,7 +70,6 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     // TODO: Data is now static. It should be brought in from the view model.
-    // View model should also return data for comments in the case of an iPad.
     private func statsViews() -> [UIView] {
         let viewsStatsView = DashboardSingleStatView(countString: "1,492", title: Strings.viewsTitle)
         let visitorsStatsView = DashboardSingleStatView(countString: "885", title: Strings.visitorsTitle)
