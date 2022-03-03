@@ -93,10 +93,6 @@ class SiteStatsInsightsViewModel: Observable {
                 }, loading: {
                     return StatsGhostGrowAudienceImmutableRow()
                 }, error: errorBlock))
-            case .customize:
-                if !FeatureFlag.statsRemoveCustomizeCard.enabled {
-                    tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-                }
             case .latestPostSummary:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLatestPostSummary,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))

@@ -26,7 +26,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
     case statsPerformanceImprovements
-    case statsRemoveCustomizeCard
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -83,8 +82,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .notificationCommentDetails:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .statsPerformanceImprovements:
-            return BuildConfiguration.current == .localDeveloper
-        case .statsRemoveCustomizeCard:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -160,8 +157,6 @@ extension FeatureFlag {
             return "Notification Comment Details"
         case .statsPerformanceImprovements:
             return "Stats Performance Improvements"
-        case .statsRemoveCustomizeCard:
-            return "Stats Remove Customize Card"
         }
     }
 

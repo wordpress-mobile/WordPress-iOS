@@ -66,13 +66,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-
-        if FeatureFlag.statsRemoveCustomizeCard.enabled {
-            SiteStatsInformation.sharedInstance.removeInsight(.customize)
-        } else {
-            loadPinnedCards()
-        }
-
+        loadPinnedCards()
         initViewModel()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
@@ -215,19 +209,6 @@ private extension SiteStatsInsightsTableViewController {
                 // Work around to make sure nudge shown is tracked only once
                 if viewsCount != nil {
                     trackNudgeShown(for: hintType)
-                }
-
-            case InsightType.customize where !insightsToShow.contains(.customize):
-                if FeatureFlag.statsRemoveCustomizeCard.enabled {
-                    break
-                }
-
-                insightsToShow = insightsToShow.filter { $0 != .growAudience }
-                insightsToShow.insert(.customize, at: 0)
-
-                // Work around to make sure customize insights shown is tracked only once
-                if viewsCount != nil {
-                    WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
                 }
             default:
                 break
