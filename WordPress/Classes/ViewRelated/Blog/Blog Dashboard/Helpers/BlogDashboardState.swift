@@ -32,6 +32,12 @@ class BlogDashboardState {
     /// Return the dashboard state for the given blog
     static func standard(blog: Blog) -> BlogDashboardState {
         let dotComID = blog.dotComID ?? 0
-        return states[dotComID] ?? BlogDashboardState()
+
+        if let availableState = states[dotComID] {
+            return availableState
+        } else {
+            states[dotComID] = BlogDashboardState()
+            return states[dotComID]!
+        }
     }
 }

@@ -4,11 +4,12 @@ import XCTest
 
 class BlogDashboardStateTests: XCTestCase {
     private var dashboardState: BlogDashboardState!
+    private var blog: Blog!
 
     override func setUp() {
         super.setUp()
 
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
+        blog = BlogBuilder(TestContextManager().mainContext).build()
         dashboardState = BlogDashboardState.standard(blog: blog)
     }
 
@@ -60,5 +61,15 @@ class BlogDashboardStateTests: XCTestCase {
         dashboardState.hasCachedData = false
 
         XCTAssertFalse(dashboardState.isFirstLoad)
+    }
+
+    /// Values should persist for the same blog
+    ///
+    func testValuesPersist() {
+        blog.dashboard.failedToLoad = false
+        blog.dashboard.hasCachedData = true
+
+        XCTAssertFalse(blog.dashboard.failedToLoad)
+        XCTAssertTrue(blog.dashboard.hasCachedData)
     }
 }
