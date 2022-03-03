@@ -5,12 +5,10 @@ class BlogDashboardService {
 
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
-    private let state: BlogDashboardState
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence(), state: BlogDashboardState = BlogDashboardState.shared) {
+    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
-        self.state = state
     }
 
     /// Fetch cards from remote
@@ -26,8 +24,8 @@ class BlogDashboardService {
 
             if let cards = self?.decode(cardsDictionary) {
 
-                self?.state.hasCachedData = true
-                self?.state.failedToLoad = false
+                blog.dashboard.hasCachedData = true
+                blog.dashboard.failedToLoad = false
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
@@ -37,12 +35,12 @@ class BlogDashboardService {
 
                 completion(snapshot)
             } else {
-                self?.state.failedToLoad = true
+                blog.dashboard.failedToLoad = true
                 failure?(nil)
             }
 
         }, failure: { [weak self] _ in
-            self?.state.failedToLoad = true
+            blog.dashboard.failedToLoad = true
             let snapshot = self?.fetchLocal(blog: blog)
             failure?(snapshot)
         })
@@ -54,11 +52,11 @@ class BlogDashboardService {
             let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
-            state.hasCachedData = true
+            blog.dashboard.hasCachedData = true
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
         } else {
-            state.hasCachedData = false
+            blog.dashboard.hasCachedData = false
             return localCards(blog: blog)
         }
     }

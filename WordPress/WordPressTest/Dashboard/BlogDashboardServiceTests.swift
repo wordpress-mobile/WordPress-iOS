@@ -28,7 +28,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
-        BlogDashboardState.shared.reset()
     }
 
     override func tearDown() {
@@ -178,7 +177,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 10, context: context)
 
         service.fetch(blog: blog) { snapshot in
             let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
@@ -194,7 +193,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testDontReturnGhostCardsWhenFetchingFromCachedData() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 11, context: context)
 
         let snapshot = service.fetchLocal(blog: blog)
 
@@ -207,7 +206,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testReturnGhostCardsWhenNoCachedData() {
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 12, context: context)
 
         let snapshot = service.fetchLocal(blog: blog)
 
@@ -224,7 +223,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Show error card")
         remoteServiceMock.respondWith = .error
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 13, context: context)
 
         service.fetch(blog: blog) { _ in } failure: { snapshot in
             let failureSection = snapshot?.sectionIdentifiers.first(where: { $0.id == .failure })
@@ -243,7 +242,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Show error card")
         remoteServiceMock.respondWith = .error
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 14, context: context)
 
         /// Call it once and fails
         service.fetch(blog: blog) { _ in } failure: { snapshot in
