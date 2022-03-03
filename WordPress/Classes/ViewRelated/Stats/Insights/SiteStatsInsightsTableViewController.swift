@@ -61,7 +61,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        SiteStatsInformation.sharedInstance.updateDefaultInsights()
+        SiteStatsInformation.sharedInstance.upgradeInsights()
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
