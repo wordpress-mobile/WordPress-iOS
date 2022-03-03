@@ -81,7 +81,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
-        StatsViewController.show(for: blog, from: sourceController)
+        StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
     }
 }
 
