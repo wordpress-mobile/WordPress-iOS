@@ -11,7 +11,7 @@ class BlogDashboardState {
 
     /// If the dashboard is currently being loaded for the very first time
     /// aka: it has never been loaded before.
-    var isCurrentlyLoadingForTheVeryFirstTime: Bool {
+    var isFirstLoad: Bool {
         !hasEverLoaded && !loadingFailed
     }
 
