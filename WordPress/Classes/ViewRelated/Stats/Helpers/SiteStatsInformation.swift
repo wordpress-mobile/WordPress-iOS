@@ -60,19 +60,19 @@ extension SiteStatsInformation {
         userDefaults.set(updatedInsights, forKey: userDefaultsInsightTypesKey)
     }
 
-    // Updates any default insights that were written in UserDefaults
-    // This usually happens as a result of removing a nudge or other re-arrangement
-    // We are thus using this method to make sure that the new defaults are presented
-    // to the majority of users that did not customize the default order.
-    func updateDefaultInsights() {
-        // TODO: Stats Revamp - the `.customize` value should be remove once we remove the related card
+    // Updates any insights that were written in UserDefaults,
+    // in order to update the default order and remove the .customize card from the list
+    func upgradeInsights() {
         let savedInsights = getCurrentSiteInsights().filter { $0 != .growAudience && $0 != .customize }
 
         guard savedInsights == InsightType.oldDefaultInsights else {
+            // remove the .customize card regardless the list is default or custom
+            let noCustomizeInsights = getCurrentSiteInsights().filter { $0 != .customize }
+            saveCurrentSiteInsights(noCustomizeInsights)
             return
         }
-        // TODO: Stats Revamp - the `.customize` value should be remove once we remove the related card
-        let newInsights = getCurrentSiteInsights().filter { $0 == .growAudience && $0 == .customize } + InsightType.defaultInsights
+        // re-add the pinned cards, but get rid of .customize
+        let newInsights = getCurrentSiteInsights().filter { $0 == .growAudience } + InsightType.defaultInsights
         saveCurrentSiteInsights(newInsights)
     }
 }
