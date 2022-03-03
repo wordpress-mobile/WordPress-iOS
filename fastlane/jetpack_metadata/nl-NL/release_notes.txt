@@ -1,0 +1,11 @@
+Drie, twee een, start—met de Jetpack-app kan je nu al je Wordpress.com-sites gebruiken, nieuwe sites bouwen en dezelfde Reader-functies als in de Wordpress-app gebruiken. Niets is onmogelijk.
+
+Ook leuk: meldingen en opmerkingen ondersteunen vanaf nu .gif bestanden. (Helaas weten we met deze update nog steeds niet of de uitspraak nu ‘gif’ of ‘jif’ is)
+
+We hebben het probleem opgelost waarbij de voorbeeldweergave knippert wanneer je van schermgrootte of oriëntatie wisselt.
+
+Wanneer je een nieuwe Inzichtenkaart aan het scherm ‘Statistieken’ toevoegt, zal je scherm naar beneden springen om je nieuwe kaart weer te geven.
+
+Met de knop ‘Link kopiëren,’ die zich boven de prullenbakknop bevindt, kan je vanaf nu links naar gepubliceerde berichten, geplande berichten en concepten kopiëren. Geweldig.
+
+Ook krijg je vanaf nu een foutmelding als een media-upload mislukt om een andere reden dan het niet verbonden zijn met het internet. Dit is stukken beter dan de eindeloos ladende voortgangsbalk die je voorheen misschien hebt gezien.

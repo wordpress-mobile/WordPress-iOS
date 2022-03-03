@@ -11,9 +11,10 @@ protocol QuickStartTour {
     var icon: UIImage { get }
     var suggestionNoText: String { get }
     var suggestionYesText: String { get }
-    var waypoints: [WayPoint] { get }
+    var waypoints: [WayPoint] { get set }
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
+    var shownInBlogDetails: Bool { get }
 }
 
 extension QuickStartTour {
@@ -28,11 +29,23 @@ extension QuickStartTour {
             return true
         }
     }
+
+    var shownInBlogDetails: Bool {
+        get {
+            return true
+        }
+    }
 }
 
 private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
+}
+
+struct QuickStartSiteMenu {
+    private static let descriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen.")
+    private static let descriptionTarget = NSLocalizedString("Site Menu", comment: "The segmented control item to select during a guided tour.")
+    static let waypoint = QuickStartTour.WayPoint(element: .siteMenu, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
 }
 
 struct QuickStartChecklistTour: QuickStartTour {
@@ -64,7 +77,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
+    var waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating your site.", comment: "This value is used to set the accessibility hint text for creating the user's site.")
 }
@@ -142,6 +155,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -160,6 +174,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -194,13 +209,14 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let icon = UIImage.gridicon(.pencil)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
-    var waypoints: [WayPoint] {
+    var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
         let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
         return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
-    }
+    }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
 }
@@ -214,6 +230,7 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -317,7 +334,7 @@ struct QuickStartCongratulationsTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
+    var waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
 
     let accessibilityHintText = ""  // Not applicable for this tour type
 }

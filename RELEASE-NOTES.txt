@@ -3,6 +3,7 @@
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
 * [*] Push notifications will now display rich media when long pressed. [#18048]
+8 [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
 
 19.3
 -----

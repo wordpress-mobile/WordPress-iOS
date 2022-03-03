@@ -84,6 +84,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     self.view.backgroundColor = [UIColor murielListBackground];
 
+    self.extendedLayoutIncludesOpaqueBars = YES;
+
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;

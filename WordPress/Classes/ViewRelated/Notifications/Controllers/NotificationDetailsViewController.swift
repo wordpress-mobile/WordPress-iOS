@@ -1383,21 +1383,19 @@ extension NotificationDetailsViewController {
     }
 
     private func showCommentDetails(with note: Notification) {
-        notificationCommentDetailCoordinator?.createViewController(with: note) { commentDetailViewController in
-            guard let commentDetailViewController = commentDetailViewController else {
-                // TODO: show error view
-                return
-            }
-
-            self.notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
-            weak var navigationController = self.navigationController
-
-            self.dismiss(animated: true, completion: {
-                commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-                navigationController?.popViewController(animated: false)
-                navigationController?.pushViewController(commentDetailViewController, animated: false)
-            })
+        guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
+            DDLogError("Notification Details: failed creating Comment Detail view.")
+            return
         }
+
+        notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
+        weak var navigationController = navigationController
+
+        dismiss(animated: true, completion: {
+            commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.popViewController(animated: false)
+            navigationController?.pushViewController(commentDetailViewController, animated: false)
+        })
     }
 
     var shouldEnablePreviousButton: Bool {
