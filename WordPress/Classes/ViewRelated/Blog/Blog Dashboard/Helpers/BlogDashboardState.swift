@@ -1,8 +1,6 @@
 import Foundation
 
 class BlogDashboardState {
-    static let shared = BlogDashboardState()
-
     private static var states: [NSNumber: BlogDashboardState] = [:]
 
     /// If the dashboard has cached data
@@ -25,7 +23,7 @@ class BlogDashboardState {
     private init() { }
 
     /// Return the dashboard state for the given blog
-    static func standard(blog: Blog) -> BlogDashboardState {
+    static func shared(for blog: Blog) -> BlogDashboardState {
         let dotComID = blog.dotComID ?? 0
 
         if let availableState = states[dotComID] {

@@ -10,7 +10,7 @@ class BlogDashboardStateTests: XCTestCase {
         super.setUp()
 
         blog = BlogBuilder(TestContextManager().mainContext).build()
-        dashboardState = BlogDashboardState.standard(blog: blog)
+        dashboardState = BlogDashboardState.shared(for: blog)
     }
 
     /// `isFirstLoadFailure` is `true` when the dashboard failed to load
