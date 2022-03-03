@@ -66,10 +66,10 @@ class BlogDashboardStateTests: XCTestCase {
     /// Values should persist for the same blog
     ///
     func testValuesPersist() {
-        blog.dashboard.failedToLoad = false
-        blog.dashboard.hasCachedData = true
+        blog.dashboardState.failedToLoad = false
+        blog.dashboardState.hasCachedData = true
 
-        XCTAssertFalse(blog.dashboard.failedToLoad)
-        XCTAssertTrue(blog.dashboard.hasCachedData)
+        XCTAssertFalse(blog.dashboardState.failedToLoad)
+        XCTAssertTrue(blog.dashboardState.hasCachedData)
     }
 }
