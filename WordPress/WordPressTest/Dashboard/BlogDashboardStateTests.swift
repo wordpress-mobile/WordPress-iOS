@@ -12,21 +12,21 @@ class BlogDashboardStateTests: XCTestCase {
     }
 
     /// `isFirstLoadFailure` is `true` when the dashboard failed to load
-    /// and has never loaded it before
+    /// and has not cached data
     ///
     func testIsFirstLoadFailureIsTrue() {
         BlogDashboardState.shared.loadingFailed = true
-        BlogDashboardState.shared.hasEverLoaded = false
+        BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertTrue(BlogDashboardState.shared.isFirstLoadFailure)
     }
 
     /// `isFirstLoadFailure` is `false` when the dashboard failed to load
-    /// but it has loaded before
+    /// but it has cached data
     ///
     func testIsFirstLoadFailureIsFalse() {
         BlogDashboardState.shared.loadingFailed = true
-        BlogDashboardState.shared.hasEverLoaded = true
+        BlogDashboardState.shared.hasCachedData = true
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoadFailure)
     }
@@ -36,7 +36,7 @@ class BlogDashboardStateTests: XCTestCase {
     ///
     func testisFirstLoadIsTrue() {
         BlogDashboardState.shared.loadingFailed = false
-        BlogDashboardState.shared.hasEverLoaded = false
+        BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertTrue(BlogDashboardState.shared.isFirstLoad)
     }
@@ -46,7 +46,7 @@ class BlogDashboardStateTests: XCTestCase {
     ///
     func testisFirstLoadIsFalseWhenNotLoadingForFirstTime() {
         BlogDashboardState.shared.loadingFailed = false
-        BlogDashboardState.shared.hasEverLoaded = true
+        BlogDashboardState.shared.hasCachedData = true
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
     }
@@ -56,7 +56,7 @@ class BlogDashboardStateTests: XCTestCase {
     ///
     func testisFirstLoadIsFalseWhenInFailureState() {
         BlogDashboardState.shared.loadingFailed = true
-        BlogDashboardState.shared.hasEverLoaded = false
+        BlogDashboardState.shared.hasCachedData = false
 
         XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
     }

@@ -96,7 +96,7 @@ private extension BlogDashboardViewModel {
     }
 
     func loadingFailure() {
-        if dashboardState.hasEverLoaded {
+        if dashboardState.hasCachedData {
             viewController?.loadingFailure()
         }
     }

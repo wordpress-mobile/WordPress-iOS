@@ -26,7 +26,7 @@ class BlogDashboardService {
 
             if let cards = self?.decode(cardsDictionary) {
 
-                self?.state.hasEverLoaded = true
+                self?.state.hasCachedData = true
                 self?.state.loadingFailed = false
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
@@ -54,11 +54,11 @@ class BlogDashboardService {
             let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
-            state.hasEverLoaded = true
+            state.hasCachedData = true
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
             return snapshot
         } else {
-            state.hasEverLoaded = false
+            state.hasCachedData = false
             return localCards(blog: blog)
         }
     }
