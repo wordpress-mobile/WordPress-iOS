@@ -24,11 +24,6 @@ class BlogDashboardState {
 
     private init() { }
 
-    func reset() {
-        hasCachedData = false
-        failedToLoad = false
-    }
-
     /// Return the dashboard state for the given blog
     static func standard(blog: Blog) -> BlogDashboardState {
         let dotComID = blog.dotComID ?? 0
