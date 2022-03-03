@@ -3,6 +3,8 @@
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
 8 [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Block editor: Fix autocorrected Headings applying bold formatting on iOS [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4557]
+* [***] Block editor: Support for multiple color palettes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4537]
 
 19.3
 -----
