@@ -149,7 +149,7 @@ private extension NotificationCommentDetailViewController {
                                                                       notificationDelegate: notificationDelegate,
                                                                       managedObjectContext: managedObjectContext)
 
-            commentDetailViewController.view.frame = view.frame
+            commentDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
             add(commentDetailViewController)
             view.pinSubviewToAllEdges(commentDetailViewController.view)
             self.commentDetailViewController = commentDetailViewController
