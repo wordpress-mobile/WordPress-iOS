@@ -83,6 +83,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     override func viewDidLoad() {
         super.viewDidLoad()
         title = notification.title
+        view.backgroundColor = .basicBackground
         loadComment()
     }
 
