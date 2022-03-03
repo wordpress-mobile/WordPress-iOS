@@ -3,61 +3,62 @@ import XCTest
 @testable import WordPress
 
 class BlogDashboardStateTests: XCTestCase {
-    private var dashboardState = BlogDashboardState.shared
+    private var dashboardState: BlogDashboardState!
 
     override func setUp() {
         super.setUp()
 
-        BlogDashboardState.shared.reset()
+        let blog = BlogBuilder(TestContextManager().mainContext).build()
+        dashboardState = BlogDashboardState.standard(blog: blog)
     }
 
     /// `isFirstLoadFailure` is `true` when the dashboard failed to load
     /// and has not cached data
     ///
     func testIsFirstLoadFailureIsTrue() {
-        BlogDashboardState.shared.failedToLoad = true
-        BlogDashboardState.shared.hasCachedData = false
+        dashboardState.failedToLoad = true
+        dashboardState.hasCachedData = false
 
-        XCTAssertTrue(BlogDashboardState.shared.isFirstLoadFailure)
+        XCTAssertTrue(dashboardState.isFirstLoadFailure)
     }
 
     /// `isFirstLoadFailure` is `false` when the dashboard failed to load
     /// but it has cached data
     ///
     func testIsFirstLoadFailureIsFalse() {
-        BlogDashboardState.shared.failedToLoad = true
-        BlogDashboardState.shared.hasCachedData = true
+        dashboardState.failedToLoad = true
+        dashboardState.hasCachedData = true
 
-        XCTAssertFalse(BlogDashboardState.shared.isFirstLoadFailure)
+        XCTAssertFalse(dashboardState.isFirstLoadFailure)
     }
 
     /// `isFirstLoad` is `true` when the dashboard is loading
     /// for the first time
     ///
     func testisFirstLoadIsTrue() {
-        BlogDashboardState.shared.failedToLoad = false
-        BlogDashboardState.shared.hasCachedData = false
+        dashboardState.failedToLoad = false
+        dashboardState.hasCachedData = false
 
-        XCTAssertTrue(BlogDashboardState.shared.isFirstLoad)
+        XCTAssertTrue(dashboardState.isFirstLoad)
     }
 
     /// `isFirstLoad` is `false` when the dashboard is NOT loading
     /// for the first time
     ///
     func testisFirstLoadIsFalseWhenNotLoadingForFirstTime() {
-        BlogDashboardState.shared.failedToLoad = false
-        BlogDashboardState.shared.hasCachedData = true
+        dashboardState.failedToLoad = false
+        dashboardState.hasCachedData = true
 
-        XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
+        XCTAssertFalse(dashboardState.isFirstLoad)
     }
 
     /// `isFirstLoad` is `false` when the dashboard is in a
     /// failure state
     ///
     func testisFirstLoadIsFalseWhenInFailureState() {
-        BlogDashboardState.shared.failedToLoad = true
-        BlogDashboardState.shared.hasCachedData = false
+        dashboardState.failedToLoad = true
+        dashboardState.hasCachedData = false
 
-        XCTAssertFalse(BlogDashboardState.shared.isFirstLoad)
+        XCTAssertFalse(dashboardState.isFirstLoad)
     }
 }
