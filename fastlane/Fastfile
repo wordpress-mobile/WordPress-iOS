@@ -456,7 +456,7 @@ platform :ios do
       paths: [ # By default, first path in the list is also the destination file in which the merge will occur in-place
         File.join(en_lproj, 'Localizable.string'),
         File.join(en_lproj, 'InfoPlist.string'),
-        File.join(intents_target_en_lproj, 'Sites.strings'),
+        File.join(intents_target_en_lproj, 'Sites.strings')
       ]
     )
 
@@ -484,10 +484,10 @@ platform :ios do
     # Then redispatch the appropriate subset of translations back to the `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj` dirs
     parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
     ios_extract_keys_from_strings_files(
-      source_parent_dir: parent_dir_for_lprojs
+      source_parent_dir: parent_dir_for_lprojs,
       target_original_files: [
         File.join(parent_dir_for_lprojs, 'en.lproj', 'InfoPlist.strings'),
-        File.join(parent_dir_for_intents_target_lprojs, 'en.lproj', 'Sites.strings'),
+        File.join(parent_dir_for_intents_target_lprojs, 'en.lproj', 'Sites.strings')
       ]
     )
 
