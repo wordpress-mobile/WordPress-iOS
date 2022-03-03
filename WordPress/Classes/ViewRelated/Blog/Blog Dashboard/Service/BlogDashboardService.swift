@@ -27,6 +27,7 @@ class BlogDashboardService {
             if let cards = self?.decode(cardsDictionary) {
 
                 self?.state.hasEverLoaded = true
+                self?.state.loadingFailed = false
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
