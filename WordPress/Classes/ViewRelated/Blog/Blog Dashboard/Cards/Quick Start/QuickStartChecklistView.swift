@@ -78,7 +78,11 @@ final class QuickStartChecklistView: UIView {
         self.tours = tours
         self.blog = blog
         titleLabel.text = title
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
         accessibilityHint = hint
+
         updateViews()
     }
 }
@@ -91,9 +95,6 @@ extension QuickStartChecklistView {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
         addGestureRecognizer(tap)
-
-        isAccessibilityElement = true
-        accessibilityTraits = .button
     }
 
     private func updateViews() {
