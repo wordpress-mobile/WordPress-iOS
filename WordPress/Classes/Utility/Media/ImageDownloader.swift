@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // MARK: - ImageDownloadTask protocol
 
@@ -74,7 +74,7 @@ class ImageDownloader {
         return task
     }
 
-    private func makeGIF(with data: Data, request: URLRequest) -> RCTAnimatedImage? {
+    private func makeGIF(with data: Data, request: URLRequest) -> AnimatedImageWrapper? {
         guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
             return nil
         }
@@ -90,7 +90,7 @@ class ImageDownloader {
 ///
 /// This class uses the RCTAnimatedImage to verify the image is a valid gif which is why I'm still
 /// using that here.
-class AnimatedImageWrapper: RCTAnimatedImage {
+class AnimatedImageWrapper: UIImage {
     var gifData: Data? = nil
     var targetSize: CGSize? = nil
 
