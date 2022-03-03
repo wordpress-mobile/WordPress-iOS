@@ -27,7 +27,8 @@ enum InsightType: Int, SiteStatsPinnable {
                                                  .followers,
                                                  .comments
     ]
-
+    // This property is here to update the default list on existing installations.
+    // If the list saved on UserDefaults matches the old one, it will be updated to the new one above.
     static let oldDefaultInsights: [InsightType] = [.latestPostSummary,
                                                     .todaysStats,
                                                     .allTimeStats,
