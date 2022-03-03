@@ -4,6 +4,7 @@
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
 * [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
 * [*] Stats: we re-organized the default view in Insights, presenting more interesting data at a glance [#18072]
+* [*] Push notifications will now display rich media when long pressed. [#18048]
 
 19.3
 -----
