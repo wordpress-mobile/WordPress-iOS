@@ -4452,6 +4452,8 @@
 		FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */; };
 		FAFC064B27D22E4C002F0483 /* QuickStartTourStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC064A27D22E4C002F0483 /* QuickStartTourStateView.swift */; };
 		FAFC064C27D22E4C002F0483 /* QuickStartTourStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC064A27D22E4C002F0483 /* QuickStartTourStateView.swift */; };
+		FAFC064E27D2360B002F0483 /* QuickStartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC064D27D2360B002F0483 /* QuickStartCell.swift */; };
+		FAFC064F27D2360B002F0483 /* QuickStartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFC064D27D2360B002F0483 /* QuickStartCell.swift */; };
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -7650,6 +7652,7 @@
 		FAF64BDC2637DF7500E8A1DF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScreenshotGeneration.swift; sourceTree = "<group>"; };
 		FAFC064A27D22E4C002F0483 /* QuickStartTourStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTourStateView.swift; sourceTree = "<group>"; };
+		FAFC064D27D2360B002F0483 /* QuickStartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartCell.swift; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -9898,6 +9901,7 @@
 				FAE4CA672732C094003BFDFE /* QuickStartPromptViewController.xib */,
 				9A4E215D21F87A8500EFF212 /* Cells */,
 				9A4E215E21F87AC300EFF212 /* Views */,
+				FAFC064D27D2360B002F0483 /* QuickStartCell.swift */,
 			);
 			name = QuickStart;
 			sourceTree = "<group>";
@@ -17988,6 +17992,7 @@
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
+				FAFC064E27D2360B002F0483 /* QuickStartCell.swift in Sources */,
 				9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */,
 				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
 				7E3E7A5D20E44DB00075D159 /* BadgeContentStyles.swift in Sources */,
@@ -20116,6 +20121,7 @@
 				FABB22D42602FC2C00C8785C /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				FE32F003275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FABB22D52602FC2C00C8785C /* TenorStrings.swift in Sources */,
+				FAFC064F27D2360B002F0483 /* QuickStartCell.swift in Sources */,
 				FABB22D62602FC2C00C8785C /* PostEditor+MoreOptions.swift in Sources */,
 				FABB22D72602FC2C00C8785C /* NotificationSupportService.swift in Sources */,
 				FABB22D82602FC2C00C8785C /* MenusSelectionView.m in Sources */,
