@@ -52,8 +52,15 @@ final class BlogDashboardViewController: UIViewController {
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
+    /// If you want to give any feedback when the dashboard
+    /// started loading just change this method.
+    /// For not, it will be transparent
+    ///
     func showLoading() { }
 
+    /// If you want to give any feedback when the dashboard
+    /// stops loading just change this method.
+    ///
     func stopLoading() { }
 
     func update(blog: Blog) {
