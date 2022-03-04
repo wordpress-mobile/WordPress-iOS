@@ -61,6 +61,7 @@ class AddInsightTableViewController: UITableViewController {
     }
 
     @objc private func doneTapped() {
+        WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
         dismiss(animated: true, completion: nil)
     }
 }
@@ -97,6 +98,8 @@ private extension AddInsightTableViewController {
         return { [unowned self] row in
             self.selectedStat = statSection
             self.insightsDelegate?.addInsightSelected?(statSection)
+
+            WPAnalytics.track(.statsInsightsManagementSaved, properties: ["types": [statSection.title]])
             self.dismiss(animated: true, completion: nil)
         }
     }

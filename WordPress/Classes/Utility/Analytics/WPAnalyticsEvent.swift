@@ -108,8 +108,10 @@ import Foundation
     case statsReaderDiscoverNudgeDismissed
     case statsReaderDiscoverNudgeCompleted
 
-    // Stats - Customize card
+    // Stats - Insights
     case statsCustomizeInsightsShown
+    case statsInsightsManagementSaved
+    case statsInsightsManagementDismissed
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -497,9 +499,13 @@ import Foundation
         case .statsReaderDiscoverNudgeCompleted:
             return "stats_reader_discover_nudge_completed"
 
-        // Stats - Customize card
+        // Stats - Insights
         case .statsCustomizeInsightsShown:
             return "stats_customize_insights_shown"
+        case .statsInsightsManagementSaved:
+            return "stats_insights_management_saved"
+        case .statsInsightsManagementDismissed:
+            return "stats_insights_management_dismissed"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
