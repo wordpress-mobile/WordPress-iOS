@@ -9,6 +9,10 @@ final class SiteCreationWizardLauncher {
         return SiteSegmentsStep(creator: self.creator, service: segmentsService)
     }()
 
+    private lazy var intentStep: WizardStep = {
+        return SiteIntentStep(creator: self.creator)
+    }()
+
     private lazy var designStep: WizardStep = {
         return SiteDesignStep(creator: self.creator)
     }()
@@ -24,11 +28,13 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var steps: [WizardStep] = {
+        let shouldAddIntentStep = FeatureFlag.siteIntentQuestion.enabled && SiteIntentAB.shared.variant == .treatment
         return [
+            shouldAddIntentStep ? self.intentStep : nil,
             self.designStep,
             self.addressStep,
             self.siteAssemblyStep
-        ]
+        ].compactMap { $0 }
     }()
 
     private lazy var wizard: SiteCreationWizard = {
