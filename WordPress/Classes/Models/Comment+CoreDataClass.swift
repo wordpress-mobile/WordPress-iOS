@@ -109,7 +109,7 @@ public class Comment: NSManagedObject {
     }
 
     @objc func isTopLevelComment() -> Bool {
-        return depth == 0
+        return !hasParentComment()
     }
 
     func isFromPostAuthor() -> Bool {
