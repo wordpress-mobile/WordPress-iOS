@@ -20,10 +20,6 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
-    lazy var activityIndicatorView: UIActivityIndicatorView = {
-        UIActivityIndicatorView()
-    }()
-
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -56,16 +52,9 @@ final class BlogDashboardViewController: UIViewController {
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
-    func showLoading() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewAtCenter(activityIndicatorView)
-        activityIndicatorView.startAnimating()
-    }
+    func showLoading() { }
 
-    func stopLoading() {
-        activityIndicatorView.stopAnimating()
-    }
+    func stopLoading() { }
 
     func update(blog: Blog) {
         self.blog = blog
