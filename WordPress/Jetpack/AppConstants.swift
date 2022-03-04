@@ -34,6 +34,10 @@ import WordPressKit
 // MARK: - Localized Strings
 extension AppConstants {
 
+    struct PostSignUpInterstitial {
+        static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
+    }
+
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
     }
