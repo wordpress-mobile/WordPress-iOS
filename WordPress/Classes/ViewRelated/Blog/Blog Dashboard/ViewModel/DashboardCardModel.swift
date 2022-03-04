@@ -14,11 +14,12 @@ struct DashboardCardModel: Hashable {
 
      - Parameters:
      - id: The `DashboardCard` id of this card
+     - dotComID: The blog id for the blog associated with this card
      - hashableDictionary: A `NSDictionary?` that is used to compare this model to others
      - entity: A `BlogDashboardRemoteEntity?` property
 
      - Returns: A `DashboardCardModel` that is used by the dashboard diffable collection
-                view. The `hashableDictionary` and the `id` is used to differentiate one
+                view. The `hashableDictionary`, `id`, and the `dotComID` is used to differentiate one
                 card from the other.
     */
     init(id: DashboardCard, dotComID: Int, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
