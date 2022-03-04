@@ -14,19 +14,19 @@ class BlogDashboardService {
     /// Fetch cards from remote
     func fetch(blog: Blog, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
 
-        guard let wpComID = blog.dotComID?.intValue else {
+        guard let dotComID = blog.dotComID?.intValue else {
             return
         }
 
         let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
 
-        remoteService.fetch(cards: cardsToFetch, forBlogID: wpComID, success: { [weak self] cardsDictionary in
+        remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
             if let cards = self?.decode(cardsDictionary) {
 
-                self?.persistence.persist(cards: cardsDictionary, for: wpComID)
+                self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
-                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog, wpComID: wpComID) else {
+                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID) else {
                     return
                 }
 
@@ -43,17 +43,17 @@ class BlogDashboardService {
     /// Fetch cards from local
     func fetchLocal(blog: Blog) -> DashboardSnapshot {
 
-        guard let wpComID = blog.dotComID?.intValue else {
+        guard let dotComID = blog.dotComID?.intValue else {
             return DashboardSnapshot()
         }
 
-        if let cardsDictionary = persistence.getCards(for: wpComID),
+        if let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
-            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, wpComID: wpComID)
+            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
-            return localCardsAndGhostCards(blog: blog, wpComID: wpComID)
+            return localCardsAndGhostCards(blog: blog, dotComID: dotComID)
         }
     }
 }
@@ -61,7 +61,7 @@ class BlogDashboardService {
 private extension BlogDashboardService {
     /// We use the `BlogDashboardRemoteEntity` to inject it into cells
     /// The `NSDictionary` is used for `Hashable` purposes
-    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog, wpComID: Int) -> DashboardSnapshot {
+    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog, dotComID: Int) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
@@ -72,7 +72,7 @@ private extension BlogDashboardService {
                 if let viewModel = cardsDictionary[card.rawValue] {
                     let section = DashboardCardSection(id: card)
                     let item = DashboardCardModel(id: card,
-                                                  wpComID: wpComID,
+                                                  dotComID: dotComID,
                                                   hashableDictionary: viewModel as? NSDictionary,
                                                   entity: cards)
 
@@ -86,7 +86,7 @@ private extension BlogDashboardService {
                 }
 
                 let section = DashboardCardSection(id: card)
-                let item = DashboardCardModel(id: card, wpComID: wpComID)
+                let item = DashboardCardModel(id: card, dotComID: dotComID)
 
                 snapshot.appendSections([section])
                 snapshot.appendItems([item], toSection: section)
@@ -107,22 +107,22 @@ private extension BlogDashboardService {
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
-    func localCardsAndGhostCards(blog: Blog, wpComID: Int) -> DashboardSnapshot {
-        var snapshot = localCards(blog: blog, wpComID: wpComID)
+    func localCardsAndGhostCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
+        var snapshot = localCards(blog: blog, dotComID: dotComID)
 
         let section = DashboardCardSection(id: .ghost)
 
         snapshot.appendSections([section])
         Array(0...4).forEach {
             snapshot.appendItems([DashboardCardModel(id: .ghost,
-                                                     wpComID: wpComID,
+                                                     dotComID: dotComID,
                                                      hashableDictionary: ["diff": $0])], toSection: section)
         }
 
         return snapshot
     }
 
-    func localCards(blog: Blog, wpComID: Int) -> DashboardSnapshot {
-        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog, wpComID: wpComID)
+    func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog, dotComID: dotComID)
     }
 }
