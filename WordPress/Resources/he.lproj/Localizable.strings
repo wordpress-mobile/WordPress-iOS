@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-24 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-03 22:50:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -8308,7 +8308,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "הצג אתר";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "להציג את כל התגובות";
 
 /* Displays More Rows */
 "View all…" = "הצג הכל...";
@@ -8976,7 +8976,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "אפשר להחליף בין אתרים בכל עת.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "אפשר לעדכן את ההגדרה הזאת בכל עת";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";

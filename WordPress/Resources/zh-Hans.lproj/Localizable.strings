@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-24 10:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-03 23:28:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -3272,7 +3272,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "图库说明。%s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "画廊样式";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "园艺";
@@ -5858,7 +5858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "删除站点图标";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "移除特色图片";
 
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
@@ -6457,7 +6457,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "设置父项";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "设为特色图片";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "设为主页";
@@ -8308,7 +8308,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "查看站点";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "查看所有评论";
 
 /* Displays More Rows */
 "View all…" = "查看所有…";
@@ -8976,7 +8976,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "您可以随时切换站点。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "您可以随时更新";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "您可以随时通过“我的站点”>“站点设置”更新此设置";
