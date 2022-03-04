@@ -20,10 +20,6 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
-    lazy var activityIndicatorView: UIActivityIndicatorView = {
-        UIActivityIndicatorView()
-    }()
-
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -56,16 +52,16 @@ final class BlogDashboardViewController: UIViewController {
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
-    func showLoading() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewAtCenter(activityIndicatorView)
-        activityIndicatorView.startAnimating()
-    }
+    /// If you want to give any feedback when the dashboard
+    /// started loading just change this method.
+    /// For not, it will be transparent
+    ///
+    func showLoading() { }
 
-    func stopLoading() {
-        activityIndicatorView.stopAnimating()
-    }
+    /// If you want to give any feedback when the dashboard
+    /// stops loading just change this method.
+    ///
+    func stopLoading() { }
 
     func update(blog: Blog) {
         self.blog = blog
