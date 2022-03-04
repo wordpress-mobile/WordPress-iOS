@@ -3,6 +3,7 @@ import Foundation
 /// Represents a card in the dashboard collection view
 struct DashboardCardModel: Hashable {
     let id: DashboardCard
+    let wpComID: Int
     let apiResponse: BlogDashboardRemoteEntity?
 
     /// Used as the `Hashable` to compare this `struct` to others
@@ -20,19 +21,22 @@ struct DashboardCardModel: Hashable {
                 view. The `hashableDictionary` and the `id` is used to differentiate one
                 card from the other.
     */
-    init(id: DashboardCard, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
+    init(id: DashboardCard, wpComID: Int, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
         self.id = id
+        self.wpComID = wpComID
         self.hashableDictionary = hashableDictionary
         self.apiResponse = entity
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
         lhs.id == rhs.id &&
+        lhs.wpComID == rhs.wpComID &&
         lhs.hashableDictionary == rhs.hashableDictionary
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(wpComID)
         hasher.combine(hashableDictionary)
     }
 }
