@@ -71,6 +71,8 @@ extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewController
 extension BlogDetailsViewController {
 
     @objc func makeDomainsDashboardViewController() -> UIViewController {
-        UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        let viewController = UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        viewController.extendedLayoutIncludesOpaqueBars = true
+        return viewController
     }
 }

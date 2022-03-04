@@ -1,0 +1,9 @@
+Entstaube deine GIF-Sammlung – Benachrichtigungen und Kommentare unterstützen jetzt auch deine animierten Lieblingsdateien! (Leider wurde bei diesem Update nicht die Frage der korrekten Aussprache – „gif“ oder „jif“ – geklärt.)
+
+Wir haben den Flimmereffekt im Vorschaumodus beim Wechsel zwischen unterschiedlichen Bildschirmgrößen und -ausrichtungen behoben.
+
+Wenn du nun eine neue Karte zu Einsichten auf dem Statistikbildschirm hinzufügst, springt die Bildschirmansicht nach unten, um deine brandneue Karte anzuzeigen.
+
+Mit dem Button „Link kopieren“ über dem Papierkorb-Button kannst du ab sofort auch Links auf veröffentlichte, geplante und als Entwurf gespeicherte Beiträge und Seiten kopieren. Das wird dir sicher gefallen.
+
+Außerdem wird dir eine Fehlermeldung angezeigt, wenn beim Hochladen von Medien ein Problem auftritt, das nicht mit der Internetverbindung zusammenhängt. Das ist viel besser als die unendlich ladende Fortschrittsleiste, die du vorher gesehen hast.

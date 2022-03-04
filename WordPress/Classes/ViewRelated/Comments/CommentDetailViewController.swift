@@ -1,19 +1,17 @@
 import UIKit
 import CoreData
 
+// Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
+extension NSNotification.Name {
+    static let NotificationCommentDeletedNotification = NSNotification.Name(rawValue: "NotificationCommentDeletedNotification")
+}
+let userInfoCommentIdKey = "commentID"
 
 @objc protocol CommentDetailsDelegate: AnyObject {
     func nextCommentSelected()
 }
 
-protocol CommentDetailsNotificationDelegate: AnyObject {
-    func previousNotificationTapped(current: Notification?)
-    func nextNotificationTapped(current: Notification?)
-    func commentWasModerated(for notification: Notification?)
-    func commentWasDeleted(for notification: Notification?)
-}
-
-class CommentDetailViewController: UIViewController {
+class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
@@ -38,10 +36,6 @@ class CommentDetailViewController: UIViewController {
 
     private var isNotificationComment: Bool {
         notification != nil
-    }
-
-    private var viewTitle: String? {
-        isNotificationComment ? notification?.title : nil
     }
 
     private var viewIsVisible: Bool {
@@ -173,40 +167,13 @@ class CommentDetailViewController: UIViewController {
 
     // MARK: Nav Bar Buttons
 
-    private lazy var editBarButtonItem: UIBarButtonItem = {
+    private(set) lazy var editBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .edit,
                                target: self,
                                action: #selector(editButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
         return button
     }()
-
-    private lazy var nextButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowUp), for: .normal)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
-        return button
-    }()
-
-    private lazy var previousButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowDown), for: .normal)
-        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
-        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
-        return button
-    }()
-
-    var previousButtonEnabled = false {
-        didSet {
-            previousButton.isEnabled = previousButtonEnabled
-        }
-    }
-    var nextButtonEnabled = false {
-        didSet {
-            nextButton.isEnabled = nextButtonEnabled
-        }
-    }
 
     // MARK: Initialization
 
@@ -220,7 +187,7 @@ class CommentDetailViewController: UIViewController {
     }
 
     init(comment: Comment,
-         notification: Notification?,
+         notification: Notification,
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
@@ -258,11 +225,6 @@ class CommentDetailViewController: UIViewController {
         keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        configureNavBarButtons()
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -284,9 +246,20 @@ class CommentDetailViewController: UIViewController {
     }
 
     // Update the Notification Comment being displayed.
-    func refreshView(comment: Comment, notification: Notification?) {
+    func refreshView(comment: Comment, notification: Notification) {
+        hideNoResults()
         self.notification = notification
         displayComment(comment)
+    }
+
+    // Show an empty view with the given values.
+    func showNoResultsView(title: String, subtitle: String? = nil, imageName: String? = nil, accessoryView: UIView? = nil) {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: title,
+                                     subtitle: subtitle,
+                                     image: imageName,
+                                     accessoryView: accessoryView)
     }
 
 }
@@ -312,8 +285,6 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
-        static let arrowButtonSize: CGFloat = 24
-        static let arrowButtonSpacing: CGFloat = 12
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -354,7 +325,7 @@ private extension CommentDetailViewController {
         }
 
         navigationController?.navigationBar.isTranslucent = true
-        title = viewTitle
+        configureNavBarButton()
     }
 
     /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
@@ -364,30 +335,10 @@ private extension CommentDetailViewController {
         navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
     }
 
-    func configureNavBarButtons() {
-        var barButtonItems: [UIBarButtonItem] = []
-
-        if isNotificationComment && splitViewControllerIsHorizontallyCompact {
-            barButtonItems.append(makeNavigationButtons())
-        }
-
+    func configureNavBarButton() {
         if comment.allowsModeration() {
-            barButtonItems.append(editBarButtonItem)
+            navigationItem.setRightBarButton(editBarButtonItem, animated: false)
         }
-
-        navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
-    }
-
-    func makeNavigationButtons() -> UIBarButtonItem {
-        // Create custom view to match that in NotificationDetailsViewController.
-        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
-        buttonStackView.axis = .horizontal
-        buttonStackView.spacing = Constants.arrowButtonSpacing
-
-        let width = (Constants.arrowButtonSize * 2) + Constants.arrowButtonSpacing
-        buttonStackView.frame = CGRect(x: 0, y: 0, width: width, height: Constants.arrowButtonSize)
-
-        return UIBarButtonItem(customView: buttonStackView)
     }
 
     func configureTable() {
@@ -445,7 +396,7 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
-        configureNavBarButtons()
+        configureNavBarButton()
         configureRows()
         tableView.reloadData()
     }
@@ -675,18 +626,11 @@ private extension CommentDetailViewController {
         present(navigationControllerToPresent, animated: true)
     }
 
-    @objc func previousButtonTapped() {
-        notificationDelegate?.previousNotificationTapped(current: notification)
-    }
-
-    @objc func nextButtonTapped() {
-        notificationDelegate?.nextNotificationTapped(current: notification)
-    }
-
     func deleteButtonTapped() {
+        let commentID = comment.commentID
         deleteComment() { [weak self] success in
             if success {
-                self?.notifyDelegateCommentDeleted()
+                self?.postNotificationCommentDeleted(commentID)
                 // Dismiss the view since the Comment no longer exists.
                 self?.navigationController?.popViewController(animated: true)
             }
@@ -716,9 +660,11 @@ private extension CommentDetailViewController {
         }
 
         if comment.isLiked {
-            CommentAnalytics.trackCommentUnLiked(comment: comment)
+            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: notification?.metaSiteID) :
+                                    CommentAnalytics.trackCommentUnLiked(comment: comment)
         } else {
-            CommentAnalytics.trackCommentLiked(comment: comment)
+            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: notification?.metaSiteID) :
+                                    CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
         commentService.toggleLikeStatus(for: comment, siteID: siteID, success: {}, failure: { _ in
@@ -795,7 +741,8 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
 private extension CommentDetailViewController {
 
     func unapproveComment() {
-        CommentAnalytics.trackCommentUnApproved(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentUnApproved(comment: comment)
 
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
@@ -807,7 +754,8 @@ private extension CommentDetailViewController {
     }
 
     func approveComment() {
-        CommentAnalytics.trackCommentApproved(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentApproved(comment: comment)
 
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
@@ -819,7 +767,8 @@ private extension CommentDetailViewController {
     }
 
     func spamComment() {
-        CommentAnalytics.trackCommentSpammed(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentSpammed(comment: comment)
 
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
@@ -831,7 +780,8 @@ private extension CommentDetailViewController {
     }
 
     func trashComment() {
-        CommentAnalytics.trackCommentTrashed(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: notification?.metaSiteID) :
+                                CommentAnalytics.trackCommentTrashed(comment: comment)
 
         commentService.trashComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
@@ -858,19 +808,13 @@ private extension CommentDetailViewController {
     }
 
     func notifyDelegateCommentModerated() {
-        guard let notification = notification else {
-            return
-        }
-
         notificationDelegate?.commentWasModerated(for: notification)
     }
 
-    func notifyDelegateCommentDeleted() {
-        guard let notification = notification else {
-            return
-        }
-
-        notificationDelegate?.commentWasDeleted(for: notification)
+    func postNotificationCommentDeleted(_ commentID: Int32) {
+        NotificationCenter.default.post(name: .NotificationCommentDeletedNotification,
+                                        object: nil,
+                                        userInfo: [userInfoCommentIdKey: commentID])
     }
 
     func showActionableNotice(title: String) {
@@ -1055,7 +999,8 @@ private extension CommentDetailViewController {
     }
 
     @objc func createReply(content: String) {
-        CommentAnalytics.trackCommentRepliedTo(comment: comment)
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
+                                CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         guard let reply = commentService.createReply(for: comment) else {
             DDLogError("Failed creating comment reply.")

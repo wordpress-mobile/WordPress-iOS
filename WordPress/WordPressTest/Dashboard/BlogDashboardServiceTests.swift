@@ -3,24 +3,46 @@ import Nimble
 
 @testable import WordPress
 
-class BlogDashboardServiceTests: XCTestCase {
+/// This test stuite is clashing with other tests
+/// Specifically:
+/// - [BlogJetpackTest testJetpackSetupDoesntReplaceDotcomAccount]
+/// - CommentServiceTests.testFailingFetchCommentLikesShouldCallFailureBlock()
+///
+/// We weren't able to figure out why but it seems a race condition + Core data
+/// For now, renaming the suite to change the execution order solves the issue.
+class ZBlogDashboardServiceTests: XCTestCase {
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext!
+
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
+
+    private let wpComID = 123456
 
     override func setUp() {
         super.setUp()
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        service = BlogDashboardService(managedObjectContext: TestContextManager().newDerivedContext(), remoteService: remoteServiceMock, persistence: persistenceMock)
+        contextManager = TestContextManager()
+        context = contextManager.newDerivedContext()
+        service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        context = nil
+        contextManager = nil
     }
 
     func testCallServiceWithCorrectIDAndCards() {
         let expect = expectation(description: "Request the correct ID")
 
-        service.fetch(wpComID: 123456) { _ in
-            XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, 123456)
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { _ in
+            XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
             XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["posts", "todays_stats"])
             expect.fulfill()
         }
@@ -32,7 +54,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: 123456) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
             let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
 
@@ -52,7 +76,7 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
 
             // cell view model is a `NSDictionary`
-            XCTAssertTrue(postsCardItem.apiResponseDictionary!["has_published"] as! Bool)
+            XCTAssertTrue(postsCardItem.hashableDictionary!["has_published"] as! Bool)
 
             expect.fulfill()
         }
@@ -64,7 +88,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: 123456) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .todaysStats })
             let todaysStatsItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: todaysStatsSection!).first!
 
@@ -81,7 +107,7 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
 
             // Todays Stats has the correct NSDictionary
-            XCTAssertEqual(todaysStatsItem.apiResponseDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
+            XCTAssertEqual(todaysStatsItem.hashableDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
 
             expect.fulfill()
         }
@@ -93,7 +119,9 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Return local cards stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: 123456) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             // Quick Actions exists
             let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickActions }
             XCTAssertEqual(quickActionsSection.count, 1)
@@ -102,7 +130,7 @@ class BlogDashboardServiceTests: XCTestCase {
             XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
 
             // It doesn't have an api response dictionary
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponseDictionary)
+            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.hashableDictionary)
 
             // It doesn't have an api response entity
             XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponse)
@@ -117,10 +145,12 @@ class BlogDashboardServiceTests: XCTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        service.fetch(wpComID: 123456) { snapshot in
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
             XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
                            self.dictionary(from: "dashboard-200-with-drafts-and-scheduled.json"))
-            XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, 123456)
+            XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, self.wpComID)
 
             expect.fulfill()
         }
@@ -131,17 +161,70 @@ class BlogDashboardServiceTests: XCTestCase {
     func testFetchCardsFromPersistence() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
 
-        let snapshot = service.fetchLocal(wpComID: 123456)
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
 
         let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
         XCTAssertNotNil(postsSection)
-        XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, 123456)
+        XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, wpComID)
+    }
+
+    // MARK: - Ghost cards
+
+    /// Ghost cards shouldn't be displayed when parsing the API response
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
+        let expect = expectation(description: "Parse drafts and scheduled")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
+            let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+            XCTAssertNil(ghostSection)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    /// Ghost cards shouldn't be displayed when parsing the cached data
+    ///
+    func testDontReturnGhostCardsWhenFetchingFromCachedData() {
+        persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNil(ghostSection)
+    }
+
+    /// Ghost cards SHOULD be displayed when there are no cached data
+    /// and the response didn't came from the API.
+    ///
+    func testReturnGhostCardsWhenNoCachedData() {
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        let snapshot = service.fetchLocal(blog: blog)
+
+        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
+        XCTAssertNotNil(ghostSection)
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 5)
     }
 
     func dictionary(from file: String) -> NSDictionary? {
-        let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
+        let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
+    }
+
+    private func newTestBlog(id: Int, context: NSManagedObjectContext) -> Blog {
+        let blog = ModelTestHelper.insertDotComBlog(context: context)
+        blog.dotComID = id as NSNumber
+        return blog
     }
 }
 
@@ -162,7 +245,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
         didCallWithBlogID = blogID
         didRequestCards = cards
 
-        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
+        if let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
         let data: Data = try? Data(contentsOf: fileURL),
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)
@@ -182,7 +265,7 @@ class BlogDashboardPersistenceMock: BlogDashboardPersistence {
     }
 
     var didCallGetCardsWithWpComID: Int?
-    var respondWith: NSDictionary = [:]
+    var respondWith: NSDictionary? = [:]
 
     override func getCards(for wpComID: Int) -> NSDictionary? {
         didCallGetCardsWithWpComID = wpComID

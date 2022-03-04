@@ -1,0 +1,9 @@
+.gif koleksiyonunuzun tozunu alın; bildirimler ve yorumlar artık en sevdiğiniz animasyonlu dosyaları destekliyor! (Maalesef bu güncelleme, "gif" veya "jif" olarak telaffuz edilip edilmediği sorununu çözmüyor.)
+
+Farklı ekran boyutları veya yönleri arasında geçiş yaptığınızda Önizleme modundaki titreme etkisini düzelttik.
+
+İstatistikler ekranına yeni bir Tek Bakışta kartı eklediğinizde, ekran görünümünüz yeni kartınızı göstermek için aşağı atlar.
+
+Artık Çöp Kutusu düğmesinin üzerindeki Bağlantıyı Kopyala düğmesini kullanarak yayınlanmış, zamanlanmış ve taslak gönderilerin ve sayfaların bağlantılarını kopyalayabilirsiniz. Harika.
+
+Son olarak, bir medya yüklemesi İnternet'e bağlı olmama dışındaki nedenlerle başarısız olursa bir hata mesajı görürsünüz. Bu, daha önce görmüş olabileceğiniz yüklemesi bitmeyen ilerleme çubuğundan çok daha iyidir.

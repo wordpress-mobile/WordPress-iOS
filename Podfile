@@ -339,19 +339,6 @@ target 'WordPressIntents' do
     wordpress_ui
 end
 
-## Notification Content Extension
-## ==============================
-##
-target 'WordPressNotificationContentExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
-end
-
-
-
 ## Notification Service Extension
 ## ==============================
 ##
