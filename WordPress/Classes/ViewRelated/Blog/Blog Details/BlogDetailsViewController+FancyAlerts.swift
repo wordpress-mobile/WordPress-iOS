@@ -81,7 +81,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowQuickStartChecklist() -> Bool {
-        return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        return QuickStartTourGuide.shouldShowChecklist(for: blog) && !shouldShowDashboard()
     }
 
     @objc func showQuickStartCustomize() {
