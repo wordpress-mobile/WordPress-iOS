@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-02 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-03 23:26:33+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -319,7 +319,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "一週 <strong>%d<\/strong> 次";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "每週 <strong>%1$d<\/strong> 次在 %2$@ 收到通知 ";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "一週<strong>一次<\/strong>";
@@ -1081,7 +1081,7 @@ translators: Block name. %s: The localized block name */
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "封鎖清單";
 
 /* No comment provided by engineer. */
 "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "區塊可讓你專心撰寫內容，瞭解所有必要的格式工具一應俱全，協助你傳達自己的訊息。";
@@ -1265,7 +1265,7 @@ translators: Block name. %s: The localized block name */
 "Cancel sharing" = "取消分享";
 
 /* The action was canceled */
-"Canceled" = "Canceled";
+"Canceled" = "已取消";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消…";
@@ -3100,7 +3100,7 @@ translators: Block name. %s: The localized block name */
 "File type" = "檔案類型";
 
 /* Title of the filter button in the Reader */
-"Filter" = "Filter";
+"Filter" = "篩選";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "依活動類型篩選";
@@ -3339,7 +3339,7 @@ translators: Block name. %s: The localized block name */
 "Gmail" = "Gmail";
 
 /* No comment provided by engineer. */
-"Go back" = "Go back";
+"Go back" = "返回";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往關注";
@@ -3519,7 +3519,7 @@ translators: Block name. %s: The localized block name */
 "Homepage successfully updated" = "已成功更新首頁";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
-"Hooray!\nAlmost done" = "Hooray!\nAlmost done";
+"Hooray!\nAlmost done" = "太棒了！\n快完成了";
 
 /* Title for the fix section in Threat Details: Threat is fixed */
 "How did Jetpack fix it?" = "Jetpack 如何修復問題？";
@@ -4217,7 +4217,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "標記未讀";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
-"Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
+"Mark all %1$@ notifications as read?" = "要將所有%1$@通知標示為已讀嗎？";
 
 /* Confirmation title for marking all notifications as read. */
 "Mark all notifications as read?" = "要將所有通知標示為已讀嗎？";
@@ -6234,7 +6234,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Search button. Current button text is" = "搜尋按鈕。 目前的按鈕文字是";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "搜尋網域";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "搜尋網域";
@@ -8363,7 +8363,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Visit %@ for more" = "造訪 %@ 以深入了解";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "造訪網站";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "請造訪說明中心以取得常見問題的解答，或聯絡我們尋求進一步協助。";
@@ -8541,7 +8541,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "我們剛將連結以電子郵件傳送至 %@。請檢查你的電子郵件應用程式，並點選連結以登入。";
 
 /* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
+"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "我們在「區塊編輯器」上進行了重大更新，我們也強力推薦您可以嘗試使用它！\n\n我們已為您在您之日後的「新文章」或「新頁面」中啟用它，若您仍較偏好「傳統編輯器」，請到 「我的網站」》「網站設定」中進行變更。";
 
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "我們已成功建立截至 %@ 為止的網站備份";
