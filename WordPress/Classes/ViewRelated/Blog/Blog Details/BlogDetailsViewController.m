@@ -731,7 +731,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
-    if ([Feature enabled:FeatureFlagMySiteDashboard] && [self.blog isAccessibleThroughWPCom] && ![self splitViewControllerIsHorizontallyCompact]) {
+    if ([self shouldShowDashboard] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
     if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
