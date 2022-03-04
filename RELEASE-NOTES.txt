@@ -2,7 +2,6 @@
 -----
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
-* [*] Stats: Remove Customise and Grow Audience cards from Stats Insights [#18051]
 
 19.3
 -----

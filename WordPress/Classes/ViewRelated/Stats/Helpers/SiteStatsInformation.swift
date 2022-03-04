@@ -59,11 +59,4 @@ extension SiteStatsInformation {
 
         userDefaults.set(updatedInsights, forKey: userDefaultsInsightTypesKey)
     }
-
-    func removeInsight(_ insightType: InsightType, _ userDefaults: UserDefaults = UserDefaults.standard) {
-        var insightTypes = getCurrentSiteInsights()
-        insightTypes.removeAll { $0 == insightType }
-
-        saveCurrentSiteInsights(insightTypes, userDefaults)
-    }
 }

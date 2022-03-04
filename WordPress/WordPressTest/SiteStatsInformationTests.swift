@@ -52,25 +52,4 @@ class SiteStatsInformationTests: XCTestCase {
             }
         }
     }
-
-    func testRemoveInsight() {
-        // Given Current Inights with customize and growaudience cards
-        let userDefaults = UserDefaults(suiteName: "testRemoveInsight")!
-        userDefaults.removePersistentDomain(forName: "testRemoveInsight")
-
-        SiteStatsInformation.sharedInstance.siteID = 3
-        var defaultInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        defaultInsights.insert(.customize, at: 0)
-        SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(defaultInsights, userDefaults)
-
-        let updatedInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        XCTAssertFalse( (updatedInsights.filter { $0 == .customize }).isEmpty )
-
-        // When we remove customize and growaudience cards
-        SiteStatsInformation.sharedInstance.removeInsight(.customize, userDefaults)
-
-        // Then customize and growaudience cards should no long exist
-        let removedInsights = SiteStatsInformation.sharedInstance.getCurrentSiteInsights(userDefaults)
-        XCTAssertTrue( (removedInsights.filter { $0 == .customize }).isEmpty )
-    }
 }
