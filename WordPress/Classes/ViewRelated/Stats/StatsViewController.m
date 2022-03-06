@@ -17,6 +17,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, assign) BOOL isActivatingStatsModule;
+@property (nonatomic, assign) BOOL shouldForceShowTodayStats;
 @property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
@@ -35,11 +36,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
-+ (void)showForBlog:(Blog *)blog from:(UIViewController *)controller
++ (void)showForBlog:(nonnull Blog *)blog
+               from:(nonnull UIViewController *)controller
+     showTodayStats:(BOOL)showTodayStats
 {
     StatsViewController *statsController = [StatsViewController new];
     statsController.blog = blog;
     statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    statsController.shouldForceShowTodayStats = showTodayStats;
     [controller.navigationController pushViewController:statsController animated:YES];
     
     [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
@@ -101,6 +105,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self addChildViewController:self.siteStatsDashboardVC];
     [self.view addSubview:self.siteStatsDashboardVC.view];
     [self.siteStatsDashboardVC didMoveToParentViewController:self];
+    if (self.shouldForceShowTodayStats) {
+        [self.siteStatsDashboardVC forceShowStatsForTodayPeriod];
+    }
 }
 
 - (void) installWidgetsButton
