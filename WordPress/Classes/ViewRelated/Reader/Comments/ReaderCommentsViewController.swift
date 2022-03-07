@@ -296,26 +296,35 @@ private extension ReaderCommentsViewController {
         }
     }
 
-    func updateRepliesVisibility(for parentComment: Comment, completion: (() -> Void)? = nil) {
-        guard let context = parentComment.managedObjectContext,
-              let post = parentComment.post as? ReaderPost else {
+    /// Update the visibility of the comment's replies for the comment thread.
+    ///
+    /// - Parameters:
+    ///   - ancestorComment: The ancestor comment that will have its reply comments iterated.
+    ///   - completion: The block executed after the replies are updated.
+    func updateRepliesVisibility(for ancestorComent: Comment, completion: (() -> Void)? = nil) {
+        guard let context = ancestorComent.managedObjectContext,
+              let post = ancestorComent.post as? ReaderPost else {
                   return
               }
 
-        let isVisible = (parentComment.status == CommentStatusType.approved.description)
+        let isVisible = (ancestorComent.status == CommentStatusType.approved.description)
         context.perform {
             guard let comments = post.comments as? Set<Comment> else {
                 completion?()
                 return
             }
 
-            // iterate on all of the comment's descendants and update their visibility on the thread.
+            // iterate over the ancestor comment's descendants and update their visibility for the comment thread.
+            //
+            // the hierarchy property stores ancestral info by storing a stringified of its comment ID hierarchy, e.g.: "0000000012.0000000025.00000000035".
+            // the idea is to check if the ancestor comment's ID exists in the hierarchy.
+            // as an optimization, skip checking the hierarchy when the comment is the direct child of the ancestor comment.
             comments.filter { comment in
-                comment.parentID == parentComment.commentID
+                comment.parentID == ancestorComent.commentID
                 || comment.hierarchy
                     .split(separator: ".")
                     .compactMap({ Int32($0) })
-                    .contains(parentComment.commentID)
+                    .contains(ancestorComent.commentID)
             }.forEach { childComment in
                 childComment.visibleOnReader = isVisible
             }
