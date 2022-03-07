@@ -61,7 +61,7 @@ class BlogDashboardService {
             return snapshot
         } else {
             blog.dashboardState.hasCachedData = false
-            return localCards(blog: blog)
+            return localCards(blog: blog, dotComID: dotComID)
         }
     }
 }
@@ -114,7 +114,7 @@ private extension BlogDashboardService {
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
-    func localCards(blog: Blog) -> DashboardSnapshot {
-        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog)
+    func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog, dotComID: dotComID)
     }
 }
