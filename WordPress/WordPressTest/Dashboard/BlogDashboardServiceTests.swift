@@ -177,7 +177,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 10, context: context)
 
         service.fetch(blog: blog) { snapshot in
             let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
@@ -193,7 +193,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testDontReturnGhostCardsWhenFetchingFromCachedData() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 11, context: context)
 
         let snapshot = service.fetchLocal(blog: blog)
 
@@ -206,13 +206,58 @@ class ZBlogDashboardServiceTests: XCTestCase {
     ///
     func testReturnGhostCardsWhenNoCachedData() {
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: 12, context: context)
 
         let snapshot = service.fetchLocal(blog: blog)
 
         let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
         XCTAssertNotNil(ghostSection)
-        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 5)
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 1)
+    }
+
+    // MARK: - Error card
+
+    /// If the first time load fails, show a failure card
+    ///
+    func testShowErrorCardWhenFailingToLoad() {
+        let expect = expectation(description: "Show error card")
+        remoteServiceMock.respondWith = .error
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: 13, context: context)
+
+        service.fetch(blog: blog) { _ in } failure: { snapshot in
+            let failureSection = snapshot?.sectionIdentifiers.first(where: { $0.id == .failure })
+            XCTAssertNotNil(failureSection)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    /// If the first time load fails, but a subsequent try
+    /// succeeds, don't show the failure card
+    ///
+    func testNotShowErrorCardAfterFailureButThenSuccess() {
+        let expect = expectation(description: "Show error card")
+        remoteServiceMock.respondWith = .error
+        persistenceMock.respondWith = nil
+        let blog = newTestBlog(id: 14, context: context)
+
+        /// Call it once and fails
+        service.fetch(blog: blog) { _ in } failure: { snapshot in
+
+            self.remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+            /// Call again and succeeds
+            self.service.fetch(blog: blog) { snapshot in
+                let failureSection = snapshot.sectionIdentifiers.first(where: { $0.id == .failure })
+                XCTAssertNil(failureSection)
+
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
     }
 
     func dictionary(from file: String) -> NSDictionary? {
@@ -234,6 +279,11 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
+        case error = "error"
+    }
+
+    enum Errors: Error {
+        case unknown
     }
 
     var respondWith: Response = .withDraftAndSchedulePosts
@@ -250,7 +300,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)
         } else {
-            success([:])
+            failure(Errors.unknown)
         }
     }
 }
