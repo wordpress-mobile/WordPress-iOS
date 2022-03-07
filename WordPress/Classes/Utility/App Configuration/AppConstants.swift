@@ -34,6 +34,10 @@ import WordPressAuthenticator
 // MARK: - Localized Strings
 extension AppConstants {
 
+    struct PostSignUpInterstitial {
+        static let welcomeTitleText = NSLocalizedString("Welcome to WordPress", comment: "Post Signup Interstitial Title Text for WordPress iOS")
+    }
+
     struct Settings {
         static let aboutTitle: String = {
             if FeatureFlag.aboutScreen.enabled {

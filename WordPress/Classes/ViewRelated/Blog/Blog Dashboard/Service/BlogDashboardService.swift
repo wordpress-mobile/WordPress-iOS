@@ -29,7 +29,7 @@ class BlogDashboardService {
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
-                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog) else {
+                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID) else {
                     return
                 }
 
@@ -48,8 +48,12 @@ class BlogDashboardService {
 
     /// Fetch cards from local
     func fetchLocal(blog: Blog) -> DashboardSnapshot {
-        if let dotComID = blog.dotComID?.intValue,
-            let cardsDictionary = persistence.getCards(for: dotComID),
+
+        guard let dotComID = blog.dotComID?.intValue else {
+            return DashboardSnapshot()
+        }
+
+        if let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
             blog.dashboardState.hasCachedData = true
@@ -65,7 +69,7 @@ class BlogDashboardService {
 private extension BlogDashboardService {
     /// We use the `BlogDashboardRemoteEntity` to inject it into cells
     /// The `NSDictionary` is used for `Hashable` purposes
-    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog) -> DashboardSnapshot {
+    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog, dotComID: Int) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
@@ -74,7 +78,10 @@ private extension BlogDashboardService {
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
                     let section = DashboardCardSection(id: card)
-                    let item = DashboardCardModel(id: card, hashableDictionary: viewModel as? NSDictionary, entity: cards)
+                    let item = DashboardCardModel(id: card,
+                                                  dotComID: dotComID,
+                                                  hashableDictionary: viewModel as? NSDictionary,
+                                                  entity: cards)
 
                     snapshot.appendSections([section])
                     snapshot.appendItems([item], toSection: section)
@@ -86,7 +93,7 @@ private extension BlogDashboardService {
                 }
 
                 let section = DashboardCardSection(id: card)
-                let item = DashboardCardModel(id: card)
+                let item = DashboardCardModel(id: card, dotComID: dotComID)
 
                 snapshot.appendSections([section])
                 snapshot.appendItems([item], toSection: section)

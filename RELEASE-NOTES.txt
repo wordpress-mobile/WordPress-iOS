@@ -1,8 +1,13 @@
 19.4
 -----
+* [*] Improves the error message shown when trying to create a new site with non-English characters in the domain name [https://github.com/wordpress-mobile/WordPress-iOS/pull/17985]
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
 * [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
-8 [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Push notifications will now display rich media when long pressed. [#18048]
+* [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Weekly Roundup: We made some further changes to try and ensure that Weekly Roundup notifications are showing up for everybody who's enabled them [#18029]
+* [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#17844]
+* [***] Block editor: Support for multiple color palettes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4537]
 
 19.3
 -----

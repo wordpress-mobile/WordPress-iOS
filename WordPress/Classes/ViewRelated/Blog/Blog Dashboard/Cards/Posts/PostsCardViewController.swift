@@ -269,6 +269,8 @@ extension NSNotification.Name {
 }
 
 private class PostCardTableView: UITableView {
+    private var previousHeight: CGFloat = 0
+
     override var contentSize: CGSize {
         didSet {
             self.invalidateIntrinsicContentSize()
@@ -279,7 +281,10 @@ private class PostCardTableView: UITableView {
     /// This allows subscribers to update their layouts (ie.: UICollectionViews)
     override var intrinsicContentSize: CGSize {
         layoutIfNeeded()
-        NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
+        if contentSize.height != previousHeight {
+            previousHeight = contentSize.height
+            NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
+        }
         return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
 }

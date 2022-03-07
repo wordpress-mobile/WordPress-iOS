@@ -1,6 +1,6 @@
 import UIKit
 
-class NotificationCommentDetailViewController: UIViewController {
+class NotificationCommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
@@ -83,6 +83,7 @@ class NotificationCommentDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = notification.title
+        view.backgroundColor = .basicBackground
         loadComment()
     }
 
@@ -149,7 +150,7 @@ private extension NotificationCommentDetailViewController {
                                                                       notificationDelegate: notificationDelegate,
                                                                       managedObjectContext: managedObjectContext)
 
-            commentDetailViewController.view.frame = view.frame
+            commentDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
             add(commentDetailViewController)
             view.pinSubviewToAllEdges(commentDetailViewController.view)
             self.commentDetailViewController = commentDetailViewController
@@ -159,6 +160,8 @@ private extension NotificationCommentDetailViewController {
     }
 
     func loadComment() {
+        showLoadingView()
+
         fetchParentCommentIfNeeded(completion: { [weak self] in
             guard let self = self else {
                 return
@@ -169,13 +172,13 @@ private extension NotificationCommentDetailViewController {
                 return
             }
 
-            self.fetchComment(self.commentID, completion: { comment in
+            self.fetchComment(self.commentID, completion: { [weak self] comment in
                 guard let comment = comment else {
-                    // TODO: show error view
+                    self?.showErrorView()
                     return
                 }
 
-                self.comment = comment
+                self?.comment = comment
             })
         })
     }
@@ -184,7 +187,6 @@ private extension NotificationCommentDetailViewController {
         guard let commentID = commentID,
               let blog = blog else {
                   DDLogError("Notification Comment: unable to load comment due to missing information.")
-                  // TODO: show error view
                   return nil
               }
 
@@ -195,7 +197,6 @@ private extension NotificationCommentDetailViewController {
         guard let commentID = commentID,
               let blog = blog else {
                   DDLogError("Notification Comment: unable to fetch comment due to missing information.")
-                  // TODO: show error view
                   completion(nil)
                   return
               }
@@ -203,7 +204,6 @@ private extension NotificationCommentDetailViewController {
         commentService.loadComment(withID: commentID, for: blog, success: { comment in
             completion(comment)
         }, failure: { error in
-            // TODO: show error view
             completion(nil)
         })
     }
@@ -224,6 +224,43 @@ private extension NotificationCommentDetailViewController {
     struct Constants {
         static let arrowButtonSize: CGFloat = 24
         static let arrowButtonSpacing: CGFloat = 12
+    }
+
+    // MARK: - No Results Views
+
+    func showLoadingView() {
+        if let commentDetailViewController = commentDetailViewController {
+            commentDetailViewController.showNoResultsView(title: NoResults.loadingTitle,
+                                                          accessoryView: NoResultsViewController.loadingAccessoryView())
+        } else {
+            hideNoResults()
+            configureAndDisplayNoResults(on: view,
+                                         title: NoResults.loadingTitle,
+                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+    }
+
+    func showErrorView() {
+        if let commentDetailViewController = commentDetailViewController {
+            commentDetailViewController.showNoResultsView(title: NoResults.errorTitle,
+                                                          subtitle: NoResults.errorSubtitle,
+                                                          imageName: NoResults.imageName)
+        } else {
+            hideNoResults()
+            configureAndDisplayNoResults(on: view,
+                                         title: NoResults.errorTitle,
+                                         subtitle: NoResults.errorSubtitle,
+                                         image: NoResults.imageName)
+
+
+        }
+    }
+
+    struct NoResults {
+        static let loadingTitle = NSLocalizedString("Loading comment...", comment: "Displayed while a comment is being loaded.")
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
+        static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
+        static let imageName = "wp-illustration-notifications"
     }
 
 }
