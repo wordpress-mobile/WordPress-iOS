@@ -316,8 +316,8 @@ private extension ReaderCommentsViewController {
 
             // iterate over the ancestor comment's descendants and update their visibility for the comment thread.
             //
-            // the hierarchy property stores ancestral info by storing a stringified of its comment ID hierarchy, e.g.: "0000000012.0000000025.00000000035".
-            // the idea is to check if the ancestor comment's ID exists in the hierarchy.
+            // the hierarchy property stores ancestral info by storing a string version of its comment ID hierarchy,
+            // e.g.: "0000000012.0000000025.00000000035". The idea is to check if the ancestor comment's ID exists in the hierarchy.
             // as an optimization, skip checking the hierarchy when the comment is the direct child of the ancestor comment.
             comments.filter { comment in
                 comment.parentID == ancestorComent.commentID
