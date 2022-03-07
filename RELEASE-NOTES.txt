@@ -1,3 +1,7 @@
+19.5
+-----
+
+
 19.4
 -----
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
