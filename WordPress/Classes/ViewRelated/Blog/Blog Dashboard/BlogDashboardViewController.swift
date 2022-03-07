@@ -68,6 +68,10 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func update(blog: Blog) {
+        guard self.blog.dotComID != blog.dotComID else {
+            return
+        }
+
         self.blog = blog
         viewModel.blog = blog
         viewModel.loadCardsFromCache()

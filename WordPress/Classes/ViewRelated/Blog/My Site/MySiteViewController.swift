@@ -739,6 +739,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private func showDashboard(for blog: Blog) {
         let blogDashboardViewController = self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog)
+        blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
     }
