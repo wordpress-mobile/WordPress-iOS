@@ -593,7 +593,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 1.43.1)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `add/invalid-query-wpcom-error`)
+  - WordPressKit (~> 4.49.0-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.4)
@@ -643,6 +643,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -755,9 +756,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.3
-  WordPressKit:
-    :branch: add/invalid-query-wpcom-error
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.71.3/third-party-podspecs/Yoga.podspec.json
 
@@ -773,9 +771,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.3
-  WordPressKit:
-    :commit: 71e70233ee074f6b94f7c99b8a50a88c4fef55b3
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -878,6 +873,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 38d328f674b6299266e26cdd43cb65e00641cc91
+PODFILE CHECKSUM: cafbf4ab3cda13373d8d52183bd2fe9aa7f0ec1f
 
 COCOAPODS: 1.11.2
