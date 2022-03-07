@@ -57,7 +57,7 @@ class BlogDashboardService {
             let cards = decode(cardsDictionary) {
 
             blog.dashboardState.hasCachedData = true
-            let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
+            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
             blog.dashboardState.hasCachedData = false
