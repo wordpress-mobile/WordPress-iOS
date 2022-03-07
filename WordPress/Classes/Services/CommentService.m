@@ -1189,14 +1189,16 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:[NSNumber numberWithInt:comment.commentID]];
 
         // Comments are shown on the thread when (1) it is approved, and (2) its ancestors are approved.
-        // Having the comments sorted ascending hierarchically sets the invariant that parent comments will
-        // always be visited first before its children. Therefore, we only need to check if the comment and
-        // its direct parent are approved. Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/18081
+        // Having the comments sorted hierarchically ascending ensures that each comment's predecessors will be visited first.
+        // Therefore, we only need to check if the comment and its direct parent are approved.
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/18081
         BOOL hasValidParent = comment.parentID > 0 && [visibleCommentIds containsObject:@(comment.parentID)];
         if ([comment isApproved] && ([comment isTopLevelComment] || hasValidParent)) {
             [visibleCommentIds addObject:@(comment.commentID)];
         }
-        comment.depth = [visibleCommentIds containsObject:@(comment.commentID)] ? ancestors.count : -1;
+        comment.visibleOnReader = [visibleCommentIds containsObject:@(comment.commentID)];
+
+        comment.depth = ancestors.count;
         comment.post = post;
         comment.content = [self sanitizeCommentContent:comment.content isPrivateSite:post.isPrivate];
         [commentsToKeep addObject:comment];

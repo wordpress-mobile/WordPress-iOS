@@ -1,3 +1,4 @@
+import CoreData
 /// Encapsulates actions related to fetching reply comments.
 ///
 extension CommentService {

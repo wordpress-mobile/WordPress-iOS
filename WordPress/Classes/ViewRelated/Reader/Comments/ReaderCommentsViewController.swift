@@ -245,16 +245,23 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            self?.commentModified = true
-            self?.refreshAfterCommentModeration()
+            guard let self = self else {
+                return
+            }
 
-            // Dismiss any old notices to avoid stacked Undo notices.
-            self?.dismissNotice()
+            // when a comment is unapproved/spammed/trashed, ensure that all of the replies are hidden.
+            self.updateRepliesVisibility(for: comment) {
+                self.commentModified = true
+                self.refreshAfterCommentModeration()
 
-            // If the status is Approved, the user has undone a comment moderation.
-            // So don't show the Undo option in this case.
-            (status == .approved) ? self?.displayNotice(title: noticeText) :
-                                    self?.showActionableNotice(title: noticeText, comment: comment)
+                // Dismiss any old notices to avoid stacked Undo notices.
+                self.dismissNotice()
+
+                // If the status is Approved, the user has undone a comment moderation.
+                // So don't show the Undo option in this case.
+                (status == .approved) ? self.displayNotice(title: noticeText) :
+                                        self.showActionableNotice(title: noticeText, comment: comment)
+            }
         }
 
         switch status {
@@ -286,6 +293,37 @@ private extension ReaderCommentsViewController {
             }
         default:
             break
+        }
+    }
+
+    func updateRepliesVisibility(for parentComment: Comment, completion: (() -> Void)? = nil) {
+        guard let context = parentComment.managedObjectContext,
+              let post = parentComment.post as? ReaderPost else {
+                  return
+              }
+
+        let isVisible = (parentComment.status == CommentStatusType.approved.description)
+        context.perform {
+            guard let comments = post.comments as? Set<Comment> else {
+                completion?()
+                return
+            }
+
+            // iterate on all of the comment's descendants and update their visibility on the thread.
+            comments.filter { comment in
+                comment.parentID == parentComment.commentID
+                || comment.hierarchy
+                    .split(separator: ".")
+                    .compactMap({ Int32($0) })
+                    .contains(parentComment.commentID)
+            }.forEach { childComment in
+                childComment.visibleOnReader = isVisible
+            }
+
+            ContextManager.shared.save(context)
+            DispatchQueue.main.async {
+                completion?()
+            }
         }
     }
 

@@ -1215,7 +1215,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     NSString *approvedStatus = [Comment descriptionFor:CommentStatusTypeApproved];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND status = %@ AND depth >= %d", self.post, approvedStatus, 0];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND status = %@ AND visibleOnReader = %@", self.post, approvedStatus, @YES];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"hierarchy" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
