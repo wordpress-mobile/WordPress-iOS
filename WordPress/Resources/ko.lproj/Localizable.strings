@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-23 17:54:08+0000 */
+/* Translation-Revision-Date: 2022-03-03 22:51:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -8308,7 +8308,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "사이트 보기";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "모든 댓글 보기";
 
 /* Displays More Rows */
 "View all…" = "모두 보기";
@@ -8976,7 +8976,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "언제든지 사이트를 전환할 수 있습니다.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "언제든지 업데이트할 수 있습니다";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "내 사이트 > 사이트 설정에서 언제든지 업데이트할 수 있습니다.";

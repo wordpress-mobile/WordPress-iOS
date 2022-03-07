@@ -26,7 +26,7 @@ class BlogDashboardService {
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
-                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog) else {
+                guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID) else {
                     return
                 }
 
@@ -42,14 +42,18 @@ class BlogDashboardService {
 
     /// Fetch cards from local
     func fetchLocal(blog: Blog) -> DashboardSnapshot {
-        if let dotComID = blog.dotComID?.intValue,
-            let cardsDictionary = persistence.getCards(for: dotComID),
+
+        guard let dotComID = blog.dotComID?.intValue else {
+            return DashboardSnapshot()
+        }
+
+        if let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
-            let snapshot = parse(cardsDictionary, cards: cards, blog: blog)
+            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
-            return localCardsAndGhostCards(blog: blog)
+            return localCardsAndGhostCards(blog: blog, dotComID: dotComID)
         }
     }
 }
@@ -57,7 +61,7 @@ class BlogDashboardService {
 private extension BlogDashboardService {
     /// We use the `BlogDashboardRemoteEntity` to inject it into cells
     /// The `NSDictionary` is used for `Hashable` purposes
-    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog) -> DashboardSnapshot {
+    func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog, dotComID: Int) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
@@ -67,7 +71,10 @@ private extension BlogDashboardService {
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
                     let section = DashboardCardSection(id: card)
-                    let item = DashboardCardModel(id: card, hashableDictionary: viewModel as? NSDictionary, entity: cards)
+                    let item = DashboardCardModel(id: card,
+                                                  dotComID: dotComID,
+                                                  hashableDictionary: viewModel as? NSDictionary,
+                                                  entity: cards)
 
                     snapshot.appendSections([section])
                     snapshot.appendItems([item], toSection: section)
@@ -79,7 +86,7 @@ private extension BlogDashboardService {
                 }
 
                 let section = DashboardCardSection(id: card)
-                let item = DashboardCardModel(id: card)
+                let item = DashboardCardModel(id: card, dotComID: dotComID)
 
                 snapshot.appendSections([section])
                 snapshot.appendItems([item], toSection: section)
@@ -100,21 +107,22 @@ private extension BlogDashboardService {
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
-    func localCardsAndGhostCards(blog: Blog) -> DashboardSnapshot {
-        var snapshot = localCards(blog: blog)
+    func localCardsAndGhostCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
+        var snapshot = localCards(blog: blog, dotComID: dotComID)
 
         let section = DashboardCardSection(id: .ghost)
 
         snapshot.appendSections([section])
         Array(0...4).forEach {
             snapshot.appendItems([DashboardCardModel(id: .ghost,
+                                                     dotComID: dotComID,
                                                      hashableDictionary: ["diff": $0])], toSection: section)
         }
 
         return snapshot
     }
 
-    func localCards(blog: Blog) -> DashboardSnapshot {
-        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog)
+    func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
+        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog, dotComID: dotComID)
     }
 }
