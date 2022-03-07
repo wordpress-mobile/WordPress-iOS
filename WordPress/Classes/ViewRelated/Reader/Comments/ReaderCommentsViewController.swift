@@ -304,6 +304,7 @@ private extension ReaderCommentsViewController {
     func updateRepliesVisibility(for ancestorComent: Comment, completion: (() -> Void)? = nil) {
         guard let context = ancestorComent.managedObjectContext,
               let post = ancestorComent.post as? ReaderPost else {
+                  completion?()
                   return
               }
 
