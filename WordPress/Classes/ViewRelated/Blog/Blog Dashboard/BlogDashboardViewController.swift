@@ -20,10 +20,6 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
-    lazy var activityIndicatorView: UIActivityIndicatorView = {
-        UIActivityIndicatorView()
-    }()
-
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -53,18 +49,19 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
+        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
-    func showLoading() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewAtCenter(activityIndicatorView)
-        activityIndicatorView.startAnimating()
-    }
+    /// If you want to give any feedback when the dashboard
+    /// started loading just change this method.
+    /// For not, it will be transparent
+    ///
+    func showLoading() { }
 
-    func stopLoading() {
-        activityIndicatorView.stopAnimating()
-    }
+    /// If you want to give any feedback when the dashboard
+    /// stops loading just change this method.
+    ///
+    func stopLoading() { }
 
     func update(blog: Blog) {
         self.blog = blog
@@ -141,6 +138,9 @@ extension BlogDashboardViewController {
                                                         leading: horizontalInset,
                                                         bottom: 0,
                                                         trailing: horizontalInset)
+
+        section.interGroupSpacing = Constants.cellSpacing
+
         return section
     }
 }
@@ -156,6 +156,6 @@ extension BlogDashboardViewController {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 20
-        static let interGroupSpacing: CGFloat = 12
+        static let cellSpacing: CGFloat = 20
     }
 }

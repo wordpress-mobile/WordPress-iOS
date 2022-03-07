@@ -13,11 +13,6 @@ extension NSNotification.Name {
 
 private struct Constants {
     // I18N Strings
-    static let welcomeTitleText = NSLocalizedString(
-        "Welcome to WordPress",
-        comment: "Post Signup Interstitial Title Text"
-    )
-
     static let subTitleText = NSLocalizedString(
         "Whatever you want to create or share, we'll help you do it right here.",
         comment: "Post Signup Interstitial Subtitle Text"
@@ -116,7 +111,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     // MARK: - Private
     private func configureI18N() {
-        welcomeLabel.text = Constants.welcomeTitleText
+        welcomeLabel.text = AppConstants.PostSignUpInterstitial.welcomeTitleText
         subTitleLabel.text = Constants.subTitleText
         createSiteButton.setTitle(Constants.createSiteButtonTitleText, for: .normal)
         addSelfHostedButton.setTitle(Constants.addSelfHostedButtonTitleText, for: .normal)

@@ -1,0 +1,11 @@
+Tiga, dua, satu, mulai! Kini, Anda bisa menggunakan semua situs WordPress.com sekaligus, membuat situs baru, dan memanfaatkan fifitur Pembaca yang sama seperti aplikasi WordPress dengan menggunakan aplikasi Jetpack. Berkreasilah tanpa batas.
+
+Menariknya, pemberitahuan dan komentar kini mendukung berkas .gif. (Sayangnya, pembaruan ini belum mampu menyelesaikan perdebatan soal pengucapan yang benar: “gif” atau “jif”)
+
+Kami memperbaiki efek yang mengganggu pada mode Prantinjau ketika Anda beralih di antara berbagai ukuran atau orientasi layar.
+
+Ketika Anda menambahkan kartu Wawasan baru di layar Statistik, pratinjau layar Anda akan menurun untuk menunjukkan kartu Anda yang baru.
+
+Sekarang Anda dapat menyalin tautan ke pos dan halaman diposkan, dijadwalkan, dan konsep menggunakan tombol Salin Tautan di atas tombol Buang. Luar biasa.
+
+Dan kini, pesan error akan ditampilkan jika pengunggahan media gagal karena penyebab selain koneksi internet. Ini jelas lebih baik daripada bilah progres yang hanya terus memuat, seperti yang dahulu.
