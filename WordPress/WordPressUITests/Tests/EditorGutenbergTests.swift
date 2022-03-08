@@ -43,7 +43,7 @@ class EditorGutenbergTests: XCTestCase {
             .done()
     }
 
-    func testBasicPostPublish() throws {
+    func testBasicPostPublishWithCategoryAndTag() throws {
 
         let category = getCategory()
         let tag = getTag()
