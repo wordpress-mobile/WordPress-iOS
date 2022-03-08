@@ -4,25 +4,25 @@ import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
-    private enum Section: Int, CaseIterable {
-        case siteMenu
+    enum Section: Int, CaseIterable {
         case dashboard
+        case siteMenu
 
         var title: String {
             switch self {
-            case .siteMenu:
-                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             case .dashboard:
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             }
         }
 
         var analyticsDescription: String {
             switch self {
-            case .siteMenu:
-                return "site_menu"
             case .dashboard:
                 return "dashboard"
+            case .siteMenu:
+                return "site_menu"
             }
         }
     }
@@ -63,7 +63,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
         return segmentedControl
     }()
 
@@ -91,12 +91,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
+    private(set) var mySiteSettings: MySiteSettings
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.mySiteSettings = mySiteSettings
+
+        if FeatureFlag.mySiteDashboard.enabled {
+            // TODO: A/B test default section
+            mySiteSettings.setDefaultSection(.dashboard)
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -212,7 +219,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func updateSegmentedControl(for blog: Blog) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+
+        segmentedControlContainerView.isHidden = hideSegmentedControl
+
+        if !hideSegmentedControl {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
+            segmentedControl.sendActions(for: .valueChanged)
+        }
     }
 
     private func setupView() {
