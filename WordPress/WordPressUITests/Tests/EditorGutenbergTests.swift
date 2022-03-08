@@ -36,7 +36,7 @@ class EditorGutenbergTests: XCTestCase {
         try editorScreen
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
-            .verifyContentStructure(blocks: 1, words: 5, characters: 24)
+            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
             .publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -51,7 +51,7 @@ class EditorGutenbergTests: XCTestCase {
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()
-            .verifyContentStructure(blocks: 2, words: 5, characters: 24)
+            .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
             .openPostSettings()
             .selectCategory(name: category)
             .addTag(name: tag)
@@ -67,7 +67,7 @@ class EditorGutenbergTests: XCTestCase {
         try editorScreen
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
-            .verifyContentStructure(blocks: 1, words: 5, characters: 24)
+            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
             .openPostSettings()
             .setFeaturedImage()
             .verifyPostSettings(hasImage: true)
@@ -83,6 +83,6 @@ class EditorGutenbergTests: XCTestCase {
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImageGallery()
-            .verifyContentStructure(blocks: 5, words: 5, characters: 24)
+            .verifyContentStructure(blocks: 5, words: content.components(separatedBy: " ").count, characters: content.count)
     }
 }
