@@ -100,7 +100,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             label.numberOfLines = 0
             label.preferredMaxLayoutWidth = Metrics.maxLabelWidth
 
-            label.font = WPStyleGuide.fontForTextStyle(.title2)
+            label.font = WPStyleGuide.fontForTextStyle(.body)
             label.textAlignment = .center
             label.textColor = .text
             label.text = Strings.noResults
