@@ -463,28 +463,28 @@ private extension StatsInsightsStore {
 
         transaction { state in
             state.lastPostInsight = StatsRecord.insight(for: blog, type: .lastPostInsight).flatMap { StatsLastPostInsight(statsRecordValues: $0.recordValues) }
-            state.lastPostSummaryStatus = state.lastPostInsight != nil ? .error : .success
+            state.lastPostSummaryStatus = state.lastPostInsight == nil ? .error : .success
             state.allTimeStats = StatsRecord.insight(for: blog, type: .allTimeStatsInsight).flatMap { StatsAllTimesInsight(statsRecordValues: $0.recordValues) }
-            state.allTimeStatus = state.allTimeStats != nil ? .error : .success
+            state.allTimeStatus = state.allTimeStats == nil ? .error : .success
             state.annualAndMostPopularTime = StatsRecord.insight(for: blog, type: .annualAndMostPopularTimes).flatMap { StatsAnnualAndMostPopularTimeInsight(statsRecordValues: $0.recordValues) }
-            state.annualAndMostPopularTimeStatus = state.annualAndMostPopularTime != nil ? .error : .success
+            state.annualAndMostPopularTimeStatus = state.annualAndMostPopularTime == nil ? .error : .success
             state.publicizeFollowers = StatsRecord.insight(for: blog, type: .publicizeConnection).flatMap { StatsPublicizeInsight(statsRecordValues: $0.recordValues) }
-            state.publicizeFollowersStatus = state.publicizeFollowers != nil ? .error : .success
+            state.publicizeFollowersStatus = state.publicizeFollowers == nil ? .error : .success
             state.todaysStats = StatsRecord.insight(for: blog, type: .today).flatMap { StatsTodayInsight(statsRecordValues: $0.recordValues) }
-            state.todaysStatsStatus = state.todaysStats != nil ? .error : .success
+            state.todaysStatsStatus = state.todaysStats == nil ? .error : .success
             state.postingActivity = StatsRecord.insight(for: blog, type: .streakInsight).flatMap { StatsPostingStreakInsight(statsRecordValues: $0.recordValues) }
-            state.postingActivityStatus = state.postingActivity != nil ? .error : .success
+            state.postingActivityStatus = state.postingActivity == nil ? .error : .success
             state.topTagsAndCategories = StatsRecord.insight(for: blog, type: .tagsAndCategories).flatMap { StatsTagsAndCategoriesInsight(statsRecordValues: $0.recordValues) }
-            state.tagsAndCategoriesStatus = state.topTagsAndCategories != nil ? .error : .success
+            state.tagsAndCategoriesStatus = state.topTagsAndCategories == nil ? .error : .success
             state.topCommentsInsight = StatsRecord.insight(for: blog, type: .commentInsight).flatMap { StatsCommentsInsight(statsRecordValues: $0.recordValues) }
-            state.commentsInsightStatus = state.topCommentsInsight != nil ? .error : .success
+            state.commentsInsightStatus = state.topCommentsInsight == nil ? .error : .success
 
             let followersInsight = StatsRecord.insight(for: blog, type: .followers)
 
             state.dotComFollowers = followersInsight.flatMap { StatsDotComFollowersInsight(statsRecordValues: $0.recordValues) }
-            state.dotComFollowersStatus = state.dotComFollowers != nil ? .error : .success
+            state.dotComFollowersStatus = state.dotComFollowers == nil ? .error : .success
             state.emailFollowers = followersInsight.flatMap { StatsEmailFollowersInsight(statsRecordValues: $0.recordValues) }
-            state.emailFollowersStatus = state.emailFollowers != nil ? .error : .success
+            state.emailFollowersStatus = state.emailFollowers == nil ? .error : .success
         }
 
         DDLogInfo("Insights load from cache")
