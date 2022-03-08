@@ -250,7 +250,7 @@ private extension ReaderCommentsViewController {
             }
 
             // when a comment is unapproved/spammed/trashed, ensure that all of the replies are hidden.
-            self.updateRepliesVisibility(for: comment) {
+            self.commentService.updateRepliesVisibility(for: comment) {
                 self.commentModified = true
                 self.refreshAfterCommentModeration()
 
@@ -293,47 +293,6 @@ private extension ReaderCommentsViewController {
             }
         default:
             break
-        }
-    }
-
-    /// Update the visibility of the comment's replies for the comment thread.
-    ///
-    /// - Parameters:
-    ///   - ancestorComment: The ancestor comment that will have its reply comments iterated.
-    ///   - completion: The block executed after the replies are updated.
-    func updateRepliesVisibility(for ancestorComent: Comment, completion: (() -> Void)? = nil) {
-        guard let context = ancestorComent.managedObjectContext,
-              let post = ancestorComent.post as? ReaderPost else {
-                  completion?()
-                  return
-              }
-
-        let isVisible = (ancestorComent.status == CommentStatusType.approved.description)
-        context.perform {
-            guard let comments = post.comments as? Set<Comment> else {
-                completion?()
-                return
-            }
-
-            // iterate over the ancestor comment's descendants and update their visibility for the comment thread.
-            //
-            // the hierarchy property stores ancestral info by storing a string version of its comment ID hierarchy,
-            // e.g.: "0000000012.0000000025.00000000035". The idea is to check if the ancestor comment's ID exists in the hierarchy.
-            // as an optimization, skip checking the hierarchy when the comment is the direct child of the ancestor comment.
-            comments.filter { comment in
-                comment.parentID == ancestorComent.commentID
-                || comment.hierarchy
-                    .split(separator: ".")
-                    .compactMap({ Int32($0) })
-                    .contains(ancestorComent.commentID)
-            }.forEach { childComment in
-                childComment.visibleOnReader = isVisible
-            }
-
-            ContextManager.shared.save(context)
-            DispatchQueue.main.async {
-                completion?()
-            }
         }
     }
 
