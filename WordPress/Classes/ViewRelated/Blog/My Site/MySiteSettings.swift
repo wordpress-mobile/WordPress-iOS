@@ -6,15 +6,15 @@ final class MySiteSettings {
 
     private let userDefaults: UserDefaults
 
+    var defaultSection: MySiteViewController.Section {
+        let rawValue = userDefaults.integer(forKey: Constants.defaultSectionKey)
+        return MySiteViewController.Section(rawValue: rawValue) ?? .siteMenu
+    }
+
     // MARK: - Init
 
     init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
-    }
-
-    func defaultSection() -> MySiteViewController.Section {
-        let rawValue = userDefaults.integer(forKey: Constants.defaultSectionKey)
-        return MySiteViewController.Section(rawValue: rawValue) ?? .siteMenu
     }
 
     func setDefaultSection(_ tab: MySiteViewController.Section) {

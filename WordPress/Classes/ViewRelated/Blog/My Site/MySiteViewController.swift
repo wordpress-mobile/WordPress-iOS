@@ -224,7 +224,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
         if !hideSegmentedControl {
-            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection().rawValue
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
             segmentedControl.sendActions(for: .valueChanged)
         }
     }

@@ -57,7 +57,7 @@ enum DashboardCard: String, CaseIterable {
         case .quickActions:
             return true
         case .quickStart:
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection() == .dashboard
+            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
         case .posts:
             return true
         case .todaysStats:
