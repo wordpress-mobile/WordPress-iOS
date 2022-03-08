@@ -52,12 +52,12 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    func shouldShow(for blog: Blog) -> Bool {
+    func shouldShow(for blog: Blog, mySiteSettings: MySiteSettings = MySiteSettings()) -> Bool {
         switch self {
         case .quickActions:
             return true
         case .quickStart:
-            return QuickStartTourGuide.shouldShowChecklist(for: blog)
+            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection() == .dashboard
         case .posts:
             return true
         case .todaysStats:

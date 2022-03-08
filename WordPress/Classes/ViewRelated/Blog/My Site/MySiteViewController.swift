@@ -91,12 +91,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
+    private(set) var mySiteSettings: MySiteSettings
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.mySiteSettings = mySiteSettings
+
+        if FeatureFlag.mySiteDashboard.enabled {
+            // TODO: A/B test default section
+            mySiteSettings.setDefaultSection(.siteMenu)
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
