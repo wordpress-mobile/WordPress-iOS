@@ -81,7 +81,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowQuickStartChecklist() -> Bool {
-        if dashboardIsEnabled() {
+        if isDashboardEnabled() {
 
             guard let parentVC = parent as? MySiteViewController else {
                 return false
