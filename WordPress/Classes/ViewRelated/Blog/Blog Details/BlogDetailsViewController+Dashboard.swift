@@ -2,7 +2,7 @@ import Foundation
 
 extension BlogDetailsViewController {
 
-    @objc func shouldShowDashboard() -> Bool {
+    @objc func dashboardIsEnabled() -> Bool {
         return FeatureFlag.mySiteDashboard.enabled && blog.isAccessibleThroughWPCom()
     }
 }

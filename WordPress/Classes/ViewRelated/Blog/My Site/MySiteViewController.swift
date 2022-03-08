@@ -102,7 +102,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         if FeatureFlag.mySiteDashboard.enabled {
             // TODO: A/B test default section
-            mySiteSettings.setDefaultSection(.siteMenu)
+            mySiteSettings.setDefaultSection(.dashboard)
         }
 
         super.init(nibName: nil, bundle: nil)
