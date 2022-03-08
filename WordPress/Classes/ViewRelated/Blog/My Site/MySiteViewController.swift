@@ -4,25 +4,25 @@ import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
-    private enum Section: Int, CaseIterable {
-        case siteMenu
+    enum Section: Int, CaseIterable {
         case dashboard
+        case siteMenu
 
         var title: String {
             switch self {
-            case .siteMenu:
-                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             case .dashboard:
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             }
         }
 
         var analyticsDescription: String {
             switch self {
-            case .siteMenu:
-                return "site_menu"
             case .dashboard:
                 return "dashboard"
+            case .siteMenu:
+                return "site_menu"
             }
         }
     }
