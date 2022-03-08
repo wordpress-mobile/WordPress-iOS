@@ -266,7 +266,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         ]
 
         let siteMenuSpotlightViewConstraints = [
-            siteMenuSpotlightView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: -Constants.siteMenuSpotlightOffset),
+            siteMenuSpotlightView.trailingAnchor.constraint(equalTo: segmentedControl.trailingAnchor, constant: Constants.siteMenuSpotlightOffset),
             siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
         ]
 
