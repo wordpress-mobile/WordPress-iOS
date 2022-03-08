@@ -63,7 +63,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
         return segmentedControl
     }()
 
@@ -219,7 +219,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func updateSegmentedControl(for blog: Blog) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+
+        segmentedControlContainerView.isHidden = hideSegmentedControl
+
+        if !hideSegmentedControl {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection().rawValue
+            segmentedControl.sendActions(for: .valueChanged)
+        }
     }
 
     private func setupView() {
