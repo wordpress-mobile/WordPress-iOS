@@ -20,6 +20,16 @@ public class MediaPickerAlbumScreen: ScreenObject {
         selectedImage.tap()
     }
 
+    public func selectMultipleImages(_ numberOfImages: Int) {
+        var index = 0
+        while index < numberOfImages {
+            selectImage(atIndex: index)
+            index += 1
+        }
+
+        app.buttons["SelectedActionButton"].tap()
+    }
+
     func insertSelectedImage() {
         app.buttons["SelectedActionButton"].tap()
     }
