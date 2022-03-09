@@ -35,11 +35,14 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var authorAvatarImageView: UIImageView!
     @IBOutlet private weak var headerBlogButton: UIButton!
+    @IBOutlet private weak var labelsStackView: UIStackView!
 
+    @IBOutlet private weak var authorAndBlogNameStackView: UIStackView!
     @IBOutlet private weak var authorNameLabel: UILabel!
     @IBOutlet private weak var arrowImageView: UIImageView!
     @IBOutlet private weak var blogNameLabel: UILabel!
 
+    @IBOutlet private weak var hostAndTimeStackView: UIStackView!
     @IBOutlet private weak var blogHostNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var bylineSeparatorLabel: UILabel!
@@ -995,7 +998,10 @@ extension ReaderPostCardCell: GhostableView {
         menuButton.layer.opacity = 0
         commentActionButton.setTitle("", for: .normal)
         likeActionButton.setTitle("", for: .normal)
-        headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
+        authorAndBlogNameStackView.spacing = 0
+        headerBlogButton.isHidden = true
+        labelsStackView.distribution = .fillEqually
+        hostAndTimeStackView.alignment = .fill
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
     }

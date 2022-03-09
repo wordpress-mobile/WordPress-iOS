@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -361,6 +361,7 @@
                 <outlet property="actionStackView" destination="Wzi-SV-nkT" id="4lH-Qh-6iA"/>
                 <outlet property="arrowImageView" destination="7dJ-PC-Ihr" id="Jxx-N1-CPe"/>
                 <outlet property="attributionView" destination="nU7-76-6MV" id="Pjl-4F-R7r"/>
+                <outlet property="authorAndBlogNameStackView" destination="nmf-Gu-jLG" id="tpk-9U-mBk"/>
                 <outlet property="authorAvatarImageView" destination="X3v-d3-Adn" id="mVo-WI-68y"/>
                 <outlet property="authorNameLabel" destination="2Gk-4n-1vI" id="0GK-nh-b6j"/>
                 <outlet property="avatarImageView" destination="7Qj-iX-iqv" id="sjW-0m-Xxe"/>
@@ -376,7 +377,9 @@
                 <outlet property="ghostPlaceholderView" destination="9Jf-BY-VHz" id="NRJ-D8-aWX"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
                 <outlet property="headerStackView" destination="xwk-ft-EDo" id="mVV-0H-yAh"/>
+                <outlet property="hostAndTimeStackView" destination="c3n-LO-Igq" id="oq6-NR-Dko"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
+                <outlet property="labelsStackView" destination="Pv6-I0-BNp" id="L6K-mG-Lpm"/>
                 <outlet property="likeActionButton" destination="z4x-8W-5Dc" id="anJ-1J-8im"/>
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
                 <outlet property="reblogActionButton" destination="Mch-Ja-RJu" id="RnC-n2-AhY"/>
