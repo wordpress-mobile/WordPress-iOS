@@ -370,9 +370,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
-    
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
