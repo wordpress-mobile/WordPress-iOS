@@ -998,7 +998,11 @@ extension ReaderPostCardCell: GhostableView {
         authorAndBlogNameStackView.spacing = 0
         headerBlogButton.isHidden = true
         labelsStackView.distribution = .fillEqually
+        labelsStackView.spacing = 8
         hostAndTimeStackView.alignment = .fill
+        bylineLabel.text = nil
+        bylineLabel.widthAnchor.constraint(equalTo: hostAndTimeStackView.widthAnchor, multiplier: 0.33).isActive = true
+        bylineLabel.isGhostableDisabled = true
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
     }
