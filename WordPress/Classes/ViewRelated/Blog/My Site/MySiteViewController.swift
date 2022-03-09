@@ -124,6 +124,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateSegmentedControl(for: newBlog)
+            createFABIfNeeded()
         }
 
         get {
@@ -459,6 +460,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+        createButtonCoordinator?.removeCreateButton()
     }
 
     private func trackNoSitesVisibleIfNeeded() {
@@ -542,7 +544,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
-        if let blog = blog, tabBarController is WPTabBarController {
+        if let blog = blog, tabBarController is WPTabBarController,
+           noResultsViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
     }
