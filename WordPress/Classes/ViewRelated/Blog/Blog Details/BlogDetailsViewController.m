@@ -450,6 +450,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     switch (section) {
         case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionDomainCredit:
+        case BlogDetailsSubsectionHome:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showDashboard];
+            break;
         case BlogDetailsSubsectionQuickStart:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -556,6 +563,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
     switch (subsection) {
         case BlogDetailsSubsectionReminders:
+        case BlogDetailsSubsectionHome:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionDomainCredit:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionQuickStart:
@@ -731,7 +740,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
-    if ([self shouldShowDashboard] && ![self splitViewControllerIsHorizontallyCompact]) {
+    if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
     if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
@@ -1081,8 +1090,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self splitViewControllerIsHorizontallyCompact]) {
         return;
     }
-    
-    [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+
+    if ([self shouldShowDashboard]) {
+        [self showDetailViewForSubsection:BlogDetailsSubsectionHome];
+    } else {
+        [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+    }
 }
 
 #pragma mark - Table view data source

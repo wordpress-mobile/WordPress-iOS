@@ -21,6 +21,8 @@ extension BlogDetailsSubsection {
             return .configure
         case .jetpackSettings:
             return .jetpack
+        case .home:
+            return .home
         @unknown default:
             fatalError()
         }
