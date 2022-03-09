@@ -25,19 +25,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vth-Nl-tJe">
-                                <rect key="frame" x="16" y="332.66666666666669" width="32" height="32"/>
+                                <rect key="frame" x="16" y="331.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grC-7j-rBx">
-                                <rect key="frame" x="103.33333333333333" y="332.66666666666669" width="31.999999999999986" height="32"/>
+                                <rect key="frame" x="103.33333333333333" y="331.66666666666669" width="31.999999999999986" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfA-lS-oeX">
-                                <rect key="frame" x="184.66666666666666" y="332.66666666666669" width="32" height="32"/>
+                                <rect key="frame" x="184.66666666666666" y="331.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="74d-A6-ibb">
-                                <rect key="frame" x="272" y="332.66666666666669" width="32" height="32"/>
+                                <rect key="frame" x="272" y="331.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RWd-ZJ-3Hc">
@@ -61,8 +61,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xwk-ft-EDo" userLabel="Header Stack View">
                                 <rect key="frame" x="16" y="16" width="288" height="40"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="z25-Q5-35K" userLabel="Avatar Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="-20" translatesAutoresizingMaskIntoConstraints="NO" id="z25-Q5-35K" userLabel="Avatar Stack View">
+                                        <rect key="frame" x="0.0" y="0.0" width="90.333333333333329" height="40"/>
                                         <subviews>
                                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -72,8 +72,20 @@
                                                     <constraint firstAttribute="width" secondItem="7Qj-iX-iqv" secondAttribute="height" multiplier="1:1" id="EEk-WN-bIC"/>
                                                 </constraints>
                                             </imageView>
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
+                                                <rect key="frame" x="20" y="0.0" width="70.333333333333329" height="40"/>
+                                                <connections>
+                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
+                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
+                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
+                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
+                                                    <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
+                                                    <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
+                                                    <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
+                                                </connections>
+                                            </button>
                                             <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="X3v-d3-Adn" userLabel="Author Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="0.0" width="40" height="40"/>
+                                                <rect key="frame" x="90.333333333333329" y="0.0" width="39.999999999999986" height="40"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="X3v-d3-Adn" secondAttribute="height" multiplier="1:1" id="D9D-ol-V5e"/>
@@ -81,15 +93,12 @@
                                                 </constraints>
                                             </imageView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="X3v-d3-Adn" firstAttribute="leading" secondItem="7Qj-iX-iqv" secondAttribute="centerX" id="ilX-FC-Cqo"/>
-                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-I0-BNp" userLabel="Label Stack View">
-                                        <rect key="frame" x="50" y="0.0" width="184" height="40"/>
+                                        <rect key="frame" x="100.33333333333333" y="0.0" width="133.66666666666669" height="40"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="nmf-Gu-jLG" userLabel="Author / Blog Name Stack View">
-                                                <rect key="frame" x="0.0" y="0.0" width="184" height="39"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="133.66666666666666" height="39"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Gk-4n-1vI" userLabel="Author Name Label">
                                                         <rect key="frame" x="0.0" y="0.0" width="43.333333333333336" height="39"/>
@@ -105,7 +114,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="749" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
-                                                        <rect key="frame" x="65.333333333333343" y="0.0" width="118.66666666666666" height="39"/>
+                                                        <rect key="frame" x="65.333333333333343" y="0.0" width="68.333333333333343" height="39"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -114,7 +123,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="c3n-LO-Igq" userLabel="Host Name / Time Stack View">
-                                                <rect key="frame" x="0.0" y="40" width="184" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="40" width="133.66666666666666" height="0.0"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="740" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCZ-4n-fDW" userLabel="Blog Host Name">
                                                         <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="0.0"/>
@@ -124,7 +133,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="749" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="740" text="·" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyk-BL-kmJ">
-                                                        <rect key="frame" x="87.666666666666657" y="0.0" width="10.666666666666671" height="0.0"/>
+                                                        <rect key="frame" x="87.666666666666671" y="0.0" width="10.666666666666671" height="0.0"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="10.5" id="vYw-c9-BGz"/>
@@ -134,7 +143,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="749" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="740" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
-                                                        <rect key="frame" x="98.333333333333343" y="0.0" width="85.666666666666657" height="0.0"/>
+                                                        <rect key="frame" x="98.333333333333329" y="0.0" width="35.333333333333329" height="0.0"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -168,10 +177,10 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp" userLabel="Title / Summary / Attr / Action Stack View">
-                                <rect key="frame" x="16" y="233.99999999999997" width="288" height="122.66666666666666"/>
+                                <rect key="frame" x="16" y="233.99999999999997" width="288" height="121.66666666666666"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="46.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="45.333333333333336"/>
                                         <subviews>
                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-cD-Pd2" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
@@ -181,7 +190,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Summary" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1n-gR-1xw" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="31.999999999999996" width="288" height="14.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="31.999999999999996" width="288" height="13.333333333333332"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -190,7 +199,7 @@
                                         </subviews>
                                     </stackView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="58.333333333333321" width="288" height="20.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="57.333333333333321" width="288" height="20.333333333333336"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -223,7 +232,7 @@
                                         </connections>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                        <rect key="frame" x="0.0" y="90.666666666666686" width="288" height="32"/>
+                                        <rect key="frame" x="0.0" y="89.666666666666686" width="288" height="32"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="44" height="32"/>
@@ -297,25 +306,13 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                <rect key="frame" x="16" y="364.66666666666669" width="288" height="100.33333333333331"/>
+                                <rect key="frame" x="16" y="363.66666666666669" width="288" height="101.33333333333331"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <edgeInsets key="layoutMargins" top="16" left="16" bottom="6" right="16"/>
                     </stackView>
-                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
-                        <rect key="frame" x="16" y="24" width="234" height="40"/>
-                        <connections>
-                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="3lc-7d-9nA"/>
-                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="Ph0-Z2-0e5"/>
-                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="fUQ-0g-O1I"/>
-                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="rSb-y4-PkS"/>
-                            <action selector="blogButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpInside" id="vgG-Vu-rLZ"/>
-                            <action selector="blogButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="aZQ-Hw-YOa"/>
-                            <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
@@ -341,7 +338,6 @@
                     <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" id="SQx-7T-hZ3"/>
                     <constraint firstItem="Vth-Nl-tJe" firstAttribute="centerY" secondItem="YRe-Q4-Aq4" secondAttribute="centerY" id="Vnk-9N-j9w"/>
                     <constraint firstItem="74d-A6-ibb" firstAttribute="width" secondItem="z4x-8W-5Dc" secondAttribute="height" id="VzA-rX-Dd4"/>
-                    <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="xwk-ft-EDo" secondAttribute="leading" id="Y8E-6u-aiv"/>
                     <constraint firstItem="grC-7j-rBx" firstAttribute="width" secondItem="Mch-Ja-RJu" secondAttribute="height" id="f5N-Cf-Nho"/>
                     <constraint firstItem="grC-7j-rBx" firstAttribute="height" secondItem="Mch-Ja-RJu" secondAttribute="height" id="fDI-az-HWu"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" constant="-1" id="gD7-ug-WFu"/>
@@ -349,9 +345,6 @@
                     <constraint firstItem="9Jf-BY-VHz" firstAttribute="height" secondItem="519-Nh-f7o" secondAttribute="height" id="lTf-rN-Pc5"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="k3b-5o-H9u" secondAttribute="leading" constant="-1" id="lbK-St-20e"/>
                     <constraint firstItem="RWd-ZJ-3Hc" firstAttribute="centerY" secondItem="D4Q-6L-ZIL" secondAttribute="centerY" id="nef-PY-yZz"/>
-                    <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="xwk-ft-EDo" secondAttribute="bottom" id="of6-De-80c"/>
-                    <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="xwk-ft-EDo" secondAttribute="top" id="up0-8u-OYB"/>
-                    <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="Pv6-I0-BNp" secondAttribute="trailing" id="vVS-qW-Hfu"/>
                     <constraint firstItem="BfA-lS-oeX" firstAttribute="centerY" secondItem="3W2-KV-isX" secondAttribute="centerY" id="vhc-lN-EiN"/>
                     <constraint firstItem="grC-7j-rBx" firstAttribute="centerX" secondItem="Mch-Ja-RJu" secondAttribute="centerX" id="wA6-V8-ITR"/>
                 </constraints>
