@@ -210,16 +210,6 @@ private extension SiteStatsInsightsTableViewController {
                 if viewsCount != nil {
                     trackNudgeShown(for: hintType)
                 }
-
-            case InsightType.customize where !insightsToShow.contains(.customize):
-                insightsToShow = insightsToShow.filter { $0 != .growAudience }
-                insightsToShow.insert(.customize, at: 0)
-
-                // Work around to make sure customize insights shown is tracked only once
-                if viewsCount != nil {
-                    WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
-                }
-
             default:
                 break
             }

@@ -54,8 +54,14 @@ class BlogDashboardViewModel {
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
             completion?()
-        }, failure: { [weak self] in
+        }, failure: { [weak self] snapshot in
             self?.viewController?.stopLoading()
+            self?.loadingFailure()
+
+            if let snapshot = snapshot {
+                self?.apply(snapshot: snapshot)
+            }
+
             completion?()
         })
     }
@@ -76,5 +82,20 @@ private extension BlogDashboardViewModel {
 
     func apply(snapshot: DashboardSnapshot) {
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Ghost/Skeleton cards and failures
+
+private extension BlogDashboardViewModel {
+
+    func isGhostCardsBeingShown() -> Bool {
+        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
+    }
+
+    func loadingFailure() {
+        if blog.dashboardState.hasCachedData {
+            viewController?.loadingFailure()
+        }
     }
 }

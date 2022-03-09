@@ -1,0 +1,11 @@
+Tres, dos, uno, despegue: ahora la aplicación Jetpack permite utilizar todos tus sitios de WordPress.com, crear nuevos y usar las mismas funciones del Lector que la aplicación WordPress. Tú pones los límites.
+
+Ahora las notificaciones y los comentarios, que prácticamente son igual de fascinantes, admiten archivos .gif (desafortunadamente, esta mejora no corrige el problema de si se pronuncia "gif" o "jif").
+
+Hemos corregido el efecto de parpadeo del modo Vista previa al cambiar el tamaño o la orientación de la pantalla.
+
+Al añadir una nueva tarjeta Detalles en la pantalla Estadísticas, la vista de la pantalla se desplazará hacia abajo para mostrar la tarjeta que acabas de crear.
+
+Ahora puedes copiar los enlaces a las entradas y páginas publicadas, programadas y borrador mediante el botón Copiar enlace que se encuentra encima del botón Papelera. Maravilloso.
+
+Por último, verás un mensaje de error si la carga de un elemento multimedia falla por motivos que no sean la falta de conexión a Internet. Esta opción es mucho mejor que la barra de progreso de carga infinita que probablemente hayas visto antes.

@@ -1,0 +1,11 @@
+Tre, två, ett, lyft – Jetpack-appen gör det nu möjligt att använda alla dina WordPress.com-webbplatser, skapa nya webbplatser och att använda samma läsarfunktioner som i WordPress-appen. Det finns inga gränser.
+
+Nästan lika spännande är att notiser och kommentarer nu stöder .gif-filer. (Tyvärr klargör denna uppdatering inte om det ska uttalas "gif" eller "jif")
+
+Vi har åtgärdat den flimrande effekten som uppstod i förhandsgranskningsläget vid ändring av skärmstorlek eller orientering.
+
+När du lägger till ett nytt Insikter-kort på skärmen Statistik kommer skärmen att bläddra ner och visa ditt nya kort.
+
+Du kan nu kopiera länkar till publicerade inlägg, schemalagda inlägg och inläggs- och sidutkast med hjälp av knappen Kopiera länk ovanför papperskorgsknappen. Underbart.
+
+Slutligen kommer ett felmeddelande att visas om en mediauppladdning misslyckas av andra orsaker än att du inte är ansluten till Internet. Detta är mycket bättre än den oändligt laddande förloppsindikatorn som visades tidigare.

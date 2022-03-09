@@ -1,0 +1,9 @@
+Rispolvera la tua raccolta .gif: le notifiche e i commenti ora supportano i tuoi file animati preferiti. (Purtroppo, questo aggiornamento non risolve il problema relativo alla pronuncia "gif" o "jif".)
+
+Abbiamo corretto l'effetto dello sfarfallio nella modalità Anteprima quando si passa da una dimensione dello schermo all'altra o da un orientamento all'altro.
+
+Quando aggiungi una nuova scheda Panoramica nella schermata Statistiche, la visualizzazione dello schermo si sposterà verso il basso con un salto per mostrare la tua nuova scheda.
+
+Ora puoi copiare i link ad articoli e pagine pubblicati, pianificati e in bozza utilizzando il pulsante Copia link sopra il pulsante Cestino. Molto piacevole.
+
+Infine, verrà mostrato un messaggio di errore quando un caricamento di elementi multimediali non andrà a buon fine per ragioni differenti dalla connessione a Internet. Questo è molto meglio della barra di stato del caricamento all'infinito, che potresti aver visto in precedenza.

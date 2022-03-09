@@ -2,9 +2,6 @@ import UIKit
 
 final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
-    private var onTapCustomize: (() -> Void)?
-    private var onTapGrow: (() -> Void)?
-
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.nextSteps
@@ -13,22 +10,10 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         return frameView
     }()
 
-    // FIXME: temporary placeholder view -- will refine design later
-    private lazy var customizeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Customize Your Site", for: .normal)
-        button.addTarget(self, action: #selector(didTapCustomizeButton), for: .touchUpInside)
-        return button
-    }()
-
-    // FIXME: temporary place holder view -- will refine design later
-    private lazy var growButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Grow Your Audience", for: .normal)
-        button.addTarget(self, action: #selector(didTapGrowButton), for: .touchUpInside)
-        return button
+    private lazy var tourStateView: QuickStarTourStateView = {
+        let view = QuickStarTourStateView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     override init(frame: CGRect) {
@@ -45,43 +30,19 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
             return
         }
 
-        onTapCustomize = { [weak self] in
-            self?.showQuickStart(with: .customize, from: viewController, for: blog)
-        }
-
-        onTapGrow = { [weak self] in
-            self?.showQuickStart(with: .grow, from: viewController, for: blog)
-        }
+        tourStateView.configure(blog: blog, sourceController: viewController)
     }
+}
+
+// MARK: - Setup
+
+extension DashboardQuickStartCardCell {
 
     private func setupViews() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView)
 
-        cardFrameView.add(subview: customizeButton)
-        cardFrameView.add(subview: growButton)
-    }
-
-}
-
-// MARK: - Actions
-
-extension DashboardQuickStartCardCell {
-
-    @objc private func didTapCustomizeButton() {
-        onTapCustomize?()
-    }
-
-    @objc private func didTapGrowButton() {
-        onTapGrow?()
-    }
-
-    private func showQuickStart(with type: QuickStartType, from sourceController: UIViewController, for blog: Blog) {
-        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
-        let navigationViewController = UINavigationController(rootViewController: checklist)
-        sourceController.present(navigationViewController, animated: true)
-
-        QuickStartTourGuide.shared.visited(.checklist)
+        cardFrameView.add(subview: tourStateView)
     }
 }
 

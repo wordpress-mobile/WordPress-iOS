@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-25 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-03-03 22:49:46+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -6457,7 +6457,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "親の設定";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "アイキャッチ画像として設定";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "ホームページに設定する";

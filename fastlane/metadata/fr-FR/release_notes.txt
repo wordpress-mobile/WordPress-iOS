@@ -1,0 +1,9 @@
+C’est le moment de dépoussiérer votre collection de fichiers .gif : les notifications et les commentaires prennent désormais en charge vos fichiers animés préférés ! (Malheureusement, cette mise à jour ne règle toujours pas la question de savoir si l’on prononce « guif » ou « jif ».)
+
+Nous avons corrigé l'effet de vacillement constaté en mode Aperçu lorsque vous basculez entre différentes tailles ou orientations d'écran.
+
+Lorsque vous ajoutez une nouvelle carte Tendances sur l'écran Statistiques, la vue de l'écran se déplace vers le bas pour afficher votre toute nouvelle carte.
+
+Vous pouvez désormais copier les liens vers les messages et les pages publiés, programmés et en brouillon à l'aide du bouton Copier le lien situé au-dessus du bouton Corbeille. Merveilleuse nouvelle !
+
+Enfin, vous verrez un message d'erreur s'afficher si le chargement d'un média échoue pour une autre raison que l'absence de connexion à Internet. Cette nouvelle solution, bien meilleure, remplace l’ancienne barre de progression qui chargeait indéfiniment auparavant.

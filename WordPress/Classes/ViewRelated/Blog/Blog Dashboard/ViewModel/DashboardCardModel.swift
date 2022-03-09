@@ -3,23 +3,41 @@ import Foundation
 /// Represents a card in the dashboard collection view
 struct DashboardCardModel: Hashable {
     let id: DashboardCard
+    let dotComID: Int
     let apiResponse: BlogDashboardRemoteEntity?
 
-    // Used as the `Hashable` to check if the cell should be updated or not
-    let apiResponseDictionary: NSDictionary?
+    /// Used as the `Hashable` to compare this `struct` to others
+    let hashableDictionary: NSDictionary?
 
-    init(id: DashboardCard, apiResponseDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
+    /**
+     Initializes a new DashboardCardModel, used as a model for each dashboard card.
+
+     - Parameters:
+     - id: The `DashboardCard` id of this card
+     - dotComID: The blog id for the blog associated with this card
+     - hashableDictionary: A `NSDictionary?` that is used to compare this model to others
+     - entity: A `BlogDashboardRemoteEntity?` property
+
+     - Returns: A `DashboardCardModel` that is used by the dashboard diffable collection
+                view. The `hashableDictionary`, `id`, and the `dotComID` is used to differentiate one
+                card from the other.
+    */
+    init(id: DashboardCard, dotComID: Int, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
         self.id = id
-        self.apiResponseDictionary = apiResponseDictionary
+        self.dotComID = dotComID
+        self.hashableDictionary = hashableDictionary
         self.apiResponse = entity
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
         lhs.id == rhs.id &&
-        lhs.apiResponseDictionary == rhs.apiResponseDictionary
+        lhs.dotComID == rhs.dotComID &&
+        lhs.hashableDictionary == rhs.hashableDictionary
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(apiResponseDictionary)
+        hasher.combine(id)
+        hasher.combine(dotComID)
+        hasher.combine(hashableDictionary)
     }
 }
