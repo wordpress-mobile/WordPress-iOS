@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,83 +13,21 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="F4q-47-pPM">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="F4q-47-pPM">
                     <rect key="frame" x="140" y="12" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AoX-vc-zrF">
-                    <rect key="frame" x="7" y="11" width="286" height="22"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBZ-lN-HGt">
-                            <rect key="frame" x="0.0" y="11" width="124" height="1"/>
-                            <color key="backgroundColor" red="0.73886972665786743" green="0.8065076470375061" blue="0.85388457775115967" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="gOn-eC-zhZ"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wKm-Mr-TCA">
-                            <rect key="frame" x="162" y="11" width="124" height="1"/>
-                            <color key="backgroundColor" red="0.73886972665786743" green="0.8065076470375061" blue="0.85388457775115967" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="k2g-PF-m8U"/>
-                            </constraints>
-                        </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-list-footer" translatesAutoresizingMaskIntoConstraints="NO" id="2lx-TZ-H9w">
-                            <rect key="frame" x="132" y="0.0" width="22" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="22" id="3hc-zb-3fV"/>
-                                <constraint firstAttribute="height" constant="22" id="cJ3-uM-7zP"/>
-                            </constraints>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="centerX" secondItem="2lx-TZ-H9w" secondAttribute="centerX" id="BXl-cW-Ywt"/>
-                        <constraint firstAttribute="centerY" secondItem="MBZ-lN-HGt" secondAttribute="centerY" constant="-0.5" id="SM7-09-i4J"/>
-                        <constraint firstAttribute="centerY" secondItem="wKm-Mr-TCA" secondAttribute="centerY" constant="-0.5" id="X37-jz-nrb"/>
-                        <constraint firstItem="2lx-TZ-H9w" firstAttribute="leading" secondItem="MBZ-lN-HGt" secondAttribute="trailing" constant="8" id="Y0M-I9-BOr"/>
-                        <constraint firstAttribute="trailing" secondItem="wKm-Mr-TCA" secondAttribute="trailing" id="b0b-rA-YhB"/>
-                        <constraint firstItem="MBZ-lN-HGt" firstAttribute="leading" secondItem="AoX-vc-zrF" secondAttribute="leading" id="gr5-vp-wLh"/>
-                        <constraint firstAttribute="height" constant="22" id="jnj-8K-NpN"/>
-                        <constraint firstItem="wKm-Mr-TCA" firstAttribute="leading" secondItem="2lx-TZ-H9w" secondAttribute="trailing" constant="8" id="qGB-cG-EAL"/>
-                        <constraint firstAttribute="centerY" secondItem="2lx-TZ-H9w" secondAttribute="centerY" id="wf6-gD-lPc"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstAttribute="bottom" secondItem="AoX-vc-zrF" secondAttribute="bottom" constant="11" id="CZF-8o-geK"/>
-                <constraint firstAttribute="trailing" secondItem="AoX-vc-zrF" secondAttribute="trailing" constant="7" id="ciu-4z-aHt"/>
-                <constraint firstItem="F4q-47-pPM" firstAttribute="centerX" secondItem="AoX-vc-zrF" secondAttribute="centerX" id="oYN-Kz-3Zu"/>
-                <constraint firstAttribute="trailingMargin" secondItem="AoX-vc-zrF" secondAttribute="trailing" priority="999" id="s16-Gc-tvU"/>
-                <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leadingMargin" id="yzD-7E-gw6"/>
-                <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leading" constant="7" id="znD-ba-XuU"/>
-                <constraint firstItem="F4q-47-pPM" firstAttribute="centerY" secondItem="AoX-vc-zrF" secondAttribute="centerY" id="zvW-CV-pmP"/>
-            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="s16-Gc-tvU"/>
-                    <exclude reference="yzD-7E-gw6"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES">
-                <mask key="constraints">
-                    <exclude reference="ciu-4z-aHt"/>
-                    <include reference="s16-Gc-tvU"/>
-                    <include reference="yzD-7E-gw6"/>
-                    <exclude reference="znD-ba-XuU"/>
-                </mask>
-            </variation>
+            <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
                 <outlet property="activityView" destination="F4q-47-pPM" id="zVo-Q1-ggr"/>
-                <outlet property="bannerView" destination="AoX-vc-zrF" id="hSc-aF-tjn"/>
             </connections>
+            <point key="canvasLocation" x="139" y="112"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon-post-list-footer" width="22" height="22"/>
-    </resources>
 </document>
