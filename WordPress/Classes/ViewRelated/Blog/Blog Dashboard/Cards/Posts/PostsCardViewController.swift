@@ -71,6 +71,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 private extension PostsCardViewController {
     func configureView() {
         configureTableView()
+        configureMinimumHeight()
     }
 
     func configureTableView() {
@@ -82,6 +83,12 @@ private extension PostsCardViewController {
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
         tableView.separatorStyle = .none
+    }
+
+    // A minimum height is necessary to avoid the view
+    // being positioned wrong in the UICollectionView
+    func configureMinimumHeight() {
+        tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.writeFirstPostViewHeight).isActive = true
     }
 
     func configureGhostableTableView() {
@@ -136,6 +143,7 @@ private extension PostsCardViewController {
 
     enum Constants {
         static let numberOfPosts = 3
+        static let writeFirstPostViewHeight: CGFloat = 92
     }
 }
 
