@@ -245,16 +245,23 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            self?.commentModified = true
-            self?.refreshAfterCommentModeration()
+            guard let self = self else {
+                return
+            }
 
-            // Dismiss any old notices to avoid stacked Undo notices.
-            self?.dismissNotice()
+            // when a comment is unapproved/spammed/trashed, ensure that all of the replies are hidden.
+            self.commentService.updateRepliesVisibility(for: comment) {
+                self.commentModified = true
+                self.refreshAfterCommentModeration()
 
-            // If the status is Approved, the user has undone a comment moderation.
-            // So don't show the Undo option in this case.
-            (status == .approved) ? self?.displayNotice(title: noticeText) :
-                                    self?.showActionableNotice(title: noticeText, comment: comment)
+                // Dismiss any old notices to avoid stacked Undo notices.
+                self.dismissNotice()
+
+                // If the status is Approved, the user has undone a comment moderation.
+                // So don't show the Undo option in this case.
+                (status == .approved) ? self.displayNotice(title: noticeText) :
+                                        self.showActionableNotice(title: noticeText, comment: comment)
+            }
         }
 
         switch status {
