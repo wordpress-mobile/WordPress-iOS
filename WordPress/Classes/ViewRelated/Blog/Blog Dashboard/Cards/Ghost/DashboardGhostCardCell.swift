@@ -19,7 +19,7 @@ class DashboardGhostCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
 
         contentView.addSubview(contentStackView)
         contentView.pinSubviewToAllEdges(contentStackView, insets: Constants.insets,
-                                         priority: UILayoutPriority(Constants.constraintPriority))
+                                         priority: Constants.constraintPriority)
 
         isAccessibilityElement = false
     }
