@@ -124,6 +124,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
 
             showSitePicker(for: newBlog)
+            showBlogDetails(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
         }
 
@@ -353,7 +354,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
-        updateSegmentedControl(for: mainBlog)
+        updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
 
     @objc
