@@ -66,9 +66,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     @IBOutlet private weak var menuButton: UIButton!
     @IBOutlet private weak var reblogActionButton: UIButton!
 
-    // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-
     // Ghost cells placeholders
     @IBOutlet private weak var ghostPlaceholderView: UIView!
 
