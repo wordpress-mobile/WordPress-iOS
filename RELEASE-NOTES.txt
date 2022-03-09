@@ -1,3 +1,7 @@
+19.5
+-----
+* [*] Reader: Fixed a bug where comment replies are misplaced after its parent comment is moderated. [#18094]
+
 19.4
 -----
 * [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
