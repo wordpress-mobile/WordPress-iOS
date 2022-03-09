@@ -100,11 +100,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
         self.mySiteSettings = mySiteSettings
 
-        if FeatureFlag.mySiteDashboard.enabled {
-            // TODO: A/B test default section
-            mySiteSettings.setDefaultSection(.siteMenu)
-        }
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -129,8 +124,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
 
             showSitePicker(for: newBlog)
-            showBlogDetails(for: newBlog)
-            updateSegmentedControl(for: newBlog)
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
         }
 
         get {
@@ -217,13 +211,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func updateSegmentedControl(for blog: Blog) {
+    private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
         let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
 
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
-        if !hideSegmentedControl {
+        if !hideSegmentedControl && switchTabsIfNeeded {
             segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
             segmentedControl.sendActions(for: .valueChanged)
         }
