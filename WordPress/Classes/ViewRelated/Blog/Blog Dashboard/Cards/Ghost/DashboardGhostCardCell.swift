@@ -18,7 +18,8 @@ class DashboardGhostCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         }
 
         contentView.addSubview(contentStackView)
-        contentView.pinSubviewToAllEdges(contentStackView, insets: Constants.insets)
+        contentView.pinSubviewToAllEdges(contentStackView, insets: Constants.insets,
+                                         priority: UILayoutPriority(Constants.constraintPriority))
 
         isAccessibilityElement = false
     }
@@ -45,6 +46,7 @@ class DashboardGhostCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         static let spacing: CGFloat = 20
         static let numberOfCards = 5
         static let insets = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        static let constraintPriority = UILayoutPriority(999)
     }
 }
 
