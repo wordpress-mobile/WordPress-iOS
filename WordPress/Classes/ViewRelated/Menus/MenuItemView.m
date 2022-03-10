@@ -51,6 +51,8 @@
     button.accessibilityLabel = NSLocalizedString(@"Move menu item", @"Screen reader text for button that will move the menu item");
     button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down", @"Screen reader hint for button that will move the menu item");
     button.userInteractionEnabled = NO;
+    // Override the accessibility traits so that VoiceOver doesn't read "Dimmed" due to userInteractionEnabled = NO
+    [button setAccessibilityTraits:UIAccessibilityTraitButton];
     _orderingButton = button;
 }
 
