@@ -3,6 +3,7 @@
 * [*] Improves the error message shown when trying to create a new site with non-English characters in the domain name [https://github.com/wordpress-mobile/WordPress-iOS/pull/17985]
 * [*] Quick Start: updated the design for the Quick Start cell on My Site [#18095]
 * [*] Reader: Fixed a bug where comment replies are misplaced after its parent comment is moderated [#18094]
+* [*] iPad: Fixed a bug where the current displayed section wasn't selected on the menu [#18118]
 
 19.4
 -----
