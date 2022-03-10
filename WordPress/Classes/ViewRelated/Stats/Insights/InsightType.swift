@@ -21,10 +21,18 @@ enum InsightType: Int, SiteStatsPinnable {
     case allAnnual
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
-    static let defaultInsights = [InsightType.latestPostSummary,
-                                  .todaysStats,
-                                  .allTimeStats,
-                                  .followersTotals
+    static let defaultInsights: [InsightType] = [.mostPopularTime,
+                                                 .allTimeStats,
+                                                 .todaysStats,
+                                                 .followers,
+                                                 .comments
+    ]
+    // This property is here to update the default list on existing installations.
+    // If the list saved on UserDefaults matches the old one, it will be updated to the new one above.
+    static let oldDefaultInsights: [InsightType] = [.latestPostSummary,
+                                                    .todaysStats,
+                                                    .allTimeStats,
+                                                    .followersTotals
     ]
 
     static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
