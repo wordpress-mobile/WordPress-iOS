@@ -1,9 +1,0 @@
-Det är dags att leta fram dina favoriter bland .gif-filer – nu finns det nämligen stöd för animerade filer! (Däremot ger vi oss inte in i debatten om hur ”gif” uttalas.)
-
-Vi har rättat till blinkningseffekten förhandsvisningsläget om man ändrar skärmstorlek eller växlar mellan stående och liggande skärm.
-
-Om du lägger till ett nytt insiktskort i statistikvyn kommer vyn nu att hoppa ned till det nya kortet, så att du ser det direkt.
-
-Nu kan du kopiera länkar till alla inlägg och sidor, både publicerade, schemalagda och utkast med knappen ”Kopiera länk” ovanför knappen ”Lägg i papperskorgen”. Bekvämt värre!
-
-Slutligen visas det nu ett felmeddelande om en filuppladdning misslyckas av någon annan anledning än att du inte är ansluten till internet. Det ger en mycket smidigare upplevelse än du kanske sett tidigare, när statusen för uppladdningen bara stod och snurrade.
