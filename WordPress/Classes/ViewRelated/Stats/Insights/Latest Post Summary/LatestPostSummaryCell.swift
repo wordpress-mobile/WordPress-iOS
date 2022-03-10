@@ -99,14 +99,14 @@ private extension LatestPostSummaryCell {
 
         actionLabel.textColor = Style.actionTextColor
     }
-    
+
     func setupStackViewsMargins() {
         actionStackView.isLayoutMarginsRelativeArrangement = true
         actionStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
-        
+
         viewsStackView.isLayoutMarginsRelativeArrangement = true
         viewsStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
-        
+
         chartStackView.isLayoutMarginsRelativeArrangement = true
         chartStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
     }
@@ -202,7 +202,7 @@ private extension LatestPostSummaryCell {
         static let dataShown = CGFloat(24)
         static let dataHidden = CGFloat(16)
     }
-    
+
     struct StackViewsMargins {
         static let horizontalPaddingMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
     }
