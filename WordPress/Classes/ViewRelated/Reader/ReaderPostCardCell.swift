@@ -35,11 +35,14 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var authorAvatarImageView: UIImageView!
     @IBOutlet private weak var headerBlogButton: UIButton!
+    @IBOutlet private weak var labelsStackView: UIStackView!
 
+    @IBOutlet private weak var authorAndBlogNameStackView: UIStackView!
     @IBOutlet private weak var authorNameLabel: UILabel!
     @IBOutlet private weak var arrowImageView: UIImageView!
     @IBOutlet private weak var blogNameLabel: UILabel!
 
+    @IBOutlet private weak var hostAndTimeStackView: UIStackView!
     @IBOutlet private weak var blogHostNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var bylineSeparatorLabel: UILabel!
@@ -62,9 +65,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     @IBOutlet private weak var commentActionButton: UIButton!
     @IBOutlet private weak var menuButton: UIButton!
     @IBOutlet private weak var reblogActionButton: UIButton!
-
-    // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
     // Ghost cells placeholders
     @IBOutlet private weak var ghostPlaceholderView: UIView!
@@ -995,7 +995,14 @@ extension ReaderPostCardCell: GhostableView {
         menuButton.layer.opacity = 0
         commentActionButton.setTitle("", for: .normal)
         likeActionButton.setTitle("", for: .normal)
-        headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
+        authorAndBlogNameStackView.spacing = 0
+        headerBlogButton.isHidden = true
+        labelsStackView.distribution = .fillEqually
+        labelsStackView.spacing = 8
+        hostAndTimeStackView.alignment = .fill
+        bylineLabel.text = nil
+        bylineLabel.widthAnchor.constraint(equalTo: hostAndTimeStackView.widthAnchor, multiplier: 0.33).isActive = true
+        bylineLabel.isGhostableDisabled = true
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
     }
