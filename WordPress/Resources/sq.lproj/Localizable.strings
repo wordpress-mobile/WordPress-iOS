@@ -1,10 +1,13 @@
-/* Translation-Revision-Date: 2022-02-13 17:41:15+0000 */
+/* Translation-Revision-Date: 2022-03-08 20:28:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
 "\nPlease send us an email to have your content cleared out." = "\nJu lutemi, dërgonani një email që të pastrojmë lëndën tuaj.";
+
+/* Notice shown on the Edit Comment view when the author is a registered user. */
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nKy përdorues është i regjistruar. Emri, adresa web dhe adresa email të tija s’mund të përpunohen.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPër ripohim, ju lutemi, para se të fshihet, rijepni adresën e sajtit tuaj.\n\n";
@@ -1836,7 +1839,7 @@ translators: Block name. %s: The localized block name */
 
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
-"Copy Link" = "Copy Link";
+"Copy Link" = "Kopjoji Lidhjen";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopjo Lidhjen për te Komenti";
@@ -2037,10 +2040,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "Krijo lidhje";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "Krijoni postimin tuaj të parë";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "Krijoni postimin tuaj pasues";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Krijoni pultin tuaj të personalizuar dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
@@ -2143,8 +2146,7 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "E errët";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
-   Title for dashboard view on the My Site screen */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Pult";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -2597,7 +2599,7 @@ translators: Block name. %s: The localized block name */
 "Edit Post" = "Përpunoni Postimin";
 
 /* Accessibility label for button to edit a comment from a notification */
-"Edit comment" = "Edit comment";
+"Edit comment" = "Përpunoni komentin";
 
 /* No comment provided by engineer. */
 "Edit cover media" = "Përpunoni media mbulesë";
@@ -3502,6 +3504,7 @@ translators: Block name. %s: The localized block name */
 "Hold for Moderation" = "Mbaje për Moderim";
 
 /* Noun. Links to a blog's dashboard screen.
+   Title for dashboard view on the My Site screen
    Title for the dashboard screen. */
 "Home" = "Kreu";
 
@@ -4064,6 +4067,9 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Po ngarkohet Skanim…";
 
+/* Displayed while a comment is being loaded. */
+"Loading comment..." = "Po ngarkohet koment…";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Po ngarkohen përkatësi";
 
@@ -4569,7 +4575,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized. */
 "Next" = "Pasuesi";
 
-/* Table view title for the quick start section. */
+/* Table view title for the quick start section.
+   Title for the Quick Start dashboard card. */
 "Next Steps" = "Hapat Pasues";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
@@ -4968,6 +4975,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only the selected photos you've given access to are available." = "Mund të përdoren vetëm foto për të cilat keni lejuar përdorim.";
 
 /* An informal exclaimation that means `something went wrong`.
+   Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5483,6 +5491,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Postimi rregullisht mund të ndihmojë t’i mbani lexuesit tuaj të angazhuar, dhe të tërhiqni vizitorë të rinj te sajti juaj.";
 
+/* Description for the card prompting the user to create a new post. */
+"Posting regularly helps build your audience!" = "Postimi rregullisht ndihmon të krijoni publikun tuaj!";
+
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
@@ -5498,6 +5509,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Postime dhe Faqe";
+
+/* Description for the card prompting the user to create their first post. */
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Në faqen tuaj të blogut postimet shfaqen në rend të përmbysur kohor. Erdhi koha të ndani idetë tuaja me botën!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Faqe postimesh";
@@ -6289,6 +6303,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to continue" = "Që të vazhdohet, përzgjidhni %@";
 
+/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
+"Select %@ to continue." = "Që të vazhdohet, përzgjidhni %@.";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Përzgjidhni %@ që të krijoni një postim të ri";
 
@@ -6675,7 +6692,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Gjuhë Sajti";
 
-/* Title for the site menu view on the My Site screen */
+/* The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Site Menu" = "Menu Sajti";
 
 /* Describes a site redirect domain */
@@ -7443,6 +7461,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Pati një gabim në ngarkim shtojcash";
 
+/* Text displayed when there is a failure loading a comment. */
+"There was an error loading the comment." = "Pati një gabim me ngarkimin e komentit.";
+
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "Pati një gabim në ngarkimin e historikut";
 
@@ -7667,7 +7688,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "Sot";
 
-/* Insights Management 'Today's Stats' title */
+/* Insights Management 'Today's Stats' title
+   Title for the card displaying today's stats. */
 "Today's Stats" = "Statistikat e Sotme";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8091,7 +8113,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "Ruhen regjistrime deri për shtatë ditë.";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "Postime të ardhshme të planifikuara";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8672,10 +8694,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weeks stats filter. */
 "Weeks" = "Javë";
 
+/* Post Signup Interstitial Title Text for Jetpack iOS */
+"Welcome to Jetpack" = "Mirë se vini te Jetpack-u";
+
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Mirë se vini te Reader. Zbuloni në pëllëmbë të dorës miliona blogje.";
 
-/* Post Signup Interstitial Title Text */
+/* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Mirë se vini në WordPress";
 
 /* A message title */
@@ -8878,7 +8903,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "Punoni Me Ne";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "Merruni me një skicë postimi";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Hartë e botës që tregon parje sipas vendesh.";
@@ -8992,9 +9017,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "S’keni ndonjë media.";
-
-/* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "S’keni ndonjë postim";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "S’keni faqe të planifikuara për botim";

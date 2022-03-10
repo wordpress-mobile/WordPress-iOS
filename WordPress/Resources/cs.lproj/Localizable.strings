@@ -1,10 +1,13 @@
-/* Translation-Revision-Date: 2022-02-22 07:33:52+0000 */
+/* Translation-Revision-Date: 2022-03-08 08:24:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
 "\nPlease send us an email to have your content cleared out." = "\nZašlete nám e-mail, aby byl váš obsah vymazán.";
+
+/* Notice shown on the Edit Comment view when the author is a registered user. */
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nTento uživatel je registrován. Jejich jméno, webovou adresu a e-mailovou adresu nelze upravit.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPro potvrzení prosím před smazáním znovu zadejte adresu vašeho webu.\n\n";
@@ -2143,8 +2146,7 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Tmavý";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
-   Title for dashboard view on the My Site screen */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Nástěnka";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -3502,6 +3504,7 @@ translators: Block name. %s: The localized block name */
 "Hold for Moderation" = "Podržet pro moderaci";
 
 /* Noun. Links to a blog's dashboard screen.
+   Title for dashboard view on the My Site screen
    Title for the dashboard screen. */
 "Home" = "Úvodní stránka";
 
@@ -4064,6 +4067,9 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Načítání webu...";
 
+/* Displayed while a comment is being loaded. */
+"Loading comment..." = "Načítání komentáře...";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Načítání domén";
 
@@ -4569,7 +4575,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized. */
 "Next" = "Další";
 
-/* Table view title for the quick start section. */
+/* Table view title for the quick start section.
+   Title for the Quick Start dashboard card. */
 "Next Steps" = "Další kroky";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
@@ -4968,6 +4975,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only the selected photos you've given access to are available." = "Dostupné jsou pouze vybrané fotografie, ke kterým jste udělili přístup.";
 
 /* An informal exclaimation that means `something went wrong`.
+   Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5483,6 +5491,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Pravidelné zveřejňování příspěvků může pomoci vašim čtenářům zaujmout a přilákat na váš web nové návštěvníky.";
 
+/* Description for the card prompting the user to create a new post. */
+"Posting regularly helps build your audience!" = "Pravidelné zveřejňování pomáhá budovat vaše publikum!";
+
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
@@ -5498,6 +5509,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Příspěvky a stránky";
+
+/* Description for the card prompting the user to create their first post. */
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Příspěvky se na stránce vašeho blogu zobrazují v obráceném chronologickém pořadí. Je čas podělit se o své nápady se světem!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Stránka příspěvků";
@@ -6289,6 +6303,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to continue" = "Pokračujte výběrem %@";
 
+/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
+"Select %@ to continue." = "Pokračujte výběrem %@.";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Vyberte %@ a vytvořte nový příspěvek";
 
@@ -6675,7 +6692,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Jazyk webu";
 
-/* Title for the site menu view on the My Site screen */
+/* The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Site Menu" = "Menu webu";
 
 /* Describes a site redirect domain */
@@ -7443,6 +7461,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Při načítání pluginů došlo k chybě";
 
+/* Text displayed when there is a failure loading a comment. */
+"There was an error loading the comment." = "Během nahrávání tohoto komentáře došlo k chybě.";
+
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "Při načítání historie došlo k chybě.";
 
@@ -7667,7 +7688,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "Dnes";
 
-/* Insights Management 'Today's Stats' title */
+/* Insights Management 'Today's Stats' title
+   Title for the card displaying today's stats. */
 "Today's Stats" = "Dnešní statistika";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8672,10 +8694,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weeks stats filter. */
 "Weeks" = "Týdny";
 
+/* Post Signup Interstitial Title Text for Jetpack iOS */
+"Welcome to Jetpack" = "Vítejte v Jetpacku";
+
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Vítejte v aplikaci Reader. Objevte miliony blogů na dosah ruky.";
 
-/* Post Signup Interstitial Title Text */
+/* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Vítejte ve WordPressu!";
 
 /* A message title */
@@ -8992,9 +9017,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Nemáte žádná média.";
-
-/* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "Nemáte žádné příspěvky";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Zatím nemáte žádné naplánované stránky.";
