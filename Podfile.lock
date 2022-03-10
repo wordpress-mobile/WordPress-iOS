@@ -67,7 +67,6 @@ PODS:
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
   - Kanvas (1.2.8)
-  - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
@@ -478,12 +477,11 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (1.43.1):
+  - WordPressAuthenticator (2.0.0-beta.1):
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
-    - lottie-ios (~> 3.1.6)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
     - WordPressKit (~> 4.18-beta)
@@ -592,7 +590,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 1.43.1)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `remove-lottie`)
   - WordPressKit (~> 4.49.0-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
@@ -603,8 +601,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
   trunk:
     - Alamofire
     - AlamofireImage
@@ -627,7 +623,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - JTAppleCalendar
     - Kanvas
-    - lottie-ios
     - MediaEditor
     - MRProgress
     - Nimble
@@ -756,6 +751,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.3
+  WordPressAuthenticator:
+    :branch: remove-lottie
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.71.3/third-party-podspecs/Yoga.podspec.json
 
@@ -771,6 +769,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.71.3
+  WordPressAuthenticator:
+    :commit: 5277dbead4ffd0f3050c64c07045891d51edcbaf
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -801,7 +802,6 @@ SPEC CHECKSUMS:
   Gutenberg: a8a0fcb4c40070f4f71f7ce50ce2fd29e83a1bc8
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
-  lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
@@ -856,7 +856,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: aa53a5339e241852252e16199e23bd9c3364b983
+  WordPressAuthenticator: 18acfe95bc0748e8e5c7cc2194ac1d3591f7163b
   WordPressKit: 158a036f5c7f1df7dc345993d8990eeb17a93906
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
@@ -873,6 +873,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: cafbf4ab3cda13373d8d52183bd2fe9aa7f0ec1f
+PODFILE CHECKSUM: bbed9db7c839acbf4ef9a111f930530cf52b67c5
 
 COCOAPODS: 1.11.2
