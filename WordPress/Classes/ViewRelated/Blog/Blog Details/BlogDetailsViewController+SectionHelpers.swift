@@ -11,16 +11,14 @@ extension BlogDetailsSubsection {
             return .domainCredit
         case .quickStart:
             return .quickStart
-        case .stats, .activity:
-            return .general
+        case .stats, .activity, .jetpackSettings:
+            return .jetpack
         case .pages, .posts, .media, .comments:
             return .publish
         case .themes, .customize:
             return .personalize
         case .sharing, .people, .plugins:
             return .configure
-        case .jetpackSettings:
-            return .jetpack
         case .home:
             return .home
         @unknown default:
