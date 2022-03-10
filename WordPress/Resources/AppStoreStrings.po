@@ -34,6 +34,12 @@ msgid ""
 "View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
 msgstr ""
 
+#. translators: Keywords used in the App Store search engine to find the app.
+#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+msgctxt "app_store_keywords"
+msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
+msgstr ""
+
 msgctxt "v19.4-whats-new"
 msgid ""
 "Color us excited—support for multiple color palettes is here! Add Theme and Default color and gradient palettes, or create your own Custom palette with your favorite shades. We also fixed an issue that caused theme colors not to appear and current theme data not to refresh.\n"
