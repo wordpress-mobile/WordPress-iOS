@@ -72,10 +72,24 @@ class BlogDashboardCardFrameView: UIView {
         }
     }
 
+    /// Closure to be called when anywhere in the view is tapped.
+    /// If set, the chevron image is displayed.
+    var onViewTap: (() -> Void)? {
+        didSet {
+            updateChevronImageState()
+            addViewTapGestureIfNeeded()
+        }
+    }
+
+    /// Closure to be called when the header view is tapped.
+    /// If set, this overrides the `onViewTap` closure if the tap is inside the header.
+    /// If set, the chevron image is displayed.
     var onHeaderTap: (() -> Void)? {
         didSet {
-            chevronImageView.isHidden = onHeaderTap == nil
+            updateChevronImageState()
+            addHeaderTapGestureIfNeeded()
         }
+
     }
 
     override init(frame: CGRect) {
@@ -119,14 +133,46 @@ class BlogDashboardCardFrameView: UIView {
             titleLabel,
             chevronImageView
         ])
+    }
 
-        // Add tap gesture
-        let tap = UITapGestureRecognizer(target: self, action: #selector(headerTapped))
-        headerStackView.addGestureRecognizer(tap)
+    private func updateChevronImageState() {
+        chevronImageView.isHidden = onViewTap == nil && onHeaderTap == nil
+    }
+
+    private func addHeaderTapGestureIfNeeded() {
+        // Reset any previously added gesture recognizers
+        headerStackView.gestureRecognizers?.forEach {headerStackView.removeGestureRecognizer($0)}
+
+        // Add gesture recognizer if needed
+        if onHeaderTap != nil {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(headerTapped))
+            headerStackView.addGestureRecognizer(tap)
+        }
+    }
+
+    private func addViewTapGestureIfNeeded() {
+        // Reset any previously added gesture recognizers
+        self.gestureRecognizers?.forEach {self.removeGestureRecognizer($0)}
+
+        // Add gesture recognizer if needed
+        if onViewTap != nil {
+            let frameTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+            self.addGestureRecognizer(frameTapGesture)
+        }
+    }
+
+    @objc private func viewTapped() {
+        onViewTap?()
     }
 
     @objc private func headerTapped() {
-        onHeaderTap?()
+        if let onHeaderTap = onHeaderTap {
+            onHeaderTap()
+        }
+        else {
+            onViewTap?()
+        }
+
     }
 
     private enum Constants {

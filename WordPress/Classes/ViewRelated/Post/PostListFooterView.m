@@ -4,7 +4,6 @@
 
 @interface PostListFooterView()
 
-@property (nonatomic, strong) IBOutlet UIView *bannerView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityView;
 
 @end
@@ -16,8 +15,6 @@
     [super awakeFromNib];
 
     self.backgroundColor = [UIColor clearColor];
-    self.bannerView.backgroundColor = [UIColor murielNeutral0];
-    self.bannerView.hidden = YES;
 }
 
 - (void)showSpinner:(BOOL)show

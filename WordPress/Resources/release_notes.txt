@@ -1,9 +1,9 @@
-Dust off your .gif collection—notifications and comments now support your favorite animated files! (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif.”)
+Color us excited—support for multiple color palettes is here! Add Theme and Default color and gradient palettes, or create your own Custom palette with your favorite shades. We also fixed an issue that caused theme colors not to appear and current theme data not to refresh.
 
-We fixed the flickering effect in Preview mode when you’re toggling between different screen sizes or orientations.
+For devices using right-to-left languages, we updated icon, button, and text positioning for the “Choose a Domain” screen in the site creation process. Alright, alright.
 
-When you add a new Insights card on the Stats screen, your screen view will jump down to show your brand-new card.
+Want to see rich media like images and .gifs in your device’s push notifications? Just press and hold the notification to open a preview.
 
-You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Trash button. Delightful.
+We made some tweaks to Weekly Roundup notifications to make sure they’re showing up once you’ve enabled them. Giddyup!
 
-Finally, you’ll see an error message if a media upload fails for reasons other than not being connected to the Internet. This is much better than the infinitely loading progress bar you might have seen previously.
+Finally, we added a few fixes on the Insight screen that’ll help speed things up. We also squashed a bug that bolded auto-corrected words in content block headings.

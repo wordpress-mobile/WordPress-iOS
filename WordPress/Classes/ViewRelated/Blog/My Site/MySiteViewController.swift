@@ -4,25 +4,25 @@ import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
-    private enum Section: Int, CaseIterable {
-        case siteMenu
+    enum Section: Int, CaseIterable {
         case dashboard
+        case siteMenu
 
         var title: String {
             switch self {
-            case .siteMenu:
-                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             case .dashboard:
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
             }
         }
 
         var analyticsDescription: String {
             switch self {
-            case .siteMenu:
-                return "site_menu"
             case .dashboard:
                 return "dashboard"
+            case .siteMenu:
+                return "site_menu"
             }
         }
     }
@@ -63,7 +63,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
         return segmentedControl
     }()
 
@@ -91,12 +91,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
+    private(set) var mySiteSettings: MySiteSettings
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.mySiteSettings = mySiteSettings
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -123,7 +125,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
-            updateSegmentedControl(for: newBlog)
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
+            createFABIfNeeded()
         }
 
         get {
@@ -210,9 +213,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func updateSegmentedControl(for blog: Blog) {
+    private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+
+        segmentedControlContainerView.isHidden = hideSegmentedControl
+
+        if !hideSegmentedControl && switchTabsIfNeeded {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
+            segmentedControl.sendActions(for: .valueChanged)
+        }
     }
 
     private func setupView() {
@@ -252,7 +262,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         ]
 
         let siteMenuSpotlightViewConstraints = [
-            siteMenuSpotlightView.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: -Constants.siteMenuSpotlightOffset),
+            siteMenuSpotlightView.trailingAnchor.constraint(equalTo: segmentedControl.trailingAnchor, constant: Constants.siteMenuSpotlightOffset),
             siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
         ]
 
@@ -345,7 +355,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
-        updateSegmentedControl(for: mainBlog)
+        updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
 
     @objc
@@ -459,6 +469,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+        createButtonCoordinator?.removeCreateButton()
     }
 
     private func trackNoSitesVisibleIfNeeded() {
@@ -542,7 +553,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
-        if let blog = blog, tabBarController is WPTabBarController {
+        if let blog = blog, tabBarController is WPTabBarController,
+           noResultsViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
     }
@@ -739,6 +751,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private func showDashboard(for blog: Blog) {
         let blogDashboardViewController = self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog)
+        blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
     }

@@ -36,7 +36,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
-    BlogDetailsSubsectionPlugins
+    BlogDetailsSubsectionPlugins,
+    BlogDetailsSubsectionHome,
 };
 
 

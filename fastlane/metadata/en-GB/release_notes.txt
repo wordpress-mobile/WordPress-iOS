@@ -1,9 +1,0 @@
-Dust off your .gif collection – notifications and comments now support your favourite animated files! (Unfortunately, this update doesn’t fix the issue of whether it’s pronounced “gif” or “jif”).
-
-We fixed the flickering effect in Preview mode when you’re toggling between different screen sizes or orientations.
-
-When you add a new Insights card on the Stats screen, your screen view will jump down to show your brand new card.
-
-You can now copy links to published, scheduled, and draft posts and pages using the Copy Link button above the Bin button. Delightful.
-
-Finally, you’ll see an error message if a media upload fails for reasons other than not being connected to the Internet. This is much better than the infinitely loading progress bar you might have seen previously.

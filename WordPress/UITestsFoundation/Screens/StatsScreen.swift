@@ -76,8 +76,11 @@ public class StatsScreen: ScreenObject {
     public func refreshStatsIfNeeded() -> StatsScreen {
         let errorMessage = NSPredicate(format: "label == 'An error occurred.'")
         let isErrorMessagePresent = app.staticTexts.element(matching: errorMessage).exists
+        let expectedCardsWithoutData = 3
+        let isDataLoaded = app.staticTexts.matching(identifier: "No data yet").count <= expectedCardsWithoutData
 
-        if isErrorMessagePresent { pullToRefresh() }
+        if isErrorMessagePresent == true || isDataLoaded == false { pullToRefresh() }
+
         return self
     }
 }
