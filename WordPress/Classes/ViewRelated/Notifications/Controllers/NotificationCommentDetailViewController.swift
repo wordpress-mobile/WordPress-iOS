@@ -82,7 +82,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = notification.title
+        configureNavBar()
         view.backgroundColor = .basicBackground
         loadComment()
     }
@@ -100,6 +100,12 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 }
 
 private extension NotificationCommentDetailViewController {
+
+    func configureNavBar() {
+        title = notification.title
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
+    }
 
     func configureNavBarButtons() {
         var barButtonItems: [UIBarButtonItem] = []
