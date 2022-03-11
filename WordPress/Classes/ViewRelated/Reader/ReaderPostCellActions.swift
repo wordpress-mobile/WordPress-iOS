@@ -84,6 +84,15 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
         ReaderLikeAction().execute(with: post, context: context, completion: {
             cell.refreshLikeButton()
+            guard let origin = self.origin as? ReaderStreamViewController else {
+                return
+            }
+            // since a like status changed, let's refresh other tabs
+            WPTabBarController.sharedInstance().readerTabViewModel.invalidateCache()
+            // if we are in "Likes", let's remove the unliked post
+            if let topic = origin.readerTopic, ReaderHelpers.topicType(topic) == .likes, !post.isLiked {
+                origin.syncIfAppropriate(forceSync: true)
+            }
         })
     }
 
