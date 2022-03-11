@@ -39,6 +39,7 @@ final class BlogDashboardViewController: UIViewController {
         setupCollectionView()
         addHeightObservers()
         addWillEnterForegroundObserver()
+        addQuickStartObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -68,6 +69,10 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func update(blog: Blog) {
+        guard self.blog.dotComID != blog.dotComID else {
+            return
+        }
+
         self.blog = blog
         viewModel.blog = blog
         viewModel.loadCardsFromCache()
@@ -103,6 +108,9 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
+    private func addQuickStartObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)    }
+
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -114,6 +122,15 @@ final class BlogDashboardViewController: UIViewController {
         }
 
         viewModel.loadCards()
+    }
+
+    /// Show Quick Start if needed
+    @objc private func showQuickStart() {
+        guard view.superview != nil else {
+            return
+        }
+
+        viewModel.loadCardsFromCache()
     }
 }
 

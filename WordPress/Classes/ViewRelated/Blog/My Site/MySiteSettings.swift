@@ -7,8 +7,9 @@ final class MySiteSettings {
     private let userDefaults: UserDefaults
 
     var defaultSection: MySiteViewController.Section {
-        let rawValue = userDefaults.integer(forKey: Constants.defaultSectionKey)
-        return MySiteViewController.Section(rawValue: rawValue) ?? .siteMenu
+        let defaultSection: MySiteViewController.Section = .siteMenu
+        let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int ?? defaultSection.rawValue
+        return MySiteViewController.Section(rawValue: rawValue) ?? defaultSection
     }
 
     // MARK: - Init
