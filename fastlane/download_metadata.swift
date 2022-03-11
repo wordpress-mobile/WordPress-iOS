@@ -2,6 +2,7 @@
 
 import Foundation
 
+let glotPressNameKey = "app_store_name"
 let glotPressSubtitleKey = "app_store_subtitle"
 let glotPressWhatsNewKey = "v19.4-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
@@ -90,6 +91,7 @@ func downloadTranslation(
                 return
         }
 
+        var name: String?
         var subtitle: String?
         var whatsNew: String?
         var keywords: String?
@@ -114,6 +116,8 @@ func downloadTranslation(
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
 
             switch keyFirstPart {
+            case glotPressNameKey:
+                name = translation
             case glotPressSubtitleKey:
                 subtitle = translation
             case glotPressKeywordsKey:
@@ -141,6 +145,7 @@ func downloadTranslation(
                 try FileManager.default.removeItem(at: URL(fileURLWithPath: releaseNotesPath))
             }
 
+            try name?.write(toFile: "\(languageFolder)/name.txt", atomically: true, encoding: .utf8)
             try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
             try whatsNew?.write(toFile: "\(languageFolder)/release_notes.txt", atomically: true, encoding: .utf8)
             try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
