@@ -1004,7 +1004,7 @@ private extension CommentDetailViewController {
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            // TODO: create comment on post.
+            createPostCommentReply(content: content)
             return
         }
 
@@ -1019,6 +1019,24 @@ private extension CommentDetailViewController {
             self?.displayReplyNotice(success: true)
             self?.refreshCommentReplyIfNeeded()
         }, failure: { [weak self] error in
+            DDLogError("Failed uploading comment reply: \(String(describing: error))")
+            self?.displayReplyNotice(success: false)
+        })
+    }
+
+    func createPostCommentReply(content: String) {
+        guard let post = comment.post as? ReaderPost else {
+            return
+        }
+
+        commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
+                                                  post: post,
+                                                  content: content,
+                                                  success: { [weak self] in
+            self?.displayReplyNotice(success: true)
+            self?.refreshCommentReplyIfNeeded()
+        }, failure: { [weak self] error in
+            DDLogError("Failed creating post comment reply: \(String(describing: error))")
             self?.displayReplyNotice(success: false)
         })
     }
