@@ -145,7 +145,7 @@ lane :update_jetpack_appstore_strings do |options|
     'screenshot-text-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
     'screenshot-text-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
     'screenshot-text-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt'),
-    'app-store-name' => File.join(source_metadata_folder, 'app_name.txt')
+    app_store_name: File.join(source_metadata_folder, 'app_name.txt')
   }
 
   ios_update_metadata_source(
