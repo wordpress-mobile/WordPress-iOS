@@ -16,11 +16,13 @@ struct DomainsDashboardView: View {
 
     var body: some View {
         List {
-            makeSiteAddressSection(blog: blog)
+            if blog.supports(.domains) {
+                makeSiteAddressSection(blog: blog)
+            }
             makeDomainsSection(blog: blog)
         }
         .listStyle(GroupedListStyle())
-        .padding(.top, Metrics.topPadding)
+        .padding(.top, blog.supports(.domains) ? Metrics.topPadding : 0)
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .onAppear {
@@ -77,17 +79,19 @@ struct DomainsDashboardView: View {
             ForEach(blog.domainsList) {
                 makeDomainCell(domain: $0)
             }
-            PresentationButton(
-                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
-                appearance: {
-                    HStack {
-                        Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
-                            .foregroundColor(Color(UIColor.primary))
-                            .bold()
-                        Spacer()
+            if blog.supports(.domains) {
+                PresentationButton(
+                    isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
+                    appearance: {
+                        HStack {
+                            Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
+                                .foregroundColor(Color(UIColor.primary))
+                                .bold()
+                            Spacer()
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
