@@ -36,7 +36,6 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .basicBackground
-        tableView.keyboardDismissMode = .interactive
     }
 
     override func viewWillAppear(_ animated: Bool) {
