@@ -5,7 +5,8 @@ import WordPressKit
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
-
+    @State var blogService = BlogService.withMainContext()
+    
     // Property observer
     private func showingDomainRegistrationFlow(to value: Bool) {
         if value {
@@ -22,6 +23,9 @@ struct DomainsDashboardView: View {
         .padding(.top, Metrics.topPadding)
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
+        .onAppear {
+            blogService.refreshDomains(for: blog, success: nil, failure: nil)
+        }
         .navigationBarTitle(TextContent.navigationTitle)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
