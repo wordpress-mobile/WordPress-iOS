@@ -187,7 +187,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        view.pinSubviewAtCenter(stackView)
+        view.pinSubviewToSafeArea(stackView)
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
