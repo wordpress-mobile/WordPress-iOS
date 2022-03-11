@@ -6,7 +6,7 @@ struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
     @State var blogService = BlogService.withMainContext()
-    
+
     // Property observer
     private func showingDomainRegistrationFlow(to value: Bool) {
         if value {
