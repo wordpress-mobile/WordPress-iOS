@@ -351,6 +351,7 @@ class AppSettingsViewController: UITableViewController {
                         return
                 }
 
+                WPAnalytics.track(.initialScreenChanged, properties: ["selected": defaultSection.analyticsDescription])
                 MySiteSettings().setDefaultSection(defaultSection)
             }
 
