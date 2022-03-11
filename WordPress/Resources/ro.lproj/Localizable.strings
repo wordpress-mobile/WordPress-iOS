@@ -1,10 +1,13 @@
-/* Translation-Revision-Date: 2022-02-22 13:31:27+0000 */
+/* Translation-Revision-Date: 2022-03-08 15:09:51+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
 "\nPlease send us an email to have your content cleared out." = "\nTe rog trimite-ne un email pentru a-ți șterge conținutul.";
+
+/* Notice shown on the Edit Comment view when the author is a registered user. */
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nAcest utilizator este înregistrat. Numele, adresa web și adresa de email nu pot fi editate.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPentru a confirma, te rog reintrodu adresa site-lui înainte de a-l șterge.\n\n";
@@ -1767,7 +1770,7 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when Publicize authorization failed
    Message to show when Publicize connect failed */
-"Connection failed" = "Conectare eșuată";
+"Connection failed" = "Conectarea a eșuat";
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Conectare indisponibilă";
@@ -2143,8 +2146,7 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Întunecată";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
-   Title for dashboard view on the My Site screen */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Panou control";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -3505,6 +3507,7 @@ translators: Block name. %s: The localized block name */
 "Hold for Moderation" = "Reșine pentru moderare";
 
 /* Noun. Links to a blog's dashboard screen.
+   Title for dashboard view on the My Site screen
    Title for the dashboard screen. */
 "Home" = "Prima pagină";
 
@@ -4067,6 +4070,9 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Încarc scanarea...";
 
+/* Displayed while a comment is being loaded. */
+"Loading comment..." = "Încarc comentariul...";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Încarc domenii";
 
@@ -4572,7 +4578,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized. */
 "Next" = "Următorul";
 
-/* Table view title for the quick start section. */
+/* Table view title for the quick start section.
+   Title for the Quick Start dashboard card. */
 "Next Steps" = "Pașii următori";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
@@ -4971,6 +4978,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only the selected photos you've given access to are available." = "Sunt disponibile numai fotografiile selectate pentru care ai dat acces.";
 
 /* An informal exclaimation that means `something went wrong`.
+   Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5486,6 +5494,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dacă publici în mod regulat, cititorii tăi rămân angrenați pe site și atragi vizitatori noi.";
 
+/* Description for the card prompting the user to create a new post. */
+"Posting regularly helps build your audience!" = "Publicările dese te ajută să-ți construiești audiența!";
+
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
@@ -5501,6 +5512,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Articole și pagini";
+
+/* Description for the card prompting the user to create their first post. */
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Articolele apar pe pagina blogului în ordine cronologică inversă. Este timpul să-ți împărtășești ideile întregii lumi!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Pagină articole";
@@ -6292,6 +6306,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to continue" = "Selectează %@ pentru a continua";
 
+/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
+"Select %@ to continue." = "Selectează %@ pentru a continua.";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Selectează %@ pentru a crea un articol nou";
 
@@ -6678,7 +6695,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Limbă site";
 
-/* Title for the site menu view on the My Site screen */
+/* The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Site Menu" = "Meniu site";
 
 /* Describes a site redirect domain */
@@ -7446,6 +7464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "A fost o eroare la încărcarea modulelor";
 
+/* Text displayed when there is a failure loading a comment. */
+"There was an error loading the comment." = "A fost o eroare la încărcarea comentariului.";
+
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "A fost o eroare la încărcarea istoricului";
 
@@ -7670,7 +7691,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "Azi";
 
-/* Insights Management 'Today's Stats' title */
+/* Insights Management 'Today's Stats' title
+   Title for the card displaying today's stats. */
 "Today's Stats" = "Statistici pentru azi";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8675,10 +8697,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weeks stats filter. */
 "Weeks" = "Săptămâni";
 
+/* Post Signup Interstitial Title Text for Jetpack iOS */
+"Welcome to Jetpack" = "Bine ai venit la Jetpack";
+
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Bine ai venit la Cititor. Descoperi milioane de bloguri la îndemână.";
 
-/* Post Signup Interstitial Title Text */
+/* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Bun venit la WordPress";
 
 /* A message title */
@@ -8995,9 +9020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Nu ai niciun element media.";
-
-/* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "Nu ai niciun articol";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "Nu ai nicio pagină prohramată";
