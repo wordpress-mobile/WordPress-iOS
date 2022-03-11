@@ -255,4 +255,11 @@ extension ReaderTabViewModel {
         let context = ContextManager.sharedInstance().mainContext
         ReaderSearchSuggestionService(managedObjectContext: context).deleteAllSuggestions()
     }
+
+    /// Resets the `lastSynced` property for all tabs
+    @objc func invalidateCache() {
+        tabItems.forEach {
+            $0.content.topic?.lastSynced = nil
+        }
+    }
 }
