@@ -32,7 +32,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(stackView)
-        contentView.pinSubviewToAllEdges(stackView)
+        contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
     }
 
     required init?(coder: NSCoder) {
@@ -143,6 +143,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
     private enum Constants {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
+        static let constraintPriority = UILayoutPriority(999)
     }
 }
 

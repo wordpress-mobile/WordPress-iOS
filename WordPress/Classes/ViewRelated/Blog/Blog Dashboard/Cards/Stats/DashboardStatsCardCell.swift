@@ -17,7 +17,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(stackView)
-        contentView.pinSubviewToAllEdges(stackView)
+        contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
     }
 
     required init?(coder: NSCoder) {
@@ -98,5 +98,6 @@ private extension DashboardStatsCardCell {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
         static let statsStackViewMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
+        static let constraintPriority = UILayoutPriority(999)
     }
 }
