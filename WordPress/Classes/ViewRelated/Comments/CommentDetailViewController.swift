@@ -1002,6 +1002,12 @@ private extension CommentDetailViewController {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
                                 CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
+        // If there is no Blog, try with the Post.
+        guard comment.blog != nil else {
+            // TODO: create comment on post.
+            return
+        }
+
         guard let reply = commentService.createReply(for: comment) else {
             DDLogError("Failed creating comment reply.")
             return
