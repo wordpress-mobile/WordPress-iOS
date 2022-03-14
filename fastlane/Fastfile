@@ -486,6 +486,12 @@ platform :ios do
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
 
+    # Note that if any `.strings` file is not yet git-added at that stage (i.e. it's a new file) then `git_commit` will fail,
+    # as `git commit <files>` can only deal with files already in the repo. This is actually a good thing because if we somehow have
+    # new locales introduced at that point, that means we will also need to add them to the `.pbxproj` manually before proceeding.
+    all_strings_files = Dir['WordPress/**/*.strings', base: PROJECT_ROOT_FOLDER]
+    git_commit(path: all_strings_files, message: 'Update app translations', allow_nothing_to_commit: true)
+
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
     # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
     download_wordpress_localized_app_store_metadata
