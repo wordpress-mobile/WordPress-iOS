@@ -305,7 +305,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         view.addSubview(noResultsLabel)
 
         NSLayoutConstraint.activate([
-            noResultsLabel.widthAnchor.constraint(equalTo: headerView.widthAnchor, constant: CGFloat(-50)),
+            noResultsLabel.widthAnchor.constraint(equalTo: table.widthAnchor, constant: -50),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noResultsLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Metrics.noResultsTopInset)
         ])
