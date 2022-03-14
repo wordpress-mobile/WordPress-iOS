@@ -1505,6 +1505,8 @@
 		8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
+		8BE8545D27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */; };
+		8BE8545E27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */; };
 		8BE9AB8827B6B5A300708E45 /* BlogDashboardPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */; };
 		8BEE845A27B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */; };
 		8BEE846227B1E0540001A93C /* DashboardCardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */; };
@@ -6190,6 +6192,7 @@
 		8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSS.swift; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
+		8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardAB.swift; sourceTree = "<group>"; };
 		8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersistenceTests.swift; sourceTree = "<group>"; };
 		8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-drafts-and-scheduled.json"; sourceTree = "<group>"; };
 		8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardSection.swift; sourceTree = "<group>"; };
@@ -11536,6 +11539,7 @@
 			isa = PBXGroup;
 			children = (
 				8BC81D6427CFC0DA0057F790 /* BlogDashboardState.swift */,
+				8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -18668,6 +18672,7 @@
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
+				8BE8545D27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
@@ -20604,6 +20609,7 @@
 				8BAC9D9F27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift in Sources */,
 				FABB24612602FC2C00C8785C /* KeyringAccountHelper.swift in Sources */,
 				FABB24622602FC2C00C8785C /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,
+				8BE8545E27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */,
 				FABB24632602FC2C00C8785C /* PushAuthenticationService.swift in Sources */,
 				FABB24642602FC2C00C8785C /* AlertView.swift in Sources */,
 				FABB24652602FC2C00C8785C /* WPTabBarController.m in Sources */,
