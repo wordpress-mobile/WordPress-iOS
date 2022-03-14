@@ -5,14 +5,18 @@ extension Array where Element: BlogDetailsSection {
 }
 
 extension BlogDetailsSubsection {
-    fileprivate var sectionCategory: BlogDetailsSectionCategory {
+    func sectionCategory(for blog: Blog) -> BlogDetailsSectionCategory {
         switch self {
         case .domainCredit:
             return .domainCredit
         case .quickStart:
             return .quickStart
-        case .stats, .activity, .jetpackSettings:
+        case .activity, .jetpackSettings:
             return .jetpack
+        case .stats where blog.shouldShowJetpackSection:
+            return .jetpack
+        case .stats where !blog.shouldShowJetpackSection:
+            return .general
         case .pages, .posts, .media, .comments:
             return .publish
         case .themes, .customize:
@@ -32,7 +36,7 @@ extension BlogDetailsViewController {
         return sections.findSectionIndex(of: category) ?? NSNotFound
     }
 
-    @objc func sectionCategory(subsection: BlogDetailsSubsection) -> BlogDetailsSectionCategory {
-        return subsection.sectionCategory
+    @objc func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
+        return subsection.sectionCategory(for: blog)
     }
 }

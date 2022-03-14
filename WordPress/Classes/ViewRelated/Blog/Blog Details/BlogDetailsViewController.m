@@ -556,7 +556,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
 - (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)subsection
 {
-    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
     NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
     switch (subsection) {
         case BlogDetailsSubsectionReminders:
@@ -599,7 +599,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (!_restorableSelectedIndexPath) {
         // If nil, default to stats subsection.
         BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
-        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection];
+        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
         NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
@@ -692,7 +692,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
                 BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
-                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection];
+                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
                 sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
                 break;
@@ -746,7 +746,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
-    if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
+    if (self.blog.shouldShowJetpackSection) {
         [marr addObject:[self jetpackSectionViewModel]];
     } else {
         [marr addObject:[self generalSectionViewModel]];
