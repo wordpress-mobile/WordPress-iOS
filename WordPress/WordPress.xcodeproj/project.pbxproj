@@ -4893,6 +4893,13 @@
 		099D76A227D14BF400F77EDE /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		099D76A327D14BF600F77EDE /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		099D76A427D14BF800F77EDE /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB7E27DFF9BE00974175 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB7F27DFF9C000974175 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB8027DFF9C600974175 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		09C8BB8127DFF9C800974175 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB8227DFF9C900974175 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB8327DFF9CB00974175 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		09C8BB8427DFF9CC00974175 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0A27D496128FBCDFA3658994 /* Pods-WordPressHomeWidgetToday.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressHomeWidgetToday.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressHomeWidgetToday/Pods-WordPressHomeWidgetToday.release-internal.xcconfig"; sourceTree = "<group>"; };
 		0EAD25F1E69B6B91783C4963 /* Pods-WordPressAllTimeWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAllTimeWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAllTimeWidget/Pods-WordPressAllTimeWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		0F01F606071B0B9BD9DB34DE /* Pods-WordPressTodayWidget.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -21341,6 +21348,13 @@
 				93D86B931C63EC31003D8E3E /* en-CA */,
 				9371F2611E4A211900BF26A0 /* ko */,
 				9371F2641E4A213300BF26A0 /* ar */,
+				09C8BB7E27DFF9BE00974175 /* sq */,
+				09C8BB7F27DFF9C000974175 /* bg */,
+				09C8BB8027DFF9C600974175 /* en-AU */,
+				09C8BB8127DFF9C800974175 /* cs */,
+				09C8BB8227DFF9C900974175 /* is */,
+				09C8BB8327DFF9CB00974175 /* ro */,
+				09C8BB8427DFF9CC00974175 /* sk */,
 			);
 			name = InfoPlist.strings;
 			path = Resources;
