@@ -441,26 +441,24 @@ platform :ios do
   lane :generate_strings_file_for_glotpress do
     cocoapods
 
-    en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
+    wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
     ios_generate_strings_file_from_code(
       paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
       exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
       routines: ['AppLocalizedString'],
-      output_dir: en_lproj
+      output_dir: wordpress_en_lproj
     )
 
-    # Merge `InfoPlist.strings` + WordPressIntents' `Sites.strings` into `Localizable.strings` so those keys are also imported in GlotPress.
+    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
     # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    intents_target_en_lproj = File.join('WordPress', 'WordPressIntents', 'en.lproj')
     ios_merge_strings_files(
-      paths: [ # By default, first path in the list is also the destination file in which the merge will occur in-place
-        File.join(en_lproj, 'Localizable.string'),
-        File.join(en_lproj, 'InfoPlist.string'),
-        File.join(intents_target_en_lproj, 'Sites.strings')
-      ]
+      paths: {
+        File.join(wordpress_en_lproj, 'Localizable.strings') => nil, # No prefix for the keys of the main file (file which we will merge the other ones into)
+        **MANUALLY_MAINTAINED_STRINGS_FILES # Merge in all the manually-maintained `.strings` files, with a prefix added to their keys for each file
+      }
     )
 
-    git_commit(path: [en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
+    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
   end
 
   #####################################################################################
@@ -485,10 +483,7 @@ platform :ios do
     parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
     ios_extract_keys_from_strings_files(
       source_parent_dir: parent_dir_for_lprojs,
-      target_original_files: [
-        File.join(parent_dir_for_lprojs, 'en.lproj', 'InfoPlist.strings'),
-        File.join(parent_dir_for_intents_target_lprojs, 'en.lproj', 'Sites.strings')
-      ]
+      target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)

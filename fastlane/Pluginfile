@@ -7,8 +7,8 @@ group :screenshots, optional: true do
 end
 
 # This comment avoids typing to switch to a development version for testing.
-# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: ''
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 3.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'l10n/prefix-merge-split-strings'
+# gem 'fastlane-plugin-wpmreleasetoolkit', '~> 3.0'
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
