@@ -25,7 +25,7 @@ extension BlogDetailsSubsection {
             return .configure
         case .home:
             return .home
-        @unknown default:
+        default:
             fatalError()
         }
     }
