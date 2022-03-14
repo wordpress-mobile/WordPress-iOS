@@ -708,8 +708,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                             self.restorableSelectedIndexPath.row < [self.tableView numberOfRowsInSection:self.restorableSelectedIndexPath.section];
     if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
-        NSLog(@"$$ index path row %d %d", self.restorableSelectedIndexPath.row, self.restorableSelectedIndexPath.section);
-
         [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
                               scrollPosition:[self optimumScrollPositionForIndexPath:self.restorableSelectedIndexPath]];
