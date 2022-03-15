@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
-default_platform(:ios)
 fastlane_require 'xcodeproj'
 fastlane_require 'dotenv'
 fastlane_require 'open-uri'
 fastlane_require 'git'
 
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
+
+########################################################################
+# Constants and Environment Variables
+########################################################################
 
 # Paths that are re-used across multiple lanes
 PROJECT_ROOT_FOLDER = File.dirname(File.expand_path(__dir__))
@@ -24,8 +27,6 @@ APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'
 
-import 'Jetpack-Fastfile'
-
 APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
 EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
@@ -41,16 +42,34 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
 
 ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
 
-require_relative 'lanes/localization-lanes'
+# Environment Variables — used by lanes but also potentially actions
+Dotenv.load(USER_ENV_FILE_PATH)
+Dotenv.load(PROJECT_ENV_FILE_PATH)
+GHHELPER_REPO = 'wordpress-mobile/wordpress-iOS'
+ENV['PROJECT_NAME'] = 'WordPress'
+ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
+ENV['DOWNLOAD_METADATA'] = './fastlane/download_metadata.swift'
+ENV['PROJECT_ROOT_FOLDER'] = PROJECT_ROOT_FOLDER + '/'
+ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
+ENV['FL_RELEASE_TOOLKIT_DEFAULT_BRANCH'] = 'trunk'
 
-# Use this instead of getting values from ENV directly
-# It will throw an error if the requested value is missing
+# Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
-  unless ENV.key?(key)
-    UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?")
-  end
+  UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?") unless ENV.key?(key)
   ENV[key]
 end
+
+
+########################################################################
+# Imports of other Fastfiles
+########################################################################
+
+import 'Jetpack-Fastfile'
+import 'lanes/localization.rb'
+import 'lanes/screenshots.rb'
+
+########################################################################
 
 before_all do |lane|
   # Skip these checks/steps for test lane (not needed for testing)
@@ -72,26 +91,9 @@ before_all do |lane|
   end
 end
 
+default_platform(:ios)
+
 platform :ios do
-  ########################################################################
-  # Environment
-  ########################################################################
-  Dotenv.load(USER_ENV_FILE_PATH)
-  Dotenv.load(PROJECT_ENV_FILE_PATH)
-  ENV[GHHELPER_REPO = 'wordpress-mobile/wordpress-iOS']
-  ENV['PROJECT_NAME'] = 'WordPress'
-  ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
-  ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-  ENV['DOWNLOAD_METADATA'] = './fastlane/download_metadata.swift'
-  ENV['PROJECT_ROOT_FOLDER'] = PROJECT_ROOT_FOLDER + '/'
-  ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
-  ENV['FL_RELEASE_TOOLKIT_DEFAULT_BRANCH'] = 'trunk'
-
-  ########################################################################
-  # Screenshots
-  ########################################################################
-  import './ScreenshotFastfile'
-
   ########################################################################
   # Release Lanes
   ########################################################################
