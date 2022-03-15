@@ -4,6 +4,7 @@
 * [*] Quick Start: updated the design for the Quick Start cell on My Site [#18095]
 * [*] Reader: Fixed a bug where comment replies are misplaced after its parent comment is moderated [#18094]
 * [*] iPad: Fixed a bug where the current displayed section wasn't selected on the menu [#18118]
+* [**] Comment Notifications: updated UI and functionality to match My Site Comments. [#18141]
 
 19.4
 -----
