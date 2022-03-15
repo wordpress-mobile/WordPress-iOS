@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
+# Lanes related to the Release Process (Code Freeze, Betas, Final Build, AppStore Submission…)
+#
 platform :ios do
-  #####################################################################################
-  # code_freeze
-  # -----------------------------------------------------------------------------------
-  # This lane executes the initial steps planned on code freeze
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane code_freeze [skip_confirm:<skip confirm>]
+
+  # Executes the initial steps needed during code freeze
+  # - Cuts a new release branch
+  # - Extract the Release Notes
+  # - Freezes the GitHub milestone and enable GitHub branch protection for the new branch
   #
-  # Example:
-  # bundle exec fastlane code_freeze
-  # bundle exec fastlane code_freeze skip_confirm:true
-  #####################################################################################
-  desc 'Creates a new release branch from the current trunk'
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  #
+  desc 'Executes the initial steps needed during code freeze'
   lane :code_freeze do |options|
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
@@ -53,19 +51,13 @@ platform :ios do
     print_release_notes_reminder
   end
 
-  #####################################################################################
-  # complete_code_freeze
-  # -----------------------------------------------------------------------------------
-  # This lane executes the initial steps planned on code freeze
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane complete_code_freeze [skip_confirm:<skip confirm>]
+  # Completes the final steps for the code freeze
+  #  - Generate `.strings` files from code then merge the other, manually-maintained `.strings` files with it
+  #  - Trigger the build of the first beta on CI
   #
-  # Example:
-  # bundle exec fastlane complete_code_freeze
-  # bundle exec fastlane complete_code_freeze skip_confirm:true
-  #####################################################################################
-  desc 'Creates a new release branch from the current trunk'
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  #
+  desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
@@ -75,23 +67,13 @@ platform :ios do
     trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
   end
 
-  #####################################################################################
-  # new_beta_release
-  # -----------------------------------------------------------------------------------
-  # This lane updates the release branch for a new beta release. It will update the
-  # current release branch by default. If you want to update a different branch
-  # (i.e. hotfix branch) pass the related version with the 'base_version' param
-  # (example: base_version:10.6.1 will work on the 10.6.1 branch)
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane new_beta_release [skip_confirm:<skip confirm>] [base_version:<version>]
+  # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
   #
-  # Example:
-  # bundle exec fastlane new_beta_release
-  # bundle exec fastlane new_beta_release skip_confirm:true
-  # bundle exec fastlane new_beta_release base_version:10.6.1
-  #####################################################################################
-  desc 'Updates a release branch for a new beta release'
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @option [String] base_version (default: _current app version_) If set, bases the beta on the specified version
+  #                  and `release/<base_version>` branch instead of the current one. Useful for triggering betas on hotfixes for example.
+  #
+  desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
     download_localized_strings_and_metadata(options)
@@ -103,18 +85,14 @@ platform :ios do
     trigger_beta_build(branch_to_build: "release/#{version}")
   end
 
-  #####################################################################################
-  # new_hotfix_release
-  # -----------------------------------------------------------------------------------
-  # This lane updates the release branch for a new hotfix release.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<x.y.z>]
+  # Sets the stage to start working on a hotfix
+  # - Cuts a new `release/x.y.z` branch from the tag from the latest (`x.y`) version
+  # - Bumps the app version numbers appropriately
   #
-  # Example:
-  # bundle exec fastlane new_hotfix_release version:10.6.1
-  #####################################################################################
-  desc 'Creates a new hotfix branch for the given version:x.y.z. The branch will be cut from the tag x.y of the previous release'
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @option [String] version (required) The version number to use for the hotfix (`"x.y.z"`)
+  #
+  desc 'Creates a new hotfix branch for the given `version:x.y.z``. The branch will be cut from the tag `x.y` of the previous release'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(
@@ -124,17 +102,10 @@ platform :ios do
     )
   end
 
-  #####################################################################################
-  # finalize_hotfix_release
-  # -----------------------------------------------------------------------------------
-  # This lane finalizes the hotfix branch.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
+  # Finalizes a hotfix, by triggering a release build on CI
   #
-  # Example:
-  # bundle exec fastlane finalize_hotfix_release skip_confirm:true
-  #####################################################################################
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
@@ -142,20 +113,14 @@ platform :ios do
     trigger_release_build(branch_to_build: "release/#{version}")
   end
 
-
-  #####################################################################################
-  # finalize_release
-  # -----------------------------------------------------------------------------------
-  # This lane finalize a release: updates store metadata, bump final version number,
-  # remove branch protection and close milestone, then trigger the final release on CI
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane finalize_release [skip_confirm:<skip confirm>] [version:<version>]
+  # Finalizes a release at the end of a sprint to submit to the AppStore
+  #  - updates store metadata
+  #  - bumps final version number
+  #  - removes branch protection and close milestone
+  #  - triggers the final release on CI
   #
-  # Example:
-  # bundle exec fastlane finalize_release
-  # bundle exec fastlane finalize_release skip_confirm:true
-  #####################################################################################
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  #
   desc 'Trigger the final release build on CI'
   lane :finalize_release do |options|
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
@@ -182,28 +147,18 @@ platform :ios do
   end
 
 
-  #####################################################################################
-  # trigger_beta_build
-  # -----------------------------------------------------------------------------------
-  # This lane triggers a beta build on CI
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane trigger_beta_build [branch_to_build:<branch_name>]
+  # Triggers a beta build on CI
   #
-  #####################################################################################
+  # @option [String] branch_to_build The name of the branch we want the CI to build, e.g. `release/19.3`
+  #
   lane :trigger_beta_build do |options|
     trigger_buildkite_release_build(branch: options[:branch_to_build], beta: true)
   end
 
-  #####################################################################################
-  # trigger_release_build
-  # -----------------------------------------------------------------------------------
-  # This lane triggers a stable release build on CI
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane trigger_release_build [branch_to_build:<branch_name>]
+  # Triggers a stable release build on CI
   #
-  #####################################################################################
+  # @option [String] branch_to_build The name of the branch we want the CI to build, e.g. `release/19.3`
+  #
   lane :trigger_release_build do |options|
     trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
@@ -227,7 +182,7 @@ def trigger_buildkite_release_build(branch:, beta:)
 end
 
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
-lane :gutenberg_dep_check do |_options|
+lane :gutenberg_dep_check do
   res = ''
 
   File.open File.join(PROJECT_ROOT_FOLDER, 'Podfile') do |file|
