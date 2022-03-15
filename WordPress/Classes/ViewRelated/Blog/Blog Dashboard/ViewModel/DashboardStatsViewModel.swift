@@ -2,7 +2,7 @@ import Foundation
 
 class DashboardStatsViewModel {
 
-    // MARK: Variables
+    // MARK: Private Variables
 
     private var apiResponse: BlogDashboardRemoteEntity
 
