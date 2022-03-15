@@ -115,7 +115,7 @@ end
 #####################################################################################
 desc 'Builds and uploads an installable build'
 lane :build_and_upload_installable_build do |options|
-  ensure_sentry_installed
+  sentry_check_cli_installed
 
   alpha_code_signing
 
@@ -188,7 +188,7 @@ end
 #####################################################################################
 desc "Builds and uploads a Jetpack installable build"
 lane :build_and_upload_jetpack_installable_build do | options |
-  ensure_sentry_installed
+  sentry_check_cli_installed
 
   jetpack_alpha_code_signing
 
@@ -265,7 +265,7 @@ lane :build_and_upload_internal do |options|
   ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
   ios_build_preflight unless options[:skip_prechecks]
 
-  ensure_sentry_installed
+  sentry_check_cli_installed
 
   internal_code_signing
 
@@ -318,7 +318,7 @@ lane :build_and_upload_itc do |options|
   ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
   ios_build_preflight unless options[:skip_prechecks]
 
-  ensure_sentry_installed
+  sentry_check_cli_installed
   appstore_code_signing
 
   gym(
