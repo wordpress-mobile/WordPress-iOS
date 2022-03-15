@@ -213,7 +213,7 @@ end
 
 
 #################################################
-# Helper functions
+# Helper Functions
 #################################################
 
 def trigger_buildkite_release_build(branch:, beta:)
