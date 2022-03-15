@@ -1,4 +1,4 @@
-Color us excited—support for multiple color palettes is here! Add Theme and Default color and gradient palettes, or create your own Custom palette with your favorite shades. We also fixed an issue that caused theme colors not to appear and current theme data not to refresh.
+Color us excited—support for multiple colour palettes is here! Add Theme and Default colour and gradient palettes, or create your own Custom palette with your favourite shades. We also fixed an issue that caused theme colours not to appear and current theme data not to refresh.
 
 For devices using right-to-left languages, we updated icon, button, and text positioning for the “Choose a Domain” screen in the site creation process. Alright, alright.
 

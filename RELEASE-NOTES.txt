@@ -15,6 +15,7 @@
 * [*] Weekly Roundup: We made some further changes to try and ensure that Weekly Roundup notifications are showing up for everybody who's enabled them [#18029]
 * [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#17844]
 * [***] Block editor: Support for multiple color palettes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4588]
+* [**] User profiles: Fixed issue where the app wasn't displaying any of the device photos which the user had granted the app access to.
 
 19.3
 -----
