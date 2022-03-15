@@ -1,11 +1,3 @@
-//
-//  DashboardStatsViewModelTests.swift
-//  WordPressTest
-//
-//  Created by Hassaan El-Garem on 15/03/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
