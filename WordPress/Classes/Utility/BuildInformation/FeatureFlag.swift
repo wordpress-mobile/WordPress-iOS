@@ -18,7 +18,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case timeZoneSuggester
     case aboutScreen
     case newCommentThread
-    case postDetailsComments
     case commentThreadModerationMenu
     case mySiteDashboard
     case followConversationPostDetails
@@ -67,8 +66,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .newCommentThread:
-            return true
-        case .postDetailsComments:
             return true
         case .commentThreadModerationMenu:
             return true
@@ -144,8 +141,6 @@ extension FeatureFlag {
             return "New Unified About Screen"
         case .newCommentThread:
             return "New Comment Thread"
-        case .postDetailsComments:
-            return "Post Details Comments"
         case .commentThreadModerationMenu:
             return "Comment Thread Moderation Menu"
         case .mySiteDashboard:

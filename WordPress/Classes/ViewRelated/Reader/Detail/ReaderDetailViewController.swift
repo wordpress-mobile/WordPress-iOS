@@ -160,10 +160,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
-
-        if FeatureFlag.postDetailsComments.enabled {
-            configureCommentsTable()
-        }
+        configureCommentsTable()
 
         coordinator?.start()
 
@@ -533,10 +530,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc private func fetchComments() {
-        guard FeatureFlag.postDetailsComments.enabled,
-              let post = post else {
-                  return
-              }
+        guard let post = post else {
+            return
+        }
 
         coordinator?.fetchComments(for: post)
     }
