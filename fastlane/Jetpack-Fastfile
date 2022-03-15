@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-APP_IDENTIFIER = 'com.automattic.jetpack'
 
   #####################################################################################
   # build_and_upload_installable_build
@@ -117,106 +116,6 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
 
   end
 
-#####################################################################################
-# update_jetpack_appstore_strings
-# -----------------------------------------------------------------------------------
-# This lane updates the AppStoreStrings.po files for the Jetpack app with
-# the latest content from the release_notes.txt file and the other text
-# sources
-# -----------------------------------------------------------------------------------
-# Usage:
-# bundle exec fastlane update_jetpack_appstore_strings version:<release note version>
-#
-# Example:
-# bundle exec fastlane update_jetpack_appstore_strings version:10.7
-#####################################################################################
-desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
-lane :update_jetpack_appstore_strings do |options|
-  source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-
-  files = {
-    whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
-    app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-    app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-    app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-    'screenshot-text-1' => File.join(source_metadata_folder, 'promo_screenshot_1.txt'),
-    'screenshot-text-2' => File.join(source_metadata_folder, 'promo_screenshot_2.txt'),
-    'screenshot-text-3' => File.join(source_metadata_folder, 'promo_screenshot_3.txt'),
-    'screenshot-text-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
-    'screenshot-text-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
-    'screenshot-text-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt'),
-    app_store_name: File.join(source_metadata_folder, 'name.txt')
-  }
-
-  ios_update_metadata_source(
-    po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'AppStoreStrings.po'),
-    source_files: files,
-    release_version: options[:version]
-  )
-end
-
-#####################################################################################
-# download_jetpack_localized_app_store_metadata
-# -----------------------------------------------------------------------------------
-# Downloads localized metadata (intended for App Store Connect) from GlotPress for Jetpack.
-# -----------------------------------------------------------------------------------
-# Usage:
-# bundle exec fastlane download_jetpack_localized_app_store_metadata
-#####################################################################################
-desc 'Downloads localized Jetpack metadata (for App Store Connect) from GlotPress'
-lane :download_jetpack_localized_app_store_metadata do
-  # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-
-  # No need to `cd` into `fastlane` because of how Fastlane manages its paths internally.
-  sh './download_metadata.swift jetpack'
-
-  # @TODO: Make the `fastlane/jetpack_metadata/en-US/release_notes.txt` path be the source of truth for the original copies in the future.
-  # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
-  #
-  # In the meantime, since GlotPress doesn't have the `en-US` notes because those are the ones used as originals, just copy the file to the right place for `deliver` to find
-  metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
-  release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
-  FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
-
-  git_commit(
-    path: Dir.glob('**/*.txt', base: metadata_directory),
-    message: 'Update Jetpack metadata translations',
-    allow_nothing_to_commit: true
-  )
-end
-
-#####################################################################################
-# update_jetpack_metadata_on_app_store_connect
-# -----------------------------------------------------------------------------------
-# This lane reads the information from `fastlane/jetpack_metadata/` and uploads it to
-# App Store Connect for the version specified in the version xcconfig file.
-#
-# Optionally, it can also upload new screenshots, overriding the existing ones.
-# -----------------------------------------------------------------------------------
-# Usage:
-# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
-#
-# Example:
-# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
-# bundle exec fastlane update_jetpack_metadata_on_app_store_connect with_screenshots:true
-#####################################################################################
-desc 'Uploads the Jetpack metadata to App Store Connect, localized, and optionally including screenshots.'
-lane :update_jetpack_metadata_on_app_store_connect do |options|
-  # Skip screenshots by default. The naming is "with" to make it clear that
-  # callers need to opt-in to adding screenshots. The naming of the deliver
-  # parameter, on the other hand, uses the skip verb.
-  with_screenshots = options.fetch(:with_screenshots, false)
-  skip_screenshots = with_screenshots == false
-
-  upload_to_app_store(
-    **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-    app_identifier: APP_IDENTIFIER,
-    metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
-    screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
-    skip_screenshots: skip_screenshots
-  )
-end
-
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################
@@ -243,7 +142,7 @@ private_lane :jetpack_appstore_code_signing do |options|
     type: "appstore",
     team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
     readonly: true,
-    app_identifier: APP_IDENTIFIER
+    app_identifier: JETPACK_APP_IDENTIFIER
   )
 end
 

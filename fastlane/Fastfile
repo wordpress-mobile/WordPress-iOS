@@ -39,8 +39,8 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressThisWeekWidget
   WordPressIntents
 ].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
-
 ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
+JETPACK_APP_IDENTIFIER = 'com.automattic.jetpack'
 
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
@@ -172,67 +172,6 @@ platform :ios do
   end
 
   #####################################################################################
-  # update_appstore_strings
-  # -----------------------------------------------------------------------------------
-  # This lane updates the AppStoreStrings.po files with the latest content from
-  # the release_notes.txt file and the other text sources
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane update_appstore_strings version:<release note version>
-  #
-  # Example:
-  # bundle exec fastlane update_appstore_strings version:10.7
-  #####################################################################################
-  desc 'Updates the AppStoreStrings.po file with the latest data'
-  lane :update_appstore_strings do |options|
-    update_wordpress_appstore_strings(options)
-    update_jetpack_appstore_strings(options)
-  end
-
-  #####################################################################################
-  # update_wordpress_appstore_strings
-  # -----------------------------------------------------------------------------------
-  # This lane updates the AppStoreStrings.po files for the WordPress app with
-  # the latest content from the release_notes.txt file and the other text
-  # sources
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane update_wordpress_appstore_strings version:<release note version>
-  #
-  # Example:
-  # bundle exec fastlane update_wordpress_appstore_strings version:10.7
-  #####################################################################################
-  desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
-  lane :update_wordpress_appstore_strings do |options|
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
-
-    files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-      app_store_name: File.join(source_metadata_folder, 'name.txt'),
-      app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-      app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-      app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'standard-whats-new-1' => File.join(source_metadata_folder, 'standard_whats_new_1.txt'),
-      'standard-whats-new-2' => File.join(source_metadata_folder, 'standard_whats_new_2.txt'),
-      'standard-whats-new-3' => File.join(source_metadata_folder, 'standard_whats_new_3.txt'),
-      'standard-whats-new-4' => File.join(source_metadata_folder, 'standard_whats_new_4.txt'),
-      'app_store_screenshot-1' => File.join(source_metadata_folder, 'promo_screenshot_1.txt'),
-      'app_store_screenshot-2' => File.join(source_metadata_folder, 'promo_screenshot_2.txt'),
-      'app_store_screenshot-3' => File.join(source_metadata_folder, 'promo_screenshot_3.txt'),
-      'app_store_screenshot-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
-      'app_store_screenshot-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
-      'app_store_screenshot-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt'),
-      'app_store_screenshot-7' => File.join(source_metadata_folder, 'promo_screenshot_7.txt')
-    }
-
-    ios_update_metadata_source(
-      po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppStoreStrings.po'),
-      source_files: files,
-      release_version: options[:version]
-    )
-  end
-
-  #####################################################################################
   # new_beta_release
   # -----------------------------------------------------------------------------------
   # This lane updates the release branch for a new beta release. It will update the
@@ -299,47 +238,6 @@ platform :ios do
     trigger_release_build(branch_to_build: "release/#{version}")
   end
 
-  #####################################################################################
-  # check_all_translations
-  # -----------------------------------------------------------------------------------
-  # This lane checks the translation progress for all the projects in GlotPress.
-  #
-  # By default, it will print all values. You can make it ask whether to continue when
-  # if found translations that are below the threshold by passing `interactive: true`.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane check_all_translations [interactive:<interactive>]
-  #
-  # Example:
-  # bundle exec fastlane check_all_translations
-  # bundle exec fastlane check_all_translations interactive:true
-  #####################################################################################
-  desc 'Check translation progress for all GlotPress projects'
-  lane :check_all_translations do |options|
-    abort_on_violations = false
-    skip_confirm = options.fetch(:interactive, false) == false
-
-    UI.message('Checking app strings translation status...')
-    check_translation_progress(
-      glotpress_url: GLOTPRESS_APP_STRINGS_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
-    )
-
-    UI.message('Checking WordPress release notes strings translation status...')
-    check_translation_progress(
-      glotpress_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
-    )
-
-    UI.message('Checking Jetpack release notes strings translation status...')
-    check_translation_progress(
-      glotpress_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
-    )
-  end
 
   #####################################################################################
   # finalize_release
@@ -377,150 +275,6 @@ platform :ios do
 
     # Start the build
     trigger_release_build(branch_to_build: "release/#{version}")
-  end
-
-  #####################################################################################
-  # update_metadata_on_app_store_connect
-  # -----------------------------------------------------------------------------------
-  # Uploads the localized metadata tracked in the project repository to App Store
-  # Connect, optionally updating screenshots, too.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane update_metadata_on_app_store_connect [with_screenshots:<with screenshots>]
-  #
-  # Example:
-  # bundle exec fastlane update_metadata_on_app_store_connect
-  # bundle exec fastlane update_metadata_on_app_store_connect with_screenshots:true
-  #####################################################################################
-  desc 'Updates the App Store Connect localized metadata'
-  lane :update_metadata_on_app_store_connect do |options|
-    update_wordpress_metadata_on_app_store_connect(options)
-    update_jetpack_metadata_on_app_store_connect(options)
-  end
-
-  #####################################################################################
-  # update_wordpress_metadata_on_app_store_connect
-  # -----------------------------------------------------------------------------------
-  # This lane reads the information from `fastlane/metadata/` and uploads it to
-  # App Store Connect for the version specified in the version xcconfig file.
-  #
-  # Optionally, it can also upload new screenshots, overriding the existing ones.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
-  #
-  # Example:
-  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
-  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect with_screenshots:true
-  #####################################################################################
-  desc 'Uploads the WordPress metadata to App Store Connect, localized, and optionally including screenshots.'
-  lane :update_wordpress_metadata_on_app_store_connect do |options|
-    # Skip screenshots by default. The naming is "with" to make it clear that
-    # callers need to opt-in to adding screenshots. The naming of the deliver
-    # parameter, on the other hand, uses the skip verb.
-    with_screenshots = options.fetch(:with_screenshots, false)
-    skip_screenshots = with_screenshots == false
-
-    upload_to_app_store(
-      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-      app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
-      skip_screenshots: skip_screenshots
-    )
-  end
-
-  #####################################################################################
-  # generate_strings_file_for_glotpress
-  # -----------------------------------------------------------------------------------
-  # Generate the `.strings` file to be imported by GlotPress,
-  # by parsing source code for `NSLocalizedString` (using `genstrings` under the hood).
-  #
-  # Typically called by complete_code_freeze.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane generate_strings_file_for_glotpress
-  #####################################################################################
-  lane :generate_strings_file_for_glotpress do
-    cocoapods
-
-    wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
-    ios_generate_strings_file_from_code(
-      paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
-      exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
-      routines: ['AppLocalizedString'],
-      output_dir: wordpress_en_lproj
-    )
-
-    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
-    # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    ios_merge_strings_files(
-      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
-      destination: File.join(wordpress_en_lproj, 'Localizable.strings')
-    )
-
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
-  end
-
-  #####################################################################################
-  # download_localized_strings_and_metadata
-  # -----------------------------------------------------------------------------------
-  # Downloads localized app strings and App Store Connect metadata from GlotPress.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane download_localized_strings_and_metadata
-  #####################################################################################
-  desc 'Downloads localized metadata for App Store Connect from GlotPress'
-  lane :download_localized_strings_and_metadata do |options|
-    # Download `Localizable.strings` translations used within the app
-    parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
-    ios_download_strings_files_from_glotpress(
-      project_url: GLOTPRESS_APP_STRINGS_URL,
-      locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
-      download_dir: parent_dir_for_lprojs
-    )
-
-    # Then redispatch the appropriate subset of translations back to the `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj` dirs
-    parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
-    modified_files = ios_extract_keys_from_strings_files(
-      source_parent_dir: parent_dir_for_lprojs,
-      target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
-    )
-    git_commit(path: modified_files, message: 'Update app translations', allow_nothing_to_commit: true)
-
-    # Finally, also download the AppStore metadata (app title, keywords, etc.)
-    # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-    download_wordpress_localized_app_store_metadata
-    download_jetpack_localized_app_store_metadata
-  end
-
-  #####################################################################################
-  # download_wordpress_localized_app_store_metadata
-  # -----------------------------------------------------------------------------------
-  # Downloads localized metadata (intended for App Store Connect) from GlotPress for WordPress.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane download_wordpress_localized_app_store_metadata
-  #####################################################################################
-  desc 'Downloads localized WordPress metadata (for App Store Connect) from GlotPress'
-  lane :download_wordpress_localized_app_store_metadata do
-    # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-
-    # No need to `cd` into `fastlane` because of how Fastlane manages its paths internally.
-    sh './download_metadata.swift wordpress'
-
-    # @TODO: Make the `fastlane/metadata/en-US/release_notes.txt` path be the source of truth for the original copies in the future.
-    # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
-    #
-    # In the meantime, since GlotPress doesn't have the `en-US` notes because those are the ones used as originals, just copy the file to the right place for `deliver` to find
-    metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata')
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
-    FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
-
-    git_commit(
-      path: Dir.glob('**/*.txt', base: metadata_directory),
-      message: 'Update WordPress metadata translations',
-      allow_nothing_to_commit: true
-    )
   end
 
   #####################################################################################
