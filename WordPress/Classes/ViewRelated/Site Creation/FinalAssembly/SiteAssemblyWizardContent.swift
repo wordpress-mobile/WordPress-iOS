@@ -128,6 +128,11 @@ final class SiteAssemblyWizardContent: UIViewController {
                         gutenbergSettings.postSettingsToRemote(for: createdBlog)
                     }
 
+                    if FeatureFlag.mySiteDashboard.enabled,
+                       BlogDashboardAB.shared.variant == .treatment {
+                        MySiteSettings().setDefaultSection(.dashboard)
+                    }
+
                     self.contentView.siteURLString = blog?.url as String?
                     self.contentView.siteName = blog?.displayURL as String?
                     self.createdBlog = blog

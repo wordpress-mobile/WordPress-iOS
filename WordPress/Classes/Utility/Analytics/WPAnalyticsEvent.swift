@@ -108,8 +108,10 @@ import Foundation
     case statsReaderDiscoverNudgeDismissed
     case statsReaderDiscoverNudgeCompleted
 
-    // Stats - Customize card
+    // Stats - Insights
     case statsCustomizeInsightsShown
+    case statsInsightsManagementSaved
+    case statsInsightsManagementDismissed
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -249,6 +251,7 @@ import Foundation
 
     // App Settings
     case settingsDidChange
+    case initialScreenChanged
 
     // Account Close
     case accountCloseTapped
@@ -497,9 +500,13 @@ import Foundation
         case .statsReaderDiscoverNudgeCompleted:
             return "stats_reader_discover_nudge_completed"
 
-        // Stats - Customize card
+        // Stats - Insights
         case .statsCustomizeInsightsShown:
             return "stats_customize_insights_shown"
+        case .statsInsightsManagementSaved:
+            return "stats_insights_management_saved"
+        case .statsInsightsManagementDismissed:
+            return "stats_insights_management_dismissed"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -738,6 +745,8 @@ import Foundation
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
+        case .initialScreenChanged:
+            return "app_settings_initial_screen_changed"
         case .appSettingsClearMediaCacheTapped:
             return "app_settings_clear_media_cache_tapped"
         case .appSettingsClearSpotlightIndexTapped:

@@ -9,18 +9,29 @@ import Foundation
 /// identifier on the backend.
 enum DashboardCard: String, CaseIterable {
     case quickActions
+    case quickStart
     case posts
     case todaysStats = "todays_stats"
+
+    // Card placeholder for when loading data
+    case ghost
+    case failure
 
     /// If the card is backed by API data
     var isRemote: Bool {
         switch self {
         case .quickActions:
             return false
+        case .quickStart:
+            return false
         case .posts:
             return true
         case .todaysStats:
             return true
+        case .ghost:
+            return false
+        case .failure:
+            return false
         }
     }
 
@@ -28,10 +39,33 @@ enum DashboardCard: String, CaseIterable {
         switch self {
         case .quickActions:
             return DashboardQuickActionsCardCell.self
+        case .quickStart:
+            return DashboardQuickStartCardCell.self
         case .posts:
             return DashboardPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
+        case .ghost:
+            return DashboardGhostCardCell.self
+        case .failure:
+            return DashboardFailureCardCell.self
+        }
+    }
+
+    func shouldShow(for blog: Blog, mySiteSettings: MySiteSettings = MySiteSettings()) -> Bool {
+        switch self {
+        case .quickActions:
+            return true
+        case .quickStart:
+            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
+        case .posts:
+            return true
+        case .todaysStats:
+            return true
+        case .ghost:
+            return blog.dashboardState.isFirstLoad
+        case .failure:
+            return blog.dashboardState.isFirstLoadFailure
         }
     }
 

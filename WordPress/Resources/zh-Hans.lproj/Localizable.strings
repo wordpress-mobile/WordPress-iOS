@@ -1,10 +1,13 @@
-/* Translation-Revision-Date: 2022-02-24 10:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-03 23:28:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
 "\nPlease send us an email to have your content cleared out." = "\n要清除你的内容，请发送一封电子邮件给我们。";
+
+/* Notice shown on the Edit Comment view when the author is a registered user. */
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n如果您确认关闭站点，请在删除之前重新输入您的站点地址。\n";
@@ -2143,8 +2146,7 @@ translators: Block name. %s: The localized block name */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "深色";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.
-   Title for dashboard view on the My Site screen */
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "控制面板";
 
 /* Title for a threat that includes the number of database rows affected */
@@ -3272,7 +3274,7 @@ translators: Block name. %s: The localized block name */
 "Gallery caption. %s" = "图库说明。%s";
 
 /* No comment provided by engineer. */
-"Gallery style" = "Gallery style";
+"Gallery style" = "画廊样式";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "园艺";
@@ -3502,6 +3504,7 @@ translators: Block name. %s: The localized block name */
 "Hold for Moderation" = "保持审核状态";
 
 /* Noun. Links to a blog's dashboard screen.
+   Title for dashboard view on the My Site screen
    Title for the dashboard screen. */
 "Home" = "主页";
 
@@ -4064,6 +4067,9 @@ translators: Block name. %s: The localized block name */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "正在加载扫描...";
 
+/* Displayed while a comment is being loaded. */
+"Loading comment..." = "Loading comment...";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "正在加载域";
 
@@ -4569,7 +4575,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized. */
 "Next" = "继续";
 
-/* Table view title for the quick start section. */
+/* Table view title for the quick start section.
+   Title for the Quick Start dashboard card. */
 "Next Steps" = "后续步骤";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
@@ -4968,6 +4975,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Only the selected photos you've given access to are available." = "仅可访问您允许访问的照片。";
 
 /* An informal exclaimation that means `something went wrong`.
+   Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5483,6 +5491,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
 
+/* Description for the card prompting the user to create a new post. */
+"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
@@ -5498,6 +5509,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "文章和页面";
+
+/* Description for the card prompting the user to create their first post. */
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "文章页面";
@@ -5858,7 +5872,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "删除站点图标";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Remove as Featured Image";
+"Remove as Featured Image" = "移除特色图片";
 
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
@@ -6289,6 +6303,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to continue" = "选择“%@”以继续";
 
+/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
+"Select %@ to continue." = "选择“%@”以继续。";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "选择“%@”，撰写一篇新文章";
 
@@ -6457,7 +6474,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "设置父项";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
+"Set as Featured Image" = "设为特色图片";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "设为主页";
@@ -6675,7 +6692,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "站点语言";
 
-/* Title for the site menu view on the My Site screen */
+/* The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Site Menu" = "站点菜单";
 
 /* Describes a site redirect domain */
@@ -7443,6 +7461,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "加载插件时出错";
 
+/* Text displayed when there is a failure loading a comment. */
+"There was an error loading the comment." = "There was an error loading the comment.";
+
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "加载历史记录时出错";
 
@@ -7667,7 +7688,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "今日";
 
-/* Insights Management 'Today's Stats' title */
+/* Insights Management 'Today's Stats' title
+   Title for the card displaying today's stats. */
 "Today's Stats" = "今日统计";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8308,7 +8330,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "查看站点";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "查看所有评论";
 
 /* Displays More Rows */
 "View all…" = "查看所有…";
@@ -8672,10 +8694,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Weeks stats filter. */
 "Weeks" = "周";
 
+/* Post Signup Interstitial Title Text for Jetpack iOS */
+"Welcome to Jetpack" = "Welcome to Jetpack";
+
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "欢迎使用阅读器。 动动手指即可发现数百万个博客。";
 
-/* Post Signup Interstitial Title Text */
+/* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "欢迎来到 WordPress";
 
 /* A message title */
@@ -8976,7 +9001,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can switch sites at any time." = "您可以随时切换站点。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time" = "You can update this any time";
+"You can update this any time" = "您可以随时更新";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "您可以随时通过“我的站点”>“站点设置”更新此设置";
@@ -8992,9 +9017,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "您没有任何媒体。";
-
-/* Displayed when the user views the dashboard posts card but they have no posts */
-"You don't have any posts" = "您没有任何文章";
 
 /* Displayed when the user views scheduled pages in the pages list and there are no pages */
 "You don't have any scheduled pages" = "您没有任何预发布页面";

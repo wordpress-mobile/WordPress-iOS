@@ -9,6 +9,7 @@ class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
+
     var blog: Blog
 
     private lazy var service: BlogDashboardService = {
@@ -47,28 +48,26 @@ class BlogDashboardViewModel {
 
     /// Call the API to return cards for the current blog
     func loadCards(completion: (() -> Void)? = nil) {
-        guard let dotComID = blog.dotComID?.intValue else {
-            return
-        }
-
         viewController?.showLoading()
 
-        service.fetch(wpComID: dotComID, completion: { [weak self] snapshot in
+        service.fetch(blog: blog, completion: { [weak self] snapshot in
             self?.viewController?.stopLoading()
             self?.apply(snapshot: snapshot)
             completion?()
-        }, failure: { [weak self] in
+        }, failure: { [weak self] snapshot in
             self?.viewController?.stopLoading()
+            self?.loadingFailure()
+
+            if let snapshot = snapshot {
+                self?.apply(snapshot: snapshot)
+            }
+
             completion?()
         })
     }
 
     func loadCardsFromCache() {
-        guard let dotComID = blog.dotComID?.intValue else {
-            return
-        }
-
-        let snapshot = service.fetchLocal(wpComID: dotComID)
+        let snapshot = service.fetchLocal(blog: blog)
         apply(snapshot: snapshot)
     }
 
@@ -83,5 +82,20 @@ private extension BlogDashboardViewModel {
 
     func apply(snapshot: DashboardSnapshot) {
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Ghost/Skeleton cards and failures
+
+private extension BlogDashboardViewModel {
+
+    func isGhostCardsBeingShown() -> Bool {
+        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
+    }
+
+    func loadingFailure() {
+        if blog.dashboardState.hasCachedData {
+            viewController?.loadingFailure()
+        }
     }
 }

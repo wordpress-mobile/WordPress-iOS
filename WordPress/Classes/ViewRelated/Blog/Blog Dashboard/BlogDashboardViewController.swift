@@ -20,10 +20,6 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
-    lazy var activityIndicatorView: UIActivityIndicatorView = {
-        UIActivityIndicatorView()
-    }()
-
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -43,6 +39,7 @@ final class BlogDashboardViewController: UIViewController {
         setupCollectionView()
         addHeightObservers()
         addWillEnterForegroundObserver()
+        addQuickStartObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -53,20 +50,29 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
+        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
     }
 
-    func showLoading() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewAtCenter(activityIndicatorView)
-        activityIndicatorView.startAnimating()
-    }
+    /// If you want to give any feedback when the dashboard
+    /// started loading just change this method.
+    /// For not, it will be transparent
+    ///
+    func showLoading() { }
 
-    func stopLoading() {
-        activityIndicatorView.stopAnimating()
+    /// If you want to give any feedback when the dashboard
+    /// stops loading just change this method.
+    ///
+    func stopLoading() { }
+
+    func loadingFailure() {
+        displayActionableNotice(title: Strings.failureTitle, actionTitle: Strings.dismiss)
     }
 
     func update(blog: Blog) {
+        guard self.blog.dotComID != blog.dotComID else {
+            return
+        }
+
         self.blog = blog
         viewModel.blog = blog
         viewModel.loadCardsFromCache()
@@ -102,6 +108,9 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
+    private func addQuickStartObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)    }
+
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -113,6 +122,15 @@ final class BlogDashboardViewController: UIViewController {
         }
 
         viewModel.loadCards()
+    }
+
+    /// Show Quick Start if needed
+    @objc private func showQuickStart() {
+        guard view.superview != nil else {
+            return
+        }
+
+        viewModel.loadCardsFromCache()
     }
 }
 
@@ -141,6 +159,9 @@ extension BlogDashboardViewController {
                                                         leading: horizontalInset,
                                                         bottom: 0,
                                                         trailing: horizontalInset)
+
+        section.interGroupSpacing = Constants.cellSpacing
+
         return section
     }
 }
@@ -149,6 +170,8 @@ extension BlogDashboardViewController {
 
     private enum Strings {
         static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
+        static let failureTitle = NSLocalizedString("Couldn't update. Check that you're online and refresh.", comment: "Content show when the dashboard fails to load")
+        static let dismiss = NSLocalizedString("Dismiss", comment: "Action shown in a bottom notice to dismiss it.")
     }
 
 
@@ -156,6 +179,6 @@ extension BlogDashboardViewController {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 20
-        static let interGroupSpacing: CGFloat = 12
+        static let cellSpacing: CGFloat = 20
     }
 }

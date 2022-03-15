@@ -5,10 +5,12 @@ import WordPressKit
 struct SiteAddressServiceResult {
     let hasExactMatch: Bool
     let domainSuggestions: [DomainSuggestion]
+    let invalidQuery: Bool
 
-    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = []) {
+    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = [], invalidQuery: Bool = false) {
         self.hasExactMatch = hasExactMatch
         self.domainSuggestions = domainSuggestions
+        self.invalidQuery = invalidQuery
     }
 }
 
@@ -120,16 +122,20 @@ private extension DomainSuggestion {
                                             quantity: domainRequestQuantity,
                                             domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
                                             success: { domainSuggestions in
-                                                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
-                                            },
+            completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+        },
                                             failure: { error in
-                                                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                                                    completion(Result.success(SiteAddressServiceResult()))
-                                                    return
-                                                }
+            if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
+                completion(Result.success(SiteAddressServiceResult()))
+                return
+            }
+            if (error as NSError).code == WordPressComRestApiError.invalidQuery.rawValue {
+                completion(Result.success(SiteAddressServiceResult(invalidQuery: true)))
+                return
+            }
 
-                                                completion(Result.failure(error))
-                                            })
+            completion(Result.failure(error))
+        })
     }
 
     private func sortSuggestions(for query: String, suggestions: [DomainSuggestion]) -> SiteAddressServiceResult {
