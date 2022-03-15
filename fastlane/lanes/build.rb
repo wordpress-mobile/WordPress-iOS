@@ -413,3 +413,28 @@ lane :build_jetpack_for_testing do | options |
     deployment_target_version: options[:ios_version],
   )
 end
+
+
+
+#################################################
+# Helper functions
+#################################################
+
+
+# This function is Buildkite-specific
+def generate_installable_build_number
+
+  if ENV['BUILDKITE']
+    commit = ENV['BUILDKITE_COMMIT'][0,7]
+    branch = ENV['BUILDKITE_BRANCH']
+    pr_num = ENV['BUILDKITE_PULL_REQUEST']
+
+    return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
+  else
+    repo = Git.open(PROJECT_ROOT_FOLDER)
+    commit = repo.current_branch
+    branch = repo.revparse('HEAD')[0, 7]
+
+    return "#{branch}-#{commit}"
+  end
+end
