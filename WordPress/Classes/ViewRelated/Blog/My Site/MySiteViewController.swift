@@ -721,9 +721,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         switch section {
         case .siteMenu:
             blogDetailsViewController?.blog = blog
-            blogDetailsViewController?.showInitialDetailsForBlog()
+            blogDetailsViewController?.configureTableViewData()
             blogDetailsViewController?.tableView.reloadData()
             blogDetailsViewController?.preloadMetadata()
+            blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:
             blogDashboardViewController?.update(blog: blog)
         }
