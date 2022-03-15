@@ -22,6 +22,7 @@ final class DashboardSingleStatView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .bold)
         label.textColor = .text
+        label.isAccessibilityElement = false
         return label
     }()
 
@@ -30,6 +31,7 @@ final class DashboardSingleStatView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.subheadline)
         label.textColor = .textSubtle
+        label.isAccessibilityElement = false
         return label
     }()
 

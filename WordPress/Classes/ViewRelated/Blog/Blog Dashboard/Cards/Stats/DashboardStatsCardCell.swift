@@ -68,6 +68,9 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         stackview.distribution = .fillEqually
         stackview.isLayoutMarginsRelativeArrangement = true
         stackview.directionalLayoutMargins = Constants.statsStackViewMargins
+        stackview.isAccessibilityElement = true
+        stackview.accessibilityTraits = .button
+        stackview.accessibilityLabel = statsStackViewAccessibilityLabel()
         return stackview
     }
 
@@ -76,6 +79,16 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         let visitorsStatsView = DashboardSingleStatView(countString: viewModel?.todaysVisitors ?? "0", title: Strings.visitorsTitle)
         let likesStatsView = DashboardSingleStatView(countString: viewModel?.todaysLikes ?? "0", title: Strings.likesTitle)
         return [viewsStatsView, visitorsStatsView, likesStatsView]
+    }
+
+    private func statsStackViewAccessibilityLabel() -> String {
+        guard let viewModel = viewModel else {
+            return Strings.errorTitle
+        }
+        let arguments = [viewModel.todaysViews.accessibilityLabel ?? viewModel.todaysViews,
+                         viewModel.todaysVisitors.accessibilityLabel ?? viewModel.todaysVisitors,
+                         viewModel.todaysLikes.accessibilityLabel ?? viewModel.todaysLikes]
+        return String(format: Strings.accessibilityLabelFormat, arguments: arguments)
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
@@ -93,6 +106,8 @@ private extension DashboardStatsCardCell {
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
+        static let accessibilityLabelFormat = "%@ \(viewsTitle), %@ \(visitorsTitle), %@ \(likesTitle)."
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
     }
 
     enum Constants {
