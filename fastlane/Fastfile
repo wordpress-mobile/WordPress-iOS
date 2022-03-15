@@ -305,47 +305,6 @@ platform :ios do
     trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 
-  ########################################################################
-  # Test Lanes
-  ########################################################################
-  #####################################################################################
-  # test_without_building
-  # -----------------------------------------------------------------------------------
-  # This lane runs tests without building the app.
-  # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>]
-  #
-  # Example:
-  # bundle exec fastlane test_without_building name:UITests
-  #####################################################################################
-  desc 'Run tests without building'
-  lane :test_without_building do |options|
-    # Find the referenced .xctestrun file based on its name
-    build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
-
-    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |e|
-      e.include?(options[:name])
-    end.first
-
-    unless !test_plan_path.nil? && File.exist?((test_plan_path))
-      UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
-    end
-
-    run_tests(
-      workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
-      device: options[:device],
-      deployment_target_version: options[:ios_version],
-      ensure_devices_found: true,
-      test_without_building: true,
-      xctestrun: test_plan_path,
-      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      reset_simulator: true,
-      result_bundle: true
-    )
-  end
 
 ########################################################################
 # Helper Lanes
