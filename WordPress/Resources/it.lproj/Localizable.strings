@@ -1166,7 +1166,7 @@ translators: Block name. %s: The localized block name */
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Registrando questo dominio, accetti ai nostri <a>Termini e condizioni<\/a>.";
 
-/* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
+/* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "Configurando Jetpack accetti i nostri\n%@";
 
@@ -1599,7 +1599,7 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when trashing a comment succeeds. */
 "Comment moved to trash." = "Commento spostato nel cestino.";
 
-/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on
  My First Post */
 "Comment on" = "Commento su";
 
@@ -6736,7 +6736,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Create new Site Page button title */
 "Site page" = "Pagina sito";
 
-/* Prologue title label, the 
+/* Prologue title label, the
  force splits it into 2 lines. */
 "Site security and performance\nfrom your pocket" = "Sicurezza e prestazioni del sito\ndalla tua tasca";
 
@@ -8874,7 +8874,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "La versione di WordPress è troppo vecchia Il sito %1$@ usa WordPress %2$@. Ti suggeriamo di aggiornare all'ultima versione, o, almeno, alla versione %3$@";
 
-/* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
+/* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location.
    NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
 "WordPress would like to add your location to posts on sites where you have enabled geotagging." = "WordPress desidera aggiungere la tua posizione agli articoli in cui hai abilitato il geotagging.";
 
@@ -9086,7 +9086,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Hai ricevuto *50 likes* on your site today";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
+/* Message displayed in popup when user has the option to load unsaved changes.
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Sono stati effettuati dei cambiamenti recenti a questo articolo ma non sono stati salvati. Scegli la versione da caricare:\n\nDa questo dispositivo\nSalvato il %1$@\n\nDall'altro dispositivo\nSalvato il %2$@\n";
 
@@ -9406,7 +9406,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "widget.today.title" = "Oggi";
 
 /* Title of the unconfigured view in today widget */
-"widget.today.unconfigured.view.title" = "Accedi a WordPress per vedere le statistiche di oggi.";
+"widget.today.unconfigured.view.title" = "FAKE UPDATE TO TEST #18061";
 
 /* Error message to show if a widget view is unavailable */
 "widget.today.view.unavailable.title" = "Questa vista non è disponibile";
@@ -9433,7 +9433,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "wordpress, me, settings, account, notification log out, logout, log in, login, help, support" = "wordpress, me, impostazioni, account, uscita con notifica, uscire, accedere, login, aiuto, supporto";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
-"wordpress, notifications, alerts, updates" = "wordpress, notifiche, avvisi, aggiornamenti";
+"wordpress, notifications, alerts, updates" = "OTHER FAKE UPDATE TO TETS #18061";
 
 /* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, reader, lettore, articoli, post, articoli di blog, seguito, scoprire, like, mi piace, tag, argomenti";
@@ -9468,3 +9468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Utenti e autori";
 
+"infoplist.NSLocationWhenInUseUsageDescription" = "FAKE NSCameraUsageDescription TRANSLATION";
+"ios-widget.ILcGmf" = "FAKE ILcGmf TRANSLATION";
+"ios-sharesheet.CFBundleDisplayName" = "FAKE CFBundleDisplayName TRANSLATION";
