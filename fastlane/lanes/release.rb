@@ -211,6 +211,11 @@ end
 
 
 
+
+#################################################
+# Helper functions
+#################################################
+
 def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
     buildkite_organization: 'automattic',
@@ -239,4 +244,27 @@ lane :gutenberg_dep_check do |_options|
   end
 
   UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
+end
+
+
+def extracted_release_notes_file_path(app:)
+  paths = {
+    wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+    jetpack: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+  }
+  paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
+end
+
+def print_release_notes_reminder
+  message = <<~MSG
+    The extracted release notes for WordPress and Jetpack were based on the same source.
+    Don't forget to remove any item that doesn't apply to the respective app before editorialization.
+
+    You can find the extracted notes at:
+
+    - #{extracted_release_notes_file_path(app: :wordpress)}
+    - #{extracted_release_notes_file_path(app: :jetpack)}
+  MSG
+
+  message.lines.each { |l| UI.important(l.chomp) }
 end
