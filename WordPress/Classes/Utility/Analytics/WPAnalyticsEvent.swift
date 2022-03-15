@@ -251,6 +251,7 @@ import Foundation
 
     // App Settings
     case settingsDidChange
+    case initialScreenChanged
 
     // Account Close
     case accountCloseTapped
@@ -744,6 +745,8 @@ import Foundation
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
+        case .initialScreenChanged:
+            return "app_settings_initial_screen_changed"
         case .appSettingsClearMediaCacheTapped:
             return "app_settings_clear_media_cache_tapped"
         case .appSettingsClearSpotlightIndexTapped:

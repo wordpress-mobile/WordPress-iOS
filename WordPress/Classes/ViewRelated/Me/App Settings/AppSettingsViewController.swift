@@ -327,6 +327,37 @@ class AppSettingsViewController: UITableViewController {
             WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
         }
     }
+
+    func pushInitialScreenSettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let values = MySiteViewController.Section.allCases
+
+            let rawValues = values.map({ $0.rawValue })
+            let titles = values.map({ $0.title })
+
+            let currentStyle = MySiteSettings().defaultSection
+
+            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: AppAppearance.default.rawValue,
+                                                  SettingsSelectionCurrentValueKey: currentStyle.rawValue,
+                                                  SettingsSelectionTitleKey: NSLocalizedString("Initial Screen", comment: "The title of the app initial screen settings screen"),
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: rawValues] as [String: Any]
+
+            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
+
+            viewController?.onItemSelected = { (section: Any!) -> () in
+                guard let section = section as? Int,
+                    let defaultSection = MySiteViewController.Section(rawValue: section) else {
+                        return
+                }
+
+                WPAnalytics.track(.initialScreenChanged, properties: ["selected": defaultSection.analyticsDescription])
+                MySiteSettings().setDefaultSection(defaultSection)
+            }
+
+            self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance
@@ -495,6 +526,12 @@ private extension AppSettingsViewController {
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
+        }
+
+        if FeatureFlag.mySiteDashboard.enabled {
+            let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
+
+            rows.append(initialScreen)
         }
 
         if FeatureFlag.debugMenu.enabled {
