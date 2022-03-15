@@ -92,6 +92,9 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: ["type": "stats"],
+                          blog: blog)
         StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
     }
 }
