@@ -1,5 +1,6 @@
-NSLocationUsageDescription = "Платформе WordPress требуется разрешение для добавления сведений о местоположении к записям на ваших сайтах, для которых включена функция привязки к местоположению.";
-NSLocationWhenInUseUsageDescription = "Платформе WordPress требуется разрешение для добавления сведений о местоположении к записям на ваших сайтах, для которых включена функция привязки к местоположению.";
-NSCameraUsageDescription = "Для создания фотографий и видео, которые будут размещаться в ваших записях.";
-NSPhotoLibraryUsageDescription = "Для размещения фотографий и видео в ваших записях.";
-NSMicrophoneUsageDescription = "Включение звука при воспроизведении видео.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict/>
+</plist>
