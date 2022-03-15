@@ -218,8 +218,8 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    # pod 'WordPressAuthenticator', '~> 1.43.1'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'remove-lottie'
+    pod 'WordPressAuthenticator', '~> 2.0.0-beta.1'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
