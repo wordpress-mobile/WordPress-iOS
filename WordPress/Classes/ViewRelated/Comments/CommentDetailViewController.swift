@@ -43,7 +43,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     private var siteID: NSNumber? {
-        return comment.blog?.dotComID
+        return comment.blog?.dotComID ?? notification?.metaSiteID
     }
 
     private var replyID: Int32 {
@@ -128,13 +128,20 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     private var parentComment: Comment? {
-        guard comment.hasParentComment(),
-              let blog = comment.blog,
-              let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
-                  return nil
-              }
+        guard comment.hasParentComment() else {
+            return nil
+        }
 
-        return parentComment
+        if let blog = comment.blog {
+            return commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog)
+
+        }
+
+        if let post = comment.post as? ReaderPost {
+            return commentService.findComment(withID: NSNumber(value: comment.parentID), from: post)
+        }
+
+        return nil
     }
 
     // transparent navigation bar style with visual blur effect.
@@ -537,12 +544,15 @@ private extension CommentDetailViewController {
 
     // Shows the comment thread with the Notification comment highlighted.
     func navigateToNotificationComment() {
-        guard let siteID = siteID,
-              let blog = comment.blog,
-              blog.supports(.wpComRESTAPI) else {
-                  openWebView(for: comment.commentURL())
-                  return
-              }
+        if let blog = comment.blog,
+           !blog.supports(.wpComRESTAPI) {
+            openWebView(for: comment.commentURL())
+            return
+        }
+
+        guard let siteID = siteID else {
+            return
+        }
 
         // Empty Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
@@ -1004,7 +1014,7 @@ private extension CommentDetailViewController {
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            // TODO: create comment on post.
+            createPostCommentReply(content: content)
             return
         }
 
@@ -1019,6 +1029,24 @@ private extension CommentDetailViewController {
             self?.displayReplyNotice(success: true)
             self?.refreshCommentReplyIfNeeded()
         }, failure: { [weak self] error in
+            DDLogError("Failed uploading comment reply: \(String(describing: error))")
+            self?.displayReplyNotice(success: false)
+        })
+    }
+
+    func createPostCommentReply(content: String) {
+        guard let post = comment.post as? ReaderPost else {
+            return
+        }
+
+        commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
+                                                  post: post,
+                                                  content: content,
+                                                  success: { [weak self] in
+            self?.displayReplyNotice(success: true)
+            self?.refreshCommentReplyIfNeeded()
+        }, failure: { [weak self] error in
+            DDLogError("Failed creating post comment reply: \(String(describing: error))")
             self?.displayReplyNotice(success: false)
         })
     }
