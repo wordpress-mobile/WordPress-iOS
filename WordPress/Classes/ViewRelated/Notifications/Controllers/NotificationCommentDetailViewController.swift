@@ -27,11 +27,19 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         return Blog.lookup(withID: siteID, in: managedObjectContext)
     }
 
+    // If the user does not have permission to the Blog, it will be nil.
+    // In this case, use the Post to obtain Comment information.
+    private var post: ReaderPost?
+
     private var commentDetailViewController: CommentDetailViewController?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
     private let managedObjectContext = ContextManager.shared.mainContext
 
     private lazy var commentService: CommentService = {
+        return .init(managedObjectContext: managedObjectContext)
+    }()
+
+    private lazy var postService: ReaderPostService = {
         return .init(managedObjectContext: managedObjectContext)
     }()
 
@@ -168,50 +176,101 @@ private extension NotificationCommentDetailViewController {
     func loadComment() {
         showLoadingView()
 
-        fetchParentCommentIfNeeded(completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
+        loadPostIfNeeded(completion: { [weak self] in
 
-            if let comment = self.loadCommentFromCache(self.commentID) {
-                self.comment = comment
-                return
-            }
-
-            self.fetchComment(self.commentID, completion: { [weak self] comment in
-                guard let comment = comment else {
-                    self?.showErrorView()
+            self?.fetchParentCommentIfNeeded(completion: { [weak self] in
+                guard let self = self else {
                     return
                 }
 
-                self?.comment = comment
+                if let comment = self.loadCommentFromCache(self.commentID) {
+                    self.comment = comment
+                    return
+                }
+
+                self.fetchComment(self.commentID, completion: { [weak self] comment in
+                    guard let comment = comment else {
+                        self?.showErrorView()
+                        return
+                    }
+
+                    self?.comment = comment
+                })
             })
         })
     }
 
-    func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
-        guard let commentID = commentID,
-              let blog = blog else {
-                  DDLogError("Notification Comment: unable to load comment due to missing information.")
-                  return nil
-              }
+    func loadPostIfNeeded(completion: @escaping () -> Void) {
 
-        return commentService.findComment(withID: commentID, in: blog)
-    }
-
-    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
-        guard let commentID = commentID,
-              let blog = blog else {
-                  DDLogError("Notification Comment: unable to fetch comment due to missing information.")
-                  completion(nil)
+        // The post is only needed if there is no Blog.
+        guard blog == nil,
+              let postID = notification.metaPostID,
+              let siteID = notification.metaSiteID else {
+                  completion()
                   return
               }
 
-        commentService.loadComment(withID: commentID, for: blog, success: { comment in
-            completion(comment)
-        }, failure: { error in
-            completion(nil)
+        if let post = postService.findPost(withID: postID, forSite: siteID) {
+            self.post = post
+            completion()
+            return
+        }
+
+        postService.fetchPost(postID.uintValue,
+                              forSite: siteID.uintValue,
+                              isFeed: false,
+                              success: { [weak self] post in
+            self?.post = post
+            completion()
+        }, failure: { [weak self] _ in
+            self?.post = nil
+            completion()
         })
+    }
+
+    func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
+        guard let commentID = commentID else {
+            DDLogError("Notification Comment: unable to load comment due to missing commentID.")
+            return nil
+        }
+
+        if let blog = blog {
+            return commentService.findComment(withID: commentID, in: blog)
+        }
+
+        if let post = post {
+            return commentService.findComment(withID: commentID, from: post)
+        }
+
+        return nil
+    }
+
+    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
+        guard let commentID = commentID else {
+            DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
+            completion(nil)
+            return
+        }
+
+        if let blog = blog {
+            commentService.loadComment(withID: commentID, for: blog, success: { comment in
+                completion(comment)
+            }, failure: { error in
+                completion(nil)
+            })
+            return
+        }
+
+        if let post = post {
+            commentService.loadComment(withID: commentID, for: post, success: { comment in
+                completion(comment)
+            }, failure: { error in
+                completion(nil)
+            })
+            return
+        }
+
+        completion(nil)
     }
 
     func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
@@ -257,8 +316,6 @@ private extension NotificationCommentDetailViewController {
                                          title: NoResults.errorTitle,
                                          subtitle: NoResults.errorSubtitle,
                                          image: NoResults.imageName)
-
-
         }
     }
 

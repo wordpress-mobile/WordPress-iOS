@@ -158,6 +158,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     } failure:^(NSError *error) {
         if (failure) {
+            DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
             failure(error);
         }
     }];
@@ -187,6 +188,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     } failure:^(NSError *error) {
         if (failure) {
+            DDLogError(@"Error fetching post with url %@. %@", postURL, error);
             failure(error);
         }
     }];
@@ -206,6 +208,19 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
+- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID
+{
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error loading cached post with id %@ and site %@. %@", postID, siteID, error);
+        return nil;
+    }
+    
+    return results.firstObject;
+}
 
 #pragma mark - Update Methods
 
