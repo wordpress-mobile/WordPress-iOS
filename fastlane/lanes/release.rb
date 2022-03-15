@@ -208,3 +208,15 @@ platform :ios do
     trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 end
+
+
+
+def trigger_buildkite_release_build(branch:, beta:)
+  buildkite_trigger_build(
+    buildkite_organization: 'automattic',
+    buildkite_pipeline: 'wordpress-ios',
+    branch: branch,
+    environment: { BETA_RELEASE: beta },
+    pipeline_file: 'release-builds.yml'
+  )
+end
