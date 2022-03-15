@@ -1,6 +1,3 @@
-import Foundation
-import UIKit
-
 /// Site Intent: Allows selection of the the site's vertical (a.k.a. intent or industry).
 final class SiteIntentStep: WizardStep {
     weak var delegate: WizardDelegate?
@@ -10,7 +7,11 @@ final class SiteIntentStep: WizardStep {
         return SiteIntentViewController()
     }()
 
-    init(creator: SiteCreator) {
+    init?(siteIntentAB: SiteIntentABTestable = SiteIntentAB.shared, creator: SiteCreator) {
+        guard FeatureFlag.siteIntentQuestion.enabled && siteIntentAB.variant == .treatment else {
+            return nil
+        }
+
         self.creator = creator
     }
 }

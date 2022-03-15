@@ -1968,6 +1968,7 @@
 		B06378C0253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06378BE253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift */; };
 		B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06378BF253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift */; };
 		B089140D27E1255D00CF468B /* SiteIntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B089140C27E1255D00CF468B /* SiteIntentViewController.swift */; };
+		B089140F27E1352B00CF468B /* SiteCreationIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B089140E27E1352B00CF468B /* SiteCreationIntentTests.swift */; };
 		B0960C8727D14BD400BC9717 /* SiteIntentStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */; };
 		B0960C8927D17B1200BC9717 /* SiteIntentAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0960C8827D17B1200BC9717 /* SiteIntentAB.swift */; };
 		B0960C8A27D17B1200BC9717 /* SiteIntentAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0960C8827D17B1200BC9717 /* SiteIntentAB.swift */; };
@@ -6645,6 +6646,7 @@
 		B06378BE253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSuggestion+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B06378BF253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSuggestion+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B089140C27E1255D00CF468B /* SiteIntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentViewController.swift; sourceTree = "<group>"; };
+		B089140E27E1352B00CF468B /* SiteCreationIntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationIntentTests.swift; sourceTree = "<group>"; };
 		B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentStep.swift; sourceTree = "<group>"; };
 		B0960C8827D17B1200BC9717 /* SiteIntentAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentAB.swift; sourceTree = "<group>"; };
 		B0A6DEBE2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AztecPostViewController+MenuTests.swift"; path = "Aztec/AztecPostViewController+MenuTests.swift"; sourceTree = "<group>"; };
@@ -10455,6 +10457,7 @@
 				73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */,
 				73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */,
 				32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */,
+				B089140E27E1352B00CF468B /* SiteCreationIntentTests.swift */,
 			);
 			path = SiteCreation;
 			sourceTree = "<group>";
@@ -19298,6 +19301,7 @@
 				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
 				F11023A323186BCA00C4E84A /* MediaBuilder.swift in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
+				B089140F27E1352B00CF468B /* SiteCreationIntentTests.swift in Sources */,
 				73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */,
 				8BD34F0927D144FF005E931C /* BlogDashboardStateTests.swift in Sources */,
 				1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */,
