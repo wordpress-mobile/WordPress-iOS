@@ -473,11 +473,11 @@ platform :ios do
   lane :download_localized_strings_and_metadata do |options|
     # Download `Localizable.strings` translations used within the app
     parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
-    ios_download_strings_files_from_glotpress(
-      project_url: GLOTPRESS_APP_STRINGS_URL,
-      locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
-      download_dir: parent_dir_for_lprojs
-    )
+    # ios_download_strings_files_from_glotpress(
+    #   project_url: GLOTPRESS_APP_STRINGS_URL,
+    #   locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
+    #   download_dir: parent_dir_for_lprojs
+    # )
 
     # Then redispatch the appropriate subset of translations back to the `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj` dirs
     parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
@@ -494,8 +494,8 @@ platform :ios do
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
     # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-    download_wordpress_localized_app_store_metadata
-    download_jetpack_localized_app_store_metadata
+    # download_wordpress_localized_app_store_metadata
+    # download_jetpack_localized_app_store_metadata
   end
 
   #####################################################################################
