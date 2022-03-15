@@ -61,6 +61,18 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'WordPressIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
+# Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
+# Used in `update_*_metadata_on_app_store_connect` lanes.
+#
+UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
+  app_version: read_version_from_config,
+  skip_binary_upload: true,
+  overwrite_screenshots: true,
+  phased_release: true,
+  precheck_include_in_app_purchases: false,
+  api_key_path: APP_STORE_CONNECT_KEY_PATH,
+  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
+}
 
 
 

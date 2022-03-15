@@ -190,15 +190,3 @@ def trigger_buildkite_release_build(branch:, beta:)
     pipeline_file: 'release-builds.yml'
   )
 end
-
-# Application-agnostic settings for the `upload_to_app_store` action, also
-# known as `deliver`.
-UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: read_version_from_config,
-  skip_binary_upload: true,
-  overwrite_screenshots: true,
-  phased_release: true,
-  precheck_include_in_app_purchases: false,
-  api_key_path: APP_STORE_CONNECT_KEY_PATH,
-  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
-}
