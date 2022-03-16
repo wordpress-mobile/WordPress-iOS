@@ -33,7 +33,7 @@ static CGFloat const FeaturedImageSize = 120.0;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
+    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self applyStyles];
     [self setupAccessibility];
 }

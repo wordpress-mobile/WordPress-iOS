@@ -40,7 +40,7 @@ extension DashboardQuickStartCardCell {
 
     private func setupViews() {
         contentView.addSubview(cardFrameView)
-        contentView.pinSubviewToAllEdges(cardFrameView)
+        contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.constraintPriority)
 
         cardFrameView.add(subview: tourStateView)
     }
@@ -56,5 +56,6 @@ extension DashboardQuickStartCardCell {
 
     private enum Metrics {
         static let iconSize = CGSize(width: 18, height: 18)
+        static let constraintPriority = UILayoutPriority(999)
     }
 }

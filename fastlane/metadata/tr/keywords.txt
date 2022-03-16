@@ -1,1 +1,1 @@
-sosyal,notlar,jetpack,yazma,coğrafi etiketleme,medya,blog,web sitesi,blog oluşturma,günlük
+blogger,yazı,bloglama,web,maker,çevrimiçi,mağaza,iş,yap,oluştur,yaz,bloglar

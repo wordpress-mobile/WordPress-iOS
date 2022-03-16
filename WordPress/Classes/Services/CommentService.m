@@ -401,6 +401,52 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
+- (void)loadCommentWithID:(NSNumber *)commentID
+                  forPost:(ReaderPost *)post
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *))failure {
+
+    NSManagedObjectID *postID = post.objectID;
+    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
+
+    [service getCommentWithID:commentID
+                      success:^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            ReaderPost *post = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postID error:nil];
+            if (!post) {
+                return;
+            }
+            
+            Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+
+            if (!comment) {
+                comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+                comment.dateCreated = [NSDate new];
+            }
+
+            comment.post = post;
+            [self updateComment:comment withRemoteComment:remoteComment];
+            
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success(comment);
+                    });
+                }
+            }];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error loading comment for post: %@", error);
+        [self.managedObjectContext performBlock:^{
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
+    }];
+}
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success

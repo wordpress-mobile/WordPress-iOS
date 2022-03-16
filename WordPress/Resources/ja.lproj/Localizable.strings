@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-03 22:49:46+0000 */
+/* Translation-Revision-Date: 2022-03-10 09:54:18+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\nコンテンツを全て消去するには、メールを送信してください。";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
-"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nこのユーザーは登録されています。 このユーザーの名前、ウェブアドレス、メールアドレスは編集できません。";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n確認のため、消去の前にサイトのアドレス (URL) を再入力してください。\n\n";
@@ -4068,7 +4068,7 @@ translators: Block name. %s: The localized block name */
 "Loading Scan..." = "スキャンを読み込んでいます...";
 
 /* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
+"Loading comment..." = "コメントを読み込み中…";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "ドメインを読み込み中";
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期的に投稿することで読者の興味を引きつけ、新たなサイト訪問者を獲得できます。";
 
 /* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+"Posting regularly helps build your audience!" = "定期的に投稿することで、読者を増やすことができます。";
 
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
@@ -5511,7 +5511,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "投稿とページ";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "投稿はブログページに新しいものから順に表示されます。 あなたのアイデアを世界中のユーザーとシェアしましょう !";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "投稿ページ";
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "プラグインの読み込みでエラーが発生しました";
 
 /* Text displayed when there is a failure loading a comment. */
-"There was an error loading the comment." = "There was an error loading the comment.";
+"There was an error loading the comment." = "コメントの読み込み時にエラーが発生しました。";
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "履歴の読み込み中にエラーが発生しました";
@@ -8695,7 +8695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weeks" = "週";
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Welcome to Jetpack";
+"Welcome to Jetpack" = "Jetpack へようこそ";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Reader へようこそ。何百万ものブログの中から、お気に入りを発見しましょう。";

@@ -2,6 +2,7 @@
 
 import Foundation
 
+let glotPressNameKey = "app_store_name"
 let glotPressSubtitleKey = "app_store_subtitle"
 let glotPressWhatsNewKey = "v19.4-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
@@ -57,22 +58,6 @@ let languages = [
     "zh-Hant": "zh-tw",
 ]
 
-func shouldUpdateSubtitle(locale: String) -> Bool {
-    return isIn20211210Experiment(locale: locale) == false
-}
-
-func shouldUpdateKeywords(locale: String) -> Bool {
-    return isIn20211210Experiment(locale: locale) == false
-}
-
-func isIn20211210Experiment(locale: String) -> Bool {
-    // The experiment should run on every English locale. See details in P2 post ref `pcbrnV-440-p2`.
-    //
-    // We could have an allow list, but given the mostly static nature of
-    // locale codes, the following check seems enough.
-    return locale.starts(with: "en")
-}
-
 func downloadTranslation(
     config: Config = .config(for: CommandLine.arguments.second),
     languageCode: String,
@@ -106,6 +91,7 @@ func downloadTranslation(
                 return
         }
 
+        var name: String?
         var subtitle: String?
         var whatsNew: String?
         var keywords: String?
@@ -130,6 +116,8 @@ func downloadTranslation(
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
 
             switch keyFirstPart {
+            case glotPressNameKey:
+                name = translation
             case glotPressSubtitleKey:
                 subtitle = translation
             case glotPressKeywordsKey:
@@ -157,16 +145,10 @@ func downloadTranslation(
                 try FileManager.default.removeItem(at: URL(fileURLWithPath: releaseNotesPath))
             }
 
-            if shouldUpdateSubtitle(locale: languageCode) {
-                try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
-            }
-
+            try name?.write(toFile: "\(languageFolder)/name.txt", atomically: true, encoding: .utf8)
+            try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
             try whatsNew?.write(toFile: "\(languageFolder)/release_notes.txt", atomically: true, encoding: .utf8)
-
-            if shouldUpdateSubtitle(locale: languageCode) {
-                try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
-            }
-
+            try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
             try storeDescription?.write(toFile: "\(languageFolder)/description.txt", atomically: true, encoding: .utf8)
         } catch {
             print("  Error writing: \(error)")

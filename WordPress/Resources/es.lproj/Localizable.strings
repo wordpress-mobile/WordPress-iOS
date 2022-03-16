@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-22 07:15:57+0000 */
+/* Translation-Revision-Date: 2022-03-10 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\nPor favor, envíanos un correo electrónico para borrar tu contenido.";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
-"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nEste usuario está registrado. No se puede editar su nombre, ni la dirección de su sitio web o correo electrónico.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPara confirmar, por favor, vuelve a introducir la dirección del sitio antes de borrarlo.\n";
@@ -4068,7 +4068,7 @@ translators: Block name. %s: The localized block name */
 "Loading Scan..." = "Cargando exploración...";
 
 /* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
+"Loading comment..." = "Cargando comentario...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Cargando dominios";
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Publicar regularmente puede ayudar a que tus lectores permanezcan implicados, y a atraer nuevos visitantes a tu sitio.";
 
 /* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+"Posting regularly helps build your audience!" = "¡Publicar regularmente ayuda a crear tu audiencia!";
 
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
@@ -5511,7 +5511,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "Entradas y páginas";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Las entradas aparecen en la página de tu blog en orden cronológicamente inverso. ¡Es el momento de compartir tus ideas con el mundo!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Página de entradas";
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "Hubo un error al cargar los plugins";
 
 /* Text displayed when there is a failure loading a comment. */
-"There was an error loading the comment." = "There was an error loading the comment.";
+"There was an error loading the comment." = "Se ha producido un error al cargar el comentario.";
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "Hubo un error al cargar el historial";
@@ -8695,7 +8695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weeks" = "Semanas";
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Welcome to Jetpack";
+"Welcome to Jetpack" = "Te damos la bienvenida a Jetpack";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Bienvenido al Lector. Descubre millones de blogs a tu alcance.";

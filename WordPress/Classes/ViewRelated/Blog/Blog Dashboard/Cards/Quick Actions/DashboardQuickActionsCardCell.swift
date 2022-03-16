@@ -117,7 +117,7 @@ extension DashboardQuickActionsCardCell {
 
     private func setup() {
         contentView.addSubview(scrollView)
-        contentView.pinSubviewToAllEdges(scrollView)
+        contentView.pinSubviewToAllEdges(scrollView, priority: Constants.constraintPriority)
         scrollView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -143,5 +143,6 @@ extension DashboardQuickActionsCardCell {
         static let contentViewCornerRadius = 8.0
         static let stackViewSpacing = 16.0
         static let stackViewHorizontalPadding = 20.0
+        static let constraintPriority = UILayoutPriority(999)
     }
 }
