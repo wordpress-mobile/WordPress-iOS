@@ -1,0 +1,9 @@
+Nos entusiasma el color: ¡Aquí está la compatibilidad para múltiples paletas de color! Añade paletas de color y degradados del tema y predeterminadas o crea tu propia paleta personalizada con tus tonos favoritos. También hemos corregido un problema que hacía que los colores del tema no aparecieran y que los datos del tema actual no se actualizaran.
+
+Para los dispositivos que usan idiomas de derecha a izquierda, hemos actualizado la posición de los iconos, los botones y el texto de la pantalla "Elegir un dominio" en el proceso de creación del sitio. ¡Muy bien!
+
+¿Quieres ver medios enriquecidos como imágenes y ".gifs" en los avisos emergentes de tu dispositivo? Solo tienes que mantener pulsado el aviso para abrir una vista previa.
+
+Hemos hecho algunos retoques a los avisos del resumen semanal para asegurarnos de que se muestren una vez que los hayas activado. ¡Corregido!
+
+Por último, hemos añadido algunas correcciones en la pantalla de información que ayudarán a acelerar las cosas. También hemos eliminado un fallo que ponía en negrita las palabras autocorregidas en los encabezados de los bloques de contenido.

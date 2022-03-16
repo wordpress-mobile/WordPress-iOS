@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-03 23:28:04+0000 */
+/* Translation-Revision-Date: 2022-03-11 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\n要清除你的内容，请发送一封电子邮件给我们。";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
-"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\n此用户已注册。 无法编辑他们的姓名、网址和电子邮箱地址。";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n如果您确认关闭站点，请在删除之前重新输入您的站点地址。\n";
@@ -4068,7 +4068,7 @@ translators: Block name. %s: The localized block name */
 "Loading Scan..." = "正在加载扫描...";
 
 /* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
+"Loading comment..." = "正在加载评论...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "正在加载域";
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
 
 /* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+"Posting regularly helps build your audience!" = "定期发表有助于吸引受众！";
 
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
@@ -5511,7 +5511,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "文章和页面";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "文章在您的博客页面上按时间顺序倒序显示。 立即与全世界分享您的观点！";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "文章页面";
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "加载插件时出错";
 
 /* Text displayed when there is a failure loading a comment. */
-"There was an error loading the comment." = "There was an error loading the comment.";
+"There was an error loading the comment." = "加载评论时出错。";
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "加载历史记录时出错";
@@ -8695,7 +8695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weeks" = "周";
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Welcome to Jetpack";
+"Welcome to Jetpack" = "欢迎使用 Jetpack";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "欢迎使用阅读器。 动动手指即可发现数百万个博客。";
