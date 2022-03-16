@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: 967dab32d6c7f629c5e0ca61ed49cc5cb50a92ce
+  revision: 9e8f697fa4c3d89d28796a315da992e73ba22d40
   branch: l10n/prefix-merge-split-strings
   specs:
     fastlane-plugin-wpmreleasetoolkit (3.1.0)

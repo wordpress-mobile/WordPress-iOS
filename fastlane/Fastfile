@@ -452,10 +452,8 @@ platform :ios do
     # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
     # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
     ios_merge_strings_files(
-      paths: {
-        File.join(wordpress_en_lproj, 'Localizable.strings') => nil, # No prefix for the keys of the main file (file which we will merge the other ones into)
-        **MANUALLY_MAINTAINED_STRINGS_FILES # Merge in all the manually-maintained `.strings` files, with a prefix added to their keys for each file
-      }
+      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
+      destination: File.join(wordpress_en_lproj, 'Localizable.strings')
     )
 
     git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
@@ -481,16 +479,11 @@ platform :ios do
 
     # Then redispatch the appropriate subset of translations back to the `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj` dirs
     parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
-    ios_extract_keys_from_strings_files(
+    modified_files = ios_extract_keys_from_strings_files(
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
-
-    # Note that if any `.strings` file is not yet git-added at that stage (i.e. it's a new file) then `git_commit` will fail,
-    # as `git commit <files>` can only deal with files already in the repo. This is actually a good thing because if we somehow have
-    # new locales introduced at that point, that means we will also need to add them to the `.pbxproj` manually before proceeding.
-    all_strings_files = Dir['WordPress/**/*.strings', base: PROJECT_ROOT_FOLDER]
-    git_commit(path: all_strings_files, message: 'Update app translations', allow_nothing_to_commit: true)
+    git_commit(path: modified_files, message: 'Update app translations', allow_nothing_to_commit: true)
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
     # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
