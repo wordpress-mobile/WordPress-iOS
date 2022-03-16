@@ -81,6 +81,12 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var tabBarHeightConstraintPriority: Float = UILayoutPriority.required.rawValue {
+        didSet {
+            tabBarHeightConstraint.priority = UILayoutPriority(tabBarHeightConstraintPriority)
+        }
+    }
+
     var equalWidthFill: UIStackView.Distribution = .fillEqually {
         didSet {
             stackView.distribution = equalWidthFill

@@ -4,6 +4,8 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Private Variables
 
+    private var viewModel: DashboardStatsViewModel?
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -29,11 +31,11 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
+        guard let viewController = viewController, let apiResponse = apiResponse else {
             return
         }
 
-        // TODO: Use apiResponse to create a View Model and use it to populate the cell
+        self.viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         clearFrames()
         addTodayStatsCard(for: blog, in: viewController)
@@ -69,11 +71,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         return stackview
     }
 
-    // TODO: Data is now static. It should be brought in from the view model.
     private func statsViews() -> [UIView] {
-        let viewsStatsView = DashboardSingleStatView(countString: "1,492", title: Strings.viewsTitle)
-        let visitorsStatsView = DashboardSingleStatView(countString: "885", title: Strings.visitorsTitle)
-        let likesStatsView = DashboardSingleStatView(countString: "112", title: Strings.likesTitle)
+        let viewsStatsView = DashboardSingleStatView(countString: viewModel?.todaysViews ?? "0", title: Strings.viewsTitle)
+        let visitorsStatsView = DashboardSingleStatView(countString: viewModel?.todaysVisitors ?? "0", title: Strings.visitorsTitle)
+        let likesStatsView = DashboardSingleStatView(countString: viewModel?.todaysLikes ?? "0", title: Strings.likesTitle)
         return [viewsStatsView, visitorsStatsView, likesStatsView]
     }
 

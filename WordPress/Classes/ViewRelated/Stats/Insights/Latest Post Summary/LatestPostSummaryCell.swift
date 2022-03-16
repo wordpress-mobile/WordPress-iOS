@@ -42,6 +42,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable, Accessible {
         super.awakeFromNib()
         applyStyles()
         prepareForVoiceOver()
+        setupStackViewsMargins()
     }
 
     override func prepareForReuse() {
@@ -97,6 +98,17 @@ private extension LatestPostSummaryCell {
         viewsDataLabel.textColor = Style.defaultTextColor
 
         actionLabel.textColor = Style.actionTextColor
+    }
+
+    func setupStackViewsMargins() {
+        actionStackView.isLayoutMarginsRelativeArrangement = true
+        actionStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
+
+        viewsStackView.isLayoutMarginsRelativeArrangement = true
+        viewsStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
+
+        chartStackView.isLayoutMarginsRelativeArrangement = true
+        chartStackView.directionalLayoutMargins = StackViewsMargins.horizontalPaddingMargins
     }
 
     func configureViewForAction() {
@@ -191,6 +203,10 @@ private extension LatestPostSummaryCell {
         static let dataHidden = CGFloat(16)
     }
 
+    struct StackViewsMargins {
+        static let horizontalPaddingMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+    }
+
     struct CellStrings {
         static let summaryPostInfo = NSLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
         static let summaryPerformance = NSLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
@@ -262,12 +278,5 @@ private extension LatestPostSummaryCell {
 
         resetChartContainerView()
         chartStackView.addArrangedSubview(chartView)
-
-        NSLayoutConstraint.activate([
-            chartView.leadingAnchor.constraint(equalTo: chartStackView.leadingAnchor),
-            chartView.trailingAnchor.constraint(equalTo: chartStackView.trailingAnchor),
-            chartView.topAnchor.constraint(equalTo: chartStackView.topAnchor),
-            chartView.bottomAnchor.constraint(equalTo: chartStackView.bottomAnchor)
-        ])
     }
 }

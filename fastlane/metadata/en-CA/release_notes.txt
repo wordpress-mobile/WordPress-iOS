@@ -1,0 +1,9 @@
+Color us excited—support for multiple colour palettes is here! Add Theme and Default colour and gradient palettes, or create your own Custom palette with your favourite shades. We also fixed an issue that caused theme colours not to appear and current theme data not to refresh.
+
+For devices using right-to-left languages, we updated icon, button, and text positioning for the “Choose a Domain” screen in the site creation process. Alright, alright.
+
+Want to see rich media like images and .gifs in your device’s push notifications? Just press and hold the notification to open a preview.
+
+We made some tweaks to Weekly Roundup notifications to make sure they’re showing up once you’ve enabled them. Giddyup!
+
+Finally, we added a few fixes on the Insight screen that’ll help speed things up. We also squashed a bug that bolded auto-corrected words in content block headings.
