@@ -19,7 +19,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
     private var followConversationEnabled = false {
         didSet {
-            followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !followConversationEnabled
+            followButton.isHidden = !followConversationEnabled
         }
     }
 

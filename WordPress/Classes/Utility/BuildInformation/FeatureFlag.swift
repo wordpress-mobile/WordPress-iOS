@@ -20,7 +20,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newCommentThread
     case commentThreadModerationMenu
     case mySiteDashboard
-    case followConversationPostDetails
     case markAllNotificationsAsRead
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
@@ -72,8 +71,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .mySiteDashboard:
             return false
         case .markAllNotificationsAsRead:
-            return true
-        case .followConversationPostDetails:
             return true
         case .mediaPickerPermissionsNotice:
             return true
@@ -145,8 +142,6 @@ extension FeatureFlag {
             return "Comment Thread Moderation Menu"
         case .mySiteDashboard:
             return "My Site Dashboard"
-        case .followConversationPostDetails:
-            return "Follow Conversation from Post Details"
         case .markAllNotificationsAsRead:
             return "Mark Notifications As Read"
         case .mediaPickerPermissionsNotice:
