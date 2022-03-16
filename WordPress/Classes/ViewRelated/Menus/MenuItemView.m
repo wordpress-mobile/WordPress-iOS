@@ -49,7 +49,7 @@
     UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
     button.accessibilityLabel = NSLocalizedString(@"Move menu item", @"Screen reader text for button that will move the menu item");
-    button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down", @"Screen reader hint for button that will move the menu item");
+    button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy.", @"Screen reader hint for button that will move the menu item");
     button.userInteractionEnabled = NO;
     // Override the accessibility traits so that VoiceOver doesn't read "Dimmed" due to userInteractionEnabled = NO
     [button setAccessibilityTraits:UIAccessibilityTraitButton];
