@@ -419,6 +419,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
+
+    [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
