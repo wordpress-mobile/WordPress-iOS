@@ -128,8 +128,8 @@ final class SiteAssemblyWizardContent: UIViewController {
                         gutenbergSettings.postSettingsToRemote(for: createdBlog)
                     }
 
-                    if FeatureFlag.mySiteDashboard.enabled {
-                        // TODO: A/B test default section
+                    if FeatureFlag.mySiteDashboard.enabled,
+                       BlogDashboardAB.shared.variant == .treatment {
                         MySiteSettings().setDefaultSection(.dashboard)
                     }
 
