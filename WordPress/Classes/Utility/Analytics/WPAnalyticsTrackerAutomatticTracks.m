@@ -164,7 +164,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
     if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        /// If the Dashboard is enabled, we keep tracks for all events
+        /// If the Dashboard is enabled, we add this property for all events
         /// about what is the default tab assigned
         /// This value can be: `site_menu`, `dashboard` or `nonexistent`
         userProperties[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
