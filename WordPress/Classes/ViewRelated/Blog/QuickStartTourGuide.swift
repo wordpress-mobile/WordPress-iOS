@@ -2,6 +2,7 @@ import WordPressFlux
 import Gridicons
 import Foundation
 import UIKit
+import WordPressShared
 
 @objc enum QuickStartTourOrigin: Int {
     case unknown
@@ -34,6 +35,8 @@ open class QuickStartTourGuide: NSObject {
         steps.forEach { (tour) in
             completed(tour: tour, for: blog)
         }
+
+        WPAnalytics.track(.quickStartStarted)
     }
 
     func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {

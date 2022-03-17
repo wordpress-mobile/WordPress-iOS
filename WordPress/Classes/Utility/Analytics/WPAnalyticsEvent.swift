@@ -316,6 +316,9 @@ import Foundation
     case mySiteSiteMenuShown
     case mySiteDashboardShown
 
+    // Quick Start
+    case quickStartStarted
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -845,6 +848,10 @@ import Foundation
             return "my_site_site_menu_show"
         case .mySiteDashboardShown:
             return "my_site_dashboard_shown"
+
+        // Quick Start
+        case .quickStartStarted:
+            return "quick_start_started"
 
         } // END OF SWITCH
     }
