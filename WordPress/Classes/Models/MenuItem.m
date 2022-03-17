@@ -115,4 +115,18 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
     return self.name.length == 0 || [self.name isEqualToString:[MenuItem defaultItemNameLocalized]];
 }
 
+/**
+ Return a sibling that precedes self, or nil if one wasn't found.
+ */
+- (MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems
+{
+    for (NSUInteger idx = [orderedItems indexOfObject:self]; idx > 0; idx--) {
+        MenuItem *previousItem = [orderedItems objectAtIndex:idx - 1];
+        if (previousItem.parent == self.parent) {
+            return previousItem;
+        }
+    }
+    return nil;
+}
+
 @end

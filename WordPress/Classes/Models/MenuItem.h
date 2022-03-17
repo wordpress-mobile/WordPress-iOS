@@ -112,6 +112,14 @@ extern NSString * const MenuItemLinkTargetBlank;
  */
 - (BOOL)nameIsEmptyOrDefault;
 
+/**
+ Search for a sibling that precedes self.
+ A sibling is a MenuItem that shares the same parent.
+ @param orderedItems an ordered set of items nested top-down as a parent followed by children. (as returned from the Menus API)
+ @returns MenuItem sibling that precedes self, or nil if there is not one.
+ */
+- (MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems;
+
 @end
 
 @interface MenuItem (CoreDataGeneratedAccessors)
