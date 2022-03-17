@@ -6,8 +6,8 @@ final class DashboardSingleStatView: UIView {
 
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            numberLabel,
-            titleLabel
+            titleLabel,
+            numberLabel
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
