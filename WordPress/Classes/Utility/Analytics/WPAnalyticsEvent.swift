@@ -312,6 +312,7 @@ import Foundation
     // My Site Dashboard
     case dashboardCardShown
     case dashboardCardItemTapped
+    case mySiteTabTapped
 
     /// A String that represents the event
     var value: String {
@@ -836,6 +837,8 @@ import Foundation
             return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
+        case .mySiteTabTapped:
+            return "my_site_tab_tapped"
 
         } // END OF SWITCH
     }
