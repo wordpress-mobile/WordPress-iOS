@@ -349,7 +349,12 @@ private extension QuickStartTourGuide {
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-            WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+
+            // Create a site is completed automatically, we don't want to track
+            if tour.analyticsKey != "create_site" {
+                WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+            }
+            
             recentlyTouredBlog = blog
         } else {
             recentlyTouredBlog = nil
