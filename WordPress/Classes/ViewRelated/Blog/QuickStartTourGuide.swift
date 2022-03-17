@@ -354,7 +354,7 @@ private extension QuickStartTourGuide {
             if tour.analyticsKey != "create_site" {
                 WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
             }
-            
+
             recentlyTouredBlog = blog
         } else {
             recentlyTouredBlog = nil
