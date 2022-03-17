@@ -25,7 +25,7 @@ class SiteIntentAB: SiteIntentABTestable {
         let token: String? = defaultAccount?.authToken
 
         if let token = token {
-            // 50/50 split between control and treatment groupss
+            // 50/50 split between control and treatment groups
             return token.hashCode() % 2 == 0 ? .control : .treatment
         } else {
             return .control
