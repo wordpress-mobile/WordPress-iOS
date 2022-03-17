@@ -111,6 +111,21 @@
 {
     self.iconView.image = [MenuItem iconImageForItemType:self.item.type];
     self.textLabel.text = self.item.name;
+    [self refreshAccessibilityLabels];
+}
+
+- (void)refreshAccessibilityLabels
+{
+    NSString *levelString;
+    if (self.item.parent) {
+        levelString = NSLocalizedString(@"Child of %@", @"Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item.");
+    } else {
+        levelString = NSLocalizedString(@"Top level", @"Screen reader text expressing the menu item is at the top level.");
+    }
+    self.textLabel.accessibilityLabel = [NSString stringWithFormat:@"%@. %@.", self.textLabel.text, levelString];
+
+    NSString *labelString = NSLocalizedString(@"Move %@", @"Screen reader text for button that will move the menu item. Argument is menu item's name.");
+    self.orderingButton.accessibilityLabel = [NSString stringWithFormat:labelString, self.item.name];
 }
 
 - (CGRect)orderingToggleRect
