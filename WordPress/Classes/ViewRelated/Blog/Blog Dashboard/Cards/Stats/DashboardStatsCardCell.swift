@@ -109,7 +109,7 @@ private extension DashboardStatsCardCell {
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-        static let accessibilityLabelFormat = "%@ \(viewsTitle), %@ \(visitorsTitle), %@ \(likesTitle)."
+        static let accessibilityLabelFormat = "\(viewsTitle) %@, \(visitorsTitle) %@, \(likesTitle) %@."
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
     }
 
