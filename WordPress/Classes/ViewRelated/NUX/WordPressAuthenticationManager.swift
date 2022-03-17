@@ -535,6 +535,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             if FeatureFlag.mySiteDashboard.enabled {
                 let isTreatment = BlogDashboardAB.shared.variant == .treatment
                 MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
+
+                // Refresh analytics metadata to track the `default_tab_experiment` correctly
+                WPAnalytics.refreshMetadata()
             }
         }
     }
