@@ -3,12 +3,8 @@ import XCTest
 
 class SiteCreationIntentTests: XCTestCase {
 
-    class SiteIntentABMock: SiteIntentABTestable {
+    struct SiteIntentABMock: SiteIntentABTestable {
         let variant: SiteIntentAB.Variant
-
-        init(override: SiteIntentAB.Variant) {
-            self.variant = override
-        }
     }
 
     func testSiteIntentNotAvailableWhenFeatureFlagOff() throws {
@@ -16,7 +12,7 @@ class SiteCreationIntentTests: XCTestCase {
         // Given
         let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: false)
-        let mockVariant = SiteIntentABMock(override: .treatment)
+        let mockVariant = SiteIntentABMock(variant: .treatment)
         let mockSiteCreator = SiteCreator()
 
         // When
@@ -31,7 +27,7 @@ class SiteCreationIntentTests: XCTestCase {
         // Given
         let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: true)
-        let mockVariant = SiteIntentABMock(override: .treatment)
+        let mockVariant = SiteIntentABMock(variant: .treatment)
         let mockSiteCreator = SiteCreator()
 
         // When
@@ -46,7 +42,7 @@ class SiteCreationIntentTests: XCTestCase {
         // Given
         let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: true)
-        let mockVariant = SiteIntentABMock(override: .control)
+        let mockVariant = SiteIntentABMock(variant: .control)
         let mockSiteCreator = SiteCreator()
 
         // When
