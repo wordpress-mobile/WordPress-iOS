@@ -163,6 +163,13 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
     userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        /// If the Dashboard is enabled, we keep tracks for all events
+        /// about what is the default tab assigned
+        /// This value can be: `site_menu`, `dashboard` or `nonexistent`
+        userProperties[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
+    }
+
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
 

@@ -2,7 +2,7 @@ import Foundation
 
 /// A helper class for My Site that manages the default section to display
 ///
-final class MySiteSettings {
+@objc final class MySiteSettings: NSObject {
 
     private let userDefaults: UserDefaults
 
@@ -10,6 +10,12 @@ final class MySiteSettings {
         let defaultSection: MySiteViewController.Section = .siteMenu
         let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int ?? defaultSection.rawValue
         return MySiteViewController.Section(rawValue: rawValue) ?? defaultSection
+    }
+
+    @objc var experimentAssignment: String {
+        let defaultSection: MySiteViewController.Section = .siteMenu
+        let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int ?? defaultSection.rawValue
+        return MySiteViewController.Section(rawValue: rawValue)?.analyticsDescription ?? "nonexistent"
     }
 
     // MARK: - Init
