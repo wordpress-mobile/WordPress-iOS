@@ -6,8 +6,8 @@
 * [*] Bug fix: Allow keyboard to be dismissed when the password field is focused during WP.com account creation.
 * [*] iPad: Fixed a bug where the current displayed section wasn't selected on the menu [#18118]
 * [**] Comment Notifications: updated UI and functionality to match My Site Comments. [#18141]
-* [*] Add GIF badge for animated GIFs uploaded to Image blocks [https://github.com/WordPress/gutenberg/pull/38996]
-* [*] Small refinement to media upload errors, including centering and tweaking copy. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4597]
+* [*] Block Editor: Add GIF badge for animated GIFs uploaded to Image blocks [https://github.com/WordPress/gutenberg/pull/38996]
+* [*] Block Editor: Small refinement to media upload errors, including centering and tweaking copy. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4597]
 
 19.4
 -----
