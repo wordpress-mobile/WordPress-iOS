@@ -69,7 +69,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    /// This message advises the user that
+    /// This message is shown when there are no domain suggestions to list
     private let noResultsLabel: UILabel
     private var isShowingError: Bool = false {
         didSet {
