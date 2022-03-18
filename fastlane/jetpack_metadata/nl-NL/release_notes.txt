@@ -1,0 +1,9 @@
+Deze update ziet er rooskleurig uit—het gebruik van meerdere kleurpaletten wordt nu ondersteund! Voeg thema en standaard kleur- en gradientpaletten toe of maak met je favoriete kleuren je eigen Persoonlijke palet. Het hebben ook het probleem opgelost waarbij je de themakleuren niet zag en de gegevens van het huidige thema niet verversten.
+
+Voor apparaten die talen gebruiken die van rechts naar links worden gelezen, hebben we in het scherm ‘Kies een domein’ tijdens het aanmaakproces voor sites de positie van de pictogrammen, knoppen en tekst bijgewerkt. Oké, oké.
+
+Wil je in de pushmeldingen van je apparaat uitgebreide media zoals afbeeldingen en .gifs zien? Houd de notificatie ingedrukt om een voorbeeldweergave te openen.
+
+We hebben de meldingen van het weekoverzicht wat aangepast zodat we zeker weten dat ze zichtbaar zijn als je ze hebt ingeschakeld. Hupsakee!
+
+Tot slot hebben we het Inzichten-scherm verbeterd, zodat het nu nog sneller is. We hebben ook een bug geplet die woorden in koppen van contentblokken automatisch dikgedrukt maakte.
