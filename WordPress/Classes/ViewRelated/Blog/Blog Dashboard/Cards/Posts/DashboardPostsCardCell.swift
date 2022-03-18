@@ -133,6 +133,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         }
 
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
+        WPAppAnalytics.track(.openedPosts, withProperties: ["tab_source": "dashboard", "tap_source": "posts_card"], with: blog)
     }
 
     private enum Strings {
