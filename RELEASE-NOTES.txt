@@ -8,7 +8,7 @@
 * [**] Comment Notifications: updated UI and functionality to match My Site Comments. [#18141]
 * [*] Block Editor: Add GIF badge for animated GIFs uploaded to Image blocks [https://github.com/WordPress/gutenberg/pull/38996]
 * [*] Block Editor: Small refinement to media upload errors, including centering and tweaking copy. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4597]
-* [*] Block Editor: Pass the ol start and reversed to native RichText too [https://github.com/WordPress/gutenberg/pull/39354]
+* [*] Block Editor: Fix issue with list's starting index and the order [https://github.com/WordPress/gutenberg/pull/39354]
 
 19.4
 -----
