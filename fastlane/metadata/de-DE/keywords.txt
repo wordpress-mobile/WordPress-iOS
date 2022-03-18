@@ -1,1 +1,1 @@
-Social,Notizen,Jetpack,schreiben,Geotagging,Media,Blog,Website,Blogging,Tagebuch
+blogger,schreiben,bloggen,web,maker,online,store,business,entwerfen,erstellen,schreiben,blogs
