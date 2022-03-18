@@ -128,6 +128,12 @@ class BlogDashboardCardFrameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateColors()
+        setNeedsDisplay()
+    }
+
     /// Add a subview inside the card frame
     func add(subview: UIView) {
         mainStackView.addArrangedSubview(subview)
@@ -156,6 +162,10 @@ class BlogDashboardCardFrameView: UIView {
             chevronImageView,
             ellipsisButton
         ])
+    }
+
+    private func updateColors() {
+        ellipsisButton.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
     }
 
     private func updateChevronImageState() {
