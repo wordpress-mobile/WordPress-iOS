@@ -61,7 +61,7 @@ class BlogDashboardCardFrameView: UIView {
     private lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        button.contentEdgeInsets = Constants.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
