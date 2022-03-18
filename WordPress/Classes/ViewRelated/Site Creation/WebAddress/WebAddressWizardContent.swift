@@ -5,6 +5,7 @@ import WordPressAuthenticator
 ///
 final class WebAddressWizardContent: CollapsableHeaderViewController {
     static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
+    static let noResultsLabelTopAnchorConstraintIdentifier = "noResultsLabelTopAnchorConstraintIdentifier"
 
     // MARK: Properties
     private struct Metrics {
@@ -172,6 +173,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        updateNoResultsLabelTopInset()
+
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let `self` = self else { return }
             if !self.sitePromptView.isHidden {
@@ -304,11 +307,23 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         view.addSubview(noResultsLabel)
 
+        let noResultsLabelTopAnchor = noResultsLabel.topAnchor.constraint(equalTo: searchHeader.bottomAnchor)
+        noResultsLabelTopAnchor.identifier = WebAddressWizardContent.noResultsLabelTopAnchorConstraintIdentifier
+
         NSLayoutConstraint.activate([
             noResultsLabel.widthAnchor.constraint(equalTo: table.widthAnchor, constant: -50),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noResultsLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Metrics.noResultsTopInset)
+            noResultsLabelTopAnchor
         ])
+
+        updateNoResultsLabelTopInset()
+    }
+
+    /// Sets the top inset for the noResultsLabel based on layout orientation
+    private func updateNoResultsLabelTopInset() {
+        if let constraint = view.constraints.first(where: { $0.identifier == WebAddressWizardContent.noResultsLabelTopAnchorConstraintIdentifier }) {
+            constraint.constant = UIDevice.current.orientation.isPortrait ? Metrics.noResultsTopInset : 0
+        }
     }
 
     private func setupTable() {
