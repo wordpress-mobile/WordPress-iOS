@@ -133,7 +133,6 @@ class BlogDashboardCardFrameView: UIView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateColors()
-        setNeedsDisplay()
     }
 
     /// Add a subview inside the card frame
