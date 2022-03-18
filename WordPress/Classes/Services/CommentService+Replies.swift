@@ -27,10 +27,13 @@ extension CommentService {
             return
         }
 
-        // also fill in the `author` parameter, so the remote only returns comments authored by the current user.
-        remote.getCommentsV2(for: siteID, parameters: [.parent: parentID, .author: userID]) { remoteComments in
-            // return the most recent commentID (if any).
-            success(remoteComments.sorted { $0.date > $1.date }.first?.commentID ?? 0)
+        // If the current user does not have permission to the site, the `author` endpoint parameter is not permitted.
+        // Therefore, fetch all replies and filter for the current user here.
+        remote.getCommentsV2(for: siteID, parameters: [.parent: parentID]) { remoteComments in
+            // Filter for comments authored by the current user, and return the most recent commentID (if any).
+            success(remoteComments
+                        .filter { $0.authorID == userID }
+                        .sorted { $0.date > $1.date }.first?.commentID ?? 0)
         } failure: { error in
             failure(error)
         }

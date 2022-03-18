@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-21 13:18:29+0000 */
+/* Translation-Revision-Date: 2022-03-11 09:05:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\nStuur ons een e-mail om je inhoud te laten wissen.";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
-"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nDeze gebruiker is geregistreerd. De naam, webadres en e-mailadres kunnen niet bewerkt worden.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nOm te bevestigen, vul je site-adres opnieuw in alvorens te verwijderen.\n";
@@ -2040,10 +2040,10 @@ translators: Block name. %s: The localized block name */
 "Create link" = "Maak link";
 
 /* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
+"Create your first post" = "Maak je eerste bericht";
 
 /* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
+"Create your next post" = "Maak je volgende bericht";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
@@ -4068,7 +4068,7 @@ translators: Block name. %s: The localized block name */
 "Loading Scan..." = "Scan laden...";
 
 /* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
+"Loading comment..." = "Reactie laden...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Domeinen laden";
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Regelmatig publiceren kan je lezers betrokken houden en nieuwe bezoekers naar je site aantrekken.";
 
 /* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+"Posting regularly helps build your audience!" = "Regelmatig publiceren helpt je publiek opbouwen!";
 
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
@@ -5511,7 +5511,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "Berichten en pagina's";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Berichten verschijnen op je blogpagina in omgekeerde chronologische volgorde. Het is tijd om je ideeën met de wereld te delen.";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Berichtenpagina";
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "Er is een fout opgetreden bij het laden van plugins";
 
 /* Text displayed when there is a failure loading a comment. */
-"There was an error loading the comment." = "There was an error loading the comment.";
+"There was an error loading the comment." = "Er is een fout opgetreden bij het laden van de reactie.";
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "Er is een fout opgetreden bij het laden van de geschiedenis";
@@ -8113,7 +8113,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Up to seven days worth of logs are saved." = "Logs worden zeven dagen lang opgeslagen.";
 
 /* Title for the card displaying upcoming scheduled posts. */
-"Upcoming scheduled posts" = "Upcoming scheduled posts";
+"Upcoming scheduled posts" = "Komende geplande berichten";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -8695,7 +8695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weeks" = "Weken";
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Welcome to Jetpack";
+"Welcome to Jetpack" = "Welkom bij Jetpack";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Reader. Ontdek miljoenen van blogs aan je vingertoppen.";
@@ -8903,7 +8903,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "Werk met ons samen";
 
 /* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
+"Work on a draft post" = "Werk aan een conceptbericht";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Wereldkaart die het aantal weergaven per land toont.";
@@ -8959,7 +8959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Yesterday" = "Gisteren";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it with the new image?" = "Je hebt al een uitgelichte afbeelding ingesteld. Wil je die met de nieuwe afbeelding vervangen?";
+"You already have a featured image set. Do you want to replace it with the new image?" = "Je hebt al een uitgelichte afbeelding ingesteld. Wil je het vervangen met de nieuwe afbeelding?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Je staat op het punt je gebruikersnaam te wijzigen, wat op dit moment %1$@. %2$@ is";

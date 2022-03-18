@@ -711,8 +711,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
                               scrollPosition:[self optimumScrollPositionForIndexPath:self.restorableSelectedIndexPath]];
-    } else {
-        NSLog(@"$$ NSNotFound %d", self.selectedSectionCategory);
     }
 }
 
