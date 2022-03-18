@@ -62,7 +62,9 @@ class BlogDashboardCardFrameView: UIView {
         let button = UIButton(type: .custom)
         button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-        button.isAccessibilityElement = false
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
+        button.accessibilityTraits = .button
         button.isHidden = true
         button.on(.touchUpInside) { [weak self] _ in
             self?.onEllipsisButtonTap?()
@@ -232,5 +234,9 @@ class BlogDashboardCardFrameView: UIView {
         static let iconSize = CGSize(width: 18, height: 18)
         static let cornerRadius: CGFloat = 10
         static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    }
+
+    private enum Strings {
+        static let ellipsisButtonAccessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for more button in dashboard quick start card.")
     }
 }
