@@ -1,0 +1,9 @@
+Vi är taggade – det är nu möjligt att använda flera färgpaletter. Lägg till tema- och standardfärg samt gradientpaletter, eller skapa din egen anpassade palett med dina favoritnyanser. Vi har även åtgärdat ett problem som gjorde att temafärger inte visades och att data för det aktuella temat inte uppdaterades.
+
+För enheter som använder höger-till-vänster-språk har vi uppdaterat ikon-, knapp- och textpositionering för skärmen "Välj en domän" i processen för webbplatsskapande. Ok, ok.
+
+Vill du se rik media som bilder och .gif-bilder i din enhets push-notiser? Du behöver bara trycka och hålla inne på notisen för att öppna en förhandsgranskning.
+
+Vi har förbättrat notiserna för Veckosammanfattning för att vara säkra på att de visas när du har aktiverat dem. Hoppla!
+
+Slutligen har vi gjort några små korrigeringar på skärmen Insikter för att få saker och ting att gå snabbare. Vi har även åtgärdat ett fel som gjorde att automatiskt korrigerade ord visades i fetstil i rubrikerna för innehållsblock.
