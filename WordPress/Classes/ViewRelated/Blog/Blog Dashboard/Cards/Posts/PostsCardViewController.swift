@@ -52,7 +52,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.dataSource = viewModel
+        tableView.dataSource = viewModel.diffableDataSource
         tableView.delegate = self
         viewModel.refresh()
     }
