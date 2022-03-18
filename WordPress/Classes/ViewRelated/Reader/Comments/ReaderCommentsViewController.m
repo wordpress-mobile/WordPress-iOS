@@ -18,9 +18,6 @@
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
 static CGFloat const EstimatedCommentRowHeight = 300.0;
-static NSInteger const MaxCommentDepth = 4.0;
-static CGFloat const CommentIndentationWidth = 40.0;
-
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
@@ -1256,6 +1253,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return NO;
 }
 
+#pragma mark - WPRichContentDelegate Methods
+
 - (void)richContentView:(WPRichContentView *)richContentView didReceiveImageAction:(WPRichTextImage *)image
 {
     UIViewController *controller = nil;
@@ -1279,9 +1278,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 }
 
-- (void)interactWithURL:(NSURL *) URL {
-      [self presentWebViewControllerWithURL:URL];
-  }
+- (void)interactWithURL:(NSURL *)URL
+{
+    [self presentWebViewControllerWithURL:URL];
+}
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
