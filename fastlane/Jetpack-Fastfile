@@ -156,41 +156,33 @@ lane :update_jetpack_appstore_strings do |options|
 end
 
 #####################################################################################
-# download_jetpack_localized_metadata
+# download_jetpack_localized_app_store_metadata
 # -----------------------------------------------------------------------------------
-# Downloads localized metadata for App Store Connect from GlotPress.
+# Downloads localized metadata (intended for App Store Connect) from GlotPress for Jetpack.
 # -----------------------------------------------------------------------------------
 # Usage:
-# bundle exec fastlane download_localized_metadata
+# bundle exec fastlane download_jetpack_localized_app_store_metadata
 #####################################################################################
-desc 'Downloads localized metadata for App Store Connect from GlotPress'
+desc 'Downloads localized Jetpack metadata (for App Store Connect) from GlotPress'
 lane :download_jetpack_localized_app_store_metadata do
-  # No need to `cd` into `fastlane` because of how Fastlane manages its paths
-  # internally.
+  # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
+
+  # No need to `cd` into `fastlane` because of how Fastlane manages its paths internally.
   sh './download_metadata.swift jetpack'
 
-  # GlotPress doesn't have the English notes because, being already in English,
-  # they do not require a translation. As such, we simply copy the source of
-  # truth file into the Fastlane metadata folder.
+  # @TODO: Make the `fastlane/jetpack_metadata/en-US/release_notes.txt` path be the source of truth for the original copies in the future.
+  # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
+  #
+  # In the meantime, since GlotPress doesn't have the `en-US` notes because those are the ones used as originals, just copy the file to the right place for `deliver` to find
   metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
   release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
   FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
-  jetpack_metadata_glob = File.join(metadata_directory, '**/*.txt')
-
-  no_files_changed = sh "git status #{jetpack_metadata_glob}" do |_, output, _|
-    output.include? 'nothing to commit'
-  end
-
-  if no_files_changed
-    UI.message "No translations downloaded into #{jetpack_metadata_glob}. Moving on."
-  else
-    sh "git add #{jetpack_metadata_glob}"
-    git_commit(
-      path: jetpack_metadata_glob,
-      message: 'Update Jetpack metadata translations'
-    )
-  end
+  git_commit(
+    path: Dir.glob('**/*.txt', base: metadata_directory),
+    message: 'Update Jetpack metadata translations',
+    allow_nothing_to_commit: true
+  )
 end
 
 #####################################################################################
