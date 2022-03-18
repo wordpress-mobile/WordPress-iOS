@@ -845,7 +845,7 @@ import Foundation
         case .mySiteTabTapped:
             return "my_site_tab_tapped"
         case .mySiteSiteMenuShown:
-            return "my_site_site_menu_show"
+            return "my_site_site_menu_shown"
         case .mySiteDashboardShown:
             return "my_site_dashboard_shown"
 
