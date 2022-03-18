@@ -5,7 +5,6 @@ import WordPressAuthenticator
 ///
 final class WebAddressWizardContent: CollapsableHeaderViewController {
     static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
-    static let noResultsLabelTopAnchorConstraintIdentifier = "noResultsLabelTopAnchorConstraintIdentifier"
 
     // MARK: Properties
     private struct Metrics {
@@ -71,6 +70,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     /// This message is shown when there are no domain suggestions to list
     private let noResultsLabel: UILabel
+
+    private var noResultsLabelTopAnchor: NSLayoutConstraint?
     private var isShowingError: Bool = false {
         didSet {
             if isShowingError {
@@ -308,7 +309,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         view.addSubview(noResultsLabel)
 
         let noResultsLabelTopAnchor = noResultsLabel.topAnchor.constraint(equalTo: searchHeader.bottomAnchor)
-        noResultsLabelTopAnchor.identifier = WebAddressWizardContent.noResultsLabelTopAnchorConstraintIdentifier
+        self.noResultsLabelTopAnchor = noResultsLabelTopAnchor
 
         NSLayoutConstraint.activate([
             noResultsLabel.widthAnchor.constraint(equalTo: table.widthAnchor, constant: -50),
@@ -321,9 +322,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     /// Sets the top inset for the noResultsLabel based on layout orientation
     private func updateNoResultsLabelTopInset() {
-        if let constraint = view.constraints.first(where: { $0.identifier == WebAddressWizardContent.noResultsLabelTopAnchorConstraintIdentifier }) {
-            constraint.constant = UIDevice.current.orientation.isPortrait ? Metrics.noResultsTopInset : 0
-        }
+        noResultsLabelTopAnchor?.constant = UIDevice.current.orientation.isPortrait ? Metrics.noResultsTopInset : 0
     }
 
     private func setupTable() {
