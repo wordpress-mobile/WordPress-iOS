@@ -1303,6 +1303,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadPages];
         [self preloadComments];
         [self preloadMetadata];
+        [self preloadDomains];
     }
 }
 
@@ -1383,6 +1384,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                [weakSelf configureTableViewData];
                                [weakSelf reloadTableViewPreservingSelection];
                            }];
+}
+
+- (void)preloadDomains
+{
+    if (![Feature enabled:FeatureFlagDomains]) {
+        return;
+    }
+
+    [self.blogService refreshDomainsFor:self.blog
+                                success:nil
+                                failure:nil];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element
