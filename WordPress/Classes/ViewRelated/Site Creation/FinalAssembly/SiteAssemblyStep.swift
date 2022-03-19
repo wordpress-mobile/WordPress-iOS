@@ -1,7 +1,7 @@
 
 import UIKit
 
-/// Site Creation, Last screen: Site Assembly.
+/// Site Creation. Site Assembly
 final class SiteAssemblyStep: WizardStep {
 
     // MARK: Properties

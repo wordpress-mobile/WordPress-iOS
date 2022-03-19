@@ -1,6 +1,6 @@
 import Foundation
 
-/// Site Creation. First screen: Allows selection of the home page which translates to the initial theme as well.
+/// Site Creation. Allows selection of the home page which translates to the initial theme as well.
 final class SiteDesignStep: WizardStep {
     typealias SiteDesignSelection = (_ design: RemoteSiteDesign?) -> Void
     weak var delegate: WizardDelegate?
