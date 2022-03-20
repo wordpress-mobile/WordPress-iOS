@@ -1,5 +1,5 @@
 
-/// Site Creation. Domains
+/// Site Creation: Domains
 final class WebAddressStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteAddressService

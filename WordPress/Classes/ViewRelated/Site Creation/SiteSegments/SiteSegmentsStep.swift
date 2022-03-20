@@ -1,5 +1,5 @@
 
-/// Site Creation. Site Segments
+/// Site Creation: Site Segments
 final class SiteSegmentsStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteSegmentsService

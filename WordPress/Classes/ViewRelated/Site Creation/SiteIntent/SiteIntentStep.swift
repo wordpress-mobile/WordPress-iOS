@@ -1,6 +1,6 @@
 import Foundation
 
-/// Site Intent: Allows selection of the the site's vertical (a.k.a. intent or industry).
+/// Site Creation: Allows selection of the the site's vertical (a.k.a. intent or industry).
 final class SiteIntentStep: WizardStep {
     typealias SiteIntentSelection = (_ vertical: SiteVertical?) -> Void
     weak var delegate: WizardDelegate?
