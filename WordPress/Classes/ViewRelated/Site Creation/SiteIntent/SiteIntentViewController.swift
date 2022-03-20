@@ -45,7 +45,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     // MARK: Constants
 
     private enum Strings {
-        static let mainTitle: String = NSLocalizedString("What's your\nwebsite about?", comment: "Select the site's intent. Title")
+        static let mainTitle: String = NSLocalizedString("What's your website about?", comment: "Select the site's intent. Title")
         static let prompt: String = NSLocalizedString("Choose a topic from the list below or type your own", comment: "Select the site's intent. Subtitle")
         static let primaryAction: String = NSLocalizedString("Continue", comment: "Button to progress to the next step")
     }
