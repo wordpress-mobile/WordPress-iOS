@@ -44,6 +44,7 @@ open class QuickStartTourGuide: NSObject {
 
     @objc func remove(from blog: Blog) {
         blog.removeAllTours()
+        endCurrentTour()
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
     }
 
