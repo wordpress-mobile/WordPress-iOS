@@ -170,6 +170,11 @@ end
 # Helper Functions
 #################################################
 
+# Triggers a Release Build on Buildkite
+#
+# @param [String] branch The branch to build
+# @param [Boolean] beta Indicate if we should build a beta or regular release
+#
 def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
     buildkite_organization: 'automattic',
@@ -180,6 +185,8 @@ def trigger_buildkite_release_build(branch:, beta:)
   )
 end
 
+# Checks that the Gutenberg pod is reference by a tag and not a commit
+#
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
   res = ''
@@ -200,6 +207,10 @@ lane :gutenberg_dep_check do
   UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
 end
 
+# Returns the path to the extracted Release Notes file for the given `app`.
+#
+# @param [String|Symbol] app The app to get the path for, must be one of `wordpress` or `jetpack`
+#
 def extracted_release_notes_file_path(app:)
   paths = {
     wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
@@ -208,6 +219,8 @@ def extracted_release_notes_file_path(app:)
   paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
 end
 
+# Prints the message to remind the Release Manager to audit the Release Notes after code freeze.
+#
 def print_release_notes_reminder
   message = <<~MSG
     The extracted release notes for WordPress and Jetpack were based on the same source.
