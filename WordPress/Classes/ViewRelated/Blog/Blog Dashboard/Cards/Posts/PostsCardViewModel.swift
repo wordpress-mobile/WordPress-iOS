@@ -35,7 +35,10 @@ class PostsCardViewModel: NSObject {
 
     private weak var viewController: PostsCardView?
 
-    lazy var diffableDataSource = UITableViewDiffableDataSource<Int, NSManagedObjectID>(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, objectID) -> UITableViewCell? in
+    typealias DataSource = UITableViewDiffableDataSource<Int, NSManagedObjectID>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+
+    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, objectID) -> UITableViewCell? in
         guard let self = self,
             let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
             return UITableViewCell()
@@ -299,12 +302,12 @@ private extension PostsCardViewModel {
 
 extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        guard let dataSource = viewController?.tableView.dataSource as? UITableViewDiffableDataSource<Int, NSManagedObjectID> else {
+        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
             assertionFailure("The data source has not implemented snapshot support while it should")
             return
         }
-        var snapshot = snapshot as NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
-        let currentSnapshot = dataSource.snapshot() as NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+        var snapshot = snapshot as Snapshot
+        let currentSnapshot = dataSource.snapshot() as Snapshot
 
         /// Ensure a maximum of `fetchRequest.fetchLimit` items is displayed
         snapshot.deleteItems(snapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
@@ -319,7 +322,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         snapshot.reloadItems(reloadIdentifiers)
 
         let shouldAnimate = viewController?.tableView.numberOfSections != 0
-        dataSource.apply(snapshot as NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>,
+        dataSource.apply(snapshot as Snapshot,
                          animatingDifferences: shouldAnimate,
                          completion: { [weak self] in
             self?.showNextPostPromptIfNeeded()
