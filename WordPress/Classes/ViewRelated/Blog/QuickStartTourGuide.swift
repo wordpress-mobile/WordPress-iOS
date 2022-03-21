@@ -19,6 +19,9 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
+    /// A flag indicating if the user is currently going through a tour or not.
+    private(set) var tourInProgress = false
+
     /// Represents the origin from which the current tour is triggered
     @objc var currentTourOrigin: QuickStartTourOrigin = .unknown
 
@@ -34,6 +37,7 @@ open class QuickStartTourGuide: NSObject {
         steps.forEach { (tour) in
             completed(tour: tour, for: blog)
         }
+        tourInProgress = false
     }
 
     func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -86,7 +90,9 @@ open class QuickStartTourGuide: NSObject {
             self?.suggestionWorkItem?.cancel()
             self?.suggestionWorkItem = nil
 
-            self?.skipped(tour, for: blog)
+            if skipped {
+                self?.skipped(tour, for: blog)
+            }
         }
 
         let newWorkItem = DispatchWorkItem { [weak self] in
@@ -164,6 +170,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
 
+        tourInProgress = true
         showCurrentStep()
     }
 
@@ -362,6 +369,7 @@ private extension QuickStartTourGuide {
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
+            tourInProgress = false
         } else {
             if let nextTour = tourToSuggest(for: blog) {
                 PushNotificationsManager.shared.postNotification(for: nextTour)
@@ -430,6 +438,7 @@ private extension QuickStartTourGuide {
             return
         }
 
+        tourInProgress = false
         currentSuggestion = nil
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
     }
@@ -444,6 +453,7 @@ private extension QuickStartTourGuide {
     }
 
     func skipped(_ tour: QuickStartTour, for blog: Blog) {
+        tourInProgress = false
         blog.skipTour(tour.key)
         recentlyTouredBlog = nil
     }
