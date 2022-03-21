@@ -140,11 +140,11 @@ private extension PostsCardViewModel {
         let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
-        let myAuthorID = blog.userID ?? 0
-
-        // Brand new local drafts have an authorID of 0.
-        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
-        predicates.append(authorPredicate)
+        if let myAuthorID = blog.userID {
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
+        }
 
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
        return predicate

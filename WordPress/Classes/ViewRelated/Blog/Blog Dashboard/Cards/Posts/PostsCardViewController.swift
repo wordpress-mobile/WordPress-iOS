@@ -228,6 +228,7 @@ extension PostsCardViewController: PostsCardView {
 
     func hideNextPrompt() {
         guard nextPostView != nil else {
+            delegate?.didHideNextPostPrompt()
             return
         }
 
