@@ -59,6 +59,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         frameView.add(subview: statsStackview)
 
         stackView.addArrangedSubview(frameView)
+
+        WPAnalytics.track(.dashboardCardShown,
+                          properties: ["type": DashboardCard.todaysStats.rawValue],
+                          blog: blog)
     }
 
     private func createStatsStackView(arrangedSubviews: [UIView]) -> UIStackView {
@@ -93,7 +97,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
         WPAnalytics.track(.dashboardCardItemTapped,
-                          properties: ["type": "stats"],
+                          properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
         StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
     }
