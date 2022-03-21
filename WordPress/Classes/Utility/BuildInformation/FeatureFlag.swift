@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+    case bloggingPrompts
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -30,6 +31,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
 
         switch self {
+        case .bloggingPrompts:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -97,6 +100,8 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
+        case .bloggingPrompts:
+            return "Blogging Prompts"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
