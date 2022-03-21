@@ -238,6 +238,10 @@ class PostCoordinator: NSObject {
 
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
+            if uploadedPost.isScheduled() {
+                NotificationCenter.default.post(name: .postScheduled, object: nil)
+            }
+
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
@@ -517,4 +521,9 @@ extension PostCoordinator {
             }
         }
     }
+}
+
+extension NSNotification.Name {
+    /// Fired when a post is scheduled
+    static let postScheduled = NSNotification.Name("PostScheduled")
 }
