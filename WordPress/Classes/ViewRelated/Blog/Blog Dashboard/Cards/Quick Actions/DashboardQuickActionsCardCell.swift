@@ -109,7 +109,7 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
-        WPAppAnalytics.track(event, withProperties: ["tab_source": "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], with: blog)
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], with: blog)
     }
 }
 
