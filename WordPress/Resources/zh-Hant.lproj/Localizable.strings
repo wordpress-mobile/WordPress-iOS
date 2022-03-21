@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-03 23:26:33+0000 */
+/* Translation-Revision-Date: 2022-03-10 22:21:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\n要清除內容，請傳送電子郵件給我們。";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
-"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nThis user is registered. Their name, web address, and email address cannot be edited.";
+"\nThis user is registered. Their name, web address, and email address cannot be edited." = "\n這位使用者已註冊。 無法編輯他們的姓名、網址和電子郵件地址。";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
@@ -1077,7 +1077,7 @@ translators: Block name. %s: The localized block name */
 "Block settings" = "區塊設定";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "封鎖此網站";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "封鎖的網站";
@@ -1829,7 +1829,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "繼續使用 Apple";
 
 /* No comment provided by engineer. */
-"Convert to link" = "轉換為連結";
+"Convert to link" = "轉換成連結";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹飪";
@@ -4068,7 +4068,7 @@ translators: Block name. %s: The localized block name */
 "Loading Scan..." = "正在載入掃瞄…";
 
 /* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
+"Loading comment..." = "載入留言中…";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "正在載入網域";
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期張貼文章有助於持續與讀者互動，並吸引更多訪客造訪網站。";
 
 /* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
+"Posting regularly helps build your audience!" = "定期發文有助於建立讀者群！";
 
 /* All Time Stats 'Posts' label
    Noun. Title for posts button.
@@ -5511,7 +5511,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "文章與頁面";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "文章會在你的網誌頁面上按時間倒序顯示。 是時候和全世界分享你的想法了！";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "文章列表頁面";
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There was an error loading plugins" = "載入外掛程式時發生錯誤";
 
 /* Text displayed when there is a failure loading a comment. */
-"There was an error loading the comment." = "There was an error loading the comment.";
+"There was an error loading the comment." = "載入留言時發生錯誤。";
 
 /* Text displayed when there is a failure loading the history. */
 "There was an error loading the history" = "載入記錄時發生錯誤";
@@ -8695,7 +8695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Weeks" = "週";
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
-"Welcome to Jetpack" = "Welcome to Jetpack";
+"Welcome to Jetpack" = "歡迎使用 Jetpack";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
 "Welcome to Reader. Discover millions of blogs at your fingertips." = "歡迎使用閱讀器。 動動指尖即可探索數百萬個網誌。";

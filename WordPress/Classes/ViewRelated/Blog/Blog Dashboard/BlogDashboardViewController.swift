@@ -109,7 +109,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)    }
+        NotificationCenter.default.addObserver(self, selector: #selector(toggleQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)    }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
@@ -124,8 +124,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
-    /// Show Quick Start if needed
-    @objc private func showQuickStart() {
+    /// Show or hide Quick Start if needed
+    @objc private func toggleQuickStart() {
         guard view.superview != nil else {
             return
         }

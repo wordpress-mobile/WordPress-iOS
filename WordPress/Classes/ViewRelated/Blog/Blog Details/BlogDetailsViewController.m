@@ -13,6 +13,7 @@
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
+#import "UIViewController+RemoveQuickStart.h"
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
 
@@ -556,7 +557,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
 - (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)subsection
 {
-    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
     NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
     switch (subsection) {
         case BlogDetailsSubsectionReminders:
@@ -567,7 +568,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionQuickStart:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionStats:
-            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionJetpackSettings:
@@ -598,8 +599,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if (!_restorableSelectedIndexPath) {
         // If nil, default to stats subsection.
-        BlogDetailsSubsection subsection = BlogDetailsSubsectionStats;
-        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection];
+        BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
         NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
@@ -612,6 +613,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         switch (section.category) {
+            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
                 _restorableSelectedIndexPath = nil;
@@ -687,9 +689,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
+            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
-                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:BlogDetailsSubsectionStats];
+                BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
                 sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
                 break;
@@ -705,7 +709,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                             self.restorableSelectedIndexPath.row < [self.tableView numberOfRowsInSection:self.restorableSelectedIndexPath.section];
     if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
-
         [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
                               scrollPosition:[self optimumScrollPositionForIndexPath:self.restorableSelectedIndexPath]];
@@ -740,7 +743,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
-    if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
+    if (self.blog.shouldShowJetpackSection) {
         [marr addObject:[self jetpackSectionViewModel]];
     } else {
         [marr addObject:[self generalSectionViewModel]];
@@ -1088,6 +1091,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
 
+    self.restorableSelectedIndexPath = nil;
+    
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    splitViewController.isShowingInitialDetail = YES;
+    
     if ([self shouldShowDashboard]) {
         [self showDetailViewForSubsection:BlogDetailsSubsectionHome];
     } else {
@@ -1173,6 +1181,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    splitViewController.isShowingInitialDetail = NO;
+    
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
@@ -1218,41 +1229,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
     view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
-        [NoticesDispatch lock];
-        [weakSelf removeQuickStartSection:header];
+        [weakSelf removeQuickStartFromBlog:weakSelf.blog];
     };
     return view;
-}
-
-- (void)removeQuickStartSection:(BlogDetailsSectionHeaderView *)view
-{
-    NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
-    NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
-    NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
-    
-    UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
-    [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
-        [NoticesDispatch unlock];
-    }];
-    [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        [[QuickStartTourGuide shared] removeFrom:self.blog];
-        [NoticesDispatch unlock];
-    }];
-    
-    UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    removeSheet.popoverPresentationController.sourceView = view;
-    removeSheet.popoverPresentationController.sourceRect = view.ellipsisButton.frame;
-    [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
-        [self presentViewController:removeConfirmation animated:YES completion:nil];
-    }];
-    [removeSheet addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
-        [NoticesDispatch unlock];
-    }];
-    
-    [self presentViewController:removeSheet animated:YES completion:nil];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -1299,6 +1278,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadPages];
         [self preloadComments];
         [self preloadMetadata];
+        [self preloadDomains];
     }
 }
 
@@ -1379,6 +1359,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                [weakSelf configureTableViewData];
                                [weakSelf reloadTableViewPreservingSelection];
                            }];
+}
+
+- (void)preloadDomains
+{
+    if (![Feature enabled:FeatureFlagDomains]) {
+        return;
+    }
+
+    [self.blogService refreshDomainsFor:self.blog
+                                success:nil
+                                failure:nil];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element

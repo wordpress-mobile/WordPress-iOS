@@ -125,6 +125,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }
 
     private func hideButton() {
+        buttonViewContainer.layoutIfNeeded()
         buttonContainerBottomConstraint.constant = buttonViewContainer.frame.height
     }
 

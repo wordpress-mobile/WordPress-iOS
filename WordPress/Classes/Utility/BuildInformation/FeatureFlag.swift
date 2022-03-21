@@ -17,12 +17,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case domains
     case timeZoneSuggester
     case aboutScreen
-    case newCommentThread
-    case postDetailsComments
-    case commentThreadModerationMenu
     case mySiteDashboard
-    case followConversationPostDetails
-    case markAllNotificationsAsRead
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
     case statsPerformanceImprovements
@@ -66,22 +61,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .aboutScreen:
             return true
-        case .newCommentThread:
-            return true
-        case .postDetailsComments:
-            return true
-        case .commentThreadModerationMenu:
-            return true
         case .mySiteDashboard:
             return false
-        case .markAllNotificationsAsRead:
-            return true
-        case .followConversationPostDetails:
-            return true
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
@@ -142,18 +127,8 @@ extension FeatureFlag {
             return "TimeZone Suggester"
         case .aboutScreen:
             return "New Unified About Screen"
-        case .newCommentThread:
-            return "New Comment Thread"
-        case .postDetailsComments:
-            return "Post Details Comments"
-        case .commentThreadModerationMenu:
-            return "Comment Thread Moderation Menu"
         case .mySiteDashboard:
             return "My Site Dashboard"
-        case .followConversationPostDetails:
-            return "Follow Conversation from Post Details"
-        case .markAllNotificationsAsRead:
-            return "Mark Notifications As Read"
         case .mediaPickerPermissionsNotice:
             return "Media Picker Permissions Notice"
         case .notificationCommentDetails:

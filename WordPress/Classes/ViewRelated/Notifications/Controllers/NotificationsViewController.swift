@@ -512,13 +512,12 @@ private extension NotificationsViewController {
 
     func updateNavigationItems() {
         var barItems: [UIBarButtonItem] = []
+
         if shouldDisplaySettingsButton {
             barItems.append(settingsBarButtonItem)
         }
 
-        if FeatureFlag.markAllNotificationsAsRead.enabled {
-            barItems.append(markAllAsReadBarButtonItem)
-        }
+        barItems.append(markAllAsReadBarButtonItem)
 
         navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
@@ -530,6 +529,7 @@ private extension NotificationsViewController {
     func setupConstraints() {
         // Inline prompt is initially hidden!
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
+        filterTabBar.tabBarHeightConstraintPriority = 999
 
         NSLayoutConstraint.activate([
             tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
