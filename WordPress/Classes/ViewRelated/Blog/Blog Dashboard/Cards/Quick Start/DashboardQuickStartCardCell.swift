@@ -2,11 +2,21 @@ import UIKit
 
 final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
+    private weak var viewController: BlogDashboardViewController?
+    private var blog: Blog?
+
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.nextSteps
         frameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
+        frameView.onEllipsisButtonTap = { [weak self] in
+            guard let viewController = self?.viewController,
+                  let blog = self?.blog else {
+                return
+            }
+            viewController.removeQuickStart(from: blog)
+        }
         return frameView
     }()
 
@@ -29,7 +39,8 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         guard let viewController = viewController else {
             return
         }
-
+        self.viewController = viewController
+        self.blog = blog
         tourStateView.configure(blog: blog, sourceController: viewController)
     }
 }
