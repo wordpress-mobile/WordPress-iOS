@@ -126,7 +126,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     open func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
-        guard let alert = WPMediaPickerHelper.buildAlertControllerWithError(error) else {
+        guard let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error) else {
             return true
         }
 
