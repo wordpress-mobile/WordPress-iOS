@@ -62,7 +62,7 @@ end
 
 
 ########################################################################
-# Imports of other Fastfiles
+# Imports domain-specific lanes
 ########################################################################
 
 import 'lanes/build.rb'
@@ -72,6 +72,8 @@ import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
 
 ########################################################################
+
+default_platform(:ios)
 
 before_all do |lane|
   # Skip these checks/steps for test lane (not needed for testing)
@@ -92,5 +94,3 @@ before_all do |lane|
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
 end
-
-default_platform(:ios)

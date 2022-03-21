@@ -4,8 +4,9 @@
 #
 platform :ios do
   # Executes the initial steps needed during code freeze
+  #
   # - Cuts a new release branch
-  # - Extract the Release Notes
+  # - Extracts the Release Notes
   # - Freezes the GitHub milestone and enable GitHub branch protection for the new branch
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
@@ -51,6 +52,7 @@ platform :ios do
   end
 
   # Completes the final steps for the code freeze
+  #
   #  - Generate `.strings` files from code then merge the other, manually-maintained `.strings` files with it
   #  - Trigger the build of the first beta on CI
   #
@@ -85,6 +87,7 @@ platform :ios do
   end
 
   # Sets the stage to start working on a hotfix
+  #
   # - Cuts a new `release/x.y.z` branch from the tag from the latest (`x.y`) version
   # - Bumps the app version numbers appropriately
   #
@@ -113,6 +116,7 @@ platform :ios do
   end
 
   # Finalizes a release at the end of a sprint to submit to the AppStore
+  #
   #  - updates store metadata
   #  - bumps final version number
   #  - removes branch protection and close milestone
