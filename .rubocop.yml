@@ -1,14 +1,14 @@
 Metrics/BlockLength:
-  Exclude:
+  Exclude: &fastfiles
     - fastlane/Fastfile
-
-Style/AsciiComments:
-  Exclude:
-    - fastlane/Fastfile
+    - fastlane/lanes/*.rb
 
 Layout/LineLength:
-  Exclude:
-    - fastlane/Fastfile
+  Max: 180
+  Exclude: *fastfiles
+
+Style/AsciiComments:
+  Exclude: *fastfiles
 
 Naming/FileName:
   Exclude:

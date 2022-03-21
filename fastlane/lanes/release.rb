@@ -3,7 +3,6 @@
 # Lanes related to the Release Process (Code Freeze, Betas, Final Build, AppStore Submission…)
 #
 platform :ios do
-
   # Executes the initial steps needed during code freeze
   # - Cuts a new release branch
   # - Extract the Release Notes
@@ -146,7 +145,6 @@ platform :ios do
     trigger_release_build(branch_to_build: "release/#{version}")
   end
 
-
   # Triggers a beta build on CI
   #
   # @option [String] branch_to_build The name of the branch we want the CI to build, e.g. `release/19.3`
@@ -163,9 +161,6 @@ platform :ios do
     trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
   end
 end
-
-
-
 
 #################################################
 # Helper Functions
@@ -200,7 +195,6 @@ lane :gutenberg_dep_check do
 
   UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
 end
-
 
 def extracted_release_notes_file_path(app:)
   paths = {
