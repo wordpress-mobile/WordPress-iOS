@@ -1574,7 +1574,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog source:@"my_site_view_site" withDeviceModes:true];
+    void (^onWebViewControllerClose)(void) = ^(void) {
+        [self startAlertTimer];
+    };
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL
+                                                                                 blog:self.blog
+                                                                               source:@"my_site_view_site"
+                                                                      withDeviceModes:true
+                                                                              onClose:onWebViewControllerClose];
     LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
