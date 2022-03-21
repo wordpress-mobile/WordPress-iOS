@@ -187,7 +187,13 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        view.pinSubviewToSafeArea(stackView)
+        // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) and letting the horizontal constraints stay centered to allow the reader website background to occupy all available space, and to allow the site preview to show a user's own site without stretching it
+        let safeArea = self.view.safeAreaLayoutGuide
+
+        stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
