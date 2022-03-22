@@ -450,7 +450,7 @@ namespace :install do
 
   namespace :lint do
     task :check do
-      if !git_initialized?
+      unless git_initialized?
         puts 'Initializing git repository'
         sh 'git init', verbose: false
       end
