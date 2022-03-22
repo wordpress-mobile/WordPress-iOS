@@ -9,7 +9,7 @@ GLOTPRESS_APP_STRINGS_URL = 'https://translate.wordpress.org/projects/apps/ios/d
 
 # URL of the GlotPress projects containing AppStore metadata (title, keywords, release notes, …)
 GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
-GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/',
+GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
 
 # List of locales used for the app strings
 # TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
