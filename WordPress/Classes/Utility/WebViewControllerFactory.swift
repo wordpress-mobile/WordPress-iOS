@@ -24,10 +24,12 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration, source: source)
     }
 
-    @objc static func controller(url: URL, blog: Blog, source: String, withDeviceModes: Bool = false) -> UIViewController {
+    @objc static func controller(url: URL, blog: Blog, source: String, withDeviceModes: Bool = false,
+                                 onClose: (() -> Void)? = nil) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.analyticsSource = source
         configuration.authenticate(blog: blog)
+        configuration.onClose = onClose
         return withDeviceModes ? PreviewWebKitViewController(configuration: configuration) : controller(configuration: configuration, source: source)
     }
 

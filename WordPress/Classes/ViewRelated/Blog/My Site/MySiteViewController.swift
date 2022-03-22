@@ -62,7 +62,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChangedByUser), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
         return segmentedControl
     }()
@@ -221,7 +221,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         if !hideSegmentedControl && switchTabsIfNeeded {
             segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
-            segmentedControl.sendActions(for: .valueChanged)
+            segmentedControlValueChanged()
         }
     }
 
@@ -397,12 +397,21 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
         }
 
-        WPAnalytics.track(.mySitePullToRefresh, properties: ["source": section.analyticsDescription])
+        WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
     }
 
     // MARK: - Segmented Control
 
-    @objc private func segmentedControlValueChanged(_ sender: Any) {
+    @objc private func segmentedControlValueChangedByUser() {
+        guard let section = currentSection else {
+            return
+        }
+
+        segmentedControlValueChanged()
+        WPAnalytics.track(.mySiteTabTapped, properties: ["tab": section.analyticsDescription])
+    }
+
+    @objc private func segmentedControlValueChanged() {
         guard let blog = blog,
               let section = currentSection else {
             return
@@ -702,7 +711,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
                 self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
-                self.segmentedControl.sendActions(for: .valueChanged)
+                self.segmentedControlValueChanged()
             }
 
             self.updateSegmentedControl(for: blog)

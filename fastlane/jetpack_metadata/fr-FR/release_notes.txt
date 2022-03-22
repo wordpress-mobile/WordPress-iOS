@@ -1,0 +1,9 @@
+Nous prenons en charge de nombreuses palettes pour vous permettre de créer des sites hauts en couleurs ! Vous pouvez ajouter des palettes colorées de dégradés, associées à des thèmes ou prédéfinies, ou bien ajouter votre propre palette personnalisée avec vos teintes préférées. Nous avons également corrigé un problème qui empêchait l’affichage des couleurs associées à un thème ainsi que l’actualisation des données du thème choisi.
+
+Pour les appareils basés sur des langues s’écrivant de droite à gauche, nous avons modifié la position des icônes, des boutons et du texte qui s’affichent sur la page « Choisir un domaine » lors du processus de création de site. Nous avons une annonce à vous faire.
+
+Vous souhaitez pouvoir afficher des éléments multimédia comme des images ou des GIF dans les notifications push de votre appareil ? Il vous suffit d’appuyer longuement sur une notification pour ouvrir un aperçu.
+
+Nous avons apporté quelques ajustements aux notifications de résumé hebdomadaire afin que les contenus multimédia s’affichent une fois que vous les avez activés. On passe la vitesse supérieure !
+
+Nous avons apporté quelques corrections à l’écran Tendances pour vous faire gagner du temps dans votre travail. Nous avons aussi éliminé un bug qui entraînait l’affichage des mots corrigés automatiquement en gras dans les titres de blocs de contenu.

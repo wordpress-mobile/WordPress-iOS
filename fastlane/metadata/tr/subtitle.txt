@@ -1,1 +1,1 @@
-Bir site tasarla, bir blog oluştur
+Bir web sitesi/blog oluşturun

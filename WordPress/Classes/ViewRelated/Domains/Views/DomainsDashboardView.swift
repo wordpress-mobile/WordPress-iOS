@@ -5,6 +5,7 @@ import WordPressKit
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
+    @State var blogService = BlogService.withMainContext()
 
     // Property observer
     private func showingDomainRegistrationFlow(to value: Bool) {
@@ -15,13 +16,18 @@ struct DomainsDashboardView: View {
 
     var body: some View {
         List {
-            makeSiteAddressSection(blog: blog)
+            if blog.supports(.domains) {
+                makeSiteAddressSection(blog: blog)
+            }
             makeDomainsSection(blog: blog)
         }
         .listStyle(GroupedListStyle())
-        .padding(.top, Metrics.topPadding)
+        .padding(.top, blog.supports(.domains) ? Metrics.topPadding : 0)
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
+        .onAppear {
+            blogService.refreshDomains(for: blog, success: nil, failure: nil)
+        }
         .navigationBarTitle(TextContent.navigationTitle)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
@@ -73,17 +79,19 @@ struct DomainsDashboardView: View {
             ForEach(blog.domainsList) {
                 makeDomainCell(domain: $0)
             }
-            PresentationButton(
-                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
-                appearance: {
-                    HStack {
-                        Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
-                            .foregroundColor(Color(UIColor.primary))
-                            .bold()
-                        Spacer()
+            if blog.supports(.domains) {
+                PresentationButton(
+                    isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
+                    appearance: {
+                        HStack {
+                            Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
+                                .foregroundColor(Color(UIColor.primary))
+                                .bold()
+                            Spacer()
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 

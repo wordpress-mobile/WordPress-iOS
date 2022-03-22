@@ -10,8 +10,8 @@ import Foundation
 enum DashboardCard: String, CaseIterable {
     case quickActions
     case quickStart
-    case posts
     case todaysStats = "todays_stats"
+    case posts
 
     // Card placeholder for when loading data
     case ghost

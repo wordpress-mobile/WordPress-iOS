@@ -68,8 +68,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    /// This message advises the user that
+    /// This message is shown when there are no domain suggestions to list
     private let noResultsLabel: UILabel
+
+    private var noResultsLabelTopAnchor: NSLayoutConstraint?
     private var isShowingError: Bool = false {
         didSet {
             if isShowingError {
@@ -100,7 +102,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             label.numberOfLines = 0
             label.preferredMaxLayoutWidth = Metrics.maxLabelWidth
 
-            label.font = WPStyleGuide.fontForTextStyle(.title2)
+            label.font = WPStyleGuide.fontForTextStyle(.body)
             label.textAlignment = .center
             label.textColor = .text
             label.text = Strings.noResults
@@ -171,6 +173,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        updateNoResultsLabelTopInset()
 
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let `self` = self else { return }
@@ -304,11 +308,21 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         view.addSubview(noResultsLabel)
 
+        let noResultsLabelTopAnchor = noResultsLabel.topAnchor.constraint(equalTo: searchHeader.bottomAnchor)
+        self.noResultsLabelTopAnchor = noResultsLabelTopAnchor
+
         NSLayoutConstraint.activate([
-            noResultsLabel.widthAnchor.constraint(equalTo: headerView.widthAnchor),
+            noResultsLabel.widthAnchor.constraint(equalTo: table.widthAnchor, constant: -50),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noResultsLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Metrics.noResultsTopInset)
+            noResultsLabelTopAnchor
         ])
+
+        updateNoResultsLabelTopInset()
+    }
+
+    /// Sets the top inset for the noResultsLabel based on layout orientation
+    private func updateNoResultsLabelTopInset() {
+        noResultsLabelTopAnchor?.constant = UIDevice.current.orientation.isPortrait ? Metrics.noResultsTopInset : 0
     }
 
     private func setupTable() {
