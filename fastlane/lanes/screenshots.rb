@@ -222,6 +222,7 @@ platform :ios do
       target_files: options[:target_files],
       locales: GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES,
       source_locale: 'en-US',
-      download_path: options[:download_path])
+      download_path: options[:download_path]
+    )
   end
 end
