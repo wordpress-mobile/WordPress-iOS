@@ -69,7 +69,7 @@ platform :ios do
     # Allow creating screenshots for just one languages
     if options[:language] != nil
       languages.keep_if do |language|
-        language.casecmp(options[:language]) == 0
+        language.casecmp(options[:language]).zero?
       end
     end
 
