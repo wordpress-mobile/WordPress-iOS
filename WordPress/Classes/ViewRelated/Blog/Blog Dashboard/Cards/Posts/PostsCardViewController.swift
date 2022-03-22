@@ -294,7 +294,7 @@ private class PostCardTableView: UITableView {
     /// This allows subscribers to update their layouts (ie.: UICollectionViews)
     override var intrinsicContentSize: CGSize {
         layoutIfNeeded()
-        if contentSize.height != previousHeight {
+        if contentSize.height != previousHeight, contentSize.height != 0 {
             previousHeight = contentSize.height
             NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
         }
