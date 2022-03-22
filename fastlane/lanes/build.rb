@@ -399,7 +399,7 @@ platform :ios do
   def generate_installable_build_number
 
     if ENV['BUILDKITE']
-      commit = ENV['BUILDKITE_COMMIT'][0,7]
+      commit = ENV['BUILDKITE_COMMIT'][0, 7]
       branch = ENV['BUILDKITE_BRANCH']
       pr_num = ENV['BUILDKITE_PULL_REQUEST']
 
