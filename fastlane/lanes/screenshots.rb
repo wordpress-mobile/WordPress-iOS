@@ -68,14 +68,14 @@ platform :ios do
 
     # Allow creating screenshots for just one languages
     if options[:language] != nil
-      languages.keep_if { |language|
+      languages.keep_if do |language|
         language.casecmp(options[:language]) == 0
-      }
+      end
     end
 
     puts languages
 
-    [true, false].each { |dark_mode_enabled|
+    [true, false].each do |dark_mode_enabled|
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
         scheme: scheme,
@@ -98,7 +98,7 @@ platform :ios do
           'iPad Pro (12.9-inch) (3rd generation)'
         ]
       )
-    }
+    end
   end
 
   # Generates the localized raw screenshots for Jetpack, using the dedicated `"JetpackScreenshotGeneration"` UI test scheme

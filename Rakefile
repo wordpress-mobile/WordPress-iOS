@@ -521,9 +521,9 @@ namespace :credentials do
       .gsub('let client = "0"', "let client=\"#{id}\"")
       .gsub('let secret = "your-secret-here"', "let secret=\"#{secret}\"")
 
-    File.open('WordPress/Credentials/Secrets.swift', 'w') { |file| 
+    File.open('WordPress/Credentials/Secrets.swift', 'w') do |file| 
       file.puts replaced_text
-    }
+    end
 
   end
 end
