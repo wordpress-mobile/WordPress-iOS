@@ -10,6 +10,9 @@ Layout/LineLength:
   Max: 180
   Exclude: *fastfiles
 
+Layout/EmptyLines:
+  Exclude: *fastfiles
+
 Style/AsciiComments:
   Exclude: *fastfiles
 

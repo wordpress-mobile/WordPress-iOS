@@ -4,6 +4,7 @@ require 'fileutils'
 # Constants
 #################################################
 
+# rubocop:disable Style/WordArray
 GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = [
   ['ar', 'ar-SA'],
   ['en-gb', 'en-US'],
@@ -30,6 +31,7 @@ GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = [
   ['zh-cn', 'zh-Hans'],
   ['zh-tw', 'zh-Hant'],
 ].freeze
+# rubocop:enable Style/WordArray
 
 #################################################
 # Lanes
