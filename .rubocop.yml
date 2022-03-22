@@ -6,6 +6,10 @@ Metrics/BlockLength:
     - fastlane/Fastfile
     - fastlane/lanes/*.rb
 
+Metrics/MethodLength:
+  Max: 30
+  Exclude: *fastfiles
+
 Layout/LineLength:
   Max: 180
   Exclude: *fastfiles
