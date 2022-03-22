@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
@@ -52,6 +53,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
         startAlertTimer()
+
+        WPAnalytics.track(.mySiteDashboardShown)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
