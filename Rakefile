@@ -409,10 +409,10 @@ namespace :install do
     namespace :addons do
       #NOTE: hash key = default installed directory on device
       # hash value = brew install location
-      oss_tools = {'convert' => 'imagemagick',
+      oss_tools = { 'convert' => 'imagemagick',
                   'gs' => 'ghostscript',
       }
-      developer_tools = {'convert' => 'imagemagick',
+      developer_tools = { 'convert' => 'imagemagick',
                         'gs' => 'ghostscript',
                         'sentry-cli' => 'getsentry/tools/sentry-cli',
                         'gpg' => 'gpg',
