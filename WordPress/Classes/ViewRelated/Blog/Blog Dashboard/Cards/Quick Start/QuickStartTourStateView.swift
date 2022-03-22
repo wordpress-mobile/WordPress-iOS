@@ -2,7 +2,7 @@ import UIKit
 
 typealias QuickStartChecklistTappedTracker = (event: WPAnalyticsEvent, properties: [AnyHashable: Any])
 
-final class QuickStarTourStateView: UIView {
+final class QuickStartTourStateView: UIView {
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -64,7 +64,7 @@ final class QuickStarTourStateView: UIView {
 
 // MARK: - Setup
 
-extension QuickStarTourStateView {
+extension QuickStartTourStateView {
 
     private func setupViews() {
         addSubview(stackView)
@@ -74,7 +74,7 @@ extension QuickStarTourStateView {
 
 // MARK: - Actions
 
-extension QuickStarTourStateView {
+extension QuickStartTourStateView {
 
     private func showQuickStart(with type: QuickStartType, from sourceController: UIViewController, for blog: Blog, tracker: QuickStartChecklistTappedTracker? = nil) {
 
@@ -94,7 +94,7 @@ extension QuickStarTourStateView {
 
 // MARK: - Constants
 
-extension QuickStarTourStateView {
+extension QuickStartTourStateView {
 
     private enum Strings {
         static let customizeTitle = NSLocalizedString("Customize Your Site",
