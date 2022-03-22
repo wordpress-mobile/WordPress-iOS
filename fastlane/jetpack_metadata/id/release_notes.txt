@@ -1,0 +1,9 @@
+Kabar gembira! Kini tersedia dukungan untuk berbagai palet warna! Tambahkan palet gradien dan palet warna Asal dan Tema atau buat palet Kustom dengan warna favorit Anda. Kami juga menyelesaikan masalah yang menyebabkan warna tema tidak muncul dan data tema saat ini tidak disegarkan.
+
+Untuk perangkat yang menggunakan bahasa dengan penulisan kanan ke kiri, kami memperbarui ikon, tombol, dan pemosisian teks untuk layar “Pilih Domain” dalam proses pembuatan situs. Oke, oke.
+
+Ingin melihat ragam media seperti gambar dan .gif di pemberitahuan push perangkat Anda? Tekan dan tahan pemberitahuan untuk membuka pratinjau.
+
+Kami melakukan perubahan pada pemberitahuan Ringkasan Mingguan agar segera muncul setelah diaktifkan. Ayo mulai!
+
+Terakhir, kami menambahkan beberapa perbaikan di layar Wawasan yang akan membantu meningkatkan kecepatan. Kami juga mengatasi bug yang mempertebal kata yang dikoreksi otomatis di judul blok konten.

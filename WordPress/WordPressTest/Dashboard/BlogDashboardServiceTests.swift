@@ -43,7 +43,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["posts", "todays_stats"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts"])
             expect.fulfill()
         }
 

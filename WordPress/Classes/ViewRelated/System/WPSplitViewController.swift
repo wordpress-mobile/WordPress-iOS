@@ -230,6 +230,11 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
+    /// A flag that indicates whether the split view controller is showing the
+    /// initial (i.e. default) view controller or not.
+    ///
+    @objc var isShowingInitialDetail = false
+
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
@@ -507,7 +512,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
                 let forceKeepDetail = (collapseMode == .AlwaysKeepDetail &&
                                        primaryViewController.viewControllers.last is WPSplitViewControllerDetailProvider)
 
-                if detailNavigationStackHasBeenModified || forceKeepDetail {
+                if (!isShowingInitialDetail && detailNavigationStackHasBeenModified) || forceKeepDetail {
                     primaryViewController.viewControllers.append(contentsOf: secondaryViewController.viewControllers)
                 }
             }

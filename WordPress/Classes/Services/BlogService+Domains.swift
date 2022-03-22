@@ -11,14 +11,14 @@ extension BlogService {
     /// Convenience method to be able to refresh the blogs from ObjC.
     ///
     @objc
-    func refreshDomains(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    func refreshDomains(for blog: Blog, success: (() -> Void)?, failure: ((Error) -> Void)?) {
         guard let account = blog.account else {
-            failure(BlogServiceDomainError.noAccountForSpecifiedBlog(blog: blog))
+            failure?(BlogServiceDomainError.noAccountForSpecifiedBlog(blog: blog))
             return
         }
 
         guard let siteID = blog.dotComID?.intValue else {
-            failure(BlogServiceDomainError.noSiteIDForSpecifiedBlog(blog: blog))
+            failure?(BlogServiceDomainError.noSiteIDForSpecifiedBlog(blog: blog))
             return
         }
 
@@ -27,9 +27,9 @@ extension BlogService {
         service.refreshDomains(siteID: siteID) { result in
             switch result {
             case .success:
-                success()
+                success?()
             case .failure(let error):
-                failure(error)
+                failure?(error)
             }
         }
     }
