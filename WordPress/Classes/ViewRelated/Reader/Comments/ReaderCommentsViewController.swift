@@ -114,7 +114,7 @@ extension NSNotification.Name {
     }
 
     func isModerationMenuEnabled(for comment: Comment) -> Bool {
-        return comment.allowsModeration() && Feature.enabled(.commentThreadModerationMenu)
+        return comment.allowsModeration()
     }
 
     // MARK: - Tracking

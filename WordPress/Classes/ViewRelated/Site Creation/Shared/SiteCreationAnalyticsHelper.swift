@@ -7,6 +7,31 @@ class SiteCreationAnalyticsHelper {
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
 
+    // MARK: - Site Intent
+    static func trackSiteIntentViewed() {
+        // TODO - enhanced_site_creation_intent_question_viewed
+    }
+
+    static func trackSiteIntentSelected(_ vertical: SiteVertical) {
+        // TODO - enhanced_site_creation_intent_question_vertical_selected
+    }
+
+    static func trackSiteIntentContinuePressed(_ term: String) {
+        // TODO - enhanced_site_creation_intent_question_continue_pressed
+    }
+
+    static func trackSiteIntentSearchFocused() {
+        // TODO - enhanced_site_creation_intent_question_search_focused
+    }
+
+    static func trackSiteIntentSkipped() {
+        // TODO - enhanced_site_creation_intent_question_skipped
+    }
+
+    static func trackSiteIntentCanceled() {
+        // TODO - enhanced_site_creation_intent_question_canceled
+    }
+
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))

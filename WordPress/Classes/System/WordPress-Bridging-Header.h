@@ -84,6 +84,7 @@
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
 #import "UIView+Subviews.h"
+#import "UIViewController+RemoveQuickStart.h"
 
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
