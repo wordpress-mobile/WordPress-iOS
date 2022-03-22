@@ -420,6 +420,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
+
+    [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1251,7 +1253,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     NSString *sourceString = [self propertiesStringForSource:source];
     
-    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
+    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString, @"tab_source": @"site_menu"} withBlog:self.blog];
 }
 
 - (NSString *)propertiesStringForSource:(BlogDetailsNavigationSource)source {
