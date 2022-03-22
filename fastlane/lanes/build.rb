@@ -402,13 +402,13 @@ platform :ios do
       branch = ENV['BUILDKITE_BRANCH']
       pr_num = ENV['BUILDKITE_PULL_REQUEST']
 
-      return pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
+      pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
     else
       repo = Git.open(PROJECT_ROOT_FOLDER)
       commit = repo.current_branch
       branch = repo.revparse('HEAD')[0, 7]
 
-      return "#{branch}-#{commit}"
+      "#{branch}-#{commit}"
     end
   end
 

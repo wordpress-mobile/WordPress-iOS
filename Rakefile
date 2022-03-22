@@ -328,9 +328,9 @@ namespace :install do
       def xcode_version_is_correct?
         if get_xcode_version == get_ci_xcode_version
           puts 'Correct version of Xcode installed'
-          return true
+          true
         else
-          return false
+          false
         end
       end
 
@@ -631,7 +631,7 @@ def display_prompt_response
       response = STDIN.gets.strip.upcase
   end
 
-  return response == 'Y'
+  response == 'Y'
 end
 
 
@@ -642,7 +642,7 @@ def fold(label, &block)
 end
 
 def is_travis?
-  return ENV['TRAVIS'] != nil
+  ENV['TRAVIS'] != nil
 end
 
 def pod(args)
@@ -681,7 +681,7 @@ end
 def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
   installed_version = `"#{swiftlint_bin}" version`.chomp
-  return (installed_version != SWIFTLINT_VERSION)
+  (installed_version != SWIFTLINT_VERSION)
 end
 
 def xcodebuild(*build_cmds)
