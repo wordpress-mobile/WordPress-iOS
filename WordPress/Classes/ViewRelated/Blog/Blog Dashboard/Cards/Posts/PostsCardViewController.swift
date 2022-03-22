@@ -236,6 +236,8 @@ extension PostsCardViewController: PostsCardView {
     }
 
     func hideNextPrompt() {
+        minimumHeightConstraint?.isActive = false
+        
         guard nextPostView != nil else {
             delegate?.didHideNextPostPrompt(cardFrameView: cardFrameView)
             return
