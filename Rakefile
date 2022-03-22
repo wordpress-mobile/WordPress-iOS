@@ -524,7 +524,6 @@ namespace :credentials do
     File.open('WordPress/Credentials/Secrets.swift', 'w') do |file| 
       file.puts replaced_text
     end
-
   end
 end
 

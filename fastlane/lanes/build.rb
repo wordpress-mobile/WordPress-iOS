@@ -397,7 +397,6 @@ platform :ios do
   # @note This function uses Buildkite-specific ENV vars
   #
   def generate_installable_build_number
-
     if ENV['BUILDKITE']
       commit = ENV['BUILDKITE_COMMIT'][0, 7]
       branch = ENV['BUILDKITE_BRANCH']
