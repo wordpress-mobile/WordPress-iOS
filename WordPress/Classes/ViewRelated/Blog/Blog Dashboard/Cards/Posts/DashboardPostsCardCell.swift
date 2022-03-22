@@ -38,7 +38,6 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.postScheduled), name: .showScheduledCard, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.draftSaved), name: .showDraftsCard, object: nil)
     }
 
@@ -148,20 +147,6 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
         WPAppAnalytics.track(.openedPosts, withProperties: ["tab_source": "dashboard", "tap_source": "posts_card"], with: blog)
-    }
-
-    // In case a post is scheduled and the scheduled card
-    // is not appearing, we show it.
-    @objc private func postScheduled() {
-        guard contentView.superview != nil else {
-            return
-        }
-
-        if !hasScheduled {
-            hasScheduled = true
-            showCard(for: blog!, status: .scheduled, to: viewController!,
-                     hasPublishedPosts: true, shouldSync: false)
-        }
     }
 
     // In case a draft is saved and the drafts card
