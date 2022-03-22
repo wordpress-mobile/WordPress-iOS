@@ -86,10 +86,10 @@ platform :ios do
   #
   private_lane :jetpack_alpha_code_signing do
     match(
-      type: "enterprise",
-      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      type: 'enterprise',
+      team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: "com.jetpack.alpha"
+      app_identifier: 'com.jetpack.alpha'
     )
   end
 
@@ -97,10 +97,10 @@ platform :ios do
   #
   private_lane :jetpack_internal_code_signing do
     match(
-      type: "enterprise",
-      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      type: 'enterprise',
+      team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: "com.jetpack.internal"
+      app_identifier: 'com.jetpack.internal'
     )
   end
 
@@ -108,8 +108,8 @@ platform :ios do
   #
   private_lane :jetpack_appstore_code_signing do
     match(
-      type: "appstore",
-      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      type: 'appstore',
+      team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       readonly: true,
       app_identifier: JETPACK_APP_IDENTIFIER
     )

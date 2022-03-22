@@ -23,11 +23,11 @@ platform :ios do
   #
   # @called_by CI
   #
-  desc "Build Jetpack for Testing"
+  desc 'Build Jetpack for Testing'
   lane :build_jetpack_for_testing do | options |
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: "Jetpack",
+      scheme: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       deployment_target_version: options[:ios_version],
@@ -107,23 +107,23 @@ platform :ios do
     jetpack_appstore_code_signing
 
     gym(
-      scheme: "Jetpack",
+      scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
       clean: true,
-      export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
-      export_options: { method: "app-store" }
+      export_options: { method: 'app-store' }
     )
 
     testflight(
       skip_waiting_for_build_processing: true,
-      team_id: "299112",
+      team_id: '299112',
       api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
     sentry_upload_dsym(
-      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: 'a8c',
       project_slug: 'jetpack-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
@@ -222,7 +222,7 @@ platform :ios do
   #
   # @called_by CI
   #
-  desc "Builds and uploads a Jetpack installable build"
+  desc 'Builds and uploads a Jetpack installable build'
   lane :build_and_upload_jetpack_installable_build do
     sentry_check_cli_installed
 
@@ -238,31 +238,31 @@ platform :ios do
     new_config.save_as(Pathname.new(version_config_path))
 
     gym(
-      scheme: "Jetpack",
+      scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
-      export_method: "enterprise",
-      configuration: "Release-Alpha",
+      export_method: 'enterprise',
+      configuration: 'Release-Alpha',
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
-      output_name: "Jetpack Alpha",
+      output_name: 'Jetpack Alpha',
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
-      export_options: { method: "enterprise" }
+      export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_options: { method: 'enterprise' }
     )
 
     appcenter_upload(
-      api_token: get_required_env("APPCENTER_API_TOKEN"),
-      owner_name: "automattic",
-      owner_type: "organization",
-      app_name: "jetpack-installable-builds",
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: 'automattic',
+      owner_type: 'organization',
+      app_name: 'jetpack-installable-builds',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      destinations: "Collaborators",
+      destinations: 'Collaborators',
       notify_testers: false
     )
 
     sentry_upload_dsym(
-      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: 'a8c',
       project_slug: 'jetpack-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],

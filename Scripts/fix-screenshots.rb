@@ -3,7 +3,7 @@
 require 'find'
 Find.find('./fastlane/screenshots') { |e|
     next if File.directory?(e)
-    next if File.extname(e) != ".png"
+    next if File.extname(e) != '.png'
 
     info = `identify "#{e}"`.sub(e, '').split
     dimensions = info[1].split('x')
