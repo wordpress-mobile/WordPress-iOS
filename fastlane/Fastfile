@@ -86,11 +86,14 @@ before_all do |lane|
   setup_ci
 
   # Check that the env files exist
+  # rubocop:disable Style/IfUnlessModifier
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
     UI.user_error! "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values."
   end
+
   unless File.file?(PROJECT_ENV_FILE_PATH)
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
+  # rubocop:enable Style/IfUnlessModifier
 end

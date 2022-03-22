@@ -53,9 +53,7 @@ platform :ios do
       e.include?(options[:name])
     end.first
 
-    unless !test_plan_path.nil? && File.exist?((test_plan_path))
-      UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
-    end
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if test_plan_path.nil? || !File.exist?((test_plan_path))
 
     run_tests(
       workspace: WORKSPACE_PATH,
