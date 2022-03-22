@@ -239,7 +239,7 @@ class PostCoordinator: NSObject {
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             if uploadedPost.isScheduled() {
-                NotificationCenter.default.post(name: .postScheduled, object: nil)
+                NotificationCenter.default.post(name: .showScheduledCard, object: nil)
             }
 
             if uploadedPost.isDraft() {
@@ -531,7 +531,7 @@ extension PostCoordinator {
 
 extension NSNotification.Name {
     /// Fired when a post is scheduled
-    static let postScheduled = NSNotification.Name("PostScheduled")
+    static let showScheduledCard = NSNotification.Name("ShowScheduledCard")
 
     /// Fired when the drafts card on the dashboard should be shown
     static let showDraftsCard = NSNotification.Name("ShowDraftsCard")

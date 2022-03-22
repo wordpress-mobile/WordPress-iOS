@@ -38,7 +38,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.postScheduled), name: .postScheduled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.postScheduled), name: .showScheduledCard, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.draftSaved), name: .showDraftsCard, object: nil)
     }
 
