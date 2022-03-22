@@ -29,7 +29,7 @@ GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = [
   ['th', 'th'],
   ['tr', 'tr'],
   ['zh-cn', 'zh-Hans'],
-  ['zh-tw', 'zh-Hant'],
+  ['zh-tw', 'zh-Hant']
 ].freeze
 # rubocop:enable Style/WordArray
 
@@ -95,7 +95,7 @@ platform :ios do
           'iPhone Xs Max',
           'iPhone 8 Plus',
           'iPad Pro (12.9-inch) (2nd generation)',
-          'iPad Pro (12.9-inch) (3rd generation)',
+          'iPad Pro (12.9-inch) (3rd generation)'
         ],
       )
     }
