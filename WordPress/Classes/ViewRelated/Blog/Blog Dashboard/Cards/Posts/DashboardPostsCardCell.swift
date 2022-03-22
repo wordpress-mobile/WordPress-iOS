@@ -14,12 +14,15 @@ import UIKit
 /// Eg.: The API might return that the user has no posts at all but
 /// they actually have a draft saved locally. In this case we show the drafts.
 class DashboardPostsCardCell: UICollectionViewCell, Reusable {
-    private var cardFrameView: BlogDashboardCardFrameView?
+    /// THe first card frame view on this cell
+    private var firstCardFrameView: BlogDashboardCardFrameView?
 
     /// The VC presenting this cell
     private weak var viewController: UIViewController?
 
     private var blog: Blog?
+
+    private var hasScheduled: Bool = false
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -33,6 +36,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         super.init(frame: frame)
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.postScheduled), name: .postScheduled, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -50,7 +55,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         self.blog = blog
 
         let hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
-        let hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
+        hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
         let hasPublished = apiResponse.posts?.hasPublished ?? true
 
         clearFrames()
@@ -105,7 +110,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         stackView.addArrangedSubview(frame)
         childViewController.didMove(toParent: viewController)
 
-        self.cardFrameView = frame
+        self.firstCardFrameView = frame
     }
 
     /// Creates a new PostsCardViewController or dequeue an existing
@@ -116,7 +121,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         if let dequeuedViewController = viewController?.children
             .first(where: {
                 $0 is PostsCardViewController
-                && cardFrameView?.currentView != $0.view
+                && firstCardFrameView?.currentView != $0.view
             }) as? PostsCardViewController {
             dequeuedViewController.update(blog: blog, status: status,
                                           hasPublishedPosts: hasPublishedPosts, shouldSync: shouldSync)
@@ -135,6 +140,19 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
     }
 
+    // In case a post is scheduled and the scheduled card
+    // is not appearing, we show it.
+    @objc private func postScheduled() {
+        guard contentView.superview != nil else {
+            return
+        }
+
+        if !hasScheduled {
+            showCard(for: blog!, status: .scheduled, to: viewController!,
+                     hasPublishedPosts: true)
+        }
+    }
+
     private enum Strings {
         static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
@@ -148,11 +166,11 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 }
 
 extension DashboardPostsCardCell: PostsCardViewControllerDelegate {
-    func didShowNextPostPrompt() {
+    func didShowNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?) {
         cardFrameView?.hideHeader()
     }
 
-    func didHideNextPostPrompt() {
+    func didHideNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?) {
         cardFrameView?.showHeader()
     }
 }

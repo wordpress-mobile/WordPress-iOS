@@ -1,8 +1,8 @@
 import UIKit
 
 protocol PostsCardViewControllerDelegate: AnyObject {
-    func didShowNextPostPrompt()
-    func didHideNextPostPrompt()
+    func didShowNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?)
+    func didHideNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?)
 }
 
 /// Render a small list of posts for a given blog and post status (drafts or scheduled)
@@ -25,6 +25,10 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     private var shouldSync: Bool
 
     weak var delegate: PostsCardViewControllerDelegate?
+
+    private var cardFrameView: BlogDashboardCardFrameView? {
+        return view.superview?.superview as? BlogDashboardCardFrameView
+    }
 
     init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true, shouldSync: Bool = true) {
         self.blog = blog
@@ -221,20 +225,20 @@ extension PostsCardViewController: PostsCardView {
 
         forceTableViewToRecalculateHeight()
 
-        delegate?.didShowNextPostPrompt()
+        delegate?.didShowNextPostPrompt(cardFrameView: cardFrameView)
 
         WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
     }
 
     func hideNextPrompt() {
         guard nextPostView != nil else {
-            delegate?.didHideNextPostPrompt()
+            delegate?.didHideNextPostPrompt(cardFrameView: cardFrameView)
             return
         }
 
         nextPostView?.removeFromSuperview()
         nextPostView = nil
-        delegate?.didHideNextPostPrompt()
+        delegate?.didHideNextPostPrompt(cardFrameView: cardFrameView)
 
         trackPostsDisplayed()
     }
