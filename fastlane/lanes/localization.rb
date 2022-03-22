@@ -47,7 +47,7 @@ GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES = {
   'th' => 'th',         # Thai
   'tr' => 'tr',         # Turkish
   'zh-cn' => 'zh-Hans', # Chinese (China)
-  'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
+  'zh-tw' => 'zh-Hant'  # Chinese (Taiwan)
 }.freeze
 
 # List of `.strings` files manually maintained by developers (as opposed to being automatically extracted from code and generated)

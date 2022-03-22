@@ -197,7 +197,7 @@ platform :ios do
       'screenshot-text-3' => { desc: 'app_store_screenshot_3.txt' },
       'screenshot-text-4' => { desc: 'app_store_screenshot_4.txt' },
       'screenshot-text-5' => { desc: 'app_store_screenshot_5.txt' },
-      'screenshot-text-6' => { desc: 'app_store_screenshot_6.txt' },
+      'screenshot-text-6' => { desc: 'app_store_screenshot_6.txt' }
     }
 
     download_translated_strings(

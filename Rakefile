@@ -410,13 +410,13 @@ namespace :install do
       #NOTE: hash key = default installed directory on device
       # hash value = brew install location
       oss_tools = { 'convert' => 'imagemagick',
-                  'gs' => 'ghostscript',
+                  'gs' => 'ghostscript'
       }
       developer_tools = { 'convert' => 'imagemagick',
                         'gs' => 'ghostscript',
                         'sentry-cli' => 'getsentry/tools/sentry-cli',
                         'gpg' => 'gpg',
-                        'git-crypt' => 'git-crypt',
+                        'git-crypt' => 'git-crypt'
       }
 
       #Check for tool, install if not installed
