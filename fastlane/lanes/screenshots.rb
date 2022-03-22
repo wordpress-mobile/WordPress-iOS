@@ -61,7 +61,7 @@ platform :ios do
       workspace: WORKSPACE_PATH,
       scheme: scheme,
       build_for_testing: true,
-      derived_data_path: DERIVED_DATA_PATH,
+      derived_data_path: DERIVED_DATA_PATH
     )
 
     languages = 'ar-SA da de-DE en-AU en-CA en-GB es-ES fr-FR he id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US'.split(' ')
@@ -96,7 +96,7 @@ platform :ios do
           'iPhone 8 Plus',
           'iPad Pro (12.9-inch) (2nd generation)',
           'iPad Pro (12.9-inch) (3rd generation)'
-        ],
+        ]
       )
     }
   end
@@ -129,7 +129,7 @@ platform :ios do
       orig_folder: 'screenshots',
       metadata_folder: 'appstoreres/metadata',
       output_folder: File.join(Dir.pwd, '/promo_screenshots'),
-      force: options[:force],
+      force: options[:force]
     )
   end
 
@@ -150,7 +150,7 @@ platform :ios do
       metadata_folder: 'appstoreres/jetpack_metadata',
       config_file: 'jetpack_screenshots.json',
       output_folder: File.join(Dir.pwd, '/jetpack_promo_screenshots'),
-      force: options[:force],
+      force: options[:force]
     )
   end
 

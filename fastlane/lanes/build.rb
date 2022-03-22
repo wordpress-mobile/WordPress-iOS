@@ -30,7 +30,7 @@ platform :ios do
       scheme: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
-      deployment_target_version: options[:ios_version],
+      deployment_target_version: options[:ios_version]
     )
   end
 
@@ -265,7 +265,7 @@ platform :ios do
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: 'a8c',
       project_slug: 'jetpack-ios',
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
