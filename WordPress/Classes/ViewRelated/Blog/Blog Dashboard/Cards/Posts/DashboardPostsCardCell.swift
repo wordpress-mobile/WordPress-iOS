@@ -157,6 +157,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         }
 
         if !hasScheduled {
+            hasScheduled = true
             showCard(for: blog!, status: .scheduled, to: viewController!,
                      hasPublishedPosts: true, shouldSync: false)
         }
@@ -170,6 +171,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         }
 
         if !hasDrafts {
+            hasDrafts = true
             showCard(for: blog!, status: .draft, to: viewController!,
                      hasPublishedPosts: true, shouldSync: false)
         }
