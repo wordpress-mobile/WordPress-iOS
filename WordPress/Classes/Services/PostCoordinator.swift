@@ -239,11 +239,11 @@ class PostCoordinator: NSObject {
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             if uploadedPost.isScheduled() {
-                NotificationCenter.default.post(name: .showScheduledCard, object: nil)
+                self?.notifyDashboardOfPostScheduled()
             }
 
             if uploadedPost.isDraft() {
-                NotificationCenter.default.post(name: .showDraftsCard, object: nil)
+                self?.notifyDashboardOfDraftSaved()
             }
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -257,7 +257,7 @@ class PostCoordinator: NSObject {
 
             completion?(.failure(error ?? SavingError.unknown))
 
-            NotificationCenter.default.post(name: .showDraftsCard, object: nil)
+            self?.notifyDashboardOfDraftSaved()
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
@@ -527,12 +527,4 @@ extension PostCoordinator {
             }
         }
     }
-}
-
-extension NSNotification.Name {
-    /// Fired when a post is scheduled
-    static let showScheduledCard = NSNotification.Name("ShowScheduledCard")
-
-    /// Fired when the drafts card on the dashboard should be shown
-    static let showDraftsCard = NSNotification.Name("ShowDraftsCard")
 }

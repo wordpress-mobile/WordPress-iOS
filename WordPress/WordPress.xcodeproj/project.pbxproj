@@ -1424,6 +1424,8 @@
 		8B55FA002614D980007D618E /* UnifiedPrologueNotificationsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788106E260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift */; };
 		8B55FA122614D989007D618E /* UnifiedPrologueReaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810D82612037800A98BD8 /* UnifiedPrologueReaderContentView.swift */; };
 		8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810B42611D25600A98BD8 /* Text+BoldSubString.swift */; };
+		8B5E1DD827EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */; };
+		8B5E1DD927EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */; };
 		8B5FEAF125A746CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B6214E027B1AD9D001DF7B6 /* DashboardStatsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6214DF27B1AD9D001DF7B6 /* DashboardStatsCardCell.swift */; };
@@ -6130,6 +6132,7 @@
 		8B45C12527B2A27400EA3257 /* dashboard-200-with-drafts-only.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-drafts-only.json"; sourceTree = "<group>"; };
 		8B4EDADC27DF9D5E004073B6 /* Blog+MySite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+MySite.swift"; sourceTree = "<group>"; };
 		8B51844425893F140085488D /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
+		8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+Dashboard.swift"; sourceTree = "<group>"; };
 		8B6214DF27B1AD9D001DF7B6 /* DashboardStatsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsCardCell.swift; sourceTree = "<group>"; };
 		8B6214E227B1B2F3001DF7B6 /* BlogDashboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardService.swift; sourceTree = "<group>"; };
 		8B6214E527B1B446001DF7B6 /* BlogDashboardServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardServiceTests.swift; sourceTree = "<group>"; };
@@ -11810,6 +11813,7 @@
 				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
+				8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
 				98E0829E2637545C00537BF1 /* PostService+Likes.swift */,
@@ -17677,6 +17681,7 @@
 				981C82B62193A7B900A06E84 /* Double+Stats.swift in Sources */,
 				175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */,
 				177074851FB209F100951A4A /* CircularProgressView.swift in Sources */,
+				8B5E1DD827EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */,
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
@@ -19685,6 +19690,7 @@
 				FABB21272602FC2C00C8785C /* Media+Blog.swift in Sources */,
 				FABB21282602FC2C00C8785C /* MenuItemEditingHeaderView.m in Sources */,
 				FABB21292602FC2C00C8785C /* Routes+Banners.swift in Sources */,
+				8B5E1DD927EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */,
 				93F72150271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				FABB212A2602FC2C00C8785C /* BadgeLabel.swift in Sources */,
 				FABB212B2602FC2C00C8785C /* ReaderTagsTableViewController.swift in Sources */,
