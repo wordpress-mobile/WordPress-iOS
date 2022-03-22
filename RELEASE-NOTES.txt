@@ -1,6 +1,6 @@
 19.6
 -----
-
+* [*] Enhances the exit animation of notices. [#18182]
 
 19.5
 -----
