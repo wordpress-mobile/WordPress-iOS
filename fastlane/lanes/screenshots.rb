@@ -51,7 +51,7 @@ platform :ios do
   # @option [Array<String>] language (default: the list of Mag16 locales) The subset of locales to generate the screenshots for
   #
   desc 'Generate localised screenshots'
-  lane :screenshots  do |options|
+  lane :screenshots do |options|
     sh('bundle exec pod install')
     FileUtils.rm_rf(DERIVED_DATA_PATH)
 
