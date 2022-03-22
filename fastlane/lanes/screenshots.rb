@@ -159,7 +159,7 @@ platform :ios do
   # The downloaded strings will be save in `fastlane/appstoreres/metadata`
   #
   desc 'Downloads translated promo strings for WordPress from GlotPress'
-  lane :download_promo_strings do |options|
+  lane :download_promo_strings do
     files = {
       'app_store_screenshot-1' => { desc: 'app_store_screenshot_1.txt' },
       'app_store_screenshot-2' => { desc: 'app_store_screenshot_2.txt' },
@@ -190,7 +190,7 @@ platform :ios do
   # The downloaded strings will be save in `fastlane/appstoreres/jetpack_metadata`
   #
   desc 'Downloads translated promo strings for Jetpack from GlotPress'
-  lane :download_jetpack_promo_strings do |options|
+  lane :download_jetpack_promo_strings do
     files = {
       'screenshot-text-1' => { desc: 'app_store_screenshot_1.txt' },
       'screenshot-text-2' => { desc: 'app_store_screenshot_2.txt' },

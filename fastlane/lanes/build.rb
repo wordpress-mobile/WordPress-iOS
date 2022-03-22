@@ -103,7 +103,7 @@ platform :ios do
   # @called_by CI
   #
   desc 'Builds and uploads Jetpack to TestFlight for distribution'
-  lane :build_and_upload_jetpack_for_app_store do |options|
+  lane :build_and_upload_jetpack_for_app_store do
     jetpack_appstore_code_signing
 
     gym(

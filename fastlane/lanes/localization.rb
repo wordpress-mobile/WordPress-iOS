@@ -187,7 +187,7 @@ platform :ios do
   # Downloads the localized app strings and App Store Connect metadata from GlotPress.
   #
   desc 'Downloads localized metadata for App Store Connect from GlotPress'
-  lane :download_localized_strings_and_metadata do |options|
+  lane :download_localized_strings_and_metadata do
     # Download `Localizable.strings` translations used within the app
     parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
     ios_download_strings_files_from_glotpress(
