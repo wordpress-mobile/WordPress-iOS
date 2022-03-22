@@ -1,7 +1,7 @@
-SWIFTLINT_VERSION='0.27.0'
-XCODE_WORKSPACE='WordPress.xcworkspace'
-XCODE_SCHEME='WordPress'
-XCODE_CONFIGURATION='Debug'
+SWIFTLINT_VERSION='0.27.0'.freeze
+XCODE_WORKSPACE='WordPress.xcworkspace'.freeze
+XCODE_SCHEME='WordPress'.freeze
+XCODE_CONFIGURATION='Debug'.freeze
 
 require 'fileutils'
 require 'tmpdir'

@@ -72,7 +72,7 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   precheck_include_in_app_purchases: false,
   api_key_path: APP_STORE_CONNECT_KEY_PATH,
   app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
-}
+}.freeze
 
 
 
