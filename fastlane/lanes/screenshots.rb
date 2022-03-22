@@ -75,7 +75,7 @@ platform :ios do
 
     puts languages
 
-    [true, false].each { | dark_mode_enabled |
+    [true, false].each { |dark_mode_enabled|
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
         scheme: scheme,

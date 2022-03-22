@@ -24,7 +24,7 @@ platform :ios do
   # @called_by CI
   #
   desc 'Build Jetpack for Testing'
-  lane :build_jetpack_for_testing do | options |
+  lane :build_jetpack_for_testing do |options|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'Jetpack',
