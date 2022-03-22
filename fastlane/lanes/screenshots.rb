@@ -1,24 +1,51 @@
 require 'fileutils'
 
-default_platform(:ios)
+#################################################
+# Constants
+#################################################
 
+GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = [
+  ["ar", "ar-SA"],
+  ["en-gb", "en-US"],
+  ["en-gb", "en-GB"],
+  ["en-ca", "en-CA"],
+  ["en-au", "en-AU"],
+  ["da", "da"],
+  ["de", "de-DE"],
+  ["es", "es-ES"],
+  ["fr", "fr-FR"],
+  ["he", "he"],
+  ["id", "id"],
+  ["it", "it"],
+  ["ja", "ja"],
+  ["ko", "ko"],
+  ["nl", "nl-NL"],
+  ["nb", "no"],
+  ["pt-br", "pt-BR"],
+  ["pt", "pt-PT"],
+  ["ru", "ru"],
+  ["sv", "sv"],
+  ["th", "th"],
+  ["tr", "tr"],
+  ["zh-cn", "zh-Hans"],
+  ["zh-tw", "zh-Hant"],
+].freeze
+
+#################################################
+# Lanes
+#################################################
+
+# Lanes related to Generating Screenshots
+#
 platform :ios do
-########################################################################
-# Screenshot Lanes
-########################################################################
-  #####################################################################################
-  # screenshots
-  # -----------------------------------------------------------------------------------
-  # This lane generates the localised screenshots.
-  # It is the same as running bundle exec fastlane snapshot, but ensures that the app
-  # is only built once.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane screenshots
+  # Generates the localized raw screenshots (for WordPress by default), using the dedicated UI test scheme
   #
-  # Example:
-  # bundle exec fastlane screenshots
-  #####################################################################################
+  # Generates both light and dark mode, for each locale, and a fixed set of device sizes (2 iPhones, 2 iPads)
+  #
+  # @option [String] scheme (default: "WordPressScreenshotGeneration") The name of the scheme to use to run the screenshots
+  # @option [String] output_directory (default: `${PWD}/screenhots`) The directory to generate the screenshots to
+  # @option [Array<String>] language (default: the list of Mag16 locales) The subset of locales to generate the screenshots for
+  #
   desc "Generate localised screenshots"
   lane :screenshots  do |options|
 
@@ -73,42 +100,26 @@ platform :ios do
     }
   end
 
-  #####################################################################################
-  # jetpack_screenshots
-  # -----------------------------------------------------------------------------------
-  # This lane generates the localised Jetpack screenshots.
-  # It is the same as running bundle exec fastlane snapshot, but ensures that the app
-  # is only built once.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane jetpack_screenshots
+  # Generates the localized raw screenshots for Jetpack, using the dedicated `"JetpackScreenshotGeneration"` UI test scheme
   #
-  # Example:
-  # bundle exec fastlane jetpack_screenshots
-  #####################################################################################
+  # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
+  #
   desc "Generate localised Jetpack screenshots"
-  lane :jetpack_screenshots do |options|
+  lane :jetpack_screenshots do
     screenshots(
       scheme: "JetpackScreenshotGeneration",
       output_directory: File.join(Dir.pwd, "/jetpack_screenshots")
     )
   end
 
-  #####################################################################################
-  # create_promo_screenshots
-  # -----------------------------------------------------------------------------------
-  # This lane generates the promo screenshots.
-  # Source plain screenshots are supposed to be in the screenshots_orig folder
-  # If this folder doesn't exist, the system will ask to use the standard screenshot
-  # folder. If the user confirms, the pictures in the screenshots folder will be
-  # copied to a new screenshots_orig folder.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane create_promo_screenshots
+  # Generates the promo screenshots for WordPress from the raw screenshots and the `screenshots.json` assembly description file.
   #
-  # Example:
-  # bundle exec fastlane create_promo_screenshots
-  #####################################################################################
+  # @see https://github.com/wordpress-mobile/release-toolkit/blob/trunk/docs/screenshot-compositor.md for documentation
+  #
+  # - Raw screenshots are expected to be in the `screenshots/`
+  # - Localized metadata for the screenshots are expected to be in `appstoreres/metadata`
+  # - Generated promo screenshots will be generated in `fastlane//promo_screenshots`
+  #
   desc "Creates promo screenshots"
   lane :create_promo_screenshots do |options|
 
@@ -122,21 +133,14 @@ platform :ios do
     )
   end
 
-  #####################################################################################
-  # create_jetpack_promo_screenshots
-  # -----------------------------------------------------------------------------------
-  # This lane generates the Jetpack promo screenshots.
-  # Source plain screenshots are supposed to be in the screenshots_orig folder
-  # If this folder doesn't exist, the system will ask to use the standard screenshot
-  # folder. If the user confirms, the pictures in the screenshots folder will be
-  # copied to a new screenshots_orig folder.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane create_jetpack_promo_screenshots
+  # Generates the promo screenshots for Jetpack from the raw screenshots and the `jetpack_screenshots.json` assembly description file.
   #
-  # Example:
-  # bundle exec fastlane create_jetpack_promo_screenshots
-  #####################################################################################
+  # @see https://github.com/wordpress-mobile/release-toolkit/blob/trunk/docs/screenshot-compositor.md for documentation
+  #
+  # - Raw screenshots are expected to be in the `jetpack_screenshots/`
+  # - Localized metadata for the screenshots are expected to be in `fastlane/appstoreres/jetpack_metadata`
+  # - Generated promo screenshots will be generated in `fastlane/jetpack_promo_screenshots`
+  #
   desc "Creates Jetpack promo screenshots"
   lane :create_jetpack_promo_screenshots do |options|
 
@@ -151,19 +155,11 @@ platform :ios do
     )
   end
 
-  #####################################################################################
-  # download_promo_strings
-  # -----------------------------------------------------------------------------------
-  # This lane downloads the promo strings to use for the creation of the enhanced
-  # screenshots.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane download_promo_strings
+  # Downloads the latest strings from GlotPress used for the creation of the WordPress promo screenshots.
   #
-  # Example:
-  # bundle exec fastlane download_promo_strings
-  #####################################################################################
-  desc "Downloads translated promo strings from GlotPress"
+  # The downloaded strings will be save in `fastlane/appstoreres/metadata`
+  #
+  desc "Downloads translated promo strings for WordPress from GlotPress"
   lane :download_promo_strings do |options|
     files = {
       "app_store_screenshot-1" => {desc: "app_store_screenshot_1.txt"},
@@ -190,19 +186,11 @@ platform :ios do
     )
   end
 
-  #####################################################################################
-  # download_jetpack_promo_strings
-  # -----------------------------------------------------------------------------------
-  # This lane downloads the Jetpack promo strings to use for the creation of the enhanced
-  # screenshots.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane download_jetpack_promo_strings
+  # Downloads the latest strings from GlotPress used for the creation of the Jetpack promo screenshots.
   #
-  # Example:
-  # bundle exec fastlane download_jetpack_promo_strings
-  #####################################################################################
-  desc "Downloads translated Jetpack promo strings from GlotPress"
+  # The downloaded strings will be save in `fastlane/appstoreres/jetpack_metadata`
+  #
+  desc "Downloads translated promo strings for Jetpack from GlotPress"
   lane :download_jetpack_promo_strings do |options|
     files = {
       "screenshot-text-1" => {desc: "app_store_screenshot_1.txt"},
@@ -223,41 +211,18 @@ platform :ios do
   ########################################################################
   # Helper Lanes
   ########################################################################
+
+  # Private lane to download the specified translated strings from GlotPress
+  #
+  # @called_by download_promo_strings, download_jetpack_promo_strings
+  #
   desc "Downloads translated strings from GlotPress"
   private_lane :download_translated_strings do |options|
-    metadata_locales = [
-      ["ar", "ar-SA"],
-      ["en-gb", "en-US"],
-      ["en-gb", "en-GB"],
-      ["en-ca", "en-CA"],
-      ["en-au", "en-AU"],
-      ["da", "da"],
-      ["de", "de-DE"],
-      ["es", "es-ES"],
-      ["fr", "fr-FR"],
-      ["he", "he"],
-      ["id", "id"],
-      ["it", "it"],
-      ["ja", "ja"],
-      ["ko", "ko"],
-      ["nl", "nl-NL"],
-      ["nb", "no"],
-      ["pt-br", "pt-BR"],
-      ["pt", "pt-PT"],
-      ["ru", "ru"],
-      ["sv", "sv"],
-      ["th", "th"],
-      ["tr", "tr"],
-      ["zh-cn", "zh-Hans"],
-      ["zh-tw", "zh-Hant"],
-    ]
-
     gp_downloadmetadata(
       project_url: options[:project_url],
       target_files: options[:target_files],
-      locales: metadata_locales,
+      locales: GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES,
       source_locale: "en-US",
       download_path: options[:download_path])
   end
-
 end
