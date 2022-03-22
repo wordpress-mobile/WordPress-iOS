@@ -64,7 +64,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH
     )
 
-    languages = 'ar-SA da de-DE en-AU en-CA en-GB es-ES fr-FR he id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US'.split(' ')
+    languages = %w[ar-SA da de-DE en-AU en-CA en-GB es-ES fr-FR he id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US]
 
     # Allow creating screenshots for just one languages
     if options[:language] != nil
