@@ -5,11 +5,12 @@ PODS:
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
   - AMScrollingNavbar (5.6.0)
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
+  - AppAuth (1.5.0):
+    - AppAuth/Core (= 1.5.0)
+    - AppAuth/ExternalUserAgent (= 1.5.0)
+  - AppAuth/Core (1.5.0)
+  - AppAuth/ExternalUserAgent (1.5.0):
+    - AppAuth/Core
   - AppCenter (4.4.1):
     - AppCenter/Analytics (= 4.4.1)
     - AppCenter/Crashes (= 4.4.1)
@@ -20,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.4.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.11.0):
+  - Automattic-Tracks-iOS (0.11.1):
     - Sentry (~> 6)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -476,7 +477,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (2.0.0-beta.1):
+  - WordPressAuthenticator (2.0.0):
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 6.0.1)
@@ -486,7 +487,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.49.0-beta.1):
+  - WordPressKit (4.49.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -523,7 +524,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (~> 0.11.0)
+  - Automattic-Tracks-iOS (~> 0.11.1)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.72.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.72.0/third-party-podspecs/BVLinearGradient.podspec.json`)
   - Charts (~> 3.2.2)
@@ -589,8 +590,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 2.0.0-beta.1)
-  - WordPressKit (~> 4.49.0-beta.1)
+  - WordPressAuthenticator (~> 2.0.0)
+  - WordPressKit (~> 4.49.0)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.4)
@@ -773,9 +774,9 @@ SPEC CHECKSUMS:
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  Automattic-Tracks-iOS: 061303f897938044f11a9d97d5f8d6426ee7ff56
+  Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
@@ -851,8 +852,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: abf8310fc4ebab25a81cb96211df80b5ec1db479
-  WordPressKit: 158a036f5c7f1df7dc345993d8990eeb17a93906
+  WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
+  WordPressKit: 96deb6ba37ea5eaec4ddcaa53eca04d653246152
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
   WordPressUI: 9e470758bc3a4a25e94478c2babe106f4ae7315a
@@ -868,6 +869,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: ce8c9b1d76b1073b98f54cf831d5d16ddd812173
+PODFILE CHECKSUM: cc0b9bf967b14c18897f090cf3170b6f0bb5139d
 
 COCOAPODS: 1.11.2

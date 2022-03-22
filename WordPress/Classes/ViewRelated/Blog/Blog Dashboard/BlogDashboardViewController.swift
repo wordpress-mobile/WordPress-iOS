@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
@@ -51,6 +52,13 @@ final class BlogDashboardViewController: UIViewController {
 
         viewModel.loadCards()
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
+        startAlertTimer()
+
+        WPAnalytics.track(.mySiteDashboardShown)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        stopAlertTimer()
     }
 
     /// If you want to give any feedback when the dashboard
@@ -163,6 +171,46 @@ extension BlogDashboardViewController {
         section.interGroupSpacing = Constants.cellSpacing
 
         return section
+    }
+}
+
+private var alertWorkItem: DispatchWorkItem?
+
+extension BlogDashboardViewController {
+    @objc func startAlertTimer() {
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            self?.showNoticeAsNeeded()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
+        alertWorkItem = newWorkItem
+    }
+
+    @objc func stopAlertTimer() {
+        alertWorkItem?.cancel()
+        alertWorkItem = nil
+    }
+
+    private func showNoticeAsNeeded() {
+        let quickStartGuide = QuickStartTourGuide.shared
+        guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            return
+        }
+
+        if quickStartGuide.tourInProgress {
+            // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
+            quickStartGuide.suggest(tourToSuggest, for: blog)
+        }
+        else {
+            guard shouldShowQuickStartChecklist() else {
+                return
+            }
+            // Show initial notice only if quick start is shown in the dashboard
+            quickStartGuide.suggest(tourToSuggest, for: blog)
+        }
+    }
+
+    private func shouldShowQuickStartChecklist() -> Bool {
+        return DashboardCard.quickStart.shouldShow(for: blog)
     }
 }
 
