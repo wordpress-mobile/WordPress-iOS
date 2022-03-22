@@ -296,7 +296,7 @@ class NoticePresenter {
                 return
         }
 
-        animator.animatePresentation(fromState: {}, toState: animator.state(for: container, withTransition: .offscreen), completion: { [weak self] in
+        animator.animatePresentation(fromState: {}, toState: animator.state(for: container, in: view, withTransition: .offscreen), completion: { [weak self] in
             container.removeFromSuperview()
 
             // It is possible that when the dismiss animation finished, another Notice was already
