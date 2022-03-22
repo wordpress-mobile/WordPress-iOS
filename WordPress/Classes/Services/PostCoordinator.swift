@@ -242,6 +242,10 @@ class PostCoordinator: NSObject {
                 NotificationCenter.default.post(name: .postScheduled, object: nil)
             }
 
+            if uploadedPost.isDraft() {
+                NotificationCenter.default.post(name: .showDraftsCard, object: nil)
+            }
+
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
@@ -252,6 +256,8 @@ class PostCoordinator: NSObject {
             self?.dispatchNotice(post)
 
             completion?(.failure(error ?? SavingError.unknown))
+
+            NotificationCenter.default.post(name: .showDraftsCard, object: nil)
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
@@ -526,4 +532,7 @@ extension PostCoordinator {
 extension NSNotification.Name {
     /// Fired when a post is scheduled
     static let postScheduled = NSNotification.Name("PostScheduled")
+
+    /// Fired when the drafts card on the dashboard should be shown
+    static let showDraftsCard = NSNotification.Name("ShowDraftsCard")
 }

@@ -22,6 +22,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
 
     private var blog: Blog?
 
+    private var hasDrafts: Bool = false
     private var hasScheduled: Bool = false
 
     private lazy var stackView: UIStackView = {
@@ -38,6 +39,7 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.postScheduled), name: .postScheduled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.draftSaved), name: .showDraftsCard, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -54,7 +56,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         self.viewController = viewController
         self.blog = blog
 
-        let hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
+        hasDrafts = (apiResponse.posts?.draft?.count ?? 0) > 0
         hasScheduled = (apiResponse.posts?.scheduled?.count ?? 0) > 0
         let hasPublished = apiResponse.posts?.hasPublished ?? true
 
@@ -107,7 +109,14 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         frame.add(subview: childViewController.view)
 
         viewController.addChild(childViewController)
-        stackView.addArrangedSubview(frame)
+
+        // Draft always come first
+        if status == .draft {
+            stackView.insertArrangedSubview(frame, at: 0)
+        } else {
+            stackView.addArrangedSubview(frame)
+        }
+
         childViewController.didMove(toParent: viewController)
 
         self.firstCardFrameView = frame
@@ -149,7 +158,20 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 
         if !hasScheduled {
             showCard(for: blog!, status: .scheduled, to: viewController!,
-                     hasPublishedPosts: true)
+                     hasPublishedPosts: true, shouldSync: false)
+        }
+    }
+
+    // In case a draft is saved and the drafts card
+    // is not appearing, we show it.
+    @objc private func draftSaved() {
+        guard contentView.superview != nil else {
+            return
+        }
+
+        if !hasDrafts {
+            showCard(for: blog!, status: .draft, to: viewController!,
+                     hasPublishedPosts: true, shouldSync: false)
         }
     }
 
