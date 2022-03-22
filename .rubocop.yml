@@ -1,3 +1,6 @@
+AllCops:
+  NewCops: enable
+
 Metrics/BlockLength:
   Exclude: &fastfiles
     - fastlane/Fastfile

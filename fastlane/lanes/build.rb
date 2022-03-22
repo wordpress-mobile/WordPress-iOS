@@ -3,7 +3,6 @@
 # Lanes related to Building and Testing the code
 #
 platform :ios do
-
   # Builds the WordPress app for Testing
   #
   # @called_by CI
@@ -105,7 +104,6 @@ platform :ios do
   #
   desc 'Builds and uploads Jetpack to TestFlight for distribution'
   lane :build_and_upload_jetpack_for_app_store do |options|
-
     jetpack_appstore_code_signing
 
     gym(

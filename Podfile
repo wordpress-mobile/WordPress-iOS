@@ -391,7 +391,6 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
         if pod.name == "Sentry"

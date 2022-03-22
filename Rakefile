@@ -85,7 +85,6 @@ namespace :dependencies do
   end
 
   namespace :lint do
-
     task :check do
       if swiftlint_needs_install
         dependency_failed("SwiftLint")
@@ -120,7 +119,6 @@ namespace :dependencies do
     end
     CLOBBER << "vendor/swiftlint"
   end
-
 end
 
 namespace :assets do

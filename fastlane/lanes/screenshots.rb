@@ -48,7 +48,6 @@ platform :ios do
   #
   desc "Generate localised screenshots"
   lane :screenshots  do |options|
-
     sh('bundle exec pod install')
     FileUtils.rm_rf(DERIVED_DATA_PATH)
 
@@ -122,7 +121,6 @@ platform :ios do
   #
   desc "Creates promo screenshots"
   lane :create_promo_screenshots do |options|
-
     # Run screenshots generator tool
     # All file paths are relative to the `fast file`.
     promo_screenshots(
@@ -143,7 +141,6 @@ platform :ios do
   #
   desc "Creates Jetpack promo screenshots"
   lane :create_jetpack_promo_screenshots do |options|
-
     # Run screenshots generator tool
     # All file paths are relative to the `fast file`.
     promo_screenshots(
