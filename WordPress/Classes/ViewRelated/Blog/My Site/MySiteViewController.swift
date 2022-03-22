@@ -397,7 +397,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
         }
 
-        WPAnalytics.track(.mySitePullToRefresh, properties: ["tab_source": section.analyticsDescription])
+        WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
     }
 
     // MARK: - Segmented Control

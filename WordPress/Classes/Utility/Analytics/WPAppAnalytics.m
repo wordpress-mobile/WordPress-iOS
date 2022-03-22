@@ -27,6 +27,7 @@ NSString * const WPAppAnalyticsKeyFollowAction                      = @"follow_a
 NSString * const WPAppAnalyticsKeySource                            = @"source";
 NSString * const WPAppAnalyticsKeyPostType                          = @"post_type";
 NSString * const WPAppAnalyticsKeyTapSource                         = @"tap_source";
+NSString * const WPAppAnalyticsKeyTabSource                         = @"tab_source";
 NSString * const WPAppAnalyticsKeyReplyingTo                        = @"replying_to";
 NSString * const WPAppAnalyticsKeySiteType                          = @"site_type";
 
