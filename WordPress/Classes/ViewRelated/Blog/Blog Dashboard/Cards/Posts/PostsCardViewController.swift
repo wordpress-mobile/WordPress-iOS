@@ -130,8 +130,8 @@ private extension PostsCardViewController {
         present(editor, animated: true)
     }
 
-    func forceTableViewToRecalculateHeight() {
-        _ = tableView.intrinsicContentSize
+    func notifyOfHeightChange() {
+        NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
     }
 
     func trackPostsDisplayed() {
@@ -178,7 +178,7 @@ extension PostsCardViewController: PostsCardView {
 
     func showError(message: String, retry: Bool) {
         guard nextPostView == nil else {
-            forceTableViewToRecalculateHeight()
+            notifyOfHeightChange()
             return
         }
 
@@ -198,7 +198,7 @@ extension PostsCardViewController: PostsCardView {
     func showNextPostPrompt() {
         guard nextPostView == nil ||
               nextPostView?.hasPublishedPosts != hasPublishedPosts else {
-            forceTableViewToRecalculateHeight()
+            notifyOfHeightChange()
             return
         }
 
@@ -216,7 +216,7 @@ extension PostsCardViewController: PostsCardView {
 
         self.nextPostView = nextPostView
 
-        forceTableViewToRecalculateHeight()
+        notifyOfHeightChange()
 
         delegate?.didShowNextPostPrompt(cardFrameView: cardFrameView)
 
