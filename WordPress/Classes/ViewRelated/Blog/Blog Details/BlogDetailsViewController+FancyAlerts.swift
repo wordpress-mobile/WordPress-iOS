@@ -75,8 +75,21 @@ extension BlogDetailsViewController {
     }
 
     private func showNoticeAsNeeded() {
-        if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
-            QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
+        let quickStartGuide = QuickStartTourGuide.shared
+        guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            return
+        }
+
+        if quickStartGuide.tourInProgress {
+            // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
+            quickStartGuide.suggest(tourToSuggest, for: blog)
+        }
+        else {
+            guard shouldShowQuickStartChecklist() else {
+                return
+            }
+            // Show initial notice only if quick start is shown in my site
+            quickStartGuide.suggest(tourToSuggest, for: blog)
         }
     }
 

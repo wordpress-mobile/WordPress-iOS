@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-02-21 06:26:03+0000 */
+/* Translation-Revision-Date: 2022-03-11 08:03:38+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -2999,7 +2999,7 @@ translators: Block name. %s: The localized block name */
 "Export Your Content" = "Wyeksportuj swoją zawartość";
 
 /* Overlay message displayed while starting content export */
-"Exporting content…" = "Eksportowanie zawartości...";
+"Exporting content…" = "Eksportowanie zawartości…";
 
 /* Section title for the external table section in the blog details screen */
 "External" = "External";
@@ -5037,7 +5037,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Opportunities to participate in WordPress.com research & surveys." = "Opportunities to participate in WordPress.com research & surveys.";
 
 /* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Opcjonalne";
+"Optional" = "Opcjonalnie";
 
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";

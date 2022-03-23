@@ -105,22 +105,6 @@ final class CommentService_RepliesTests: XCTestCase {
         expect { parameters = mockApi.parametersPassedIn! as! [String: Any] }.toNot(throwError())
         expect(parameters[parentKey] as? Int).to(equal(commentID))
     }
-
-    func test_getReplies_givenValidAuthorId_shouldAddAuthorIdInParameter() {
-        let (mockService, mockApi) = makeMockService()
-        let authorKey = CommentServiceRemoteREST.RequestKeys.author.rawValue
-
-        mockService.getLatestReplyID(for: commentID,
-                                     siteID: siteID,
-                                     accountService: accountService,
-                                     success: { _ in },
-                                     failure: { _ in })
-
-        var parameters = [String: Any]()
-        expect(mockApi.parametersPassedIn).toNot(beNil())
-        expect { parameters = mockApi.parametersPassedIn! as! [String: Any] }.toNot(throwError())
-        expect(parameters[authorKey] as? Int).to(equal(authorID))
-    }
 }
 
 // MARK: - Test Helpers
