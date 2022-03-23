@@ -5,6 +5,9 @@
 platform :ios do
   # Builds the WordPress app for Testing
   #
+  # @option [String] device the name of the Simulator device to run the tests on
+  # @option [String] ios_version the Deployment Target version to use while testing
+  #
   # @called_by CI
   #
   desc 'Build WordPress for Testing'
@@ -21,6 +24,9 @@ platform :ios do
 
   # Builds the Jetpack app for Testing
   #
+  # @option [String] device the name of the Simulator device to run the tests on
+  # @option [String] ios_version the Deployment Target version to use while testing
+  #
   # @called_by CI
   #
   desc 'Build Jetpack for Testing'
@@ -30,6 +36,7 @@ platform :ios do
       scheme: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
+      device: options[:device],
       deployment_target_version: options[:ios_version]
     )
   end
