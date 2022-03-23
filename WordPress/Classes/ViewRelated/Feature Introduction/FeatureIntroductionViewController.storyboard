@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Feature Introduction View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="FeatureIntroductionViewController" id="Y6W-OH-hqX" customClass="FeatureIntroductionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PUG-95-nXq" userLabel="Close Button">
+                                <rect key="frame" x="368" y="57" width="30" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="PUG-95-nXq" secondAttribute="height" multiplier="1:1" id="Jqq-ci-OIX"/>
+                                    <constraint firstAttribute="width" constant="30" id="Wp9-Lz-2bw"/>
+                                </constraints>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <buttonConfiguration key="configuration" style="gray" cornerStyle="capsule">
+                                    <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="closeButtonTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="eqb-mI-vv6"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aG5-33-cQu">
+                                <rect key="frame" x="16" y="100" width="382" height="641.5"/>
+                            </scrollView>
+                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWv-UK-vUR" userLabel="Buttons View">
+                                <rect key="frame" x="0.0" y="741.5" width="414" height="120.5"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQt-J3-jHS" userLabel="Separator">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="0.5" id="8Pd-wz-E9s"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="zco-A3-30p" userLabel="Button Stack View">
+                                        <rect key="frame" x="16" y="8.5" width="382" height="104"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YIa-cg-O6q" customClass="FancyButton" customModule="WordPressUI">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="hyn-La-b18"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <state key="normal" title="Primary Button">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naZ-F3-XnX" userLabel="Secondary Button" customClass="FancyButton" customModule="WordPressUI">
+                                                <rect key="frame" x="0.0" y="60" width="382" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="ihc-bG-S2g"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <state key="normal" title="Secondary Button">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="QQt-J3-jHS" firstAttribute="leading" secondItem="JWv-UK-vUR" secondAttribute="leading" id="Hfo-cT-Wqk"/>
+                                    <constraint firstAttribute="bottom" secondItem="zco-A3-30p" secondAttribute="bottom" constant="8" id="Q8i-79-e4R"/>
+                                    <constraint firstAttribute="trailing" secondItem="zco-A3-30p" secondAttribute="trailing" constant="16" id="Wnq-ZY-Cdv"/>
+                                    <constraint firstItem="QQt-J3-jHS" firstAttribute="top" secondItem="JWv-UK-vUR" secondAttribute="top" id="ZaY-WF-prJ"/>
+                                    <constraint firstItem="zco-A3-30p" firstAttribute="top" secondItem="QQt-J3-jHS" secondAttribute="bottom" constant="8" id="Zjb-D8-bUX"/>
+                                    <constraint firstItem="zco-A3-30p" firstAttribute="leading" secondItem="JWv-UK-vUR" secondAttribute="leading" constant="16" id="kuR-Ce-Zbm"/>
+                                    <constraint firstAttribute="trailing" secondItem="QQt-J3-jHS" secondAttribute="trailing" id="tRT-IE-clv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="JWv-UK-vUR" secondAttribute="trailing" id="8Sa-T6-85M"/>
+                            <constraint firstItem="aG5-33-cQu" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="C8i-6j-HZQ"/>
+                            <constraint firstItem="JWv-UK-vUR" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="Cx4-Kj-RvV"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="JWv-UK-vUR" secondAttribute="bottom" id="DP5-eB-ebl"/>
+                            <constraint firstItem="JWv-UK-vUR" firstAttribute="top" secondItem="aG5-33-cQu" secondAttribute="bottom" id="KpO-1R-XiM"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="PUG-95-nXq" secondAttribute="trailing" constant="16" id="con-Ci-koD"/>
+                            <constraint firstItem="aG5-33-cQu" firstAttribute="top" secondItem="PUG-95-nXq" secondAttribute="bottom" constant="13" id="eXs-Yt-Ste"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="aG5-33-cQu" secondAttribute="trailing" constant="16" id="iMX-Kz-cwe"/>
+                            <constraint firstItem="PUG-95-nXq" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="13" id="trA-1L-OU6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="buttonSeparator" destination="QQt-J3-jHS" id="uEB-8l-oVM"/>
+                        <outlet property="buttonSeparatorHeightConstraint" destination="8Pd-wz-E9s" id="onk-Ul-3FR"/>
+                        <outlet property="closeButton" destination="PUG-95-nXq" id="ZeM-y4-ey0"/>
+                        <outlet property="closeButtonWidthConstraint" destination="Wp9-Lz-2bw" id="epD-D9-lPo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="115.84821428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="beveled-blue-button-down" width="18.5" height="19.5"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
