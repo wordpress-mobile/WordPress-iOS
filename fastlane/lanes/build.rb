@@ -80,31 +80,61 @@ platform :ios do
     )
   end
 
-  # Builds the app and uploads it to TestFlight / App Store Connect
+  # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] create_gh_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
+  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
+  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
   # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
   # @called_by CI
-  # @calls build_and_upload_itc
   #
   desc 'Builds and uploads for distribution to App Store Connect'
   lane :build_and_upload_app_store_connect do |options|
-    ios_build_prechecks(
-      skip_confirm: options[:skip_confirm],
-      internal: options[:beta_release],
-      external: true
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
+    ios_build_preflight unless options[:skip_prechecks]
+
+    sentry_check_cli_installed
+    appstore_code_signing
+
+    gym(
+      scheme: 'WordPress',
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_options: { method: 'app-store' }
     )
 
-    ios_build_preflight
-
-    build_and_upload_itc(
-      skip_prechecks: true,
-      skip_confirm: options[:skip_confirm],
-      beta_release: options[:beta_release],
-      create_release: options[:create_gh_release]
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: '299112',
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
+
+    sentry_upload_dsym(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    if options[:create_release]
+      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
+      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+
+      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
+      create_release(
+        repository: GHHELPER_REPO,
+        version: version,
+        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+        release_assets: archive_zip_path.to_s,
+        prerelease: options[:beta_release]
+      )
+
+      FileUtils.rm_rf(archive_zip_path)
+    end
   end
 
   # Builds the Jetpack app and uploads it to TestFlight, for beta-testing or final release
@@ -339,63 +369,6 @@ platform :ios do
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
-  end
-
-  # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
-  # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
-  #
-  # @called_by build_and_upload_app_store_connect
-  #
-  desc 'Builds and uploads WordPress to TestFlight for distribution'
-  lane :build_and_upload_itc do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
-
-    sentry_check_cli_installed
-    appstore_code_signing
-
-    gym(
-      scheme: 'WordPress',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      output_directory: BUILD_PRODUCTS_PATH,
-      derived_data_path: DERIVED_DATA_PATH,
-      export_options: { method: 'app-store' }
-    )
-
-    testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: '299112',
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    if options[:create_release]
-      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
-      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
-
-      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
-      create_release(
-        repository: GHHELPER_REPO,
-        version: version,
-        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-        release_assets: archive_zip_path.to_s,
-        prerelease: options[:beta_release]
-      )
-
-      FileUtils.rm_rf(archive_zip_path)
-    end
   end
 
   #################################################
