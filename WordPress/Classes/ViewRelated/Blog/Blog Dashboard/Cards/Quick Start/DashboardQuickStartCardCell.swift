@@ -15,7 +15,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
                   let blog = self?.blog else {
                 return
             }
-            viewController.removeQuickStart(from: blog)
+            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.ellipsisButtonRect)
         }
         return frameView
     }()
