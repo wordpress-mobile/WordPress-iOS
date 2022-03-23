@@ -125,6 +125,12 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         }
     }
 
+    open func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
+        context.present(alert, animated: true)
+        return true
+    }
+
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }

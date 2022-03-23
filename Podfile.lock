@@ -499,7 +499,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.4)
-  - WPMediaPicker (1.8.2)
+  - WPMediaPicker (1.8.3-beta.1)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -595,7 +595,7 @@ DEPENDENCIES:
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.4)
-  - WPMediaPicker (~> 1.8.2)
+  - WPMediaPicker (~> 1.8.3-beta.1)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.73.0-alpha2/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -785,7 +785,7 @@ SPEC CHECKSUMS:
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 2bf7b5e351f8e33867210ff6eb9c5c178a035522
-  FBReactNativeSpec: 16a9f79d4f7700be883fbed663947595aa6c21c4
+  FBReactNativeSpec: b4076f780f69b07abd859b279490f401d127c0ec
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
@@ -857,7 +857,7 @@ SPEC CHECKSUMS:
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
   WordPressUI: 9e470758bc3a4a25e94478c2babe106f4ae7315a
-  WPMediaPicker: a34b708a7b995a0889bd5098e3b79f4a50a7a9bd
+  WPMediaPicker: 0bcc78d3f1f2e14a369f318bbe930b8ea1d65ae5
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 2ca978c40e0fd6d7f54bcb1602bc0cbbc79454a7
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -869,6 +869,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 150017460806dd93a024fbc4732679361000e2df
+PODFILE CHECKSUM: 2e096ad6dcdbf668d4d4ec39a1388ed6484e1bfa
 
 COCOAPODS: 1.11.2
