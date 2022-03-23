@@ -24,6 +24,10 @@ class BlogDashboardService {
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
+            guard let cardsDictionary = self?.parseCardsForLocalContent(cardsDictionary, blog: blog) else {
+                return
+            }
+
             if let cards = self?.decode(cardsDictionary, blog: blog) {
 
                 blog.dashboardState.hasCachedData = true
@@ -56,10 +60,11 @@ class BlogDashboardService {
         }
 
         if let cardsDictionary = persistence.getCards(for: dotComID),
-           let cards = decode(cardsDictionary, blog: blog) {
+           let cardsWithLocalData = parseCardsForLocalContent(cardsDictionary, blog: blog),
+           let cards = decode(cardsWithLocalData, blog: blog) {
 
             blog.dashboardState.hasCachedData = true
-            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
+            let snapshot = parse(cardsWithLocalData, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
             blog.dashboardState.hasCachedData = false
@@ -107,12 +112,6 @@ private extension BlogDashboardService {
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {
-        let cardsDictionary: NSMutableDictionary = cardsDictionary.mutableCopy() as! NSMutableDictionary
-
-        if let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary {
-            cardsDictionary["posts"] = postsParser.parse(posts, for: blog)
-        }
-
         guard let data = try? JSONSerialization.data(withJSONObject: cardsDictionary, options: []) else {
             return nil
         }
@@ -120,6 +119,16 @@ private extension BlogDashboardService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
+    }
+
+    func parseCardsForLocalContent(_ cardsDictionary: NSDictionary, blog: Blog) -> NSDictionary? {
+        guard let cardsDictionary = cardsDictionary.mutableCopy() as? NSMutableDictionary,
+              let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary else {
+            return cardsDictionary
+        }
+
+        cardsDictionary["posts"] = postsParser.parse(posts, for: blog)
+        return cardsDictionary
     }
 
     func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
