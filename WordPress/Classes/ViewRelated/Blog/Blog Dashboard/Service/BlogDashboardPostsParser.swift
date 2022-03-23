@@ -15,33 +15,30 @@ class BlogDashboardPostsParser {
 
         if !posts.hasDrafts {
             // Check for local drafts
-            let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-            fetchRequest.predicate = PostListFilter.draftFilter().predicate(for: blog)
-            fetchRequest.sortDescriptors = PostListFilter.draftFilter().sortDescriptors
-            fetchRequest.fetchBatchSize = 1
-            fetchRequest.fetchLimit = 1
-            if let localDraftsCount = try? managedObjectContext.count(for: fetchRequest),
+            if let localDraftsCount = numberOfPosts(for: blog, filter: PostListFilter.draftFilter()),
                localDraftsCount > 0 {
                 posts["draft"] = [0...localDraftsCount].map { _ in [:] }
-                print("$$ adding \(localDraftsCount) drafts")
             }
         }
 
         if !posts.hasScheduled {
             // Check for local scheduled
-            let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-            fetchRequest.predicate = PostListFilter.scheduledFilter().predicate(for: blog)
-            fetchRequest.sortDescriptors = PostListFilter.scheduledFilter().sortDescriptors
-            fetchRequest.fetchBatchSize = 1
-            fetchRequest.fetchLimit = 1
-            if let localScheduledCount = try? managedObjectContext.count(for: fetchRequest),
+            if let localScheduledCount = numberOfPosts(for: blog, filter: PostListFilter.scheduledFilter()),
                localScheduledCount > 0 {
                 posts["scheduled"] = [0...localScheduledCount].map { _ in [:] }
-                print("$$ adding \(localScheduledCount) scheduled")
             }
         }
 
         return posts
+    }
+
+    private func numberOfPosts(for blog: Blog, filter: PostListFilter) -> Int? {
+        let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
+        fetchRequest.predicate = filter.predicate(for: blog)
+        fetchRequest.sortDescriptors = filter.sortDescriptors
+        fetchRequest.fetchBatchSize = 1
+        fetchRequest.fetchLimit = 1
+        return try? managedObjectContext.count(for: fetchRequest)
     }
 }
 
