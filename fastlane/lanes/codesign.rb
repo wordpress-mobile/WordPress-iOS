@@ -3,7 +3,7 @@
 # Lanes related to Code Signing and Provisioning Profiles
 #
 platform :ios do
-  # Registers a new device in the App Store Portal and update all the Provisioning Profiles
+  # Registers a new device in the Developer Portal and update all the Provisioning Profiles
   #
   # @option [String] device_name name to give to the device. Will be prompted interactively if not provided.
   # @option [String] device_id UDID of the device to add. Will be prompted interactively if not provided.

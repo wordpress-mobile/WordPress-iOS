@@ -103,7 +103,7 @@ platform :ios do
     end
   end
 
-  # Generates the localized raw screenshots for Jetpack, using the dedicated `"JetpackScreenshotGeneration"` UI test scheme
+  # Generates the localized raw screenshots for Jetpack, using the dedicated `JetpackScreenshotGeneration` UI test scheme
   #
   # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
   #
@@ -125,8 +125,7 @@ platform :ios do
   #
   desc 'Creates promo screenshots'
   lane :create_promo_screenshots do |options|
-    # Run screenshots generator tool
-    # All file paths are relative to the `fast file`.
+    # All file paths are relative to the `Fastfile`.
     promo_screenshots(
       orig_folder: 'screenshots',
       metadata_folder: 'appstoreres/metadata',
@@ -145,8 +144,7 @@ platform :ios do
   #
   desc 'Creates Jetpack promo screenshots'
   lane :create_jetpack_promo_screenshots do |options|
-    # Run screenshots generator tool
-    # All file paths are relative to the `fast file`.
+    # All file paths are relative to the `Fastfile`.
     promo_screenshots(
       orig_folder: 'jetpack_screenshots',
       metadata_folder: 'appstoreres/jetpack_metadata',

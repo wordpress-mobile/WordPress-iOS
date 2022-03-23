@@ -60,8 +60,8 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |e|
-      e.include?(options[:name])
+    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
+      path.include?(options[:name])
     end.first
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if test_plan_path.nil? || !File.exist?((test_plan_path))
@@ -113,6 +113,8 @@ platform :ios do
   #
   desc 'Builds and uploads Jetpack to TestFlight for distribution'
   lane :build_and_upload_jetpack_for_app_store do
+    sentry_check_cli_installed
+
     jetpack_appstore_code_signing
 
     gym(
@@ -162,7 +164,7 @@ platform :ios do
     )
   end
 
-  # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to AppCenter
+  # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
@@ -184,12 +186,12 @@ platform :ios do
     gym(
       scheme: 'WordPress Alpha',
       workspace: WORKSPACE_PATH,
-      export_method: 'enterprise',
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'WordPress Alpha',
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
 
@@ -217,7 +219,7 @@ platform :ios do
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
     install_url = 'https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/'
 
-    comment_body = "You can test the <strong>WordPress</strong> changes on this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
+    comment_body = "You can test the changes in <strong>WordPress</strong> from this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
 
     comment_on_pr(
       project: 'wordpress-mobile/wordpress-ios',
@@ -249,13 +251,13 @@ platform :ios do
     gym(
       scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
-      export_method: 'enterprise',
       configuration: 'Release-Alpha',
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'Jetpack Alpha',
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
 
@@ -283,7 +285,7 @@ platform :ios do
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
     install_url = 'https://install.appcenter.ms/orgs/automattic/apps/jetpack-installable-builds/'
 
-    comment_body = "You can test the <strong>Jetpack</strong> changes on this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
+    comment_body = "You can test the changes in <strong>Jetpack</strong> from this Pull Request by downloading it from App Center <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
 
     comment_on_pr(
       project: 'wordpress-mobile/wordpress-ios',

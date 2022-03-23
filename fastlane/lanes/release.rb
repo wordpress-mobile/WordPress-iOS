@@ -3,11 +3,11 @@
 # Lanes related to the Release Process (Code Freeze, Betas, Final Build, AppStore Submission…)
 #
 platform :ios do
-  # Executes the initial steps needed during code freeze
+  # Executes the initial steps of the code freeze
   #
   # - Cuts a new release branch
   # - Extracts the Release Notes
-  # - Freezes the GitHub milestone and enable GitHub branch protection for the new branch
+  # - Freezes the GitHub milestone and enables the GitHub branch protection for the new branch
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
@@ -51,10 +51,10 @@ platform :ios do
     print_release_notes_reminder
   end
 
-  # Completes the final steps for the code freeze
+  # Executes the final steps for the code freeze
   #
-  #  - Generate `.strings` files from code then merge the other, manually-maintained `.strings` files with it
-  #  - Trigger the build of the first beta on CI
+  #  - Generates `.strings` files from code then merges the other, manually-maintained `.strings` files with it
+  #  - Triggers the build of the first beta on CI
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
@@ -94,7 +94,7 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   # @option [String] version (required) The version number to use for the hotfix (`"x.y.z"`)
   #
-  desc 'Creates a new hotfix branch for the given `version:x.y.z``. The branch will be cut from the tag `x.y` of the previous release'
+  desc 'Creates a new hotfix branch for the given `version:x.y.z`. The branch will be cut from the `x.y` tag.'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(
@@ -115,12 +115,12 @@ platform :ios do
     trigger_release_build(branch_to_build: "release/#{version}")
   end
 
-  # Finalizes a release at the end of a sprint to submit to the AppStore
+  # Finalizes a release at the end of a sprint to submit to the App Store
   #
-  #  - updates store metadata
-  #  - bumps final version number
-  #  - removes branch protection and close milestone
-  #  - triggers the final release on CI
+  #  - Updates store metadata
+  #  - Bumps final version number
+  #  - Removes branch protection and close milestone
+  #  - Triggers the final release on CI
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
@@ -219,7 +219,7 @@ def extracted_release_notes_file_path(app:)
   paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
 end
 
-# Prints the message to remind the Release Manager to audit the Release Notes after code freeze.
+# Prints a reminder to audit the Release Notes after code freeze.
 #
 def print_release_notes_reminder
   message = <<~MSG
