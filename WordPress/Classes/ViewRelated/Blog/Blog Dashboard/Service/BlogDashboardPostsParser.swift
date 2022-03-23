@@ -8,6 +8,12 @@ class BlogDashboardPostsParser {
         self.managedObjectContext = managedObjectContext
     }
 
+    /// Parse the posts data that comes from the API
+    /// We might run into cases where the API returns that there are no
+    /// drafts and/or scheduled posts, however the user might have
+    /// they locally.
+    /// This parser basically looks in the local content and fixes the data
+    /// if needed.
     func parse(_ postsDictionary: NSDictionary, for blog: Blog) -> NSDictionary {
         guard let posts = postsDictionary.mutableCopy() as? NSMutableDictionary else {
             return postsDictionary
