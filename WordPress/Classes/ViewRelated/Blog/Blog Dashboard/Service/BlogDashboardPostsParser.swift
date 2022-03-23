@@ -18,8 +18,8 @@ class BlogDashboardPostsParser {
             let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
             fetchRequest.predicate = PostListFilter.draftFilter().predicate(for: blog)
             fetchRequest.sortDescriptors = PostListFilter.draftFilter().sortDescriptors
-            fetchRequest.fetchBatchSize = 3
-            fetchRequest.fetchLimit = 3
+            fetchRequest.fetchBatchSize = 1
+            fetchRequest.fetchLimit = 1
             if let localDraftsCount = try? managedObjectContext.count(for: fetchRequest),
                localDraftsCount > 0 {
                 posts["draft"] = [0...localDraftsCount].map { _ in [:] }
@@ -32,8 +32,8 @@ class BlogDashboardPostsParser {
             let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
             fetchRequest.predicate = PostListFilter.scheduledFilter().predicate(for: blog)
             fetchRequest.sortDescriptors = PostListFilter.scheduledFilter().sortDescriptors
-            fetchRequest.fetchBatchSize = 3
-            fetchRequest.fetchLimit = 3
+            fetchRequest.fetchBatchSize = 1
+            fetchRequest.fetchLimit = 1
             if let localScheduledCount = try? managedObjectContext.count(for: fetchRequest),
                localScheduledCount > 0 {
                 posts["scheduled"] = [0...localScheduledCount].map { _ in [:] }
