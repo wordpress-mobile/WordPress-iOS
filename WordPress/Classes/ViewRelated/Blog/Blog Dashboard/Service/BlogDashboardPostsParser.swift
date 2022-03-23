@@ -16,7 +16,7 @@ class BlogDashboardPostsParser {
         if !posts.hasDrafts {
             // Check for local drafts
             let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-            fetchRequest.predicate = predicateForFetchRequest(PostListFilter.draftFilter().predicateForFetchRequest, blog: blog)
+            fetchRequest.predicate = PostListFilter.draftFilter().predicate(for: blog)
             fetchRequest.sortDescriptors = PostListFilter.draftFilter().sortDescriptors
             fetchRequest.fetchBatchSize = 3
             fetchRequest.fetchLimit = 3
@@ -30,7 +30,7 @@ class BlogDashboardPostsParser {
         if !posts.hasScheduled {
             // Check for local scheduled
             let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-            fetchRequest.predicate = predicateForFetchRequest(PostListFilter.scheduledFilter().predicateForFetchRequest, blog: blog)
+            fetchRequest.predicate = PostListFilter.scheduledFilter().predicate(for: blog)
             fetchRequest.sortDescriptors = PostListFilter.scheduledFilter().sortDescriptors
             fetchRequest.fetchBatchSize = 3
             fetchRequest.fetchLimit = 3
@@ -42,25 +42,6 @@ class BlogDashboardPostsParser {
         }
 
         return posts
-    }
-
-    func predicateForFetchRequest(_ filterPredicate: NSPredicate, blog: Blog) -> NSPredicate {
-        var predicates = [NSPredicate]()
-
-        // Show all original posts without a revision & revision posts.
-        let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
-        predicates.append(basePredicate)
-
-        predicates.append(filterPredicate)
-
-        if let myAuthorID = blog.userID {
-            // Brand new local drafts have an authorID of 0.
-            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
-            predicates.append(authorPredicate)
-        }
-
-       let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-       return predicate
     }
 }
 
