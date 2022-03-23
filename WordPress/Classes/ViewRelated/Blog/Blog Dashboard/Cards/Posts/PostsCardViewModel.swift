@@ -246,7 +246,7 @@ private extension PostsCardViewModel {
     }
 
     func showNextPostPrompt() {
-        viewController?.showNextPostPrompt()
+        showNextPostPromptIfNeeded()
         viewController?.hideLoading()
     }
 
@@ -303,7 +303,6 @@ private extension PostsCardViewModel {
 extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
-            assertionFailure("The data source has not implemented snapshot support while it should")
             return
         }
         var snapshot = snapshot as Snapshot
