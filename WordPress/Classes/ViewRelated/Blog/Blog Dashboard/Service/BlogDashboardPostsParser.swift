@@ -8,7 +8,7 @@ class BlogDashboardPostsParser {
         self.managedObjectContext = managedObjectContext
     }
 
-    func parse(postsDictionary: NSDictionary, for blog: Blog) -> NSDictionary {
+    func parse(_ postsDictionary: NSDictionary, for blog: Blog) -> NSDictionary {
         guard let posts = postsDictionary.mutableCopy() as? NSMutableDictionary else {
             return postsDictionary
         }
