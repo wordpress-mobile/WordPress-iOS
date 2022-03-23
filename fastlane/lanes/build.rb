@@ -171,26 +171,49 @@ platform :ios do
     )
   end
 
-  # Builds the app and uploads it to App Center
+  # Builds the "WordPress Internal" app and uploads it to App Center
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
   #
   # @called_by CI
-  # @calls build_and_upload_internal
   #
   desc 'Builds and uploads for distribution to App Center'
   lane :build_and_upload_app_center do |options|
-    ios_build_prechecks(
-      skip_confirm: options[:skip_confirm],
-      internal: true,
-      external: true
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
+    ios_build_preflight unless options[:skip_prechecks]
+
+    sentry_check_cli_installed
+
+    internal_code_signing
+
+    gym(
+      scheme: 'WordPress Internal',
+      workspace: WORKSPACE_PATH,
+      export_method: 'enterprise',
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: 'WordPress Internal',
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      export_options: { method: 'enterprise' }
     )
 
-    ios_build_preflight
+    appcenter_upload(
+      api_token: ENV['APPCENTER_API_TOKEN'],
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: 'WP-Internal',
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      notify_testers: false
+    )
 
-    build_and_upload_internal(
-      skip_prechecks: true,
-      skip_confirm: options[:skip_confirm]
+    sentry_upload_dsym(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
 
@@ -322,52 +345,6 @@ platform :ios do
       pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
       reuse_identifier: 'jetpack-installable-build-link',
       body: comment_body
-    )
-  end
-
-  # Builds the "WordPress Internal" scheme and upload it to AppCenter for internal testing
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by build_and_upload_app_center
-  #
-  desc 'Builds and uploads for distribution'
-  lane :build_and_upload_internal do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      export_method: 'enterprise',
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_options: { method: 'enterprise' }
-    )
-
-    appcenter_upload(
-      api_token: ENV['APPCENTER_API_TOKEN'],
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
 
