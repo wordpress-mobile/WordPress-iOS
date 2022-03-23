@@ -118,11 +118,11 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(toggleQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
     private func addShowScheduledCardsObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: .showScheduledCard, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .updateDashboard, object: nil)
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -138,8 +138,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
-    /// Show or hide Quick Start if needed
-    @objc private func toggleQuickStart() {
+    /// Load card from cache if view is appearing
+    @objc private func loadCardsFromCache() {
         guard view.superview != nil else {
             return
         }
@@ -235,4 +235,9 @@ extension BlogDashboardViewController {
         static let sectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
     }
+}
+
+extension NSNotification.Name {
+    /// Updates the dashboard
+    static let updateDashboard = NSNotification.Name("UpdateDashboard")
 }
