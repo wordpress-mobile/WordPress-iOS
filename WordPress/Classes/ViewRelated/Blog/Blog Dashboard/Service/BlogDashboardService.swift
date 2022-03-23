@@ -5,10 +5,12 @@ class BlogDashboardService {
 
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
+    private let postsParser: BlogDashboardPostsParser
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
+    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence(), postsParser: BlogDashboardPostsParser? = nil) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
+        self.postsParser = postsParser ?? BlogDashboardPostsParser(managedObjectContext: managedObjectContext)
     }
 
     /// Fetch cards from remote
@@ -22,7 +24,7 @@ class BlogDashboardService {
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
-            if let cards = self?.decode(cardsDictionary) {
+            if let cards = self?.decode(cardsDictionary, blog: blog) {
 
                 blog.dashboardState.hasCachedData = true
                 blog.dashboardState.failedToLoad = false
@@ -54,7 +56,7 @@ class BlogDashboardService {
         }
 
         if let cardsDictionary = persistence.getCards(for: dotComID),
-            let cards = decode(cardsDictionary) {
+           let cards = decode(cardsDictionary, blog: blog) {
 
             blog.dashboardState.hasCachedData = true
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
@@ -104,7 +106,13 @@ private extension BlogDashboardService {
         return snapshot
     }
 
-    func decode(_ cardsDictionary: NSDictionary) -> BlogDashboardRemoteEntity? {
+    func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {
+        let cardsDictionary: NSMutableDictionary = cardsDictionary.mutableCopy() as! NSMutableDictionary
+
+        if let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary {
+            cardsDictionary["posts"] = postsParser.parse(posts, for: blog)
+        }
+
         guard let data = try? JSONSerialization.data(withJSONObject: cardsDictionary, options: []) else {
             return nil
         }
