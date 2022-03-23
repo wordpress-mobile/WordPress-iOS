@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+SENTRY_ORG_SLUG = 'a8c'
+APPCENTER_OWNER_NAME = 'automattic'
+APPCENTER_OWNER_TYPE = 'organization'      
+
 # Lanes related to Building and Testing the code
 #
 platform :ios do
@@ -129,7 +133,7 @@ platform :ios do
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: 'a8c',
+      org_slug: SENTRY_ORG_SLUG,
       project_slug: 'jetpack-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
@@ -191,8 +195,8 @@ platform :ios do
 
     appcenter_upload(
       api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: 'automattic',
-      owner_type: 'organization',
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
       app_name: 'WPiOS-One-Offs',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
@@ -202,7 +206,7 @@ platform :ios do
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: 'a8c',
+      org_slug: SENTRY_ORG_SLUG,
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
@@ -257,8 +261,8 @@ platform :ios do
 
     appcenter_upload(
       api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: 'automattic',
-      owner_type: 'organization',
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
       app_name: 'jetpack-installable-builds',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
@@ -268,7 +272,7 @@ platform :ios do
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: 'a8c',
+      org_slug: SENTRY_ORG_SLUG,
       project_slug: 'jetpack-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
@@ -319,8 +323,8 @@ platform :ios do
 
     appcenter_upload(
       api_token: ENV['APPCENTER_API_TOKEN'],
-      owner_name: 'automattic',
-      owner_type: 'organization',
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
       app_name: 'WP-Internal',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
@@ -329,7 +333,7 @@ platform :ios do
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: 'a8c',
+      org_slug: SENTRY_ORG_SLUG,
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
@@ -370,7 +374,7 @@ platform :ios do
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: 'a8c',
+      org_slug: SENTRY_ORG_SLUG,
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
