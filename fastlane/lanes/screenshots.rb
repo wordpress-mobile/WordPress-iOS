@@ -75,7 +75,7 @@ platform :ios do
       end
     end
 
-    puts languages
+    UI.message "Generating screenshots for the following languages: #{languages}"
 
     [true, false].each do |dark_mode_enabled|
       capture_ios_screenshots(
