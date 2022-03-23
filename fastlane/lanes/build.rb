@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 SENTRY_ORG_SLUG = 'a8c'
+SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
+SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'      
 
@@ -116,7 +118,7 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
@@ -166,7 +168,7 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'jetpack-ios',
+      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
@@ -212,7 +214,7 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
@@ -262,7 +264,7 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
@@ -315,7 +317,7 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'jetpack-ios',
+      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
