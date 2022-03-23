@@ -368,10 +368,13 @@ platform :ios do
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
     qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
-      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by <a href='#{install_url}'>installing it from App Center here</a> (build number: <code>#{build_number}</code>),
-      or by scanning the QR code below:<br /><img src='#{qr_code_url}' width='250' height='250' /> 
-      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.
-      If you need access to this, you can ask a maintainer to add you.
+      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
+        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
+        <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
+      </ul>
+      <img src='#{qr_code_url}' width='150' height='150' /> 
+      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.<br />
+      If you need access to App Center, please ask a maintainer to add you.
     COMMENT_BODY
 
     comment_on_pr(
