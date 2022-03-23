@@ -98,6 +98,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 
         if hidesHeader {
             frame.hideHeader()
+            childViewController.showNextPostPrompt()
         }
 
         frame.onHeaderTap = { [weak self] in
