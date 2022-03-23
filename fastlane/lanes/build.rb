@@ -359,14 +359,16 @@ platform :ios do
   #
   def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build here: #{download_url}")
+    UI.message("Successfully built and uploaded installable build `#{build_number}` here: #{download_url}")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
+    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
-      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by downloading it from App Center <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>.
-      IPA is available <a href='#{download_url}'>here</a>.
+      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by <a href='#{install_url}'>installing it from App Center here</a> (build number: <code>#{build_number}</code>),
+      or by scanning the QR code below:<br /><img src='#{qr_code_url}' width='250' height='250' /> 
+      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.
       If you need access to this, you can ask a maintainer to add you.
     COMMENT_BODY
 
