@@ -120,21 +120,21 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    if options[:create_release]
-      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
-      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+    next unless options[:create_release]
 
-      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
-      create_release(
-        repository: GHHELPER_REPO,
-        version: version,
-        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-        release_assets: archive_zip_path.to_s,
-        prerelease: options[:beta_release]
-      )
+    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
+    zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-      FileUtils.rm_rf(archive_zip_path)
-    end
+    version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
+    create_release(
+      repository: GHHELPER_REPO,
+      version: version,
+      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+      release_assets: archive_zip_path.to_s,
+      prerelease: options[:beta_release]
+    )
+
+    FileUtils.rm_rf(archive_zip_path)
   end
 
   # Builds the Jetpack app and uploads it to TestFlight, for beta-testing or final release
