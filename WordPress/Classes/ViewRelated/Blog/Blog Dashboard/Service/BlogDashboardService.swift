@@ -12,7 +12,7 @@ class BlogDashboardService {
     }
 
     /// Fetch cards from remote
-    func fetch(blog: Blog, completion: @escaping (DashboardSnapshot) -> Void, failure: (() -> Void)? = nil) {
+    func fetch(blog: Blog, completion: @escaping (DashboardSnapshot) -> Void, failure: ((DashboardSnapshot?) -> Void)? = nil) {
 
         guard let dotComID = blog.dotComID?.intValue else {
             return
@@ -24,6 +24,9 @@ class BlogDashboardService {
 
             if let cards = self?.decode(cardsDictionary) {
 
+                blog.dashboardState.hasCachedData = true
+                blog.dashboardState.failedToLoad = false
+
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
 
                 guard let snapshot = self?.parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID) else {
@@ -32,11 +35,14 @@ class BlogDashboardService {
 
                 completion(snapshot)
             } else {
-                failure?()
+                blog.dashboardState.failedToLoad = true
+                failure?(nil)
             }
 
-        }, failure: { _ in
-            failure?()
+        }, failure: { [weak self] _ in
+            blog.dashboardState.failedToLoad = true
+            let snapshot = self?.fetchLocal(blog: blog)
+            failure?(snapshot)
         })
     }
 
@@ -50,10 +56,12 @@ class BlogDashboardService {
         if let cardsDictionary = persistence.getCards(for: dotComID),
             let cards = decode(cardsDictionary) {
 
+            blog.dashboardState.hasCachedData = true
             let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
-            return localCardsAndGhostCards(blog: blog, dotComID: dotComID)
+            blog.dashboardState.hasCachedData = false
+            return localCards(blog: blog, dotComID: dotComID)
         }
     }
 }
@@ -65,7 +73,6 @@ private extension BlogDashboardService {
         var snapshot = DashboardSnapshot()
 
         DashboardCard.allCases
-            .filter { $0 != .ghost }
             .forEach { card in
 
             if card.isRemote {
@@ -105,21 +112,6 @@ private extension BlogDashboardService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
-    }
-
-    func localCardsAndGhostCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
-        var snapshot = localCards(blog: blog, dotComID: dotComID)
-
-        let section = DashboardCardSection(id: .ghost)
-
-        snapshot.appendSections([section])
-        Array(0...4).forEach {
-            snapshot.appendItems([DashboardCardModel(id: .ghost,
-                                                     dotComID: dotComID,
-                                                     hashableDictionary: ["diff": $0])], toSection: section)
-        }
-
-        return snapshot
     }
 
     func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {

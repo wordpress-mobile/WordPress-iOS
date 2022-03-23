@@ -25,7 +25,7 @@ static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemove
 static NSString *const BlogDetailsQuickActionsCellIdentifier = @"BlogDetailsQuickActionsCell";
 static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
-static NSString *const QuickStartListTitleCellNibName = @"QuickStartListTitleCell";
+static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
@@ -346,10 +346,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
     [self.tableView registerClass:[QuickActionsCell class] forCellReuseIdentifier:BlogDetailsQuickActionsCellIdentifier];
-    UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
+    UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
-    UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
-    [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
+    [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
@@ -371,9 +370,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
-    
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -451,6 +447,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     switch (section) {
         case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionDomainCredit:
+        case BlogDetailsSubsectionHome:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showDashboard];
+            break;
         case BlogDetailsSubsectionQuickStart:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -553,16 +556,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
 - (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)subsection
 {
-    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
     NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
     switch (subsection) {
         case BlogDetailsSubsectionReminders:
+        case BlogDetailsSubsectionHome:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionDomainCredit:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionQuickStart:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionStats:
-            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionJetpackSettings:
@@ -593,8 +598,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if (!_restorableSelectedIndexPath) {
         // If nil, default to stats subsection.
-        BlogDetailsSubsection subsection = BlogDetailsSubsectionStats;
-        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection];
+        BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
         NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
@@ -607,6 +612,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         switch (section.category) {
+            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
                 _restorableSelectedIndexPath = nil;
@@ -682,9 +688,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
+            case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
-                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:BlogDetailsSubsectionStats];
+                BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
                 sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
                 break;
@@ -700,7 +708,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                             self.restorableSelectedIndexPath.row < [self.tableView numberOfRowsInSection:self.restorableSelectedIndexPath.section];
     if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
-
         [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
                               scrollPosition:[self optimumScrollPositionForIndexPath:self.restorableSelectedIndexPath]];
@@ -732,10 +739,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
-    if ([Feature enabled:FeatureFlagMySiteDashboard] && [self.blog isAccessibleThroughWPCom] && ![self splitViewControllerIsHorizontallyCompact]) {
+    if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
-    if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
+    if (self.blog.shouldShowJetpackSection) {
         [marr addObject:[self jetpackSectionViewModel]];
     } else {
         [marr addObject:[self generalSectionViewModel]];
@@ -1082,8 +1089,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self splitViewControllerIsHorizontallyCompact]) {
         return;
     }
+
+    self.restorableSelectedIndexPath = nil;
     
-    [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    splitViewController.isShowingInitialDetail = YES;
+    
+    if ([self shouldShowDashboard]) {
+        [self showDetailViewForSubsection:BlogDetailsSubsectionHome];
+    } else {
+        [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+    }
 }
 
 #pragma mark - Table view data source
@@ -1117,9 +1133,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (row.accessoryView) {
         cell.accessoryView = row.accessoryView;
     }
-    if ([cell isKindOfClass:[QuickStartListTitleCell class]]) {
-        ((QuickStartListTitleCell *) cell).state = row.quickStartTitleState;
-    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1129,6 +1142,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (section.category == BlogDetailsSectionCategoryQuickAction) {
         QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
         [self configureQuickActionsWithCell: cell];
+        return cell;
+    }
+    
+    if (section.category == BlogDetailsSectionCategoryQuickStart) {
+        QuickStartCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickStartCellIdentifier];
+        [cell configureWithBlog:self.blog viewController:self];
         return cell;
     }
 
@@ -1161,6 +1180,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+    splitViewController.isShowingInitialDetail = NO;
+    
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
@@ -1287,6 +1309,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadPages];
         [self preloadComments];
         [self preloadMetadata];
+        [self preloadDomains];
     }
 }
 
@@ -1367,6 +1390,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                [weakSelf configureTableViewData];
                                [weakSelf reloadTableViewPreservingSelection];
                            }];
+}
+
+- (void)preloadDomains
+{
+    if (![Feature enabled:FeatureFlagDomains]) {
+        return;
+    }
+
+    [self.blogService refreshDomainsFor:self.blog
+                                success:nil
+                                failure:nil];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element

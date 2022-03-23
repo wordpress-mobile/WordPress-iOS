@@ -105,6 +105,7 @@ class SignupEpilogueCell: UITableViewCell {
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
         configureEditable(for: newCellType)
+        configureKeyboardReturnKey(for: newCellType)
 
         addBottomBorder(withColor: .divider, leadingMargin: cellLabelLeadingConstraint.constant)
 
@@ -206,6 +207,12 @@ private extension SignupEpilogueCell {
             cellField.isEnabled = false
         } else {
             cellField.isEnabled = true
+        }
+    }
+
+    func configureKeyboardReturnKey(for cellType: EpilogueCellType) {
+        if cellType == .displayName {
+            cellField.enablesReturnKeyAutomatically = true
         }
     }
 

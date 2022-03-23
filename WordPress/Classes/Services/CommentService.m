@@ -401,6 +401,52 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
+- (void)loadCommentWithID:(NSNumber *)commentID
+                  forPost:(ReaderPost *)post
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *))failure {
+
+    NSManagedObjectID *postID = post.objectID;
+    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
+
+    [service getCommentWithID:commentID
+                      success:^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            ReaderPost *post = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postID error:nil];
+            if (!post) {
+                return;
+            }
+            
+            Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+
+            if (!comment) {
+                comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+                comment.dateCreated = [NSDate new];
+            }
+
+            comment.post = post;
+            [self updateComment:comment withRemoteComment:remoteComment];
+            
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success(comment);
+                    });
+                }
+            }];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error loading comment for post: %@", error);
+        [self.managedObjectContext performBlock:^{
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
+    }];
+}
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success
@@ -1169,6 +1215,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return;
     }
 
+    NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
     NSMutableArray *ancestors = [NSMutableArray array];
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     NSString *entityName = NSStringFromClass([Comment class]);
@@ -1186,7 +1233,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         // Calculate hierarchy and depth.
         ancestors = [self ancestorsForCommentWithParentID:[NSNumber numberWithInt:comment.parentID] andCurrentAncestors:ancestors];
         comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:[NSNumber numberWithInt:comment.commentID]];
-        comment.depth = [ancestors count];
+
+        // Comments are shown on the thread when (1) it is approved, and (2) its ancestors are approved.
+        // Having the comments sorted hierarchically ascending ensures that each comment's predecessors will be visited first.
+        // Therefore, we only need to check if the comment and its direct parent are approved.
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/18081
+        BOOL hasValidParent = comment.parentID > 0 && [visibleCommentIds containsObject:@(comment.parentID)];
+        if ([comment isApproved] && ([comment isTopLevelComment] || hasValidParent)) {
+            [visibleCommentIds addObject:@(comment.commentID)];
+        }
+        comment.visibleOnReader = [visibleCommentIds containsObject:@(comment.commentID)];
+
+        comment.depth = ancestors.count;
         comment.post = post;
         comment.content = [self sanitizeCommentContent:comment.content isPrivateSite:post.isPrivate];
         [commentsToKeep addObject:comment];

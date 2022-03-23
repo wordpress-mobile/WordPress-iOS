@@ -15,6 +15,7 @@ enum DashboardCard: String, CaseIterable {
 
     // Card placeholder for when loading data
     case ghost
+    case failure
 
     /// If the card is backed by API data
     var isRemote: Bool {
@@ -28,6 +29,8 @@ enum DashboardCard: String, CaseIterable {
         case .todaysStats:
             return true
         case .ghost:
+            return false
+        case .failure:
             return false
         }
     }
@@ -44,21 +47,25 @@ enum DashboardCard: String, CaseIterable {
             return DashboardStatsCardCell.self
         case .ghost:
             return DashboardGhostCardCell.self
+        case .failure:
+            return DashboardFailureCardCell.self
         }
     }
 
-    func shouldShow(for blog: Blog) -> Bool {
+    func shouldShow(for blog: Blog, mySiteSettings: MySiteSettings = MySiteSettings()) -> Bool {
         switch self {
         case .quickActions:
             return true
         case .quickStart:
-            return QuickStartTourGuide.shouldShowChecklist(for: blog)
+            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
         case .posts:
             return true
         case .todaysStats:
             return true
         case .ghost:
-            return true
+            return blog.dashboardState.isFirstLoad
+        case .failure:
+            return blog.dashboardState.isFirstLoadFailure
         }
     }
 
