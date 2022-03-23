@@ -266,20 +266,7 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
-
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build here: #{download_url}")
-    install_url = 'https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/'
-
-    comment_body = "You can test the changes in <strong>WordPress</strong> from this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
-
-    comment_on_pr(
-      project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
-      reuse_identifier: 'installable-build-link',
-      body: comment_body
-    )
+    post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
   # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to AppCenter
@@ -332,20 +319,7 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
-
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build here: #{download_url}")
-    install_url = 'https://install.appcenter.ms/orgs/automattic/apps/jetpack-installable-builds/'
-
-    comment_body = "You can test the changes in <strong>Jetpack</strong> from this Pull Request by downloading it from App Center <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
-
-    comment_on_pr(
-      project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
-      reuse_identifier: 'jetpack-installable-build-link',
-      body: comment_body
-    )
+    post_installable_build_pr_comment(app_name: 'Jetpack', build_number: build_number, url_slug: 'jetpack-installable-builds')
   end
 
   #################################################
@@ -371,6 +345,37 @@ platform :ios do
 
       "#{branch}-#{commit}"
     end
+  end
+
+  # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
+  # 
+  # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
+  #
+  # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
+  # @param [String] build_number The App Center's build number for this build
+  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in AppCenter (e.g. `WPiOS-One-Offs`)
+  #
+  # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
+  #
+  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
+    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
+    UI.message("Successfully built and uploaded installable build here: #{download_url}")
+
+    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+
+    install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
+    comment_body = <<~COMMENT_BODY
+      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by downloading it from App Center <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>.
+      IPA is available <a href='#{download_url}'>here</a>.
+      If you need access to this, you can ask a maintainer to add you.
+    COMMENT_BODY
+
+    comment_on_pr(
+      project: 'wordpress-mobile/wordpress-ios',
+      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      reuse_identifier: "installable-build-link--#{url_slug}",
+      body: comment_body
+    )
   end
 
   # Returns the value of `VERSION_SHORT`` from the `Version.public.xcconfig` file
