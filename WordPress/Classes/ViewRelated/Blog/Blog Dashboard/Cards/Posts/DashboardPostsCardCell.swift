@@ -38,7 +38,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.draftSaved), name: .showDraftsCard, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCard), name: .showDraftsCard, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCard), name: .showScheduledCard, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -152,15 +153,25 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 
     // In case a draft is saved and the drafts card
     // is not appearing, we show it.
-    @objc private func draftSaved() {
+    @objc private func showDraftsCard() {
         guard contentView.superview != nil else {
             return
         }
 
         if !hasDrafts {
-            hasDrafts = true
-            showCard(for: blog!, status: .draft, to: viewController!,
-                     hasPublishedPosts: true, shouldSync: false)
+            NotificationCenter.default.post(name: .updateDashboard, object: nil)
+        }
+    }
+
+    // In case a post is scheduled and the scheduled card
+    // is not appearing, we show it.
+    @objc private func showScheduledCard() {
+        guard contentView.superview != nil else {
+            return
+        }
+
+        if !hasScheduled {
+            NotificationCenter.default.post(name: .updateDashboard, object: nil)
         }
     }
 
