@@ -83,7 +83,7 @@ platform :ios do
   # Builds the app and uploads it to TestFlight / App Store Connect
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] create_gh_release If tru, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
+  # @option [Boolean] create_gh_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
   # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
   # @called_by CI
@@ -343,7 +343,7 @@ platform :ios do
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  # @option [Boolean] create_gh_release If tru, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
+  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
   # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
   # @called_by build_and_upload_app_store_connect
