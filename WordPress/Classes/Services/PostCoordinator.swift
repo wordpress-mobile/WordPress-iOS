@@ -60,6 +60,8 @@ class PostCoordinator: NSObject {
               defaultFailureNotice: Notice? = nil,
               completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
+        notifyDashboardOfDraftSaved()
+
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
@@ -242,10 +244,6 @@ class PostCoordinator: NSObject {
                 self?.notifyDashboardOfPostScheduled()
             }
 
-            if uploadedPost.isDraft() {
-                self?.notifyDashboardOfDraftSaved()
-            }
-
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
@@ -256,8 +254,6 @@ class PostCoordinator: NSObject {
             self?.dispatchNotice(post)
 
             completion?(.failure(error ?? SavingError.unknown))
-
-            self?.notifyDashboardOfDraftSaved()
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
