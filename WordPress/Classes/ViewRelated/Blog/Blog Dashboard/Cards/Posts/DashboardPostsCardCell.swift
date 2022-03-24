@@ -64,7 +64,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
 
         if !hasDrafts && !hasScheduled {
             showCard(for: blog, status: .draft, to: viewController,
-                     hasPublishedPosts: hasPublished, hidesHeader: true, shouldSync: false)
+                     hasPublishedPosts: hasPublished, showNextPostPrompt: true, shouldSync: false)
         } else {
             if hasDrafts {
                 showCard(for: blog, status: .draft, to: viewController,
@@ -84,7 +84,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
     }
 
     /// Embed the post list into a "card frame" and display it
-    private func showCard(for blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, hidesHeader: Bool = false, shouldSync: Bool = true) {
+    private func showCard(for blog: Blog, status: BasePost.Status, to viewController: UIViewController, hasPublishedPosts: Bool, showNextPostPrompt: Bool = false, shouldSync: Bool = true) {
         // Get the VC to present posts
         let childViewController = createOrDequeueVC(blog: blog,
                                                     status: status,
@@ -97,7 +97,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         frame.title = status == .draft ? Strings.draftsTitle : Strings.scheduledTitle
         frame.icon = UIImage.gridicon(.posts, size: Constants.iconSize)
 
-        if hidesHeader {
+        if showNextPostPrompt {
             frame.hideHeader()
             childViewController.showNextPostPrompt()
         }
