@@ -1,9 +1,0 @@
-La prise en charge de palettes de couleurs multiples est arrivée ! Ajoutez les palettes de couleurs et de dégradés du thème et par défaut, ou créez votre propre palette personnalisée avec vos teintes préférées. Nous avons également corrigé un problème qui empêchait les couleurs de thème d’apparaître et les données de thème actuelles de se mettre à jour.
-
-Pour les appareils utilisant des langues allant de droite à gauche, nous avons mis à jour le positionnement de l’icône, du bouton et du texte pour l’écran "Choisir un domaine" dans le processus de création de site. C’est chouette !
-
-Vous voulez voir des médias riches comme des images et des .gifs dans les notifications push de votre appareil ? Il suffit d’appuyer sur la notification et de maintenir la pression pour ouvrir un aperçu.
-
-Nous avons apporté quelques modifications aux notifications du Weekly Roundup pour nous assurer qu’elles s’affichent bien une fois que vous les avez activées. Hourra !
-
-Enfin, nous avons ajouté quelques corrections sur l’écran Insight qui permettront d’accélérer les choses. Nous avons également corrigé un bug qui mettait en gras les mots corrigés automatiquement dans les titres des blocs de contenu.
