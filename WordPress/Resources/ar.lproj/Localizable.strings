@@ -15,7 +15,7 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nللتأكيد، يرجى إعادة إدخال اسم المستخدم الخاص بك قبل الإغلاق.\n\n";
 
-/* No comment provided by engineer. */
+/* Per-year postfix shown after a domain's cost. */
 " \/ year" = " \/ سنة";
 
 /* Title for the lazy load images setting */
@@ -1281,9 +1281,6 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "كن حذرًا!";
 
-/* shown in promotional screens during first launch */
-"Catch up with your favorite sites and join the conversation anywhere, any time." = "حافظ على مواقعك المفضلة وانضم إلى المحادثة أينما كنت ووقتما تشاء.";
-
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "تصنيفات";
@@ -2334,6 +2331,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
@@ -2739,9 +2737,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for the action button that enables notification for new comments */
 "Enable in-app notifications?" = "هل تريد تمكين التنبيهات داخل التطبيق؟";
 
-/* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
-"Enable microphone access to record sound in your videos." = "قم بتمكين الوصول إلى الميكروفون لتسجيل الصوت في فيديوهاتك.";
-
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "تمكين مشاركة المقالة";
 
@@ -3030,9 +3025,6 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "فشل في إدراج وسائط.\nيرجى الضغط على الخيارات.";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nPlease tap for options." = "فشلت عملية إدراج وسائط.\nيرجى النقر على الخيارات.";
-
-/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "فشل حفظ الملفات.\nيرجى النقر على الخيارات.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3162,8 +3154,7 @@ translators: Block name. %s: The localized block name */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "قم بمتابعة الموضوعات التي تهتم بها وستجد بعض المدونات التي قد تنال إعجابك.";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Follow your favorite sites and discover new blogs." = "تابع مواقعك المفضَّلة واكتشف مدوّنات جديدة.";
 
 /* Displayed in the Notification Settings View
@@ -4203,9 +4194,6 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "إدارة الموقع";
-
-/* shown in promotional screens during first launch */
-"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "إدارة موقعك المدعوم من Jetpack أثناء تنقلك — سيكون ووردبريس في متناول يدك.";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "تعديلات يدويّة";
@@ -5677,9 +5665,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of a Quick Start Tour */
 "Publish a post" = "نشر مقالة";
 
-/* shown in promotional screens during first launch */
-"Publish from the park. Blog from the bus. Comment from the café. WordPress goes where you do." = "نشر من قائمة الانتظار. تدوين من قائمة النقل. تعليق من المقهى. يذهب ووردبريس معك حيثما تذهب.";
-
 /* Immediately publish button title */
 "Publish immediately" = "النشر فورًا";
 
@@ -5944,8 +5929,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reply button
    Reply to a comment (verb)
    Reply to a comment.
-   Verb. Button title. Reply to a comment.
-   Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post. */
+   Verb. Button title. Reply to a comment. */
 "Reply" = "رد";
 
 /* The app successfully sent a comment */
@@ -6137,8 +6121,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "حفظ المقالات لوقت لاحق";
 
-/* Title of button allowing users to change the status of the post they are currently editing to Draft.
-   WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
+/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
 "Save as Draft" = "حفظ كمسودة";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
@@ -6292,8 +6275,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "الاطلاع على الإرشادات";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "شاهد التعليقات والإشعارات في الوقت الفعلي.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post.
@@ -7633,10 +7615,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "عنوان التصنيف إلزامي.";
 
-/* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
-   NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
-"To add photos or videos to your posts." = "لإضافة صور أو مقاطع فيديو إلى مقالاتك.";
-
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "لإغلاق هذا الحساب الآن، اتصل بفريق الدعم.";
 
@@ -7669,9 +7647,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "لإزالة مكوِّن، حدِّد المكوِّن وانقر على النقاط الثلاث الموجودة في أسفل يمين المكوِّن لعرض الإعدادات. من هناك، اختر خيار إزالة المكوِّن.";
-
-/* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
-"To take photos or videos to use in your posts." = "لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
 "To use blogging reminders, you'll need to turn on push notifications." = "لاستخدام تذكيرات التدوين، سيتعيَّن عليك تشغيل التنبيهات المؤقتة.";
@@ -8439,11 +8414,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Jetpack Restore Warning screen */
 "Warning" = "تحذير";
 
-/* shown in promotional screens during first launch */
-"Watch readers from around the world read and interact with your site — in real time." = "راقب القرّاء من جميع أنحاء العالم وهم يقرؤون ويتفاعلون مع موقعك — بالوقت الفعلي.";
-
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "شاهد جمهورك يتزايد من خلال التحليلات المتعمقة.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -8712,9 +8683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
-
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "نحن نرسل دومًا رسائل بريد إلكتروني مهمة بخصوص حسابك، ومع ذلك يمكنك الحصول على بعض الإضافات المفيدة أيضًا.";
 
@@ -8807,8 +8775,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing email address */
 "Will not be publicly displayed." = "لن تكون مرئية للجميع.";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "With this powerful editor you can post on the go." = "باستخدام هذا المحرر القوي، يمكنك النشر أثناء التنقّل.";
 
 /* Siri Suggestion to open App Settings */
@@ -8873,10 +8840,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "إصدار WordPress قديم جدًا. يستخدم الموقع في %1$@ WordPress %2$@. نوصي بالتحديث إلى أحدث إصدار أو الإصدار %3$@ على الأقل";
-
-/* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
-   NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
-"WordPress would like to add your location to posts on sites where you have enabled geotagging." = "ترغب وردبريس في إضافة مكانك إلى مقالاتك على الموقع حيث قمت بتمكين تحديد الموقع الجغرافي.";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -9165,9 +9128,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "جاري الآن إعداد نطاقك الجديد %@. قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك بالعمل.";
-
-/* shown in promotional screens during first launch */
-"Your notifications travel with you — see comments and likes as they happen." = "تنتقل الإشعارات معك — راجع التعليقات والإعجابات عندما تحدث.";
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "ينبغي ألا يقل طول كلمة المرور الخاصة بك عن ستة أحرف. ولجعل كلمة المرور أقوى، استخدم أحرفًا كبيرة وصغيرة وأرقامًا ورموزًا مثل ! \" ؟ $ % ^ & ).";
