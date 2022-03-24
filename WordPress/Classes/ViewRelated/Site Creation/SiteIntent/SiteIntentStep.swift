@@ -13,7 +13,9 @@ final class SiteIntentStep: WizardStep {
     }()
 
     init?(siteIntentAB: SiteIntentABTestable = SiteIntentAB.shared, creator: SiteCreator) {
-        guard FeatureFlag.siteIntentQuestion.enabled && siteIntentAB.variant == .treatment else {
+        let variant = siteIntentAB.variant
+        SiteCreationAnalyticsHelper.trackSiteIntentExperiment(variant)
+        guard FeatureFlag.siteIntentQuestion.enabled && variant == .treatment else {
             return nil
         }
 
