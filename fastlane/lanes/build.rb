@@ -103,15 +103,15 @@ platform :ios do
       scheme: 'WordPress',
       workspace: WORKSPACE_PATH,
       clean: true,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       export_options: { method: 'app-store' }
     )
 
     testflight(
       skip_waiting_for_build_processing: true,
-      team_id: '299112',
+      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
@@ -192,17 +192,17 @@ platform :ios do
     gym(
       scheme: 'WordPress Internal',
       workspace: WORKSPACE_PATH,
-      export_method: 'enterprise',
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'WordPress Internal',
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
 
     appcenter_upload(
-      api_token: ENV['APPCENTER_API_TOKEN'],
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
       owner_name: APPCENTER_OWNER_NAME,
       owner_type: APPCENTER_OWNER_TYPE,
       app_name: 'WP-Internal',
