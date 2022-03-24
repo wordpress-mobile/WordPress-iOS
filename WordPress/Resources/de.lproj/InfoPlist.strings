@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress möchte auf Webseiten, bei denen Du das Geotagging aktiviert hast, deinen Standort zu den Beiträgen hinzufügen.";
-NSLocationWhenInUseUsageDescription = "WordPress möchte auf Webseiten, bei denen Du das Geotagging aktiviert hast, deinen Standort zu den Beiträgen hinzufügen.";
-NSCameraUsageDescription = "Um Fotos oder Videos für deine Beiträge aufzunehmen.";
-NSPhotoLibraryUsageDescription = "Um deinen Beiträgen Fotos oder Videos hinzuzufügen.";
-NSMicrophoneUsageDescription = "Damit du Sound für deine Videos aufnehmen kannst.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Um Fotos oder Videos für deine Beiträge aufzunehmen.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Darf WordPress zu Beiträgen auf Websites, auf denen du Geotagging aktiviert hast, deinen Standort hinzufügen?</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Darf WordPress zu Beiträgen auf Websites, auf denen du Geotagging aktiviert hast, deinen Standort hinzufügen?</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Aktiviere den Mikrofonzugriff, um in deinen Videos Ton aufzeichnen zu können.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Um deinen Beiträgen Fotos oder Videos hinzuzufügen.</string>
+  </dict>
+</plist>
