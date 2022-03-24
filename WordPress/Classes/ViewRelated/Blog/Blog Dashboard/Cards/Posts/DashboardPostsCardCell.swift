@@ -38,8 +38,8 @@ class DashboardPostsCardCell: UICollectionViewCell, Reusable {
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCard), name: .showDraftsCard, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCard), name: .showScheduledCard, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCard), name: .newPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCard), name: .newPostScheduled, object: nil)
     }
 
     required init?(coder: NSCoder) {

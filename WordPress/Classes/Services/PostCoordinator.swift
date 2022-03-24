@@ -60,7 +60,7 @@ class PostCoordinator: NSObject {
               defaultFailureNotice: Notice? = nil,
               completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
-        notifyDashboardOfDraftSaved()
+        notifyNewPostCreated()
 
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
@@ -241,7 +241,7 @@ class PostCoordinator: NSObject {
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             if uploadedPost.isScheduled() {
-                self?.notifyDashboardOfPostScheduled()
+                self?.notifyNewPostScheduled()
             }
 
             SearchManager.shared.indexItem(uploadedPost)
