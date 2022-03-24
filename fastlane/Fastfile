@@ -477,6 +477,12 @@ platform :ios do
       download_dir: parent_dir_for_lprojs
     )
 
+    git_commit(
+      path: File.join(parent_dir_for_lprojs, '*.lproj', 'Localizable.strings'),
+      message: 'Update app translations – `Localizable.strings`',
+      allow_nothing_to_commit: true
+    )
+
     # Then redispatch the appropriate subset of translations back to the
     # `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj`
     # dirs
@@ -484,7 +490,12 @@ platform :ios do
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
-    git_commit(path: modified_files, message: 'Update app translations', allow_nothing_to_commit: true)
+
+    git_commit(
+      path: modified_files,
+      message: 'Update app translations – Other `.strings`',
+      allow_nothing_to_commit: true
+    )
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
     # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
