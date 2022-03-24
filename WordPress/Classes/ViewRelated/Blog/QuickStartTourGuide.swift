@@ -2,6 +2,7 @@ import WordPressFlux
 import Gridicons
 import Foundation
 import UIKit
+import WordPressShared
 
 @objc enum QuickStartTourOrigin: Int {
     case unknown
@@ -38,6 +39,8 @@ open class QuickStartTourGuide: NSObject {
             completed(tour: tour, for: blog)
         }
         tourInProgress = false
+
+        WPAnalytics.track(.quickStartStarted)
     }
 
     func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -355,7 +358,12 @@ private extension QuickStartTourGuide {
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-            WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+
+            // Create a site is completed automatically, we don't want to track
+            if tour.analyticsKey != "create_site" {
+                WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+            }
+
             recentlyTouredBlog = blog
         } else {
             recentlyTouredBlog = nil

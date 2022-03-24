@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
@@ -100,6 +101,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
         StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
+        WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
     }
 }
 

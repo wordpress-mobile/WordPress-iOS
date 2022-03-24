@@ -2,8 +2,8 @@ import UIKit
 
 @objc class QuickStartCell: UITableViewCell {
 
-    private lazy var tourStateView: QuickStarTourStateView = {
-        let view = QuickStarTourStateView()
+    private lazy var tourStateView: QuickStartTourStateView = {
+        let view = QuickStartTourStateView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
