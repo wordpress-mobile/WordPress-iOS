@@ -97,8 +97,7 @@ extension WPTabBarController {
     // TODO: remove before merging. For testing only.
     @objc func showFeatureIntroduction() {
         if FeatureFlag.bloggingPrompts.enabled {
-            let controller = FeatureIntroductionViewController.controller()
-            present(controller, animated: true)
+            present(FeatureIntroductionViewController.navigationController(), animated: true)
         }
     }
 

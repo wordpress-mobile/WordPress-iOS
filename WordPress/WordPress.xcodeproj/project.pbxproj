@@ -1806,8 +1806,6 @@
 		98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA6D1026B8CE7200920C8B /* Comment+CoreDataClass.swift */; };
 		98AA9F2127EA890800B3A98C /* FeatureIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA9F2027EA890800B3A98C /* FeatureIntroductionViewController.swift */; };
 		98AA9F2227EA890800B3A98C /* FeatureIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA9F2027EA890800B3A98C /* FeatureIntroductionViewController.swift */; };
-		98AA9F2427EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AA9F2327EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard */; };
-		98AA9F2527EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98AA9F2327EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard */; };
 		98AE3DF5219A1789003C0E24 /* StatsInsightsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */; };
 		98B11B892216535100B7F2D7 /* StatsChildRowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B11B882216535100B7F2D7 /* StatsChildRowsView.swift */; };
 		98B11B8B2216536C00B7F2D7 /* StatsChildRowsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B11B8A2216536C00B7F2D7 /* StatsChildRowsView.xib */; };
@@ -6481,7 +6479,6 @@
 		98AA22BE25082B1E005CCC13 /* GetStartedScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStartedScreen.swift; sourceTree = "<group>"; };
 		98AA6D1026B8CE7200920C8B /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		98AA9F2027EA890800B3A98C /* FeatureIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIntroductionViewController.swift; sourceTree = "<group>"; };
-		98AA9F2327EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FeatureIntroductionViewController.storyboard; sourceTree = "<group>"; };
 		98ADDDD925083CA9008FF6EE /* PasswordScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordScreen.swift; sourceTree = "<group>"; };
 		98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsInsightsStore.swift; sourceTree = "<group>"; };
 		98B11B882216535100B7F2D7 /* StatsChildRowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsChildRowsView.swift; sourceTree = "<group>"; };
@@ -12145,7 +12142,6 @@
 			isa = PBXGroup;
 			children = (
 				98AA9F2027EA890800B3A98C /* FeatureIntroductionViewController.swift */,
-				98AA9F2327EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard */,
 			);
 			path = "Feature Introduction";
 			sourceTree = "<group>";
@@ -15834,7 +15830,6 @@
 				17222DAD261DDDF90047B163 /* spectrum-classic-icon-app-76x76@2x.png in Resources */,
 				17222D9A261DDDF90047B163 /* black-icon-app-60x60@3x.png in Resources */,
 				9AB36B84236B25D900FAD72A /* StatsGhostTitleCell.xib in Resources */,
-				98AA9F2427EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard in Resources */,
 				17222D8D261DDDF90047B163 /* black-classic-icon-app-60x60@2x.png in Resources */,
 				176CF3AC25E0079600E1E598 /* NoteBlockButtonTableViewCell.xib in Resources */,
 				17222D9D261DDDF90047B163 /* black-icon-app-83.5x83.5@2x.png in Resources */,
@@ -16342,7 +16337,6 @@
 				FABB20902602FC2C00C8785C /* ReaderWelcomeBanner.xib in Resources */,
 				FE3E427B26A8690A00C596CE /* ListSimpleOverlayView.xib in Resources */,
 				FABB20952602FC2C00C8785C /* StatsGhostPostingActivityCell.xib in Resources */,
-				98AA9F2527EA8A8900B3A98C /* FeatureIntroductionViewController.storyboard in Resources */,
 				FABB20962602FC2C00C8785C /* ColorPalette.xcassets in Resources */,
 				FABB20972602FC2C00C8785C /* RestoreCompleteView.xib in Resources */,
 				FABB20992602FC2C00C8785C /* RegisterDomain.storyboard in Resources */,
