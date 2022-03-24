@@ -41,7 +41,7 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
-        addShowScheduledCardsObserver()
+        addUpdateDashboardObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -121,7 +121,7 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func addShowScheduledCardsObserver() {
+    private func addUpdateDashboardObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .updateDashboard, object: nil)
     }
 
