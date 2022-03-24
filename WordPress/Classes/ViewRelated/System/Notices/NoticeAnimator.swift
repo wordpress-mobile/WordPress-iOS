@@ -67,6 +67,8 @@ public struct NoticeAnimator {
             switch presentation.notice.style.animationStyle {
             case .moveIn:
                 noticeContainer.bottomConstraint?.constant = bottomOffset
+                noticeContainer.bottomConstraint?.isActive = transition == .onscreen
+                noticeContainer.topConstraint?.isActive = transition == .offscreen
             case .fade:
                 // Fade just changes the alpha value which both animations need
                 break

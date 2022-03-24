@@ -1,5 +1,6 @@
 19.6
 -----
+* [*] Enhances the exit animation of notices. [#18182]
 * [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
 
 19.5
