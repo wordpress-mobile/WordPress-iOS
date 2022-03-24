@@ -104,4 +104,3 @@ private extension BlogDashboardPostsParserTests {
         return try! JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
     }
 }
-
