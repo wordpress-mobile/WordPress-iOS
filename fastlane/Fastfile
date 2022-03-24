@@ -477,7 +477,9 @@ platform :ios do
       download_dir: parent_dir_for_lprojs
     )
 
-    # Then redispatch the appropriate subset of translations back to the `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj` dirs
+    # Then redispatch the appropriate subset of translations back to the
+    # `InfoPlist.strings` and `Sites.strings` files in corresponding `*.lproj`
+    # dirs
     parent_dir_for_intents_target_lprojs = File.join('WordPress', 'WordPressIntents')
     modified_files = ios_extract_keys_from_strings_files(
       source_parent_dir: parent_dir_for_lprojs,
