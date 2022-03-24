@@ -179,7 +179,7 @@ lane :download_jetpack_localized_app_store_metadata do
   FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
   git_commit(
-    path: Dir.glob('**/*.txt', base: metadata_directory),
+    path: File.join(metadata_directory, '**', '*.txt'),
     message: 'Update Jetpack metadata translations',
     allow_nothing_to_commit: true
   )

@@ -527,7 +527,7 @@ platform :ios do
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
     git_commit(
-      path: Dir.glob('**/*.txt', base: metadata_directory),
+      path: File.join(metadata_directory, '**', '*.txt'),
       message: 'Update WordPress metadata translations',
       allow_nothing_to_commit: true
     )
