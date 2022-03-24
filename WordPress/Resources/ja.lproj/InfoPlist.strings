@@ -1,5 +1,6 @@
-NSLocationUsageDescription = "WordPress は、ユーザーが有効にしたジオタギングの場所をサイトの投稿に追加したいと考えています。";
-NSLocationWhenInUseUsageDescription = "WordPress は、ユーザーが有効にしたジオタギングの場所をサイトの投稿に追加したいと考えています。";
-NSCameraUsageDescription = "投稿に使用する写真または動画を撮る方法。";
-NSPhotoLibraryUsageDescription = "投稿に写真または動画を追加する方法。";
-NSMicrophoneUsageDescription = "動画に音声を含める方法。";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict/>
+</plist>
