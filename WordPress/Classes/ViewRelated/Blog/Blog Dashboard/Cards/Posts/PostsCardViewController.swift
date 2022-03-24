@@ -23,6 +23,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
     private var status: BasePost.Status = .draft
     private var hasPublishedPosts: Bool
     private var shouldSync: Bool
+    private var minimumHeightConstraint: NSLayoutConstraint?
 
     weak var delegate: PostsCardViewControllerDelegate?
 
@@ -52,7 +53,7 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.dataSource = viewModel
+        tableView.dataSource = viewModel.diffableDataSource
         tableView.delegate = self
         viewModel.refresh()
     }
@@ -85,10 +86,12 @@ private extension PostsCardViewController {
         tableView.separatorStyle = .none
     }
 
-    // A minimum height is necessary to avoid the view
-    // being positioned wrong in the UICollectionView
+    // A minimum height is necessary when presenting the next post prompt
+    // to avoid the view bumping while being positioned in the UICollectionView
+    // This only happens the first time it is shown.
     func configureMinimumHeight() {
-        tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.writeFirstPostViewHeight).isActive = true
+        minimumHeightConstraint = tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.writeFirstPostViewHeight)
+        minimumHeightConstraint?.isActive = true
     }
 
     func configureGhostableTableView() {
@@ -223,6 +226,8 @@ extension PostsCardViewController: PostsCardView {
 
         delegate?.didShowNextPostPrompt()
 
+        minimumHeightConstraint?.isActive = false
+
         WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
     }
 
@@ -289,7 +294,7 @@ private class PostCardTableView: UITableView {
     /// This allows subscribers to update their layouts (ie.: UICollectionViews)
     override var intrinsicContentSize: CGSize {
         layoutIfNeeded()
-        if contentSize.height != previousHeight {
+        if contentSize.height != previousHeight, contentSize.height != 0 {
             previousHeight = contentSize.height
             NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
         }
