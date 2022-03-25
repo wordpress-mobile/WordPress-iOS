@@ -238,6 +238,8 @@ extension PostCompactCell {
         trailingContentConstraint.constant = Constants.margin
         headerStackView.spacing = Constants.margin
 
+        disableiPadReadableMargin()
+
         if !post.isScheduled() {
             configureExcerpt()
         }
