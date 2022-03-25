@@ -1172,7 +1172,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
-        let canUploadMedia = post.blog.capabilities != nil ? post.blog.isUploadingFilesAllowed() : true
+        let canUploadMedia = post.blog.canUserUploadMedia()
         return [
             .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),

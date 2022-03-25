@@ -49,6 +49,11 @@ extension Blog {
         return isUserCapableOf(.UploadFiles)
     }
 
+    @objc public func canUserUploadMedia() -> Bool {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
+        return capabilities != nil ? isUploadingFilesAllowed() : true
+    }
+
     /// Returns true if the current user is allowed to see Jetpack's Backups
     ///
     @objc public func isBackupsAllowed() -> Bool {

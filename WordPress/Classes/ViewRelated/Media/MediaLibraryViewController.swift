@@ -96,7 +96,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         registerChangeObserver()
         registerUploadCoordinatorObserver()
 
-        noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+        noResultsView.configureForNoAssets(userCanUploadMedia: blog.canUserUploadMedia())
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
@@ -142,7 +142,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             var barButtonItems = [UIBarButtonItem]()
 
-            if blog.userCanUploadMedia && assetCount > 0 {
+            if blog.canUserUploadMedia() && assetCount > 0 {
                 let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
                 addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
                 addButton.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
@@ -176,7 +176,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             if hasSearchQuery {
                 noResultsView.configureForNoSearchResult()
             } else {
-                noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+                noResultsView.configureForNoAssets(userCanUploadMedia: blog.canUserUploadMedia())
             }
         }
     }
@@ -699,13 +699,6 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
         super.encodeRestorableState(with: coder)
 
         coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
-    }
-}
-
-fileprivate extension Blog {
-    var userCanUploadMedia: Bool {
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
-        return capabilities != nil ? isUploadingFilesAllowed() : true
     }
 }
 
