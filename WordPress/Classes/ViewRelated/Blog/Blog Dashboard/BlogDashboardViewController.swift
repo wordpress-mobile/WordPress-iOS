@@ -41,6 +41,7 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
+        addNewPostAvailableObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -117,7 +118,12 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(toggleQuickStart), name: .QuickStartTourElementChangedNotification, object: nil)    }
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
+
+    private func addNewPostAvailableObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .newPostAvailableForDashboard, object: nil)
+    }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
@@ -132,8 +138,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
-    /// Show or hide Quick Start if needed
-    @objc private func toggleQuickStart() {
+    /// Load card from cache if view is appearing
+    @objc private func loadCardsFromCache() {
         guard view.superview != nil else {
             return
         }
@@ -162,10 +168,12 @@ extension BlogDashboardViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
+        let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
         let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
+        let bottomInset = isLastSection ? Constants.sectionInset : 0
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
                                                         leading: horizontalInset,
-                                                        bottom: 0,
+                                                        bottom: bottomInset,
                                                         trailing: horizontalInset)
 
         section.interGroupSpacing = Constants.cellSpacing

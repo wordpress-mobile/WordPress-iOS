@@ -169,7 +169,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.72.0'
+    gutenberg :tag => 'v1.73.0-alpha2'
 
     ## Third party libraries
     ## =====================
@@ -210,7 +210,7 @@ abstract_target 'Apps' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.8.2'
+    pod 'WPMediaPicker', '~> 1.8.3-beta.1'
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
@@ -391,10 +391,9 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
-        if pod.name == "Sentry"
+        if pod.name == 'Sentry'
           dynamic << pod
           next
         end
@@ -448,7 +447,7 @@ post_install do |installer|
                    </body>"
 
       ## Remove the <h1>, since we've promoted it to <title>
-      styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
+      styled_html = styled_html.sub('<h1>Acknowledgements</h1>', '')
 
       ## The glog library's license contains a URL that does not wrap in the web view,
       ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
@@ -474,9 +473,9 @@ post_install do |installer|
     # Flag Alpha builds for Tracks
     # ============================
     installer.pods_project.targets.each do |target|
-      next unless target.name == "Automattic-Tracks-iOS"
+      next unless target.name == 'Automattic-Tracks-iOS'
       target.build_configurations.each do |config|
-        if config.name == "Release-Alpha" or config.name == "Release-Internal"
+        if config.name == 'Release-Alpha' or config.name == 'Release-Internal'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1']
         end
       end

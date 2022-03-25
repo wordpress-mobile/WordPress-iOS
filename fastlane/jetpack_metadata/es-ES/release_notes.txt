@@ -1,9 +1,0 @@
-¡Queremos llenarlo todo de color! Ahora puedes trabajar con múltiples paletas de color. Añade paletas de degradados y color temáticas y por defecto, o crea tu propia paleta personalizada con tus tonos favoritos. También hemos solucionado un problema por el que los colores del tema no aparecían y los datos del tema actual no se actualizaban.
-
-Hemos modificado la posición del icono, el botón y el texto de la pantalla "Elige un dominio" en el proceso de creación del sitio para los dispositivos con idiomas de derecha a izquierda. Muy bien.
-
-¿Quieres ver medios enriquecidos como imágenes y GIF en las notificaciones push de tu dispositivo? Para abrir una vista previa solo tienes que mantener pulsada la notificación.
-
-Hemos hecho algunos ajustes a las notificaciones del Resumen semanal para que se muestren en cuanto las actives. ¡Vamos!
-
-Por último, hemos añadido algunas correcciones en la pantalla Detalles para agilizar el proceso. También hemos eliminado un error que ponía en negrita las palabras corregidas automáticamente en los títulos de los bloques de contenido.

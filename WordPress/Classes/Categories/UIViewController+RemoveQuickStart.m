@@ -5,7 +5,7 @@
 
 @implementation UIViewController (RemoveQuickStart)
 
-- (void)removeQuickStartFromBlog:(Blog *)blog
+- (void)removeQuickStartFromBlog:(Blog *)blog sourceView:(UIView *)sourceView sourceRect:(CGRect)sourceRect
 {
     [NoticesDispatch lock];
     NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
@@ -25,6 +25,8 @@
     }];
 
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    removeSheet.popoverPresentationController.sourceView = sourceView;
+    removeSheet.popoverPresentationController.sourceRect = sourceRect;
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];

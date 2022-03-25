@@ -15,13 +15,13 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
                   let blog = self?.blog else {
                 return
             }
-            viewController.removeQuickStart(from: blog)
+            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.ellipsisButtonFrame)
         }
         return frameView
     }()
 
-    private lazy var tourStateView: QuickStarTourStateView = {
-        let view = QuickStarTourStateView()
+    private lazy var tourStateView: QuickStartTourStateView = {
+        let view = QuickStartTourStateView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -41,7 +41,14 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         }
         self.viewController = viewController
         self.blog = blog
-        tourStateView.configure(blog: blog, sourceController: viewController)
+
+        let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties:["type": DashboardCard.quickStart.rawValue])
+
+        tourStateView.configure(blog: blog, sourceController: viewController, checklistTappedTracker: checklistTappedTracker)
+
+        WPAnalytics.track(.dashboardCardShown,
+                          properties: ["type": DashboardCard.quickStart.rawValue],
+                          blog: blog)
     }
 }
 

@@ -1,10 +1,12 @@
-* [*] Improves the error message shown when trying to create a new site with non-English characters in the domain name [https://github.com/wordpress-mobile/WordPress-iOS/pull/17985]
-* [*] Quick Start: updated the design for the Quick Start cell on My Site [#18095]
-* [*] Reader: Fixed a bug where comment replies are misplaced after its parent comment is moderated [#18094]
-* [*] Bug fix: Allow keyboard to be dismissed when the password field is focused during WP.com account creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/17938]
-* [*] iPad: Fixed a bug where the current displayed section wasn't selected on the menu [#18118]
-* [**] Comment Notifications: updated UI and functionality to match My Site Comments. [#18141]
-* [*] Block Editor: Add GIF badge for animated GIFs uploaded to Image blocks [https://github.com/WordPress/gutenberg/pull/38996]
-* [*] Block Editor: Small refinement to media upload errors, including centering and tweaking copy. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4597]
-* [*] Block Editor: Fix issue with list's starting index and the order [https://github.com/WordPress/gutenberg/pull/39354]
+We updated Comment Notifications with a spiffy new look and feel. (You might recognize it from My Site Comments!) The Quick Start design in your site menu and dashboard is rocking a new look, too.
 
+When you’re creating a new site and entering the domain name, you should now see a more accurate error message if you try to use non-English characters that aren’t letters or numbers. We also tweaked the upload error text in media upload blocks.
+
+Not sure if you’re looking at an image or a GIF in your Image block? No need to wonder anymore—animated GIFs now come with a GIF badge.
+
+We also made a few bug fixes while we were under the hood.
+
+- Good news for all those orphan comments out there—we squashed a bug where comment replies got lost after their parent comments were unapproved.
+- When you switch between sites on an iPad, you won’t switch between sidebar nav items, too. You’ll be looking at the same menu item you left on the previous site.
+- Block setting changes to ordered lists now appear in the editor, not just in Preview.
+- We fixed a keyboard issue in the WP.com account creation process. If you start entering a magic link password and change your mind, you can dismiss the keyboard and move on with your day.
