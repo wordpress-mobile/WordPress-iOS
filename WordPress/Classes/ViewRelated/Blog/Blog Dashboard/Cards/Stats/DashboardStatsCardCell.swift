@@ -5,6 +5,8 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Private Variables
 
+    private weak var viewController: BlogDashboardViewController?
+
     private var viewModel: DashboardStatsViewModel?
 
     private lazy var stackView: UIStackView = {
@@ -13,6 +15,17 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
         return stackView
+    }()
+
+    private lazy var nudgeButton: MultilineButton = {
+        let button = MultilineButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(Strings.nudgeButtonTitle, for: .normal)
+        button.setTitleColor(.textSubtle, for: .normal)
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.numberOfLines = 0
+        button.addTarget(self, action: #selector(nudgeButtonTapped), for: .touchUpInside)
+        return button
     }()
 
     // MARK: Initializers
@@ -36,6 +49,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
             return
         }
 
+        self.viewController = viewController
         self.viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         clearFrames()
@@ -58,6 +72,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         let views = statsViews()
         let statsStackview = createStatsStackView(arrangedSubviews: views)
         frameView.add(subview: statsStackview)
+
+        if viewModel?.shouldDisplayNudge ?? false {
+            frameView.add(subview: nudgeButton)
+        }
 
         stackView.addArrangedSubview(frameView)
 
@@ -103,6 +121,16 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
         WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
     }
+
+    @objc private func nudgeButtonTapped() {
+        guard let url = URL(string: Constants.nudgeURLString) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "dashboard_stats_card")
+        let navController = UINavigationController(rootViewController: webViewController)
+        viewController?.present(navController, animated: true)
+    }
 }
 
 // MARK: Constants
@@ -117,6 +145,7 @@ private extension DashboardStatsCardCell {
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
         static let accessibilityLabelFormat = "\(viewsTitle) %@, \(visitorsTitle) %@, \(likesTitle) %@."
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let nudgeButtonTitle = NSLocalizedString("If you want to try get more views and traffic check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
     }
 
     enum Constants {
@@ -124,5 +153,7 @@ private extension DashboardStatsCardCell {
         static let iconSize = CGSize(width: 18, height: 18)
         static let statsStackViewMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
         static let constraintPriority = UILayoutPriority(999)
+
+        static let nudgeURLString = "https://wordpress.com/support/getting-more-views-and-traffic/"
     }
 }
