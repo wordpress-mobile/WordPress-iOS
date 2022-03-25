@@ -149,23 +149,7 @@ private extension PostsCardViewModel {
     }
 
     func predicateForFetchRequest() -> NSPredicate {
-        var predicates = [NSPredicate]()
-
-        // Show all original posts without a revision & revision posts.
-        let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
-        predicates.append(basePredicate)
-
-        let filterPredicate = postListFilter.predicateForFetchRequest
-        predicates.append(filterPredicate)
-
-        let myAuthorID = blog.userID ?? 0
-
-        // Brand new local drafts have an authorID of 0.
-        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
-        predicates.append(authorPredicate)
-
-       let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-       return predicate
+        postListFilter.predicate(for: blog)
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
@@ -246,7 +230,7 @@ private extension PostsCardViewModel {
     }
 
     func showNextPostPrompt() {
-        viewController?.showNextPostPrompt()
+        showNextPostPromptIfNeeded()
         viewController?.hideLoading()
     }
 
