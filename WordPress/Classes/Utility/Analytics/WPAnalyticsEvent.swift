@@ -316,6 +316,15 @@ import Foundation
     case mySiteSiteMenuShown
     case mySiteDashboardShown
 
+    // Site Intent Question
+    case enhancedSiteCreationIntentQuestionCanceled
+    case enhancedSiteCreationIntentQuestionSkipped
+    case enhancedSiteCreationIntentQuestionVerticalSelected
+    case enhancedSiteCreationIntentQuestionContinuePressed
+    case enhancedSiteCreationIntentQuestionSearchFocused
+    case enhancedSiteCreationIntentQuestionViewed
+    case enhancedSiteCreationIntentQuestionExperiment
+
     // Quick Start
     case quickStartStarted
 
@@ -852,6 +861,22 @@ import Foundation
         // Quick Start
         case .quickStartStarted:
             return "quick_start_started"
+
+        // Site Intent Question
+        case .enhancedSiteCreationIntentQuestionCanceled:
+            return "enhanced_site_creation_intent_question_canceled"
+        case .enhancedSiteCreationIntentQuestionSkipped:
+            return "enhanced_site_creation_intent_question_skipped"
+        case .enhancedSiteCreationIntentQuestionVerticalSelected:
+            return "enhanced_site_creation_intent_question_vertical_selected"
+        case .enhancedSiteCreationIntentQuestionContinuePressed:
+            return "enhanced_site_creation_intent_question_continue_pressed"
+        case .enhancedSiteCreationIntentQuestionSearchFocused:
+            return "enhanced_site_creation_intent_question_search_focused"
+        case .enhancedSiteCreationIntentQuestionViewed:
+            return "enhanced_site_creation_intent_question_viewed"
+        case .enhancedSiteCreationIntentQuestionExperiment:
+            return "enhanced_site_creation_intent_question_experiment"
 
         } // END OF SWITCH
     }

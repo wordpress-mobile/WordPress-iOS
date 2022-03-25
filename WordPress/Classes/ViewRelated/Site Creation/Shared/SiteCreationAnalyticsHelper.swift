@@ -1,35 +1,54 @@
 import Foundation
 import WordPressKit
 
+extension SiteIntentAB.Variant {
+    var tracksProperty: String {
+        switch self {
+        case .treatment: return "treatment"
+        case .control: return "control"
+        }
+    }
+}
+
 class SiteCreationAnalyticsHelper {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
+    private static let verticalSlugKey = "vertical_slug"
+    private static let verticalSearchTerm = "search_term"
+    private static let variation = "variation"
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
-        // TODO - enhanced_site_creation_intent_question_viewed
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
     }
 
     static func trackSiteIntentSelected(_ vertical: SiteVertical) {
-        // TODO - enhanced_site_creation_intent_question_vertical_selected
+        let properties = [verticalSlugKey: vertical.identifier]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionVerticalSelected, properties: properties)
     }
 
     static func trackSiteIntentContinuePressed(_ term: String) {
-        // TODO - enhanced_site_creation_intent_question_continue_pressed
+        let properties = [verticalSearchTerm: term]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionContinuePressed, properties: properties)
     }
 
     static func trackSiteIntentSearchFocused() {
-        // TODO - enhanced_site_creation_intent_question_search_focused
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSearchFocused)
     }
 
     static func trackSiteIntentSkipped() {
-        // TODO - enhanced_site_creation_intent_question_skipped
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSkipped)
     }
 
     static func trackSiteIntentCanceled() {
-        // TODO - enhanced_site_creation_intent_question_canceled
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
+    }
+
+    static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
+        let properties = [variation: variant.tracksProperty]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
     }
 
     // MARK: - Site Design
