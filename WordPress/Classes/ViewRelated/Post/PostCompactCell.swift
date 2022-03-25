@@ -17,6 +17,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     @IBOutlet weak var trailingContentConstraint: NSLayoutConstraint!
 
+    private var iPadReadableLeadingAnchor: NSLayoutConstraint?
+    private var iPadReadableTrailingAnchor: NSLayoutConstraint?
+
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
@@ -32,6 +35,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
             viewModel = PostCardStatusViewModel(post: post)
         }
     }
+
     private var viewModel: PostCardStatusViewModel?
 
     func configure(with post: Post) {
@@ -96,8 +100,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     private func setupReadableGuideForiPad() {
         guard WPDeviceIdentification.isiPad() else { return }
 
-        innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
-        innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
+        iPadReadableLeadingAnchor = innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor)
+        iPadReadableTrailingAnchor = innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
+
+        iPadReadableLeadingAnchor?.isActive = true
+        iPadReadableTrailingAnchor?.isActive = true
     }
 
     private func configureFeaturedImage() {
@@ -238,5 +245,10 @@ extension PostCompactCell {
 
     func hideSeparator() {
         separator.isHidden = true
+    }
+
+    func disableiPadReadableMargin() {
+        iPadReadableLeadingAnchor?.isActive = false
+        iPadReadableTrailingAnchor?.isActive = false
     }
 }
