@@ -125,6 +125,13 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
             return
         }
 
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: [
+                            "type": DashboardCard.todaysStats.rawValue,
+                            "sub_type": "nudge"
+                          ],
+                          blog: blog)
+
         let webViewController = WebViewControllerFactory.controller(url: url, source: "dashboard_stats_card")
         let navController = UINavigationController(rootViewController: webViewController)
         sourceController.present(navController, animated: true)
