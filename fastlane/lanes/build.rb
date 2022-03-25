@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 SENTRY_ORG_SLUG = 'a8c'
+SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
+SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'      
 
@@ -80,31 +82,61 @@ platform :ios do
     )
   end
 
-  # Builds the app and uploads it to TestFlight / App Store Connect
+  # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] create_gh_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
+  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
+  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
   # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
   # @called_by CI
-  # @calls build_and_upload_itc
   #
   desc 'Builds and uploads for distribution to App Store Connect'
   lane :build_and_upload_app_store_connect do |options|
-    ios_build_prechecks(
-      skip_confirm: options[:skip_confirm],
-      internal: options[:beta_release],
-      external: true
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
+    ios_build_preflight unless options[:skip_prechecks]
+
+    sentry_check_cli_installed
+    appstore_code_signing
+
+    gym(
+      scheme: 'WordPress',
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      export_options: { method: 'app-store' }
     )
 
-    ios_build_preflight
-
-    build_and_upload_itc(
-      skip_prechecks: true,
-      skip_confirm: options[:skip_confirm],
-      beta_release: options[:beta_release],
-      create_release: options[:create_gh_release]
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
+
+    sentry_upload_dsym(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    next unless options[:create_release]
+
+    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
+    zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+
+    version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
+    create_release(
+      repository: GHHELPER_REPO,
+      version: version,
+      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+      release_assets: archive_zip_path.to_s,
+      prerelease: options[:beta_release]
+    )
+
+    FileUtils.rm_rf(archive_zip_path)
   end
 
   # Builds the Jetpack app and uploads it to TestFlight, for beta-testing or final release
@@ -136,31 +168,54 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'jetpack-ios',
+      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
 
-  # Builds the app and uploads it to App Center
+  # Builds the "WordPress Internal" app and uploads it to App Center
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
   #
   # @called_by CI
-  # @calls build_and_upload_internal
   #
   desc 'Builds and uploads for distribution to App Center'
   lane :build_and_upload_app_center do |options|
-    ios_build_prechecks(
-      skip_confirm: options[:skip_confirm],
-      internal: true,
-      external: true
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
+    ios_build_preflight unless options[:skip_prechecks]
+
+    sentry_check_cli_installed
+
+    internal_code_signing
+
+    gym(
+      scheme: 'WordPress Internal',
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: 'WordPress Internal',
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      export_method: 'enterprise',
+      export_options: { method: 'enterprise' }
     )
 
-    ios_build_preflight
+    appcenter_upload(
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: 'WP-Internal',
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      notify_testers: false
+    )
 
-    build_and_upload_internal(
-      skip_prechecks: true,
-      skip_confirm: options[:skip_confirm]
+    sentry_upload_dsym(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
   end
 
@@ -209,24 +264,11 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
+      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
-
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build here: #{download_url}")
-    install_url = 'https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/'
-
-    comment_body = "You can test the changes in <strong>WordPress</strong> from this Pull Request by downloading it from AppCenter <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
-
-    comment_on_pr(
-      project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
-      reuse_identifier: 'installable-build-link',
-      body: comment_body
-    )
+    post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
   # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to AppCenter
@@ -275,127 +317,11 @@ platform :ios do
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'jetpack-ios',
+      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
-
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build here: #{download_url}")
-    install_url = 'https://install.appcenter.ms/orgs/automattic/apps/jetpack-installable-builds/'
-
-    comment_body = "You can test the changes in <strong>Jetpack</strong> from this Pull Request by downloading it from App Center <a href='#{install_url}'>here</a> with build number: <code>#{build_number}</code>. IPA is available <a href='#{download_url}'>here</a>. If you need access to this, you can ask a maintainer to add you."
-
-    comment_on_pr(
-      project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
-      reuse_identifier: 'jetpack-installable-build-link',
-      body: comment_body
-    )
-  end
-
-  # Builds the "WordPress Internal" scheme and upload it to AppCenter for internal testing
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by build_and_upload_app_center
-  #
-  desc 'Builds and uploads for distribution'
-  lane :build_and_upload_internal do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      export_method: 'enterprise',
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_options: { method: 'enterprise' }
-    )
-
-    appcenter_upload(
-      api_token: ENV['APPCENTER_API_TOKEN'],
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-  end
-
-  # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
-  # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
-  #
-  # @called_by build_and_upload_app_store_connect
-  #
-  desc 'Builds and uploads WordPress to TestFlight for distribution'
-  lane :build_and_upload_itc do |options|
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
-    ios_build_preflight unless options[:skip_prechecks]
-
-    sentry_check_cli_installed
-    appstore_code_signing
-
-    gym(
-      scheme: 'WordPress',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      output_directory: BUILD_PRODUCTS_PATH,
-      derived_data_path: DERIVED_DATA_PATH,
-      export_options: { method: 'app-store' }
-    )
-
-    testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: '299112',
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: 'wordpress-ios',
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    if options[:create_release]
-      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
-      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
-
-      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
-      create_release(
-        repository: GHHELPER_REPO,
-        version: version,
-        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-        release_assets: archive_zip_path.to_s,
-        prerelease: options[:beta_release]
-      )
-
-      FileUtils.rm_rf(archive_zip_path)
-    end
+    post_installable_build_pr_comment(app_name: 'Jetpack', build_number: build_number, url_slug: 'jetpack-installable-builds')
   end
 
   #################################################
@@ -421,6 +347,42 @@ platform :ios do
 
       "#{branch}-#{commit}"
     end
+  end
+
+  # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
+  # 
+  # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
+  #
+  # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
+  # @param [String] build_number The App Center's build number for this build
+  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in AppCenter (e.g. `WPiOS-One-Offs`)
+  #
+  # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
+  #
+  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
+    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
+    UI.message("Successfully built and uploaded installable build `#{build_number}` here: #{download_url}")
+
+    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+
+    install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
+    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
+    comment_body = <<~COMMENT_BODY
+      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
+        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
+        <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
+      </ul>
+      <img src='#{qr_code_url}' width='150' height='150' /> 
+      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.<br />
+      If you need access to App Center, please ask a maintainer to add you.
+    COMMENT_BODY
+
+    comment_on_pr(
+      project: 'wordpress-mobile/wordpress-ios',
+      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      reuse_identifier: "installable-build-link--#{url_slug}",
+      body: comment_body
+    )
   end
 
   # Returns the value of `VERSION_SHORT`` from the `Version.public.xcconfig` file
