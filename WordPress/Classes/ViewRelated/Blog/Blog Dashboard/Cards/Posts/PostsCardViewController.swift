@@ -51,7 +51,6 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hideSeparatorForGhostCells()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -118,11 +117,6 @@ private extension PostsCardViewController {
 
     func removeGhostableTableView() {
         ghostableTableView?.removeFromSuperview()
-    }
-
-    func hideSeparatorForGhostCells() {
-        ghostableTableView?.visibleCells
-            .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
     }
 
     func presentEditor() {
