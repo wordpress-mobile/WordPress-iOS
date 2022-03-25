@@ -65,7 +65,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .mySiteDashboard:
-            return false
+            return true
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
