@@ -1172,6 +1172,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+        let canUploadMedia = post.blog.capabilities != nil ? post.blog.isUploadingFilesAllowed() : true
         return [
             .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
@@ -1180,6 +1181,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .tiledGalleryBlock: post.blog.supports(.tiledGallery),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
+            .canUploadMedia: canUploadMedia,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
             .mediaFilesCollectionBlock: post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
