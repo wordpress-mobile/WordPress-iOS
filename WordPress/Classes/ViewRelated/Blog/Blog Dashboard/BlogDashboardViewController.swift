@@ -162,10 +162,12 @@ extension BlogDashboardViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
+        let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
         let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
+        let bottomInset = isLastSection ? Constants.sectionInset : 0
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
                                                         leading: horizontalInset,
-                                                        bottom: 0,
+                                                        bottom: bottomInset,
                                                         trailing: horizontalInset)
 
         section.interGroupSpacing = Constants.cellSpacing
