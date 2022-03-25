@@ -1,9 +1,0 @@
-Renklerle bizi heyecanlandırın—birden çok renk paleti desteği burada! Tema ve Varsayılan renk ve gradyan paletleri ekleyin veya en sevdiğiniz tonlarla kendi Özel paletinizi oluşturun. Ayrıca tema renklerinin görünmemesine ve mevcut tema verilerinin yenilenmemesine neden olan bir sorunu da düzelttik.
-
-Sağdan sola dilleri kullanan cihazlar için site oluşturma sürecinde “Bir Alan Adı Seç” ekranı için simge, düğme ve metin konumlandırmasını güncelledik. Tamam, tamam.
-
-Cihazınızın anlık bildirimlerinde görseller ve .gif'ler gibi zengin medyaları mı görmek istiyorsunuz? Bir önizlemeyi açmak için bildirimi basılı tutmanız yeterlidir.
-
-Etkinleştirdikten sonra göründüklerinden emin olmak için Haftalık Özet bildirimlerinde bazı değişiklikler yaptık. Haydi bakalım!
-
-Son olarak, Tek Bakışta ekranına işleri hızlandırmaya yardımcı olacak birkaç düzeltme ekledik. Ayrıca, içerik bloku başlıklarında otomatik olarak düzeltilen sözcükleri kalın yazı tipine dönüştüren bir hatayı da ortadan kaldırdık.

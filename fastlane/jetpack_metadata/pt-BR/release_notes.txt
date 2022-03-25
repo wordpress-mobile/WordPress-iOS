@@ -1,9 +1,0 @@
-Explosão de cores: chegou a compatibilidade com várias paletas! Adicione paletas gradientes e cores de tema e padrão ou crie uma paleta personalizada com seus tons favoritos. Além disso, corrigimos um problema que não permitia que as cores de tema aparecessem e os dados do tema atual fossem atualizados.
-
-Para dispositivos que utilizam idiomas RTL, atualizamos o posicionamento de texto, botão e ícone da tela "Escolha um domínio" no processo de criação do site. Muito bem.
-
-Quer ver conteúdo rich media, como imagens e GIFs, nas notificações por push do seu dispositivo? Basta manter a notificação pressionada para abrir uma prévia.
-
-Fizemos alguns ajustes nas notificações do resumo semanal para garantir que sejam exibidas assim que você as ativar. Opa!
-
-E, por fim, fizemos algumas correções na tela Informação para agilizar as coisas. Também eliminamos um bug que deixava em negrito palavras corrigidas automaticamente nos títulos de blocos de conteúdo.

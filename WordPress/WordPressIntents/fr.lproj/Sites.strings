@@ -2,5 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>Il y a des ${count} options correspondantes « ${site} ».</string>
+    <key>gpCwrM</key>
+    <string>Sélectionner le site</string>
+    <key>s4dJhx</key>
+    <string>Vous vouliez vraiment « ${site} » ?</string>
+    <key>tVvJ9c</key>
+    <string>Sélectionner l’intention du site</string>
+  </dict>
 </plist>
