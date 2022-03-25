@@ -41,7 +41,7 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
-        addUpdateDashboardObserver()
+        addNewPostAvailableObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -121,8 +121,8 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func addUpdateDashboardObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .updateDashboard, object: nil)
+    private func addNewPostAvailableObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .newPostAvailableForDashboard, object: nil)
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -235,9 +235,4 @@ extension BlogDashboardViewController {
         static let sectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
     }
-}
-
-extension NSNotification.Name {
-    /// Updates the dashboard
-    static let updateDashboard = NSNotification.Name("UpdateDashboard")
 }

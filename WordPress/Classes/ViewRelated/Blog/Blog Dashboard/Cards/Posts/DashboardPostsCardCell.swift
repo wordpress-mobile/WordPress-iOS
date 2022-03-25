@@ -159,7 +159,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         }
 
         if !hasDrafts {
-            NotificationCenter.default.post(name: .updateDashboard, object: nil)
+            NotificationCenter.default.post(name: .newPostAvailableForDashboard, object: nil)
         }
     }
 
@@ -171,7 +171,7 @@ extension DashboardPostsCardCell: BlogDashboardCardConfigurable {
         }
 
         if !hasScheduled {
-            NotificationCenter.default.post(name: .updateDashboard, object: nil)
+            NotificationCenter.default.post(name: .newPostAvailableForDashboard, object: nil)
         }
     }
 
@@ -195,4 +195,9 @@ extension DashboardPostsCardCell: PostsCardViewControllerDelegate {
     func didHideNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?) {
         cardFrameView?.showHeader()
     }
+}
+
+extension NSNotification.Name {
+    /// Updates the dashboard
+    static let newPostAvailableForDashboard = NSNotification.Name("NewPostAvailableForDashboard")
 }
