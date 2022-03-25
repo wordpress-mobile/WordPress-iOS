@@ -83,6 +83,7 @@ class BlogDashboardPostsParserTests: XCTestCase {
     /// When the API return scheduled posts, keep the amount returned
     func testReturnScheduledAsItIsEvenWhenLocalScheduledExists() {
         let blog = BlogBuilder(context).build()
+        _ = PostBuilder(context, blog: blog).scheduled().withRemote().build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithPosts["posts"] as! NSDictionary,
                                                  for: blog)
