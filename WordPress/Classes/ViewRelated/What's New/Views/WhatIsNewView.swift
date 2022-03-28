@@ -15,6 +15,7 @@ class WhatIsNewView: UIView {
         let label = makeLabel(viewTitles.header)
         label.font = self.appearance.headlineFont
         label.numberOfLines = 0
+        label.textAlignment = self.appearance.headlineAlignment
         return label
     }()
 
