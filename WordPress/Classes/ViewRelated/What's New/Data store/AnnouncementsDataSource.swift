@@ -7,19 +7,15 @@ protocol AnnouncementsDataSource: UITableViewDataSource {
 
 class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
-    private let store: AnnouncementsStore
-
+    private let features: [WordPressKit.Feature]
+    private let detailsUrl: String
     private let cellTypes: [String: UITableViewCell.Type]
-    private var features: [WordPressKit.Feature] {
-        store.announcements.reduce(into: [WordPressKit.Feature](), {
-            $0.append(contentsOf: $1.features)
-        })
-    }
 
     var dataDidChange: (() -> Void)?
 
-    init(store: AnnouncementsStore, cellTypes: [String: UITableViewCell.Type]) {
-        self.store = store
+    init(features: [WordPressKit.Feature], detailsUrl: String, cellTypes: [String: UITableViewCell.Type]) {
+        self.features = features
+        self.detailsUrl = detailsUrl
         self.cellTypes = cellTypes
         super.init()
     }
@@ -42,7 +38,7 @@ class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
         guard indexPath.row <= features.count - 1 else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "findOutMoreCell", for: indexPath) as? FindOutMoreCell ?? FindOutMoreCell()
-            cell.configure(with: URL(string: store.announcements.first?.detailsUrl ?? ""))
+            cell.configure(with: URL(string: detailsUrl))
             return cell
         }
 

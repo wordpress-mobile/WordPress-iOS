@@ -67,6 +67,12 @@ class WhatIsNewScenePresenter: ScenePresenter {
 // MARK: - Dependencies
 private extension WhatIsNewScenePresenter {
 
+    private var features: [WordPressKit.Feature] {
+        store.announcements.reduce(into: [WordPressKit.Feature](), {
+            $0.append(contentsOf: $1.features)
+        })
+    }
+
     func makeWhatIsNewViewController() -> WhatIsNewViewController {
         return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView, onContinue: {
             WPAnalytics.track(.featureAnnouncementButtonTapped, properties: ["button": "close_dialog"])
@@ -74,7 +80,24 @@ private extension WhatIsNewScenePresenter {
     }
 
     func makeWhatIsNewView() -> WhatIsNewView {
+        if shouldUseDashboardCustomView() {
+            return makeCustomWhatIsNewView()
+        }
+        else {
+            return makeStandardWhatIsNewView()
+        }
+    }
 
+    func makeDataSource() -> AnnouncementsDataSource {
+        if shouldUseDashboardCustomView() {
+            return makeCustomDataSource()
+        }
+        else {
+            return makeStandardDataSource()
+        }
+    }
+
+    private func makeStandardWhatIsNewView() -> WhatIsNewView {
         let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
                                              version: WhatIsNewStrings.version,
                                              continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
@@ -82,9 +105,28 @@ private extension WhatIsNewScenePresenter {
         return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .standard)
     }
 
-    func makeDataSource() -> AnnouncementsDataSource {
-        return FeatureAnnouncementsDataSource(store: self.store,
-                                              cellTypes: ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self])
+    private func makeStandardDataSource() -> AnnouncementsDataSource {
+        let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
+        let cellTypes = ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self]
+        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, cellTypes: cellTypes)
+    }
+
+    private func makeCustomWhatIsNewView() -> WhatIsNewView {
+        let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
+                                             version: "",
+                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
+
+        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .dashboardCustom)
+    }
+
+    private func makeCustomDataSource() -> AnnouncementsDataSource {
+        let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
+        let cellTypes = ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self]
+        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, cellTypes: cellTypes)
+    }
+
+    private func shouldUseDashboardCustomView() -> Bool {
+        return self.store.appVersionName == "19.6"
     }
 
     enum WhatIsNewStrings {
