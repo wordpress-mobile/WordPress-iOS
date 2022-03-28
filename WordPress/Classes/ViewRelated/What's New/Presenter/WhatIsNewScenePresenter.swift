@@ -112,17 +112,19 @@ private extension WhatIsNewScenePresenter {
     }
 
     private func makeCustomWhatIsNewView() -> WhatIsNewView {
-        let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
+        let title = features.first(where: {!$0.title.isEmpty})?.title ?? WhatIsNewStrings.title // Extract title from features
+        let viewTitles = WhatIsNewViewTitles(header: title,
                                              version: "",
-                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
+                                             continueButtonTitle: WhatIsNewStrings.gotItButtonTitle)
 
         return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .dashboardCustom)
     }
 
     private func makeCustomDataSource() -> AnnouncementsDataSource {
+        let adjustedFeatures = features.filter {$0.title.isEmpty && !$0.subtitle.isEmpty}
         let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
         let cellTypes = ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self]
-        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, cellTypes: cellTypes)
+        return FeatureAnnouncementsDataSource(features: adjustedFeatures, detailsUrl: detailsUrl, cellTypes: cellTypes)
     }
 
     private func shouldUseDashboardCustomView() -> Bool {
@@ -133,6 +135,7 @@ private extension WhatIsNewScenePresenter {
         static let title = NSLocalizedString("What's New in WordPress", comment: "Title of the What's new page.")
         static let versionPrefix = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
+        static let gotItButtonTitle = NSLocalizedString("Got it", comment: "Title for the continue button in the dashboard's custom What's New page.")
         static var version: String {
             Bundle.main.shortVersionString() != nil ? versionPrefix + Bundle.main.shortVersionString() : ""
         }
