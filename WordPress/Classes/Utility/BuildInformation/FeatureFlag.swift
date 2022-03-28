@@ -23,6 +23,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case notificationCommentDetails
     case statsPerformanceImprovements
     case siteIntentQuestion
+    case landInTheEditor
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -73,6 +74,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
+            return false
+        case .landInTheEditor:
             return false
         }
     }
@@ -142,6 +145,8 @@ extension FeatureFlag {
             return "Stats Performance Improvements"
         case .siteIntentQuestion:
             return "Site Intent Question"
+        case .landInTheEditor:
+            return "Land In The Editor"
         }
     }
 

@@ -151,14 +151,12 @@ class BlogDetailHeaderView: UIView {
     }
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
-        var constraints = [
+        return [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides),
             titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
-
-        return constraints
     }
 
     // MARK: - User Action Handlers
