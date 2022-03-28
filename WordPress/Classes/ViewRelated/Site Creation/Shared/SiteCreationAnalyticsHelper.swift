@@ -24,8 +24,8 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
     }
 
-    static func trackSiteIntentSelected(_ vertical: SiteVertical) {
-        let properties = [verticalSlugKey: vertical.identifier]
+    static func trackSiteIntentSelected(_ vertical: SiteIntentVertical) {
+        let properties = [verticalSlugKey: vertical.slug]
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionVerticalSelected, properties: properties)
     }
 

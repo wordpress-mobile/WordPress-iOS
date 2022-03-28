@@ -4,10 +4,14 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let table: UITableView
 
-    private var selectedVertical: SiteVertical? {
+    private var selectedVertical: SiteIntentVertical? {
         didSet {
             itemSelectionChanged(selectedVertical != nil)
         }
+    }
+
+    private var data: [SiteIntentVertical] {
+        return SiteIntentData.defaultVerticals
     }
 
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
@@ -34,6 +38,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTable()
         navigationItem.backButtonTitle = NSLocalizedString("Topic", comment: "Shortened version of the main title to be used in back navigation")
         configureTable()
         configureSkipButton()
@@ -65,15 +70,23 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
+    private func setupTable() {
+        table.dataSource = self
+        setupCells()
+    }
+
+    private func setupCells() {
+        let cellName = IntentCell.cellReuseIdentifier()
+        let nib = UINib(nibName: cellName, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: cellName)
+        table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+        table.cellLayoutMarginsFollowReadableWidth = true
+    }
+
     // MARK: Actions
 
     override func primaryActionSelected(_ sender: Any) {
-        guard let selectedVertical = selectedVertical else {
-            return
-        }
-
-        SiteCreationAnalyticsHelper.trackSiteIntentSelected(selectedVertical)
-        selection(selectedVertical)
+        // TODO - handle string input
     }
 
     @objc
@@ -86,5 +99,43 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private func closeButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentCanceled()
         dismiss(animated: true)
+    }
+}
+
+// MARK: UITableViewDataSource
+
+extension SiteIntentViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return configureIntentCell(tableView, cellForRowAt: indexPath)
+    }
+
+    func configureIntentCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: IntentCell.cellReuseIdentifier()) as? IntentCell else {
+            assertionFailure("This is a programming error - IntentCell has not been properly registered!")
+            return UITableViewCell()
+        }
+
+        let intentVertical = data[indexPath.row]
+        cell.model = intentVertical
+        return cell
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension SiteIntentViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // TODO - either use or remove after implementing search
+        // searchTextField.resignFirstResponder()
+
+        let vertical = data[indexPath.row]
+
+        SiteCreationAnalyticsHelper.trackSiteIntentSelected(vertical)
+        selection(vertical)
     }
 }
