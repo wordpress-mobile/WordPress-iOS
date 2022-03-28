@@ -36,6 +36,7 @@ final class IntentCell: UITableViewCell, ModelSettableCell {
 
         accessoryType = .disclosureIndicator
         emojiContainer.layer.cornerRadius = emojiContainer.layer.frame.width / 2
+        title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
     }
 
     override func prepareForReuse() {
