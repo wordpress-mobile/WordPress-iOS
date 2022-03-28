@@ -116,7 +116,7 @@ struct WhatIsNewViewAppearance {
 
         // table view
         let headerViewInsets = UIEdgeInsets(top: 88, left: 0, bottom: 24, right: 0)
-        let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
+        let estimatedRowHeight: CGFloat = 195 // image height + vertical spacing + bottom inset
         // bottom spacing is button height (48) + vertical button insets ( 2 * 16) + vertical spacing before "Find out more" (32)
         let tableViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
 
