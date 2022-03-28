@@ -170,7 +170,7 @@ abstract_target 'Apps' do
     ## =====================
     ##
     ##gutenberg :tag => 'v1.73.0-alpha2'
-    gutenberg :commit => 'b8f1625a13395be094e49d4d9b408493049d8818'
+    gutenberg :commit => '9d0176c8b8994c7a97b0d9aff4c11ee837419f25'
 
     ## Third party libraries
     ## =====================
