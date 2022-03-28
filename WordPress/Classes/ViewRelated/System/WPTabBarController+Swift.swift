@@ -94,11 +94,4 @@ extension WPTabBarController {
         tabBar.isTranslucent = false
     }
 
-    // TODO: remove before merging. For testing only.
-    @objc func showFeatureIntroduction() {
-        if FeatureFlag.bloggingPrompts.enabled {
-            present(FeatureIntroductionViewController.navigationController(), animated: true)
-        }
-    }
-
 }
