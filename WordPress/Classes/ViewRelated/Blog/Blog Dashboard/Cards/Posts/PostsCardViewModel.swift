@@ -304,7 +304,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         }
         snapshot.reloadItems(reloadIdentifiers)
 
-        let shouldAnimate = viewController?.tableView.numberOfSections != 0
+        let shouldAnimate = viewController?.tableView.numberOfRows(inSection: 0) != 0
         dataSource.apply(snapshot as Snapshot,
                          animatingDifferences: shouldAnimate,
                          completion: { [weak self] in
