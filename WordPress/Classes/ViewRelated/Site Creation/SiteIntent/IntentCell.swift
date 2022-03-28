@@ -1,7 +1,6 @@
 import UIKit
 
 final class IntentCell: UITableViewCell, ModelSettableCell {
-    var borders = [UIView]()
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var emojiContainer: UIView!
     @IBOutlet weak var emoji: UILabel!
