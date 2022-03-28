@@ -80,7 +80,7 @@ struct WhatIsNewViewAppearance {
 
     static var dashboardCustom: Self {
         // main view
-        let mainContentInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
+        let mainContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
         // title
         var headlineFont: UIFont

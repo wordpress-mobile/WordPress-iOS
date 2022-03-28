@@ -107,8 +107,7 @@ private extension WhatIsNewScenePresenter {
 
     private func makeStandardDataSource() -> AnnouncementsDataSource {
         let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
-        let cellTypes = ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self]
-        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, cellTypes: cellTypes)
+        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, announcementCellType: AnnouncementCell.self)
     }
 
     private func makeCustomWhatIsNewView() -> WhatIsNewView {
@@ -123,8 +122,7 @@ private extension WhatIsNewScenePresenter {
     private func makeCustomDataSource() -> AnnouncementsDataSource {
         let adjustedFeatures = features.filter {$0.title.isEmpty && !$0.subtitle.isEmpty}
         let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
-        let cellTypes = ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self]
-        return FeatureAnnouncementsDataSource(features: adjustedFeatures, detailsUrl: detailsUrl, cellTypes: cellTypes)
+        return FeatureAnnouncementsDataSource(features: adjustedFeatures, detailsUrl: detailsUrl, announcementCellType: DashboardCustomAnnouncementCell.self)
     }
 
     private func shouldUseDashboardCustomView() -> Bool {
