@@ -24,8 +24,9 @@ class StoriesIntroViewController: WhatIsNewViewController {
 
     init(continueTapped: @escaping () -> Void, openURL: @escaping (URL) -> Void) {
         let titles = WhatIsNewViewTitles(header: Constants.headerTitle,
-                                       version: "",
-                                       continueButtonTitle: Constants.continueButtonTitle)
+                                         version: "",
+                                         continueButtonTitle: Constants.continueButtonTitle,
+                                         disclaimerTitle: "")
 
         let storyQueryItems = [URLQueryItem.WPStory.fullscreen, URLQueryItem.WPStory.playOnLoad]
 

@@ -100,7 +100,8 @@ private extension WhatIsNewScenePresenter {
     private func makeStandardWhatIsNewView() -> WhatIsNewView {
         let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
                                              version: WhatIsNewStrings.version,
-                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
+                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle,
+                                             disclaimerTitle: "")
 
         return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .standard)
     }
@@ -114,7 +115,8 @@ private extension WhatIsNewScenePresenter {
         let title = features.first(where: {!$0.title.isEmpty})?.title ?? WhatIsNewStrings.title // Extract title from features
         let viewTitles = WhatIsNewViewTitles(header: title,
                                              version: "",
-                                             continueButtonTitle: WhatIsNewStrings.gotItButtonTitle)
+                                             continueButtonTitle: WhatIsNewStrings.gotItButtonTitle,
+                                             disclaimerTitle: WhatIsNewStrings.disclaimerTitle)
 
         return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .dashboardCustom)
     }
@@ -137,6 +139,7 @@ private extension WhatIsNewScenePresenter {
         static var version: String {
             Bundle.main.shortVersionString() != nil ? versionPrefix + Bundle.main.shortVersionString() : ""
         }
+        static let disclaimerTitle = NSLocalizedString("NEW!", comment: "Title for disclaimer in the dashboard's custom What's New page.")
     }
 }
 

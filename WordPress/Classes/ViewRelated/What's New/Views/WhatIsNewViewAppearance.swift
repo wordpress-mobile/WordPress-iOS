@@ -27,6 +27,14 @@ struct WhatIsNewViewAppearance {
     let backButtonTintColor: UIColor
     let backButtonInset: CGFloat
 
+    // disclaimer label
+    let disclaimerBackgroundColor: UIColor
+    let disclaimerLabelInsets: UIEdgeInsets
+    let disclaimerFont: UIFont
+    let disclaimerViewHeight: CGFloat
+    let disclaimerViewCornerRadius: CGFloat
+    let disclaimerTitleSpacing: CGFloat
+
     static var standard: WhatIsNewViewAppearance {
         // main view
         let mainContentInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
@@ -63,6 +71,14 @@ struct WhatIsNewViewAppearance {
         // back button
         let backButtonTintColor = UIColor.darkGray
         let backButtonInset: CGFloat = 16
+        // disclaimer label
+        let disclaimerBackgroundColor = UIColor(light: .muriel(name: .pink, .shade40),
+                                                dark: .muriel(name: .pink, .shade50))
+        let disclaimerLabelInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        let disclaimerFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
+        let disclaimerViewHeight: CGFloat = 24
+        let disclaimerViewCornerRadius: CGFloat = 4
+        let disclaimerTitleSpacing: CGFloat = 16
         return WhatIsNewViewAppearance(mainContentInsets: mainContentInsets,
                                        headlineFont: headlineFont,
                                        headlineAlignment: headlineAlignment,
@@ -76,7 +92,13 @@ struct WhatIsNewViewAppearance {
                                        continueButtonInsets: continueButtonInsets,
                                        material: material,
                                        backButtonTintColor: backButtonTintColor,
-                                       backButtonInset: backButtonInset)
+                                       backButtonInset: backButtonInset,
+                                       disclaimerBackgroundColor: disclaimerBackgroundColor,
+                                       disclaimerLabelInsets: disclaimerLabelInsets,
+                                       disclaimerFont: disclaimerFont,
+                                       disclaimerViewHeight: disclaimerViewHeight,
+                                       disclaimerViewCornerRadius: disclaimerViewCornerRadius,
+                                       disclaimerTitleSpacing: disclaimerTitleSpacing)
     }
 
     static var dashboardCustom: Self {
@@ -107,6 +129,15 @@ struct WhatIsNewViewAppearance {
         // back button
         let backButtonTintColor = UIColor.darkGray
         let backButtonInset: CGFloat = 16
+
+        // disclaimer label
+        let disclaimerBackgroundColor = UIColor(light: .muriel(name: .pink, .shade40),
+                                                dark: .muriel(name: .pink, .shade50))
+        let disclaimerLabelInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        let disclaimerFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
+        let disclaimerViewHeight: CGFloat = 24
+        let disclaimerViewCornerRadius: CGFloat = 4
+        let disclaimerTitleSpacing: CGFloat = 16
         return WhatIsNewViewAppearance(mainContentInsets: mainContentInsets,
                                        headlineFont: headlineFont,
                                        headlineAlignment: headlineAlignment,
@@ -120,6 +151,12 @@ struct WhatIsNewViewAppearance {
                                        continueButtonInsets: continueButtonInsets,
                                        material: material,
                                        backButtonTintColor: backButtonTintColor,
-                                       backButtonInset: backButtonInset)
+                                       backButtonInset: backButtonInset,
+                                       disclaimerBackgroundColor: disclaimerBackgroundColor,
+                                       disclaimerLabelInsets: disclaimerLabelInsets,
+                                       disclaimerFont: disclaimerFont,
+                                       disclaimerViewHeight: disclaimerViewHeight,
+                                       disclaimerViewCornerRadius: disclaimerViewCornerRadius,
+                                       disclaimerTitleSpacing: disclaimerTitleSpacing)
     }
 }

@@ -4,6 +4,7 @@ struct WhatIsNewViewTitles {
     let header: String
     let version: String
     let continueButtonTitle: String
+    let disclaimerTitle: String
 }
 
 
@@ -31,6 +32,30 @@ class WhatIsNewView: UIView {
         label.font = self.appearance.subHeadlineFont
         label.textColor = .textSubtle
         return label
+    }()
+
+    private lazy var disclaimerLabel: UILabel = {
+        let label = makeLabel(viewTitles.disclaimerTitle)
+        label.font = self.appearance.disclaimerFont
+        label.textColor = .white
+        return label
+    }()
+
+    private lazy var disclaimerLabelView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        // if there's no disclaimer, just hide the label
+        guard !viewTitles.disclaimerTitle.isEmpty else {
+            view.isHidden = true
+            return view
+        }
+        view.backgroundColor = self.appearance.disclaimerBackgroundColor
+        view.layer.cornerRadius = self.appearance.disclaimerViewCornerRadius
+        view.layer.masksToBounds = true
+        view.addSubview(disclaimerLabel)
+        view.pinSubviewToAllEdges(disclaimerLabel, insets: self.appearance.disclaimerLabelInsets)
+        return view
     }()
 
     private lazy var backButton: UIButton = {
@@ -106,8 +131,10 @@ class WhatIsNewView: UIView {
     private lazy var headerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerStackView)
+        view.addSubviews([headerStackView, disclaimerLabelView])
         view.pinSubviewToAllEdges(headerStackView, insets: self.appearance.headerViewInsets)
+        headerStackView.topAnchor.constraint(equalTo: disclaimerLabelView.bottomAnchor, constant: self.appearance.disclaimerTitleSpacing).isActive = true
+        disclaimerLabelView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         return view
     }()
 
@@ -146,7 +173,8 @@ class WhatIsNewView: UIView {
             continueButtonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             continueButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor)
+            headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor),
+            disclaimerLabelView.heightAnchor.constraint(equalToConstant: self.appearance.disclaimerViewHeight)
         ])
 
         if showsBackButton {
