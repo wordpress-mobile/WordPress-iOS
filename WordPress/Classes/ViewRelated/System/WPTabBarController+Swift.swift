@@ -93,5 +93,4 @@ extension WPTabBarController {
     @objc func setupColors() {
         tabBar.isTranslucent = false
     }
-
 }
