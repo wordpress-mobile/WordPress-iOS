@@ -51,7 +51,6 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hideSeparatorForGhostCells()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -103,10 +102,10 @@ private extension PostsCardViewController {
         ghostableTableView.isScrollEnabled = false
         ghostableTableView.separatorStyle = .none
 
-        let postCompactCellNib = PostCompactCell.defaultNib
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+        let postCompactCellNib = BlogDashboardPostCardGhostCell.defaultNib
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
 
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: PostCompactCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
@@ -118,11 +117,6 @@ private extension PostsCardViewController {
 
     func removeGhostableTableView() {
         ghostableTableView?.removeFromSuperview()
-    }
-
-    func hideSeparatorForGhostCells() {
-        ghostableTableView?.visibleCells
-            .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
     }
 
     func presentEditor() {
