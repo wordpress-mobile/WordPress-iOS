@@ -52,7 +52,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
         ])
 
         super.init(whatIsNewViewFactory: {
-            return WhatIsNewView(viewTitles: titles, dataSource: dataSource, showsBackButton: true)
+            return WhatIsNewView(viewTitles: titles, dataSource: dataSource, appearance: .standard, showsBackButton: true)
         }, onContinue: {
             StoriesIntroViewController.trackContinue()
             continueTapped()

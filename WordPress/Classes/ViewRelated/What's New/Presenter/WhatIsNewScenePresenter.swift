@@ -79,7 +79,7 @@ private extension WhatIsNewScenePresenter {
                                              version: WhatIsNewStrings.version,
                                              continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
 
-        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource())
+        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .standard)
     }
 
     func makeDataSource() -> AnnouncementsDataSource {
