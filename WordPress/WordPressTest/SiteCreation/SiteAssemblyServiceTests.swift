@@ -17,10 +17,7 @@ class SiteAssemblyServiceTests: XCTestCase {
             iconColor: "#FF0000",
             mobile: true)
 
-        siteCreator.vertical = SiteVertical(identifier: "678910",
-            title: "A title",
-            isNew: true)
-
+        siteCreator.vertical = SiteIntentVertical(slug: "slug", localizedTitle: "A title", emoji: "😎")
         siteCreator.information = SiteInformation(title: "A title", tagLine: "A tagline")
 
         let domainSuggestionPayload: [String: AnyObject] = [
