@@ -7,10 +7,11 @@ class SiteCreationIntentTests: XCTestCase {
         let variant: SiteIntentAB.Variant
     }
 
+    let featureFlags = FeatureFlagOverrideStore()
+
     func testSiteIntentNotAvailableWhenFeatureFlagOff() throws {
 
         // Given
-        let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: false)
         let mockVariant = SiteIntentABMock(variant: .treatment)
         let mockSiteCreator = SiteCreator()
@@ -25,7 +26,6 @@ class SiteCreationIntentTests: XCTestCase {
     func testSiteIntentAvailableForTreatmentGroup() throws {
 
         // Given
-        let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: true)
         let mockVariant = SiteIntentABMock(variant: .treatment)
         let mockSiteCreator = SiteCreator()
@@ -40,7 +40,6 @@ class SiteCreationIntentTests: XCTestCase {
     func testSiteIntentNotAvailableForControlGroup() throws {
 
         // Given
-        let featureFlags = FeatureFlagOverrideStore()
         try featureFlags.override(FeatureFlag.siteIntentQuestion, withValue: true)
         let mockVariant = SiteIntentABMock(variant: .control)
         let mockSiteCreator = SiteCreator()

@@ -17,6 +17,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
+    private var postsParserMock: BlogDashboardPostsParserMock!
 
     private let wpComID = 123456
 
@@ -27,7 +28,8 @@ class ZBlogDashboardServiceTests: XCTestCase {
         persistenceMock = BlogDashboardPersistenceMock()
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
-        service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock)
+        postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
+        service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
     }
 
     override func tearDown() {
@@ -43,7 +45,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["posts", "todays_stats"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts"])
             expect.fulfill()
         }
 
@@ -260,6 +262,35 @@ class ZBlogDashboardServiceTests: XCTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Local post content
+
+    /// We might run into the case where the API returns that
+    /// there are no posts, but the user has local content.
+    /// In this case the response is changed to take into account
+    /// local content.
+    func testReturnPostsCorrectlyBasedOnLocalContent() {
+        let expect = expectation(description: "Return local posts")
+        remoteServiceMock.respondWith = .withoutPosts
+        postsParserMock.hasDraftsAndScheduled = true
+
+        let blog = newTestBlog(id: wpComID, context: context)
+
+        service.fetch(blog: blog) { snapshot in
+            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
+            let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
+
+            // It should have 1 draft items
+            XCTAssertEqual(postsCardItem.apiResponse!.posts!.draft!.count, 1)
+
+            // It should have 1 scheduled item
+            XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     func dictionary(from file: String) -> NSDictionary? {
         let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
@@ -279,6 +310,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
     enum Response: String {
         case withDraftAndSchedulePosts = "dashboard-200-with-drafts-and-scheduled.json"
         case withDraftsOnly = "dashboard-200-with-drafts-only.json"
+        case withoutPosts = "dashboard-200-without-posts.json"
         case error = "error"
     }
 
@@ -321,5 +353,17 @@ class BlogDashboardPersistenceMock: BlogDashboardPersistence {
         didCallGetCardsWithWpComID = wpComID
 
         return respondWith
+    }
+}
+
+class BlogDashboardPostsParserMock: BlogDashboardPostsParser {
+    var hasDraftsAndScheduled = false
+
+    override func parse(_ postsDictionary: NSDictionary, for blog: Blog) -> NSDictionary {
+        guard hasDraftsAndScheduled else {
+            return postsDictionary
+        }
+
+        return ["has_published": false, "draft": [[:]], "scheduled": [[:]]]
     }
 }

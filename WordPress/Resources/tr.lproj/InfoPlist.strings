@@ -1,5 +1,6 @@
-NSLocationUsageDescription = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki gönderilere konumunuzu eklemek istiyor.";
-NSLocationWhenInUseUsageDescription = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki gönderilere konumunuzu eklemek istiyor.";
-NSCameraUsageDescription = "Gönderilerinizde kullanacağınız fotoğraf veya videoları çekmek için.";
-NSPhotoLibraryUsageDescription = "Gönderilerinize fotoğraf veya video eklemek için.";
-NSMicrophoneUsageDescription = "Videolarınıza ses eklemek için.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict/>
+</plist>

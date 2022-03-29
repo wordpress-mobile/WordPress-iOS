@@ -111,6 +111,10 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureCloseButton() {
+        guard navigationController?.viewControllers.first == self else {
+            return
+        }
+
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 

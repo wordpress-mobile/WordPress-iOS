@@ -1,8 +1,8 @@
 import UIKit
 
 protocol PostsCardViewControllerDelegate: AnyObject {
-    func didShowNextPostPrompt()
-    func didHideNextPostPrompt()
+    func didShowNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?)
+    func didHideNextPostPrompt(cardFrameView: BlogDashboardCardFrameView?)
 }
 
 /// Render a small list of posts for a given blog and post status (drafts or scheduled)
@@ -26,6 +26,10 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     weak var delegate: PostsCardViewControllerDelegate?
 
+    private var cardFrameView: BlogDashboardCardFrameView? {
+        return view.superview?.superview as? BlogDashboardCardFrameView
+    }
+
     init(blog: Blog, status: BasePost.Status, hasPublishedPosts: Bool = true, shouldSync: Bool = true) {
         self.blog = blog
         self.status = status
@@ -47,12 +51,11 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hideSeparatorForGhostCells()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.dataSource = viewModel
+        tableView.dataSource = viewModel.diffableDataSource
         tableView.delegate = self
         viewModel.refresh()
     }
@@ -71,7 +74,6 @@ protocol PostsCardViewControllerDelegate: AnyObject {
 private extension PostsCardViewController {
     func configureView() {
         configureTableView()
-        configureMinimumHeight()
     }
 
     func configureTableView() {
@@ -83,12 +85,6 @@ private extension PostsCardViewController {
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
         tableView.separatorStyle = .none
-    }
-
-    // A minimum height is necessary to avoid the view
-    // being positioned wrong in the UICollectionView
-    func configureMinimumHeight() {
-        tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.writeFirstPostViewHeight).isActive = true
     }
 
     func configureGhostableTableView() {
@@ -106,10 +102,10 @@ private extension PostsCardViewController {
         ghostableTableView.isScrollEnabled = false
         ghostableTableView.separatorStyle = .none
 
-        let postCompactCellNib = PostCompactCell.defaultNib
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+        let postCompactCellNib = BlogDashboardPostCardGhostCell.defaultNib
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
 
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: PostCompactCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
@@ -123,18 +119,13 @@ private extension PostsCardViewController {
         ghostableTableView?.removeFromSuperview()
     }
 
-    func hideSeparatorForGhostCells() {
-        ghostableTableView?.visibleCells
-            .forEach { ($0 as? PostCompactCell)?.hideSeparator() }
-    }
-
     func presentEditor() {
         let editor = EditPostViewController(blog: blog)
         present(editor, animated: true)
     }
 
-    func forceTableViewToRecalculateHeight() {
-        _ = tableView.intrinsicContentSize
+    func notifyOfHeightChange() {
+        NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
     }
 
     func trackPostsDisplayed() {
@@ -181,7 +172,7 @@ extension PostsCardViewController: PostsCardView {
 
     func showError(message: String, retry: Bool) {
         guard nextPostView == nil else {
-            forceTableViewToRecalculateHeight()
+            notifyOfHeightChange()
             return
         }
 
@@ -201,7 +192,7 @@ extension PostsCardViewController: PostsCardView {
     func showNextPostPrompt() {
         guard nextPostView == nil ||
               nextPostView?.hasPublishedPosts != hasPublishedPosts else {
-            forceTableViewToRecalculateHeight()
+            notifyOfHeightChange()
             return
         }
 
@@ -219,21 +210,23 @@ extension PostsCardViewController: PostsCardView {
 
         self.nextPostView = nextPostView
 
-        forceTableViewToRecalculateHeight()
+        notifyOfHeightChange()
 
-        delegate?.didShowNextPostPrompt()
+        delegate?.didShowNextPostPrompt(cardFrameView: cardFrameView)
 
         WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
     }
 
     func hideNextPrompt() {
+
         guard nextPostView != nil else {
+            delegate?.didHideNextPostPrompt(cardFrameView: cardFrameView)
             return
         }
 
         nextPostView?.removeFromSuperview()
         nextPostView = nil
-        delegate?.didHideNextPostPrompt()
+        delegate?.didHideNextPostPrompt(cardFrameView: cardFrameView)
 
         trackPostsDisplayed()
     }
@@ -289,7 +282,7 @@ private class PostCardTableView: UITableView {
     /// This allows subscribers to update their layouts (ie.: UICollectionViews)
     override var intrinsicContentSize: CGSize {
         layoutIfNeeded()
-        if contentSize.height != previousHeight {
+        if contentSize.height != previousHeight, contentSize.height != 0 {
             previousHeight = contentSize.height
             NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
         }

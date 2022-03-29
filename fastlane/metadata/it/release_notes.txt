@@ -1,9 +1,0 @@
-Emozioni di colori: ora sono supportate più palette! Aggiungi le palette di colori e gradienti predefinite e dei temi oppure crea la tua palette personalizzata con le tonalità che preferisci. Abbiamo anche risolto un problema per cui i colori dei temi non apparivano e i dati del tema attuale non venivano aggiornati.
-
-Per i dispositivi che utilizzano le lingue da destra a sinistra, abbiamo aggiornato l'icona, il pulsante e il posizionamento del testo per la schermata "Scegli un dominio" nel processo di creazione del sito. D'accordo, d'accordo!
-
-Vuoi vedere contenuti multimediali come immagini e .gif nelle notifiche push del tuo dispositivo? Basta premere e tenere premuta la notifica per aprire un'anteprima.
-
-Abbiamo apportato alcune modifiche alle notifiche Resoconto settimanale per garantire che le notifiche siano visualizzate una volta abilitate. Forza!
-
-Infine, abbiamo aggiunto alcune correzioni nella schermata di Panoramica che ti aiuteranno a velocizzare le cose. Abbiamo anche eliminato un bug per cui le parole auto-corrette nelle intestazioni dei blocchi di contenuto venivano visualizzate in grassetto.

@@ -1,16 +1,16 @@
 typealias HomepageEditorCompletion = () -> Void
 
 class LandInTheEditorHelper {
-    /// Land in the editor, or continue as usual for the control group -  Used to branch on the ExPlat experiment for landing in the editor from the site creation flow
+    /// Land in the editor, or continue as usual -  Used to branch on the feature flag for landing in the editor from the site creation flow
     /// - Parameter blog: Blog (which was just created) for which to show the home page editor
     /// - Parameter navigationController: UINavigationController used to present the home page editor
-    /// - Parameter completion: HomepageEditorCompletion callback to be invoked after the user finishes editing the home page, or immediately in the control group case
+    /// - Parameter completion: HomepageEditorCompletion callback to be invoked after the user finishes editing the home page, or immediately iwhen the feature flag is disabled
     static func landInTheEditorOrContinue(for blog: Blog, navigationController: UINavigationController, completion: @escaping HomepageEditorCompletion) {
-        // branch here for explat variation
-        if ABTest.landInTheEditorPhase1.variation == .control {
-            completion()
-        } else {
+        // branch here for feature flag
+        if FeatureFlag.landInTheEditor.enabled {
             landInTheEditor(for: blog, navigationController: navigationController, completion: completion)
+        } else {
+            completion()
         }
     }
 

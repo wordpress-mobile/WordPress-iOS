@@ -35,6 +35,24 @@ class PostsCardViewModel: NSObject {
 
     private weak var viewController: PostsCardView?
 
+    typealias DataSource = UITableViewDiffableDataSource<Int, NSManagedObjectID>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+
+    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, objectID) -> UITableViewCell? in
+        guard let self = self,
+            let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
+            return UITableViewCell()
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
+
+        self.viewController?.hideLoading()
+
+        self.configureCell(cell, at: indexPath, with: post)
+
+        return cell
+    }
+
     init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
         self.blog = blog
         self.viewController = viewController
@@ -131,23 +149,7 @@ private extension PostsCardViewModel {
     }
 
     func predicateForFetchRequest() -> NSPredicate {
-        var predicates = [NSPredicate]()
-
-        // Show all original posts without a revision & revision posts.
-        let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
-        predicates.append(basePredicate)
-
-        let filterPredicate = postListFilter.predicateForFetchRequest
-        predicates.append(filterPredicate)
-
-        let myAuthorID = blog.userID ?? 0
-
-        // Brand new local drafts have an authorID of 0.
-        let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
-        predicates.append(authorPredicate)
-
-       let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-       return predicate
+        postListFilter.predicate(for: blog)
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
@@ -228,7 +230,7 @@ private extension PostsCardViewModel {
     }
 
     func showNextPostPrompt() {
-        viewController?.showNextPostPrompt()
+        showNextPostPromptIfNeeded()
         viewController?.hideLoading()
     }
 
@@ -280,86 +282,43 @@ private extension PostsCardViewModel {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - NSFetchedResultsControllerDelegate
 
-extension PostsCardViewModel: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
+extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
+            return
+        }
+        var snapshot = snapshot as Snapshot
+        let currentSnapshot = dataSource.snapshot() as Snapshot
+
+        /// Ensure a maximum of `fetchRequest.fetchLimit` items is displayed
+        snapshot.deleteItems(snapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
+
+        let reloadIdentifiers: [NSManagedObjectID] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
+            guard let currentIndex = currentSnapshot.indexOfItem(itemIdentifier), let index = snapshot.indexOfItem(itemIdentifier), index == currentIndex else {
+                return nil
+            }
+            guard let existingObject = try? controller.managedObjectContext.existingObject(with: itemIdentifier), existingObject.isUpdated else { return nil }
+            return itemIdentifier
+        }
+        snapshot.reloadItems(reloadIdentifiers)
+
+        let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
+        dataSource.apply(snapshot as Snapshot,
+                         animatingDifferences: shouldAnimate,
+                         completion: { [weak self] in
+            self?.showNextPostPromptIfNeeded()
+            self?.checkIfPostIsPublished()
+        })
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
-
-        viewController?.hideLoading()
-
-        configureCell(cell, at: indexPath)
-
-        return cell
-    }
-
-    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath, with post: Post) {
         cell.accessoryType = .none
-
-        let post: Post = fetchedResultsController.object(at: indexPath)
-
         guard let configurablePostView = cell as? PostCompactCell else {
                 fatalError("Cell is not a PostCompactCell")
         }
 
         configurablePostView.configureForDashboard(with: post)
-    }
-}
-
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        viewController?.tableView.beginUpdates()
-    }
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        viewController?.tableView.endUpdates()
-
-        showNextPostPromptIfNeeded()
-        checkIfPostIsPublished()
-
-        // When going to the post list all displayed posts there will be displayed
-        // here too. This check ensures that we never display more than what
-        // is specified on the `fetchLimit` property
-        if fetchedResultsController.fetchRequest.fetchLimit > 0 && fetchedResultsController.fetchRequest.fetchLimit < fetchedResultsController.fetchedObjects?.count ?? 0 {
-            try? fetchedResultsController.performFetch()
-            viewController?.tableView.reloadData()
-        }
-    }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath {
-                viewController?.tableView.insertRows(at: [indexPath], with: .fade)
-            }
-            break
-        case .delete:
-            if let indexPath = indexPath {
-                viewController?.tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-            break
-        case .update:
-            if let indexPath = indexPath {
-                viewController?.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-            break
-        case .move:
-            if let indexPath = indexPath {
-                viewController?.tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-
-            if let newIndexPath = newIndexPath {
-                viewController?.tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
-            break
-        @unknown default:
-            break
-        }
     }
 }

@@ -1,14 +1,24 @@
-Metrics/BlockLength:
-  Exclude:
-    - fastlane/Fastfile
+AllCops:
+  NewCops: enable
 
-Style/AsciiComments:
-  Exclude:
+Metrics/BlockLength:
+  Exclude: &fastfiles
     - fastlane/Fastfile
+    - fastlane/lanes/*.rb
+
+Metrics/MethodLength:
+  Max: 30
+  Exclude: *fastfiles
 
 Layout/LineLength:
-  Exclude:
-    - fastlane/Fastfile
+  Max: 180
+  Exclude: *fastfiles
+
+Layout/EmptyLines:
+  Exclude: *fastfiles
+
+Style/AsciiComments:
+  Exclude: *fastfiles
 
 Naming/FileName:
   Exclude:

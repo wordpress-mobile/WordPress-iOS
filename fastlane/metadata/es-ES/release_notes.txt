@@ -1,9 +1,12 @@
-Nos entusiasma el color: ¡Aquí está la compatibilidad para múltiples paletas de color! Añade paletas de color y degradados del tema y por defecto o crea tu propia paleta personalizada con tus tonos favoritos. También hemos corregido un problema que hacía que los colores del tema no aparecieran y que los datos del tema actual no se actualizaran.
+Hemos actualizado los avisos de comentarios con un nuevo y elegante aspecto. (El diseño de inicio rápido en el menú de tu sitio y en el escritorio también tiene un nuevo aspecto.
 
-Para los dispositivos que usan idiomas de derecha a izquierda, hemos actualizado la posición de los iconos, los botones y el texto de la pantalla «Elegir un dominio» en el proceso de creación del sitio. ¡Muy bien!
+Cuando crees un nuevo sitio e introduzcas el nombre de dominio, ahora deberías ver un mensaje de error más preciso si intentas utilizar caracteres no ingleses que no sean letras o números. También hemos modificado el texto de error de carga en los bloques de subida de medios.
 
-¿Quieres ver medios enriquecidos como imágenes y «.gifs» en los avisos emergentes de tu dispositivo? Solo tienes que mantener pulsado el aviso para abrir una vista previa.
+¿No estás seguro de si estás viendo una imagen o un GIF en tu bloque de imágenes? Ya no hace falta que te lo preguntes: los GIF animados vienen ahora con un distintivo de GIF.
 
-Hemos hecho algunos retoques a los avisos del resumen semanal para asegurarnos de que se muestren una vez que los hayas activado. ¡Corregido!
+También hemos corregido algunos errores mientras estábamos revisando el sistema.
 
-Por último, hemos añadido algunas correcciones en la pantalla de información que ayudarán a acelerar las cosas. También hemos eliminado un fallo que ponía en negrita las palabras autocorregidas en los encabezados de los bloques de contenido.
+- Buenas noticias para todos los comentarios huérfanos: Hemos eliminado un error por el que las respuestas a los comentarios se perdían después de que sus comentarios principales no fueran aprobados.
+- Cuando cambies de sitio en un iPad, no cambiarás también entre los elementos de la barra lateral. Verás el mismo elemento de menú que dejaste en el sitio anterior.
+- Los cambios de configuración de bloques en las listas ordenadas ahora aparecen en el editor, no sólo en la vista previa.
+- Hemos corregido un problema de teclado en el proceso de creación de la cuenta de WP.com. Si empiezas a introducir una contraseña de enlace mágico y cambias de opinión, puedes descartar el teclado y seguir con tu día.

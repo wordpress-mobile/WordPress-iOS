@@ -1,9 +1,0 @@
-Spiel mit Farben – Ab sofort gibt es Support für mehrere Farbpaletten! Füge Theme- und Standardfarbpaletten sowie Farbverlaufspaletten hinzu oder erstelle deine eigene individuelle Palette mit deinen Lieblingsfarbtönen. Wir haben zudem ein Problem behoben, wodurch Theme-Farben nicht angezeigt und aktuelle Theme-Daten nicht aktualisiert wurden.
-
-Bei Geräten, die Rechts-nach-Links-Sprachen verwenden, haben wir Icon-, Button- und Textpositionierung für den Bildschirm „Domain auswählen“ bei der Website-Erstellung aktualisiert. In Ordnung.
-
-Du möchtest gerne Bilder und GIFs in Rich-Media-Qualität in den Push-Benachrichtigungen deines Geräts anzeigen? Halte einfach die Benachrichtigung gedrückt, um eine Vorschau zu öffnen.
-
-Wir haben ein paar praktische Änderungen an den Benachrichtigungen mit wöchentlichen Zusammenfassungen vorgenommen, damit diese sofort nach der Aktivierung angezeigt werden. Wow, wie schnell!
-
-Und schließlich haben wir einige Verbesserungen auf dem Bildschirm „Einsichten“ vorgenommen, damit alles etwas schneller funktioniert. Und wir haben einen Fehler behoben, wodurch automatisch korrigierte Wörter in Überschriftsblöcken fett gedruckt waren.

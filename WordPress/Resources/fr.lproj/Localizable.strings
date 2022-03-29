@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-08 09:11:55+0000 */
+/* Translation-Revision-Date: 2022-03-24 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -15,7 +15,7 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nPour confirmer, veuillez ressaisir votre identifiant avant de fermer.\n\n";
 
-/* No comment provided by engineer. */
+/* Per-year postfix shown after a domain's cost. */
 " \/ year" = " \/ an";
 
 /* Title for the lazy load images setting */
@@ -1281,9 +1281,6 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Attention !";
 
-/* shown in promotional screens during first launch */
-"Catch up with your favorite sites and join the conversation anywhere, any time." = "Suivez vos sites favoris et rejoignez la conversation n’importe où, n’importe quand.";
-
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Catégories";
@@ -1365,6 +1362,9 @@ translators: Block name. %s: The localized block name */
 
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Vérifiez vos e-mails !";
+
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "Vérifiez votre connexion Internet et faites glisser pour actualiser.";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Vérifiez la connexion de votre réseau et réessayez ou créez une page blanche.";
@@ -1943,6 +1943,9 @@ translators: Block name. %s: The localized block name */
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Impossible de marquer comme sain";
 
+/* Content show when the dashboard fails to load */
+"Couldn't update. Check that you're online and refresh." = "La mise à jour n’a pas pu être effectuée Vérifiez que vous êtes en ligne et actualisez.";
+
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Impossible de téléverser l’image à la une";
 
@@ -2334,6 +2337,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
@@ -2739,9 +2743,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for the action button that enables notification for new comments */
 "Enable in-app notifications?" = "Activer les notifications dans l’application ?";
 
-/* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
-"Enable microphone access to record sound in your videos." = "Autoriser l’accès au micro pour enregistrer le son dans vos vidéos.";
-
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Activer le partage d’articles";
 
@@ -3030,7 +3031,7 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "L’insertion du média a échoué.\nVeuillez toucher pour les options.";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nPlease tap for options." = "L’insertion du média a échoué.\nVeuillez toucher pour les options.";
+"Failed to insert media.\nTap for more info." = "Échec d’insertion du média.\nCliquez pour plus d’informations.";
 
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "L’enregistrement des fichiers a échoué.\nVeuillez toucher pour accéder aux options.";
@@ -3162,8 +3163,7 @@ translators: Block name. %s: The localized block name */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Suivez des sujets qui vous intéressent, et nous trouverons des blogs susceptibles de vous plaire.";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Follow your favorite sites and discover new blogs." = "Suivez vos sites préférés et découvrez de nouveaux blogs.";
 
 /* Displayed in the Notification Settings View
@@ -3652,6 +3652,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Information sur les cours et évènement de WordPress.com (en ligne ou face-à-face)";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "Écran initial";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Initialisation du processus de restauration";
@@ -4203,9 +4207,6 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Gérer le site";
-
-/* shown in promotional screens during first launch */
-"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "Gérer votre site propulsé par Jetpack de n’importe où. Vous avez WordPress dans votre poche.";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Décalage manuel";
@@ -5677,9 +5678,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publiez un article";
 
-/* shown in promotional screens during first launch */
-"Publish from the park. Blog from the bus. Comment from the café. WordPress goes where you do." = "Publiez depuis le parc. Bloguez depuis le bus. Commentez depuis une terrasse de café. WordPress vous suit partout.";
-
 /* Immediately publish button title */
 "Publish immediately" = "Publier immédiatement";
 
@@ -5944,8 +5942,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reply button
    Reply to a comment (verb)
    Reply to a comment.
-   Verb. Button title. Reply to a comment.
-   Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post. */
+   Verb. Button title. Reply to a comment. */
 "Reply" = "Répondre";
 
 /* The app successfully sent a comment */
@@ -6137,8 +6134,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Enregistrer des articles pour plus tard";
 
-/* Title of button allowing users to change the status of the post they are currently editing to Draft.
-   WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
+/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
 "Save as Draft" = "Enregistrer comme brouillon";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
@@ -6292,8 +6288,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "Voir les instructions";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "Voir les commentaires et notifications en temps réel.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post.
@@ -6790,6 +6785,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Certains blocs ont des réglages supplémentaires. Appuyez sur l’icône des réglages en bas à droite du bloc pour afficher plus d’options.";
+
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "Certaines données n’ont pas été chargées";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Certains téléversements de média ont échoués. Cette action va supprimer tous ces médias de l’article. \nEnregistrer quand même ?";
@@ -7512,6 +7510,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la médiathèque de votre appareil, afin d’ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les réglages de confidentialité.";
 
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Cette combinaison de couleurs peut être difficile à lire pour certaines personnes. Essayez une couleur d’arrière-plan plus claire et\/ou une couleur de texte plus foncée.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Cette combinaison de couleurs peut être difficile à lire pour certaines personnes. Essayez une couleur d’arrière-plan plus foncée et\/ou une couleur de texte plus claire.";
+
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Ce domaine n’est pas disponible";
 
@@ -7633,10 +7637,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Une catégorie doit obligatoirement avoir un titre.";
 
-/* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
-   NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
-"To add photos or videos to your posts." = "Pour ajouter des photos ou des vidéos à vos articles.";
-
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "Pour fermer ce compte maintenant, contactez notre équipe d’assistance.";
 
@@ -7669,9 +7669,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Pour supprimer un bloc, sélectionnez-le et cliquez sur les trois points en bas à droite du bloc pour afficher les réglages. À partir de là, choisissez l’option pour supprimer le bloc.";
-
-/* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
-"To take photos or videos to use in your posts." = "Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
 "To use blogging reminders, you'll need to turn on push notifications." = "Pour utiliser les rappels de blog, vous devez activer les notifications push.";
@@ -8439,11 +8436,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Jetpack Restore Warning screen */
 "Warning" = "Avertissement";
 
-/* shown in promotional screens during first launch */
-"Watch readers from around the world read and interact with your site — in real time." = "Observez les lecteurs tout autour du monde lire et interagir avec votre site, en temps réel.";
-
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Regardez votre audience grossir avec les statistiques approfondies.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -8712,9 +8705,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Bienvenue sur le constructeur de site le plus populaire au monde.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "Bienvenue sur le constructeur de site le plus populaire au monde.";
-
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Nous vous enverrons toujours des e-mails importants sur votre compte, mais vous pouvez aussi recevoir des conseils utiles !";
 
@@ -8807,8 +8797,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Ne sera pas affiché publiquement.";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "With this powerful editor you can post on the go." = "Avec cet éditeur puissant, vous pouvez publier de n’importe où.";
 
 /* Siri Suggestion to open App Settings */
@@ -8873,10 +8862,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Votre version de WordPress est trop ancienne. Le site sur %1$@ utilise WordPress %2$@. Nous vous recommandons de mettre à jour à la dernière version ou au moins %3$@.";
-
-/* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
-   NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
-"WordPress would like to add your location to posts on sites where you have enabled geotagging." = "WordPress souhaiterait ajouter votre emplacement aux articles sur les sites pour lesquels vous avez activé la géolocalisation.";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -9166,9 +9151,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Votre nouveau domaine %@ est en cours de configuration. Un délai de 30 minutes peut être nécessaire pour que votre domaine soit opérationnel.";
 
-/* shown in promotional screens during first launch */
-"Your notifications travel with you — see comments and likes as they happen." = "Vos notifications voyagent avec vous. Visualisez les commentaires et les réactions dès leur arrivée.";
-
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Votre mot de passe doit être d’au moins 6 caractères. Pour qu’il soit plus fort, utilisez des minuscules et des majuscules, des chiffres et des symboles comme ! \" ? $ % ^ & ).";
 
@@ -9186,6 +9168,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Votre restauration prend plus de temps qu’à l’habitude, veuillez vérifiez dans quelques minutes.";
+
+/* This is shown to the user when their domain search query contains invalid characters. */
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Votre recherche contient des caractères non pris en charge dans les domaines WordPress.com. Ces caractères sont autorisés : A–Z, a–z, 0–9.";
 
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "L’adresse de votre site apparait dans la barre en haut de l’écran quand vous le visitez dans Safari.";
@@ -9323,6 +9308,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "dans \"Mise à jour\"";
+
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
+"infoplist.NSCameraUsageDescription" = "Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress souhaiterait ajouter votre emplacement aux articles sur les sites pour lesquels vous avez activé la géolocalisation.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress souhaiterait ajouter votre emplacement aux articles sur les sites pour lesquels vous avez activé la géolocalisation.";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
+"infoplist.NSMicrophoneUsageDescription" = "Autoriser l’accès au micro pour enregistrer le son dans vos vidéos.";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
+"infoplist.NSPhotoLibraryUsageDescription" = "Pour ajouter des photos ou des vidéos à vos articles.";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "Enregistrer comme brouillon";
+
+/* MARK: - Sites.strings */
+"ios-widget.BOl9KQ" = "Il y a des ${count} options correspondantes « ${site} ».";
+
+/* No comment provided by engineer. */
+"ios-widget.gpCwrM" = "Sélectionner le site";
+
+/* No comment provided by engineer. */
+"ios-widget.s4dJhx" = "Vous vouliez vraiment « ${site} » ?";
+
+/* No comment provided by engineer. */
+"ios-widget.tVvJ9c" = "Sélectionner l’intention du site";
 
 /* Later today */
 "later today" = "ultérieurement aujourd'hui";

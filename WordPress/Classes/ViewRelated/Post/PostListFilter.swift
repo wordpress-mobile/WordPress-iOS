@@ -185,4 +185,23 @@ import Foundation
 
         return filter
     }
+
+    func predicate(for blog: Blog) -> NSPredicate {
+        var predicates = [NSPredicate]()
+
+        // Show all original posts without a revision & revision posts.
+        let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+        predicates.append(basePredicate)
+
+        predicates.append(predicateForFetchRequest)
+
+        if let myAuthorID = blog.userID {
+            // Brand new local drafts have an authorID of 0.
+            let authorPredicate = NSPredicate(format: "authorID = %@ || authorID = 0", myAuthorID)
+            predicates.append(authorPredicate)
+        }
+
+       let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+       return predicate
+    }
 }

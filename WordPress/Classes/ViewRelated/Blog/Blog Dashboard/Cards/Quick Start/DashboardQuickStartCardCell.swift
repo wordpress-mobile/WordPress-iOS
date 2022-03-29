@@ -2,16 +2,26 @@ import UIKit
 
 final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
 
+    private weak var viewController: BlogDashboardViewController?
+    private var blog: Blog?
+
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.nextSteps
         frameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
+        frameView.onEllipsisButtonTap = { [weak self] in
+            guard let viewController = self?.viewController,
+                  let blog = self?.blog else {
+                return
+            }
+            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.ellipsisButtonFrame)
+        }
         return frameView
     }()
 
-    private lazy var tourStateView: QuickStarTourStateView = {
-        let view = QuickStarTourStateView()
+    private lazy var tourStateView: QuickStartTourStateView = {
+        let view = QuickStartTourStateView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -29,8 +39,16 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         guard let viewController = viewController else {
             return
         }
+        self.viewController = viewController
+        self.blog = blog
 
-        tourStateView.configure(blog: blog, sourceController: viewController)
+        let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties:["type": DashboardCard.quickStart.rawValue])
+
+        tourStateView.configure(blog: blog, sourceController: viewController, checklistTappedTracker: checklistTappedTracker)
+
+        WPAnalytics.track(.dashboardCardShown,
+                          properties: ["type": DashboardCard.quickStart.rawValue],
+                          blog: blog)
     }
 }
 
