@@ -37,7 +37,7 @@ struct SiteIntentData {
         .init("personal", NSLocalizedString("Personal", comment: "Personal site intent topic"), "✍️"),
         .init("photography", NSLocalizedString("Photography", comment: "Photography site intent topic"), "📷"),
         .init("politics", NSLocalizedString("Politics", comment: "Politics site intent topic"), "🗳️"),
-        .init("real_state", NSLocalizedString("Real Estate", comment: "Real Estate site intent topic"), "🏠"),
+        .init("real_estate", NSLocalizedString("Real Estate", comment: "Real Estate site intent topic"), "🏠"),
         .init("sports", NSLocalizedString("Sports", comment: "Sports site intent topic"), "⚽"),
         .init("technology", NSLocalizedString("Technology", comment: "Technology site intent topic"), "💻"),
         .init("travel", NSLocalizedString("Travel", comment: "Travel site intent topic"), "✈️"),
