@@ -86,10 +86,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     // MARK: Actions
 
-    override func primaryActionSelected(_ sender: Any) {
-        // TODO - handle string input
-    }
-
     @objc
     private func skipButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentSkipped()
@@ -131,9 +127,6 @@ extension SiteIntentViewController: UITableViewDataSource {
 extension SiteIntentViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // TODO - either use or remove after implementing search
-        // searchTextField.resignFirstResponder()
-
         let vertical = availableVerticals[indexPath.row]
 
         SiteCreationAnalyticsHelper.trackSiteIntentSelected(vertical)
