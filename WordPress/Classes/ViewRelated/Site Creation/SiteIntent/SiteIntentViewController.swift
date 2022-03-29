@@ -10,7 +10,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         }
     }
 
-    private var data: [SiteIntentVertical] {
+    private var availableVerticals: [SiteIntentVertical] {
         return SiteIntentData.defaultVerticals
     }
 
@@ -106,7 +106,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
 extension SiteIntentViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return availableVerticals.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,8 +119,8 @@ extension SiteIntentViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        let intentVertical = data[indexPath.row]
-        cell.model = intentVertical
+        let vertical = availableVerticals[indexPath.row]
+        cell.model = vertical
         return cell
     }
 }
@@ -133,7 +133,7 @@ extension SiteIntentViewController: UITableViewDelegate {
         // TODO - either use or remove after implementing search
         // searchTextField.resignFirstResponder()
 
-        let vertical = data[indexPath.row]
+        let vertical = availableVerticals[indexPath.row]
 
         SiteCreationAnalyticsHelper.trackSiteIntentSelected(vertical)
         selection(vertical)
