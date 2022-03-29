@@ -111,8 +111,11 @@ private extension WhatIsNewScenePresenter {
         return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, announcementCellType: AnnouncementCell.self)
     }
 
+
+    /// Creates a WhatIsNewView using custom layout for dashboard announcement
+    /// Treats feature titles and subtitles of value "." as empty strings.
     private func makeCustomWhatIsNewView() -> WhatIsNewView {
-        let title = features.first(where: {!$0.title.isEmpty})?.title ?? WhatIsNewStrings.title // Extract title from features
+        let title = features.first(where: {!$0.title.isFeatureStringEmpty()})?.title ?? WhatIsNewStrings.title // Extract title from features
         let viewTitles = WhatIsNewViewTitles(header: title,
                                              version: "",
                                              continueButtonTitle: WhatIsNewStrings.gotItButtonTitle,
@@ -122,7 +125,7 @@ private extension WhatIsNewScenePresenter {
     }
 
     private func makeCustomDataSource() -> AnnouncementsDataSource {
-        let adjustedFeatures = features.filter {$0.title.isEmpty && !$0.subtitle.isEmpty}
+        let adjustedFeatures = features.filter {$0.title.isFeatureStringEmpty() && !$0.subtitle.isFeatureStringEmpty()}
         let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
         return FeatureAnnouncementsDataSource(features: adjustedFeatures, detailsUrl: detailsUrl, announcementCellType: DashboardCustomAnnouncementCell.self)
     }
@@ -155,5 +158,11 @@ private extension UserDefaults {
         set {
             set(newValue, forKey: UserDefaults.announcementsVersionDisplayedKey)
         }
+    }
+}
+
+fileprivate extension String {
+    func isFeatureStringEmpty() -> Bool {
+        return self.isEmpty || self == "."
     }
 }
