@@ -7,6 +7,14 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
         return makeLabel(font: Appearance.headingFont, color: .secondaryLabel)
     }()
 
+    private lazy var headingLabelView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.addSubview(headingLabel)
+        view.pinSubviewToAllEdges(headingLabel, insets: Appearance.headingLabelInsets)
+        return view
+    }()
+
     private lazy var imageBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .quaternarySystemFill
@@ -25,7 +33,7 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     }()
 
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [headingLabel, imageBackgroundView])
+        let stackView = UIStackView(arrangedSubviews: [headingLabelView, imageBackgroundView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -45,7 +53,8 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
             imageBackgroundView.heightAnchor.constraint(equalToConstant: Appearance.announcementImageHeight),
             imageBackgroundView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
             announcementImageView.heightAnchor.constraint(equalTo: imageBackgroundView.heightAnchor),
-            announcementImageView.centerXAnchor.constraint(equalTo: imageBackgroundView.centerXAnchor)
+            announcementImageView.centerXAnchor.constraint(equalTo: imageBackgroundView.centerXAnchor),
+            announcementImageView.centerYAnchor.constraint(equalTo: imageBackgroundView.centerYAnchor)
         ])
     }
 
@@ -87,6 +96,7 @@ private extension DashboardCustomAnnouncementCell {
     enum Appearance {
         // heading
         static let headingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body), size: 17)
+        static let headingLabelInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
         // announcement image
         static let announcementImageHeight: CGFloat = 155
