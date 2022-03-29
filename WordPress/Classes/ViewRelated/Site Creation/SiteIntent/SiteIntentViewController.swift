@@ -28,6 +28,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
             defaultActionTitle: nil,
             accessoryView: nil
         )
+
+        table.dataSource = self
     }
 
     // MARK: UIViewController
@@ -71,7 +73,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
-        table.dataSource = self
         setupCells()
     }
 
