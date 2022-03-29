@@ -2,7 +2,7 @@ import UIKit
 
 class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
-    private let table: UITableView
+    private let tableView: UITableView
 
     private var selectedVertical: SiteIntentVertical? {
         didSet {
@@ -17,10 +17,10 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
 
-        table = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .grouped)
 
         super.init(
-            scrollableView: table,
+            scrollableView: tableView,
             mainTitle: Strings.mainTitle,
             prompt: Strings.prompt,
             primaryActionTitle: Strings.primaryAction,
@@ -29,7 +29,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
             accessoryView: nil
         )
 
-        table.dataSource = self
+        tableView.dataSource = self
     }
 
     // MARK: UIViewController
@@ -60,7 +60,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     // MARK: UI Setup
 
     private func configureTable() {
-        table.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
     }
 
     private func configureSkipButton() {
@@ -79,9 +79,9 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private func setupCells() {
         let cellName = IntentCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
-        table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
-        table.cellLayoutMarginsFollowReadableWidth = true
+        tableView.register(nib, forCellReuseIdentifier: cellName)
+        tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     // MARK: Actions
