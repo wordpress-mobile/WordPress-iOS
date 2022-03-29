@@ -158,7 +158,7 @@ private extension DashboardStatsCardCell {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
         static let statsStackViewMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
-        static let nudgeButtonMargins = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
+        static let nudgeButtonMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         static let constraintPriority = UILayoutPriority(999)
 
