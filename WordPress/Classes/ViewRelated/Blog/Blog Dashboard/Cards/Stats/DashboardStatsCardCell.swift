@@ -110,7 +110,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func createNudgeButton(for blog: Blog, in viewController: UIViewController) -> DashboardStatsNudgeButton {
-        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle)
+        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
         nudgeButton.contentEdgeInsets = Constants.nudgeButtonMargins
 
         nudgeButton.onTap = { [weak self] in
@@ -151,6 +151,7 @@ private extension DashboardStatsCardCell {
         static let accessibilityLabelFormat = "\(viewsTitle) %@, \(visitorsTitle) %@, \(likesTitle) %@."
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
         static let nudgeButtonTitle = NSLocalizedString("If you want to try get more views and traffic check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
+        static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
     }
 
     enum Constants {
