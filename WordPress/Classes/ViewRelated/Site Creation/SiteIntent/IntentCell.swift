@@ -33,7 +33,6 @@ final class IntentCell: UITableViewCell, ModelSettableCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        accessoryType = .disclosureIndicator
         emojiContainer.layer.cornerRadius = emojiContainer.layer.frame.width / 2
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
     }
