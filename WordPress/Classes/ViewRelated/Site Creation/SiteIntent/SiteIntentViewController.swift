@@ -2,21 +2,25 @@ import UIKit
 
 class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
-    private let table: UITableView
+    private let tableView: UITableView
 
-    private var selectedVertical: SiteVertical? {
+    private var selectedVertical: SiteIntentVertical? {
         didSet {
             itemSelectionChanged(selectedVertical != nil)
         }
     }
 
+    private var availableVerticals: [SiteIntentVertical] {
+        return SiteIntentData.defaultVerticals
+    }
+
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
 
-        table = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .grouped)
 
         super.init(
-            scrollableView: table,
+            scrollableView: tableView,
             mainTitle: Strings.mainTitle,
             prompt: Strings.prompt,
             primaryActionTitle: Strings.primaryAction,
@@ -24,6 +28,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
             defaultActionTitle: nil,
             accessoryView: nil
         )
+
+        tableView.dataSource = self
     }
 
     // MARK: UIViewController
@@ -34,6 +40,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTable()
         navigationItem.backButtonTitle = NSLocalizedString("Topic", comment: "Shortened version of the main title to be used in back navigation")
         configureTable()
         configureSkipButton()
@@ -53,7 +60,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     // MARK: UI Setup
 
     private func configureTable() {
-        table.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
     }
 
     private func configureSkipButton() {
@@ -65,16 +72,19 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
-    // MARK: Actions
-
-    override func primaryActionSelected(_ sender: Any) {
-        guard let selectedVertical = selectedVertical else {
-            return
-        }
-
-        SiteCreationAnalyticsHelper.trackSiteIntentSelected(selectedVertical)
-        selection(selectedVertical)
+    private func setupTable() {
+        setupCells()
     }
+
+    private func setupCells() {
+        let cellName = IntentCell.cellReuseIdentifier()
+        let nib = UINib(nibName: cellName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellName)
+        tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+    }
+
+    // MARK: Actions
 
     @objc
     private func skipButtonTapped(_ sender: Any) {
@@ -86,5 +96,40 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private func closeButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentCanceled()
         dismiss(animated: true)
+    }
+}
+
+// MARK: UITableViewDataSource
+
+extension SiteIntentViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return availableVerticals.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return configureIntentCell(tableView, cellForRowAt: indexPath)
+    }
+
+    func configureIntentCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: IntentCell.cellReuseIdentifier()) as? IntentCell else {
+            assertionFailure("This is a programming error - IntentCell has not been properly registered!")
+            return UITableViewCell()
+        }
+
+        let vertical = availableVerticals[indexPath.row]
+        cell.model = vertical
+        return cell
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension SiteIntentViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let vertical = availableVerticals[indexPath.row]
+
+        SiteCreationAnalyticsHelper.trackSiteIntentSelected(vertical)
+        selection(vertical)
     }
 }
