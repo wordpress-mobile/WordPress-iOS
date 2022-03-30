@@ -29,9 +29,8 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
             scrollableView: scrollView,
             mainTitle: Strings.headerTitle,
             prompt: Strings.headerSubtitle,
-            // TODO: update the button titles once the buttons are customized for Feature Introduction.
-            primaryActionTitle: "",
-            defaultActionTitle: Strings.primaryActionTitle)
+            primaryActionTitle: Strings.primaryActionTitle,
+            secondaryActionTitle: Strings.secondaryActionTitle)
     }
 
     required init?(coder: NSCoder) {
@@ -49,6 +48,17 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        configureVerticalButtonView()
+    }
+
+    // MARK: - Button Actions
+
+    override func primaryActionSelected(_ sender: Any) {
+        // TODO: call feature specific primary action
+    }
+
+    override func secondaryActionSelected(_ sender: Any) {
+        // TODO: call feature specific secondary action
     }
 
 }
@@ -65,10 +75,12 @@ private extension FeatureIntroductionViewController {
         dismiss(animated: true)
     }
 
+    // TODO: move to feature specific implementation.
     enum Strings {
         static let headerTitle: String = NSLocalizedString("Introducing Prompts", comment: "Title displayed on the feature introduction view.")
         static let headerSubtitle: String = NSLocalizedString("The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!", comment: "Subtitle displayed on the feature introduction view.")
         static let primaryActionTitle: String = NSLocalizedString("Try it now", comment: "Primary button title on the feature introduction view.")
+        static let secondaryActionTitle: String = NSLocalizedString("Remind me", comment: "Secondary button title on the feature introduction view.")
     }
 
 }
