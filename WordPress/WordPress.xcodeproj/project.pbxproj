@@ -1839,6 +1839,8 @@
 		98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
 		98BFF57F23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
+		98C05B6827F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C05B6727F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift */; };
+		98C05B6927F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C05B6727F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift */; };
 		98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CAD295221B4ED1003E8F45 /* StatSection.swift */; };
@@ -6525,6 +6527,7 @@
 		98BBB642258047DD0084FF72 /* WordPress 107.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 107.xcdatamodel"; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
 		98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTimeWidgetStats.swift; sourceTree = "<group>"; };
+		98C05B6727F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsFeatureIntroduction.swift; sourceTree = "<group>"; };
 		98CAD295221B4ED1003E8F45 /* StatSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatSection.swift; sourceTree = "<group>"; };
 		98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressAllTimeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		98D31B962396ED7F009CFF43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -12195,6 +12198,7 @@
 			isa = PBXGroup;
 			children = (
 				98AA9F2027EA890800B3A98C /* FeatureIntroductionViewController.swift */,
+				98C05B6727F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift */,
 			);
 			path = "Feature Introduction";
 			sourceTree = "<group>";
@@ -18605,6 +18609,7 @@
 				4666534A2501552A00165DD4 /* LayoutPreviewViewController.swift in Sources */,
 				7326A4A8221C8F4100B4EB8C /* UIStackView+Subviews.swift in Sources */,
 				4349B0AC218A45270034118A /* RevisionsTableViewController.swift in Sources */,
+				98C05B6827F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift in Sources */,
 				8BF1C81A27BC00AF00F1C203 /* BlogDashboardCardFrameView.swift in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
 				984B139421F66B2D0004B6A2 /* StatsPeriodStore.swift in Sources */,
@@ -20390,6 +20395,7 @@
 				8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */,
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
+				98C05B6927F4F4130001A01B /* BloggingPromptsFeatureIntroduction.swift in Sources */,
 				FABB233A2602FC2C00C8785C /* RevisionsNavigationController.swift in Sources */,
 				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
 				FABB233B2602FC2C00C8785C /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,
