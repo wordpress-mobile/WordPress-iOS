@@ -40,6 +40,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         )
 
         tableView.dataSource = self
+        searchBar.delegate = self
     }
 
     // MARK: UIViewController
