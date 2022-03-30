@@ -56,7 +56,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
+        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.growListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
     }
@@ -69,7 +69,7 @@ open class QuickStartTourGuide: NSObject {
         let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
         let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
         let unavailableTours = Array(Set(completedTours + skippedTours))
-        let allTours = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
+        let allTours = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.growListTours
 
         guard isQuickStartEnabled(for: blog),
             recentlyTouredBlog == blog else {
@@ -332,7 +332,7 @@ open class QuickStartTourGuide: NSObject {
         ]
     }
 
-    var createGrowListTours: [QuickStartTour] {
+    var growListTours: [QuickStartTour] {
         return [
             QuickStartShareTour(),
             QuickStartPublishTour(),
@@ -396,7 +396,7 @@ private extension QuickStartTourGuide {
     /// - Parameter blog: blog to check
     /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
+        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.growListTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 

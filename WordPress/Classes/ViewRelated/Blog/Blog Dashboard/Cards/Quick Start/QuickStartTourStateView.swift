@@ -49,7 +49,7 @@ final class QuickStartTourStateView: UIView {
         }
 
         growChecklistView.configure(
-            tours: QuickStartTourGuide.shared.createGrowListTours,
+            tours: QuickStartTourGuide.shared.growListTours,
             blog: blog,
             title: Strings.growTitle,
             hint: Strings.growHint

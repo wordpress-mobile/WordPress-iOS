@@ -45,7 +45,7 @@ class QuickStartChecklistViewController: UITableViewController {
                                                     tours: QuickStartTourGuide.shared.customizeListTours)
         case .grow:
             return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
-                                                    tours: QuickStartTourGuide.shared.createGrowListTours)
+                                                    tours: QuickStartTourGuide.shared.growListTours)
         }
     }()
     private lazy var successScreen: NoResultsViewController = {
