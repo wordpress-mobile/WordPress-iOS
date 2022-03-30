@@ -33,11 +33,10 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         super.init(
             scrollableView: tableView,
             mainTitle: Strings.mainTitle,
+            navigationBarTitle: Strings.navigationBarTitle,
             prompt: Strings.prompt,
             primaryActionTitle: Strings.primaryAction,
-            secondaryActionTitle: nil,
-            defaultActionTitle: nil,
-            accessoryView: nil
+            accessoryView: searchBar
         )
 
         tableView.dataSource = self
