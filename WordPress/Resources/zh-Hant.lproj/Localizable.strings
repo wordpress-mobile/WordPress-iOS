@@ -9,13 +9,10 @@
 /* Notice shown on the Edit Comment view when the author is a registered user. */
 "\nThis user is registered. Their name, web address, and email address cannot be edited." = "\n這位使用者已註冊。 無法編輯他們的姓名、網址和電子郵件地址。";
 
-/* Message of Delete Site confirmation alert; substitution is site's host. */
-"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
-
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n為進行確認，請在關閉前重新輸入你的使用者名稱。\n\n";
 
-/* No comment provided by engineer. */
+/* Per-year postfix shown after a domain's cost. */
 " \/ year" = " \/年";
 
 /* Title for the lazy load images setting */
@@ -525,9 +522,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "新增短代碼…";
-
-/* No Tags View Button Label */
-"Add a site" = "Add a site";
 
 /* No Topics View Button Label */
 "Add a topic" = "新增主題";
@@ -1166,10 +1160,6 @@ translators: Block name. %s: The localized block name */
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "註冊此網域，即表示你同意我們的<a>條款與條件<\/a>。";
 
-/* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
-. Also there is a placeholder %@ which is: Terms and Conditions */
-"By setting up Jetpack you agree to our\n%@" = "By setting up Jetpack you agree to our\n%@";
-
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "註冊即代表你同意我們的「服務條款」。";
 
@@ -1280,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "請小心！";
-
-/* shown in promotional screens during first launch */
-"Catch up with your favorite sites and join the conversation anywhere, any time." = "隨時隨地掌握最愛網站的最新動態並加入討論。";
 
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
@@ -1764,10 +1751,6 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "正在連結...";
 
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Connection canceled";
-
 /* Message to show when Publicize authorization failed
    Message to show when Publicize connect failed */
 "Connection failed" = "連結失敗";
@@ -1983,15 +1966,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the site creation flow. */
 "Create New Site" = "建立新網站";
 
-/* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
-   Title for button to make a page with the contents of the selected layout */
-"Create Page" = "Create Page";
-
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
-"Create Post" = "Create Post";
-
 /* Button to progress to the next step
    Site creation. Step 1. Screen title */
 "Create Site" = "建立網站";
@@ -2127,9 +2101,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edition of the share message. */
 "Customize the message" = "自訂訊息";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "自訂新文章和留言的關注網站設定";
@@ -2334,6 +2305,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
@@ -2610,9 +2582,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit focal point" = "編輯焦點";
 
-/* No comment provided by engineer. */
-"Edit media" = "Edit media";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
 
@@ -2738,9 +2707,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the action button that enables notification for new comments */
 "Enable in-app notifications?" = "是否啟用應用程式內通知？";
-
-/* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
-"Enable microphone access to record sound in your videos." = "請啟用麥克風權限，以錄製影片音效。";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "啟用文章分享功能";
@@ -2869,9 +2835,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "將留言移至垃圾桶時發生錯誤。";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Error occurred\nduring loading";
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "儲存時\n發生錯誤";
@@ -3030,9 +2993,6 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "未能添加媒體\n請輕觸螢幕查看其他選項。";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
-
-/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "存檔失敗。\n請點選以顯示選項。";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3162,8 +3122,7 @@ translators: Block name. %s: The localized block name */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "追蹤自己感興趣的主題，我們會據此推薦你可能會喜歡的網誌。";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Follow your favorite sites and discover new blogs." = "追蹤你喜歡的網站並探索新網誌。";
 
 /* Displayed in the Notification Settings View
@@ -4203,9 +4162,6 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "管理網站";
-
-/* shown in promotional screens during first launch */
-"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "隨時隨地管理以 Jetpack 建置的網站，就像把 WordPress 裝在口袋隨身帶著走。";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "手動時差";
@@ -5677,9 +5633,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of a Quick Start Tour */
 "Publish a post" = "發表文章";
 
-/* shown in promotional screens during first launch */
-"Publish from the park. Blog from the bus. Comment from the café. WordPress goes where you do." = "在公園發表文章，在公車上寫網誌，或在咖啡館留言，你走到哪，WordPress 跟你到哪。";
-
 /* Immediately publish button title */
 "Publish immediately" = "立即發表";
 
@@ -5944,8 +5897,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reply button
    Reply to a comment (verb)
    Reply to a comment.
-   Verb. Button title. Reply to a comment.
-   Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post. */
+   Verb. Button title. Reply to a comment. */
 "Reply" = "回覆";
 
 /* The app successfully sent a comment */
@@ -6137,8 +6089,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "儲存文章以供稍後使用";
 
-/* Title of button allowing users to change the status of the post they are currently editing to Draft.
-   WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
+/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
 "Save as Draft" = "儲存為草稿";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
@@ -6235,9 +6186,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "搜尋 WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "搜尋區塊標籤。 目前的文字是";
 
@@ -6292,8 +6240,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "查看說明";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "See comments and notifications in real time." = "即時查看留言和通知。";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post.
@@ -7392,9 +7339,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "傳送邀請時發生未預期的錯誤";
 
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
-
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新你的通知設定時發生意外錯誤";
 
@@ -7633,10 +7577,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "分類標題是必填的。";
 
-/* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
-   NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
-"To add photos or videos to your posts." = "在你的文章中新增相片或影片。";
-
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "若要立即關閉此帳號，請與支援團隊聯絡。";
 
@@ -7669,9 +7609,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "若要移除區塊，請選取區塊，並按一下區塊右下角的三個點以檢視設定。 在設定中選擇移除區塊的選項。";
-
-/* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
-"To take photos or videos to use in your posts." = "拍些相片或影片供文章使用。";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
 "To use blogging reminders, you'll need to turn on push notifications." = "你需要開啟推播通知才能使用網誌提醒。";
@@ -8439,11 +8376,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Jetpack Restore Warning screen */
 "Warning" = "警告";
 
-/* shown in promotional screens during first launch */
-"Watch readers from around the world read and interact with your site — in real time." = "第一時間看到來自世界各地的讀者閱讀你的網站，並與你的網站互動。";
-
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "透過深入分析資料拓展讀者群。";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -8504,9 +8437,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "我們無法還原你的網站。 請稍後再試一次。";
-
-/* Description that appears when a media fails to load in the Media Editor. */
-"We couldn't retrieve this media.\nPlease tap to retry." = "We couldn't retrieve this media.\nPlease tap to retry.";
 
 /* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
 "We couldn't schedule this page, but we'll try again later." = "我們無法排程此頁面，但稍後會再試一次。";
@@ -8712,9 +8642,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
-
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我們會隨時傳送與帳號資訊相關的重要電子郵件，除此之外，你也能獲得實用的額外內容。";
 
@@ -8807,8 +8734,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing email address */
 "Will not be publicly displayed." = "不會被公開。";
 
-/* Caption displayed in promotional screens shown during the login flow.
-   Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow. */
 "With this powerful editor you can post on the go." = "這個功能強大的編輯器讓你隨時隨地都能發佈文章。";
 
 /* Siri Suggestion to open App Settings */
@@ -8873,10 +8799,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress 版本過舊。網址為 %1$@ 的網站使用 WordPress %2$@。建議更新至最新版本，或至少更新至 %3$@";
-
-/* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
-   NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
-"WordPress would like to add your location to posts on sites where you have enabled geotagging." = "WordPress 想要在你已啟用地理位置標誌功能的網站上，將你的位置新增網站上的文章。";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -8966,9 +8888,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message informing the user that they are already following a site in their reader. */
 "You are already following this site." = "你已經關注此這個網站。";
-
-/* Alert message. */
-"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "你目前正在上傳媒體。請等待此作業完成。";
@@ -9080,15 +8999,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "你必須登入 WordPress.com 帳號才能執行此動作。";
 
-/* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
-
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "你已收到 *50 likes* on your site today";
-
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
 
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail */
@@ -9165,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "正在設定你的新網域 %@。 你的網域最多可能需要 30 分鐘才能開始運作。";
-
-/* shown in promotional screens during first launch */
-"Your notifications travel with you — see comments and likes as they happen." = "你走到哪，通知就到哪，第一時間查看留言和讚。";
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "密碼必須至少包含 6 個字元。若要提升密碼強度，可使用大小寫字母、數字，以及 ! \" ? $ % ^ & ) 等符號。";

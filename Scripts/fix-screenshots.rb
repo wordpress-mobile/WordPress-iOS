@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'find'
-Find.find('./fastlane/screenshots') { |e|
+Find.find('./fastlane/screenshots') do |e|
     next if File.directory?(e)
-    next if File.extname(e) != ".png"
+    next if File.extname(e) != '.png'
 
     info = `identify "#{e}"`.sub(e, '').split
     dimensions = info[1].split('x')
@@ -12,4 +12,4 @@ Find.find('./fastlane/screenshots') { |e|
         `convert "#{e}" -rotate -90 "#{e}"`
         puts "✅ #{e}"
     end
-}
+end

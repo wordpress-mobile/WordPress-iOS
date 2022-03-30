@@ -2,5 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>‘${site}’과(와) 일치하는 ${count}개 옵션이 있습니다.</string>
+    <key>ILcGmf</key>
+    <string>사이트</string>
+    <key>cyajMn</key>
+    <string>사이트</string>
+    <key>gpCwrM</key>
+    <string>사이트 선택</string>
+    <key>s4dJhx</key>
+    <string>단지 ‘${site}’을(를) 확인해 보고 싶으신가요?</string>
+    <key>tVvJ9c</key>
+    <string>사이트 의도 선택</string>
+  </dict>
 </plist>
