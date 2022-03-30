@@ -28,8 +28,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
-
-        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .plain)
 
         super.init(
             scrollableView: tableView,
