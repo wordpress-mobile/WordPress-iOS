@@ -267,7 +267,7 @@ open class QuickStartTourGuide: NSObject {
             let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
             let completedIDs = completedTours.map { $0.tourID }
 
-            for tour in QuickStartTourGuide.checklistListTours {
+            for tour in QuickStartTourGuide.checklistTours {
                 if !completedIDs.contains(tour.key) {
                     blog.completeTour(tour.key)
                 }
@@ -298,7 +298,7 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static var checklistListTours: [QuickStartTour] {
+    static var checklistTours: [QuickStartTour] {
         return [
             QuickStartCreateTour(),
             QuickStartViewTour(),
@@ -389,7 +389,7 @@ private extension QuickStartTourGuide {
     /// - Note: This method is needed for upgrade/migration to V2 and should not
     ///         be removed when the V2 feature flag is removed.
     func allOriginalToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.checklistListTours
+        let list = QuickStartTourGuide.checklistTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
