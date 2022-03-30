@@ -11,6 +11,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let scrollableView: UIScrollView
     let accessoryView: UIView?
     let mainTitle: String
+    let navigationBarTitle: String?
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
@@ -157,6 +158,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///
     init(scrollableView: UIScrollView,
          mainTitle: String,
+         navigationBarTitle: String? = nil,
          prompt: String,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
@@ -164,6 +166,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          accessoryView: UIView? = nil) {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
+        self.navigationBarTitle = navigationBarTitle
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
@@ -282,7 +285,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - View Styling
     private func setStaticText() {
-        titleView.text = mainTitle
+        titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
