@@ -21,6 +21,11 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         return searchBar
     }()
 
+
+    override var seperatorStyle: SeperatorStyle {
+        return .hidden
+    }
+
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
 
