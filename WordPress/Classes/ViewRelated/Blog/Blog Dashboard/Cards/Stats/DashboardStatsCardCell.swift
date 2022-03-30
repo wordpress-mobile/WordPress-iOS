@@ -6,6 +6,9 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     // MARK: Private Variables
 
     private var viewModel: DashboardStatsViewModel?
+    private var frameView: BlogDashboardCardFrameView?
+    private var nudgeButton: DashboardStatsNudgeButton?
+    private var statsStackView: DashboardStatsStackView?
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -19,12 +22,44 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(stackView)
-        contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
+        commonInit()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        commonInit()
+    }
+
+    // MARK: Helpers
+
+    private func commonInit() {
+        contentView.addSubview(stackView)
+        contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
+        addSubviews()
+    }
+
+    private func addSubviews() {
+        let frameView = BlogDashboardCardFrameView()
+        frameView.title = Strings.statsTitle
+        frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
+        self.frameView = frameView
+
+        let statsStackview = DashboardStatsStackView()
+        frameView.add(subview: statsStackview)
+        self.statsStackView = statsStackview
+
+        let nudgeButton = createNudgeButton()
+        frameView.add(subview: nudgeButton)
+        self.nudgeButton = nudgeButton
+
+        stackView.addArrangedSubview(frameView)
+    }
+
+    private func createNudgeButton() -> DashboardStatsNudgeButton {
+        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
+        nudgeButton.contentEdgeInsets = Constants.nudgeButtonMargins
+
+        return nudgeButton
     }
 }
 
@@ -37,68 +72,28 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         }
 
         self.viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
-
-        clearFrames()
-        addTodayStatsCard(for: blog, in: viewController)
+        configureCard(for: blog, in: viewController)
     }
 
-    /// Remove any card frame, if present
-    private func clearFrames() {
-        stackView.removeAllSubviews()
-    }
+    private func configureCard(for blog: Blog, in viewController: UIViewController) {
 
-    private func addTodayStatsCard(for blog: Blog, in viewController: UIViewController) {
-        let frameView = BlogDashboardCardFrameView()
-        frameView.title = Strings.statsTitle
-        frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
-        frameView.onViewTap = { [weak self] in
+        frameView?.onViewTap = { [weak self] in
             self?.showStats(for: blog, from: viewController)
         }
 
-        let views = statsViews()
-        let statsStackview = createStatsStackView(arrangedSubviews: views)
-        frameView.add(subview: statsStackview)
+        statsStackView?.views = viewModel?.todaysViews
+        statsStackView?.visitors = viewModel?.todaysVisitors
+        statsStackView?.likes = viewModel?.todaysLikes
 
-        if viewModel?.shouldDisplayNudge ?? false {
-            let nudgeButton = createNudgeButton(for: blog, in: viewController)
-            frameView.add(subview: nudgeButton)
+        nudgeButton?.onTap = { [weak self] in
+            self?.showNudgeHint(for: blog, from: viewController)
         }
 
-        stackView.addArrangedSubview(frameView)
+        nudgeButton?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
 
         WPAnalytics.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
-    }
-
-    private func createStatsStackView(arrangedSubviews: [UIView]) -> UIStackView {
-        let stackview = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackview.axis = .horizontal
-        stackview.translatesAutoresizingMaskIntoConstraints = false
-        stackview.distribution = .fillEqually
-        stackview.isLayoutMarginsRelativeArrangement = true
-        stackview.directionalLayoutMargins = Constants.statsStackViewMargins
-        stackview.isAccessibilityElement = true
-        stackview.accessibilityTraits = .button
-        stackview.accessibilityLabel = statsStackViewAccessibilityLabel()
-        return stackview
-    }
-
-    private func statsViews() -> [UIView] {
-        let viewsStatsView = DashboardSingleStatView(countString: viewModel?.todaysViews ?? "0", title: Strings.viewsTitle)
-        let visitorsStatsView = DashboardSingleStatView(countString: viewModel?.todaysVisitors ?? "0", title: Strings.visitorsTitle)
-        let likesStatsView = DashboardSingleStatView(countString: viewModel?.todaysLikes ?? "0", title: Strings.likesTitle)
-        return [viewsStatsView, visitorsStatsView, likesStatsView]
-    }
-
-    private func statsStackViewAccessibilityLabel() -> String {
-        guard let viewModel = viewModel else {
-            return Strings.errorTitle
-        }
-        let arguments = [viewModel.todaysViews.accessibilityLabel ?? viewModel.todaysViews,
-                         viewModel.todaysVisitors.accessibilityLabel ?? viewModel.todaysVisitors,
-                         viewModel.todaysLikes.accessibilityLabel ?? viewModel.todaysLikes]
-        return String(format: Strings.accessibilityLabelFormat, arguments: arguments)
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
@@ -107,17 +102,6 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
                           blog: blog)
         StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
         WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
-    }
-
-    private func createNudgeButton(for blog: Blog, in viewController: UIViewController) -> DashboardStatsNudgeButton {
-        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
-        nudgeButton.contentEdgeInsets = Constants.nudgeButtonMargins
-
-        nudgeButton.onTap = { [weak self] in
-            self?.showNudgeHint(for: blog, from: viewController)
-        }
-
-        return nudgeButton
     }
 
     private func showNudgeHint(for blog: Blog, from sourceController: UIViewController) {
@@ -144,12 +128,6 @@ private extension DashboardStatsCardCell {
 
     enum Strings {
         static let statsTitle = NSLocalizedString("Today's Stats", comment: "Title for the card displaying today's stats.")
-        static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
-        static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
-        static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
-        static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-        static let accessibilityLabelFormat = "\(viewsTitle) %@, \(visitorsTitle) %@, \(likesTitle) %@."
-        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
         static let nudgeButtonTitle = NSLocalizedString("If you want to try get more views and traffic check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
     }
@@ -157,7 +135,6 @@ private extension DashboardStatsCardCell {
     enum Constants {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
-        static let statsStackViewMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
         static let nudgeButtonMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         static let constraintPriority = UILayoutPriority(999)
