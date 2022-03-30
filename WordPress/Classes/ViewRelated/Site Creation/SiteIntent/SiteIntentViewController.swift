@@ -51,48 +51,43 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTable()
-        navigationItem.backButtonTitle = NSLocalizedString("Topic", comment: "Shortened version of the main title to be used in back navigation")
+
+        configureNavigationBar()
         configureTable()
-        configureSkipButton()
-        configureCloseButton()
-        largeTitleView.numberOfLines = 2
+
+        largeTitleView.numberOfLines = Metrics.largeTitleLines
         SiteCreationAnalyticsHelper.trackSiteIntentViewed()
+
     }
 
-    // MARK: Constants
-
-    private enum Strings {
-        static let mainTitle: String = NSLocalizedString("What's your website about?", comment: "Select the site's intent. Title")
-        static let prompt: String = NSLocalizedString("Choose a topic from the list below or type your own", comment: "Select the site's intent. Subtitle")
-        static let primaryAction: String = NSLocalizedString("Continue", comment: "Button to progress to the next step")
+    override func viewDidLayoutSubviews() {
+        searchBar.placeholder = Strings.searchTextFieldPlaceholder
     }
 
     // MARK: UI Setup
 
+    private func configureNavigationBar() {
+        // Title
+        navigationItem.backButtonTitle = Strings.backButtonTitle
+        // Skip button
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.skipButtonTitle,
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(skipButtonTapped))
+        // Cancel button
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle,
+                                                           style: .done,
+                                                           target: self,
+                                                           action: #selector(closeButtonTapped))
+    }
+
     private func configureTable() {
-        tableView.backgroundColor = .basicBackground
-    }
-
-    private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
-        navigationItem.rightBarButtonItem = skip
-    }
-
-    private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
-    }
-
-    private func setupTable() {
-        setupCells()
-    }
-
-    private func setupCells() {
         let cellName = IntentCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellName)
         tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.backgroundColor = .basicBackground
     }
 
     // MARK: Actions
