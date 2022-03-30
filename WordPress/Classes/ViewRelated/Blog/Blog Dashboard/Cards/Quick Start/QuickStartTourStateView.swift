@@ -36,7 +36,7 @@ final class QuickStarTourStateView: UIView {
     func configure(blog: Blog, sourceController: UIViewController) {
 
         customizeChecklistView.configure(
-            tours: QuickStartTourGuide.shared.customizeListTours,
+            tours: QuickStartTourGuide.customizeListTours,
             blog: blog,
             title: Strings.customizeTitle,
             hint: Strings.customizeHint
@@ -47,7 +47,7 @@ final class QuickStarTourStateView: UIView {
         }
 
         growChecklistView.configure(
-            tours: QuickStartTourGuide.shared.growListTours,
+            tours: QuickStartTourGuide.growListTours,
             blog: blog,
             title: Strings.growTitle,
             hint: Strings.growHint
