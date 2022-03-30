@@ -204,6 +204,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         checkAppleIDCredentialState()
 
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
+
+        // TODO: remove before merging. For testing only.
+        WPTabBarController.sharedInstance().showFeatureIntroduction()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
