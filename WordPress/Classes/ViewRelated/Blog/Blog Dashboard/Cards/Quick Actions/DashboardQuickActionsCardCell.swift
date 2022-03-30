@@ -13,10 +13,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            statsButton,
+            pagesButton,
             postsButton,
             mediaButton,
-            pagesButton
+            statsButton
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -109,7 +109,7 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
-        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTapSource: "dashboard"], with: blog)
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], with: blog)
     }
 }
 

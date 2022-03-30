@@ -28,7 +28,7 @@ final class SiteCreator {
     // MARK: Properties
     var segment: SiteSegment?
     var design: RemoteSiteDesign?
-    var vertical: SiteVertical?
+    var vertical: SiteIntentVertical?
     var information: SiteInformation?
     var address: DomainSuggestion?
 
@@ -37,8 +37,6 @@ final class SiteCreator {
     /// - Returns: an Encodable object
     ///
     func build() throws -> SiteCreationRequest {
-        let verticalIdentifier = vertical?.identifier.description
-
         guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
@@ -48,7 +46,7 @@ final class SiteCreator {
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
             siteDesign: siteDesign,
-            verticalIdentifier: verticalIdentifier,
+            verticalIdentifier: vertical?.slug,
             title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
             tagline: information?.tagLine ?? "",
             siteURLString: siteName,

@@ -58,7 +58,9 @@ class ReaderTabViewController: UIViewController {
         if AppConfiguration.showsWhatIsNew {
             WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
         }
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
         searchButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.readerSearch)
     }
 
