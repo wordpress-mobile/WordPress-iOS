@@ -4,6 +4,7 @@ import WordPressKit
 /// Genric type that renders announcements upon requesting them by calling `getAnnouncements()`
 protocol AnnouncementsStore: Observable {
     var announcements: [WordPressKit.Announcement] { get }
+    var appVersionName: String { get }
     var versionHasAnnouncements: Bool { get }
     func getAnnouncements()
 }
@@ -61,6 +62,15 @@ class CachedAnnouncementsStore: AnnouncementsStore {
             return []
         case .ready(let announcements):
             return announcements
+        }
+    }
+
+    var appVersionName: String {
+        switch state {
+        case .loading, .error:
+            return ""
+        case .ready(let announcements):
+            return announcements.first?.appVersionName ?? ""
         }
     }
 
