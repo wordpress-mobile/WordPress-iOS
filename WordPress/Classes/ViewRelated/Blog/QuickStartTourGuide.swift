@@ -56,7 +56,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.createCustomizeListTours() + QuickStartTourGuide.createGrowListTours()
+        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
     }
@@ -69,7 +69,7 @@ open class QuickStartTourGuide: NSObject {
         let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
         let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
         let unavailableTours = Array(Set(completedTours + skippedTours))
-        let allTours = QuickStartTourGuide.createCustomizeListTours() + QuickStartTourGuide.createGrowListTours()
+        let allTours = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
 
         guard isQuickStartEnabled(for: blog),
             recentlyTouredBlog == blog else {
@@ -279,7 +279,7 @@ open class QuickStartTourGuide: NSObject {
             let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
             let completedIDs = completedTours.map { $0.tourID }
 
-            for tour in QuickStartTourGuide.createChecklistListTours() {
+            for tour in QuickStartTourGuide.shared.checklistListTours {
                 if !completedIDs.contains(tour.key) {
                     blog.completeTour(tour.key)
                 }
@@ -310,7 +310,7 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static func createChecklistListTours() -> [QuickStartTour] {
+    var checklistListTours: [QuickStartTour] {
         return [
             QuickStartCreateTour(),
             QuickStartViewTour(),
@@ -321,7 +321,7 @@ open class QuickStartTourGuide: NSObject {
         ]
     }
 
-    static func createCustomizeListTours() -> [QuickStartTour] {
+    var customizeListTours: [QuickStartTour] {
         return [
             QuickStartCreateTour(),
             QuickStartSiteTitleTour(),
@@ -332,7 +332,7 @@ open class QuickStartTourGuide: NSObject {
         ]
     }
 
-    static func createGrowListTours() -> [QuickStartTour] {
+    var createGrowListTours: [QuickStartTour] {
         return [
             QuickStartShareTour(),
             QuickStartPublishTour(),
@@ -396,7 +396,7 @@ private extension QuickStartTourGuide {
     /// - Parameter blog: blog to check
     /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.createCustomizeListTours() + QuickStartTourGuide.createGrowListTours()
+        let list = QuickStartTourGuide.shared.customizeListTours + QuickStartTourGuide.shared.createGrowListTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
@@ -407,7 +407,7 @@ private extension QuickStartTourGuide {
     /// - Note: This method is needed for upgrade/migration to V2 and should not
     ///         be removed when the V2 feature flag is removed.
     func allOriginalToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.createChecklistListTours()
+        let list = QuickStartTourGuide.shared.checklistListTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
