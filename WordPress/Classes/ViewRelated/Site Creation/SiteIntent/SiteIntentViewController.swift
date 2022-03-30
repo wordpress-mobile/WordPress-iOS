@@ -99,6 +99,33 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     }
 }
 
+// MARK: Constants
+extension SiteIntentViewController {
+
+    private enum Strings {
+        static let mainTitle = NSLocalizedString("What's your website about?",
+                                                 comment: "Select the site's intent. Title")
+        static let navigationBarTitle = NSLocalizedString("Site Topic",
+                                                          comment: "Title of the navigation bar, shown when the large title is hidden.")
+        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own",
+                                              comment: "Select the site's intent. Subtitle")
+        static let primaryAction = NSLocalizedString("Continue",
+                                                     comment: "Button to progress to the next step")
+        static let backButtonTitle = NSLocalizedString("Topic",
+                                                       comment: "Shortened version of the main title to be used in back navigation")
+        static let skipButtonTitle = NSLocalizedString("Skip",
+                                                       comment: "Continue without making a selection")
+        static let cancelButtonTitle = NSLocalizedString("Cancel",
+                                                         comment: "Cancel site creation")
+        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field used for Site Intent selection.")
+    }
+
+    private enum Metrics {
+        static let searchTextFieldInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let largeTitleLines = 2
+    }
+}
+
 // MARK: UITableViewDataSource
 
 extension SiteIntentViewController: UITableViewDataSource {
