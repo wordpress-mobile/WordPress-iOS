@@ -4,7 +4,9 @@ import Foundation
 ///
 @objc final class MySiteSettings: NSObject {
 
-    private let userDefaults: UserDefaults
+    private var userDefaults: UserDefaults {
+        UserDefaults.standard
+    }
 
     var defaultSection: MySiteViewController.Section {
         let defaultSection: MySiteViewController.Section = .siteMenu
@@ -13,16 +15,15 @@ import Foundation
     }
 
     @objc var experimentAssignment: String {
-        let defaultSection: MySiteViewController.Section = .siteMenu
-        let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int ?? defaultSection.rawValue
-        return MySiteViewController.Section(rawValue: rawValue)?.analyticsDescription ?? "nonexistent"
+        if let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int,
+            let defaultSection = MySiteViewController.Section(rawValue: rawValue)?.analyticsDescription {
+            return defaultSection
+        }
+
+        return "nonexistent"
     }
 
     // MARK: - Init
-
-    init(userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
-    }
 
     func setDefaultSection(_ tab: MySiteViewController.Section) {
         userDefaults.set(tab.rawValue, forKey: Constants.defaultSectionKey)
