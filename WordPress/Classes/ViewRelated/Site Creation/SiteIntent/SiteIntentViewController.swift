@@ -160,3 +160,26 @@ extension SiteIntentViewController: UITableViewDelegate {
         selection(vertical)
     }
 }
+
+extension SiteIntentViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        availableVerticals = SiteIntentData.verticals
+        tableView.reloadData()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            availableVerticals = SiteIntentData.verticals
+            tableView.reloadData()
+            return
+        }
+
+        let filteredVerticals = availableVerticals.filter {
+            $0.localizedTitle.lowercased().contains(searchText.lowercased())
+        }
+
+        availableVerticals = filteredVerticals
+        tableView.reloadData()
+    }
+}
