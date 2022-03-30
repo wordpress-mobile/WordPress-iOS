@@ -14,6 +14,15 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         return SiteIntentData.defaultVerticals
     }
 
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureSearchBar(searchBar)
+        searchBar.setImage(UIImage(), for: .search, state: .normal)
+        searchBar.backgroundColor = .clear
+        return searchBar
+    }()
+
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
 
