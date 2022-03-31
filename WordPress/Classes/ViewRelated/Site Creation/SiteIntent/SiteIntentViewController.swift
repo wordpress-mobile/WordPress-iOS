@@ -146,12 +146,15 @@ extension SiteIntentViewController {
                                                        comment: "Continue without making a selection")
         static let cancelButtonTitle = NSLocalizedString("Cancel",
                                                          comment: "Cancel site creation")
-        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field used for Site Intent selection.")
+        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
+        static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title of the continue button for the Site Intent screen.")
     }
 
     private enum Metrics {
-        static let searchTextFieldInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let largeTitleLines = 2
+        static let continueButtonPadding: CGFloat = 16
+        static let continueButtonBottomOffset: CGFloat = 12
+        static let continueButtonHeight: CGFloat = 44
     }
 }
 
