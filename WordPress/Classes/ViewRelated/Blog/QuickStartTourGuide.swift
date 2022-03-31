@@ -310,32 +310,38 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static let checklistTours: [QuickStartTour] = [
-        QuickStartCreateTour(),
-        QuickStartViewTour(),
-        QuickStartThemeTour(),
-        QuickStartShareTour(),
-        QuickStartPublishTour(),
-        QuickStartFollowTour()
-    ]
+    static var checklistTours: [QuickStartTour] {
+        return [
+            QuickStartCreateTour(),
+            QuickStartViewTour(),
+            QuickStartThemeTour(),
+            QuickStartShareTour(),
+            QuickStartPublishTour(),
+            QuickStartFollowTour()
+        ]
+    }
 
-    static let customizeListTours: [QuickStartTour] = [
-        QuickStartCreateTour(),
-        QuickStartSiteTitleTour(),
-        QuickStartSiteIconTour(),
-        QuickStartEditHomepageTour(),
-        QuickStartReviewPagesTour(),
-        QuickStartViewTour()
-    ]
+    static var customizeListTours: [QuickStartTour] {
+        return [
+            QuickStartCreateTour(),
+            QuickStartSiteTitleTour(),
+            QuickStartSiteIconTour(),
+            QuickStartEditHomepageTour(),
+            QuickStartReviewPagesTour(),
+            QuickStartViewTour()
+        ]
+    }
 
-    static let growListTours: [QuickStartTour] = [
-        QuickStartShareTour(),
-        QuickStartPublishTour(),
-        QuickStartFollowTour(),
-        QuickStartCheckStatsTour()
-// Temporarily disabled
-//        QuickStartExplorePlansTour()
-    ]
+    static var growListTours: [QuickStartTour] {
+        return [
+            QuickStartShareTour(),
+            QuickStartPublishTour(),
+            QuickStartFollowTour(),
+            QuickStartCheckStatsTour()
+    // Temporarily disabled
+    //        QuickStartExplorePlansTour()
+        ]
+    }
 }
 
 private extension QuickStartTourGuide {
