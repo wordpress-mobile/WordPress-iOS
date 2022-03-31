@@ -193,23 +193,25 @@ extension SiteIntentViewController: UITableViewDelegate {
     }
 }
 
+// MARK: Search Bar Delegate
 extension SiteIntentViewController: UISearchBarDelegate {
+
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        availableVerticals = SiteIntentData.verticals
+        // do not unfilter already filtered content, when navigating back to this page
+        guard availableVerticals == SiteIntentData.defaultVerticals else {
+            return
+        }
+
+        availableVerticals = SiteIntentData.getVerticals()
         tableView.reloadData()
         tableView.scrollToView(searchBar.searchTextField, animated: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {
-            availableVerticals = SiteIntentData.verticals
-            tableView.reloadData()
-            return
-        }
 
-        let filteredVerticals = availableVerticals.filter {
-            $0.localizedTitle.lowercased().contains(searchText.lowercased())
-        }
+        availableVerticals = SiteIntentData.getVerticals(searchText)
+        tableView.reloadData()
+        handleContinueButton(availableVerticals.isEmpty)
     }
 }
 
