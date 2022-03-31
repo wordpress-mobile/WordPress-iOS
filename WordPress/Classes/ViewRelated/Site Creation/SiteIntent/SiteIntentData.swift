@@ -37,6 +37,14 @@ struct SiteIntentData {
     static let defaultVerticals: [SiteIntentVertical] = {
         verticals.filter { $0.isDefault }
     }()
+
+    static func getVerticals(_ term: String = "") -> [SiteIntentVertical] {
+        term.isEmpty ?
+        verticals :
+        verticals.filter {
+            $0.localizedTitle.lowercased().contains(term.lowercased())
+        }
+    }
 }
 
 fileprivate extension SiteIntentVertical {
