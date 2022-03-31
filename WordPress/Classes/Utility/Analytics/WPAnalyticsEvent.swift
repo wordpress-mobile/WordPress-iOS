@@ -315,6 +315,7 @@ import Foundation
     case mySiteTabTapped
     case mySiteSiteMenuShown
     case mySiteDashboardShown
+    case mySiteDefaultTabExperimentVariantAssigned
 
     // Site Intent Question
     case enhancedSiteCreationIntentQuestionCanceled
@@ -857,6 +858,8 @@ import Foundation
             return "my_site_site_menu_shown"
         case .mySiteDashboardShown:
             return "my_site_dashboard_shown"
+        case .mySiteDefaultTabExperimentVariantAssigned:
+            return "my_site_default_tab_experiment_variant_assigned"
 
         // Quick Start
         case .quickStartStarted:
