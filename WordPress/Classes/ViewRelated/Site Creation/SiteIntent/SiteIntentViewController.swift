@@ -63,6 +63,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    private var keyboardSize: CGRect?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -198,8 +200,58 @@ extension SiteIntentViewController: UISearchBarDelegate {
         let filteredVerticals = availableVerticals.filter {
             $0.localizedTitle.lowercased().contains(searchText.lowercased())
         }
+    }
+}
 
-        availableVerticals = filteredVerticals
-        tableView.reloadData()
+// MARK: Continue button
+private extension SiteIntentViewController {
+
+    /// Adds obsrvers to detect if the keyboard is present
+    func observeKeyboard() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    /// stores the keyboard size when it shows up
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.keyboardSize = keyboardSize
+        }
+    }
+
+    /// resets the keyboard size to nil when it hides
+    @objc func keyboardWillHide(notification: NSNotification) {
+        keyboardSize = nil
+    }
+
+    /// Continue button action
+    @objc func navigateToNextStep() {
+        selection(nil)
+    }
+
+    /// Adds or removes the continue button on top of the keyboard as needed
+    func handleContinueButton(_ listIsEmpty: Bool) {
+
+        guard let size = keyboardSize, listIsEmpty else {
+            continueButton.removeFromSuperview()
+            searchBar.searchTextField.enablesReturnKeyAutomatically = true
+            return
+        }
+
+        view.addSubview(continueButton)
+        NSLayoutConstraint.activate([
+            continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                   constant: -(size.height + Metrics.continueButtonBottomOffset)),
+            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.continueButtonPadding),
+            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.continueButtonPadding),
+            continueButton.heightAnchor.constraint(equalToConstant: Metrics.continueButtonHeight)
+        ])
+        searchBar.searchTextField.enablesReturnKeyAutomatically = true
     }
 }
