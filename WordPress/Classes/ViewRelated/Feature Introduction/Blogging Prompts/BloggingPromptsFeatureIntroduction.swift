@@ -11,12 +11,18 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
     }
 
     init() {
+
+        let featureDescriptionView: BloggingPromptsFeatureDescriptionView = {
+            let featureDescriptionView = BloggingPromptsFeatureDescriptionView.loadFromNib()
+             featureDescriptionView.translatesAutoresizingMaskIntoConstraints = false
+            return featureDescriptionView
+        }()
+
         super.init(headerTitle: Strings.headerTitle,
                    headerSubtitle: Strings.headerSubtitle,
                    // TODO: provide lightbulb image
                    headerImage: nil,
-                   // TODO: provide feature description view
-                   featureDescriptionView: UIView(),
+                   featureDescriptionView: featureDescriptionView,
                    primaryButtonTitle: Strings.primaryButtonTitle,
                    secondaryButtonTitle: Strings.secondaryButtonTitle)
 
