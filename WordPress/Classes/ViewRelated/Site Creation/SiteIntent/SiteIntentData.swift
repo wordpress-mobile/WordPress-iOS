@@ -1,7 +1,7 @@
 import Foundation
 
 struct SiteIntentData {
-    static let verticals: [SiteIntentVertical] = [
+    private static let verticals: [SiteIntentVertical] = [
         .init("food", NSLocalizedString("Food", comment: "Food site intent topic"), "🍔", isDefault: true),
         .init("news", NSLocalizedString("News", comment: "News site intent topic"), "🗞️", isDefault: true),
         .init("lifestyle", NSLocalizedString("Lifestyle", comment: "Lifestyle site intent topic"), "☕", isDefault: true),
