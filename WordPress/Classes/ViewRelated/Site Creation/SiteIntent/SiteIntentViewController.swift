@@ -80,6 +80,13 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         searchBar.placeholder = Strings.searchTextFieldPlaceholder
     }
 
+    override func estimatedContentSize() -> CGSize {
+
+        let visibleCells = CGFloat(availableVerticals.count)
+        let height = visibleCells * IntentCell.estimatedSize.height
+        return CGSize(width: view.frame.width, height: height)
+    }
+
     // MARK: UI Setup
 
     private func configureNavigationBar() {
