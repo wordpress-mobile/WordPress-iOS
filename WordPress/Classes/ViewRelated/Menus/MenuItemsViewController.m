@@ -918,17 +918,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
 #pragma mark - VoiceOver
 
-
-/// Used by VoiceOver to announce changes of the Menu UI.
-/// @param parent A new parent of the current item.
-/// @param parentChanged If the parent changed. Needed to infer "Top level" when parent is nil.
-/// @param before A menu item that now precedes the current item.
-/// @param after A menu item that now succeeds the current item.
-- (void)announceOrderingChange:(MenuItem *)parent parentChanged:(BOOL)parentChanged before:(MenuItem *)before after:(MenuItem *)after {
-    if (!UIAccessibilityIsVoiceOverRunning()) {
-        return;
-    }
-
++ (nullable NSString *)generateOrderingChangeVOString:(nullable MenuItem *)parent parentChanged:(BOOL)parentChanged before:(nullable MenuItem *)before after:(nullable MenuItem *)after {
     NSMutableArray *stringArray = [[NSMutableArray alloc] init];
 
     if (parentChanged) {
@@ -940,23 +930,36 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
             [stringArray addObject:parentString];
         }
     }
-
-    if (before) {
-        NSString *beforeString = NSLocalizedString(@"Before %@", @"Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item.");
-        [stringArray addObject:[NSString stringWithFormat:beforeString, before.name]];
-    }
-
     if (after) {
         NSString *afterString = NSLocalizedString(@"After %@", @"Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item.");
         [stringArray addObject:[NSString stringWithFormat:afterString, after.name]];
     }
-
+    if (before) {
+        NSString *beforeString = NSLocalizedString(@"Before %@", @"Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item.");
+        [stringArray addObject:[NSString stringWithFormat:beforeString, before.name]];
+    }
     if (!stringArray.count) {
+        return nil;
+    }
+
+    return [stringArray componentsJoinedByString:@". "];
+}
+
+
+/// Used by VoiceOver to announce changes of the Menu UI.
+/// @param parent A new parent of the current item.
+/// @param parentChanged If the parent changed. Needed to infer "Top level" when parent is nil.
+/// @param before A menu item that now precedes the current item.
+/// @param after A menu item that now succeeds the current item.
+- (void)announceOrderingChange:(MenuItem *)parent parentChanged:(BOOL)parentChanged before:(MenuItem *)before after:(MenuItem *)after {
+    if (!UIAccessibilityIsVoiceOverRunning()) {
         return;
     }
 
-    NSString *announcement = [stringArray componentsJoinedByString:@". "];
-    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, announcement);
+    NSString *announcement = [MenuItemsViewController generateOrderingChangeVOString:parent parentChanged:parentChanged before:before after:after];
+    if (announcement) {
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, announcement);
+    }
 }
 
 @end

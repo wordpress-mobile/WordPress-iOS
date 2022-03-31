@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeItem:(MenuItem *)item;
 
++ (nullable NSString *)generateOrderingChangeVOString:(nullable MenuItem *)parent parentChanged:(BOOL)parentChanged before:(nullable MenuItem *)before after:(nullable MenuItem *)after;
+
 @end
 
 @protocol MenuItemsViewControllerDelegate <NSObject>
