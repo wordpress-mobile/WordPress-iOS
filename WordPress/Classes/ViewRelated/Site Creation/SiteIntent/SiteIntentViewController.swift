@@ -25,6 +25,15 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         return searchBar
     }()
 
+    private lazy var continueButton: UIButton = {
+        let button = FancyButton()
+        button.isPrimary = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        button.setTitle(Strings.continueButtonTitle, for: .normal)
+        button.addTarget(self, action: #selector(navigateToNextStep), for: .touchUpInside)
+        return button
+    }()
 
     override var seperatorStyle: SeperatorStyle {
         return .hidden
