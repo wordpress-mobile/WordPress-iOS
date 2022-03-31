@@ -1340,6 +1340,12 @@
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
+		80EF672527F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */; };
+		80EF672627F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */; };
+		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
+		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
+		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
+		80EF672327F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
 		821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
@@ -2138,6 +2144,14 @@
 		BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */; };
 		BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314543A262770BE005B216B /* BlogServiceAuthorTests.swift */; };
+		C3234F4C27EB96A3004ADB29 /* IntentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3302CC427EB67D0004229D3 /* IntentCell.xib */; };
+		C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3302CC427EB67D0004229D3 /* IntentCell.xib */; };
+		C3234F4E27EB96A9004ADB29 /* IntentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3302CC527EB67D0004229D3 /* IntentCell.swift */; };
+		C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3302CC527EB67D0004229D3 /* IntentCell.swift */; };
+		C3234F5127EB9925004ADB29 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5027EB9925004ADB29 /* SiteIntentData.swift */; };
+		C3234F5227EB9925004ADB29 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5027EB9925004ADB29 /* SiteIntentData.swift */; };
+		C3234F5427EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */; };
+		C3234F5527EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */; };
 		C387B7A22638D66F00BDEF86 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
 		C3C39B0726F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */; };
 		C3C39B0826F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */; };
@@ -2861,6 +2875,8 @@
 		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE42726159B1300BF29FE /* AppConstants.swift */; };
+		FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */; };
+		FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
 		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
@@ -6041,6 +6057,9 @@
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
 		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
+		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
+		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
+		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -6861,6 +6880,10 @@
 		BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPublishEpilogueScreen.swift; sourceTree = "<group>"; };
 		C2988A406A3D5697C2984F3E /* Pods-WordPressStatsWidgets.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressStatsWidgets.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressStatsWidgets/Pods-WordPressStatsWidgets.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C314543A262770BE005B216B /* BlogServiceAuthorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceAuthorTests.swift; sourceTree = "<group>"; };
+		C3234F5027EB9925004ADB29 /* SiteIntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentData.swift; sourceTree = "<group>"; };
+		C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentVertical.swift; sourceTree = "<group>"; };
+		C3302CC427EB67D0004229D3 /* IntentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntentCell.xib; sourceTree = "<group>"; };
+		C3302CC527EB67D0004229D3 /* IntentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentCell.swift; sourceTree = "<group>"; };
 		C3ABE791263099F7009BD402 /* WordPress 121.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 121.xcdatamodel"; sourceTree = "<group>"; };
 		C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordPressSupportSourceTag+Editor.swift"; sourceTree = "<group>"; };
 		C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAuthorSelectorViewController.swift; sourceTree = "<group>"; };
@@ -7656,6 +7679,7 @@
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsNudgeButton.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
@@ -9296,11 +9320,13 @@
 			isa = PBXGroup;
 			children = (
 				3F3087C324EDB7040087B548 /* AnnouncementCell.swift */,
+				80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */,
 				3F8CBE0C24EED2CB00F71234 /* FindOutMoreCell.swift */,
 				3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */,
 				3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */,
 				F5B390E92537E30B0097049E /* GridCell.swift */,
 				F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */,
+				80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -11662,6 +11688,8 @@
 			children = (
 				8B6214DF27B1AD9D001DF7B6 /* DashboardStatsCardCell.swift */,
 				8071390627D039E70012DB21 /* DashboardSingleStatView.swift */,
+				FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */,
+				80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -12600,8 +12628,12 @@
 		B0960C8527D14B9200BC9717 /* SiteIntent */ = {
 			isa = PBXGroup;
 			children = (
+				C3302CC527EB67D0004229D3 /* IntentCell.swift */,
+				C3302CC427EB67D0004229D3 /* IntentCell.xib */,
 				B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */,
 				B089140C27E1255D00CF468B /* SiteIntentViewController.swift */,
+				C3234F5027EB9925004ADB29 /* SiteIntentData.swift */,
+				C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */,
 			);
 			path = SiteIntent;
 			sourceTree = "<group>";
@@ -15912,6 +15944,7 @@
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				98E55019265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				FF37F90922385CA000AFA3DB /* RELEASE-NOTES.txt in Resources */,
+				C3234F4C27EB96A3004ADB29 /* IntentCell.xib in Resources */,
 				9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */,
 				C7E5F2552799BD54009BC263 /* cool-blue-icon-app-83.5x83.5@2x.png in Resources */,
 				17222D92261DDDF90047B163 /* blue-classic-icon-app-83.5x83.5@2x.png in Resources */,
@@ -16356,6 +16389,7 @@
 				FE3E427926A868EC00C596CE /* ListTableHeaderView.xib in Resources */,
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
+				C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */,
 				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
 				FABB207E2602FC2C00C8785C /* EpilogueUserInfoCell.xib in Resources */,
@@ -17362,6 +17396,7 @@
 				8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */,
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				40F46B6B22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift in Sources */,
+				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */,
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
@@ -17455,6 +17490,7 @@
 				433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */,
 				4395A1592106389800844E8E /* QuickStartTours.swift in Sources */,
 				9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */,
+				80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */,
 				F5A34BCB25DF244F00C9654B /* KanvasCameraAnalyticsHandler.swift in Sources */,
 				8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */,
 				839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */,
@@ -18139,6 +18175,7 @@
 				E684383E221F535900752258 /* LoadMoreCounter.swift in Sources */,
 				E6158ACA1ECDF518005FA441 /* LoginEpilogueUserInfo.swift in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
+				C3234F5427EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */,
 				983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */,
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
 				8B0732F3242BF99B00E7FBD3 /* PrepublishingNavigationController.swift in Sources */,
@@ -18256,6 +18293,7 @@
 				AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
+				80EF672527F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
@@ -18650,6 +18688,7 @@
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
 				98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				F5E1577F25DE04E200EEEDFB /* GutenbergMediaFilesUploadProcessor.swift in Sources */,
+				80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
 				436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */,
 				73F76E1E222851E300FDDAD2 /* Charts+AxisFormatters.swift in Sources */,
@@ -18849,6 +18888,7 @@
 				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */,
+				C3234F5127EB9925004ADB29 /* SiteIntentData.swift in Sources */,
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
 				4054F4612214F50300D261AB /* StreakStatsRecordValue+CoreDataClass.swift in Sources */,
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
@@ -18856,6 +18896,7 @@
 				FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */,
 				17171374265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
 				8236EB502024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift in Sources */,
+				C3234F4E27EB96A9004ADB29 /* IntentCell.swift in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
 				1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */,
 				0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */,
@@ -19660,6 +19701,7 @@
 				FABB20DF2602FC2C00C8785C /* ContextManager.m in Sources */,
 				FABB20E02602FC2C00C8785C /* CookieJar.swift in Sources */,
 				C7F7BDBD26262A1B00CE547F /* AppDependency.swift in Sources */,
+				FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */,
 				FABB20E12602FC2C00C8785C /* WebAddressStep.swift in Sources */,
 				FABB20E22602FC2C00C8785C /* NotificationSyncMediator.swift in Sources */,
 				FABB20E42602FC2C00C8785C /* ThemeBrowserHeaderView.swift in Sources */,
@@ -19715,6 +19757,7 @@
 				FABB21112602FC2C00C8785C /* BaseRestoreOptionsViewController.swift in Sources */,
 				8B4DDF25278F44CC0022494D /* BlogDashboardViewController.swift in Sources */,
 				FABB21122602FC2C00C8785C /* AddSiteAlertFactory.swift in Sources */,
+				80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */,
 				FABB21132602FC2C00C8785C /* AuthenticationService.swift in Sources */,
 				FABB21142602FC2C00C8785C /* JetpackSiteRef.swift in Sources */,
 				FABB21152602FC2C00C8785C /* WPStyleGuide+Reply.swift in Sources */,
@@ -20097,6 +20140,7 @@
 				FABB225B2602FC2C00C8785C /* CountryStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB225C2602FC2C00C8785C /* MenuHeaderViewController.m in Sources */,
 				FABB225D2602FC2C00C8785C /* NotificationDetailsViewController.swift in Sources */,
+				C3234F5527EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */,
 				FABB225F2602FC2C00C8785C /* MediaURLExporter.swift in Sources */,
 				FABB22602602FC2C00C8785C /* WordPress.xcdatamodeld in Sources */,
 				93CDC72226CD342900C8A3A8 /* DestructiveAlertHelper.swift in Sources */,
@@ -20206,6 +20250,7 @@
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
 				FABB22B92602FC2C00C8785C /* NoResultsTenorConfiguration.swift in Sources */,
+				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
 				FABB22BA2602FC2C00C8785C /* JetpackRemoteInstallViewController.swift in Sources */,
 				FABB22BB2602FC2C00C8785C /* PlanDetailViewController.swift in Sources */,
@@ -20224,6 +20269,7 @@
 				FABB22C62602FC2C00C8785C /* NSAttributedString+WPRichText.swift in Sources */,
 				FABB22C72602FC2C00C8785C /* StatsTotalRow.swift in Sources */,
 				C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */,
+				80EF672327F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
 				FABB22C82602FC2C00C8785C /* SiteCreationAnalyticsHelper.swift in Sources */,
 				FABB22C92602FC2C00C8785C /* NSAttributedString+Helpers.swift in Sources */,
 				FABB22CA2602FC2C00C8785C /* TenorService.swift in Sources */,
@@ -20425,6 +20471,7 @@
 				FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */,
 				FABB23782602FC2C00C8785C /* GutenbergViewController+InformativeDialog.swift in Sources */,
 				8B55F9DC2614D902007D618E /* CircledIcon.swift in Sources */,
+				C3234F5227EB9925004ADB29 /* SiteIntentData.swift in Sources */,
 				FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */,
 				3FE3D1FD26A6F34900F3CD10 /* WPStyleGuide+List.swift in Sources */,
 				175CC17D2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
@@ -20494,6 +20541,7 @@
 				FABB23B62602FC2C00C8785C /* NoteBlockCommentTableViewCell.swift in Sources */,
 				C7F7ACBE261E4F0600CE547F /* JetpackErrorViewModel.swift in Sources */,
 				FABB23B72602FC2C00C8785C /* Notifiable.swift in Sources */,
+				80EF672627F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */,
 				FABB23B82602FC2C00C8785C /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				FABB23B92602FC2C00C8785C /* BlogListViewController+SiteCreation.swift in Sources */,
 				FABB23BA2602FC2C00C8785C /* CommentAnalytics.swift in Sources */,

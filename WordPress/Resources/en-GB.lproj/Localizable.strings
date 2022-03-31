@@ -9330,23 +9330,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Save as Draft";
 
-/* MARK: - Sites.strings */
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
 "ios-widget.BOl9KQ" = "There are ${count} options matching ‘${site}’.";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Site";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "ios-widget.cyajMn" = "Site";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* No comment provided by engineer. */
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
-
-/* No comment provided by engineer. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Later today */
 "later today" = "later today";

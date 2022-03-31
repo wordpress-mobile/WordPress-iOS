@@ -81,7 +81,22 @@ class BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func apply(snapshot: DashboardSnapshot) {
-        dataSource?.apply(snapshot, animatingDifferences: false)
+        let scrollView = viewController?.mySiteScrollView
+        let position = scrollView?.contentOffset
+
+        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
+            guard let scrollView = scrollView, let position = position else {
+                return
+            }
+
+            self?.scroll(scrollView, to: position)
+        }
+    }
+
+    func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
+        if position.y > 0 {
+            scrollView.setContentOffset(position, animated: false)
+        }
     }
 }
 

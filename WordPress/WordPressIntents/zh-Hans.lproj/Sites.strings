@@ -2,5 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>有 ${count} 个选项与“${site}”匹配。</string>
+    <key>ILcGmf</key>
+    <string>站点</string>
+    <key>cyajMn</key>
+    <string>站点</string>
+    <key>gpCwrM</key>
+    <string>选择站点</string>
+    <key>s4dJhx</key>
+    <string>再确认一下，您是想要“${site}”吗？</string>
+  </dict>
 </plist>

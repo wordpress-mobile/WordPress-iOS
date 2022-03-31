@@ -2,5 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>「${site}」に一致するオプションが${count}件あります</string>
+    <key>ILcGmf</key>
+    <string>サイト</string>
+    <key>cyajMn</key>
+    <string>サイト</string>
+    <key>gpCwrM</key>
+    <string>サイトを選択</string>
+    <key>s4dJhx</key>
+    <string>「${site}」でよろしいですか？</string>
+  </dict>
 </plist>
