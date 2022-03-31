@@ -945,7 +945,6 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     return [stringArray componentsJoinedByString:@". "];
 }
 
-
 /// Used by VoiceOver to announce changes of the Menu UI.
 /// @param parent A new parent of the current item.
 /// @param parentChanged If the parent changed. Needed to infer "Top level" when parent is nil.
