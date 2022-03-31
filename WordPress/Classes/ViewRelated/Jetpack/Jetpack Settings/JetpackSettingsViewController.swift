@@ -30,7 +30,7 @@ open class JetpackSettingsViewController: UITableViewController {
     // MARK: - Initializer
 
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: settings.managedObjectContext!)
     }
@@ -41,6 +41,7 @@ open class JetpackSettingsViewController: UITableViewController {
         super.viewDidLoad()
         WPAnalytics.trackEvent(.jetpackSettingsViewed)
         title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
+        extendedLayoutIncludesOpaqueBars = true
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)

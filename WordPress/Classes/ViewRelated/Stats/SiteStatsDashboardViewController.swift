@@ -69,6 +69,23 @@ class SiteStatsDashboardViewController: UIViewController {
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
     private var pageViewController: UIPageViewController?
 
+    @objc lazy var manageInsightsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+                image: .gridicon(.cog),
+                style: .plain,
+                target: self,
+                action: #selector(manageInsightsButtonTapped))
+        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
+    // MARK: Public Functions
+
+    /// When called, the initial selected `StatsPeriodType` is set to days instead of insights.
+    @objc public func forceShowStatsForTodayPeriod() {
+        self.currentSelectedPeriod = .days
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -77,7 +94,16 @@ class SiteStatsDashboardViewController: UIViewController {
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
+        configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
+    }
+
+    func configureNavBar() {
+        parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+    }
+
+    @objc func manageInsightsButtonTapped() {
+        insightsTableViewController.showAddInsightView(source: "nav_bar")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -145,6 +171,8 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
+
+        configureNavBar()
     }
 
 }
@@ -194,10 +222,11 @@ private extension SiteStatsDashboardViewController {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+        let isGrowAudienceShowingOnInsights = insightsTableViewController.isGrowAudienceShowing
 
         switch currentSelectedPeriod {
         case .insights:
-            if selectedPeriodChanged || pageViewControllerIsEmpty {
+            if selectedPeriodChanged || pageViewControllerIsEmpty || isGrowAudienceShowingOnInsights {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)

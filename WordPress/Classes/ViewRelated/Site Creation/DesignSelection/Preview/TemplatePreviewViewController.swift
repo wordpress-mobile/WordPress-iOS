@@ -26,7 +26,12 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     internal var selectedPreviewDevice: PreviewDevice {
         didSet {
             if selectedPreviewDevice != oldValue {
-                webView.reload()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webView.alpha = 0
+                }, completion: { _ in
+                    self.progressBar.animatableSetIsHidden(false)
+                    self.webView.reload()
+                })
             }
         }
     }
@@ -87,6 +92,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     private func configureWebView() {
+        webView.alpha = 0
         guard let demoURL = URL(string: demoURL) else { return }
         let request = URLRequest(url: demoURL)
         webView.customUserAgent = WPUserAgent.wordPress()
@@ -140,7 +146,6 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         configureAndDisplayNoResults(on: webView,
                                      title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
-        removeProgressObserver()
     }
 }
 
@@ -155,18 +160,21 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
         handleError(error)
     }
 
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        webView.evaluateJavaScript(selectedPreviewDevice.viewportScript)
+    }
+
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         handleError(error)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript(selectedPreviewDevice.viewportScript, completionHandler: { [weak self] (_, _) in
-            guard let self = self else { return }
-            self.delegate?.previewLoaded()
-        })
+        UIView.animate(withDuration: 0.2) {
+            self.webView.alpha = 1
+        }
 
+        delegate?.previewLoaded()
         progressBar.animatableSetIsHidden(true)
-        removeProgressObserver()
     }
 }
 

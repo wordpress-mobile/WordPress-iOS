@@ -70,6 +70,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private let loggingStack = WPLoggingStack()
 
+    private lazy var tracksLogger = TracksLogger()
+
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
         shared?.loggingStack.crashLogging
@@ -161,9 +163,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
-        // Let the app finish any uploads that are in progress
         let app = UIApplication.shared
+
+        // Let the app finish any uploads that are in progress
         if let task = bgTask, bgTask != .invalid {
+            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task.rawValue)")
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
@@ -173,11 +177,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // the task actually finishes at around the same time.
             DispatchQueue.main.async { [weak self] in
                 if let task = self?.bgTask, task != .invalid {
+                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
                     app.endBackgroundTask(task)
                     self?.bgTask = .invalid
                 }
             }
         })
+
+        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask?.rawValue)")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -274,6 +281,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
+
+        TracksLogging.delegate = tracksLogger
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -700,7 +709,6 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         WPSharedSetLoggingLevel(level)
-        TracksSetLoggingLevel(level)
         WPAuthenticatorSetLoggingLevel(level)
     }
 }

@@ -16,6 +16,7 @@ protocol NotificationsNavigationDataSource: AnyObject {
 // MARK: - Renders a given Notification entity, onscreen
 //
 class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
+
     // MARK: - Properties
 
     let formatter = FormattableContentFormatter()
@@ -84,7 +85,11 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     ///
     weak var dataSource: NotificationsNavigationDataSource?
 
-    /// Notification to-be-displayed
+    /// Used to present CommentDetailViewController when previous/next notification is a Comment.
+    ///
+    weak var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator?
+
+    /// Notification being displayed
     ///
     var note: Notification! {
         didSet {
@@ -99,7 +104,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    /// Wether a confetti animation was presented on this notification or not
+    /// Whether a confetti animation was presented on this notification or not
     ///
     private var confettiWasShown = false
 
@@ -1349,8 +1354,8 @@ extension NotificationDetailsViewController {
             return
         }
 
-        refreshView(with: previous)
         WPAnalytics.track(.notificationsPreviousTapped)
+        refreshView(with: previous)
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1358,16 +1363,39 @@ extension NotificationDetailsViewController {
             return
         }
 
-        refreshView(with: next)
         WPAnalytics.track(.notificationsNextTapped)
+        refreshView(with: next)
     }
 
     private func refreshView(with note: Notification) {
-        hideNoResults()
         onSelectedNoteChange?(note)
+        trackDetailsOpened(for: note)
+
+        if FeatureFlag.notificationCommentDetails.enabled,
+           note.kind == .comment {
+            showCommentDetails(with: note)
+            return
+        }
+
+        hideNoResults()
         self.note = note
         showConfettiIfNeeded()
-        trackDetailsOpened(for: note)
+    }
+
+    private func showCommentDetails(with note: Notification) {
+        guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
+            DDLogError("Notification Details: failed creating Comment Detail view.")
+            return
+        }
+
+        notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
+        weak var navigationController = navigationController
+
+        dismiss(animated: true, completion: {
+            commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.popViewController(animated: false)
+            navigationController?.pushViewController(commentDetailViewController, animated: false)
+        })
     }
 
     var shouldEnablePreviousButton: Bool {

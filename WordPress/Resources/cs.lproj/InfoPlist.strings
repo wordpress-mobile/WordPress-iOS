@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Pořizovat fotky a videa a umožnit použití ve vašich příspěvcích. </string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress chce přidat vaší polohu k příspěvkům, můžete povolit určování polohy.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress chce přidat vaší polohu k příspěvkům, můžete povolit určování polohy.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Povolte přístup k mikrofonům pro záznam zvuku ve videích.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Chcete přidat fotky a videa do vašeho příspěvku.</string>
+  </dict>
+</plist>

@@ -28,6 +28,12 @@ extension Comment {
     @NSManaged public var hierarchy: String
     @NSManaged public var replyID: Int32
 
+    /// Determines if the comment should be displayed in the Reader comment thread.
+    ///
+    /// Note that this property is only updated and guaranteed to be correct within the comment thread.
+    /// The value may be outdated when accessed from other places (e.g. My Sites, Notifications).
+    @NSManaged public var visibleOnReader: Bool
+
     /*
      // Hierarchy is a string representation of a comments ancestors. Each ancestor's
      // is denoted by a ten character zero padded representation of its ID

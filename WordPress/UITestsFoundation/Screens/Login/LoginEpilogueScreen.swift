@@ -10,7 +10,11 @@ public class LoginEpilogueScreen: ScreenObject {
     var loginEpilogueTable: XCUIElement { loginEpilogueTableGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [loginEpilogueTableGetter], app: app)
+        try super.init(
+            expectedElementGetters: [loginEpilogueTableGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func continueWithSelectedSite() throws -> MySiteScreen {

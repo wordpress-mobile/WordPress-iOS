@@ -108,8 +108,10 @@ import Foundation
     case statsReaderDiscoverNudgeDismissed
     case statsReaderDiscoverNudgeCompleted
 
-    // Stats - Customize card
+    // Stats - Insights
     case statsCustomizeInsightsShown
+    case statsInsightsManagementSaved
+    case statsInsightsManagementDismissed
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -215,6 +217,9 @@ import Foundation
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
 
+    // My Site
+    case mySitePullToRefresh
+
     // My Site: No sites view displayed
     case mySiteNoSitesViewDisplayed
     case mySiteNoSitesViewActionTapped
@@ -246,6 +251,7 @@ import Foundation
 
     // App Settings
     case settingsDidChange
+    case initialScreenChanged
 
     // Account Close
     case accountCloseTapped
@@ -264,6 +270,7 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+    case notificationsMarkAllReadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -301,6 +308,26 @@ import Foundation
     case changeUsernameSearchPerformed
     case changeUsernameDisplayed
     case changeUsernameDismissed
+
+    // My Site Dashboard
+    case dashboardCardShown
+    case dashboardCardItemTapped
+    case mySiteTabTapped
+    case mySiteSiteMenuShown
+    case mySiteDashboardShown
+    case mySiteDefaultTabExperimentVariantAssigned
+
+    // Site Intent Question
+    case enhancedSiteCreationIntentQuestionCanceled
+    case enhancedSiteCreationIntentQuestionSkipped
+    case enhancedSiteCreationIntentQuestionVerticalSelected
+    case enhancedSiteCreationIntentQuestionContinuePressed
+    case enhancedSiteCreationIntentQuestionSearchFocused
+    case enhancedSiteCreationIntentQuestionViewed
+    case enhancedSiteCreationIntentQuestionExperiment
+
+    // Quick Start
+    case quickStartStarted
 
     /// A String that represents the event
     var value: String {
@@ -489,9 +516,13 @@ import Foundation
         case .statsReaderDiscoverNudgeCompleted:
             return "stats_reader_discover_nudge_completed"
 
-        // Stats - Customize card
+        // Stats - Insights
         case .statsCustomizeInsightsShown:
             return "stats_customize_insights_shown"
+        case .statsInsightsManagementSaved:
+            return "stats_insights_management_saved"
+        case .statsInsightsManagementDismissed:
+            return "stats_insights_management_dismissed"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -677,6 +708,10 @@ import Foundation
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
 
+        // My Site
+        case .mySitePullToRefresh:
+            return "my_site_pull_to_refresh"
+
         // My Site No Sites View
         case .mySiteNoSitesViewDisplayed:
             return "my_site_no_sites_view_displayed"
@@ -726,6 +761,8 @@ import Foundation
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
+        case .initialScreenChanged:
+            return "app_settings_initial_screen_changed"
         case .appSettingsClearMediaCacheTapped:
             return "app_settings_clear_media_cache_tapped"
         case .appSettingsClearSpotlightIndexTapped:
@@ -751,6 +788,8 @@ import Foundation
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
+        case .notificationsMarkAllReadTapped:
+            return "notifications_mark_all_read_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
@@ -807,6 +846,40 @@ import Foundation
             return "change_username_displayed"
         case .changeUsernameDismissed:
             return "change_username_dismissed"
+
+        // My Site Dashboard
+        case .dashboardCardShown:
+            return "my_site_dashboard_card_shown"
+        case .dashboardCardItemTapped:
+            return "my_site_dashboard_card_item_tapped"
+        case .mySiteTabTapped:
+            return "my_site_tab_tapped"
+        case .mySiteSiteMenuShown:
+            return "my_site_site_menu_shown"
+        case .mySiteDashboardShown:
+            return "my_site_dashboard_shown"
+        case .mySiteDefaultTabExperimentVariantAssigned:
+            return "my_site_default_tab_experiment_variant_assigned"
+
+        // Quick Start
+        case .quickStartStarted:
+            return "quick_start_started"
+
+        // Site Intent Question
+        case .enhancedSiteCreationIntentQuestionCanceled:
+            return "enhanced_site_creation_intent_question_canceled"
+        case .enhancedSiteCreationIntentQuestionSkipped:
+            return "enhanced_site_creation_intent_question_skipped"
+        case .enhancedSiteCreationIntentQuestionVerticalSelected:
+            return "enhanced_site_creation_intent_question_vertical_selected"
+        case .enhancedSiteCreationIntentQuestionContinuePressed:
+            return "enhanced_site_creation_intent_question_continue_pressed"
+        case .enhancedSiteCreationIntentQuestionSearchFocused:
+            return "enhanced_site_creation_intent_question_search_focused"
+        case .enhancedSiteCreationIntentQuestionViewed:
+            return "enhanced_site_creation_intent_question_viewed"
+        case .enhancedSiteCreationIntentQuestionExperiment:
+            return "enhanced_site_creation_intent_question_experiment"
 
         } // END OF SWITCH
     }

@@ -1,21 +1,114 @@
 import WordPressAuthenticator
-import Foundation
 import UIKit
+import SwiftUI
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
+    enum Section: Int, CaseIterable {
+        case dashboard
+        case siteMenu
+
+        var title: String {
+            switch self {
+            case .dashboard:
+                return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
+            }
+        }
+
+        var analyticsDescription: String {
+            switch self {
+            case .dashboard:
+                return "dashboard"
+            case .siteMenu:
+                return "site_menu"
+            }
+        }
+    }
+
+    private var isShowingDashboard: Bool {
+        return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
+    }
+
+    private var currentSection: Section? {
+        Section(rawValue: segmentedControl.selectedSegmentIndex)
+    }
+
+    @objc
+    private(set) lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.refreshControl = refreshControl
+        return scrollView
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 0
+        return stackView
+    }()
+
+    private lazy var segmentedControlContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: Section.allCases.map { $0.title })
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChangedByUser), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+        return segmentedControl
+    }()
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pulledToRefresh), for: .valueChanged)
+        return refreshControl
+    }()
+
+    private lazy var siteMenuSpotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the site menu.
+    var siteMenuSpotlightIsShown: Bool = false {
+        didSet {
+            siteMenuSpotlightView.isHidden = !siteMenuSpotlightIsShown
+        }
+    }
+
+    private var createButtonCoordinator: CreateButtonCoordinator?
+
     private let meScenePresenter: ScenePresenter
+    private let blogService: BlogService
+    private(set) var mySiteSettings: MySiteSettings
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
         self.meScenePresenter = meScenePresenter
+        self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.mySiteSettings = mySiteSettings
 
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("Initializer not implemented!")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Blog
@@ -30,18 +123,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
+            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
+            createFABIfNeeded()
         }
 
         get {
-            return blogDetailsViewController?.blog
+            return sitePickerViewController?.blog
         }
     }
 
-    /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
-    /// Please keep this in mind when making modifications.
-    ///
-    private var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var sitePickerViewController: SitePickerViewController?
+    private(set) var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var blogDashboardViewController: BlogDashboardViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -52,10 +147,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        setupView()
+        setupConstraints()
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToJetpackInstallNotifications()
+        subscribeToContentSizeCategory()
+        startObservingQuickStart()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +163,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if blog == nil {
             showBlogDetailsForMainBlogOrNoSites()
         }
+
+        setupNavBarAppearance()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        resetNavBarAppearance()
+        createButtonCoordinator?.hideCreateButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -78,6 +186,27 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
 
         trackNoSitesVisibleIfNeeded()
+
+        setupNavBarAppearance()
+
+        createFABIfNeeded()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: traitCollection)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
+    }
+
+    private func subscribeToContentSizeCategory() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -117,6 +246,64 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.syncBlogs()
             }
         }
+    private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
+        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
+        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+
+        segmentedControlContainerView.isHidden = hideSegmentedControl
+
+        if !hideSegmentedControl && switchTabsIfNeeded {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
+            segmentedControlValueChanged()
+        }
+    }
+
+    private func setupView() {
+        view.backgroundColor = .listBackground
+        configureSegmentedControlFont()
+    }
+
+    /// This method builds a layout with the following view hierarchy:
+    ///
+    /// - Scroll view
+    ///   - Stack view
+    ///     - Segmented control container view
+    ///       - Segmented control
+    ///     - Child view controller
+    /// 
+    private func setupConstraints() {
+        view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView)
+        scrollView.addSubview(stackView)
+        scrollView.pinSubviewToAllEdges(stackView)
+        segmentedControlContainerView.addSubview(segmentedControl)
+        stackView.addArrangedSubviews([segmentedControlContainerView])
+        view.addSubview(siteMenuSpotlightView)
+
+        let stackViewConstraints = [
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ]
+
+        let segmentedControlConstraints = [
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                      constant: Constants.segmentedControlXOffset),
+            segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor,
+                                                  constant: Constants.segmentedControlYOffset),
+            segmentedControl.bottomAnchor.constraint(equalTo: segmentedControlContainerView.bottomAnchor),
+            segmentedControl.heightAnchor.constraint(equalToConstant: Constants.segmentedControlHeight)
+        ]
+
+        let siteMenuSpotlightViewConstraints = [
+            siteMenuSpotlightView.trailingAnchor.constraint(equalTo: segmentedControl.trailingAnchor, constant: Constants.siteMenuSpotlightOffset),
+            siteMenuSpotlightView.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -Constants.siteMenuSpotlightOffset)
+        ]
+
+        NSLayoutConstraint.activate(
+            stackViewConstraints +
+            segmentedControlConstraints +
+            siteMenuSpotlightViewConstraints
+        )
     }
 
     // MARK: - Navigation Item
@@ -133,7 +320,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
         navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
 
         // Workaround:
@@ -156,6 +343,18 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
+    private func setupNavBarAppearance() {
+        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
+        if FeatureFlag.mySiteDashboard.enabled {
+            let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
+            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
+        }
+    }
+
+    private func resetNavBarAppearance() {
+        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
+    }
+
     // MARK: - Account
 
     private func defaultAccount() -> WPAccount? {
@@ -172,7 +371,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// - Returns:the main blog for an account (last selected, or first blog in list).
     ///
     private func mainBlog() -> Blog? {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         return blogService.lastUsedOrFirstBlog()
     }
 
@@ -188,7 +386,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
 
     @objc
@@ -201,12 +401,83 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self?.noResultsRefreshControl?.endRefreshing()
         }
 
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         blogService.syncBlogs(for: account) {
             finishSync()
         } failure: { (error) in
             finishSync()
         }
+    }
+
+    @objc
+    private func pulledToRefresh() {
+        guard let section = currentSection else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+            }
+
+        case .dashboard:
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
+                self?.refreshControl.endRefreshing()
+            }
+        }
+
+        WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
+    }
+
+    // MARK: - Segmented Control
+
+    @objc private func segmentedControlValueChangedByUser() {
+        guard let section = currentSection else {
+            return
+        }
+
+        segmentedControlValueChanged()
+        WPAnalytics.track(.mySiteTabTapped, properties: ["tab": section.analyticsDescription])
+    }
+
+    @objc private func segmentedControlValueChanged() {
+        guard let blog = blog,
+              let section = currentSection else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            siteMenuSpotlightIsShown = false
+            hideDashboard()
+            showBlogDetails(for: blog)
+        case .dashboard:
+            hideBlogDetails()
+            showDashboard(for: blog)
+        }
+    }
+
+    // MARK: - Child VC logic
+
+    private func embedChildInStackView(_ child: UIViewController) {
+        addChild(child)
+        stackView.addArrangedSubview(child.view)
+        child.didMove(toParent: self)
+    }
+
+    private func removeChildFromStackView(_ child: UIViewController) {
+        guard child.parent != nil else {
+            return
+        }
+
+        child.willMove(toParent: nil)
+        stackView.removeArrangedSubview(child.view)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
     }
 
     // MARK: - No Sites UI logic
@@ -229,6 +500,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
             return
@@ -239,6 +511,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+        createButtonCoordinator?.removeCreateButton()
     }
 
     private func trackNoSitesVisibleIfNeeded() {
@@ -313,15 +586,41 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         noResultsScrollView = nil
     }
 
+    // MARK: - FAB
+
+    private func createFABIfNeeded() {
+        createButtonCoordinator?.removeCreateButton()
+        createButtonCoordinator = makeCreateButtonCoordinator()
+        createButtonCoordinator?.add(to: view,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if let blog = blog, tabBarController is WPTabBarController,
+           noResultsViewController.view.superview == nil {
+            createButtonCoordinator?.showCreateButton(for: blog)
+        }
+    }
+
 // MARK: - Add Site Alert
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
-            self?.launchSiteCreation(source: "my_site_no_sites")
-        } addSelfHostedSite: {
-            WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+        let addSite = {
+            self.launchSiteCreation(source: "my_site_no_sites")
         }
+
+        guard canAddSelfHostedSite else {
+            addSite()
+            return
+        }
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
+                                                                  canCreateWPComSite: defaultAccount() != nil,
+                                                                  createWPComSite: {
+            addSite()
+        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite: {
+            WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        })
 
         if let sourceView = noResultsViewController.actionButton,
            let popoverPresentationController = addSiteAlert.popoverPresentationController {
@@ -332,6 +631,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         present(addSiteAlert, animated: true)
+    }
+
+    @objc
+    func didChangeDynamicType() {
+        configureSegmentedControlFont()
+    }
+
+    private func configureSegmentedControlFont() {
+        let font = WPStyleGuide.fontForTextStyle(.subheadline)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
 
     @objc
@@ -360,8 +669,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        remove(blogDetailsViewController)
-        self.blogDetailsViewController = nil
+        removeChildFromStackView(blogDetailsViewController)
     }
 
     /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
@@ -386,10 +694,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        add(blogDetailsViewController)
-
-        blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(blogDetailsViewController.view)
+        embedChildInStackView(blogDetailsViewController)
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }
@@ -412,8 +717,86 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return blogDetailsViewController
     }
 
+    private func showSitePicker(for blog: Blog) {
+        guard let sitePickerViewController = sitePickerViewController else {
+
+            let sitePickerViewController = makeSitePickerViewController(for: blog)
+            self.sitePickerViewController = sitePickerViewController
+
+            addChild(sitePickerViewController)
+            stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+            sitePickerViewController.didMove(toParent: self)
+
+            return
+        }
+
+        sitePickerViewController.blog = blog
+    }
+
+    private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
+        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+
+        sitePickerViewController.onBlogSwitched = { [weak self] blog in
+
+            guard let self = self else {
+                return
+            }
+
+            if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
+                self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+                self.segmentedControlValueChanged()
+            }
+
+            self.updateSegmentedControl(for: blog)
+            self.updateChildViewController(for: blog)
+            self.createFABIfNeeded()
+        }
+
+        return sitePickerViewController
+    }
+
+    private func updateChildViewController(for blog: Blog) {
+        guard let section = currentSection else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.configureTableViewData()
+            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.preloadMetadata()
+            blogDetailsViewController?.showInitialDetailsForBlog()
+        case .dashboard:
+            blogDashboardViewController?.update(blog: blog)
+        }
+    }
+
     func presentCreateSheet() {
         blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
+    }
+
+    // MARK: Dashboard UI Logic
+
+    private func hideDashboard() {
+        guard let blogDashboardViewController = blogDashboardViewController else {
+            return
+        }
+
+        removeChildFromStackView(blogDashboardViewController)
+    }
+
+    /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// of creating it.
+    ///
+    /// - Parameters:
+    ///         - blog: The blog to show the details of.
+    ///
+    private func showDashboard(for blog: Blog) {
+        let blogDashboardViewController = self.blogDashboardViewController ?? BlogDashboardViewController(blog: blog)
+        blogDashboardViewController.update(blog: blog)
+        embedChildInStackView(blogDashboardViewController)
+        self.blogDashboardViewController = blogDashboardViewController
     }
 
     // MARK: - Model Changes
@@ -481,13 +864,18 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
         guard let blog = blogService.lastUsedOrFirstBlog() else {
             return
         }
 
         self.blog = blog
+    }
+
+    private enum Constants {
+        static let segmentedControlXOffset: CGFloat = 20
+        static let segmentedControlYOffset: CGFloat = 24
+        static let segmentedControlHeight: CGFloat = 32
+        static let siteMenuSpotlightOffset: CGFloat = 8
     }
 }
 
@@ -520,5 +908,13 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - QuickStart
+//
+extension MySiteViewController {
+    func startAlertTimer() {
+        blogDetailsViewController?.startAlertTimer()
     }
 }

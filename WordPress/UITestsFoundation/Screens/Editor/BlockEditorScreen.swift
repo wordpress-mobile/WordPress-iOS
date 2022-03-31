@@ -16,13 +16,20 @@ public class BlockEditorScreen: ScreenObject {
 
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
 
+    let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["more_post_options"]
+    }
+
+    var moreButton: XCUIElement { moreButtonGetter(app) }
+
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter ],
-            app: app
+            expectedElementGetters: [ editorCloseButtonGetter, addBlockButtonGetter ],
+            app: app,
+            waitTimeout: 10
         )
     }
 
@@ -63,6 +70,16 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     /**
+     Adds a gallery block with multiple images from device.
+     */
+    public func addImageGallery() throws -> BlockEditorScreen {
+        addBlock("Gallery block")
+        try addMultipleImages(numberOfImages: 3)
+
+        return self
+    }
+
+    /**
     Selects a block based on part of the block label (e.g. partial text in a paragraph block)
      */
     @discardableResult
@@ -78,12 +95,7 @@ public class BlockEditorScreen: ScreenObject {
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
                 let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
-                    if XCUIDevice.isPad {
-                        app.otherElements["PopoverDismissRegion"].tap()
-                    } else {
-                        let keepEditingButton = app.sheets.buttons["Keep Editing"] // Uses a localized string
-                        keepEditingButton.tap()
-                    }
+                    dismissBlockEditorPopovers()
                 }
             }
 
@@ -105,6 +117,16 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
+    // Sometimes ScreenObject times out due to long loading time making the Editor Screen evaluate to `nil`.
+    // This function adds the ability to still close the Editor Screen when that happens.
+    public static func closeEditorDiscardingChanges(app: XCUIApplication = XCUIApplication()) {
+        let closeButton = app.buttons["Close"]
+        if closeButton.waitForIsHittable() { closeButton.tap() }
+
+        let discardChangesButton = app.buttons["Discard"]
+        if discardChangesButton.waitForIsHittable() { discardChangesButton.tap() }
+    }
+
     public func publish() throws -> EditorNoticeComponent {
         let publishButton = app.buttons["Publish"]
         let publishNowButton = app.buttons["Publish Now"]
@@ -121,12 +143,43 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func openPostSettings() throws -> EditorPostSettings {
-        let moreButton = app.buttons["more_post_options"]
         moreButton.tap()
         let postSettingsButton = app.sheets.buttons["Post Settings"] // Uses a localized string
         postSettingsButton.tap()
 
         return try EditorPostSettings()
+    }
+
+    private func getContentStructure() -> String {
+        moreButton.tap()
+        let contentStructure = app.staticTexts.element(matching: NSPredicate(format: "label CONTAINS 'Content Structure'")).label
+        dismissBlockEditorPopovers()
+
+        return contentStructure
+    }
+
+    private func dismissBlockEditorPopovers() {
+        if XCUIDevice.isPad {
+            app.otherElements["PopoverDismissRegion"].tap()
+            dismissImageViewIfNeeded()
+        } else {
+            app.sheets.buttons["Keep Editing"].tap()
+        }
+    }
+
+    private func dismissImageViewIfNeeded() {
+        let fullScreenImage = app.images["Fullscreen view of image. Double tap to dismiss"]
+        if fullScreenImage.exists { fullScreenImage.tap() }
+    }
+
+    @discardableResult
+    public func verifyContentStructure(blocks: Int, words: Int, characters: Int) throws -> BlockEditorScreen {
+        let expectedStructure = "Content Structure Blocks: \(blocks), Words: \(words), Characters: \(characters)"
+        let actualStructure = getContentStructure()
+
+        XCTAssertEqual(actualStructure, expectedStructure, "Unexpected post structure.")
+
+        return try BlockEditorScreen()
     }
 
     private func addBlock(_ blockLabel: String) {
@@ -153,6 +206,19 @@ public class BlockEditorScreen: ScreenObject {
      Select Image from Camera Roll by its ID. Starts with 0
      */
     private func addImageByOrder(id: Int) throws {
+        try chooseFromDevice()
+            .selectImage(atIndex: 0)
+    }
+
+    /*
+     Select Sequencial Images from Camera Roll by its ID. Starts with 0
+     */
+    private func addMultipleImages(numberOfImages: Int) throws {
+        try chooseFromDevice()
+            .selectMultipleImages(numberOfImages)
+    }
+
+    private func chooseFromDevice() throws -> MediaPickerAlbumScreen {
         let imageDeviceButton = app.sheets.buttons["Choose from device"] // Uses a localized string
 
         imageDeviceButton.tap()
@@ -160,10 +226,8 @@ public class BlockEditorScreen: ScreenObject {
         // Allow access to device media
         app.tap() // trigger the media permissions alert handler
 
-        // Inject the first picture
-        try MediaPickerAlbumListScreen()
-            .selectAlbum(atIndex: 0)
-            .selectImage(atIndex: 0)
+        return try MediaPickerAlbumListScreen()
+                    .selectAlbum(atIndex: 0)
     }
 
     private func confirmPublish() throws {

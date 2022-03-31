@@ -44,7 +44,8 @@ public class LoginUsernamePasswordScreen: ScreenObject {
                 usernameTextFieldGetter,
                 passwordTextFieldGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

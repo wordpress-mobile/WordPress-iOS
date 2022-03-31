@@ -1,0 +1,12 @@
+Hemos actualizado los avisos de comentarios con un nuevo y elegante aspecto. (El diseño de inicio rápido en el menú de tu sitio y en el escritorio también tiene un nuevo aspecto.
+
+Cuando crees un nuevo sitio e introduzcas el nombre de dominio, ahora deberías ver un mensaje de error más preciso si intentas utilizar caracteres no ingleses que no sean letras o números. También hemos modificado el texto de error de carga en los bloques de subida de medios.
+
+¿No estás seguro de si estás viendo una imagen o un GIF en tu bloque de imágenes? Ya no hace falta que te lo preguntes: los GIF animados vienen ahora con un distintivo de GIF.
+
+También hemos corregido algunos errores mientras estábamos revisando el sistema.
+
+- Buenas noticias para todos los comentarios huérfanos: Hemos eliminado un error por el que las respuestas a los comentarios se perdían después de que sus comentarios principales no fueran aprobados.
+- Cuando cambies de sitio en un iPad, no cambiarás también entre los elementos de la barra lateral. Verás el mismo elemento de menú que dejaste en el sitio anterior.
+- Los cambios de configuración de bloques en las listas ordenadas ahora aparecen en el editor, no sólo en la vista previa.
+- Hemos corregido un problema de teclado en el proceso de creación de la cuenta de WP.com. Si empiezas a introducir una contraseña de enlace mágico y cambias de opinión, puedes descartar el teclado y seguir con tu día.

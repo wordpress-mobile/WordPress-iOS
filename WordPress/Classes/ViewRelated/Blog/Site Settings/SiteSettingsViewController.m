@@ -104,7 +104,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
         _username = blog.usernameForSite;
@@ -122,6 +122,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
+    
+    self.extendedLayoutIncludesOpaqueBars = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)

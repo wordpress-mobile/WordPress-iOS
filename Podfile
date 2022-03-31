@@ -20,7 +20,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.17.0'
+    pod 'WordPressShared', '~> 1.17.1'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -35,11 +35,11 @@ def aztec
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
     #pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.7'
+    pod 'WordPress-Editor-iOS', '~> 1.19.8'
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.12.2'
+    pod 'WordPressUI', '~> 1.12.4'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.45.0'
+    pod 'WordPressKit', '~> 4.49.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -169,7 +169,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.69.0-alpha2'
+    gutenberg :tag => 'v1.73.0'
 
     ## Third party libraries
     ## =====================
@@ -202,7 +202,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.9.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.11.1'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -210,15 +210,15 @@ abstract_target 'Apps' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.8.0'
-    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+    pod 'WPMediaPicker', '~> 1.8.3-beta.1'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.42.1'
+    pod 'WordPressAuthenticator', '~> 2.0.0'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
@@ -339,19 +339,6 @@ target 'WordPressIntents' do
     wordpress_ui
 end
 
-## Notification Content Extension
-## ==============================
-##
-target 'WordPressNotificationContentExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
-end
-
-
-
 ## Notification Service Extension
 ## ==============================
 ##
@@ -404,10 +391,9 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
-        if pod.name == "Sentry"
+        if pod.name == 'Sentry'
           dynamic << pod
           next
         end
@@ -461,7 +447,7 @@ post_install do |installer|
                    </body>"
 
       ## Remove the <h1>, since we've promoted it to <title>
-      styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
+      styled_html = styled_html.sub('<h1>Acknowledgements</h1>', '')
 
       ## The glog library's license contains a URL that does not wrap in the web view,
       ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
@@ -487,9 +473,9 @@ post_install do |installer|
     # Flag Alpha builds for Tracks
     # ============================
     installer.pods_project.targets.each do |target|
-      next unless target.name == "Automattic-Tracks-iOS"
+      next unless target.name == 'Automattic-Tracks-iOS'
       target.build_configurations.each do |config|
-        if config.name == "Release-Alpha" or config.name == "Release-Internal"
+        if config.name == 'Release-Alpha' or config.name == 'Release-Internal'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1']
         end
       end

@@ -4,6 +4,7 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -27,12 +28,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
-
-    /// The unified list requires an extra 10pt space on top of the list, but returns to the original padding
-    /// while scrolled and stickied. This should be removed once the unified list is fully rolled out.
-    /// See: https://git.io/JBQlU
-    ///
-    @IBOutlet private weak var filterTabBarBottomConstraint: NSLayoutConstraint!
 
     /// Inline Prompt Header View
     ///
@@ -88,6 +83,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
+        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+    }()
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -97,24 +96,34 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Notification Settings button
-    lazy var notificationSettingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
-        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
-        return button
+    private lazy var settingsBarButtonItem: UIBarButtonItem = {
+        let settingsButton = UIBarButtonItem(
+            image: .gridicon(.cog),
+            style: .plain,
+            target: self,
+            action: #selector(showNotificationSettings)
+        )
+        settingsButton.accessibilityLabel = NSLocalizedString(
+            "Notification Settings",
+            comment: "Link to Notification Settings section"
+        )
+        return settingsButton
     }()
 
-    /// Convenience property that stores feature flag value for unified list.
-    /// This should be removed once the feature is fully rolled out.
-    private var usesUnifiedList: Bool = FeatureFlag.unifiedCommentsAndNotificationsList.enabled {
-        didSet {
-            // Since this view controller is the root view controller for notifications tab, we need to check whether
-            // the value has changed in `viewWillAppear`. If so, reload the table view to use the correct design.
-            if usesUnifiedList != oldValue {
-                reloadTableViewPreservingSelection()
-                updateFilterBarConstraints()
-            }
-        }
-    }
+    /// Mark All As Read button
+    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
+        let markButton = UIBarButtonItem(
+            image: .gridicon(.checkmark),
+            style: .plain,
+            target: self,
+            action: #selector(showMarkAllAsReadConfirmation)
+        )
+        markButton.accessibilityLabel = NSLocalizedString(
+            "Mark All As Read",
+            comment: "Marks all notifications under the filter as read"
+        )
+        return markButton
+    }()
 
     // MARK: - View Lifecycle
 
@@ -142,11 +151,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupConstraints()
 
         reloadTableViewPreservingSelection()
+        startListeningToCommentDeletedNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        syncNotificationsWithModeratedComments()
         setupInlinePrompt()
 
         // Manually deselect the selected row.
@@ -170,6 +181,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
+        updateMarkAllAsReadButton()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -181,10 +193,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             jetpackLoginViewController?.view.removeFromSuperview()
             jetpackLoginViewController?.removeFromParent()
         }
-
-        // Refresh feature flag value for unified list.
-        // This should be removed when the feature is fully rolled out.
-        usesUnifiedList = FeatureFlag.unifiedCommentsAndNotificationsList.enabled
 
         showNoResultsViewIfNeeded()
         selectFirstNotificationIfAppropriate()
@@ -235,6 +243,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -310,6 +319,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return
         }
 
+        // TODO: add check for CommentDetailViewController
         for case let detailVC as NotificationDetailsViewController in navigationControllers {
             if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
                 configureDetailsViewController(detailVC, withNote: note)
@@ -320,20 +330,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
+        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+              let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
             return nil
         }
 
-        if usesUnifiedList,
-           let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView {
-            headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-            return headerView
-        }
-
-        let headerView = NoteTableHeaderView.makeFromNib()
         headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-        headerView.separatorColor = tableView.separatorColor
-
         return headerView
     }
 
@@ -348,17 +350,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = usesUnifiedList ? ListTableViewCell.defaultReuseID : NoteTableViewCell.reuseIdentifier()
-        let expectedType = usesUnifiedList ? ListTableViewCell.self : NoteTableViewCell.self
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-
-        guard type(of: cell) == expectedType else {
-            DDLogError("Error getting Notification table cell.")
-            return .init()
-        }
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
         configureCell(cell, at: indexPath)
-
         return cell
     }
 
@@ -391,6 +384,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         selectedNotification = note
         showDetails(for: note)
+
+        if !splitViewControllerIsHorizontallyCompact {
+            syncNotificationsWithModeratedComments()
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -485,6 +483,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.dataSource = self
+        detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -512,7 +511,15 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        navigationItem.rightBarButtonItem = shouldDisplaySettingsButton ? notificationSettingsButton : nil
+        var barItems: [UIBarButtonItem] = []
+
+        if shouldDisplaySettingsButton {
+            barItems.append(settingsBarButtonItem)
+        }
+
+        barItems.append(markAllAsReadBarButtonItem)
+
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     @objc func closeNotificationSettings() {
@@ -522,6 +529,7 @@ private extension NotificationsViewController {
     func setupConstraints() {
         // Inline prompt is initially hidden!
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
+        filterTabBar.tabBarHeightConstraintPriority = 999
 
         NSLayoutConstraint.activate([
             tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
@@ -531,16 +539,9 @@ private extension NotificationsViewController {
     }
 
     func setupTableView() {
-        // Since this view controller is a root view controller for the notifications tab, both `NoteTableViewCell` and the new List components
-        // need to be registered to handle feature flag changes. When the feature is fully rolled out, let's remove NoteTableViewCell.
-
-        // Register unified list components.
+        // Register the cells
         tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
         tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
-
-        // Register the cells
-        let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: Bundle.main)
-        tableView.register(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
@@ -584,20 +585,8 @@ private extension NotificationsViewController {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .filterBarBackground
 
-        filterTabBar.items = Filter.allFilters
+        filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-        updateFilterBarConstraints()
-    }
-
-    /// If notifications are displayed with the new unified list, add an extra space below the filter tab bar.
-    /// Once unified list is fully rolled out, this should be applied in Notifications.storyboard instead.
-    /// See: https://git.io/JBQlU
-    func updateFilterBarConstraints() {
-        filterTabBarBottomConstraint.constant = usesUnifiedList ? Constants.filterTabBarBottomSpace : 0
-
-        // With the 10pt bottom padding addition, ensure that the extra padding has the same background color
-        // as the table header cell. NOTE: Move this line to `setupFilterBar` once the feature flag is removed.
-        filterTabBar.superview?.backgroundColor = usesUnifiedList ? .systemBackground : .filterBarBackground
     }
 }
 
@@ -624,6 +613,13 @@ private extension NotificationsViewController {
                        selector: #selector(significantTimeChange),
                        name: UIApplication.significantTimeChangeNotification,
                        object: nil)
+    }
+
+    func startListeningToCommentDeletedNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(removeDeletedNotification),
+                                               name: .NotificationCommentDeletedNotification,
+                                               object: nil)
     }
 
     func stopListeningToNotifications() {
@@ -730,7 +726,9 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
+        if let postID = note.metaPostID,
+            let siteID = note.metaSiteID,
+            note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             showDetailViewController(readerViewController, sender: nil)
@@ -738,18 +736,44 @@ extension NotificationsViewController {
             return
         }
 
+        presentDetails(for: note)
+    }
+
+    private func presentDetails(for note: Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
-        //
+
         view.isUserInteractionEnabled = false
 
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             self.view.isUserInteractionEnabled = true
+
+            if FeatureFlag.notificationCommentDetails.enabled,
+               note.kind == .comment {
+                guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
+                    DDLogError("Notifications: failed creating Comment Detail view.")
+                    return
+                }
+
+                self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+                    self?.selectRow(for: note)
+                }
+
+                commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+                self.showDetailViewController(commentDetailViewController, sender: nil)
+
+                return
+            }
+
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
         }
     }
 
@@ -792,7 +816,7 @@ extension NotificationsViewController {
     }
 
     /// Will display an Undelete button on top of a given notification.
-    /// On timeout, the destructive action (received via parameter) will be exeuted, and the notification
+    /// On timeout, the destructive action (received via parameter) will be executed, and the notification
     /// will (supposedly) get deleted.
     ///
     /// -   Parameters:
@@ -858,6 +882,73 @@ private extension NotificationsViewController {
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
+
+
+    // MARK: - Notifications Deletion from CommentDetailViewController
+
+    // With the `notificationCommentDetails` feature, Comment moderation is handled by the view.
+    // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
+    // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
+    // Those Notifications are updated here when the view is shown to update the list accordingly.
+    func syncNotificationsWithModeratedComments() {
+        selectNextAvailableNotification(ignoring: notificationCommentDetailCoordinator.notificationsCommentModerated)
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated.forEach {
+            syncNotification(with: $0.notificationId, timeout: Syncing.pushMaxWait, success: {_ in })
+        }
+
+        notificationCommentDetailCoordinator.notificationsCommentModerated = []
+    }
+
+    @objc func removeDeletedNotification(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
+              let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+                  return
+              }
+
+        let notification = notifications.first(where: { notification -> Bool in
+            guard let commentID = notification.metaCommentID else {
+                return false
+            }
+
+            return commentID.intValue == deletedCommentID
+        })
+
+        syncDeletedNotification(notification)
+    }
+
+    func syncDeletedNotification(_ notification: Notification?) {
+        guard let notification = notification else {
+            return
+        }
+
+        selectNextAvailableNotification(ignoring: [notification])
+
+        syncNotification(with: notification.notificationId, timeout: Syncing.pushMaxWait, success: { [weak self] notification in
+            self?.notificationCommentDetailCoordinator.notificationsCommentModerated.removeAll(where: { $0.notificationId == notification.notificationId })
+        })
+    }
+
+    func selectNextAvailableNotification(ignoring: [Notification]) {
+        // If the currently selected notification is about to be removed, find the next available and select it.
+        // This is only necessary for split view to prevent the details from showing for removed notifications.
+        if !splitViewControllerIsHorizontallyCompact,
+           let selectedNotification = selectedNotification,
+           ignoring.contains(selectedNotification) {
+
+            guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
+                  let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
+                  let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
+                      self.selectedNotification = nil
+                      return
+                  }
+
+            self.selectedNotification = nextAvailable
+            tableView(tableView, didSelectRowAt: indexPath)
+        }
+    }
+
 }
 
 
@@ -865,6 +956,17 @@ private extension NotificationsViewController {
 // MARK: - Marking as Read
 //
 private extension NotificationsViewController {
+    private enum Localization {
+        static let markAllAsReadNoticeSuccess = NSLocalizedString(
+            "Notifications marked as read",
+            comment: "Title for mark all as read success notice"
+        )
+
+        static let markAllAsReadNoticeFailure = NSLocalizedString(
+            "Failed marking Notifications as read",
+            comment: "Message for mark all as read success notice"
+        )
+    }
 
     func markSelectedNotificationAsRead() {
         guard let note = selectedNotification else {
@@ -882,12 +984,78 @@ private extension NotificationsViewController {
         NotificationSyncMediator()?.markAsRead(note)
     }
 
+    /// Marks all messages as read under the selected filter.
+    ///
+    @objc func markAllAsRead() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        WPAnalytics.track(.notificationsMarkAllReadTapped)
+
+        let unreadNotifications = notes.filter {
+            !$0.read
+        }
+
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+            let notice = Notice(
+                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
+            )
+            ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+            self?.updateMarkAllAsReadButton()
+        })
+    }
+
+    /// Presents a confirmation action sheet for mark all as read action.
+    @objc func showMarkAllAsReadConfirmation() {
+        let title: String
+
+        switch filter {
+        case .none:
+            title = NSLocalizedString(
+                "Mark all notifications as read?",
+                comment: "Confirmation title for marking all notifications as read."
+            )
+
+        default:
+            title = NSLocalizedString(
+                "Mark all %1$@ notifications as read?",
+                comment: "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
+            )
+        }
+
+        let cancelTitle = NSLocalizedString(
+            "Cancel",
+            comment: "Cancels the mark all as read action."
+        )
+        let markAllTitle = NSLocalizedString(
+            "OK",
+            comment: "Marks all notifications as read."
+        )
+
+        let alertController = UIAlertController(
+            title: String.localizedStringWithFormat(title, filter.confirmationMessageTitle),
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
+
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        alertController.addActionWithTitle(markAllTitle, style: .default) { [weak self] _ in
+            self?.markAllAsRead()
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
+
     func markAsUnread(note: Notification) {
         guard note.read else {
             return
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
+        updateMarkAllAsReadButton()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -896,6 +1064,17 @@ private extension NotificationsViewController {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
+    }
+
+    func updateMarkAllAsReadButton() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        let isEnabled = notes.first { !$0.read } != nil
+
+        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
+        markAllAsReadBarButtonItem.isEnabled = isEnabled
     }
 }
 
@@ -969,6 +1148,7 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
+        updateMarkAllAsReadButton()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
@@ -987,10 +1167,16 @@ private extension NotificationsViewController {
                    scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
-            DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
-            tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
-        }
+        // also ensure that the index path returned from results controller does not have negative row index.
+        // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
+        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification),
+              indexPath != tableView.indexPathForSelectedRow,
+              0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
+                  return
+              }
+
+        DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
+        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 
     func reloadTableViewPreservingSelection() {
@@ -1135,51 +1321,21 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-        // For that reason, we draw our own separators.
-        //
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+              let cell = cell as? ListTableViewCell else {
             return
         }
 
+        cell.configureWithNotification(note)
+
+        // handle undo overlays
         let deletionRequest = deletionRequestForNoteWithID(note.objectID)
-        let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-
-        // configure unified list cell if the feature flag is enabled.
-        if usesUnifiedList, let cell = cell as? ListTableViewCell {
-            cell.configureWithNotification(note)
-
-            // handle undo overlays
-            cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
-                self?.cancelDeletionRequestForNoteWithID(note.objectID)
-            }
-
-            // additional configurations
-            cell.showsBottomSeparator = !isLastRow
-            cell.accessibilityHint = Self.accessibilityHint(for: note)
-
-            return
-        }
-
-        // otherwise, configure using the (soon-to-be) legacy NoteTableViewCell.
-        guard let cell = cell as? NoteTableViewCell else {
-            return
-        }
-
-        cell.attributedSubject      = note.renderSubject()
-        cell.attributedSnippet      = note.renderSnippet()
-
-        cell.read                   = note.read
-        cell.noticon                = note.noticon
-        cell.unapproved             = note.isUnapprovedComment
-        cell.showsBottomSeparator   = !isLastRow
-        cell.undeleteOverlayText    = deletionRequest?.kind.legendText
-        cell.onUndelete             = { [weak self] in
+        cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
+        // additional configurations
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.downloadIconWithURL(note.iconURL)
     }
 
     func sectionNameKeyPath() -> String {
@@ -1207,28 +1363,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
-        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-        //
-        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            let cell = tableView.cellForRow(at: indexPath)
-
-            // Apply the same handling for ListTableViewCell.
-            // this should be removed when it's confirmed that default table separators no longer trigger issues
-            // resolved in #2845, and the unified list feature is fully rolled out.
-            if usesUnifiedList,
-               let listCell = cell as? ListTableViewCell {
-                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-                listCell.showsBottomSeparator = !isLastRow
-                continue
-            }
-
-            if let noteCell = cell as? NoteTableViewCell {
-                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-                noteCell.showsBottomSeparator = !isLastRow
-            }
-        }
-
         refreshUnreadNotifications()
 
         // Update NoResults View
@@ -1691,7 +1825,7 @@ private extension NotificationsViewController {
         }
     }
 
-    enum Filter: Int, FilterTabBarItem {
+    enum Filter: Int, FilterTabBarItem, CaseIterable {
         case none = 0
         case unread = 1
         case comment = 2
@@ -1725,6 +1859,16 @@ private extension NotificationsViewController {
             case .comment:  return "Comments"
             case .follow:   return "Follows"
             case .like:     return "Likes"
+            }
+        }
+
+        var confirmationMessageTitle: String {
+            switch self {
+            case .none:     return ""
+            case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
+            case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
+            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
 
@@ -1770,7 +1914,6 @@ private extension NotificationsViewController {
         }
 
         static let sortKey = "timestamp"
-        static let allFilters = [Filter.none, .unread, .comment, .follow, .like]
     }
 
     enum Settings {
@@ -1873,8 +2016,6 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         // number of notifications after which the second alert will show up
         static let secondNotificationsAlertThreshold = 10
         static let secondNotificationsAlertDisabled = -1
-        /// the amount of bottom padding added to the filter tab bar. To be used with unified list.
-        static let filterTabBarBottomSpace: CGFloat = 10.0
     }
 }
 

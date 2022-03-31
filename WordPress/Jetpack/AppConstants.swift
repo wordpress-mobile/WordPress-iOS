@@ -27,13 +27,16 @@ import WordPressKit
 // MARK: - Tab bar order
 @objc enum WPTab: Int {
     case mySites
-    case notifications
-    // Reader on Jetpack is not displayed, but we keep it here to avoid adding conditionals on existing code
     case reader
+    case notifications
 }
 
 // MARK: - Localized Strings
 extension AppConstants {
+
+    struct PostSignUpInterstitial {
+        static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
+    }
 
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")

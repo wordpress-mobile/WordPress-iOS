@@ -3,19 +3,22 @@
 @class Blog;
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
+@class IntrinsicTableView;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
+    BlogDetailsSectionCategoryQuickAction,
     BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
     BlogDetailsSectionCategoryQuickStart,
+    BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
     BlogDetailsSectionCategoryPublish,
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
-    BlogDetailsSectionCategoryRemoveSite
+    BlogDetailsSectionCategoryRemoveSite,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
@@ -33,7 +36,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
-    BlogDetailsSubsectionPlugins
+    BlogDetailsSubsectionPlugins,
+    BlogDetailsSubsectionHome,
 };
 
 
@@ -66,6 +70,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementPlans = 19,
     QuickStartTourElementSiteTitle = 20,
     QuickStartTourElementEditHomepage = 21,
+    QuickStartTourElementSiteMenu = 22,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
@@ -137,7 +142,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
-@property (nonatomic, strong, readonly) id<BlogDetailHeader> _Nonnull headerView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
@@ -152,9 +156,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
-- (void)refreshSiteIcon;
-- (void)toggleSpotlightForSiteTitle;
-- (void)toggleSpotlightOnHeaderView;
-- (void)uploadDroppedSiteIcon:(nonnull UIImage *)image onCompletion:(nullable void(^)(void))completion;
-- (void)updateTableViewAndHeader;
+- (void)updateTableView:(nullable void(^)(void))completion;
+- (void)preloadMetadata;
+- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl  onCompletion:(nullable void(^)(void))completion;
 @end

@@ -51,6 +51,7 @@ extension JetpackLoginErrorViewController {
 
     private func configureTitleLabel() {
         guard let title = viewModel.title else {
+            titleLabel.isHidden = true
             return
         }
 

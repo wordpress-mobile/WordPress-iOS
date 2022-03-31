@@ -78,6 +78,20 @@ class BackgroundTasksCoordinator {
         self.registeredTasks = tasks
 
         for task in tasks {
+            if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/18156
+                // we still need to register to handle the old identifier = "org.wordpress.bgtask.weeklyroundup"
+                // in order to handle previously scheduled app refresh tasks before this enhancement.
+                //
+                // When the old identifier AppRefreshTask is triggered this will re-schedule using the new identifier going forward
+                // at some point in future when this FeatureFlag is removed and most users are on new version of app this can be removed
+                scheduler.register(forTaskWithIdentifier: WeeklyRoundupBackgroundTask.Constants.taskIdentifier, using: nil) { osTask in
+                    self.schedule(task) { [weak self] result in
+                        self?.taskScheduledCompleted(osTask, identifier: type(of: task).identifier, result: result, cancelled: false)
+                    }
+                }
+            }
+
             scheduler.register(forTaskWithIdentifier: type(of: task).identifier, using: nil) { osTask in
                 guard Feature.enabled(.weeklyRoundup) else {
                     osTask.setTaskCompleted(success: false)
@@ -97,19 +111,37 @@ class BackgroundTasksCoordinator {
                 }) { cancelled in
                     eventHandler.handle(.taskCompleted(identifier: type(of: task).identifier, cancelled: cancelled))
 
-                    self.schedule(task) { result in
-                        switch result {
-                        case .success:
-                            eventHandler.handle(.rescheduled(identifier: type(of: task).identifier))
-                        case .failure(let error):
-                            eventHandler.handle(.error(identifier: type(of: task).identifier, error: error))
+                    if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
+                        self.schedule(task) { [weak self] result in
+                            self?.taskScheduledCompleted(osTask, identifier: type(of: task).identifier, result: result, cancelled: cancelled)
                         }
+                    } else {
+                        //TODO - remove after removing feature flag
+                        self.schedule(task) { result in
+                            switch result {
+                            case .success:
+                                eventHandler.handle(.rescheduled(identifier: type(of: task).identifier))
+                            case .failure(let error):
+                                eventHandler.handle(.error(identifier: type(of: task).identifier, error: error))
+                            }
 
-                        osTask.setTaskCompleted(success: !cancelled)
+                            osTask.setTaskCompleted(success: !cancelled)
+                        }
                     }
                 }
             }
         }
+    }
+
+    func taskScheduledCompleted(_ osTask: BGTask, identifier: String, result: Result<Void, Error>, cancelled: Bool) {
+        switch result {
+        case .success:
+            eventHandler.handle(.rescheduled(identifier: identifier))
+        case .failure(let error):
+            eventHandler.handle(.error(identifier: identifier, error: error))
+        }
+
+        osTask.setTaskCompleted(success: !cancelled)
     }
 
     /// Schedules the registered tasks.  The reason this step is separated from the registration of the tasks, is that we need
@@ -153,8 +185,7 @@ class BackgroundTasksCoordinator {
             return
         }
 
-        let request = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
-        request.earliestBeginDate = nextDate
+        let request = createBGTaskRequest(task, beginDate: nextDate)
 
         do {
             try self.scheduler.submit(request)
@@ -163,6 +194,20 @@ class BackgroundTasksCoordinator {
             completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
         }
     }
+
+    func createBGTaskRequest(_ task: BackgroundTask, beginDate: Date) -> BGTaskRequest {
+        if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
+            let bgProcessingTaskRequest = BGProcessingTaskRequest(identifier: type(of: task).identifier)
+            bgProcessingTaskRequest.requiresNetworkConnectivity = true
+            bgProcessingTaskRequest.earliestBeginDate = beginDate
+            return bgProcessingTaskRequest
+        }
+
+        let appRefreshTaskRequest = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
+        appRefreshTaskRequest.earliestBeginDate = beginDate
+        return appRefreshTaskRequest
+    }
+
 
     // MARK: - Querying Data
 

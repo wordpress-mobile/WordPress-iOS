@@ -17,6 +17,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, assign) BOOL isActivatingStatsModule;
+@property (nonatomic, assign) BOOL shouldForceShowTodayStats;
 @property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
@@ -35,12 +36,27 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
++ (void)showForBlog:(nonnull Blog *)blog
+               from:(nonnull UIViewController *)controller
+     showTodayStats:(BOOL)showTodayStats
+{
+    StatsViewController *statsController = [StatsViewController new];
+    statsController.blog = blog;
+    statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    statsController.shouldForceShowTodayStats = showTodayStats;
+    [controller.navigationController pushViewController:statsController animated:YES];
+    
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
+
+    self.extendedLayoutIncludesOpaqueBars = YES;
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
     self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
@@ -59,7 +75,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     // Being shown in a modal window
     if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
-        self.navigationItem.rightBarButtonItem = doneButton;
+        self.navigationItem.leftBarButtonItem = doneButton;
         self.title = self.blog.settings.name;
     }
 
@@ -89,6 +105,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self addChildViewController:self.siteStatsDashboardVC];
     [self.view addSubview:self.siteStatsDashboardVC.view];
     [self.siteStatsDashboardVC didMoveToParentViewController:self];
+    if (self.shouldForceShowTodayStats) {
+        [self.siteStatsDashboardVC forceShowStatsForTodayPeriod];
+    }
 }
 
 - (void) installWidgetsButton

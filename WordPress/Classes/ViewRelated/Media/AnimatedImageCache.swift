@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// AnimatedImageCache is an image + animated gif data cache used in
 /// CachedAnimatedImageView. It should be accessed via the `shared` singleton.

@@ -19,7 +19,8 @@ public class StatsScreen: ScreenObject {
         try super.init(
             // swiftlint:disable:next opening_brace
             expectedElementGetters: [{ $0.otherElements.firstMatch }],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
@@ -69,6 +70,17 @@ public class StatsScreen: ScreenObject {
     @discardableResult
     public func switchTo(mode: Mode) -> StatsScreen {
         app.buttons[mode.rawValue].tap()
+        return self
+    }
+
+    public func refreshStatsIfNeeded() -> StatsScreen {
+        let errorMessage = NSPredicate(format: "label == 'An error occurred.'")
+        let isErrorMessagePresent = app.staticTexts.element(matching: errorMessage).exists
+        let expectedCardsWithoutData = 3
+        let isDataLoaded = app.staticTexts.matching(identifier: "No data yet").count <= expectedCardsWithoutData
+
+        if isErrorMessagePresent == true || isDataLoaded == false { pullToRefresh() }
+
         return self
     }
 }

@@ -1,5 +1,14 @@
 import WordPressFlux
 import Gridicons
+import Foundation
+import UIKit
+import WordPressShared
+
+@objc enum QuickStartTourOrigin: Int {
+    case unknown
+    case blogDetails
+    case blogDashboard
+}
 
 open class QuickStartTourGuide: NSObject {
     var navigationSettings = QuickStartNavigationSettings()
@@ -11,6 +20,11 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
+    /// A flag indicating if the user is currently going through a tour or not.
+    private(set) var tourInProgress = false
+
+    /// Represents the origin from which the current tour is triggered
+    @objc var currentTourOrigin: QuickStartTourOrigin = .unknown
 
     @objc static let shared = QuickStartTourGuide()
 
@@ -24,6 +38,9 @@ open class QuickStartTourGuide: NSObject {
         steps.forEach { (tour) in
             completed(tour: tour, for: blog)
         }
+        tourInProgress = false
+
+        WPAnalytics.track(.quickStartStarted)
     }
 
     func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -34,6 +51,8 @@ open class QuickStartTourGuide: NSObject {
 
     @objc func remove(from blog: Blog) {
         blog.removeAllTours()
+        endCurrentTour()
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
@@ -74,7 +93,9 @@ open class QuickStartTourGuide: NSObject {
             self?.suggestionWorkItem?.cancel()
             self?.suggestionWorkItem = nil
 
-            self?.skipped(tour, for: blog)
+            if skipped {
+                self?.skipped(tour, for: blog)
+            }
         }
 
         let newWorkItem = DispatchWorkItem { [weak self] in
@@ -120,12 +141,26 @@ open class QuickStartTourGuide: NSObject {
         endCurrentTour()
         dismissSuggestion()
 
-        switch tour {
-        case let tour as QuickStartFollowTour:
-            tour.setupReaderTab()
+        let adjustedTour = addSiteMenuWayPointIfNeeded(for: tour)
+
+        switch adjustedTour {
+        case let adjustedTour as QuickStartFollowTour:
+            adjustedTour.setupReaderTab()
             fallthrough
         default:
-            currentTourState = TourState(tour: tour, blog: blog, step: 0)
+            currentTourState = TourState(tour: adjustedTour, blog: blog, step: 0)
+        }
+    }
+
+    private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
+
+        if currentTourOrigin == .blogDashboard && tour.shownInBlogDetails && !UIDevice.isPad() {
+            var tourToAdjust = tour
+            let siteMenuWaypoint = QuickStartSiteMenu.waypoint
+            tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)
+            return tourToAdjust
+        } else {
+            return tour
         }
     }
 
@@ -138,6 +173,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
 
+        tourInProgress = true
         showCurrentStep()
     }
 
@@ -190,7 +226,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         if element != currentElement {
-            let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
+            let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing, .siteMenu]
             let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
 
             if blogDetailEvents.contains(element) {
@@ -210,9 +246,24 @@ open class QuickStartTourGuide: NSObject {
             // TODO: we could put a nice animation here
             return
         }
-        currentTourState = nextStep
 
+        if element == .siteMenu {
+            showNextStepWithDelay(nextStep)
+        } else {
+            showNextStep(nextStep)
+        }
+    }
+
+    private func showNextStep(_ nextStep: TourState) {
+        currentTourState = nextStep
         showCurrentStep()
+    }
+
+    private func showNextStepWithDelay(_ nextStep: TourState) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.nextStepDelay) {
+            self.currentTourState = nextStep
+            self.showCurrentStep()
+        }
     }
 
     func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
@@ -259,32 +310,38 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static let checklistTours: [QuickStartTour] = [
-        QuickStartCreateTour(),
-        QuickStartViewTour(),
-        QuickStartThemeTour(),
-        QuickStartShareTour(),
-        QuickStartPublishTour(),
-        QuickStartFollowTour()
-    ]
+    static var checklistTours: [QuickStartTour] {
+        return [
+            QuickStartCreateTour(),
+            QuickStartViewTour(),
+            QuickStartThemeTour(),
+            QuickStartShareTour(),
+            QuickStartPublishTour(),
+            QuickStartFollowTour()
+        ]
+    }
 
-    static let customizeListTours: [QuickStartTour] = [
-        QuickStartCreateTour(),
-        QuickStartSiteTitleTour(),
-        QuickStartSiteIconTour(),
-        QuickStartEditHomepageTour(),
-        QuickStartReviewPagesTour(),
-        QuickStartViewTour()
-    ]
+    static var customizeListTours: [QuickStartTour] {
+        return [
+            QuickStartCreateTour(),
+            QuickStartSiteTitleTour(),
+            QuickStartSiteIconTour(),
+            QuickStartEditHomepageTour(),
+            QuickStartReviewPagesTour(),
+            QuickStartViewTour()
+        ]
+    }
 
-    static let growListTours: [QuickStartTour] = [
-        QuickStartShareTour(),
-        QuickStartPublishTour(),
-        QuickStartFollowTour(),
-        QuickStartCheckStatsTour()
-// Temporarily disabled
-//        QuickStartExplorePlansTour()
-    ]
+    static var growListTours: [QuickStartTour] {
+        return [
+            QuickStartShareTour(),
+            QuickStartPublishTour(),
+            QuickStartFollowTour(),
+            QuickStartCheckStatsTour()
+    // Temporarily disabled
+    //        QuickStartExplorePlansTour()
+        ]
+    }
 }
 
 private extension QuickStartTourGuide {
@@ -307,7 +364,12 @@ private extension QuickStartTourGuide {
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-            WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+
+            // Create a site is completed automatically, we don't want to track
+            if tour.analyticsKey != "create_site" {
+                WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+            }
+
             recentlyTouredBlog = blog
         } else {
             recentlyTouredBlog = nil
@@ -321,6 +383,7 @@ private extension QuickStartTourGuide {
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
+            tourInProgress = false
         } else {
             if let nextTour = tourToSuggest(for: blog) {
                 PushNotificationsManager.shared.postNotification(for: nextTour)
@@ -389,6 +452,7 @@ private extension QuickStartTourGuide {
             return
         }
 
+        tourInProgress = false
         currentSuggestion = nil
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
     }
@@ -403,6 +467,7 @@ private extension QuickStartTourGuide {
     }
 
     func skipped(_ tour: QuickStartTour, for blog: Blog) {
+        tourInProgress = false
         blog.skipTour(tour.key)
         recentlyTouredBlog = nil
     }
@@ -423,6 +488,7 @@ private extension QuickStartTourGuide {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
+        static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
     }
 }
 

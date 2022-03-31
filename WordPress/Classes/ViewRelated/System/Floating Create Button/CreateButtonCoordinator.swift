@@ -181,6 +181,11 @@ import WordPressFlux
         }
     }
 
+    func removeCreateButton() {
+        button.removeFromSuperview()
+        noticeContainerView?.removeFromSuperview()
+    }
+
     @objc func showCreateButton(for blog: Blog) {
         let showsStories = blog.supports(.stories)
         button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")

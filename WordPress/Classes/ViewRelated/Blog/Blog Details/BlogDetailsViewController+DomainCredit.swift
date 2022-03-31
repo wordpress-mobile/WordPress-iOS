@@ -33,7 +33,15 @@ extension BlogDetailsViewController {
     private func presentDomainCreditRedemptionSuccess(domain: String) {
         let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
         present(controller, animated: true) { [weak self] in
-            self?.updateTableViewAndHeader()
+            self?.updateTableView {
+                guard
+                    let parent = self?.parent as? MySiteViewController,
+                    let blog = self?.blog
+                else {
+                    return
+                }
+                parent.sitePickerViewController?.blogDetailHeaderView.blog = blog
+            }
         }
     }
 }
@@ -63,6 +71,8 @@ extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewController
 extension BlogDetailsViewController {
 
     @objc func makeDomainsDashboardViewController() -> UIViewController {
-        UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        let viewController = UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
+        viewController.extendedLayoutIncludesOpaqueBars = true
+        return viewController
     }
 }

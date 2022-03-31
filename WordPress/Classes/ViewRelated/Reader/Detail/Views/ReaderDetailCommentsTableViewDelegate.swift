@@ -1,3 +1,4 @@
+import UIKit
 /// Table View delegate to handle the Comments table displayed in Reader Post details.
 ///
 class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -5,8 +6,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     // MARK: - Private Properties
 
     private(set) var totalComments = 0
-    private var commentsEnabled = true
+    private var post: ReaderPost?
+    private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
+    private var headerView: ReaderDetailCommentsHeader?
 
     private var totalRows = 0
     private var hideButton = true
@@ -30,17 +33,28 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         }
     }
 
+    private var commentsEnabled: Bool {
+        return post?.commentsOpen ?? false
+    }
+
     // MARK: - Public Methods
 
-    func updateWith(comments: [Comment] = [],
+    func updateWith(post: ReaderPost,
+                    comments: [Comment] = [],
                     totalComments: Int = 0,
-                    commentsEnabled: Bool = true,
+                    presentingViewController: UIViewController,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
-        self.commentsEnabled = commentsEnabled
+        self.post = post
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
+        self.presentingViewController = presentingViewController
         self.buttonDelegate = buttonDelegate
+    }
+
+    func updateFollowButtonState(post: ReaderPost) {
+        self.post = post
+        headerView?.updateFollowButtonState(post: post)
     }
 
     // MARK: - Table Methods
@@ -79,22 +93,14 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader else {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader,
+              let post = post,
+              let presentingViewController = presentingViewController else {
             return nil
         }
 
-        header.titleLabel.text = {
-            switch totalComments {
-            case 0:
-                return Constants.comments
-            case 1:
-                return String(format: Constants.singularCommentFormat, totalComments)
-            default:
-                return String(format: Constants.pluralCommentsFormat, totalComments)
-            }
-        }()
-
-        header.addBottomBorder(withColor: .divider)
+        header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        headerView = header
         return header
     }
 
@@ -123,9 +129,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
-        static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let comments = NSLocalizedString("Comments", comment: "Comments table header label.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }

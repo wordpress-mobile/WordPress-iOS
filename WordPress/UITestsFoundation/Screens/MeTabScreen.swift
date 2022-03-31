@@ -20,7 +20,8 @@ public class MeTabScreen: ScreenObject {
 
         try super.init(
             expectedElementGetter: { $0.cells["appSettings"] },
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

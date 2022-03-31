@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+    case bloggingPrompts
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -11,18 +12,18 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case unifiedCommentsAndNotificationsList
-    case recommendAppToOthers
     case weeklyRoundup
     case weeklyRoundupStaticNotification
-    case newCommentDetail
+    case weeklyRoundupBGProcessingTask
     case domains
-    case followConversationViaNotifications
+    case timeZoneSuggester
     case aboutScreen
-    case newCommentThread
-    case postDetailsComments
-    case commentThreadModerationMenu
     case mySiteDashboard
+    case mediaPickerPermissionsNotice
+    case notificationCommentDetails
+    case statsPerformanceImprovements
+    case siteIntentQuestion
+    case landInTheEditor
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -31,6 +32,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
 
         switch self {
+        case .bloggingPrompts:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -49,32 +52,31 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .unifiedCommentsAndNotificationsList:
-            return true
-        case .recommendAppToOthers:
-            return true
         case .weeklyRoundup:
             return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
-        case .newCommentDetail:
-            // NOTE: only applies to My Site > Comments.
+        case .weeklyRoundupBGProcessingTask:
             return true
         case .domains:
             return false
-        case .followConversationViaNotifications:
+        case .timeZoneSuggester:
             return true
         case .aboutScreen:
             return true
-        case .newCommentThread:
-            return true
-        case .postDetailsComments:
-            return true
-        case .commentThreadModerationMenu:
-            return false
         case .mySiteDashboard:
-            return BuildConfiguration.current == .localDeveloper
+            return true
+        case .mediaPickerPermissionsNotice:
+            return true
+        case .notificationCommentDetails:
+            return true
+        case .statsPerformanceImprovements:
+            return true
+        case .siteIntentQuestion:
+            return false
+        case .landInTheEditor:
+            return false
         }
     }
 
@@ -101,6 +103,8 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
+        case .bloggingPrompts:
+            return "Blogging Prompts"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -119,30 +123,30 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .unifiedCommentsAndNotificationsList:
-            return "Unified List for Comments and Notifications"
-        case .recommendAppToOthers:
-            return "Recommend App to Others"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
             return "Weekly Roundup Static Notification"
-        case .newCommentDetail:
-            return "New Comment Detail"
+        case .weeklyRoundupBGProcessingTask:
+            return "Weekly Roundup BGProcessingTask"
         case .domains:
             return "Domain Purchases"
-        case .followConversationViaNotifications:
-            return "Follow Conversation via Notifications"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
         case .aboutScreen:
             return "New Unified About Screen"
-        case .newCommentThread:
-            return "New Comment Thread"
-        case .postDetailsComments:
-            return "Post Details Comments"
-        case .commentThreadModerationMenu:
-            return "Comment Thread Moderation Menu"
         case .mySiteDashboard:
             return "My Site Dashboard"
+        case .mediaPickerPermissionsNotice:
+            return "Media Picker Permissions Notice"
+        case .notificationCommentDetails:
+            return "Notification Comment Details"
+        case .statsPerformanceImprovements:
+            return "Stats Performance Improvements"
+        case .siteIntentQuestion:
+            return "Site Intent Question"
+        case .landInTheEditor:
+            return "Land In The Editor"
         }
     }
 

@@ -324,6 +324,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         if let authenticationHandler = authenticationHandler,
+           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
            authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
             return
         }
@@ -396,13 +397,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
         }
 
+        navigationController.delegate = epilogueViewController
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
-        if let authenticationHandler = authenticationHandler {
+        if let authenticationHandler = authenticationHandler,
+           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
             authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
             return
         }
@@ -512,12 +515,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Tracks a given Analytics Event.
     ///
     func track(event: WPAnalyticsStat) {
+        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event)
     }
 
     /// Tracks a given Analytics Event, with the specified properties.
     ///
     func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event, withProperties: properties)
     }
 
@@ -525,6 +530,24 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
+    }
+
+    // This is probably not the best place to put this assignment
+    // However, `signed_in` is tracked on WPAuthenticator pod
+    // (which is used by other apps)
+    // Here we capture the event in the case is triggered and assign it
+    // This should be removed once the experiment is done
+    //
+    private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
+        if event == .signedIn {
+            if FeatureFlag.mySiteDashboard.enabled {
+                let isTreatment = BlogDashboardAB.shared.variant == .treatment
+                MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
+
+                // Refresh analytics metadata to track the `default_tab_experiment` correctly
+                WPAnalytics.refreshMetadata()
+            }
+        }
     }
 }
 

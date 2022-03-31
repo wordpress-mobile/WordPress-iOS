@@ -17,7 +17,6 @@
 #import "BlogSiteVisibilityHelper.h"
 
 #import "CommentService.h"
-#import "CommentViewController.h"
 #import "CommentsViewController+Network.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
@@ -85,6 +84,7 @@
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
 #import "UIView+Subviews.h"
+#import "UIViewController+RemoveQuickStart.h"
 
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"

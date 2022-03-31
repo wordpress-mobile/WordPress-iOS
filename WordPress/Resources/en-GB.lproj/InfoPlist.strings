@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
-NSLocationWhenInUseUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
-NSCameraUsageDescription = "To take photos or videos to use in your posts.";
-NSPhotoLibraryUsageDescription = "To add photos or videos to your posts.";
-NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>To take photos or videos to use in your posts.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Enable microphone access to record sound in your videos.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To add photos or videos to your posts.</string>
+  </dict>
+</plist>

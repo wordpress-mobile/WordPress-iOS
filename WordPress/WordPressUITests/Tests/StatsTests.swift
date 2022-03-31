@@ -10,6 +10,7 @@ class StatsTests: XCTestCase {
         statsScreen = try MySiteScreen()
             .goToStatsScreen()
             .switchTo(mode: .insights)
+            .refreshStatsIfNeeded()
             .dismissCustomizeInsightsNotice()
     }
 
@@ -20,7 +21,6 @@ class StatsTests: XCTestCase {
     }
 
     let insightsStats: [String] = [
-        "35",
         "Views",
         "2,243",
         "Posts",

@@ -7,13 +7,27 @@ public class MediaPickerAlbumScreen: ScreenObject {
     }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [mediaCollectionGetter], app: app)
+        try super.init(
+            expectedElementGetters: [mediaCollectionGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func selectImage(atIndex index: Int) {
         let selectedImage = mediaCollectionGetter(app).cells.element(boundBy: index)
         XCTAssertTrue(selectedImage.waitForExistence(timeout: 5), "Selected image did not load")
         selectedImage.tap()
+    }
+
+    public func selectMultipleImages(_ numberOfImages: Int) {
+        var index = 0
+        while index < numberOfImages {
+            selectImage(atIndex: index)
+            index += 1
+        }
+
+        app.buttons["SelectedActionButton"].tap()
     }
 
     func insertSelectedImage() {

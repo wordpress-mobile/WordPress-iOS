@@ -27,12 +27,54 @@ extension CommentService {
             return
         }
 
-        // also fill in the `author` parameter, so the remote only returns comments authored by the current user.
-        remote.getCommentsV2(for: siteID, parameters: [.parent: parentID, .author: userID]) { remoteComments in
-            // return the most recent commentID (if any).
-            success(remoteComments.sorted { $0.date > $1.date }.first?.commentID ?? 0)
+        // If the current user does not have permission to the site, the `author` endpoint parameter is not permitted.
+        // Therefore, fetch all replies and filter for the current user here.
+        remote.getCommentsV2(for: siteID, parameters: [.parent: parentID]) { remoteComments in
+            // Filter for comments authored by the current user, and return the most recent commentID (if any).
+            success(remoteComments
+                        .filter { $0.authorID == userID }
+                        .sorted { $0.date > $1.date }.first?.commentID ?? 0)
         } failure: { error in
             failure(error)
+        }
+    }
+
+    /// Update the visibility of the comment's replies on the comment thread.
+    /// Note that this only applies to comments fetched from the Reader Comments section (i.e. has a reference to the `ReaderPost`).
+    ///
+    /// - Parameters:
+    ///   - ancestorComment: The ancestor comment that will have its reply comments iterated.
+    ///   - completion: The block executed after the replies are updated.
+    func updateRepliesVisibility(for ancestorComment: Comment, completion: (() -> Void)? = nil) {
+        guard let context = ancestorComment.managedObjectContext,
+              let post = ancestorComment.post as? ReaderPost,
+              let comments = post.comments as? Set<Comment> else {
+                  completion?()
+                  return
+              }
+
+        let isVisible = (ancestorComment.status == CommentStatusType.approved.description)
+
+        // iterate over the ancestor comment's descendants and update their visibility for the comment thread.
+        //
+        // the hierarchy property stores ancestral info by storing a string version of its comment ID hierarchy,
+        // e.g.: "0000000012.0000000025.00000000035". The idea is to check if the ancestor comment's ID exists in the hierarchy.
+        // as an optimization, skip checking the hierarchy when the comment is the direct child of the ancestor comment.
+        context.perform {
+            comments.filter { comment in
+                comment.parentID == ancestorComment.commentID
+                || comment.hierarchy
+                    .split(separator: ".")
+                    .compactMap({ Int32($0) })
+                    .contains(ancestorComment.commentID)
+            }.forEach { childComment in
+                childComment.visibleOnReader = isVisible
+            }
+
+            ContextManager.shared.save(context)
+            DispatchQueue.main.async {
+                completion?()
+            }
         }
     }
 }

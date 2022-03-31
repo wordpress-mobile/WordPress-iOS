@@ -160,35 +160,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
-
-        if FeatureFlag.postDetailsComments.enabled {
-            configureCommentsTable()
-        }
+        configureCommentsTable()
 
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+        // When comments are moderated or edited from the Comments view, update the Comments snippet here.
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        configureFeaturedImage()
-
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
-
-        guard !featuredImage.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
-        }
+        setupFeaturedImage()
+        updateFollowButtonState()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -243,10 +229,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
         fetchLikes()
-
-        if FeatureFlag.postDetailsComments.enabled {
-            fetchComments()
-        }
+        fetchComments()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -391,15 +374,34 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
+        guard let post = post else {
+            DDLogError("Missing post when updating Reader post detail comments.")
+            return
+        }
+
+        // Moderated comments could still be cached, so filter out non-approved comments.
+        let approvedStatus = Comment.descriptionFor(.approved)
+        let approvedComments = comments.filter({ $0.status == approvedStatus})
+
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
 
-        commentsTableViewDelegate.updateWith(comments: comments,
-                                              totalComments: totalComments,
-                                              commentsEnabled: toolbar.commentButton.isEnabled,
-                                              buttonDelegate: self)
+        commentsTableViewDelegate.updateWith(post: post,
+                                             comments: approvedComments,
+                                             totalComments: totalComments,
+                                             presentingViewController: self,
+                                             buttonDelegate: self)
+
         commentsTableView.reloadData()
+    }
+
+    private func updateFollowButtonState() {
+        guard let post = post else {
+            return
+        }
+
+        commentsTableViewDelegate.updateFollowButtonState(post: post)
     }
 
     deinit {
@@ -448,6 +450,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
                 self?.webViewHeight.constant = min(height, webViewHeight)
             })
+        }
+    }
+
+    private func setupFeaturedImage() {
+        configureFeaturedImage()
+
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
+
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
         }
     }
 
@@ -509,7 +529,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         view.setNeedsDisplay()
     }
 
-    private func fetchComments() {
+    @objc private func fetchComments() {
         guard let post = post else {
             return
         }

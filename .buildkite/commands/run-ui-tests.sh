@@ -24,7 +24,28 @@ install_gems
 echo "--- :cocoapods: Setting up Pods"
 install_cocoapods
 
-echo "--- 🧪 Testing"
+echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
+set +e
 bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+TESTS_EXIT_STATUS=$?
+set -e
+
+if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
+  # Keep the (otherwise collapsed) current "Testing" section open in Buildkite logs on error. See https://buildkite.com/docs/pipelines/managing-log-output#collapsing-output
+  echo "^^^ +++"
+  echo "UI Tests failed!"
+fi
+
+echo "--- 📦 Zipping test results"
+cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+
+echo "--- 🚦 Report Tests Exit Status"
+if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
+  echo "UI Tests seems to have passed (exit code 0). All good 👍"
+else
+  echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
+  echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
+fi
+exit $TESTS_EXIT_STATUS

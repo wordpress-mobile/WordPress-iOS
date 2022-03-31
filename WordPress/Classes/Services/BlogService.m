@@ -126,7 +126,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
 
     [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
@@ -347,6 +347,22 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 updateOnSuccess(settings);
             } failure:failure];
         }
+    }];
+}
+
+- (void)syncAuthorsForBlog:(Blog *)blog
+                    success:(void (^)(void))success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+
+    [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+        [self updateMultiAuthor:users forBlog:blogObjectID];
+        success();
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        failure(error);
     }];
 }
 
@@ -622,7 +638,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
     
     [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
 
