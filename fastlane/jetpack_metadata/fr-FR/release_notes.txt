@@ -1,0 +1,12 @@
+Les notifications de commentaires ont été remises au goût du jour avec un look clair et élégant. C’est le même que celui des commentaires de la section Mon site !  L’outil de démarrage rapide disponible dans le menu et le tableau de bord de votre site a lui aussi fait peau neuve.
+
+Si vous saisissez des caractères (autres que des chiffres ou des lettres) qui n’existent pas en anglais au moment où vous devez donner le nom de domaine de votre nouveau site, vous devriez désormais voir un message d’erreur plus précis qu’auparavant. Nous avons également apporté quelques retouches au message d’erreur concernant le chargement de contenu multimédia dans les blocs.
+
+Vous avez parfois des difficultés à différencier les images des GIF dans vos blocs d’images ? Ce n’est plus un problème : les GIF animés affichent désormais un badge distinctif.
+
+Nous avons également profité de ces mises à jour pour corriger certains bugs.
+
+- Bonne nouvelle pour tous les commentaires orphelins : nous avons éliminé le bug qui provoquait la suppression des réponses aux commentaires dont le parent était désapprouvé.
+- Lorsque vous passez d’un site à l’autre sur votre iPad, les éléments de navigation dans la colonne latérale ne changent plus. L’élément de menu que vous aviez sélectionné sur le site que vous venez de quitter continue de s’afficher.
+- La structure des blocs a changé pour permettre l’affichage des listes ordonnées dans l’éditeur.
+- Nous avons corrigé un problème de clavier qui affectait le processus de création des comptes WP.com. Si vous commencez à saisir un mot de passe de connexion pour un lien magique, puis que vous changez d’avis, vous pouvez fermer le clavier et continuer à travailler tranquillement.

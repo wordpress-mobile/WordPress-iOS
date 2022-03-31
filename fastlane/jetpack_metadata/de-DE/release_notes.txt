@@ -1,0 +1,12 @@
+Wir haben den Benachrichtigungen zu Kommentaren ein schickes neues Erscheinungsbild verpasst. (Möglicherweise kennst du es schon von Meine Website > Kommentare.) Das Schnellstart-Design im Menü deiner Website und deinem Dashboard hat ebenfalls einen neuen Look bekommen.
+
+Wenn du eine neue Website erstellst und den Domainnamen eingibst, wird dir jetzt eine präzisere Fehlermeldung angezeigt, solltest du dabei nicht-englische Zeichen verwenden, die keine Buchstaben oder Zahlen sind. Außerdem haben wir den Text bei Uploadfehlern in Blöcken zum Hochladen von Medien aktualisiert.
+
+Du bist dir nicht sicher, ob dein Bild-Block ein Bild oder ein GIF enthält? Darüber musst du dir nicht mehr den Kopf zerbrechen − animierte GIFs haben jetzt ein GIF-Badge.
+
+Zusätzlich haben wir beim Verbessern auch ein paar Fehler behoben.
+
+- Gute Nachrichten für alle verwaisten Kommentare: Wir haben einen Bug behoben, bei dem Antworten auf Kommentare verloren gingen, wenn die Genehmigung übergeordneter Kommentare widerrufen wurde.
+- Wenn du auf einem iPad zwischen Websites wechselst, wechseln die Navigationselemente der Seitenleiste nicht mehr mit. Du siehst denselben Menüeintrag, den du auf der vorherigen Website angezeigt hast.
+- Änderungen an den Blockeinstellungen für sortierte Listen werden jetzt im Editor angezeigt, nicht nur in der Vorschau.
+- Wir haben ein Tastaturproblem beim Erstellen von WP.com-Kontos behoben. Wenn du beim Eingeben des Passworts für einen magischen Link deine Meinung änderst, kannst du die Tastatur ausblenden und mit etwas anderem weitermachen.

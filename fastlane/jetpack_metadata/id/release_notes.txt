@@ -1,0 +1,12 @@
+Kami memperbarui Pemberitahuan Komentar dengan tampilan dan suasana baru yang menarik. (Anda dapat mengenalinya dari Komentar Situs Saya!) Desain Mulai Cepat di menu dan dasbor situs Anda juga hadir dengan tampilan baru.
+
+Ketika membuat situs baru dan memasukkan nama domain, Anda akan melihat pesan error yang lebih akurat jika Anda mencoba menggunakan karakter non-bahasa Inggris selain huruf atau angka. Kami menyesuaikan teks error saat mengunggah di blok unggah media.
+
+Tidak yakin apakah Anda melihat gambar atau GIF di blok Gambar Anda? Tidak usah bingung lagi karena animasi GIF kini dilengkapi lencana GIF.
+
+Kami juga memperbaiki bug secara internal.
+
+- Terkait dengan komentar tanpa induk, kami menyingkirkan bug yang menyebabkan hilangnya balasan komentar setelah komentar induk ditolak.
+- Jika berpindah antarsitus di perangkat iPad, Anda tidak perlu berpindah item navigasi bilah sisi. Anda akan melihat item menu yang sama dengan item menu di situs yang Anda buka sebelumnya.
+- Perubahan pengaturan blok pada daftar berurutan kini ditampilkan di editor, tidak hanya di Pratinjau.
+- Kami menyelesaikan masalah keyboard dalam proses pembuatan akun WP.com. Jika mulai memasukkan kata sandi tautan ajaib lalu berubah pikiran, Anda dapat mengabaikan keyboard dan melanjutkan.
