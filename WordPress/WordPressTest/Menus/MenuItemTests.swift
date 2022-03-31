@@ -15,6 +15,7 @@ class MenuItemTests: XCTestCase {
         context = nil
     }
 
+    /// Tests detection of descendants.
     func testIsDescendantOfItem() {
         let itemA = newMenuItem(named: "Item A")
         let itemB = newMenuItem(named: "Item B")
@@ -46,10 +47,11 @@ class MenuItemTests: XCTestCase {
         let fIsDescendantOfD = itemF.isDescendant(of: itemD)
         XCTAssertTrue(fIsDescendantOfD)
 
-        let fIsNotDescendantOfA = itemF.isDescendant(of: itemA)
-        XCTAssertFalse(fIsNotDescendantOfA)
+        let fIsDescendantOfA = itemF.isDescendant(of: itemA)
+        XCTAssertFalse(fIsDescendantOfA)
     }
 
+    /// Tests that the last descendant of an item is found.
     func testLastDescendantInOrderedItems() {
         let itemA = newMenuItem(named: "Item A")
         let itemB = newMenuItem(named: "Item B")
@@ -81,19 +83,17 @@ class MenuItemTests: XCTestCase {
         itemE.parent = itemD
         itemF.parent = itemD
 
-        /// Item B has a child, but is the last descendant of Item A
         let lastDescendant = itemA.lastDescendant(inOrderedItems: orderedItems)
         XCTAssertEqual(lastDescendant, itemB)
 
-        /// Item C has no descendants
         let descendantOfItemC = itemC.lastDescendant(inOrderedItems: orderedItems)
         XCTAssertEqual(descendantOfItemC, nil)
 
-        /// Item F should be the last descendant of Item D
         let descendantOfItemD = itemD.lastDescendant(inOrderedItems: orderedItems)
         XCTAssertEqual(descendantOfItemD, itemF)
     }
 
+    /// Tests that preceding siblings are found.
     func testPrecedingSiblingInOrderedItems() {
         let itemA = newMenuItem(named: "Item A")
         let itemB = newMenuItem(named: "Item B")
