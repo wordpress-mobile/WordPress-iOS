@@ -22,6 +22,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         WPStyleGuide.configureSearchBar(searchBar)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.backgroundColor = .clear
+        searchBar.searchTextField.returnKeyType = .search
         return searchBar
     }()
 
