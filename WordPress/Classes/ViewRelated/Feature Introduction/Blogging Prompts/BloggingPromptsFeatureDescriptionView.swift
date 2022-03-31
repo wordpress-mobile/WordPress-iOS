@@ -46,7 +46,7 @@ private extension BloggingPromptsFeatureDescriptionView {
 
         attributedString.append(.init(string: Strings.noteLabel,
                                       attributes: [.foregroundColor: Style.textColor,
-                                                   .font: UIFont.preferredFont(forTextStyle: .caption1).semibold()]))
+                                                   .font: UIFont.preferredFont(forTextStyle: .caption1).bold()]))
 
         attributedString.append(.init(string: " " + Strings.noteText,
                                       attributes: [.foregroundColor: Style.textColor,
