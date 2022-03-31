@@ -24,8 +24,6 @@ import WordPressShared
         return "nonexistent"
     }
 
-    // MARK: - Init
-
     func setDefaultSection(_ tab: MySiteViewController.Section) {
         userDefaults.set(tab.rawValue, forKey: Constants.defaultSectionKey)
         WPAnalytics.track(.mySiteDefaultTabExperimentVariantAssigned, properties: ["default_tab_experiment": experimentAssignment])
