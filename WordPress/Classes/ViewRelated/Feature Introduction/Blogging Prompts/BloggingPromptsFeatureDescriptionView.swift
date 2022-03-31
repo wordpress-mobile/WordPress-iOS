@@ -14,11 +14,6 @@ class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
     open override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
-
-        // Recreate Note attributed string when text size changes.
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(configureNoteText),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
 }
@@ -41,8 +36,11 @@ private extension BloggingPromptsFeatureDescriptionView {
         configureNoteText()
     }
 
-    @objc func configureNoteText() {
+    func configureNoteText() {
         let attributedString = NSMutableAttributedString()
+
+        // These attributed string styles cannot be stored statically (i.e. in the Style enum).
+        // They must be dynamic to resize correctly when the text size changes.
 
         attributedString.append(.init(string: Strings.noteLabel,
                                       attributes: [.foregroundColor: Style.textColor,
