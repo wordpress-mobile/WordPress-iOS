@@ -53,7 +53,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // Flag indicating if the action button stack view (selectedStateButtonsContainer) is vertical.
     // Used when calculating the footer height.
-    private var verticalActionButtons: Bool = false
+    private var usesVerticalActionButtons: Bool = false
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -85,7 +85,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         var height = verticalMargins + buttonHeight + verticalMargins + safeArea
 
-        if verticalActionButtons {
+        if usesVerticalActionButtons {
             height += (buttonHeight + selectedStateButtonsContainer.spacing)
         }
 
@@ -470,7 +470,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// - The selectedStateButtonsContainer axis is set to vertical.
     /// - The primaryActionButton is moved to the top of the stack view.
     func configureVerticalButtonView() {
-        verticalActionButtons = true
+        usesVerticalActionButtons = true
         itemSelectionChanged(true)
         selectedStateButtonsContainer.axis = .vertical
 
