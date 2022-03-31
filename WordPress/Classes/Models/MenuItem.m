@@ -94,7 +94,7 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
 /**
  Traverse the orderedItems for parent items equal to self or that are a descendant of self (a child of a child).
  */
-- (MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems
+- (nullable MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems
 {
     MenuItem *lastChildItem = nil;
     NSUInteger parentIndex = [orderedItems indexOfObject:self];
@@ -118,7 +118,7 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
 /**
  Return a sibling that precedes self, or nil if one wasn't found.
  */
-- (MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems
+- (nullable MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems
 {
     for (NSUInteger idx = [orderedItems indexOfObject:self]; idx > 0; idx--) {
         MenuItem *previousItem = [orderedItems objectAtIndex:idx - 1];

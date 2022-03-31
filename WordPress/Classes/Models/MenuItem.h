@@ -105,7 +105,7 @@ extern NSString * const MenuItemLinkTargetBlank;
  @param orderedItems an ordered set of items nested top-down as a parent followed by children. (as returned from the Menus API)
  @returns MenuItem the last child of self to occur in the ordered set.
  */
-- (MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems;
+- (nullable MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems;
 
 /**
  The item's name is nil, empty, or the default string.
@@ -118,7 +118,7 @@ extern NSString * const MenuItemLinkTargetBlank;
  @param orderedItems an ordered set of items nested top-down as a parent followed by children. (as returned from the Menus API)
  @returns MenuItem sibling that precedes self, or nil if there is not one.
  */
-- (MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems;
+- (nullable MenuItem *)precedingSiblingInOrderedItems:(NSOrderedSet *)orderedItems;
 
 @end
 
