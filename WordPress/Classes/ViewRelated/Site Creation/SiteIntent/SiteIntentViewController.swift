@@ -73,7 +73,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
         largeTitleView.numberOfLines = Metrics.largeTitleLines
         SiteCreationAnalyticsHelper.trackSiteIntentViewed()
-
+        observeKeyboard()
     }
 
     override func viewDidLayoutSubviews() {
