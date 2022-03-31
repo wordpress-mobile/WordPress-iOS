@@ -21,6 +21,11 @@ final class BlogDashboardViewController: UIViewController {
         return collectionView
     }()
 
+    /// The "My Site" main scroll view
+    var mySiteScrollView: UIScrollView? {
+        return view.superview?.superview as? UIScrollView
+    }
+
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
