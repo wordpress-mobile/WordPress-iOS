@@ -1,5 +1,5 @@
 
-class AnnouncementCell: UITableViewCell {
+class AnnouncementCell: AnnouncementTableViewCell {
 
     // MARK: - View elements
     private lazy var headingLabel: UILabel = {

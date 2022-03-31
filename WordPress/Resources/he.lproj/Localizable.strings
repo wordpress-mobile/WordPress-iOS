@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-10 09:54:17+0000 */
+/* Translation-Revision-Date: 2022-03-25 16:54:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -1363,6 +1363,9 @@ translators: Block name. %s: The localized block name */
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "יש לבדוק את תיבת האימייל!";
 
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "יש לבדוק את החיבור לאינטרנט ולמשוך כדי לרענן את העמוד.";
+
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "יש לבדוק את החיבור לרשת ולנסות שוב, או ליצור עמוד ריק.";
 
@@ -1939,6 +1942,9 @@ translators: Block name. %s: The localized block name */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "לא ניתן לבטל את הסימון כ'זבל'";
+
+/* Content show when the dashboard fails to load */
+"Couldn't update. Check that you're online and refresh." = "לא ניתן היה לעדכן. יש לוודא שהחיבור לאינטרנט פעיל ולרענן את העמוד.";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "שגיאה בהעלאת תמונה ראשית";
@@ -3025,6 +3031,9 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "שילוב פירטי המדיה נכשל.\n יש להקיש לאפשרויות.";
 
 /* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "ההוספה של המדיה נכשלה.\nיש להקיש לפרטים נוספים.";
+
+/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "שמירת קבצים נכשלה.\nיש להקיש לאפשרויות.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3643,6 +3652,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "מידע על קורסים ואירועים ב-WordPress.com (ברשת ופרונטלי).";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "מסך ראשוני";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "מתחילים את תהליך השחזור";
@@ -6773,6 +6786,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "בבלוקים מסוימים יש הגדרות נוספות. יש להקיש על סמל ההגדרות בפינה הימנית התחתונה של הבלוק כדי להציג את האפשרויות הנוספות.";
 
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "חלק מהנתונים לא נטענו";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "מספר טעינות מדיה נכשלו. פעולה זו תסיר את כל המדיה שנכשלה מהפוסט.\nלשמור בכל זאת?";
 
@@ -7493,6 +7509,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "אפליקציה זו זקוקה להרשאה כדי לגשת לספריית המדיה במכשיר שלך ולהוסיף תמונות ו\/או סרטוני וידאו לפוסטים שלך. יש לשנות את הגדרות הפרטיות אם ברצונך לאפשר זאת.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "ייתכן ששילוב הצבעים הזה יהיה מאתגר לקריאה עבור אנשים מסוימים. אנחנו ממליצים לנסות צבע רקע בהיר יותר ו\/או צבע טקסט כהה יותר.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "ייתכן ששילוב הצבעים הזה יהיה מאתגר לקריאה עבור אנשים מסוימים. אנחנו ממליצים לנסות צבע רקע כהה יותר ו\/או צבע טקסט בהיר יותר.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "הדומיין לא זמין";
@@ -9147,6 +9169,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "השחזור שלך אורך יותר זמן מהצפוי, מומלץ לבדוק שוב בעוד מספר דקות.";
 
+/* This is shown to the user when their domain search query contains invalid characters. */
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "החיפוש שלך כולל תווים שלא נתמכים בדומיינים של WordPress.com. התווים הבאים מותרים: A–Z‏, a–z,‏ 0–9.";
+
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "עם הכניסה לאתר בדפדפן Safari, כתובת האתר שלך תופיע בסרגל העליון של המסך.";
 
@@ -9283,6 +9308,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "תחת 'שדרוג'";
+
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
+"infoplist.NSCameraUsageDescription" = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
+"infoplist.NSMicrophoneUsageDescription" = "עליך לאפשר גישה למיקרופון כדי להקליט סאונד בקובצי ווידאו.";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
+"infoplist.NSPhotoLibraryUsageDescription" = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "לשמור כטיוטה";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "לשמור כטיוטה";
+
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "יש ${count} אפשרויות שתואמות לנתון ‘${site}’.";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "אתר";
+
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "אתר";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "יש לבחור אתר";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "אנחנו רוצים לוודא, האם התכוונת לרשום ‘${site}’?";
 
 /* Later today */
 "later today" = "מאוחר יותר היום";

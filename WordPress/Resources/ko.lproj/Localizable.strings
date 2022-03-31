@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-24 12:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-25 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -1355,7 +1355,7 @@ translators: Block name. %s: The localized block name */
 "Check your email!" = "이메일을 확인바랍니다!";
 
 /* Subtitle shown on the dashboard when it fails to load */
-"Check your internet connection and pull to refresh." = "인터넷 연결을 확인하고 끌어서 새로고침을 하세요.";
+"Check your internet connection and pull to refresh." = "인터넷 연결을 확인하고 끌어서 페이지를 새로 고치세요.";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "네트워크 연결을 확인하고 다시 시도하거나 빈 페이지를 만드세요.";
@@ -1935,7 +1935,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't unmark as spam" = "스팸 표시를 취소할 수 없음";
 
 /* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "업데이트할 수 없습니다. 온라인 상태인지 확인하고 새로고침을 하세요.";
+"Couldn't update. Check that you're online and refresh." = "업데이트할 수 없습니다. 온라인 상태인지 확인하고 페이지를 새로 고치세요.";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "특성 이미지를 업로드 할 수 없습니다";
@@ -9297,10 +9297,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
 
 /* This sentence is shown when the app asks permission from the user to use their location. */
-"infoplist.NSLocationUsageDescription" = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+"infoplist.NSLocationUsageDescription" = "워드프레스에서 위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
 
 /* This sentence is shown when the app asks permission from the user to use their location. */
-"infoplist.NSLocationWhenInUseUsageDescription" = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+"infoplist.NSLocationWhenInUseUsageDescription" = "워드프레스에서 위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
 
 /* Sentence to justify why the app asks permission from the user to access the device microphone. */
 "infoplist.NSMicrophoneUsageDescription" = "비디오에 소리를 녹음하려면 마이크 접근을 활성화하세요.";
@@ -9314,23 +9314,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "임시글로 저장";
 
-/* MARK: - Sites.strings */
-"ios-widget.BOl9KQ" = "‘${site}’과(와) 일치하는 ${count}개 옵션이 있습니다.";
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "‘${site}’과(와) 일치하는 옵션이 ${count}개 있습니다.";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "사이트";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "ios-widget.cyajMn" = "사이트";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "사이트 선택";
 
-/* No comment provided by engineer. */
-"ios-widget.s4dJhx" = "단지 ‘${site}’을(를) 확인해 보고 싶으신가요?";
-
-/* No comment provided by engineer. */
-"ios-widget.tVvJ9c" = "사이트 의도 선택";
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "‘${site}’을(를) 원하시나요?";
 
 /* Later today */
 "later today" = "오늘 중";

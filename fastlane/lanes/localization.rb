@@ -236,8 +236,10 @@ platform :ios do
     release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
+    metadata_path = File.join(metadata_directory, '**', '*.txt')
+    git_add(path: metadata_path, shell_escape: true)
     git_commit(
-      path: File.join(metadata_directory, '**', '*.txt'),
+      path: metadata_path,
       message: 'Update WordPress metadata translations',
       allow_nothing_to_commit: true
     )
@@ -260,8 +262,10 @@ platform :ios do
     release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
+    metadata_path = File.join(metadata_directory, '**', '*.txt')
+    git_add(path: metadata_path, shell_escape: true)
     git_commit(
-      path: File.join(metadata_directory, '**', '*.txt'),
+      path: metadata_path,
       message: 'Update Jetpack metadata translations',
       allow_nothing_to_commit: true
     )

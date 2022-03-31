@@ -1,0 +1,12 @@
+Yorum Bildirimlerini şık ve yeni bir görünüm güncelledik. (Sitem Yorumlarından tanıyabilirsiniz!) Site menünüzdeki ve panonuzdaki Hızlı Başlangıç tasarımı da yeni bir görünümle göz alıyor.
+
+Yeni bir site oluştururken ve alan adını girerken, harf veya sayı olmayan İngilizce dışı karakterler kullanmaya çalıştığınızda artık daha doğru bir hata mesajı göreceksiniz. Ayrıca medya yükleme bloklarındaki yükleme hatası metninde ince ayar yaptık.
+
+Görsel blokunuzda bir görsele mi yoksa GIF'e mi baktığınızdan emin değil misiniz? Bundan sonra merak etmenize gerek yok; animasyonlu GIF'lerde artık bir GIF rozeti var.
+
+Elimiz değişmişken birkaç hata düzeltmesi daha yaptık.
+
+- Tek kalmış yorumlar için iyi bir haberimiz var; ana yorumlar onaylandıktan sonra yorum yanıtlarının kaybolmasına neden olan bir hatayı düzelttik.
+- Bir iPad'de siteler arasında geçiş yaptığınızda, kenar çubuğu gezinme öğeleri arasında da geçiş yapmayacaksınız. Önceki sitede bıraktığınız aynı menü öğesini göreceksiniz.
+- Sıralı listelerdeki blok ayarı değişiklikleri artık yalnızca Önizleme'de değil, düzenleyicide de görünüyor.
+- WP.com hesabı oluşturma sürecinde bir klavye sorununu düzelttik. Bir sihirli bağlantı şifresi girmeye başlar ve fikrinizi değiştirirseniz, klavyeyi kapatıp gününüze devam edebilirsiniz.

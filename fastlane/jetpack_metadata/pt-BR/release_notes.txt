@@ -1,0 +1,12 @@
+Agora as notificações de comentários contam com uma aparência nova e sofisticada (talvez você as conheça de Comentários do meu site). O design do início rápido no menu e no painel do seu site também está de cara nova.
+
+Ao criar um novo site e inserir um domínio, agora você verá uma mensagem de erro mais precisa se tentar usar caracteres não latinos que não sejam letras ou números. Também ajustamos o texto do erro de upload nos blocos de upload de mídia.
+
+Não tem certeza se está vendo uma imagem ou um GIF no bloco de imagem? Não precisa mais ficar na dúvida. Agora os GIFs animados vêm com um emblema de GIF.
+
+Aproveitamos também para fazer algumas correções de bug.
+
+- Boas notícias para quem estava dando falta de comentários: acabamos com um bug que sumia com respostas a comentários quando os comentários principais não eram aprovados.
+- Os itens de navegação da barra lateral não serão afetados quando você trocar de site em um iPad. Você continuará vendo o mesmo item de menu que via no site anterior.
+- Agora as alterações de configuração de bloco em listas ordenadas aparecem não só em Visualização, mas também no editor.
+- Corrigimos um erro de teclado que ocorria no processo de criação de conta do WP.com. Se você começar a inserir uma senha usando um link mágico e mudar de ideia, poderá fechar o teclado e seguir com a vida.
