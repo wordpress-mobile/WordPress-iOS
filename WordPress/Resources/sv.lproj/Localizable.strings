@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-22 06:27:43+0000 */
+/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -1362,6 +1362,9 @@ translators: Block name. %s: The localized block name */
 
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Kolla din e-post!";
+
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "Kontrollera din internetanslutning och dra för att uppdatera.";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Kontrollera din nätverksanslutning och försök igen. Eller skapa en tom sida.";
@@ -3649,6 +3652,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Information om kurser och evenemang på WordPress.com (online och fysiska möten).";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "Initial skärm";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Initierar återställningsprocessen";
@@ -6779,6 +6786,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Vissa block har ytterligare inställningar. Tryck på ikonen för inställningar i blockets nedre högra hörn för att se fler alternativ.";
 
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "Viss data kunde inte läsas in";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Uppladdning av vissa mediefiler misslyckades. Om du fortsätter med den här åtgärden kommer de mediefiler som inte laddats upp inte med i inlägget.\nSpara ändå?";
 
@@ -9302,6 +9312,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.";
 
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
+
 /* Sentence to justify why the app asks permission from the user to access the device microphone. */
 "infoplist.NSMicrophoneUsageDescription" = "Aktivera mikrofonåtkomst för att spela in ljud i dina videoklipp.";
 
@@ -9314,14 +9330,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Spara som utkast";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "Det finns ${count} alternativ som matchar \"${site}\".";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Webbplats";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "ios-widget.cyajMn" = "Webbplats";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Välj webbplats";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "Bara för att bekräfta, du önskade \"${site}\"?";
 
 /* Later today */
 "later today" = "senare idag";
