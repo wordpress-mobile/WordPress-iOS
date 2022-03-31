@@ -10,7 +10,11 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         }
     }
 
-    private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals
+    private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
+        didSet {
+            contentSizeWillChange()
+        }
+    }
 
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
