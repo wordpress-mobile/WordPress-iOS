@@ -237,6 +237,7 @@ platform :ios do
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
     metadata_path = File.join(metadata_directory, '**', '*.txt')
+    git_add(path: metadata_path, shell_escape: true)
     git_commit(
       path: metadata_path,
       message: 'Update WordPress metadata translations',
@@ -262,6 +263,7 @@ platform :ios do
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
 
     metadata_path = File.join(metadata_directory, '**', '*.txt')
+    git_add(path: metadata_path, shell_escape: true)
     git_commit(
       path: metadata_path,
       message: 'Update Jetpack metadata translations',
