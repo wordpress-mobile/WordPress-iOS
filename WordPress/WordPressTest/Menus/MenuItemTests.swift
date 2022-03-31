@@ -15,6 +15,41 @@ class MenuItemTests: XCTestCase {
         context = nil
     }
 
+    func testIsDescendantOfItem() {
+        let itemA = newMenuItem(named: "Item A")
+        let itemB = newMenuItem(named: "Item B")
+        let itemC = newMenuItem(named: "Item C")
+        let itemD = newMenuItem(named: "Item D")
+        let itemE = newMenuItem(named: "Item E")
+        let itemF = newMenuItem(named: "Item F")
+
+        /*
+         Item A
+         -- Item B
+         ---- Item C
+         Item D
+         -- Item E
+         -- Item F
+         */
+
+        itemB.parent = itemA
+        itemC.parent = itemB
+        itemE.parent = itemD
+        itemF.parent = itemD
+
+        let bIsDescendantOfA = itemB.isDescendant(of: itemA)
+        XCTAssertTrue(bIsDescendantOfA)
+
+        let cIsDescendantOfA = itemC.isDescendant(of: itemA)
+        XCTAssertTrue(cIsDescendantOfA)
+
+        let fIsDescendantOfD = itemF.isDescendant(of: itemD)
+        XCTAssertTrue(fIsDescendantOfD)
+
+        let fIsNotDescendantOfA = itemF.isDescendant(of: itemA)
+        XCTAssertFalse(fIsNotDescendantOfA)
+    }
+
     func testLastDescendantInOrderedItems() {
         let itemA = newMenuItem(named: "Item A")
         let itemB = newMenuItem(named: "Item B")
