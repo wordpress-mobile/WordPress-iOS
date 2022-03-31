@@ -1,6 +1,6 @@
 import Foundation
 
-struct SiteIntentVertical {
+struct SiteIntentVertical: Equatable {
     let slug: String
     let localizedTitle: String
     let emoji: String
