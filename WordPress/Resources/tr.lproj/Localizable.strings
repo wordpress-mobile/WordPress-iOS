@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-11 11:54:08+0000 */
+/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -1363,6 +1363,9 @@ translators: Block name. %s: The localized block name */
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "E-postanızı kontrol edin!";
 
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "İnternet bağlantınızı kontrol edin ve yenilemek için çekin.";
+
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Ağ bağlantınızı kontrol edip tekrar deneyin veya bir boş sayfa oluşturun.";
 
@@ -1939,6 +1942,9 @@ translators: Block name. %s: The localized block name */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Spam işareti kaldırılamadı";
+
+/* Content show when the dashboard fails to load */
+"Couldn't update. Check that you're online and refresh." = "Güncellenemedi. Çevrimiçi olup olmadığınızı kontrol edin ve yenileyin.";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Öne çıkan görsel yüklenemedi";
@@ -3025,6 +3031,9 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "Ortam eklenemedi.\n Lütfen seçenekler için dokunun.";
 
 /* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "Medya eklenemedi.\nDaha fazla bilgi için dokunun.";
+
+/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Dosyalar kaydedilemedi.\nSeçenekler için lütfen dokunun.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3643,6 +3652,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "WordPress.com kursları ve etkinlikleri hakkında bilgi (çevrimiçi ve bire bir).";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "İlk Ekran";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Geri yükleme süreci başlatılıyor";
@@ -6773,6 +6786,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Bazı blokların ek ayarları vardır. Daha fazla seçenek görüntülemek için blokun sağ alt kısmındaki ayarlar simgesine dokunun.";
 
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "Bazı veriler yüklenmedi";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Bazı görsel yüklemeleri başarısız oldu. Bu eylem, başarısız olan görsellerin  tümünü gönderiden kaldıracak.\nYine de kaydedilsin mi?";
 
@@ -7493,6 +7509,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Bu uygulama yazılarınıza fotoğraf ve\/veya video eklemek için cihazınızın görsel kitaplığa erişim izni istiyor. Buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Bu renk birleşimi insanların okuması zor olabilir. Daha parlak bir arka plan ve\/veya daha koyu bir metin rengi kullanmayı deneyin.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Bu renk kombinasyonu insanların okuması zor olabilir. Daha parlak bir arka plan ve\/veya daha koyu bir metin rengi kullanmayı deneyin.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Bu alan adı kullanılamaz";
@@ -9147,6 +9169,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Geri yüklemeniz normalden uzun sürüyor, lütfen birkaç dakika sonra tekrar kontrol edin.";
 
+/* This is shown to the user when their domain search query contains invalid characters. */
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Aramanız, WordPress.com alan adlarında desteklenmeyen karakterler içeriyor. Aşağıdaki karakterlere izin verilir: A–Z, a–z, 0–9.";
+
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sitenizin adresi Safari ile sitenizi ziyaret ettiğinizde tepede görüntülenir.";
 
@@ -9283,6 +9308,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "\"Güncelleme\" içinde";
+
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
+"infoplist.NSCameraUsageDescription" = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki yazılara konumunuzu eklemek istiyor.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki yazılara konumunuzu eklemek istiyor.";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
+"infoplist.NSMicrophoneUsageDescription" = "Videolarınızdaki sesleri kaydetmek için mikrofon erişimini etkinleştir.";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
+"infoplist.NSPhotoLibraryUsageDescription" = "Yazılarınızda fotoğraf veya video eklemek için.";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "Taslak olarak kaydet";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "Taslak olarak kaydet";
+
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "‘${site}’ ile eşleşen '${count}' seçenekleri var.";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "Site";
+
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "Site";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Site seçin";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "‘${site}’ istediğinizden emin misiniz?";
 
 /* Later today */
 "later today" = "bugün daha sonra";

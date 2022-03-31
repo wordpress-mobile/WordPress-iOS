@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-11 09:05:09+0000 */
+/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -3643,6 +3643,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informatie over cursussen en evenementen van WordPress.com (online en op locatie).";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "Initial Screen";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Het terugzetproces aan het starten";

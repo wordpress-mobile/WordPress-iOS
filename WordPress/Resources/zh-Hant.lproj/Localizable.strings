@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-10 22:21:56+0000 */
+/* Translation-Revision-Date: 2022-03-25 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -1353,6 +1353,9 @@ translators: Block name. %s: The localized block name */
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "請檢查你的電子郵件！";
 
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "請檢查你的網際網路連線，並拖動以重新整理。";
+
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "請檢查你的網路連線並再試一次，或建立空白頁面。";
 
@@ -1925,6 +1928,9 @@ translators: Block name. %s: The localized block name */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "無法取消垃圾訊息的標示";
+
+/* Content show when the dashboard fails to load */
+"Couldn't update. Check that you're online and refresh." = "無法更新。 請確認你為上線狀態並重新整理。";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "無法上傳特色圖片";
@@ -2993,6 +2999,9 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "未能添加媒體\n請輕觸螢幕查看其他選項。";
 
 /* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "無法插入媒體。\n點選以瞭解更多資訊。";
+
+/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "存檔失敗。\n請點選以顯示選項。";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3611,6 +3620,10 @@ translators: Block name. %s: The localized block name */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "WordPress.com 課程與活動相關資訊 (線上和專人洽詢)。";
+
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "初始畫面";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "初始化還原程序";
@@ -6738,6 +6751,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "有些區塊具有其他設定。 請點選區塊右下角的設定圖示以檢視更多選項。";
 
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "部分資料未載入";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
 
@@ -7455,6 +7471,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "此應用程式需要權限才能存取你的裝置媒體庫，以便在你的文章中新增相片和\/或影片。若你希望允許此應用程式功能，請變更隱私設定。";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "此色彩組合可能讓人難以閱讀。 請嘗試更亮的背景顏色和\/或較深的文字顏色。";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "此色彩組合可能讓人難以閱讀。 請嘗試更深的背景顏色和\/或較亮的文字顏色。";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "此網域不可使用";
@@ -9096,6 +9118,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "還原的時間比平常更長，請在數分鐘後再返回查看。";
 
+/* This is shown to the user when their domain search query contains invalid characters. */
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "你的搜尋包含 WordPress.com 網域不支援的字元。 允許使用以下字元：A–Z、a–z、0–9。";
+
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "當你使用 Safari 造訪自己的網站時，網站位址會顯示在畫面上方的網址列中。";
 
@@ -9232,6 +9257,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "在「升級」中";
+
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
+"infoplist.NSCameraUsageDescription" = "拍些相片或影片供文章使用。";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress 想要在你已啟用地理位置標誌功能的網站上，將你的位置新增至網站上的文章。";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress 想要在你已啟用地理位置標誌功能的網站上，將你的位置新增至網站上的文章。";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
+"infoplist.NSMicrophoneUsageDescription" = "請啟用麥克風權限，以錄製影片音效。";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
+"infoplist.NSPhotoLibraryUsageDescription" = "在你的文章中新增相片或影片。";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "儲存為草稿";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "儲存為草稿";
+
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "有 ${count} 個選項和「${site}」相符。";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "網站";
+
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "網站";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "選取網站";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "確認一下，你想要的是「${site}」嗎？";
 
 /* Later today */
 "later today" = "今日稍晚";

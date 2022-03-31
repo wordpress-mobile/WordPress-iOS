@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-22 16:18:07+0000 */
+/* Translation-Revision-Date: 2022-03-30 16:31:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -3734,7 +3734,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Prezentăm Articole narațiune";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Adresă email invalidă";
+"Invalid Email Address" = "Adresa de email este invalidă";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Adresa site-ului este invalidă";
@@ -5312,7 +5312,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid email address for a WordPress.com account." = "Te rog introdu o adresă de email validă pentru un cont WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Te rog introdu o adresă de email validă.";
+"Please enter a valid email address." = "Te rog să introduci o adresă de email validă.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Te rog introdu un număr de telefon valid";
@@ -9333,23 +9333,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Salvează ca ciornă";
 
-/* MARK: - Sites.strings */
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
 "ios-widget.BOl9KQ" = "Există ${count} opțiuni care se potrivesc cu „${site}”.";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Site";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "ios-widget.cyajMn" = "Site";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Selectează site-ul";
 
-/* No comment provided by engineer. */
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Trebuie să confirmi, ai vrut „${site}”?";
-
-/* No comment provided by engineer. */
-"ios-widget.tVvJ9c" = "Selectează scopul site-ului";
 
 /* Later today */
 "later today" = "azi, mai târziu";
