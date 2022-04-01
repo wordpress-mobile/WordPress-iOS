@@ -15,7 +15,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let sitePromptTopMargin      = CGFloat(25)
     }
 
-    override var seperatorStyle: SeperatorStyle {
+    override var separatorStyle: SeparatorStyle {
         return .hidden
     }
 

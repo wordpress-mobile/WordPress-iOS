@@ -26,7 +26,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         return searchBar
     }()
 
-    override var seperatorStyle: SeperatorStyle {
+    override var separatorStyle: SeparatorStyle {
         return .hidden
     }
 
