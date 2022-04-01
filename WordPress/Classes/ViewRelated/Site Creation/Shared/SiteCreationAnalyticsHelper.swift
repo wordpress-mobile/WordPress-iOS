@@ -26,12 +26,11 @@ class SiteCreationAnalyticsHelper {
 
     static func trackSiteIntentSelected(_ vertical: SiteIntentVertical) {
         let properties = [verticalSlugKey: vertical.slug]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionVerticalSelected, properties: properties)
-    }
+        let event: WPAnalyticsEvent = vertical.isCustom ?
+            .enhancedSiteCreationIntentQuestionCustomVerticalSelected :
+            .enhancedSiteCreationIntentQuestionVerticalSelected
 
-    static func trackSiteIntentContinuePressed(_ term: String) {
-        let properties = [verticalSearchTerm: term]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionContinuePressed, properties: properties)
+        WPAnalytics.track(event, properties: properties)
     }
 
     static func trackSiteIntentSearchFocused() {
