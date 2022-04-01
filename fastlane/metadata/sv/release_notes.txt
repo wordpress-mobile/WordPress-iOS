@@ -1,0 +1,12 @@
+Vi har uppdaterat utseendet och känslan på kommentarsnotiserna. (Du kanske känner igen det från Mina webbplatskommentarer) Snabbstartsdesignen i din webbplatsmeny och adminpanel har också fått ett nytt utseende.
+
+När du skapar en ny webbplats och anger domännamnet bör du nu se ett mer korrekt felmeddelande om du försöker använda icke-engelska tecken som inte är bokstäver eller siffror. Vi har även ändrat texten för uppladdningsfel i mediauppladdningsblock.
+
+Är du osäker på om ditt bildblock innehåller en bild eller en GIF? Du behöver inte undra längre – animerade GIF-bilder har nu ett GIF-märke.
+
+Vi har dessutom åtgärdat ett antal buggar i bakgrunden.
+
+- Goda nyheter för alla föräldralösa kommentarer där ute — vi har åtgärdat en bugg som gjorde att kommentarssvar gick förlorade om godkännande av deras överordnade kommentarer ångrades.
+- När du växlar mellan webbplatser på en iPad kommer du inte längre att växla mellan navigeringsobjekt i sidopanelen. Du kommer att se samma menyval som på den föregående webbplatsen.
+- Blockinställningsändringar av sorterade listor visas nu i redigeraren, inte bara i förhandsgranskningen.
+- Vi har åtgärdat ett tangentbordsproblem som uppstod under kontoskapandeprocessen på WP.com. Om du börjar ange ett lösenord för en magisk länk och ändrar dig kan du nu gömma tangentbordet och fortsätta med din dag.

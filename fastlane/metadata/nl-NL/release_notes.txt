@@ -1,0 +1,12 @@
+We hebben de meldingen bij opmerkingen een chique nieuwe uitstraling gegeven. (Je herkent deze misschien wel van Mijn site-opmerkingen!) Het ontwerp van Snelstart in je sitemenu en het dashboard is ook voorzien van een nieuwe look.
+
+Wanneer je een nieuwe site aanmaakt en de domeinnaam invoert, zou je een meer nauwkeurige foutmelding moeten zien wanneer je niet-Engelse tekens wilt gebruiken die geen letters of cijfers zijn. Ook hebben we de tekst van uploadfouten in media-uploadblokken aangepast.
+
+Weet je niet zeker of je een afbeelding of een GIF voor je hebt in je Afbeeldingblok? Je hoeft het je niet langer af te vragen – bewegende GIF's zijn nu voorzien van een GIF-badge.
+
+We hebben ook wat bugs verholpen; we waren immers toch aan het sleutelen.
+
+- Goed nieuws voor alle losse opmerkingen — we hebben een bug verholpen waardoor reacties op opmerkingen verloren gingen wanneer de bovenliggende opmerkingen niet werden goedgekeurd.
+- Wanneer je tussen sites schakelt op een iPad, schakel je niet ook tussen navigatie-items in de zijbalk. Je ziet hetzelfde menu-item dat je hebt achtergelaten op de vorige site.
+- Gewijzigde blokinstellingen naar geordende lijsten verschijnen nu in de editor, niet alleen in Voorbeeldweergave.
+- We hebben een probleem met het toetsenbord opgelost tijdens het aanmaakproces van WP.com-accounts. Als je een magisch koppelwachtwoord invoert en van gedachten verandert, kun je het toetsenbord negeren en verder gaan.
