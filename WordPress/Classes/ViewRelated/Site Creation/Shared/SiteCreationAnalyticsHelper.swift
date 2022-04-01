@@ -1,11 +1,55 @@
 import Foundation
 import WordPressKit
 
+extension SiteIntentAB.Variant {
+    var tracksProperty: String {
+        switch self {
+        case .treatment: return "treatment"
+        case .control: return "control"
+        }
+    }
+}
+
 class SiteCreationAnalyticsHelper {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
+    private static let verticalSlugKey = "vertical_slug"
+    private static let verticalSearchTerm = "search_term"
+    private static let variation = "variation"
+
+    // MARK: - Site Intent
+    static func trackSiteIntentViewed() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
+    }
+
+    static func trackSiteIntentSelected(_ vertical: SiteIntentVertical) {
+        let properties = [verticalSlugKey: vertical.slug]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionVerticalSelected, properties: properties)
+    }
+
+    static func trackSiteIntentContinuePressed(_ term: String) {
+        let properties = [verticalSearchTerm: term]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionContinuePressed, properties: properties)
+    }
+
+    static func trackSiteIntentSearchFocused() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSearchFocused)
+    }
+
+    static func trackSiteIntentSkipped() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSkipped)
+    }
+
+    static func trackSiteIntentCanceled() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
+    }
+
+    static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
+        let properties = [variation: variant.tracksProperty]
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
+    }
 
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {

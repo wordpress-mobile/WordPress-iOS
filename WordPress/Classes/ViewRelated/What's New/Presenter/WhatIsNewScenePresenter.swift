@@ -67,6 +67,12 @@ class WhatIsNewScenePresenter: ScenePresenter {
 // MARK: - Dependencies
 private extension WhatIsNewScenePresenter {
 
+    private var features: [WordPressKit.Feature] {
+        store.announcements.reduce(into: [WordPressKit.Feature](), {
+            $0.append(contentsOf: $1.features)
+        })
+    }
+
     func makeWhatIsNewViewController() -> WhatIsNewViewController {
         return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView, onContinue: {
             WPAnalytics.track(.featureAnnouncementButtonTapped, properties: ["button": "close_dialog"])
@@ -74,26 +80,69 @@ private extension WhatIsNewScenePresenter {
     }
 
     func makeWhatIsNewView() -> WhatIsNewView {
-
-        let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
-                                             version: WhatIsNewStrings.version,
-                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
-
-        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource())
+        if shouldUseDashboardCustomView() {
+            return makeCustomWhatIsNewView()
+        }
+        else {
+            return makeStandardWhatIsNewView()
+        }
     }
 
     func makeDataSource() -> AnnouncementsDataSource {
-        return FeatureAnnouncementsDataSource(store: self.store,
-                                              cellTypes: ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self])
+        if shouldUseDashboardCustomView() {
+            return makeCustomDataSource()
+        }
+        else {
+            return makeStandardDataSource()
+        }
+    }
+
+    private func makeStandardWhatIsNewView() -> WhatIsNewView {
+        let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
+                                             version: WhatIsNewStrings.version,
+                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle,
+                                             disclaimerTitle: "")
+
+        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .standard)
+    }
+
+    private func makeStandardDataSource() -> AnnouncementsDataSource {
+        let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
+        return FeatureAnnouncementsDataSource(features: features, detailsUrl: detailsUrl, announcementCellType: AnnouncementCell.self)
+    }
+
+
+    /// Creates a WhatIsNewView using custom layout for dashboard announcement
+    /// Treats feature titles and subtitles of value "." as empty strings.
+    private func makeCustomWhatIsNewView() -> WhatIsNewView {
+        let title = features.first(where: {!$0.title.isFeatureStringEmpty()})?.title ?? WhatIsNewStrings.title // Extract title from features
+        let viewTitles = WhatIsNewViewTitles(header: title,
+                                             version: "",
+                                             continueButtonTitle: WhatIsNewStrings.gotItButtonTitle,
+                                             disclaimerTitle: WhatIsNewStrings.disclaimerTitle)
+
+        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource(), appearance: .dashboardCustom)
+    }
+
+    private func makeCustomDataSource() -> AnnouncementsDataSource {
+        let adjustedFeatures = features.filter {$0.title.isFeatureStringEmpty() && !$0.subtitle.isFeatureStringEmpty()}
+        let detailsUrl = self.store.announcements.first?.detailsUrl ?? ""
+        return FeatureAnnouncementsDataSource(features: adjustedFeatures, detailsUrl: detailsUrl, announcementCellType: DashboardCustomAnnouncementCell.self)
+    }
+
+    private func shouldUseDashboardCustomView() -> Bool {
+        return self.store.appVersionName == "19.6"
     }
 
     enum WhatIsNewStrings {
         static let title = NSLocalizedString("What's New in WordPress", comment: "Title of the What's new page.")
         static let versionPrefix = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
+        static let gotItButtonTitle = NSLocalizedString("Got it", comment: "Title for the continue button in the dashboard's custom What's New page.")
         static var version: String {
             Bundle.main.shortVersionString() != nil ? versionPrefix + Bundle.main.shortVersionString() : ""
         }
+        static let disclaimerTitle = NSLocalizedString("NEW!", comment: "Title for disclaimer in the dashboard's custom What's New page.")
     }
 }
 
@@ -109,5 +158,11 @@ private extension UserDefaults {
         set {
             set(newValue, forKey: UserDefaults.announcementsVersionDisplayedKey)
         }
+    }
+}
+
+fileprivate extension String {
+    func isFeatureStringEmpty() -> Bool {
+        return self.isEmpty || self == "."
     }
 }

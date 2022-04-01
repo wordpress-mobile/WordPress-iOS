@@ -5,10 +5,12 @@ class BlogDashboardService {
 
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
+    private let postsParser: BlogDashboardPostsParser
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence()) {
+    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence(), postsParser: BlogDashboardPostsParser? = nil) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
+        self.postsParser = postsParser ?? BlogDashboardPostsParser(managedObjectContext: managedObjectContext)
     }
 
     /// Fetch cards from remote
@@ -22,7 +24,11 @@ class BlogDashboardService {
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
-            if let cards = self?.decode(cardsDictionary) {
+            guard let cardsDictionary = self?.parseCardsForLocalContent(cardsDictionary, blog: blog) else {
+                return
+            }
+
+            if let cards = self?.decode(cardsDictionary, blog: blog) {
 
                 blog.dashboardState.hasCachedData = true
                 blog.dashboardState.failedToLoad = false
@@ -54,10 +60,11 @@ class BlogDashboardService {
         }
 
         if let cardsDictionary = persistence.getCards(for: dotComID),
-            let cards = decode(cardsDictionary) {
+           let cardsWithLocalData = parseCardsForLocalContent(cardsDictionary, blog: blog),
+           let cards = decode(cardsWithLocalData, blog: blog) {
 
             blog.dashboardState.hasCachedData = true
-            let snapshot = parse(cardsDictionary, cards: cards, blog: blog, dotComID: dotComID)
+            let snapshot = parse(cardsWithLocalData, cards: cards, blog: blog, dotComID: dotComID)
             return snapshot
         } else {
             blog.dashboardState.hasCachedData = false
@@ -104,7 +111,7 @@ private extension BlogDashboardService {
         return snapshot
     }
 
-    func decode(_ cardsDictionary: NSDictionary) -> BlogDashboardRemoteEntity? {
+    func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {
         guard let data = try? JSONSerialization.data(withJSONObject: cardsDictionary, options: []) else {
             return nil
         }
@@ -112,6 +119,16 @@ private extension BlogDashboardService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
+    }
+
+    func parseCardsForLocalContent(_ cardsDictionary: NSDictionary, blog: Blog) -> NSDictionary? {
+        guard let cardsDictionary = cardsDictionary.mutableCopy() as? NSMutableDictionary,
+              let posts = cardsDictionary[DashboardCard.posts.rawValue] as? NSDictionary else {
+            return cardsDictionary
+        }
+
+        cardsDictionary["posts"] = postsParser.parse(posts, for: blog)
+        return cardsDictionary
     }
 
     func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {

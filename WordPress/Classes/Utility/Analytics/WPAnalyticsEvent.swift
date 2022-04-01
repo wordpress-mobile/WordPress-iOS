@@ -312,6 +312,22 @@ import Foundation
     // My Site Dashboard
     case dashboardCardShown
     case dashboardCardItemTapped
+    case mySiteTabTapped
+    case mySiteSiteMenuShown
+    case mySiteDashboardShown
+    case mySiteDefaultTabExperimentVariantAssigned
+
+    // Site Intent Question
+    case enhancedSiteCreationIntentQuestionCanceled
+    case enhancedSiteCreationIntentQuestionSkipped
+    case enhancedSiteCreationIntentQuestionVerticalSelected
+    case enhancedSiteCreationIntentQuestionContinuePressed
+    case enhancedSiteCreationIntentQuestionSearchFocused
+    case enhancedSiteCreationIntentQuestionViewed
+    case enhancedSiteCreationIntentQuestionExperiment
+
+    // Quick Start
+    case quickStartStarted
 
     /// A String that represents the event
     var value: String {
@@ -836,6 +852,34 @@ import Foundation
             return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
+        case .mySiteTabTapped:
+            return "my_site_tab_tapped"
+        case .mySiteSiteMenuShown:
+            return "my_site_site_menu_shown"
+        case .mySiteDashboardShown:
+            return "my_site_dashboard_shown"
+        case .mySiteDefaultTabExperimentVariantAssigned:
+            return "my_site_default_tab_experiment_variant_assigned"
+
+        // Quick Start
+        case .quickStartStarted:
+            return "quick_start_started"
+
+        // Site Intent Question
+        case .enhancedSiteCreationIntentQuestionCanceled:
+            return "enhanced_site_creation_intent_question_canceled"
+        case .enhancedSiteCreationIntentQuestionSkipped:
+            return "enhanced_site_creation_intent_question_skipped"
+        case .enhancedSiteCreationIntentQuestionVerticalSelected:
+            return "enhanced_site_creation_intent_question_vertical_selected"
+        case .enhancedSiteCreationIntentQuestionContinuePressed:
+            return "enhanced_site_creation_intent_question_continue_pressed"
+        case .enhancedSiteCreationIntentQuestionSearchFocused:
+            return "enhanced_site_creation_intent_question_search_focused"
+        case .enhancedSiteCreationIntentQuestionViewed:
+            return "enhanced_site_creation_intent_question_viewed"
+        case .enhancedSiteCreationIntentQuestionExperiment:
+            return "enhanced_site_creation_intent_question_experiment"
 
         } // END OF SWITCH
     }

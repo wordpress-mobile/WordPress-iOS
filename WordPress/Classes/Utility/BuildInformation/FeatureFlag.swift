@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+    case bloggingPrompts
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -22,6 +23,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case notificationCommentDetails
     case statsPerformanceImprovements
     case siteIntentQuestion
+    case landInTheEditor
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -30,6 +32,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
 
         switch self {
+        case .bloggingPrompts:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -62,7 +66,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .mySiteDashboard:
-            return false
+            return true
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
@@ -70,6 +74,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
+            return false
+        case .landInTheEditor:
             return false
         }
     }
@@ -97,6 +103,8 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
+        case .bloggingPrompts:
+            return "Blogging Prompts"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -137,6 +145,8 @@ extension FeatureFlag {
             return "Stats Performance Improvements"
         case .siteIntentQuestion:
             return "Site Intent Question"
+        case .landInTheEditor:
+            return "Land In The Editor"
         }
     }
 

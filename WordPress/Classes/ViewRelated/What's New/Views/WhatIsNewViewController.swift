@@ -27,6 +27,7 @@ class WhatIsNewViewController: UIViewController {
         self.onContinue = onContinue
         self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .formSheet
     }
 
     required init?(coder: NSCoder) {

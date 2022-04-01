@@ -161,7 +161,6 @@ import Gridicons
             return
         }
 
-        QuickStartTourGuide.shared.visited(.readerSearch)
         WPAppAnalytics.track(.readerSearchLoaded)
         didBumpStats = true
     }
