@@ -246,6 +246,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.syncBlogs()
             }
         }
+    }
+    
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
         let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
