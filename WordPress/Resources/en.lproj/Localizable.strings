@@ -9485,6 +9485,8 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
+/* This text is required by Apple to be part of the tranlsations but is not shown to the users. You can ignore translating this. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
+
 /* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
-
