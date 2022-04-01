@@ -74,7 +74,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
-            return false
+            return true
         case .landInTheEditor:
             return false
         }
