@@ -185,6 +185,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // do not unfilter already filtered content, when navigating back to this page
+        SiteCreationAnalyticsHelper.trackSiteIntentSearchFocused()
         guard availableVerticals == SiteIntentData.defaultVerticals else {
             return
         }
