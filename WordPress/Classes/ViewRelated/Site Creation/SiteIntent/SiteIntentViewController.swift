@@ -10,26 +10,41 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         }
     }
 
-    private var availableVerticals: [SiteIntentVertical] {
-        return SiteIntentData.defaultVerticals
+    private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
+        didSet {
+            contentSizeWillChange()
+        }
+    }
+
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureSearchBar(searchBar)
+        searchBar.setImage(UIImage(), for: .search, state: .normal)
+        searchBar.backgroundColor = .clear
+        searchBar.searchTextField.returnKeyType = .search
+        return searchBar
+    }()
+
+    override var separatorStyle: SeparatorStyle {
+        return .hidden
     }
 
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
-
-        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: .zero, style: .plain)
 
         super.init(
             scrollableView: tableView,
             mainTitle: Strings.mainTitle,
+            navigationBarTitle: Strings.navigationBarTitle,
             prompt: Strings.prompt,
             primaryActionTitle: Strings.primaryAction,
-            secondaryActionTitle: nil,
-            defaultActionTitle: nil,
-            accessoryView: nil
+            accessoryView: searchBar
         )
 
         tableView.dataSource = self
+        searchBar.delegate = self
     }
 
     // MARK: UIViewController
@@ -40,48 +55,49 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTable()
-        navigationItem.backButtonTitle = NSLocalizedString("Topic", comment: "Shortened version of the main title to be used in back navigation")
+
+        configureNavigationBar()
         configureTable()
-        configureSkipButton()
-        configureCloseButton()
-        largeTitleView.numberOfLines = 2
+
+        largeTitleView.numberOfLines = Metrics.largeTitleLines
         SiteCreationAnalyticsHelper.trackSiteIntentViewed()
     }
 
-    // MARK: Constants
+    override func viewDidLayoutSubviews() {
+        searchBar.placeholder = Strings.searchTextFieldPlaceholder
+    }
 
-    private enum Strings {
-        static let mainTitle: String = NSLocalizedString("What's your website about?", comment: "Select the site's intent. Title")
-        static let prompt: String = NSLocalizedString("Choose a topic from the list below or type your own", comment: "Select the site's intent. Subtitle")
-        static let primaryAction: String = NSLocalizedString("Continue", comment: "Button to progress to the next step")
+    override func estimatedContentSize() -> CGSize {
+
+        let visibleCells = CGFloat(availableVerticals.count)
+        let height = visibleCells * IntentCell.estimatedSize.height
+        return CGSize(width: view.frame.width, height: height)
     }
 
     // MARK: UI Setup
 
+    private func configureNavigationBar() {
+        // Title
+        navigationItem.backButtonTitle = Strings.backButtonTitle
+        // Skip button
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.skipButtonTitle,
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(skipButtonTapped))
+        // Cancel button
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle,
+                                                           style: .done,
+                                                           target: self,
+                                                           action: #selector(closeButtonTapped))
+    }
+
     private func configureTable() {
-        tableView.backgroundColor = .basicBackground
-    }
-
-    private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
-        navigationItem.rightBarButtonItem = skip
-    }
-
-    private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
-    }
-
-    private func setupTable() {
-        setupCells()
-    }
-
-    private func setupCells() {
         let cellName = IntentCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellName)
         tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.backgroundColor = .basicBackground
     }
 
     // MARK: Actions
@@ -96,6 +112,36 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private func closeButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentCanceled()
         dismiss(animated: true)
+    }
+}
+
+// MARK: Constants
+extension SiteIntentViewController {
+
+    private enum Strings {
+        static let mainTitle = NSLocalizedString("What's your website about?",
+                                                 comment: "Select the site's intent. Title")
+        static let navigationBarTitle = NSLocalizedString("Site Topic",
+                                                          comment: "Title of the navigation bar, shown when the large title is hidden.")
+        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own",
+                                              comment: "Select the site's intent. Subtitle")
+        static let primaryAction = NSLocalizedString("Continue",
+                                                     comment: "Button to progress to the next step")
+        static let backButtonTitle = NSLocalizedString("Topic",
+                                                       comment: "Shortened version of the main title to be used in back navigation")
+        static let skipButtonTitle = NSLocalizedString("Skip",
+                                                       comment: "Continue without making a selection")
+        static let cancelButtonTitle = NSLocalizedString("Cancel",
+                                                         comment: "Cancel site creation")
+        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
+        static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title of the continue button for the Site Intent screen.")
+    }
+
+    private enum Metrics {
+        static let largeTitleLines = 2
+        static let continueButtonPadding: CGFloat = 16
+        static let continueButtonBottomOffset: CGFloat = 12
+        static let continueButtonHeight: CGFloat = 44
     }
 }
 
@@ -131,5 +177,33 @@ extension SiteIntentViewController: UITableViewDelegate {
 
         SiteCreationAnalyticsHelper.trackSiteIntentSelected(vertical)
         selection(vertical)
+    }
+}
+
+// MARK: Search Bar Delegate
+extension SiteIntentViewController: UISearchBarDelegate {
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // do not unfilter already filtered content, when navigating back to this page
+        SiteCreationAnalyticsHelper.trackSiteIntentSearchFocused()
+        guard availableVerticals == SiteIntentData.defaultVerticals else {
+            return
+        }
+
+        availableVerticals = SiteIntentData.getVerticals()
+        tableView.reloadData()
+        tableView.scrollToView(searchBar.searchTextField, animated: true)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+        if searchText.isEmpty {
+            SiteIntentData.clearCustomVerticals()
+        } else {
+            SiteIntentData.insertCustomVertical(searchText)
+        }
+
+        availableVerticals = SiteIntentData.getVerticals(searchText)
+        tableView.reloadData()
     }
 }

@@ -28,7 +28,8 @@ class SiteCreatorTests: XCTestCase {
             slug: "slug",
             localizedTitle: "A title",
             emoji: "😎",
-            isDefault: true
+            isDefault: true,
+            isCustom: false
         )
 
         defaultInput.information = SiteInformation(title: "A title", tagLine: "A tagline")
