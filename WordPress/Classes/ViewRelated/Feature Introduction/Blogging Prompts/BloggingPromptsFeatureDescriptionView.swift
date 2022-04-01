@@ -1,5 +1,4 @@
 import UIKit
-import AuthenticationServices
 
 class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
 
