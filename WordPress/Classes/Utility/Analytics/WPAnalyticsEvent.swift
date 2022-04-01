@@ -321,7 +321,7 @@ import Foundation
     case enhancedSiteCreationIntentQuestionCanceled
     case enhancedSiteCreationIntentQuestionSkipped
     case enhancedSiteCreationIntentQuestionVerticalSelected
-    case enhancedSiteCreationIntentQuestionContinuePressed
+    case enhancedSiteCreationIntentQuestionCustomVerticalSelected
     case enhancedSiteCreationIntentQuestionSearchFocused
     case enhancedSiteCreationIntentQuestionViewed
     case enhancedSiteCreationIntentQuestionExperiment
@@ -872,8 +872,8 @@ import Foundation
             return "enhanced_site_creation_intent_question_skipped"
         case .enhancedSiteCreationIntentQuestionVerticalSelected:
             return "enhanced_site_creation_intent_question_vertical_selected"
-        case .enhancedSiteCreationIntentQuestionContinuePressed:
-            return "enhanced_site_creation_intent_question_continue_pressed"
+        case .enhancedSiteCreationIntentQuestionCustomVerticalSelected:
+            return "enhanced_site_creation_intent_question_custom_vertical_selected"
         case .enhancedSiteCreationIntentQuestionSearchFocused:
             return "enhanced_site_creation_intent_question_search_focused"
         case .enhancedSiteCreationIntentQuestionViewed:
