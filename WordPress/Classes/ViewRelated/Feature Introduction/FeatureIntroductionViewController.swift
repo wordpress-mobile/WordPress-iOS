@@ -18,7 +18,8 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     private lazy var contentView: UIView = {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        // TODO: add featureDescriptionView subview
+        contentView.addSubview(featureDescriptionView)
+        contentView.pinSubviewToAllEdges(featureDescriptionView)
         return contentView
     }()
 
@@ -81,7 +82,14 @@ private extension FeatureIntroductionViewController {
     func configureView() {
         navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
         scrollView.addSubview(contentView)
-        scrollView.pinSubviewToAllEdges(contentView)
+
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
     }
 
     @IBAction func closeButtonTapped() {
