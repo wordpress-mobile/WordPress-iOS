@@ -5,4 +5,5 @@ struct SiteIntentVertical: Equatable {
     let localizedTitle: String
     let emoji: String
     let isDefault: Bool
+    let isCustom: Bool
 }
