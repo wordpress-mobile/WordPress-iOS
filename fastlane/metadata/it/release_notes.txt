@@ -1,0 +1,12 @@
+Abbiamo aggiornato Notifiche del commento con un nuovo elegante aspetto. (Potresti riconoscere l'opzione da I miei siti > Commenti.) Anche il design della sessione di orientamento nel menu e nella bacheca del sito sfoggia un nuovo stile.
+
+Quando crei un nuovo sito e inserisci il nome di dominio, dovresti visualizzare ora un messaggio di errore più preciso se provi a usare caratteri non inglesi che non siano lettere o numeri. Abbiamo inoltre fatto piccole modifiche al testo dell'errore di caricamento nei blocchi per il caricamento di elementi multimediali.
+
+Non sei sicuro se stai guardando un'immagine o una GIF nel blocco Immagine? Non c'è più bisogno di meravigliarsi: le GIF animate ora sono dotate di un badge GIF.
+
+Abbiamo anche effettuato alcune correzioni ai bug mentre tenevamo sotto controllo.
+
+- Buone notizie per tutti quei commenti orfani: siamo riusciti a tenere sotto controllo un bug a causa del quale le risposte ai commenti andavano perse dopo che veniva rimossa l'approvazione ai commenti principali.
+- Quando passi da un sito all'altro su un iPad, non passi anche tra gli elementi di navigazione della barra laterale. Vedrai lo stesso elemento del menu che hai lasciato sul sito precedente.
+- Le modifiche delle impostazioni del blocco negli elenchi ordinati ora appaiono nell'editor, non solo nell'Anteprima.
+- Abbiamo risolto un problema relativo alla tastiera nel processo di creazione dell'account di WP.com. Se inizi a inserire una password del link e cambi idea, puoi chiudere la tastiera e andare avanti con la tua giornata.
