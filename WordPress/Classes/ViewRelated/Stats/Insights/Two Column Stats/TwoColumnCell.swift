@@ -1,9 +1,10 @@
 import UIKit
 
-class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
+class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var viewMoreView: UIView!
@@ -15,7 +16,6 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
-    private var statSection: StatSection?
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - View
@@ -23,6 +23,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+        configureHeadingLabel(with: topConstraint)
         prepareForVoiceOver()
     }
 
@@ -35,6 +36,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
         self.dataRows = dataRows
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+
         addRows()
         toggleViewMore()
     }
