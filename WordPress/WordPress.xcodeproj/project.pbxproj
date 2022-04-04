@@ -628,6 +628,10 @@
 		3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */; };
+		3FBB2D2B27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBB2D2A27FB6CB200C57BBF /* SiteNameViewController.swift */; };
+		3FBB2D2C27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBB2D2A27FB6CB200C57BBF /* SiteNameViewController.swift */; };
+		3FBB2D2E27FB715900C57BBF /* SiteNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBB2D2D27FB715900C57BBF /* SiteNameView.swift */; };
+		3FBB2D2F27FB715900C57BBF /* SiteNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBB2D2D27FB715900C57BBF /* SiteNameView.swift */; };
 		3FBF21B7267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FC2C33D26C4CF0A00C6D98F /* XCUITestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */; };
@@ -5397,6 +5401,8 @@
 		3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+TimeStrings.swift"; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FB5C2B227059AC8007D0ECE /* XCUIElement+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Scroll.swift"; sourceTree = "<group>"; };
+		3FBB2D2A27FB6CB200C57BBF /* SiteNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNameViewController.swift; sourceTree = "<group>"; };
+		3FBB2D2D27FB715900C57BBF /* SiteNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNameView.swift; sourceTree = "<group>"; };
 		3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersAnimator.swift; sourceTree = "<group>"; };
 		3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueStatsContentView.swift; sourceTree = "<group>"; };
 		3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStore.swift; sourceTree = "<group>"; };
@@ -9664,6 +9670,8 @@
 		3FBB2D2927FB6BFA00C57BBF /* Site Name */ = {
 			isa = PBXGroup;
 			children = (
+				3FBB2D2A27FB6CB200C57BBF /* SiteNameViewController.swift */,
+				3FBB2D2D27FB715900C57BBF /* SiteNameView.swift */,
 			);
 			path = "Site Name";
 			sourceTree = "<group>";
@@ -17779,6 +17787,7 @@
 				40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */,
 				175721162754D31F00DE38BC /* AppIcon.swift in Sources */,
 				7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */,
+				3FBB2D2B27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */,
 				17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
 				7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */,
@@ -18003,6 +18012,7 @@
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
 				F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */,
 				733195832284FE9F0007D904 /* PeriodChart.swift in Sources */,
+				3FBB2D2E27FB715900C57BBF /* SiteNameView.swift in Sources */,
 				F1450CF52437E1A600A28BFE /* MediaHost.swift in Sources */,
 				08216FC81CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m in Sources */,
 				F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */,
@@ -20193,6 +20203,7 @@
 				FABB226C2602FC2C00C8785C /* ParentPageSettingsViewController.swift in Sources */,
 				FABB226D2602FC2C00C8785C /* Queue.swift in Sources */,
 				FABB226E2602FC2C00C8785C /* SwitchTableViewCell.swift in Sources */,
+				3FBB2D2C27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */,
 				17171375265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
 				FABB226F2602FC2C00C8785C /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
 				FABB22702602FC2C00C8785C /* WordPressComSyncService.swift in Sources */,
@@ -21172,6 +21183,7 @@
 				3FAF9CC326D02FC500268EA2 /* DomainsDashboardView.swift in Sources */,
 				FABB25BE2602FC2C00C8785C /* SettingsPickerViewController.swift in Sources */,
 				FABB25BF2602FC2C00C8785C /* WPTableImageSource.m in Sources */,
+				3FBB2D2F27FB715900C57BBF /* SiteNameView.swift in Sources */,
 				FABB25C02602FC2C00C8785C /* ReaderTopicCollectionViewCoordinator.swift in Sources */,
 				FABB25C12602FC2C00C8785C /* WPAppAnalytics.m in Sources */,
 				FABB25C22602FC2C00C8785C /* SettingsSelectionViewController.m in Sources */,
