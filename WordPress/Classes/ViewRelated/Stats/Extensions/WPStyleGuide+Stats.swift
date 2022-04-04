@@ -34,6 +34,11 @@ extension WPStyleGuide {
         }
 
         static func configureCell(_ cell: UITableViewCell) {
+            if FeatureFlag.statsNewAppearance.enabled {
+                cell.contentView.layer.cornerRadius = cellCornerRadius
+                cell.contentView.layer.masksToBounds = true
+            }
+
             cell.backgroundColor = tableBackgroundColor
             cell.contentView.backgroundColor = cellBackgroundColor
         }
@@ -44,7 +49,7 @@ extension WPStyleGuide {
         }
 
         static func configureViewAsSeparator(_ separatorView: UIView) {
-            separatorView.backgroundColor = separatorColor
+            separatorView.backgroundColor = FeatureFlag.statsNewAppearance.enabled ? .clear : separatorColor
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
             separatorView.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         }
@@ -210,6 +215,7 @@ extension WPStyleGuide {
         static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let verticalSeparatorColor = UIColor.neutral(.shade5)
+        static let cellCornerRadius: CGFloat = 10.0
 
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
