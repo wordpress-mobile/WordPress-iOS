@@ -4,7 +4,6 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var viewMoreView: UIView!
@@ -23,7 +22,6 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
-        configureHeadingLabel(with: topConstraint)
         prepareForVoiceOver()
     }
 

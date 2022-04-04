@@ -3,15 +3,22 @@ import UIKit
 class StatsBaseCell: UITableViewCell {
     let headingLabel: UILabel = UILabel()
 
+    @IBOutlet var topConstraint: NSLayoutConstraint!
+
     var statSection: StatSection? {
         didSet {
             headingLabel.text = statSection?.title
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        configureHeadingLabel(with: topConstraint)
+    }
+
     func configureHeadingLabel(with topConstraint: NSLayoutConstraint) {
-        guard FeatureFlag.statsNewAppearance.enabled,
-            topConstraint.isActive else {
+        guard FeatureFlag.statsNewAppearance.enabled else {
             return
         }
 
@@ -25,9 +32,11 @@ class StatsBaseCell: UITableViewCell {
         ])
 
         if let anchor = topConstraint.firstItem?.topAnchor {
+            let constant = topConstraint.constant
+
             topConstraint.isActive = false
 
-            headingLabel.bottomAnchor.constraint(equalTo: anchor, constant: -Metrics.padding).isActive = true
+            headingLabel.bottomAnchor.constraint(equalTo: anchor, constant: -(Metrics.padding + constant)).isActive = true
         }
     }
 

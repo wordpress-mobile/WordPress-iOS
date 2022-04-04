@@ -2,10 +2,6 @@ import UIKit
 
 // MARK: - Shared Rows
 
-protocol StatsTableRow where Self: ImmuTableRow {
-    var statSection: StatSection { get }
-}
-
 struct OverviewRow: ImmuTableRow {
 
     typealias CellType = OverviewCell
@@ -237,12 +233,13 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
+                       statSection: dataRows.first?.statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
 }
 
-struct TwoColumnStatsRow: StatsTableRow {
+struct TwoColumnStatsRow: ImmuTableRow {
 
     typealias CellType = TwoColumnCell
 
