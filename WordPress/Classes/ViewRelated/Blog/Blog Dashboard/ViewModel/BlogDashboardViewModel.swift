@@ -83,6 +83,7 @@ private extension BlogDashboardViewModel {
     func apply(snapshot: DashboardSnapshot) {
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
+        let oldSnapshot = dataSource?.snapshot()
 
         dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
             guard let scrollView = scrollView, let position = position else {
@@ -91,12 +92,36 @@ private extension BlogDashboardViewModel {
 
             self?.scroll(scrollView, to: position)
         }
+        trackShownCards(oldSnapshot: oldSnapshot, newSnapshot: snapshot)
     }
 
     func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
         if position.y > 0 {
             scrollView.setContentOffset(position, animated: false)
         }
+    }
+
+    func trackShownCards(oldSnapshot: DashboardSnapshot?, newSnapshot: DashboardSnapshot?) {
+        if didShowCard(.todaysStats, oldSnapshot: oldSnapshot, newSnapshot: newSnapshot) {
+            WPAnalytics.track(.dashboardCardShown,
+                              properties: ["type": DashboardCard.todaysStats.rawValue],
+                              blog: blog)
+        }
+        if didShowCard(.quickStart, oldSnapshot: oldSnapshot, newSnapshot: newSnapshot) {
+            WPAnalytics.track(.dashboardCardShown,
+                              properties: ["type": DashboardCard.quickStart.rawValue],
+                              blog: blog)
+        }
+    }
+
+    func didShowCard(_ card: DashboardCard, oldSnapshot: DashboardSnapshot?, newSnapshot: DashboardSnapshot?) -> Bool {
+        guard let newCard = newSnapshot?.itemIdentifiers.first(where: {$0.id == card}) else {
+            return false
+        }
+        guard let oldCard = oldSnapshot?.itemIdentifiers.first(where: {$0.id == card}) else {
+            return true
+        }
+        return oldCard.dotComID != newCard.dotComID
     }
 }
 

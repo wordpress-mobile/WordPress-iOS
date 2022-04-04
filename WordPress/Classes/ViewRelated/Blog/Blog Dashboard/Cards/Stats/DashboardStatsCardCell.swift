@@ -90,10 +90,6 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         }
 
         nudgeButton?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
-
-        WPAnalytics.track(.dashboardCardShown,
-                          properties: ["type": DashboardCard.todaysStats.rawValue],
-                          blog: blog)
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
