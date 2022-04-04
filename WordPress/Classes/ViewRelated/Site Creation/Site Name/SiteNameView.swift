@@ -51,7 +51,7 @@ class SiteNameView: UIView {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        WPStyleGuide.configureSearchBar(searchBar)
+        WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.backgroundColor = .clear
         return searchBar

@@ -6,20 +6,20 @@ extension WPStyleGuide {
 
     fileprivate static let barTintColor: UIColor = .neutral(.shade10)
 
-    public class func configureSearchBar(_ searchBar: UISearchBar, returnKeyType: UIReturnKeyType = .done) {
+    public class func configureSearchBar(_ searchBar: UISearchBar, backgroundColor: UIColor, returnKeyType: UIReturnKeyType) {
         searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.isTranslucent = true
         searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = .appBarBackground
+        searchBar.backgroundColor = backgroundColor
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = returnKeyType
     }
 
-    /// configures a search bar with a default `.done` return key
+    /// configures a search bar with a default `.appBackground` color and a `.done` return key
     @objc public class func configureSearchBar(_ searchBar: UISearchBar) {
-        configureSearchBar(searchBar, returnKeyType: .done)
+        configureSearchBar(searchBar, backgroundColor: .appBarBackground, returnKeyType: .done)
     }
 
     @objc public class func configureSearchBarAppearance() {
