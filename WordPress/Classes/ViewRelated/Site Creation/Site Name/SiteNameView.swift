@@ -73,7 +73,7 @@ class SiteNameView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         button.setTitle(TextContent.continueButtonTitle, for: .normal)
-        //button.addTarget(self, action: #selector(navigateToNextStep), for: .touchUpInside)
+        // TODO: SITENAME - This button is still missing a target, development is WIP.
         return button
     }()
 
@@ -126,8 +126,7 @@ private extension SiteNameView {
     /// sets up the continue button on top of the keyboard
     func setupContinueButton() {
         continueButton.isEnabled = false
-        WPStyleGuide.configureSearchBar(searchBar, returnKeyType: .continue)
-        searchBar.searchTextField.inputAccessoryView = continueButtonView
+        searchBar.inputAccessoryView = continueButtonView
         continueButtonView.frame = Metrics.continueButtonViewFrame(frame.width)
 
     }
