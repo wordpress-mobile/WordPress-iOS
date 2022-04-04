@@ -7,7 +7,8 @@ class StatsBaseCell: UITableViewCell {
 
     var statSection: StatSection? {
         didSet {
-            headingLabel.text = statSection?.title
+            let title = statSection?.title ?? ""
+            updateHeadingLabel(with: title)
         }
     }
 
@@ -38,6 +39,10 @@ class StatsBaseCell: UITableViewCell {
 
             headingLabel.bottomAnchor.constraint(equalTo: anchor, constant: -(Metrics.padding + constant)).isActive = true
         }
+    }
+
+    private func updateHeadingLabel(with title: String) {
+        headingLabel.text = title
     }
 
     private enum Metrics {
