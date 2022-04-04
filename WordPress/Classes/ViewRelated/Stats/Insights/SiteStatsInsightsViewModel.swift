@@ -242,6 +242,14 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(TableFooterRow())
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            // Remove any header rows for the new appearance
+            tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
+
+            let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
+            return ImmuTable(sections: sections)
+        }
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: tableRows)

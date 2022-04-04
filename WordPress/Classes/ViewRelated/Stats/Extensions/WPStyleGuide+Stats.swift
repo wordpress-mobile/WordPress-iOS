@@ -34,11 +34,6 @@ extension WPStyleGuide {
         }
 
         static func configureCell(_ cell: UITableViewCell) {
-            if FeatureFlag.statsNewAppearance.enabled {
-                cell.contentView.layer.cornerRadius = cellCornerRadius
-                cell.contentView.layer.masksToBounds = true
-            }
-
             cell.backgroundColor = tableBackgroundColor
             cell.contentView.backgroundColor = cellBackgroundColor
         }

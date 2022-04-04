@@ -83,6 +83,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
     }
 
+    var disabled: Bool {
+        return enabled == false
+    }
+
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
