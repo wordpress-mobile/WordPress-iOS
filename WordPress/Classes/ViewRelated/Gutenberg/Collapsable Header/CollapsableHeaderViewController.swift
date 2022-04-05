@@ -2,7 +2,7 @@ import UIKit
 import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
-    enum SeperatorStyle {
+    enum SeparatorStyle {
         case visibile
         case automatic
         case hidden
@@ -11,6 +11,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let scrollableView: UIScrollView
     let accessoryView: UIView?
     let mainTitle: String
+    let navigationBarTitle: String?
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
@@ -19,7 +20,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         return 44
     }
 
-    open var seperatorStyle: SeperatorStyle {
+    open var separatorStyle: SeparatorStyle {
         return self.hasAccessoryBar ? .visibile : .automatic
     }
 
@@ -27,6 +28,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headerView: CollapsableHeaderView!
+
     let titleView: UILabel = {
         let title = UILabel(frame: .zero)
         title.adjustsFontForContentSizeCategory = true
@@ -36,6 +38,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         title.minimumScaleFactor = 2/3
         return title
     }()
+
     @IBOutlet weak var largeTitleTopSpacingConstraint: NSLayoutConstraint!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
@@ -49,6 +52,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
     @IBOutlet weak var seperator: UIView!
 
+    // Flag indicating if the action button stack view (selectedStateButtonsContainer) is vertical.
+    // Used when calculating the footer height.
+    private var usesVerticalActionButtons: Bool = false
+
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
     @IBOutlet weak var initialHeaderTopConstraint: NSLayoutConstraint!
@@ -56,7 +63,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var titleToSubtitleSpacing: NSLayoutConstraint!
     @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
 
-    /// As the Header expands it allows a little bit of extra room between the bottom of the filter bar and the bottom of the header view. These next two constaints help account for that slight adustment.
+    /// As the Header expands it allows a little bit of extra room between the bottom of the filter bar and the bottom of the header view.
+    /// These next two constaints help account for that slight adustment.
     @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var scrollableContainerBottomConstraint: NSLayoutConstraint!
@@ -70,12 +78,21 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             }
         }
     }
+
     private var footerHeight: CGFloat {
         let verticalMargins: CGFloat = 16
         let buttonHeight: CGFloat = 44
         let safeArea = (UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? 0)
-        return verticalMargins + buttonHeight + verticalMargins + safeArea
+
+        var height = verticalMargins + buttonHeight + verticalMargins + safeArea
+
+        if usesVerticalActionButtons {
+            height += (buttonHeight + selectedStateButtonsContainer.spacing)
+        }
+
+        return height
     }
+
     private var isShowingNoResults: Bool = false {
         didSet {
             if oldValue != isShowingNoResults {
@@ -157,6 +174,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///
     init(scrollableView: UIScrollView,
          mainTitle: String,
+         navigationBarTitle: String? = nil,
          prompt: String,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
@@ -164,6 +182,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          accessoryView: UIView? = nil) {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
+        self.navigationBarTitle = navigationBarTitle
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
@@ -282,7 +301,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - View Styling
     private func setStaticText() {
-        titleView.text = mainTitle
+        titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
@@ -346,7 +365,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         accessoryBarHeightConstraint.constant = shouldHideAccessoryBar ? 0 : accessoryBarHeight
-        let collapseBottomSpacing = shouldHideAccessoryBar || (seperatorStyle == .hidden)
+        let collapseBottomSpacing = shouldHideAccessoryBar || (separatorStyle == .hidden)
         maxHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 24
         minHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 9
     }
@@ -445,6 +464,23 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         hideNoResults()
     }
 
+    /// A public interface to notify the container that the action buttons need to be vertical instead of horizontal (the default).
+    /// In this scenario, it is assumed:
+    /// - The primary and secondary action buttons are always displayed.
+    /// - The defaultActionButton is never displayed.
+    /// Therefore:
+    /// - itemSelectionChanged is called to accomplish the two points above.
+    /// - The selectedStateButtonsContainer axis is set to vertical.
+    /// - The primaryActionButton is moved to the top of the stack view.
+    func configureVerticalButtonView() {
+        usesVerticalActionButtons = true
+        itemSelectionChanged(true)
+        selectedStateButtonsContainer.axis = .vertical
+
+        selectedStateButtonsContainer.removeArrangedSubview(primaryActionButton)
+        selectedStateButtonsContainer.insertArrangedSubview(primaryActionButton, at: 0)
+    }
+
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
     /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
     private var stashedOffset: CGPoint? = nil
@@ -492,7 +528,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Seperator styling
     private func updateSeperatorStyle(animated: Bool = true) {
         let shouldBeHidden: Bool
-        switch seperatorStyle {
+        switch separatorStyle {
         case .automatic:
             shouldBeHidden = headerHeightConstraint.constant > minHeaderHeight && !shouldUseCompactLayout
         case .visibile:

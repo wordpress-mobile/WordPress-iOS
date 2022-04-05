@@ -2,6 +2,14 @@ import UIKit
 
 final class DashboardSingleStatView: UIView {
 
+    // MARK: Public Variables
+
+    var countString: String? {
+        didSet {
+            self.numberLabel.text = countString
+        }
+    }
+
     // MARK: Private Variables
 
     private lazy var mainStackView: UIStackView = {
@@ -37,9 +45,9 @@ final class DashboardSingleStatView: UIView {
 
     // MARK: Initializers
 
-    convenience init(countString: String, title: String) {
+    convenience init(title: String) {
         self.init()
-        self.numberLabel.text = countString
+        self.numberLabel.text = Constants.emptyString
         self.titleLabel.text = title
     }
 
@@ -66,5 +74,6 @@ private extension DashboardSingleStatView {
 
     enum Constants {
         static let mainStackViewSpacing = 2.0
+        static let emptyString = "0"
     }
 }

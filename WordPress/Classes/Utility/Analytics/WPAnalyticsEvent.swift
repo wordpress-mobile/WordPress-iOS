@@ -315,12 +315,13 @@ import Foundation
     case mySiteTabTapped
     case mySiteSiteMenuShown
     case mySiteDashboardShown
+    case mySiteDefaultTabExperimentVariantAssigned
 
     // Site Intent Question
     case enhancedSiteCreationIntentQuestionCanceled
     case enhancedSiteCreationIntentQuestionSkipped
     case enhancedSiteCreationIntentQuestionVerticalSelected
-    case enhancedSiteCreationIntentQuestionContinuePressed
+    case enhancedSiteCreationIntentQuestionCustomVerticalSelected
     case enhancedSiteCreationIntentQuestionSearchFocused
     case enhancedSiteCreationIntentQuestionViewed
     case enhancedSiteCreationIntentQuestionExperiment
@@ -857,6 +858,8 @@ import Foundation
             return "my_site_site_menu_shown"
         case .mySiteDashboardShown:
             return "my_site_dashboard_shown"
+        case .mySiteDefaultTabExperimentVariantAssigned:
+            return "my_site_default_tab_experiment_variant_assigned"
 
         // Quick Start
         case .quickStartStarted:
@@ -869,8 +872,8 @@ import Foundation
             return "enhanced_site_creation_intent_question_skipped"
         case .enhancedSiteCreationIntentQuestionVerticalSelected:
             return "enhanced_site_creation_intent_question_vertical_selected"
-        case .enhancedSiteCreationIntentQuestionContinuePressed:
-            return "enhanced_site_creation_intent_question_continue_pressed"
+        case .enhancedSiteCreationIntentQuestionCustomVerticalSelected:
+            return "enhanced_site_creation_intent_question_custom_vertical_selected"
         case .enhancedSiteCreationIntentQuestionSearchFocused:
             return "enhanced_site_creation_intent_question_search_focused"
         case .enhancedSiteCreationIntentQuestionViewed:

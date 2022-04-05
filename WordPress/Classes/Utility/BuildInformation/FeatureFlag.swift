@@ -24,6 +24,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsPerformanceImprovements
     case siteIntentQuestion
     case landInTheEditor
+    case siteName
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -66,7 +67,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .mySiteDashboard:
-            return false
+            return true
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
@@ -74,8 +75,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
-            return false
+            return true
         case .landInTheEditor:
+            return false
+        case .siteName:
             return false
         }
     }
@@ -147,6 +150,8 @@ extension FeatureFlag {
             return "Site Intent Question"
         case .landInTheEditor:
             return "Land In The Editor"
+        case .siteName:
+            return "Site Name"
         }
     }
 

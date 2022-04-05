@@ -15,11 +15,16 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    lazy var collectionView: IntrinsicCollectionView = {
-        let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
+    lazy var collectionView: DynamicHeightCollectionView = {
+        let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+
+    /// The "My Site" main scroll view
+    var mySiteScrollView: UIScrollView? {
+        return view.superview?.superview as? UIScrollView
+    }
 
     @objc init(blog: Blog) {
         self.blog = blog
