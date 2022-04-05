@@ -96,6 +96,8 @@ class SiteNameView: UIView {
         setupContinueButton()
         activateConstraints()
         searchBar.delegate = self
+        hideTitles(traitCollection.verticalSizeClass == .compact ||
+                   traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
     }
 
     required init?(coder: NSCoder) {
@@ -103,8 +105,8 @@ class SiteNameView: UIView {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        titleLabelView.isHidden = traitCollection.verticalSizeClass == .compact
-        subtitleLabelView.isHidden = traitCollection.verticalSizeClass == .compact
+        hideTitles(traitCollection.verticalSizeClass == .compact ||
+                   traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
     }
 }
 
@@ -145,6 +147,12 @@ private extension SiteNameView {
             mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.mainStackViewSidePadding),
             searchBar.heightAnchor.constraint(equalToConstant: Metrics.searchbarHeight),
         ])
+    }
+
+    /// hides or shows titles based on the passed boolean parameter
+    func hideTitles(_ hide: Bool) {
+        titleLabelView.isHidden = hide
+        subtitleLabelView.isHidden = hide
     }
 }
 
