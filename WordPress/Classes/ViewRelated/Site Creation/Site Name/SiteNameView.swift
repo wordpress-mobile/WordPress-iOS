@@ -14,6 +14,7 @@ class SiteNameView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = Metrics.numberOfLinesInTitle
         label.textAlignment = .center
         return label
@@ -32,6 +33,7 @@ class SiteNameView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.body)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .secondaryLabel
         label.setText(TextContent.subtitle)
         label.numberOfLines = Metrics.numberOfLinesInSubtitle
