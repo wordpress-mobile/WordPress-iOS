@@ -10,6 +10,16 @@ final class DashboardStatsNudgeButton: MultilineButton {
         setTitle(title: title, hint: hint)
     }
 
+    // MARK: - Overrides
+
+    override var intrinsicContentSize: CGSize {
+        if let intrinsicContentSize = titleLabel?.intrinsicContentSize {
+            return CGSize(width: intrinsicContentSize.width, height: intrinsicContentSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
+        }
+
+        return .zero
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -22,7 +32,10 @@ final class DashboardStatsNudgeButton: MultilineButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel?.preferredMaxLayoutWidth = titleLabel?.frame.size.width ?? 0
+        super.layoutSubviews()
     }
+
+    // MARK: - View setup
 
     private func setup() {
         setTitleColor(.textSubtle, for: .normal)
@@ -45,7 +58,7 @@ final class DashboardStatsNudgeButton: MultilineButton {
 
         let attachmentString = NSAttributedString(attachment: externalAttachment)
 
-        let titleString = NSMutableAttributedString(string: "\(title) ")
+        let titleString = NSMutableAttributedString(string: "\(title) \u{FEFF}")
         if let subStringRange = title.nsRange(of: hint) {
             titleString.addAttributes([
                 .foregroundColor: UIColor.primary,
