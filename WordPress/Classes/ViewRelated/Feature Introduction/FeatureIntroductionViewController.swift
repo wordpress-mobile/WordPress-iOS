@@ -49,7 +49,6 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
             prompt: headerSubtitle,
             // TODO: pass headerImage
             primaryActionTitle: primaryButtonTitle,
-            // TODO: don't show secondary action button if there is no title
             secondaryActionTitle: secondaryButtonTitle)
     }
 
