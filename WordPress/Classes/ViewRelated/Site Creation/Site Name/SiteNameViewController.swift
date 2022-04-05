@@ -19,10 +19,12 @@ class SiteNameViewController: UIViewController {
         // TODO: SITENAME - This string is here only to test the UI until the implementation is complete.
         view = SiteNameView(siteName: "Commuinity & Non-Profit")
         removeNavigationBarBorder()
+        setTitleForTraitCollection()
+
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        title = traitCollection.verticalSizeClass == .compact ? Self.titleForVerticalCompactSizeClass : ""
+        setTitleForTraitCollection()
     }
 }
 
@@ -40,6 +42,14 @@ private extension SiteNameViewController {
         navigationItem.scrollEdgeAppearance = navBarAppearance
         navigationItem.compactAppearance = navBarAppearance
         setNeedsStatusBarAppearanceUpdate()
+    }
+
+    // hides or show title depending on the vertical size class ands accessibility category
+    func setTitleForTraitCollection() {
+        title = (traitCollection.verticalSizeClass == .compact ||
+                 traitCollection.preferredContentSizeCategory.isAccessibilityCategory) ?
+        Self.titleForVerticalCompactSizeClass :
+        ""
     }
 
     static let titleForVerticalCompactSizeClass = NSLocalizedString("Give your website a name",
