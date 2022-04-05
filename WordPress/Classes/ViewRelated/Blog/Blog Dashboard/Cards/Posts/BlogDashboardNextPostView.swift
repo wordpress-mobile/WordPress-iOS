@@ -26,6 +26,8 @@ class BlogDashboardNextPostView: UIView {
         titleLabel.text = "Create your first post"
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.title3)
         titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.5
         titleLabel.accessibilityTraits = .button
         return titleLabel
     }()
