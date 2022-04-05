@@ -64,7 +64,7 @@ class SiteNameView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabelView, subtitleLabelView, searchBar])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Metrics.stackViewVerticalSpacing
+        stackView.spacing = Metrics.mainStackViewVerticalSpacing
         return stackView
     }()
 
@@ -133,15 +133,16 @@ private extension SiteNameView {
 
     }
 
+    /// activates all constraints
     func activateConstraints() {
         continueButtonView.pinSubviewToSafeArea(continueButton, insets: Metrics.continueButtonInsets)
-        titleLabelView.pinSubviewToAllEdges(titleLabel, insets: Metrics.titlesInsets)
-        subtitleLabelView.pinSubviewToAllEdges(subtitleLabel, insets: Metrics.titlesInsets)
+        titleLabelView.pinSubviewToSafeArea(titleLabel, insets: Metrics.titlesInsets)
+        subtitleLabelView.pinSubviewToSafeArea(subtitleLabel, insets: Metrics.titlesInsets)
 
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.titleTopSpacing),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Metrics.mainStackViewTopPadding),
+            mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Metrics.mainStackViewSidePadding),
+            mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.mainStackViewSidePadding),
             searchBar.heightAnchor.constraint(equalToConstant: Metrics.searchbarHeight),
         ])
     }
@@ -162,14 +163,18 @@ private extension SiteNameView {
     }
 
     enum Metrics {
-        static let stackViewVerticalSpacing: CGFloat = 18
-        static let searchbarHeight: CGFloat = 56
-        static let titleTopSpacing: CGFloat = 10
+        // main stack view
+        static let mainStackViewVerticalSpacing: CGFloat = 18
+        static let mainStackViewTopPadding: CGFloat = 10
+        static let mainStackViewSidePadding: CGFloat = 8
+        // search bar
+        static let searchbarHeight: CGFloat = 64
+        // title and subtitle
         static let numberOfLinesInTitle = 0
         static let numberOfLinesInSubtitle = 0
         static let titlesInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        //continue button
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-
         static func continueButtonViewFrame(_ accessoryWidth: CGFloat) -> CGRect {
             CGRect(x: 0, y: 0, width: accessoryWidth, height: 76)
         }
