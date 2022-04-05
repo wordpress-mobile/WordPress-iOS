@@ -1,6 +1,6 @@
 import UIKit
 
-final class DashboardStatsNudgeButton: MultilineButton {
+final class DashboardStatsNudgeButton: UIButton {
 
     var onTap: (() -> Void)?
 
