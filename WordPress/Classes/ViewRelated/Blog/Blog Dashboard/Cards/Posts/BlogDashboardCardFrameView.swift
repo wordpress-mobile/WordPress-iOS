@@ -58,7 +58,7 @@ class BlogDashboardCardFrameView: UIView {
 
     /// Ellipsis Button displayed on the top right corner of the view.
     /// Displayed only when an associated action is set
-    private lazy var ellipsisButton: UIButton = {
+    private(set) lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
         button.contentEdgeInsets = Constants.ellipsisButtonPadding
