@@ -645,8 +645,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - iOS 10 bottom padding
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    BOOL isLastSection = section == self.tableSections.count - 1;
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = self.tableSections[sectionNum];
+    BOOL isLastSection = sectionNum == self.tableSections.count - 1;
+    BOOL hasTitle = section.footerTitle != nil && ![section.footerTitle isEmpty];
+    if (hasTitle) {
+        return UITableViewAutomaticDimension;
+    }
     if (isLastSection) {
         return BlogDetailSectionsSpacing;
     }
@@ -655,10 +660,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
+    BOOL hasTitle = section.title != nil && ![section.title isEmpty];
 
     if (section.showQuickStartMenu == true) {
         return BlogDetailQuickStartSectionHeaderHeight;
-    } else if (section.title != nil && ![section.title isEmpty]) {
+    } else if (hasTitle) {
         return BlogDetailSectionTitleHeaderHeight;
     }
     return BlogDetailSectionsSpacing;
