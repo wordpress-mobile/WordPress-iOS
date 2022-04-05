@@ -192,6 +192,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
+    let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let showTotalCount: Bool
     let action: ImmuTableAction? = nil
@@ -203,6 +204,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
         }
 
         cell.configure(tabsData: tabsData,
+                       statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        showTotalCount: showTotalCount)
     }
@@ -233,7 +235,6 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       statSection: dataRows.first?.statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }

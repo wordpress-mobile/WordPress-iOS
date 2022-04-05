@@ -540,6 +540,7 @@ private extension SiteStatsInsightsViewModel {
     func createCommentsRow() -> TabbedTotalsStatsRow {
         return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
                                                tabDataForCommentType(.insightsCommentsPosts)],
+                                    statSection: .insightsCommentsAuthors,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: false)
     }
@@ -586,6 +587,7 @@ private extension SiteStatsInsightsViewModel {
     func createFollowersRow() -> TabbedTotalsStatsRow {
         return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                tabDataForFollowerType(.insightsFollowersEmail)],
+                                    statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true)
     }

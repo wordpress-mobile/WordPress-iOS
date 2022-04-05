@@ -28,7 +28,7 @@ struct TabData: FilterTabBarItem {
     }
 }
 
-class TabbedTotalsCell: UITableViewCell, NibLoadable {
+class TabbedTotalsCell: StatsBaseCell, NibLoadable {
 
     // MARK: - Properties
 
@@ -63,12 +63,14 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     // MARK: - Configure
 
     func configure(tabsData: [TabData],
+                   statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    showTotalCount: Bool,
                    selectedIndex: Int = 0,
                    forDetails: Bool = false) {
         self.tabsData = tabsData
+        self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.showTotalCount = showTotalCount
