@@ -40,7 +40,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }()
 
     @IBOutlet weak var largeTitleTopSpacingConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var headerStackView: UIStackView!
+    @IBOutlet weak var headerImageView: UIImageView!
     @IBOutlet weak var largeTitleView: UILabel!
+    private var headerImage: UIImage?
+
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var accessoryBar: UIView!
     @IBOutlet weak var accessoryBarHeightConstraint: NSLayoutConstraint!
@@ -165,7 +170,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///
     /// - Parameters:
     ///   - scrollableView: Populates the scrollable area of this container. Required.
-    ///   - title: The Large title and small title in the header. Required.
+    ///   - mainTitle: The Large title and small title in the header. Required.
+    ///   - navigationBarTitle: The Large title in the header. Optional.
+    ///   - headerImage: An image displayed in the header. Optional.
     ///   - prompt: The subtitle/prompt in the header. Required.
     ///   - primaryActionTitle: The button title for the right most button when an item is selected. Required.
     ///   - secondaryActionTitle: The button title for the left most button when an item is selected. Optional - nil results in the left most button being hidden when an item is selected.
@@ -175,6 +182,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     init(scrollableView: UIScrollView,
          mainTitle: String,
          navigationBarTitle: String? = nil,
+         headerImage: UIImage? = nil,
          prompt: String,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
@@ -183,6 +191,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
         self.navigationBarTitle = navigationBarTitle
+        self.headerImage = headerImage
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
@@ -201,6 +210,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewDidLoad()
         insertChildView()
         insertAccessoryView()
+        configureHeaderImageView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         toggleFilterBarConstraints()
@@ -345,6 +355,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         accessoryBar.addConstraints([top, bottom, leading, trailing])
     }
 
+    private func configureHeaderImageView() {
+        headerImageView.isHidden = (headerImage == nil)
+        headerImageView.image = headerImage
+    }
+
     private func styleButtons() {
         let seperator = UIColor.separator
 
@@ -390,7 +405,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             accessoryBarSpacing = accessoryBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
         }
         _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + accessoryBarSpacing
-        _maxHeaderHeight = largeTitleTopSpacingConstraint.constant + largeTitleView.frame.height + _midHeaderHeight
+        _maxHeaderHeight = largeTitleTopSpacingConstraint.constant + headerStackView.frame.height + _midHeaderHeight
     }
 
     private func layoutHeaderInsets() {
@@ -626,7 +641,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     private func snapToHeight(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout else { return }
 
-        if largeTitleView.frame.midY > 0 {
+        if headerStackView.frame.midY > 0 {
             snapToHeight(scrollView, height: maxHeaderHeight)
         } else if promptView.frame.midY > 0 {
             snapToHeight(scrollView, height: midHeaderHeight)
