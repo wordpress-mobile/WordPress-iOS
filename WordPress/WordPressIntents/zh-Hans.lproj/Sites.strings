@@ -13,5 +13,7 @@
     <string>选择站点</string>
     <key>s4dJhx</key>
     <string>再确认一下，您是想要“${site}”吗？</string>
+    <key>tVvJ9c</key>
+    <string>选择“站点意图”</string>
   </dict>
 </plist>
