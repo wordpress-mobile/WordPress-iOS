@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:31:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -616,10 +616,12 @@
 "Contact support" = "Връзка с отдела по поддръжка";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Напред";
 
 /* Menus alert button title to continue making changes. */
@@ -801,7 +803,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Дискусия";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -1498,7 +1501,8 @@
 /* Post Stats months and years header. */
 "Months and Years" = "Месеци и години";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -1826,7 +1830,8 @@
 "Pending review" = "Очаква отзив";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "Хора";
 
 /* Label for date periods. */
@@ -2753,7 +2758,8 @@
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "Включване на HTML";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Тема";
 
 /* Topics Filter Tab Title */

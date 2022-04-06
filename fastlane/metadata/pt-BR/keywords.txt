@@ -1,1 +1,1 @@
-social,notas,jetpack,escrever,geotag,mídia,blog,site,blogar,diário
+blogueiro,escrita,blog,web,criador,online,loja,negócio,criar,fazer,escrever,blogs

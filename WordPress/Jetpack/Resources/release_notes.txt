@@ -1,4 +1,7 @@
-* [*] Enhances the exit animation of notices. [#18182]
-* [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
-* [***] My Site: your My Site screen now has two tabs, "Site Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
+Big news, site fans—your My Site screen just got better. You’ll now see two new tabs you can switch between: Site Menu and Home.
 
+The Home tab also contains handy cards with more information about your site, including drafts, scheduled posts, and today’s stats. Or, if you’re in a hurry, you can easily head over to another section of the app.
+
+We’re all about clear communication. That’s why we’ve added new error text to the photo upload process, just in case you try to upload a photo from your device without giving the app photo permission first.
+
+Finally, when in-app notices pop up, they now fade out more smoothly when you don’t need them anymore. Exit stage left.
