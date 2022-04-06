@@ -10,6 +10,7 @@ protocol BlogDashboardCardConfigurable {
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
+    private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
         BlogDashboardViewModel(viewController: self, blog: blog)
@@ -18,7 +19,16 @@ final class BlogDashboardViewController: UIViewController {
     lazy var collectionView: IntrinsicCollectionView = {
         let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        if !embeddedInScrollView {
+            collectionView.refreshControl = refreshControl
+        }
         return collectionView
+    }()
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
     }()
 
     /// The "My Site" main scroll view
@@ -26,8 +36,9 @@ final class BlogDashboardViewController: UIViewController {
         return view.superview?.superview as? UIScrollView
     }
 
-    @objc init(blog: Blog) {
+    @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
+        self.embeddedInScrollView = embeddedInScrollView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -93,6 +104,12 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
+    @objc func refreshControlPulled() {
+        pulledToRefresh { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+
     func pulledToRefresh(completion: (() -> Void)? = nil) {
         viewModel.loadCards {
             completion?()
@@ -104,7 +121,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func setupCollectionView() {
-        collectionView.isScrollEnabled = false
+        collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)

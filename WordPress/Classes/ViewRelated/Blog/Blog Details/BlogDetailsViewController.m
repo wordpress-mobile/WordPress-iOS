@@ -1536,7 +1536,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDashboard
 {
-    BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog];
+    BlogDashboardViewController *controller = [[BlogDashboardViewController alloc] initWithBlog:self.blog embeddedInScrollView:NO];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     controller.extendedLayoutIncludesOpaqueBars = YES;
     [self showDetailViewController:controller sender:self];
