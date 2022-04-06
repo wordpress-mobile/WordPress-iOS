@@ -57,13 +57,10 @@ final class SiteCreationWizardLauncher: SiteCreationWizardStepInvoker {
     init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.onDismiss = onDismiss
 
-        let siteIntentVariant = SiteIntentAB.shared.variant
-        let siteNameVariant = ABTest.siteNameV1.variation
-
         stepOrderer = SiteCreationWizardStepOrderer(
             stepInvoker: self,
-            siteIntentVariant: siteIntentVariant,
-            siteNameVariant: siteNameVariant
+            siteIntentVariant: SiteIntentAB.shared.variant,
+            siteNameVariant: ABTest.siteNameV1.variation
         )
     }
 }
