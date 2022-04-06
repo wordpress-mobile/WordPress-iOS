@@ -181,7 +181,8 @@ private extension PostsCardViewModel {
         syncing = (blog.dotComID, status)
 
         // If the userID is nil we need to sync authors
-        if blog.userID == nil {
+        // But only if the user is an admin
+        if blog.userID == nil && blog.isAdmin {
             syncAuthors()
             return
         }
