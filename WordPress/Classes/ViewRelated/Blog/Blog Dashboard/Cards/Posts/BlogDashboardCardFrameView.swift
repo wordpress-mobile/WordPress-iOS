@@ -74,11 +74,6 @@ class BlogDashboardCardFrameView: UIView {
 
     weak var currentView: UIView?
 
-    /// Current frame of the ellipsis button. Used when displaying an action sheet as a popover.
-    var ellipsisButtonFrame: CGRect {
-        return ellipsisButton.frame
-    }
-
     /// The title at the header
     var title: String? {
         didSet {
