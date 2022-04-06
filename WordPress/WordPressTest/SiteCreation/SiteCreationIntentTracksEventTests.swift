@@ -116,8 +116,8 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
         let lastEventTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.last?.event)
         XCTAssertEqual(lastEventTracked, expectedEvent)
     }
-}
 
-struct SiteIntentABMock: SiteIntentABTestable {
-    let variant: SiteIntentAB.Variant
+    struct SiteIntentABMock: SiteIntentABTestable {
+        let variant: SiteIntentAB.Variant
+    }
 }
