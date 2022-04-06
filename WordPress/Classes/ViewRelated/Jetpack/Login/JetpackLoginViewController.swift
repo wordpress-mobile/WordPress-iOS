@@ -216,15 +216,27 @@ class JetpackLoginViewController: UIViewController {
 
     private func jetpackIsCanceled() {
         trackStat(.installJetpackCanceled)
-        dismiss(animated: true, completion: completionBlock)
+
+        guard let completionBlock = completionBlock else {
+            dismiss(animated: true)
+            return
+        }
+
+        completionBlock()
     }
 
     private func jetpackIsCompleted() {
         trackStat(.installJetpackCompleted)
         trackStat(.signedInToJetpack, blog: blog)
-        dismiss(animated: true, completion: completionBlock)
-    }
 
+        guard let completionBlock = completionBlock else {
+            dismiss(animated: true)
+            return
+        }
+
+        completionBlock()
+    }
+    
     private func openJetpackRemoteInstall() {
         trackStat(.selectedInstallJetpack)
         let controller = JetpackRemoteInstallViewController(blog: blog,
