@@ -1,48 +1,42 @@
+import AutomatticTracks
+
 /// Puts together the Site creation wizard, assembling steps.
-final class SiteCreationWizardLauncher {
+final class SiteCreationWizardLauncher: SiteCreationWizardStepInvoker {
+    private var stepOrderer: SiteCreationWizardStepOrderer?
+
     private lazy var creator: SiteCreator = {
         return SiteCreator()
     }()
 
-    private lazy var segmentsStep: WizardStep = {
+    internal lazy var segmentsStep: WizardStep = {
         let segmentsService = SiteCreationSegmentsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         return SiteSegmentsStep(creator: self.creator, service: segmentsService)
     }()
 
-    private lazy var intentStep: WizardStep? = {
+    internal lazy var intentStep: WizardStep = {
         return SiteIntentStep(creator: self.creator)
     }()
 
-    private lazy var nameStep: WizardStep? = {
+    internal lazy var nameStep: WizardStep = {
         return SiteNameStep(creator: self.creator)
     }()
 
-    private lazy var designStep: WizardStep = {
+    internal lazy var designStep: WizardStep = {
         return SiteDesignStep(creator: self.creator)
     }()
 
-    private lazy var addressStep: WizardStep = {
+    internal lazy var addressStep: WizardStep = {
         let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
         return WebAddressStep(creator: self.creator, service: addressService)
     }()
 
-    private lazy var siteAssemblyStep: WizardStep = {
+    internal lazy var siteAssemblyStep: WizardStep = {
         let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService, onDismiss: onDismiss)
     }()
 
-    private lazy var steps: [WizardStep] = {
-        return [
-            self.intentStep,
-            self.nameStep,
-            self.designStep,
-            self.addressStep,
-            self.siteAssemblyStep
-        ].compactMap { $0 }
-    }()
-
     private lazy var wizard: SiteCreationWizard = {
-        return SiteCreationWizard(steps: self.steps)
+        return SiteCreationWizard(steps: self.stepOrderer?.steps ?? [])
     }()
 
     lazy var ui: UIViewController? = {
@@ -62,5 +56,14 @@ final class SiteCreationWizardLauncher {
 
     init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.onDismiss = onDismiss
+
+        let siteIntentVariant = SiteIntentAB.shared.variant
+        let siteNameVariant = ABTest.siteNameV1.variation
+
+        stepOrderer = SiteCreationWizardStepOrderer(
+            stepInvoker: self,
+            siteIntentVariant: siteIntentVariant,
+            siteNameVariant: siteNameVariant
+        )
     }
 }

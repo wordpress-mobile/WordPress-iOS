@@ -1,5 +1,4 @@
 import Foundation
-import AutomatticTracks
 
 /// Site Creation: Allows creation of the site's name.
 final class SiteNameStep: WizardStep {
@@ -10,22 +9,8 @@ final class SiteNameStep: WizardStep {
         return SiteNameViewController(creator: creator)
     }()
 
-    init?(
-        siteIntentVariation: SiteIntentAB.Variant = SiteIntentAB.shared.variant,
-        siteNameVariation: Variation = ABTest.siteNameV1.variation,
-        creator: SiteCreator
-    ) {
-        // TODO: Send an event to track the site name variant.
-
-        guard
-            FeatureFlag.siteIntentQuestion.enabled,
-            FeatureFlag.siteName.enabled,
-            siteIntentVariation == .treatment,
-            siteNameVariation == .treatment(nil)
-        else {
-            return nil
-        }
-
+    init(siteNameAB: ABTest = ABTest.siteNameV1, creator: SiteCreator) {
+        // TODO: Send an event to track the Site Name variant.
         self.creator = creator
     }
 

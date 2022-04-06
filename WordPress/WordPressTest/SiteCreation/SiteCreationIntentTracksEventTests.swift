@@ -20,10 +20,10 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     }
 
     func siteIntentViewControllerMaker() throws -> SiteIntentViewController {
-        let mockABTestForTreatment = SiteCreationIntentTests.SiteIntentABMock(variant: treatmentVariant)
+        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
         let mockSiteCreator = SiteCreator()
         let siteIntentStep = SiteIntentStep(siteIntentAB: mockABTestForTreatment, creator: mockSiteCreator)
-        let siteIntentViewController = try XCTUnwrap(siteIntentStep?.content as? SiteIntentViewController)
+        let siteIntentViewController = try XCTUnwrap(siteIntentStep.content as? SiteIntentViewController)
         return siteIntentViewController
     }
 
@@ -40,7 +40,7 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     func testSiteIntentTracksEventFiresForTreatmentGroup() throws {
 
         // Given
-        let mockABTestForTreatment = SiteCreationIntentTests.SiteIntentABMock(variant: treatmentVariant)
+        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
         let mockSiteCreator = SiteCreator()
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
         let expectedProperty = treatmentVariant.tracksProperty
@@ -58,7 +58,7 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     func testSiteIntentTracksEventFiresForControlGroup() throws {
 
         // Given
-        let mockABTestForControl = SiteCreationIntentTests.SiteIntentABMock(variant: controlVariant)
+        let mockABTestForControl = SiteIntentABMock(variant: controlVariant)
         let mockSiteCreator = SiteCreator()
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
         let expectedProperty = controlVariant.tracksProperty
@@ -116,4 +116,8 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
         let lastEventTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.last?.event)
         XCTAssertEqual(lastEventTracked, expectedEvent)
     }
+}
+
+struct SiteIntentABMock: SiteIntentABTestable {
+    let variant: SiteIntentAB.Variant
 }
