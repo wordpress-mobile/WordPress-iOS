@@ -214,39 +214,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func subscribeToJetpackInstallNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchJetpackInstallFromNotification(_:)), name: .installJetpack, object: nil)
-    }
-
-    @objc
-    func launchJetpackInstallFromNotification(_ notification: NSNotification) {
-        guard let blog = blog else {
-            return
-        }
-
-        let controller = JetpackLoginViewController(blog: blog)
-        controller.promptType = .installPrompt
-
-        let navController = UINavigationController(rootViewController: controller)
-        navController.modalPresentationStyle = .fullScreen
-
-        navigationController?.present(navController, animated: true)
-
-        controller.completionBlock = { [weak self] in
-            defer {
-                navController.dismiss(animated: true)
-            }
-
-            guard let self = self else {
-                return
-            }
-
-            // TODO: Add a loading indicator
-            DispatchQueue.main.async {
-                self.syncBlogs()
-            }
-        }
-    }
     
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
@@ -394,7 +361,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    private func syncBlogs() {
+    func syncBlogs() {
         guard let account = defaultAccount() else {
             return
         }
