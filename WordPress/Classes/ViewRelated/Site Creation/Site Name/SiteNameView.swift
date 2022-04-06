@@ -154,7 +154,7 @@ private extension SiteNameView {
             .constraint(equalTo: continueButton.topAnchor,
                         constant: -Metrics.continueButtonStandardPadding)
 
-        contineuButtonBottomConstraint =
+        continueButtonBottomConstraint =
         continueButtonView.safeAreaLayoutGuide
             .bottomAnchor
             .constraint(equalTo: continueButton.bottomAnchor,
@@ -203,7 +203,7 @@ private extension SiteNameView {
                                                     constant: -Metrics.mainStackViewSidePadding),
             searchBar.heightAnchor.constraint(equalToConstant: Metrics.searchbarHeight),
             continueButtonTopConstraint,
-            contineuButtonBottomConstraint,
+            continueButtonBottomConstraint,
             continueButtonLeadingConstraint,
             continueButtonTrailingConstraint
         ])
