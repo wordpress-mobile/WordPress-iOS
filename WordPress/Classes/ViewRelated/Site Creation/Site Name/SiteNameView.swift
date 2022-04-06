@@ -174,6 +174,7 @@ private extension SiteNameView {
                         constant: Metrics.continueButtonStandardPadding)
     }
 
+    /// Updates the constraints of the Continue button on iPad, so that the button and the search text field are at the same width
     func updateContinueButton() {
         guard UIDevice.isPad(), let windowWidth = UIApplication.shared.mainWindow?.frame.width else {
             return
