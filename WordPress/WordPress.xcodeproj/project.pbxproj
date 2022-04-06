@@ -2881,8 +2881,8 @@
 		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE42726159B1300BF29FE /* AppConstants.swift */; };
-		FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */; };
-		FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */; };
+		FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
+		FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
 		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
@@ -7688,7 +7688,7 @@
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsNudgeButton.swift; sourceTree = "<group>"; };
+		FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsNudgeView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
@@ -11697,7 +11697,7 @@
 			children = (
 				8B6214DF27B1AD9D001DF7B6 /* DashboardStatsCardCell.swift */,
 				8071390627D039E70012DB21 /* DashboardSingleStatView.swift */,
-				FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeButton.swift */,
+				FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */,
 				80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */,
 			);
 			path = Stats;
@@ -17418,7 +17418,7 @@
 				8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */,
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				40F46B6B22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift in Sources */,
-				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */,
+				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
@@ -19725,7 +19725,7 @@
 				FABB20DF2602FC2C00C8785C /* ContextManager.m in Sources */,
 				FABB20E02602FC2C00C8785C /* CookieJar.swift in Sources */,
 				C7F7BDBD26262A1B00CE547F /* AppDependency.swift in Sources */,
-				FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeButton.swift in Sources */,
+				FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
 				FABB20E12602FC2C00C8785C /* WebAddressStep.swift in Sources */,
 				FABB20E22602FC2C00C8785C /* NotificationSyncMediator.swift in Sources */,
 				FABB20E42602FC2C00C8785C /* ThemeBrowserHeaderView.swift in Sources */,

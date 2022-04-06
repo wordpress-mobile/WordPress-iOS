@@ -1,23 +1,30 @@
 import UIKit
 
-final class DashboardStatsNudgeButton: UIButton {
+final class DashboardStatsNudgeView: UIView {
 
-    var onTap: (() -> Void)?
+    var onTap: (() -> Void)? {
+        didSet {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+            addGestureRecognizer(tapGesture)
+        }
+    }
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        label.textColor = .textSubtle
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+
+    // MARK: - Init
 
     convenience init(title: String, hint: String) {
         self.init(frame: .zero)
 
         setTitle(title: title, hint: hint)
-    }
-
-    // MARK: - Overrides
-
-    override var intrinsicContentSize: CGSize {
-        if let intrinsicContentSize = titleLabel?.intrinsicContentSize {
-            return CGSize(width: intrinsicContentSize.width, height: intrinsicContentSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
-        }
-
-        return .zero
     }
 
     override init(frame: CGRect) {
@@ -29,23 +36,11 @@ final class DashboardStatsNudgeButton: UIButton {
         fatalError("Not implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        titleLabel?.preferredMaxLayoutWidth = titleLabel?.frame.size.width ?? 0
-        super.layoutSubviews()
-    }
-
     // MARK: - View setup
 
     private func setup() {
-        setTitleColor(.textSubtle, for: .normal)
-        titleLabel?.lineBreakMode = .byWordWrapping
-        titleLabel?.numberOfLines = 0
-        titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        titleLabel?.textColor = .textSubtle
-        contentHorizontalAlignment = .leading
-        contentVerticalAlignment = .top
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        addSubview(titleLabel)
+        pinSubviewToAllEdges(titleLabel, insets: Constants.margins)
     }
 
     @objc private func buttonTapped() {
@@ -68,12 +63,13 @@ final class DashboardStatsNudgeButton: UIButton {
 
         titleString.append(attachmentString)
 
-        setAttributedTitle(titleString, for: .normal)
+        titleLabel.attributedText = titleString
     }
 
     private enum Constants {
         static let iconSize = CGSize(width: 16, height: 16)
         static let iconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
+        static let margins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
     }
 
 }
