@@ -240,7 +240,7 @@ extension BlogDashboardViewController {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 20
-        static let verticalSectionInset: CGFloat = 24
+        static let verticalSectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 24
     }
 }
