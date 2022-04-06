@@ -3,7 +3,7 @@ import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     enum SeparatorStyle {
-        case visibile
+        case visible
         case automatic
         case hidden
     }
@@ -21,7 +21,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     open var separatorStyle: SeparatorStyle {
-        return self.hasAccessoryBar ? .visibile : .automatic
+        return self.hasAccessoryBar ? .visible : .automatic
     }
 
     private let hasDefaultAction: Bool
@@ -57,8 +57,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
     @IBOutlet weak var seperator: UIView!
 
-    // Flag indicating if the action button stack view (selectedStateButtonsContainer) is vertical.
-    // Used when calculating the footer height.
+    /// Flag indicating if the action button stack view (selectedStateButtonsContainer) is vertical.
+    /// Used when calculating the footer height.
     private var usesVerticalActionButtons: Bool = false
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
@@ -251,7 +251,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        guard isShowingNoResults else { return }
+        guard isShowingNoResults else {
+            return
+        }
+
         coordinator.animate(alongsideTransition: nil) { (_) in
             self.updateHeaderDisplay()
             if self.shouldHideAccessoryBar {
@@ -345,7 +348,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func insertAccessoryView() {
-        guard let accessoryView = accessoryView else { return }
+        guard let accessoryView = accessoryView else {
+            return
+        }
+
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         let top = NSLayoutConstraint(item: accessoryView, attribute: .top, relatedBy: .equal, toItem: accessoryBar, attribute: .top, multiplier: 1, constant: 0)
         let bottom = NSLayoutConstraint(item: accessoryView, attribute: .bottom, relatedBy: .equal, toItem: accessoryBar, attribute: .bottom, multiplier: 1, constant: 0)
@@ -458,7 +464,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     /// A public interface to notify the container that the content has loaded data or is attempting too.
     public func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?) {
-        guard !isShowingNoResults else { return }
+        guard !isShowingNoResults else {
+            return
+        }
+
         isShowingNoResults = true
         disableInitialLayoutHelpers()
         snapToHeight(scrollableView, height: minHeaderHeight)
@@ -473,7 +482,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     public func dismissNoResultsController() {
-        guard isShowingNoResults else { return }
+        guard isShowingNoResults else {
+            return
+        }
+
         isShowingNoResults = false
         snapToHeight(scrollableView, height: maxHeaderHeight)
         hideNoResults()
@@ -521,7 +533,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             })
             return
         }
-        guard hasSelectedItem == selectedStateButtonsContainer.isHidden else { return }
+
+        guard hasSelectedItem == selectedStateButtonsContainer.isHidden else {
+            return
+        }
+
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
@@ -546,7 +562,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         switch separatorStyle {
         case .automatic:
             shouldBeHidden = headerHeightConstraint.constant > minHeaderHeight && !shouldUseCompactLayout
-        case .visibile:
+        case .visible:
             shouldBeHidden = false
         case .hidden:
             shouldBeHidden = true
@@ -568,7 +584,10 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
     /// Restores the stashed content offset if it appears as if it's been reset.
     private func restoreContentOffsetIfNeeded(_ scrollView: UIScrollView) {
-        guard var stashedOffset = stashedOffset else { return }
+        guard var stashedOffset = stashedOffset else {
+            return
+        }
+
         stashedOffset = resolveContentOffsetCollisions(scrollView, cachedOffset: stashedOffset)
         scrollView.contentOffset = stashedOffset
     }
@@ -639,7 +658,9 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     private func snapToHeight(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout else { return }
+        guard !shouldUseCompactLayout else {
+            return
+        }
 
         if headerStackView.frame.midY > 0 {
             snapToHeight(scrollView, height: maxHeaderHeight)
@@ -651,7 +672,9 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     public func expandHeader() {
-        guard !shouldUseCompactLayout else { return }
+        guard !shouldUseCompactLayout else {
+            return
+        }
         snapToHeight(scrollableView, height: maxHeaderHeight)
     }
 
