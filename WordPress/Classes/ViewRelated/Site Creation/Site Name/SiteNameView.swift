@@ -9,7 +9,7 @@ class SiteNameView: UIView {
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
-    private var contineuButtonBottomConstraint: NSLayoutConstraint!
+    private var continueButtonBottomConstraint: NSLayoutConstraint!
     private var continueButtonLeadingConstraint: NSLayoutConstraint!
     private var continueButtonTrailingConstraint: NSLayoutConstraint!
 
