@@ -17,13 +17,14 @@ class SiteNameViewController: UIViewController {
 
     override func loadView() {
         // TODO: SITENAME - This string is here only to test the UI until the implementation is complete.
-        view = SiteNameView(siteName: "Commuinity & Non-Profit")
+        view = SiteNameView(siteName: "Community & Non-Profit")
         removeNavigationBarBorder()
         setTitleForTraitCollection()
 
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         setTitleForTraitCollection()
     }
 }
