@@ -4,11 +4,15 @@
 <plist version="1.0">
   <dict>
     <key>BOl9KQ</key>
-    <string>Il y a des ${count} options correspondantes « ${site} ».</string>
+    <string>Il existe ${count} options correspondant à « ${site} ».</string>
+    <key>ILcGmf</key>
+    <string>Site</string>
+    <key>cyajMn</key>
+    <string>Site</string>
     <key>gpCwrM</key>
-    <string>Sélectionner le site</string>
+    <string>Sélectionnez le site</string>
     <key>s4dJhx</key>
-    <string>Vous vouliez vraiment « ${site} » ?</string>
+    <string>Vous cherchiez bien « ${site} » ?</string>
     <key>tVvJ9c</key>
     <string>Sélectionner l’intention du site</string>
   </dict>

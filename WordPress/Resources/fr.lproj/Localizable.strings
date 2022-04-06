@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-24 15:54:07+0000 */
+/* Translation-Revision-Date: 2022-04-04 14:23:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -248,9 +248,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s n’a pas d’URL définie";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "Lien %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Les aperçus %s ne sont pas encore disponibles";
@@ -888,7 +885,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Organisez votre contenu en colonnes, ajoutez des boutons d’appel à l’action et superposer des images et du texte.";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "Art";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1141,6 +1139,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Liste à puces";
+
+/* Business site intent topic */
+"Business" = "Business";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Occupé";
@@ -1801,10 +1802,12 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Structure de contenu\nBlocs : %1$li, mots : %2$li, caractères : %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continuez";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -1944,7 +1947,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't unmark as spam" = "Impossible de marquer comme sain";
 
 /* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "La mise à jour n’a pas pu être effectuée Vérifiez que vous êtes en ligne et actualisez.";
+"Couldn't update. Check that you're online and refresh." = "La mise à jour n’a pas pu être effectuée. Vérifiez que vous êtes en ligne et actualisez.";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Impossible de téléverser l’image à la une";
@@ -2335,7 +2338,8 @@ translators: Block name. %s: The localized block name */
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussion";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -3031,7 +3035,7 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "L’insertion du média a échoué.\nVeuillez toucher pour les options.";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nTap for more info." = "Échec d’insertion du média.\nCliquez pour plus d’informations.";
+"Failed to insert media.\nTap for more info." = "Échec d’insertion du média.\nAppuyez pour plus d’informations.";
 
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "L’enregistrement des fichiers a échoué.\nVeuillez toucher pour accéder aux options.";
@@ -4370,7 +4374,8 @@ translators: Block name. %s: The localized block name */
 /* Post Stats months and years header. */
 "Months and Years" = "Mois et Années";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -4464,7 +4469,8 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "Musées à visiter à Londres";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "Musique";
 
 /* Link to My Profile section
@@ -5205,7 +5211,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending review" = "En attente de relecture";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "Personnes";
 
 /* Label for date periods. */
@@ -5390,7 +5397,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the plugin directory */
 "Plugins" = "Extensions";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "Politique";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -7511,10 +7519,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la médiathèque de votre appareil, afin d’ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les réglages de confidentialité.";
 
 /* No comment provided by engineer. */
-"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Cette combinaison de couleurs peut être difficile à lire pour certaines personnes. Essayez une couleur d’arrière-plan plus claire et\/ou une couleur de texte plus foncée.";
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Cette combinaison de couleurs peut gêner la lecture chez certaines personnes. Essayez une couleur d’arrière-plan plus claire et\/ou une couleur de texte plus foncée.";
 
 /* No comment provided by engineer. */
-"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Cette combinaison de couleurs peut être difficile à lire pour certaines personnes. Essayez une couleur d’arrière-plan plus foncée et\/ou une couleur de texte plus claire.";
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Cette combinaison de couleurs peut gêner la lecture chez certaines personnes. Essayez une couleur d’arrière-plan plus foncée et\/ou une couleur de texte plus claire.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Ce domaine n’est pas disponible";
@@ -7704,7 +7712,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell title for the Top Level option case */
 "Top level" = "Premier niveau";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Sujet";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7799,7 +7808,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Essayez un autre terme de recherche";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "Essayer maintenant !";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -9170,7 +9180,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Votre restauration prend plus de temps qu’à l’habitude, veuillez vérifiez dans quelques minutes.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
-"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Votre recherche contient des caractères non pris en charge dans les domaines WordPress.com. Ces caractères sont autorisés : A–Z, a–z, 0–9.";
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Votre recherche contient des caractères non pris en charge dans les domaines WordPress.com. Les caractères suivants sont autorisés : A–Z, a–z, 0–9.";
 
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "L’adresse de votre site apparait dans la barre en haut de l’écran quand vous le visitez dans Safari.";
@@ -9330,16 +9340,22 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Enregistrer comme brouillon";
 
-/* MARK: - Sites.strings */
-"ios-widget.BOl9KQ" = "Il y a des ${count} options correspondantes « ${site} ».";
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "Il existe ${count} options correspondant à « ${site} ».";
 
-/* No comment provided by engineer. */
-"ios-widget.gpCwrM" = "Sélectionner le site";
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "Site";
 
-/* No comment provided by engineer. */
-"ios-widget.s4dJhx" = "Vous vouliez vraiment « ${site} » ?";
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "Site";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Sélectionnez le site";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "Vous cherchiez bien « ${site} » ?";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Sélectionner l’intention du site";
 
 /* Later today */

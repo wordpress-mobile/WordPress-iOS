@@ -2,5 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>„${site}“ odpovídá ${count} možností.</string>
+    <key>ILcGmf</key>
+    <string>Web</string>
+    <key>cyajMn</key>
+    <string>Web</string>
+    <key>gpCwrM</key>
+    <string>Vybrat web</string>
+    <key>s4dJhx</key>
+    <string>Jen pro potvrzení, chtěli jste „${site}“?</string>
+    <key>tVvJ9c</key>
+    <string>Vyberte záměr webu</string>
+  </dict>
 </plist>

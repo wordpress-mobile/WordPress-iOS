@@ -83,7 +83,7 @@ class BlogDetailHeaderView: UIView {
 
     private enum LayoutSpacing {
         static let atSides: CGFloat = 20
-        static let top: CGFloat = 16
+        static let top: CGFloat = 10
         static let bottom: CGFloat = 16
         static let belowActionRow: CGFloat = 24
         static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
@@ -151,14 +151,12 @@ class BlogDetailHeaderView: UIView {
     }
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
-        var constraints = [
+        return [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides),
             titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
-
-        return constraints
     }
 
     // MARK: - User Action Handlers

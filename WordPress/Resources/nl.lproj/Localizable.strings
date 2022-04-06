@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-11 09:05:09+0000 */
+/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -248,9 +248,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s heeft geen URL ingesteld";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s voorbeelden nog niet beschikbaar";
@@ -888,7 +885,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Rangschik je inhoud in kolommen, voeg Oproep tot actie knoppen toe, en overlap afbeeldingen met tekst.";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1141,6 +1139,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Opsommingslijst";
+
+/* Business site intent topic */
+"Business" = "Business";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Bezig";
@@ -1798,10 +1799,12 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Inhouds-structuur\nBlokken: %1$li, Woorden: %2$li, Karakters: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Doorgaan";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2329,7 +2332,8 @@ translators: Block name. %s: The localized block name */
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussie";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -3644,6 +3648,10 @@ translators: Block name. %s: The localized block name */
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informatie over cursussen en evenementen van WordPress.com (online en op locatie).";
 
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "Initial Screen";
+
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Het terugzetproces aan het starten";
 
@@ -4357,7 +4365,8 @@ translators: Block name. %s: The localized block name */
 /* Post Stats months and years header. */
 "Months and Years" = "Maanden en jaren";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -4451,7 +4460,8 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "Museums om te zien in Londen";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "Muziek";
 
 /* Link to My Profile section
@@ -5192,7 +5202,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending review" = "Afwachting van de moderatie";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "Mensen";
 
 /* Label for date periods. */
@@ -5377,7 +5388,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the plugin directory */
 "Plugins" = "Plugins";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "Politiek";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -7682,7 +7694,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell title for the Top Level option case */
 "Top level" = "Bovenste niveau";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Onderwerp";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7777,7 +7790,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Probeer een andere zoekterm";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "Probeer het nu";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
