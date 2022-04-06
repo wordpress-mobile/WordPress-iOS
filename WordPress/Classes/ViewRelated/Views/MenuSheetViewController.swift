@@ -17,6 +17,18 @@ class MenuSheetViewController: UITableViewController {
         let title: String
         let image: UIImage?
         let handler: () -> Void
+        let destructive: Bool
+
+        init(title: String, image: UIImage? = nil, destructive: Bool = false, handler: @escaping () -> Void) {
+            self.title = title
+            self.image = image
+            self.handler = handler
+            self.destructive = destructive
+        }
+
+        var foregroundColor: UIColor {
+            return destructive ? .error : .text
+        }
     }
 
     private let itemSource: [[MenuItem]]
@@ -96,7 +108,8 @@ extension MenuSheetViewController {
               }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
-        cell.tintColor = .text
+        cell.tintColor = item.foregroundColor
+        cell.textLabel?.textColor = item.foregroundColor
         cell.textLabel?.setText(item.title)
         cell.accessoryView = UIImageView(image: item.image?.withTintColor(.text))
 
