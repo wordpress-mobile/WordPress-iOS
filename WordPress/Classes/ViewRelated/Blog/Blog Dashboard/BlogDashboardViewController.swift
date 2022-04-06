@@ -10,19 +10,35 @@ protocol BlogDashboardCardConfigurable {
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
+    private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    lazy var collectionView: IntrinsicCollectionView = {
-        let collectionView = IntrinsicCollectionView(frame: .zero, collectionViewLayout: createLayout())
+    lazy var collectionView: DynamicHeightCollectionView = {
+        let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        if !embeddedInScrollView {
+            collectionView.refreshControl = refreshControl
+        }
         return collectionView
     }()
 
-    @objc init(blog: Blog) {
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        return refreshControl
+    }()
+
+    /// The "My Site" main scroll view
+    var mySiteScrollView: UIScrollView? {
+        return view.superview?.superview as? UIScrollView
+    }
+
+    @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
+        self.embeddedInScrollView = embeddedInScrollView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -88,6 +104,12 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
+    @objc func refreshControlPulled() {
+        pulledToRefresh { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+
     func pulledToRefresh(completion: (() -> Void)? = nil) {
         viewModel.loadCards {
             completion?()
@@ -99,7 +121,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func setupCollectionView() {
-        collectionView.isScrollEnabled = false
+        collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
@@ -169,9 +191,9 @@ extension BlogDashboardViewController {
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
         let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
-        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
-        let bottomInset = isLastSection ? Constants.sectionInset : 0
-        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
+        let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
+        let bottomInset = isLastSection ? Constants.verticalSectionInset : 0
+        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
                                                         trailing: horizontalInset)
@@ -234,7 +256,22 @@ extension BlogDashboardViewController {
     private enum Constants {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 20
+        static let horizontalSectionInset: CGFloat = 20
+        static let verticalSectionInset: CGFloat = 20
+        static let cellSpacing: CGFloat = 24
+    }
+}
+
+// MARK: - UI Popover Delegate
+
+/// This view controller may host a `DashboardPromptsCardCell` that requires presenting a `MenuSheetViewController`,
+/// a fallback implementation of `UIMenu` for iOS 13. For more details, see the docs on `MenuSheetViewController`.
+///
+/// NOTE: This should be removed once we drop support for iOS 13.
+///
+extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
+    // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
+    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
 }

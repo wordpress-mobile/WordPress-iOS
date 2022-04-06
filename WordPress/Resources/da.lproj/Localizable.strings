@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:32:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -80,7 +80,8 @@
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Er du sikker på, du vil slette dette indlæg?";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "Kunst";
 
 /* No comment provided by engineer. */
@@ -389,7 +390,8 @@
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Afbryd forbindelse til WordPress.com";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -783,7 +785,8 @@
 /* Post Stats months and years header. */
 "Months and Years" = "Måneder og år";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -1485,7 +1488,8 @@
    Notifications Today Section Header */
 "Today" = "I dag";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Emne";
 
 /* Topics Filter Tab Title */

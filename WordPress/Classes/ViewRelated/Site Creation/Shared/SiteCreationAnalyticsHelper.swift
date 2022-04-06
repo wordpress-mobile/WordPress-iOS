@@ -24,14 +24,13 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
     }
 
-    static func trackSiteIntentSelected(_ vertical: SiteVertical) {
-        let properties = [verticalSlugKey: vertical.identifier]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionVerticalSelected, properties: properties)
-    }
+    static func trackSiteIntentSelected(_ vertical: SiteIntentVertical) {
+        let properties = [verticalSlugKey: vertical.slug]
+        let event: WPAnalyticsEvent = vertical.isCustom ?
+            .enhancedSiteCreationIntentQuestionCustomVerticalSelected :
+            .enhancedSiteCreationIntentQuestionVerticalSelected
 
-    static func trackSiteIntentContinuePressed(_ term: String) {
-        let properties = [verticalSearchTerm: term]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionContinuePressed, properties: properties)
+        WPAnalytics.track(event, properties: properties)
     }
 
     static func trackSiteIntentSearchFocused() {

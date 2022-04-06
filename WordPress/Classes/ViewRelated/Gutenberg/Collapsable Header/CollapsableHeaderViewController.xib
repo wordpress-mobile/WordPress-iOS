@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -63,7 +63,17 @@
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LGN-fD-c9Q" userLabel="Header View" customClass="CollapsableHeaderView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="88" width="414" height="202"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw" userLabel="Large Title">
+                            <rect key="frame" x="95" y="10" width="224" height="37"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                            </accessibility>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                            <variation key="heightClass=compact" hidden="YES"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73" userLabel="Prompt">
                             <rect key="frame" x="64.5" y="59" width="285" height="55"/>
                             <accessibility key="accessibilityConfiguration">
                                 <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -76,17 +86,7 @@
                             <nil key="highlightedColor"/>
                             <variation key="heightClass=compact" hidden="YES"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw">
-                            <rect key="frame" x="95" y="10" width="224" height="37"/>
-                            <accessibility key="accessibilityConfiguration">
-                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                            </accessibility>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" hidden="YES"/>
-                        </label>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB" userLabel="Accessory Bar">
                             <rect key="frame" x="0.0" y="134" width="414" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -153,9 +153,6 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <color key="tintColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="110" id="RV8-lP-Nz4"/>
-                            </constraints>
                             <blurEffect style="regular"/>
                         </visualEffectView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jCA-DJ-MgS" userLabel="Seperator">
@@ -185,6 +182,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeJ-NR-hHA" userLabel="Secondry Action">
                                     <rect key="frame" x="0.0" y="0.0" width="182" height="44"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="HTk-qu-K7m"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                     <state key="normal" title="Preview">
                                         <color key="titleColor" systemColor="labelColor"/>
@@ -196,6 +196,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cck-0Q-rBD" userLabel="Primary Action">
                                     <rect key="frame" x="192" y="0.0" width="182" height="44"/>
                                     <color key="backgroundColor" name="Pink50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="bwA-RB-jmT"/>
+                                    </constraints>
                                     <state key="normal" title="Create Page">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -204,9 +207,6 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="44" id="g4B-fL-RbV"/>
-                            </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -218,6 +218,7 @@
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" id="jdx-th-4uc"/>
                         <constraint firstItem="dmc-kV-0d8" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" constant="16" id="lU4-Sj-dcL"/>
                         <constraint firstAttribute="height" constant="110" id="lle-48-IUZ"/>
+                        <constraint firstItem="qxH-Si-bGn" firstAttribute="height" secondItem="UfV-hu-KZx" secondAttribute="height" id="tz4-DO-FSF"/>
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" id="v6p-Jz-Saz"/>
                         <constraint firstAttribute="trailing" secondItem="qxH-Si-bGn" secondAttribute="trailing" id="yT0-ne-uGv"/>
                     </constraints>

@@ -39,4 +39,24 @@ class DashboardStatsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.todaysLikes, "0")
     }
 
+    func testReturnTrueIfAllTodaysStatsAreZero() {
+        // Given
+        let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 0, visitors: 0, likes: 0, comments: 0)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
+
+        // When & Then
+        XCTAssertEqual(viewModel.shouldDisplayNudge, true)
+    }
+
+    func testReturnFalseIfNotAllTodaysStatsAreZero() {
+        // Given
+        let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 1, visitors: 0, likes: 0, comments: 0)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
+
+        // When & Then
+        XCTAssertEqual(viewModel.shouldDisplayNudge, false)
+    }
+
 }

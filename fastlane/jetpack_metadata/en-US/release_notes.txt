@@ -1,12 +1,4 @@
-We updated Comment Notifications with a spiffy new look and feel. (You might recognize it from My Site Comments!) The Quick Start design in your site menu and dashboard is rocking a new look, too.
+* [*] Enhances the exit animation of notices. [#18182]
+* [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
+* [***] My Site: your My Site screen now has two tabs, "Site Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
 
-When you’re creating a new site and entering the domain name, you should now see a more accurate error message if you try to use non-English characters that aren’t letters or numbers. We also tweaked the upload error text in media upload blocks.
-
-Not sure if you’re looking at an image or a GIF in your Image block? No need to wonder anymore—animated GIFs now come with a GIF badge.
-
-We also made a few bug fixes while we were under the hood.
-
-- Good news for all those orphan comments out there—we squashed a bug where comment replies got lost after their parent comments were unapproved.
-- When you switch between sites on an iPad, you won’t switch between sidebar nav items, too. You’ll be looking at the same menu item you left on the previous site.
-- Block setting changes to ordered lists now appear in the editor, not just in Preview.
-- We fixed a keyboard issue in the WP.com account creation process. If you start entering a magic link password and change your mind, you can dismiss the keyboard and move on with your day.

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-24 12:54:07+0000 */
+/* Translation-Revision-Date: 2022-03-25 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -248,9 +248,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s에 설정된 URL 없음";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s 링크";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s 미리보기는 아직 사용할 수 없음";
@@ -882,7 +879,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "콘텐츠를 열로 정렬하고, 행동 유도 버튼을 추가하고, 이미지에 텍스트를 입히세요.";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "예술";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1136,6 +1134,9 @@ translators: Block name. %s: The localized block name */
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "불릿 목록";
 
+/* Business site intent topic */
+"Business" = "비즈니스";
+
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "사용 중";
 
@@ -1355,7 +1356,7 @@ translators: Block name. %s: The localized block name */
 "Check your email!" = "이메일을 확인바랍니다!";
 
 /* Subtitle shown on the dashboard when it fails to load */
-"Check your internet connection and pull to refresh." = "인터넷 연결을 확인하고 끌어서 새로고침을 하세요.";
+"Check your internet connection and pull to refresh." = "인터넷 연결을 확인하고 끌어서 페이지를 새로 고치세요.";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "네트워크 연결을 확인하고 다시 시도하거나 빈 페이지를 만드세요.";
@@ -1792,10 +1793,12 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "콘텐츠 구성\n블록: %1$li, 단어: %2$li, 글자: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "계속";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -1935,7 +1938,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't unmark as spam" = "스팸 표시를 취소할 수 없음";
 
 /* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "업데이트할 수 없습니다. 온라인 상태인지 확인하고 새로고침을 하세요.";
+"Couldn't update. Check that you're online and refresh." = "업데이트할 수 없습니다. 온라인 상태인지 확인하고 페이지를 새로 고치세요.";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "특성 이미지를 업로드 할 수 없습니다";
@@ -2326,7 +2329,8 @@ translators: Block name. %s: The localized block name */
    Title for the Discussion Settings Screen */
 "Discussion" = "토론";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -4361,7 +4365,8 @@ translators: Block name. %s: The localized block name */
 /* Post Stats months and years header. */
 "Months and Years" = "월 및 연도";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -4455,7 +4460,8 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "런던에서 볼 만한 박물관";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "음악";
 
 /* Link to My Profile section
@@ -5193,7 +5199,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending review" = "대기중인 리뷰";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "사람";
 
 /* Label for date periods. */
@@ -5378,7 +5385,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the plugin directory */
 "Plugins" = "플러그인";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "정치";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -7688,7 +7696,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell title for the Top Level option case */
 "Top level" = "최상위";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "토픽";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7783,7 +7792,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "다른 검색어 시도";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "지금 사용해 보기";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -9297,10 +9307,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
 
 /* This sentence is shown when the app asks permission from the user to use their location. */
-"infoplist.NSLocationUsageDescription" = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+"infoplist.NSLocationUsageDescription" = "워드프레스에서 위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
 
 /* This sentence is shown when the app asks permission from the user to use their location. */
-"infoplist.NSLocationWhenInUseUsageDescription" = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+"infoplist.NSLocationWhenInUseUsageDescription" = "워드프레스에서 위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
 
 /* Sentence to justify why the app asks permission from the user to access the device microphone. */
 "infoplist.NSMicrophoneUsageDescription" = "비디오에 소리를 녹음하려면 마이크 접근을 활성화하세요.";
@@ -9314,22 +9324,22 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "임시글로 저장";
 
-/* MARK: - Sites.strings */
-"ios-widget.BOl9KQ" = "‘${site}’과(와) 일치하는 ${count}개 옵션이 있습니다.";
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "‘${site}’과(와) 일치하는 옵션이 ${count}개 있습니다.";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "사이트";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "ios-widget.cyajMn" = "사이트";
 
-/* No comment provided by engineer. */
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "사이트 선택";
 
-/* No comment provided by engineer. */
-"ios-widget.s4dJhx" = "단지 ‘${site}’을(를) 확인해 보고 싶으신가요?";
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "‘${site}’을(를) 원하시나요?";
 
-/* No comment provided by engineer. */
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "사이트 의도 선택";
 
 /* Later today */

@@ -230,9 +230,6 @@
 "%s has URL set" = "%s has URL set";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s previews not yet available";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -916,7 +913,8 @@
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "Art";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1000,6 +998,9 @@
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic Family";
 
+/* Automotive site intent topic */
+"Automotive" = "Automotive";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
 
@@ -1065,6 +1066,9 @@
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Be the first to leave a comment.";
+
+/* Beauty site intent topic */
+"Beauty" = "Beauty";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Best Day";
@@ -1152,6 +1156,9 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Bold";
 
+/* Books site intent topic */
+"Books" = "Books";
+
 /* No comment provided by engineer. */
 "Border Radius" = "Border Radius";
 
@@ -1175,6 +1182,9 @@
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Bullet List";
+
+/* Business site intent topic */
+"Business" = "Business";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Busy";
@@ -1448,6 +1458,9 @@
 /* Label for Publish time picker */
 "Choose a time" = "Choose a time";
 
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own" = "Choose a topic from the list below or type your own";
+
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Choose a unique site icon";
 
@@ -1680,6 +1693,9 @@
 /* Setting: WordPress.com Community */
 "Community" = "Community";
 
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "Community & Non-Profit";
+
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compact";
 
@@ -1839,10 +1855,12 @@
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Content Structure\nBlocks: %1$li, Words: %2$li, Characters: %3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continue";
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
@@ -2376,7 +2394,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussion";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -2417,6 +2436,9 @@
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Display your site stats for today here. Configure in the WordPress app in your site stats.";
+
+/* DIY site intent topic */
+"DIY" = "DIY";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Do it again";
@@ -2706,11 +2728,17 @@
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Edits this menu item";
 
+/* Education site intent topic */
+"Education" = "Education";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "eg. 44";
+
+/* Placeholder text for the search field int the Site Intent screen. */
+"Eg. Fashion, Poetry, Politics" = "Eg. Fashion, Poetry, Politics";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3103,6 +3131,9 @@
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
 
+/* Fashion site intent topic */
+"Fashion" = "Fashion";
+
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
@@ -3160,11 +3191,17 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "File type";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film & Television";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filter";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filter by activity type";
+
+/* Finance site intent topic */
+"Finance" = "Finance";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Find out more";
@@ -3182,6 +3219,9 @@
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "First Name";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "Fitness & Exercise";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Fix All";
@@ -3280,6 +3320,9 @@
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
 
+/* Food site intent topic */
+"Food" = "Food";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Football";
 
@@ -3333,6 +3376,9 @@
 
 /* No comment provided by engineer. */
 "Gallery style" = "Gallery style";
+
+/* Gaming site intent topic */
+"Gaming" = "Gaming";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Gardening";
@@ -3420,6 +3466,9 @@
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google sign up failed.";
 
+/* Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "Got it";
+
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Got it!";
 
@@ -3504,6 +3553,9 @@
 
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
+
+/* Health site intent topic */
+"Health" = "Health";
 
 /* Help button */
 "Help" = "Help";
@@ -3632,6 +3684,9 @@
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"If you want to try get more views and traffic check out our top tips" = "If you want to try get more views and traffic check out our top tips";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have.";
@@ -3799,6 +3854,12 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.";
+
+/* Interior Design site intent topic */
+"Interior Design" = "Interior Design";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Prompts" = "Introducing Prompts";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introducing Story Posts";
@@ -4029,6 +4090,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Let Us Help";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "Lifestyle";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Light";
 
@@ -4192,6 +4256,9 @@
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
 "Local changes" = "Local changes";
+
+/* Local Services site intent topic */
+"Local Services" = "Local Services";
 
 /* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Location";
@@ -4455,7 +4522,8 @@
 /* Post Stats months and years header. */
 "Months and Years" = "Months and Years";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -4549,7 +4617,8 @@
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "Museums to See In London";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "Music";
 
 /* Link to My Profile section
@@ -4647,11 +4716,17 @@
 /* Noun. The title of an item in a list. */
 "New posts" = "New posts";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "NEW!";
+
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Newest";
 
 /* Sort Order */
 "Newest first" = "Newest first";
+
+/* News site intent topic */
+"News" = "News";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4925,6 +5000,9 @@
 
 /* Display value for Support email field if there is no user email address. */
 "Not Set" = "Not Set";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "Note:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Note: Column layout may vary between themes and screen sizes";
@@ -5255,6 +5333,9 @@
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "Parent page successfully updated.";
 
+/* Parenting site intent topic */
+"Parenting" = "Parenting";
+
 /* No comment provided by engineer. */
 "password" = "password";
 
@@ -5295,7 +5376,8 @@
 "Pending review" = "Pending review";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "People";
 
 /* Label for date periods. */
@@ -5306,6 +5388,9 @@
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Permanently Delete Site";
+
+/* Personal site intent topic */
+"Personal" = "Personal";
 
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personalize";
@@ -5318,6 +5403,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Photo Library";
+
+/* Photography site intent topic */
+"Photography" = "Photography";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Photos";
@@ -5486,7 +5574,8 @@
    Title for the plugin directory */
 "Plugins" = "Plugins";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "Politics";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -5851,6 +5940,9 @@
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
 
+/* Real Estate site intent topic */
+"Real Estate" = "Real Estate";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "Reblog";
 
@@ -5921,6 +6013,9 @@
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Related Posts displays relevant content from your site below your posts";
+
+/* Secondary button title on the feature introduction view. */
+"Remind me" = "Remind me";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Reminders removed";
@@ -6523,6 +6618,9 @@
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Selects this item";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "Selects this topic as the intent for your site.";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Send Feedback";
 
@@ -6829,6 +6927,9 @@
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Site title changed successfully";
 
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "Site Topic";
+
 /* The accessibility label for the followed sites search field */
 "Site URL" = "Site URL";
 
@@ -6984,6 +7085,9 @@
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Speed up your site";
+
+/* Sports site intent topic */
+"Sports" = "Sports";
 
 /* Standard post format label */
 "Standard" = "Standard";
@@ -7263,6 +7367,9 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomy";
 
+/* Technology site intent topic */
+"Technology" = "Technology";
+
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Tell us a bit about you.";
 
@@ -7321,6 +7428,9 @@
 
 /* No comment provided by engineer. */
 "The basics" = "The basics";
+
+/* Subtitle displayed on the feature introduction view. */
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?";
@@ -7804,7 +7914,11 @@
 /* Cell title for the Top Level option case */
 "Top level" = "Top level";
 
-/* Topic page title */
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "top tips";
+
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Topic";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7867,6 +7981,9 @@
    Title of trashed Comments filter. */
 "Trashed" = "Trashed";
 
+/* Travel site intent topic */
+"Travel" = "Travel";
+
 /* Connect when the SSL certificate is invalid */
 "Trust" = "Trust";
 
@@ -7896,7 +8013,8 @@
 /* No comment provided by engineer. */
 "Try another search term" = "Try another search term";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "Try it now";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8824,6 +8942,9 @@
    Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll notify you when its done." = "We’ll notify you when its done.";
 
+/* Description of Blogging Prompts displayed in the Feature Introduction view. */
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!";
+
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "We’ll still attempt to backup your site.";
 
@@ -8863,6 +8984,9 @@
 /* Opens the What's New / Feature Announcement modal
    Title of the What's new page. */
 "What's New in WordPress" = "What's New in WordPress";
+
+/* Select the site's intent. Title */
+"What's your website about?" = "What's your website about?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "Whatever you want to create or share, we'll help you do it right here.";
@@ -9105,6 +9229,9 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Writing";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "Writing & Poetry";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X-Axis Position";
 
@@ -9165,6 +9292,9 @@
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "You can follow posts on a specific subject by adding a topic.";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";
@@ -9484,6 +9614,9 @@
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
