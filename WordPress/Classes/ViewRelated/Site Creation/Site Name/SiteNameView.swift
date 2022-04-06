@@ -9,7 +9,7 @@ class SiteNameView: UIView {
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
-    private var contineuButtonBottomConstraint: NSLayoutConstraint!
+    private var continueButtonBottomConstraint: NSLayoutConstraint!
     private var continueButtonLeadingConstraint: NSLayoutConstraint!
     private var continueButtonTrailingConstraint: NSLayoutConstraint!
 
@@ -61,6 +61,7 @@ class SiteNameView: UIView {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
+        searchBar.autocapitalizationType = .sentences
         return searchBar
     }()
 
@@ -153,7 +154,7 @@ private extension SiteNameView {
             .constraint(equalTo: continueButton.topAnchor,
                         constant: -Metrics.continueButtonStandardPadding)
 
-        contineuButtonBottomConstraint =
+        continueButtonBottomConstraint =
         continueButtonView.safeAreaLayoutGuide
             .bottomAnchor
             .constraint(equalTo: continueButton.bottomAnchor,
@@ -173,6 +174,7 @@ private extension SiteNameView {
                         constant: Metrics.continueButtonStandardPadding)
     }
 
+    /// Updates the constraints of the Continue button on iPad, so that the button and the search text field are at the same width
     func updateContinueButton() {
         guard UIDevice.isPad(), let windowWidth = UIApplication.shared.mainWindow?.frame.width else {
             return
@@ -201,7 +203,7 @@ private extension SiteNameView {
                                                     constant: -Metrics.mainStackViewSidePadding),
             searchBar.heightAnchor.constraint(equalToConstant: Metrics.searchbarHeight),
             continueButtonTopConstraint,
-            contineuButtonBottomConstraint,
+            continueButtonBottomConstraint,
             continueButtonLeadingConstraint,
             continueButtonTrailingConstraint
         ])

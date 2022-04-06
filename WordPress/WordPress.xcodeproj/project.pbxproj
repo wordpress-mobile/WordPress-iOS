@@ -2835,8 +2835,6 @@
 		FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A543F25A6E3080033967D /* RestoreWarningView.xib */; };
 		FA1A55EF25A6F0740033967D /* RestoreStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */; };
 		FA1A55FF25A6F07F0033967D /* RestoreStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */; };
-		FA1A5FD427A1A920001A38D8 /* IntrinsicCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A5FD327A1A91F001A38D8 /* IntrinsicCollectionView.swift */; };
-		FA1A5FD527A1A920001A38D8 /* IntrinsicCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A5FD327A1A91F001A38D8 /* IntrinsicCollectionView.swift */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
@@ -4521,6 +4519,7 @@
 		FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE02F95E269DC14A00752A44 /* Comment+Interface.swift */; };
 		FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
+		FE18495827F5ACBA00D26879 /* DashboardPromptsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */; };
 		FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4B26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
@@ -4551,6 +4550,7 @@
 		FE43DAB026DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */; };
 		FE43DAB126DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */; };
 		FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */; };
+		FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */; };
 		FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FE9CC71B26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* ListTableHeaderView.swift */; };
@@ -7657,7 +7657,6 @@
 		FA1A543F25A6E3080033967D /* RestoreWarningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreWarningView.xib; sourceTree = "<group>"; };
 		FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusView.swift; sourceTree = "<group>"; };
 		FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusView.xib; sourceTree = "<group>"; };
-		FA1A5FD327A1A91F001A38D8 /* IntrinsicCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntrinsicCollectionView.swift; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusFailedView.swift; sourceTree = "<group>"; };
 		FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusFailedView.xib; sourceTree = "<group>"; };
@@ -7761,6 +7760,7 @@
 		FE02F95E269DC14A00752A44 /* Comment+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Interface.swift"; sourceTree = "<group>"; };
 		FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenter.swift; sourceTree = "<group>"; };
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
+		FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPromptsCardCell.swift; sourceTree = "<group>"; };
 		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
@@ -8141,7 +8141,6 @@
 				32F2565F25012D3F006B8BC4 /* LinearGradientView.swift */,
 				F18CB8952642E58700B90794 /* FixedSizeImageView.swift */,
 				FADFBD25265F580500039C41 /* MultilineButton.swift */,
-				FA1A5FD327A1A91F001A38D8 /* IntrinsicCollectionView.swift */,
 				808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */,
 			);
 			path = Views;
@@ -11502,6 +11501,7 @@
 		8B4DDF23278F3AED0022494D /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				FE18495627F5ACA400D26879 /* Prompts */,
 				8B92D69427CD51CE001F5371 /* Ghost */,
 				FAA4012F27B405DF009E1137 /* Quick Actions */,
 				FA8E2FE327C6377D00DA0982 /* Quick Start */,
@@ -15079,6 +15079,14 @@
 			path = Sharing;
 			sourceTree = "<group>";
 		};
+		FE18495627F5ACA400D26879 /* Prompts */ = {
+			isa = PBXGroup;
+			children = (
+				FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */,
+			);
+			path = Prompts;
+			sourceTree = "<group>";
+		};
 		FE32F004275F60360040BE67 /* ContentRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -18123,7 +18131,6 @@
 				9A1A67A622B2AD4E00FF8422 /* CountriesMap.swift in Sources */,
 				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
 				40F46B6A22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,
-				FA1A5FD427A1A920001A38D8 /* IntrinsicCollectionView.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
@@ -18523,6 +18530,7 @@
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
+				FE18495827F5ACBA00D26879 /* DashboardPromptsCardCell.swift in Sources */,
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
 				46F583A92624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
@@ -19970,6 +19978,7 @@
 				FABB21932602FC2C00C8785C /* GutenbergTenorMediaPicker.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
 				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
+				FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */,
 				FABB21972602FC2C00C8785C /* MenusViewController.m in Sources */,
 				FABB21982602FC2C00C8785C /* UIViewController+Notice.swift in Sources */,
 				FABB21992602FC2C00C8785C /* GutenbergFileUploadProcessor.swift in Sources */,
@@ -21166,7 +21175,6 @@
 				FABB25A02602FC2C00C8785C /* UINavigationBar+Appearance.swift in Sources */,
 				FABB25A12602FC2C00C8785C /* QuickStartChecklistViewController.swift in Sources */,
 				FABB25A22602FC2C00C8785C /* MenuItemsViewController.m in Sources */,
-				FA1A5FD527A1A920001A38D8 /* IntrinsicCollectionView.swift in Sources */,
 				FABB25A32602FC2C00C8785C /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				FABB25A42602FC2C00C8785C /* TableViewKeyboardObserver.swift in Sources */,
 				FABB25A52602FC2C00C8785C /* BlogToJetpackAccount.m in Sources */,
