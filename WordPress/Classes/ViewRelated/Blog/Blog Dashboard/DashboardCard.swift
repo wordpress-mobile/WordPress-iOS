@@ -10,6 +10,7 @@ import Foundation
 enum DashboardCard: String, CaseIterable {
     case quickActions
     case quickStart
+    case prompts
     case todaysStats = "todays_stats"
     case posts
 
@@ -28,6 +29,8 @@ enum DashboardCard: String, CaseIterable {
             return true
         case .todaysStats:
             return true
+        case .prompts:
+            return false // TODO: Change this to true later.
         case .ghost:
             return false
         case .failure:
@@ -45,6 +48,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
+        case .prompts:
+            return DashboardPromptsCardCell.self
         case .ghost:
             return DashboardGhostCardCell.self
         case .failure:
@@ -62,6 +67,8 @@ enum DashboardCard: String, CaseIterable {
             return true
         case .todaysStats:
             return true
+        case .prompts:
+            return FeatureFlag.bloggingPrompts.enabled
         case .ghost:
             return blog.dashboardState.isFirstLoad
         case .failure:

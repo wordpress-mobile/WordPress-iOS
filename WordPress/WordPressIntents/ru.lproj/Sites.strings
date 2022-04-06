@@ -13,5 +13,7 @@
     <string>Выбрать сайт</string>
     <key>s4dJhx</key>
     <string>Вы действительно хотели "${site}"?</string>
+    <key>tVvJ9c</key>
+    <string>Выберите назначение сайта</string>
   </dict>
 </plist>
