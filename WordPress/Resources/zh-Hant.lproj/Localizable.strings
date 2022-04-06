@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-03-25 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -245,9 +245,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s 沒有 URL 集";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s 連結";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "尚未推出 %s 預覽";
@@ -882,7 +879,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "在欄位中排列你的內容、新增「行動呼籲」按鈕，並在圖片中加上文字。";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "藝術";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1135,6 +1133,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "項目符號清單";
+
+/* Business site intent topic */
+"Business" = "商務版";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "忙碌中";
@@ -1787,10 +1788,12 @@ translators: Block name. %s: The localized block name */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "內容結構\n區塊：%1$li、文字：%2$li、字元：%3$li";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "繼續";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2309,7 +2312,8 @@ translators: Block name. %s: The localized block name */
    Title for the Discussion Settings Screen */
 "Discussion" = "討論";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -4338,7 +4342,8 @@ translators: Block name. %s: The localized block name */
 /* Post Stats months and years header. */
 "Months and Years" = "月份與年份";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -4432,7 +4437,8 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "倫敦的博物館";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "音樂";
 
 /* Link to My Profile section
@@ -5173,7 +5179,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending review" = "等待複審";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "使用者";
 
 /* Label for date periods. */
@@ -5358,7 +5365,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the plugin directory */
 "Plugins" = "外掛程式";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "政治";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -7666,7 +7674,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell title for the Top Level option case */
 "Top level" = "最上層";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "主題";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -7761,7 +7770,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "嘗試其他搜尋字詞";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "立即試試";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -9293,6 +9303,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "確認一下，你想要的是「${site}」嗎？";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "選擇網站用途";
 
 /* Later today */
 "later today" = "今日稍晚";
