@@ -235,6 +235,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
+                       statSection: dataRows.first?.statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
