@@ -14,6 +14,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Private Properties
 
+    // Used to present the menu sheet for contextual menu.
+    // NOTE: Remove this once we drop support for iOS 13.
+    private weak var presenterViewController: BlogDashboardViewController? = nil
+
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -27,10 +31,19 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.title = Strings.cardFrameTitle
         frameView.icon = Style.frameIconImage
-        frameView.onEllipsisButtonTap = { [weak self] in
-            // TODO: Show contextual menu.
-            // TODO: For testing purposes; added to make it easier to toggle answered state.
-            self?.isAnswered.toggle()
+
+        // NOTE: Remove the logic for iOS 13 once we drop that version.
+        if #available (iOS 14.0, *) {
+            // assign an empty closure so the button appears.
+            frameView.onEllipsisButtonTap = {}
+            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            frameView.ellipsisButton.menu = contextMenu
+        } else {
+            // Show a fallback implementation using `MenuSheetViewController`.
+            // iOS 13 doesn't support showing UIMenu programmatically.
+            frameView.onEllipsisButtonTap = { [weak self] in
+                self?.showMenuSheet()
+            }
         }
 
         return frameView
@@ -108,6 +121,25 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return stackView
     }()
 
+    // Defines the structure of the contextual menu items.
+    private var contextMenuItems: [[MenuItem]] {
+        return [
+            [
+                .viewMore(viewMoreMenuTapped),
+                .skip(skipMenuTapped)
+            ],
+            [
+                .remove(removeMenuTapped)
+            ]
+        ]
+    }
+
+    private var contextMenu: UIMenu {
+        return .init(title: String(), options: .displayInline, children: contextMenuItems.map { menuSection in
+            UIMenu(title: String(), options: .displayInline, children: menuSection.map { $0.toAction })
+        })
+    }
+
     // MARK: Initializers
 
     override init(frame: CGRect) {
@@ -124,11 +156,12 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.presenterViewController = viewController
         refreshStackView()
     }
 }
 
-// MARK: - Constants
+// MARK: - Private Helpers
 
 private extension DashboardPromptsCardCell {
 
@@ -149,6 +182,42 @@ private extension DashboardPromptsCardCell {
         containerStackView.addArrangedSubviews([promptTitleView, (isAnswered ? answeredStateView : answerButton)])
     }
 
+    // MARK: Context menu actions
+
+    func viewMoreMenuTapped() {
+        // TODO.
+    }
+
+    func skipMenuTapped() {
+        // TODO.
+    }
+
+    func removeMenuTapped() {
+        // TODO.
+    }
+
+    // Fallback context menu implementation for iOS 13.
+    func showMenuSheet() {
+        guard let presenterViewController = presenterViewController else {
+            return
+        }
+
+        let menuViewController = MenuSheetViewController(items: contextMenuItems.map { menuSection in
+            menuSection.map { $0.toMenuSheetItem }
+        })
+
+        menuViewController.modalPresentationStyle = .popover
+        if let popoverPresentationController = menuViewController.popoverPresentationController {
+            popoverPresentationController.delegate = presenterViewController
+            popoverPresentationController.sourceView = cardFrameView.ellipsisButton
+            popoverPresentationController.sourceRect = cardFrameView.ellipsisButton.bounds
+        }
+
+        presenterViewController.present(menuViewController, animated: true)
+    }
+
+    // MARK: Constants
+
     struct Strings {
         static let cardFrameTitle = NSLocalizedString("Prompts", comment: "Title label for the Prompts card in My Sites tab.")
         static let answerButtonTitle = NSLocalizedString("Answer Prompt", comment: "Title for a call-to-action button on the prompts card.")
@@ -168,5 +237,64 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let cardFrameConstraintPriority = UILayoutPriority(999)
+    }
+
+    // MARK: Contextual Menu
+
+    enum MenuItem {
+        case viewMore(_ handler: () -> Void)
+        case skip(_ handler: () -> Void)
+        case remove(_ handler: () -> Void)
+
+        var title: String {
+            switch self {
+            case .viewMore:
+                return NSLocalizedString("View more prompts", comment: "Menu title to show more prompts.")
+            case .skip:
+                return NSLocalizedString("Skip this prompt", comment: "Menu title to skip today's prompt.")
+            case .remove:
+                return NSLocalizedString("Remove from dashboard", comment: "Destructive menu title to remove the prompt card from the dashboard.")
+            }
+        }
+
+        var image: UIImage? {
+            switch self {
+            case .viewMore:
+                return .init(systemName: "ellipsis.circle")
+            case .skip:
+                return .init(systemName: "xmark.circle")
+            case .remove:
+                return .init(systemName: "minus.circle")
+            }
+        }
+
+        var menuAttributes: UIMenuElement.Attributes {
+            switch self {
+            case .remove:
+                return .destructive
+            default:
+                return []
+            }
+        }
+
+        var toAction: UIAction {
+            switch self {
+            case .viewMore(let handler),
+                    .skip(let handler),
+                    .remove(let handler):
+                return .init(title: title, image: image, attributes: menuAttributes, handler: { _ in
+                    handler()
+                })
+            }
+        }
+
+        var toMenuSheetItem: MenuSheetViewController.MenuItem {
+            switch self {
+            case .viewMore(let handler),
+                    .skip(let handler),
+                    .remove(let handler):
+                return .init(title: title, image: image, handler: handler)
+            }
+        }
     }
 }
