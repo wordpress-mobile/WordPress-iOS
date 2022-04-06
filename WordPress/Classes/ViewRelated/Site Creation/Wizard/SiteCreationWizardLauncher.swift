@@ -13,6 +13,10 @@ final class SiteCreationWizardLauncher {
         return SiteIntentStep(creator: self.creator)
     }()
 
+    private lazy var nameStep: WizardStep? = {
+        return SiteNameStep(creator: self.creator)
+    }()
+
     private lazy var designStep: WizardStep = {
         return SiteDesignStep(creator: self.creator)
     }()
@@ -30,6 +34,7 @@ final class SiteCreationWizardLauncher {
     private lazy var steps: [WizardStep] = {
         return [
             self.intentStep,
+            self.nameStep,
             self.designStep,
             self.addressStep,
             self.siteAssemblyStep
