@@ -1,6 +1,6 @@
 19.7
 -----
-
+* [*] Reader: Fixed a bug that caused cut off content in reader web view [#16106]
 
 19.6
 -----
