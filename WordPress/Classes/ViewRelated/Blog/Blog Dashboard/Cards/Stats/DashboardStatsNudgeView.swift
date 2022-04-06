@@ -41,6 +41,8 @@ final class DashboardStatsNudgeView: UIView {
     private func setup() {
         addSubview(titleLabel)
         pinSubviewToAllEdges(titleLabel, insets: Constants.margins)
+
+        prepareForVoiceOver()
     }
 
     @objc private func buttonTapped() {
@@ -72,4 +74,13 @@ final class DashboardStatsNudgeView: UIView {
         static let margins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
     }
 
+}
+
+extension DashboardStatsNudgeView: Accessible {
+
+    func prepareForVoiceOver() {
+        isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = true
+        titleLabel.accessibilityTraits = .button
+    }
 }
