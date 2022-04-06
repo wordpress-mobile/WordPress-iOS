@@ -7,6 +7,12 @@ class SiteNameView: UIView {
 
     private let siteName: String
 
+    // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
+    private var continueButtonTopConstraint: NSLayoutConstraint!
+    private var contineuButtonBottomConstraint: NSLayoutConstraint!
+    private var continueButtonLeadingConstraint: NSLayoutConstraint!
+    private var continueButtonTrailingConstraint: NSLayoutConstraint!
+
     // MARK: UI
 
     /// Title
@@ -106,6 +112,11 @@ class SiteNameView: UIView {
         super.traitCollectionDidChange(previousTraitCollection)
         hideTitlesIfNeeded()
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateContinueButton()
+    }
 }
 
 // MARK: setup
@@ -130,20 +141,69 @@ private extension SiteNameView {
         continueButton.isEnabled = false
         searchBar.inputAccessoryView = continueButtonView
         continueButtonView.frame = Metrics.continueButtonViewFrame(frame.width)
+        setContinueButtonConstraints()
+    }
 
+    /// sets the default constraints for the continue button
+    func setContinueButtonConstraints() {
+        continueButtonTopConstraint =
+        continueButtonView
+            .safeAreaLayoutGuide
+            .topAnchor
+            .constraint(equalTo: continueButton.topAnchor,
+                        constant: -Metrics.continueButtonStandardPadding)
+
+        contineuButtonBottomConstraint =
+        continueButtonView.safeAreaLayoutGuide
+            .bottomAnchor
+            .constraint(equalTo: continueButton.bottomAnchor,
+                        constant: Metrics.continueButtonStandardPadding)
+
+        continueButtonLeadingConstraint =
+        continueButtonView.safeAreaLayoutGuide
+            .leadingAnchor
+            .constraint(equalTo: continueButton.leadingAnchor,
+                        constant: -Metrics.continueButtonStandardPadding)
+
+        continueButtonTrailingConstraint =
+        continueButtonView
+            .safeAreaLayoutGuide
+            .trailingAnchor
+            .constraint(equalTo: continueButton.trailingAnchor,
+                        constant: Metrics.continueButtonStandardPadding)
+    }
+
+    func updateContinueButton() {
+        guard UIDevice.isPad(), let windowWidth = UIApplication.shared.mainWindow?.frame.width else {
+            return
+        }
+        continueButtonLeadingConstraint.isActive = false
+        continueButtonTrailingConstraint.isActive = false
+
+        let padding = (windowWidth - searchBar.frame.width) / 2 + Metrics.continueButtonAdditionaliPadPadding
+
+        continueButtonLeadingConstraint = continueButtonView.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: continueButton.leadingAnchor, constant: -padding)
+        continueButtonTrailingConstraint = continueButtonView.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: continueButton.trailingAnchor, constant: padding)
+        NSLayoutConstraint.activate([continueButtonLeadingConstraint, continueButtonTrailingConstraint])
     }
 
     /// activates all constraints
     func activateConstraints() {
-        continueButtonView.pinSubviewToSafeArea(continueButton, insets: Metrics.continueButtonInsets)
         titleLabelView.pinSubviewToSafeArea(titleLabel, insets: Metrics.titlesInsets)
         subtitleLabelView.pinSubviewToSafeArea(subtitleLabel, insets: Metrics.titlesInsets)
 
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Metrics.mainStackViewTopPadding),
-            mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Metrics.mainStackViewSidePadding),
-            mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Metrics.mainStackViewSidePadding),
+            mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
+                                               constant: Metrics.mainStackViewTopPadding),
+            mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+                                                   constant: Metrics.mainStackViewSidePadding),
+            mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
+                                                    constant: -Metrics.mainStackViewSidePadding),
             searchBar.heightAnchor.constraint(equalToConstant: Metrics.searchbarHeight),
+            continueButtonTopConstraint,
+            contineuButtonBottomConstraint,
+            continueButtonLeadingConstraint,
+            continueButtonTrailingConstraint
         ])
     }
 
@@ -182,6 +242,8 @@ private extension SiteNameView {
         static let numberOfLinesInSubtitle = 0
         static let titlesInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         //continue button
+        static let continueButtonStandardPadding: CGFloat = 16
+        static let continueButtonAdditionaliPadPadding: CGFloat = 8
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static func continueButtonViewFrame(_ accessoryWidth: CGFloat) -> CGRect {
             CGRect(x: 0, y: 0, width: accessoryWidth, height: 76)
@@ -195,5 +257,9 @@ extension SiteNameView: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         continueButton.isEnabled = !searchText.isEmpty
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        updateContinueButton()
     }
 }
