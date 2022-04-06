@@ -55,7 +55,6 @@ class SiteNameView: UIView {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
-        searchBar.backgroundColor = .clear
         return searchBar
     }()
 
