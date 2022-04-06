@@ -259,26 +259,12 @@
                 <constraint firstItem="WmP-bw-ceT" firstAttribute="top" secondItem="0a4-LI-57Y" secondAttribute="top" id="yIx-Dt-kfa"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="color" keyPath="fromColor">
-                    <color key="value" name="Celadon30"/>
-                </userDefinedRuntimeAttribute>
-                <userDefinedRuntimeAttribute type="color" keyPath="toColor">
-                    <color key="value" name="Yellow30"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="-230.43478260869566" y="-881.25"/>
         </view>
     </objects>
     <resources>
-        <namedColor name="Celadon30">
-            <color red="0.035294117647058823" green="0.70980392156862748" blue="0.52156862745098043" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Pink50">
             <color red="0.78823529411764703" green="0.20784313725490197" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Yellow30">
-            <color red="0.87058823529411766" green="0.69411764705882351" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
