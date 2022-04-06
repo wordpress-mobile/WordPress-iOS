@@ -191,9 +191,9 @@ extension BlogDashboardViewController {
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
         let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
-        let horizontalInset = isQuickActionSection ? 0 : Constants.sectionInset
-        let bottomInset = isLastSection ? Constants.sectionInset : 0
-        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.sectionInset,
+        let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
+        let bottomInset = isLastSection ? Constants.verticalSectionInset : 0
+        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
                                                         trailing: horizontalInset)
@@ -256,7 +256,8 @@ extension BlogDashboardViewController {
     private enum Constants {
         static let estimatedWidth: CGFloat = 100
         static let estimatedHeight: CGFloat = 44
-        static let sectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 20
+        static let horizontalSectionInset: CGFloat = 20
+        static let verticalSectionInset: CGFloat = 20
+        static let cellSpacing: CGFloat = 24
     }
 }
