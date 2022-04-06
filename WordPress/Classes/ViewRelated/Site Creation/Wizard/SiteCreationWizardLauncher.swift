@@ -57,10 +57,23 @@ final class SiteCreationWizardLauncher: SiteCreationWizardStepInvoker {
     init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.onDismiss = onDismiss
 
+        let siteIntentVariant = SiteIntentAB.shared.variant
+        let siteNameVariant = ABTest.siteNameV1.variation
+
+        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: siteIntentVariant, siteNameVariant: siteNameVariant)
+
         stepOrderer = SiteCreationWizardStepOrderer(
             stepInvoker: self,
-            siteIntentVariant: SiteIntentAB.shared.variant,
-            siteNameVariant: ABTest.siteNameV1.variation
+            siteIntentVariant: siteIntentVariant,
+            siteNameVariant: siteNameVariant
         )
+    }
+
+    static func fireInitEvents(siteIntentVariant: SiteIntentAB.Variant?, siteNameVariant: Variation?) {
+        if let siteIntentVariant = siteIntentVariant {
+            SiteCreationAnalyticsHelper.trackSiteIntentExperiment(siteIntentVariant)
+        }
+
+        // TODO: Track Site Name
     }
 }

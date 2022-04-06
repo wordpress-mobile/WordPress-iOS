@@ -20,9 +20,9 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     }
 
     func siteIntentViewControllerMaker() throws -> SiteIntentViewController {
-        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
+//        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
         let mockSiteCreator = SiteCreator()
-        let siteIntentStep = SiteIntentStep(siteIntentAB: mockABTestForTreatment, creator: mockSiteCreator)
+        let siteIntentStep = SiteIntentStep(creator: mockSiteCreator)
         let siteIntentViewController = try XCTUnwrap(siteIntentStep.content as? SiteIntentViewController)
         return siteIntentViewController
     }
@@ -40,13 +40,12 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     func testSiteIntentTracksEventFiresForTreatmentGroup() throws {
 
         // Given
-        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
-        let mockSiteCreator = SiteCreator()
+        let mockABTestForTreatment = SiteIntentAB.Variant.treatment
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
         let expectedProperty = treatmentVariant.tracksProperty
 
         // When
-        let _ = SiteIntentStep(siteIntentAB: mockABTestForTreatment, creator: mockSiteCreator)
+        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: mockABTestForTreatment, siteNameVariant: nil)
 
         // Then
         let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)
@@ -58,13 +57,12 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     func testSiteIntentTracksEventFiresForControlGroup() throws {
 
         // Given
-        let mockABTestForControl = SiteIntentABMock(variant: controlVariant)
-        let mockSiteCreator = SiteCreator()
+        let mockABTestForControl = SiteIntentAB.Variant.control
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
         let expectedProperty = controlVariant.tracksProperty
 
         // When
-        let _ = SiteIntentStep(siteIntentAB: mockABTestForControl, creator: mockSiteCreator)
+        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: mockABTestForControl, siteNameVariant: nil)
 
         // Then
         let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)

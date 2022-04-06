@@ -12,9 +12,7 @@ final class SiteIntentStep: WizardStep {
         }
     }()
 
-    init(siteIntentAB: SiteIntentABTestable = SiteIntentAB.shared, creator: SiteCreator) {
-        let variant = siteIntentAB.variant
-        SiteCreationAnalyticsHelper.trackSiteIntentExperiment(variant)
+    init(creator: SiteCreator) {
         self.creator = creator
     }
 

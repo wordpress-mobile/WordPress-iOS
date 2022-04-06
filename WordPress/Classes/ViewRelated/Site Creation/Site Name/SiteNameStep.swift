@@ -9,8 +9,7 @@ final class SiteNameStep: WizardStep {
         return SiteNameViewController(creator: creator)
     }()
 
-    init(siteNameAB: ABTest = ABTest.siteNameV1, creator: SiteCreator) {
-        // TODO: Send an event to track the Site Name variant.
+    init(creator: SiteCreator) {
         self.creator = creator
     }
 
