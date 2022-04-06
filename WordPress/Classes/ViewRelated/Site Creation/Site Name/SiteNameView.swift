@@ -221,7 +221,7 @@ private extension SiteNameView {
 
     enum TextContent {
         static let title = NSLocalizedString("Give your %@ website a name",
-                                             comment: "Title of the Site Name screen.")
+                                             comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
         static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later",
