@@ -20,7 +20,6 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     }
 
     func siteIntentViewControllerMaker() throws -> SiteIntentViewController {
-//        let mockABTestForTreatment = SiteIntentABMock(variant: treatmentVariant)
         let mockSiteCreator = SiteCreator()
         let siteIntentStep = SiteIntentStep(creator: mockSiteCreator)
         let siteIntentViewController = try XCTUnwrap(siteIntentStep.content as? SiteIntentViewController)
