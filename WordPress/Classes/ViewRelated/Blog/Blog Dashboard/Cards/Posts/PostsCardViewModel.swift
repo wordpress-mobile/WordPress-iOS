@@ -8,6 +8,7 @@ protocol PostsCardView: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(message: String, retry: Bool)
+    func hideError()
     func showNextPostPrompt()
     func hideNextPrompt()
     func firstPostPublished()
@@ -212,7 +213,7 @@ private extension PostsCardViewModel {
             self?.syncing = nil
             self?.performInitialLoading()
             self?.refresh()
-        }, failure: { [weak self] _ in
+        }, failure: { [weak self] error in
             self?.syncing = nil
             self?.showLoadingFailureError()
         })
@@ -319,6 +320,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
                 fatalError("Cell is not a PostCompactCell")
         }
 
+        viewController?.hideError()
         configurablePostView.configureForDashboard(with: post)
     }
 }
