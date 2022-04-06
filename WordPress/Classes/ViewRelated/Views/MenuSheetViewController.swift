@@ -145,6 +145,7 @@ private extension MenuSheetViewController {
     func configureTable() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.sectionHeaderHeight = 0
+        tableView.bounces = false
 
         // draw the separators from edge to edge.
         tableView.separatorInset = .zero
