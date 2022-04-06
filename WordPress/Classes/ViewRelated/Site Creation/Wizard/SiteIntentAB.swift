@@ -24,8 +24,6 @@ class SiteIntentAB: SiteIntentABTestable {
         let defaultAccount = accountService.defaultWordPressComAccount()
         let token: String? = defaultAccount?.authToken
 
-        return .treatment
-
         if let token = token {
             // 50/50 split between control and treatment groups
             return token.hashCode() % 2 == 0 ? .control : .treatment
