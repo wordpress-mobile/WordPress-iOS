@@ -53,6 +53,7 @@ class BlogDashboardCardFrameView: UIView {
         chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         chevronImageView.isAccessibilityElement = false
         chevronImageView.isHidden = true
+        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return chevronImageView
     }()
 
@@ -66,6 +67,7 @@ class BlogDashboardCardFrameView: UIView {
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
         button.isHidden = true
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.on(.touchUpInside) { [weak self] _ in
             self?.onEllipsisButtonTap?()
         }
