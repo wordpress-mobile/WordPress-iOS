@@ -1,8 +1,13 @@
+19.7
+-----
+
+
 19.6
 -----
 * [*] Enhances the exit animation of notices. [#18182]
 * [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
 * [***] My Site: your My Site screen now has two tabs, "Site Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
+* [*] [internal] Site creation: Adds a new screen asking the user the intent of the site [#18270]
 
 19.5
 -----

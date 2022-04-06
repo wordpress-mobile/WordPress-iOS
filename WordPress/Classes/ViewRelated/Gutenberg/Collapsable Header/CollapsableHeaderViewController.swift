@@ -2,7 +2,7 @@ import UIKit
 import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
-    enum SeperatorStyle {
+    enum SeparatorStyle {
         case visibile
         case automatic
         case hidden
@@ -11,6 +11,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let scrollableView: UIScrollView
     let accessoryView: UIView?
     let mainTitle: String
+    let navigationBarTitle: String?
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
@@ -19,7 +20,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         return 44
     }
 
-    open var seperatorStyle: SeperatorStyle {
+    open var separatorStyle: SeparatorStyle {
         return self.hasAccessoryBar ? .visibile : .automatic
     }
 
@@ -85,7 +86,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         var height = verticalMargins + buttonHeight + verticalMargins + safeArea
 
-        if usesVerticalActionButtons {
+        if usesVerticalActionButtons && !secondaryActionButton.isHidden {
             height += (buttonHeight + selectedStateButtonsContainer.spacing)
         }
 
@@ -173,6 +174,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///
     init(scrollableView: UIScrollView,
          mainTitle: String,
+         navigationBarTitle: String? = nil,
          prompt: String,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
@@ -180,6 +182,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          accessoryView: UIView? = nil) {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
+        self.navigationBarTitle = navigationBarTitle
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
@@ -298,7 +301,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - View Styling
     private func setStaticText() {
-        titleView.text = mainTitle
+        titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
@@ -362,7 +365,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         accessoryBarHeightConstraint.constant = shouldHideAccessoryBar ? 0 : accessoryBarHeight
-        let collapseBottomSpacing = shouldHideAccessoryBar || (seperatorStyle == .hidden)
+        let collapseBottomSpacing = shouldHideAccessoryBar || (separatorStyle == .hidden)
         maxHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 24
         minHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 9
     }
@@ -525,7 +528,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Seperator styling
     private func updateSeperatorStyle(animated: Bool = true) {
         let shouldBeHidden: Bool
-        switch seperatorStyle {
+        switch separatorStyle {
         case .automatic:
             shouldBeHidden = headerHeightConstraint.constant > minHeaderHeight && !shouldUseCompactLayout
         case .visibile:

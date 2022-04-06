@@ -1,7 +1,7 @@
 import Foundation
 
 struct SiteIntentData {
-    static let verticals: [SiteIntentVertical] = [
+    private static var verticals: [SiteIntentVertical] = [
         .init("food", NSLocalizedString("Food", comment: "Food site intent topic"), "🍔", isDefault: true),
         .init("news", NSLocalizedString("News", comment: "News site intent topic"), "🗞️", isDefault: true),
         .init("lifestyle", NSLocalizedString("Lifestyle", comment: "Lifestyle site intent topic"), "☕", isDefault: true),
@@ -37,13 +37,40 @@ struct SiteIntentData {
     static let defaultVerticals: [SiteIntentVertical] = {
         verticals.filter { $0.isDefault }
     }()
+
+    static func getVerticals(_ term: String = "") -> [SiteIntentVertical] {
+        term.isEmpty ?
+        verticals :
+        verticals.filter {
+            $0.localizedTitle.lowercased().contains(term.lowercased())
+        }
+    }
+
+    static func insertCustomVertical(_ term: String) {
+        clearCustomVerticals()
+        guard !verticals.contains(where: { $0.localizedTitle.lowercased() == term.lowercased() }) else {
+            return
+        }
+        let customVertical = SiteIntentVertical(term.lowercased(), term, "＋", isCustom: true)
+        verticals.insert(customVertical, at: 0)
+    }
+
+    static func clearCustomVerticals() {
+        verticals = verticals.filter { !$0.isCustom }
+    }
 }
 
 fileprivate extension SiteIntentVertical {
-    init(_ slug: String, _ localizedTitle: String, _ emoji: String, isDefault: Bool = false) {
+    init(_ slug: String,
+         _ localizedTitle: String,
+         _ emoji: String,
+         isDefault: Bool = false,
+         isCustom: Bool = false) {
+
         self.slug = slug
         self.localizedTitle = localizedTitle
         self.emoji = emoji
         self.isDefault = isDefault
+        self.isCustom = isCustom
     }
 }

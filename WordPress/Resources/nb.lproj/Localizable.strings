@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:27:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -675,7 +675,8 @@ translators: Block name. %s: The localized block name */
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Er du sikker på at du vil oppdatere?";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Art site intent topic */
 "Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
@@ -1355,10 +1356,12 @@ translators: Block name. %s: The localized block name */
 "Contact us at %@" = "Kontakt oss på %@";
 
 /* Apply changes localy to single block edition in the web block editor
+   Button to progress to the next step
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
-   Title for the continue button in the What's New page. */
+   Title for the continue button in the What's New page.
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Fortsett";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -1754,7 +1757,8 @@ translators: Block name. %s: The localized block name */
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -3182,7 +3186,8 @@ translators: Block name. %s: The localized block name */
 /* Post Stats months and years header. */
 "Months and Years" = "Måneder og år";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -3255,7 +3260,8 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Flytter kommentaren til søppelkassen.";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
 "Music" = "Musikk";
 
 /* Link to My Profile section
@@ -3848,7 +3854,8 @@ translators: Block name. %s: The localized block name */
 "Pending review" = "Venter på gjennomgang";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "Folk";
 
 /* Label for date periods. */
@@ -4003,7 +4010,8 @@ translators: Block name. %s: The localized block name */
    Title for the plugin directory */
 "Plugins" = "Utvidelser";
 
-/* An example tag used in the login prologue screens. */
+/* An example tag used in the login prologue screens.
+   Politics site intent topic */
 "Politics" = "Politikk";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -5825,7 +5833,8 @@ translators: Block name. %s: The localized block name */
 /* Cell title for the Top Level option case */
 "Top level" = "Toppnivå";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Emne";
 
 /* Used when a Reader Topic is not found for a specific id */
@@ -5908,7 +5917,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
-/* Customize Insights button title */
+/* Customize Insights button title
+   Primary button title on the feature introduction view. */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */

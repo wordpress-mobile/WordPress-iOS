@@ -5,6 +5,10 @@ final class IntentCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var emojiContainer: UIView!
     @IBOutlet weak var emoji: UILabel!
 
+    static var estimatedSize: CGSize {
+        return CGSize(width: 320, height: 63)
+    }
+
     var model: SiteIntentVertical? {
         didSet {
             title.text = model?.localizedTitle

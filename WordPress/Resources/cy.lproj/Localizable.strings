@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:33:39+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -298,6 +298,9 @@
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Rhestr Bwledi";
+
+/* Business site intent topic */
+"Business" = "Busnes";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Prysur";
@@ -724,7 +727,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Trafodaeth";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -1303,7 +1307,8 @@
 /* Post Stats months and years header. */
 "Months and Years" = "Misoedd a Blynyddoedd";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -1613,7 +1618,8 @@
 "Pending review" = "Disgwyl adolygiad";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "Pobl";
 
 /* Label for date periods. */
@@ -2485,7 +2491,8 @@
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "Togglo Ffynhonnell yr HTML ";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "Pwnc";
 
 /* Topics Filter Tab Title */
