@@ -111,6 +111,7 @@ extension MenuSheetViewController {
         cell.tintColor = item.foregroundColor
         cell.textLabel?.textColor = item.foregroundColor
         cell.textLabel?.setText(item.title)
+        cell.textLabel?.numberOfLines = 0
         cell.accessoryView = UIImageView(image: item.image?.withTintColor(.text))
 
         return cell
