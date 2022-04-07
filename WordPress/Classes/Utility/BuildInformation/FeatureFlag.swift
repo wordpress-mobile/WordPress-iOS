@@ -79,7 +79,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .landInTheEditor:
             return false
         case .statsNewAppearance:
-            return true
+            return false
         }
     }
 
