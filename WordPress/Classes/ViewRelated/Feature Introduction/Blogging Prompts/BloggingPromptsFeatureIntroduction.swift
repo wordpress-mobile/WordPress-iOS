@@ -17,9 +17,8 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
             return featureDescriptionView
         }()
 
-        let headerImage = UIImage(systemName: Style.headerImageName)?
+        let headerImage = UIImage(named: Style.headerImageName)?
             .withTintColor(Style.headerImageTintColor)
-            .withRenderingMode(.alwaysOriginal)
 
         super.init(headerTitle: Strings.headerTitle,
                    headerSubtitle: Strings.headerSubtitle,
@@ -60,7 +59,7 @@ private extension BloggingPromptsFeatureIntroduction {
     }
 
     enum Style {
-        static let headerImageName = "lightbulb"
+        static let headerImageName = "icon-lightbulb-outline"
         static let headerImageTintColor: UIColor = .orange // TODO: use gradient colors
     }
 
