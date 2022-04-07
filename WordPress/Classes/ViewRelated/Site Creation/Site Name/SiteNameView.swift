@@ -5,7 +5,7 @@ import WordPressShared
 /// content view for SiteNameViewController
 class SiteNameView: UIView {
 
-    private let siteName: String
+    private var verticalTitle: String?
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -93,8 +93,7 @@ class SiteNameView: UIView {
         return view
     }()
 
-    init(siteName: String) {
-        self.siteName = siteName
+    init() {
         super.init(frame: .zero)
         backgroundColor = .basicBackground
         addSubview(mainStackView)
@@ -118,16 +117,25 @@ class SiteNameView: UIView {
         super.layoutSubviews()
         updateContinueButton()
     }
+
+    func setTitle(verticalTitle: String?) {
+        self.verticalTitle = verticalTitle
+        setupTitleColors()
+    }
 }
 
 // MARK: setup
 private extension SiteNameView {
-
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        let fullTitle = String(format: TextContent.title, siteName)
+        guard let verticalTitle = verticalTitle else {
+            titleLabel.setText(TextContent.defaultTitle)
+            return
+        }
+
+        let fullTitle = String(format: TextContent.title, verticalTitle)
         let attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: siteName) else {
+        guard let range = fullTitle.nsRange(of: verticalTitle) else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }

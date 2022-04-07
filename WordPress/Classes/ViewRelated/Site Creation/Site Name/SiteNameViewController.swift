@@ -6,6 +6,18 @@ class SiteNameViewController: UIViewController {
 
     private let creator: SiteCreator
 
+    var nameView: SiteNameView {
+        return view as! SiteNameView
+    }
+
+    private var verticalTitle: String? {
+        guard let vertical = creator.vertical else {
+            return nil
+        }
+
+        return vertical.localizedTitle
+    }
+
     init(creator: SiteCreator) {
         self.creator = creator
         super.init(nibName: nil, bundle: nil)
@@ -16,8 +28,7 @@ class SiteNameViewController: UIViewController {
     }
 
     override func loadView() {
-        // TODO: SITENAME - This string is here only to test the UI until the implementation is complete.
-        view = SiteNameView(siteName: "Community & Non-Profit")
+        view = SiteNameView()
         removeNavigationBarBorder()
         setTitleForTraitCollection()
 
@@ -26,6 +37,11 @@ class SiteNameViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setTitleForTraitCollection()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        nameView.setTitle(verticalTitle: verticalTitle)
     }
 }
 
