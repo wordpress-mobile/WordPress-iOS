@@ -199,12 +199,26 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
+    }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard let blog = blog else {
+        guard let previousTraitCollection = previousTraitCollection,
+            let blog = blog else {
             return
+        }
+
+        // When switching from compact width to regular width, if the dashboard tab is selected
+        // we must switch to the site menu tab.
+        //
+        // This ensures that the site menu is shown in the left pane of the split vc.
+        //
+        if previousTraitCollection.horizontalSizeClass == .compact,
+           traitCollection.horizontalSizeClass == .regular,
+           isShowingDashboard {
+            segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+            segmentedControlValueChanged()
         }
 
         updateSegmentedControl(for: blog)
