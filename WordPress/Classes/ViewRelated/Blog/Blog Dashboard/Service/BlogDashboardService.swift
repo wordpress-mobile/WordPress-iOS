@@ -14,7 +14,7 @@ class BlogDashboardService {
     }
 
     /// Fetch cards from remote
-    func fetch(blog: Blog, completion: @escaping ([DashboardItem]) -> Void, failure: (([DashboardItem]) -> Void)? = nil) {
+    func fetch(blog: Blog, completion: @escaping ([DashboardCardModel]) -> Void, failure: (([DashboardCardModel]) -> Void)? = nil) {
 
         guard let dotComID = blog.dotComID?.intValue else {
             failure?([])
@@ -56,7 +56,7 @@ class BlogDashboardService {
     }
 
     /// Fetch cards from local
-    func fetchLocal(blog: Blog) -> [DashboardItem] {
+    func fetchLocal(blog: Blog) -> [DashboardCardModel] {
 
         guard let dotComID = blog.dotComID?.intValue else {
             return []
@@ -78,15 +78,15 @@ class BlogDashboardService {
 
 private extension BlogDashboardService {
 
-    func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardItem] {
-        var items: [DashboardItem] = []
+    func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
+        var items: [DashboardCardModel] = []
         DashboardCard.allCases.forEach { card in
             guard card.shouldShow(for: blog, apiResponse: entity) else {
                 return
             }
 
             let cardModel = DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
-            items.append(.cards(cardModel))
+            items.append(cardModel)
         }
         return items
     }
@@ -111,7 +111,7 @@ private extension BlogDashboardService {
         return cardsDictionary
     }
 
-    func localCards(blog: Blog, dotComID: Int) -> [DashboardItem] {
+    func localCards(blog: Blog, dotComID: Int) -> [DashboardCardModel] {
         parse(nil, blog: blog, dotComID: dotComID)
     }
 }

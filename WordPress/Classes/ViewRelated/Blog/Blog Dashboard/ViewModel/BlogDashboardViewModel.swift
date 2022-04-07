@@ -95,7 +95,7 @@ class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
-    func updateCurrentCards(cards: [DashboardItem]) {
+    func updateCurrentCards(cards: [DashboardCardModel]) {
         let snapshot = createSnapshot(from: cards)
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
@@ -109,11 +109,12 @@ private extension BlogDashboardViewModel {
         }
     }
 
-    func createSnapshot(from cards: [DashboardItem]) -> DashboardSnapshot {
+    func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
+        let items = cards.map {DashboardItem.cards($0)}
         var snapshot = DashboardSnapshot()
         snapshot.appendSections(DashboardSection.allCases)
         snapshot.appendItems([.quickActions], toSection: .quickActions)
-        snapshot.appendItems(cards, toSection: .cards)
+        snapshot.appendItems(items, toSection: .cards)
         return snapshot
     }
 
