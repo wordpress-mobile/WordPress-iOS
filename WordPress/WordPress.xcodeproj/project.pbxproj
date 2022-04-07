@@ -1344,6 +1344,7 @@
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
+		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -6067,6 +6068,7 @@
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
 		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
+		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -11529,6 +11531,7 @@
 				8B2D4F5427ECE376009B085C /* BlogDashboardPostsParserTests.swift */,
 				8BD34F0827D144FF005E931C /* BlogDashboardStateTests.swift */,
 				806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */,
+				80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -19417,6 +19420,7 @@
 				400A2C8F2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift in Sources */,
 				7320C8BD2190C9FC0082FED5 /* UITextView+SummaryTests.swift in Sources */,
 				24A2948325D602710000A51E /* BlogTimeZoneTests.m in Sources */,
+				80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */,
 				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
 				F11023A323186BCA00C4E84A /* MediaBuilder.swift in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
