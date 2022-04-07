@@ -68,25 +68,22 @@ class BlogDashboardViewModel {
     func loadCards(completion: (() -> Void)? = nil) {
         viewController?.showLoading()
 
-        service.fetch(blog: blog, completion: { [weak self] snapshot in
+        service.fetch(blog: blog, completion: { [weak self] cards in
             self?.viewController?.stopLoading()
-            self?.apply(snapshot: snapshot)
+            self?.updateCurrentCards(cards: cards)
             completion?()
-        }, failure: { [weak self] snapshot in
+        }, failure: { [weak self] cards in
             self?.viewController?.stopLoading()
             self?.loadingFailure()
-
-            if let snapshot = snapshot {
-                self?.apply(snapshot: snapshot)
-            }
+            self?.updateCurrentCards(cards: cards)
 
             completion?()
         })
     }
 
     func loadCardsFromCache() {
-        let snapshot = service.fetchLocal(blog: blog)
-        apply(snapshot: snapshot)
+        let cards = service.fetchLocal(blog: blog)
+        updateCurrentCards(cards: cards)
     }
 
     func dashboardItem(for sectionIndex: Int) -> DashboardItem? {
@@ -98,7 +95,8 @@ class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
-    func apply(snapshot: DashboardSnapshot) {
+    func updateCurrentCards(cards: [DashboardItem]) {
+        let snapshot = createSnapshot(from: cards)
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
 
@@ -109,6 +107,14 @@ private extension BlogDashboardViewModel {
 
             self?.scroll(scrollView, to: position)
         }
+    }
+
+    func createSnapshot(from cards: [DashboardItem]) -> DashboardSnapshot {
+        var snapshot = DashboardSnapshot()
+        snapshot.appendSections(DashboardSection.allCases)
+        snapshot.appendItems([.quickActions], toSection: .quickActions)
+        snapshot.appendItems(cards, toSection: .cards)
+        return snapshot
     }
 
     func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
