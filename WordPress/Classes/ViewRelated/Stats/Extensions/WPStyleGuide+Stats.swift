@@ -210,7 +210,6 @@ extension WPStyleGuide {
         static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let verticalSeparatorColor = UIColor.neutral(.shade5)
-        static let cellCornerRadius: CGFloat = 10.0
 
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
