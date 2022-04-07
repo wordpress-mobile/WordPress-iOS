@@ -197,13 +197,14 @@ extension SiteIntentViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
-        if searchText.isEmpty {
+        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedSearch.isEmpty {
             SiteIntentData.clearCustomVerticals()
         } else {
-            SiteIntentData.insertCustomVertical(searchText)
+            SiteIntentData.insertCustomVertical(trimmedSearch)
         }
 
-        availableVerticals = SiteIntentData.getVerticals(searchText)
+        availableVerticals = SiteIntentData.getVerticals(trimmedSearch)
         tableView.reloadData()
     }
 }
