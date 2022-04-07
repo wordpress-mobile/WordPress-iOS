@@ -214,7 +214,7 @@ private extension PostsCardViewModel {
             self?.syncing = nil
             self?.performInitialLoading()
             self?.refresh()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.syncing = nil
             self?.showLoadingFailureError()
         })
