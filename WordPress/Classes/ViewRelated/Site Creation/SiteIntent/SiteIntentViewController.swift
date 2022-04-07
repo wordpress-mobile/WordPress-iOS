@@ -4,12 +4,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let tableView: UITableView
 
-    private var selectedVertical: SiteIntentVertical? {
-        didSet {
-            itemSelectionChanged(selectedVertical != nil)
-        }
-    }
-
     private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
         didSet {
             contentSizeWillChange()
