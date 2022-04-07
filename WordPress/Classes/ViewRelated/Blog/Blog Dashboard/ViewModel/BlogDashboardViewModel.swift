@@ -133,16 +133,7 @@ private extension BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func isGhostCardsBeingShown() -> Bool {
-        let ghostCells = dataSource?.snapshot().itemIdentifiers.filter({ item in
-            switch item {
-            case .quickActions:
-                return false
-            case .cards(let cardModel):
-                return cardModel.cardType == .ghost
-            }
-        })
-        let ghostCellsCount = ghostCells?.count ?? 0
-        return ghostCellsCount > 0
+        return currentCards.contains(where: {$0.cardType == .ghost})
     }
 
     func loadingFailure() {
