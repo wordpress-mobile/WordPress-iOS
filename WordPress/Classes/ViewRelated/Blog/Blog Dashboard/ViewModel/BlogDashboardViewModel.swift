@@ -22,6 +22,8 @@ class BlogDashboardViewModel {
 
     var blog: Blog
 
+    private var currentCards: [DashboardCardModel] = []
+
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
@@ -96,6 +98,7 @@ class BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
+        currentCards = cards
         let snapshot = createSnapshot(from: cards)
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
