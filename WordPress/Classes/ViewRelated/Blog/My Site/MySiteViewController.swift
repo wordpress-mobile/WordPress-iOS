@@ -199,6 +199,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let blog = blog else {
+            return
+        }
+
+        updateSegmentedControl(for: blog)
     }
 
     private func subscribeToContentSizeCategory() {
@@ -214,8 +223,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
-        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
+        let hideSegmentedControl =
+            !FeatureFlag.mySiteDashboard.enabled ||
+            !blog.isAccessibleThroughWPCom() ||
+            !splitViewControllerIsHorizontallyCompact
 
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
