@@ -53,9 +53,9 @@ enum DashboardCard: String, CaseIterable {
         case .nextPost:
             fallthrough
         case .createPost:
-            return self.shouldShowPostsCard(apiResponse: apiResponse)
+            fallthrough
         case .todaysStats:
-            return true
+            return self.shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
             return FeatureFlag.bloggingPrompts.enabled
         case .ghost:
@@ -65,7 +65,7 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    private func shouldShowPostsCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
+    private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
         guard let apiResponse = apiResponse else {
             return false
         }
@@ -78,6 +78,8 @@ enum DashboardCard: String, CaseIterable {
             return apiResponse.hasNoDraftsOrScheduled && apiResponse.hasPublished
         case .createPost:
             return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
+        case .todaysStats:
+            return true
         default:
             return false
         }

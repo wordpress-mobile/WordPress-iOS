@@ -55,15 +55,27 @@ class DashboardCardTests: XCTestCase {
 
     // MARK: Stats
 
-    func testShouldAlwaysShowStatsCard() {
+    func testShouldShowStatsCardWhenResponseIsAvaialble() {
+        // Given
+        let blog = BlogBuilder(TestContextManager().mainContext).build()
+        let apiResponse = buildEntity(hasDrafts: true, hasScheduled: false, hasPublished: false)
+
+        // When
+        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertTrue(shouldShow)
+    }
+
+    func testShouldNotShowStatsCardIfResponseIsUnavailable() {
         // Given
         let blog = BlogBuilder(TestContextManager().mainContext).build()
 
         // When
-        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog)
+        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: nil)
 
         // Then
-        XCTAssertTrue(shouldShow)
+        XCTAssertFalse(shouldShow)
     }
 
     // MARK: Ghost

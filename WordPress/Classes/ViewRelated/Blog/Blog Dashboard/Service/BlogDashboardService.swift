@@ -111,7 +111,7 @@ private extension BlogDashboardService {
         return cardsDictionary
     }
 
-    func localCards(blog: Blog, dotComID: Int) -> DashboardSnapshot {
-        parse([:], cards: BlogDashboardRemoteEntity(), blog: blog, dotComID: dotComID)
+    func localCards(blog: Blog, dotComID: Int) -> [DashboardItem] {
+        parse(nil, blog: blog, dotComID: dotComID)
     }
 }
