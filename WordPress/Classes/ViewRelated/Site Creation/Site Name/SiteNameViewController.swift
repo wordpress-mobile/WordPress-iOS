@@ -4,6 +4,10 @@ import UIKit
 /// Site Name screen for the Site Creation flow
 class SiteNameViewController: UIViewController {
 
+    private var nameView: SiteNameView {
+        return view as! SiteNameView
+    }
+
     private let creator: SiteCreator
 
     init(creator: SiteCreator) {
@@ -26,6 +30,12 @@ class SiteNameViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setTitleForTraitCollection()
+    }
+
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        nameView.focusSearchBar()
     }
 }
 

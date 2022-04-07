@@ -62,6 +62,8 @@ class SiteNameView: UIView {
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.autocapitalizationType = .sentences
+        searchBar.accessibilityIdentifier = "Website Title"
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString()
         return searchBar
     }()
 
@@ -117,6 +119,10 @@ class SiteNameView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateContinueButton()
+    }
+
+    func focusSearchBar() {
+        searchBar.becomeFirstResponder()
     }
 }
 
