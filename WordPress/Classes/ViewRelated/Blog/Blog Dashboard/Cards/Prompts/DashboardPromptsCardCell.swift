@@ -293,7 +293,7 @@ private extension DashboardPromptsCardCell {
             case .viewMore(let handler),
                     .skip(let handler),
                     .remove(let handler):
-                return .init(title: title, image: image, handler: handler)
+                return .init(title: title, image: image, destructive: menuAttributes.contains(.destructive), handler: handler)
             }
         }
     }
