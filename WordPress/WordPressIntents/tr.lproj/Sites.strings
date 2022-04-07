@@ -13,5 +13,7 @@
     <string>Site seçin</string>
     <key>s4dJhx</key>
     <string>‘${site}’ istediğinizden emin misiniz?</string>
+    <key>tVvJ9c</key>
+    <string>Site Amacı Seçin</string>
   </dict>
 </plist>

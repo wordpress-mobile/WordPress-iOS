@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:32:28+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-alpha.2 */
+/* Generator: GlotPress/3.0.0-rc.3 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -474,7 +474,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "การสนทนา";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
@@ -923,7 +924,8 @@
 /* Post Stats months and years header. */
 "Months and Years" = "เดือนและปี";
 
-/* Accessibility label for the More button in Page List.
+/* Accessibility label for more button in dashboard quick start card.
+   Accessibility label for the More button in Page List.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Accessibility label for the More button on Reader Cell
@@ -1164,7 +1166,8 @@
 "Pending review" = "รอคอยการตรวจสอบ";
 
 /* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature. */
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
 "People" = "ผู้คน";
 
 /* Label for date periods. */
@@ -1837,7 +1840,8 @@
    Title for the card displaying today's stats. */
 "Today's Stats" = "สถิติวันนี้";
 
-/* Topic page title */
+/* Shortened version of the main title to be used in back navigation
+   Topic page title */
 "Topic" = "กระทู้";
 
 /* Topics Filter Tab Title */
