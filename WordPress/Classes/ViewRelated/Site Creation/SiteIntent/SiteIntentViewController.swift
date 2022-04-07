@@ -4,15 +4,22 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let tableView: UITableView
 
-    private var customVertical: SiteIntentVertical?
-    private var storedVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
+    private var storedVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals
+    private var customVertical: SiteIntentVertical? {
         didSet {
             contentSizeWillChange()
         }
     }
 
     private var availableVerticals: [SiteIntentVertical] {
-        return ([customVertical] + storedVerticals).compactMap { $0 }
+        get {
+            return ([customVertical] + storedVerticals).compactMap { $0 }
+        }
+
+        set {
+            storedVerticals = newValue
+            contentSizeWillChange()
+        }
     }
 
     private let searchBar: UISearchBar = {
@@ -202,7 +209,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
             return
         }
 
-        storedVerticals = SiteIntentData.getVerticals()
+        availableVerticals = SiteIntentData.getVerticals()
         tableView.reloadData()
         tableView.scrollToView(searchBar.searchTextField, animated: true)
     }
@@ -215,7 +222,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
             insertCustomVertical(searchText)
         }
 
-        storedVerticals = SiteIntentData.getVerticals(searchText)
+        availableVerticals = SiteIntentData.getVerticals(searchText)
         tableView.reloadData()
     }
 }
