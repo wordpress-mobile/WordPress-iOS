@@ -4,10 +4,15 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let tableView: UITableView
 
-    private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
+    private var customVertical: SiteIntentVertical?
+    private var storedVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
         didSet {
             contentSizeWillChange()
         }
+    }
+
+    private var availableVerticals: [SiteIntentVertical] {
+        return ([customVertical] + storedVerticals).compactMap { $0 }
     }
 
     private let searchBar: UISearchBar = {
@@ -39,8 +44,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
         tableView.dataSource = self
         searchBar.delegate = self
-
-        SiteIntentData.clearCustomVerticals()
     }
 
     // MARK: UIViewController
@@ -108,6 +111,19 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private func closeButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteIntentCanceled()
         dismiss(animated: true)
+    }
+
+    private func insertCustomVertical(_ term: String) {
+        customVertical = nil
+        guard !SiteIntentData.verticals.contains(where: { $0.localizedTitle.lowercased() == term.lowercased() }) else {
+            return
+        }
+        customVertical = SiteIntentVertical(
+            slug: term.lowercased(),
+            localizedTitle: term,
+            emoji: "＋",
+            isCustom: true
+        )
     }
 }
 
@@ -186,7 +202,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
             return
         }
 
-        availableVerticals = SiteIntentData.getVerticals()
+        storedVerticals = SiteIntentData.getVerticals()
         tableView.reloadData()
         tableView.scrollToView(searchBar.searchTextField, animated: true)
     }
@@ -194,12 +210,12 @@ extension SiteIntentViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
         if searchText.isEmpty {
-            SiteIntentData.clearCustomVerticals()
+            customVertical = nil
         } else {
-            SiteIntentData.insertCustomVertical(searchText)
+            insertCustomVertical(searchText)
         }
 
-        availableVerticals = SiteIntentData.getVerticals(searchText)
+        storedVerticals = SiteIntentData.getVerticals(searchText)
         tableView.reloadData()
     }
 }

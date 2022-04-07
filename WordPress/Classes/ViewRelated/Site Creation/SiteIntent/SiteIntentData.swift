@@ -1,7 +1,7 @@
 import Foundation
 
 struct SiteIntentData {
-    private static var verticals: [SiteIntentVertical] = [
+    static let verticals: [SiteIntentVertical] = [
         .init("food", NSLocalizedString("Food", comment: "Food site intent topic"), "🍔", isDefault: true),
         .init("news", NSLocalizedString("News", comment: "News site intent topic"), "🗞️", isDefault: true),
         .init("lifestyle", NSLocalizedString("Lifestyle", comment: "Lifestyle site intent topic"), "☕", isDefault: true),
@@ -44,19 +44,6 @@ struct SiteIntentData {
         verticals.filter {
             $0.localizedTitle.lowercased().contains(term.lowercased())
         }
-    }
-
-    static func insertCustomVertical(_ term: String) {
-        clearCustomVerticals()
-        guard !verticals.contains(where: { $0.localizedTitle.lowercased() == term.lowercased() }) else {
-            return
-        }
-        let customVertical = SiteIntentVertical(term.lowercased(), term, "＋", isCustom: true)
-        verticals.insert(customVertical, at: 0)
-    }
-
-    static func clearCustomVerticals() {
-        verticals = verticals.filter { !$0.isCustom }
     }
 }
 
