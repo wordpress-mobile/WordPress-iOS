@@ -79,19 +79,20 @@ private extension BlogDashboardService {
     func parse(_ cardsDictionary: NSDictionary, cards: BlogDashboardRemoteEntity, blog: Blog, dotComID: Int) -> DashboardSnapshot {
         var snapshot = DashboardSnapshot()
 
+        snapshot.appendSections(DashboardSection.allCases)
+        snapshot.appendItems([.quickActions], toSection: .quickActions)
+
         DashboardCard.allCases
             .forEach { card in
 
             if card.isRemote {
                 if let viewModel = cardsDictionary[card.rawValue] {
-                    let section = DashboardCardSection(id: card)
-                    let item = DashboardCardModel(id: card,
+                    let cardModel = DashboardCardModel(cardType: card,
                                                   dotComID: dotComID,
                                                   hashableDictionary: viewModel as? NSDictionary,
                                                   entity: cards)
 
-                    snapshot.appendSections([section])
-                    snapshot.appendItems([item], toSection: section)
+                    snapshot.appendItems([.cards(cardModel)], toSection: .cards)
                 }
             } else {
 
@@ -99,11 +100,8 @@ private extension BlogDashboardService {
                     return
                 }
 
-                let section = DashboardCardSection(id: card)
-                let item = DashboardCardModel(id: card, dotComID: dotComID)
-
-                snapshot.appendSections([section])
-                snapshot.appendItems([item], toSection: section)
+                let cardModel = DashboardCardModel(cardType: card, dotComID: dotComID)
+                snapshot.appendItems([.cards(cardModel)], toSection: .cards)
             }
 
         }

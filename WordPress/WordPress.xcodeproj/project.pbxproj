@@ -1533,8 +1533,6 @@
 		8BE8545E27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */; };
 		8BE9AB8827B6B5A300708E45 /* BlogDashboardPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */; };
 		8BEE845A27B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */; };
-		8BEE846227B1E0540001A93C /* DashboardCardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */; };
-		8BEE846327B1E0560001A93C /* DashboardCardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */; };
 		8BEE846427B1E05B0001A93C /* DashboardCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */; };
 		8BEE846527B1E05C0001A93C /* DashboardCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */; };
 		8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */; };
@@ -6255,7 +6253,6 @@
 		8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardAB.swift; sourceTree = "<group>"; };
 		8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersistenceTests.swift; sourceTree = "<group>"; };
 		8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-drafts-and-scheduled.json"; sourceTree = "<group>"; };
-		8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardSection.swift; sourceTree = "<group>"; };
 		8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardModel.swift; sourceTree = "<group>"; };
 		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
 		8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardCardFrameView.swift; sourceTree = "<group>"; };
@@ -11700,7 +11697,6 @@
 			isa = PBXGroup;
 			children = (
 				8B074A4F27AC3A64003A2EB8 /* BlogDashboardViewModel.swift */,
-				8BEE845E27B1DE040001A93C /* DashboardCardSection.swift */,
 				8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */,
 				806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */,
 			);
@@ -17946,7 +17942,6 @@
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
 				FA73D7E52798765B00DF24B3 /* SitePickerViewController.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
-				8BEE846327B1E0560001A93C /* DashboardCardSection.swift in Sources */,
 				3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */,
 				8BC81D6527CFC0DA0057F790 /* BlogDashboardState.swift in Sources */,
@@ -20540,7 +20535,6 @@
 				FABB23802602FC2C00C8785C /* ReaderCommentsViewController.m in Sources */,
 				FABB23812602FC2C00C8785C /* MySiteViewController.swift in Sources */,
 				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
-				8BEE846227B1E0540001A93C /* DashboardCardSection.swift in Sources */,
 				FABB23822602FC2C00C8785C /* FooterContentGroup.swift in Sources */,
 				FABB23832602FC2C00C8785C /* BasePageListCell.m in Sources */,
 				F163541726DE2ECE008B625B /* NotificationEventTracker.swift in Sources */,
