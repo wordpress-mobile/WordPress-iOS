@@ -1,13 +1,9 @@
 import Foundation
 import WordPressShared
 
-protocol DefaultSectionProvider {
-    var defaultSection: MySiteViewController.Section { get }
-}
-
 /// A helper class for My Site that manages the default section to display
 ///
-@objc final class MySiteSettings: NSObject, DefaultSectionProvider {
+@objc final class MySiteSettings: NSObject {
 
     private var userDefaults: UserDefaults {
         UserDefaults.standard
