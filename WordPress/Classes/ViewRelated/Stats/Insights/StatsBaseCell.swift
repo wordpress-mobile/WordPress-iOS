@@ -61,7 +61,7 @@ class StatsBaseCell: UITableViewCell {
         guard FeatureFlag.statsNewAppearance.enabled else {
             return
         }
-        
+
         headingLabel.text = title
 
         let hasTitle = !title.isEmpty

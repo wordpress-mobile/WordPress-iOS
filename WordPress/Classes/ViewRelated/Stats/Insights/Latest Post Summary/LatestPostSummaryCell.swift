@@ -54,7 +54,7 @@ class LatestPostSummaryCell: StatsBaseCell, NibLoadable, Accessible {
 
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
-        
+
         // If there is no summary data, there is no post. Show Create Post option.
         guard let lastPostInsight = lastPostInsight else {
             actionType = .createPost
