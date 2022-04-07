@@ -13,5 +13,7 @@
     <string>Website auswählen</string>
     <key>s4dJhx</key>
     <string>Nur um sicherzugehen, du willst „${site}“?</string>
+    <key>tVvJ9c</key>
+    <string>Website-Intent auswählen</string>
   </dict>
 </plist>

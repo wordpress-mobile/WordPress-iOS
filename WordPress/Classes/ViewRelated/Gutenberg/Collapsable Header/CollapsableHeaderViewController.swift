@@ -86,7 +86,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         var height = verticalMargins + buttonHeight + verticalMargins + safeArea
 
-        if usesVerticalActionButtons {
+        if usesVerticalActionButtons && !secondaryActionButton.isHidden {
             height += (buttonHeight + selectedStateButtonsContainer.spacing)
         }
 

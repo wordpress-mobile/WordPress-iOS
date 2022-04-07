@@ -13,5 +13,7 @@
     <string>사이트 선택</string>
     <key>s4dJhx</key>
     <string>‘${site}’을(를) 원하시나요?</string>
+    <key>tVvJ9c</key>
+    <string>사이트 의도 선택</string>
   </dict>
 </plist>
