@@ -169,7 +169,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '65c77b7f13e6c0a51b483790e628c0d3bff881f1'
+    gutenberg :commit => '78737e4074d29859d85a7a132505adb7b92e099a'
 
     ## Third party libraries
     ## =====================
