@@ -32,7 +32,6 @@ class SiteNameViewController: UIViewController {
         setTitleForTraitCollection()
     }
 
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         nameView.focusSearchBar()
