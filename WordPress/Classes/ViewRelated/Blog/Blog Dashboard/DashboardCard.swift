@@ -5,8 +5,7 @@ import Foundation
 /// Notice that the order here matters and it will take
 /// precedence over the backend.
 ///
-/// If the card `isRemote` the `String` should match its
-/// identifier on the backend.
+/// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable {
     case quickStart
     case prompts
@@ -16,24 +15,6 @@ enum DashboardCard: String, CaseIterable {
     // Card placeholder for when loading data
     case ghost
     case failure
-
-    /// If the card is backed by API data
-    var isRemote: Bool {
-        switch self {
-        case .quickStart:
-            return false
-        case .posts:
-            return true
-        case .todaysStats:
-            return true
-        case .prompts:
-            return false // TODO: Change this to true later.
-        case .ghost:
-            return false
-        case .failure:
-            return false
-        }
-    }
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
@@ -69,13 +50,10 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    /// All cards that are remote
-    static var remoteCases: [DashboardCard] {
-        return DashboardCard.allCases.filter { $0.isRemote }
-    }
-
-    /// All cards that are local
-    static var localCases: [DashboardCard] {
-        return DashboardCard.allCases.filter { !$0.isRemote }
+    /// Includes all cards that should be fetched from the backend
+    /// The `String` should match its identifier on the backend.
+    enum RemoteDashboardCard: String, CaseIterable {
+        case todaysStats = "todays_stats"
+        case posts
     }
 }

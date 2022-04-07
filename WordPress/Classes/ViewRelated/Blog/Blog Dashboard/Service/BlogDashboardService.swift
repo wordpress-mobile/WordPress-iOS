@@ -20,7 +20,7 @@ class BlogDashboardService {
             return
         }
 
-        let cardsToFetch: [String] = DashboardCard.remoteCases.map { $0.rawValue }
+        let cardsToFetch: [String] = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
