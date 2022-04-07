@@ -45,6 +45,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
         tableView.dataSource = self
         searchBar.delegate = self
+
+        SiteIntentData.clearCustomVerticals()
     }
 
     // MARK: UIViewController
