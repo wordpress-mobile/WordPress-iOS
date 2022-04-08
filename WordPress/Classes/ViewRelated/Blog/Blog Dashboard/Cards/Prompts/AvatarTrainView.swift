@@ -75,7 +75,7 @@ private extension AvatarTrainView {
 
     func configureBorder(for view: UIView) {
         view.layer.borderWidth = Constants.borderWidth
-        view.layer.borderColor = UIColor.basicBackground.cgColor
+        view.layer.borderColor = UIColor.listForeground.cgColor
     }
 
     // MARK: Constants
