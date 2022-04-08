@@ -124,7 +124,7 @@ class SiteNameView: UIView {
         updateContinueButton()
     }
 
-    func setTitle(verticalTitle: String?) {
+    func setVerticalTitle(_ verticalTitle: String?) {
         self.verticalTitle = verticalTitle
         setupTitleColors()
     }

@@ -6,7 +6,7 @@ class SiteNameViewController: UIViewController {
 
     private let creator: SiteCreator
 
-    var nameView: SiteNameView {
+    private var nameView: SiteNameView {
         return view as! SiteNameView
     }
 
@@ -31,7 +31,6 @@ class SiteNameViewController: UIViewController {
         view = SiteNameView()
         removeNavigationBarBorder()
         setTitleForTraitCollection()
-
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -41,7 +40,7 @@ class SiteNameViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        nameView.setTitle(verticalTitle: verticalTitle)
+        nameView.setVerticalTitle(verticalTitle)
     }
 
     override func viewDidAppear(_ animated: Bool) {
