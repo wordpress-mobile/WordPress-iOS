@@ -102,6 +102,7 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.blog = blog
         viewModel.loadCardsFromCache()
         viewModel.loadCards()
+        BlogDashboardAnalytics.shared.reset()
     }
 
     @objc func refreshControlPulled() {
@@ -136,7 +137,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addWillEnterForegroundObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     private func addQuickStartObserver() {
@@ -167,6 +168,11 @@ final class BlogDashboardViewController: UIViewController {
         }
 
         viewModel.loadCardsFromCache()
+    }
+
+    @objc private func willEnterForeground() {
+        BlogDashboardAnalytics.shared.reset()
+        loadCards()
     }
 }
 
