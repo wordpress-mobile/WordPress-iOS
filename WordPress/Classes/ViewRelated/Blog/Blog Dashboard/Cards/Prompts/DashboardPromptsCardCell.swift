@@ -159,6 +159,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.setTitle(Strings.shareButtonTitle, for: .normal)
         button.setTitleColor(Style.buttonTitleColor, for: .normal)
         button.titleLabel?.font = Style.buttonTitleFont
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.contentHorizontalAlignment = .leading
 
         // TODO: Implement button tap action
