@@ -31,7 +31,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     }
 
     override var alwaysResetHeaderOnRotation: Bool {
-        true
+        // the default behavior works on iPad, so let's not override it
+        WPDeviceIdentification.isiPhone()
     }
 
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
