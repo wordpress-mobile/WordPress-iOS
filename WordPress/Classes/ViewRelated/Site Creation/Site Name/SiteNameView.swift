@@ -95,6 +95,10 @@ class SiteNameView: UIView {
         return view
     }()
 
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
     init(siteName: String) {
         self.siteName = siteName
         super.init(frame: .zero)
@@ -121,9 +125,10 @@ class SiteNameView: UIView {
         updateContinueButton()
     }
 
-    func focusSearchBar() {
-        searchBar.becomeFirstResponder()
-    }
+    override func becomeFirstResponder() -> Bool {
+         super.becomeFirstResponder()
+         return searchBar.becomeFirstResponder()
+     }
 }
 
 // MARK: setup
