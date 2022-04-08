@@ -129,7 +129,7 @@ private extension PostsCardViewController {
     }
 
     func trackPostsDisplayed() {
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
     }
 
     enum Constants {
@@ -186,7 +186,7 @@ extension PostsCardViewController: PostsCardView {
         // Force the table view to recalculate its height
         _ = tableView.intrinsicContentSize
 
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
     }
 
     func hideError() {
@@ -220,7 +220,7 @@ extension PostsCardViewController: PostsCardView {
 
         delegate?.didShowNextPostPrompt(cardFrameView: cardFrameView)
 
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": hasPublishedPosts ? "create_next" : "create_first"])
     }
 
     func hideNextPrompt() {
