@@ -46,8 +46,8 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
         super.init(
             scrollableView: scrollView,
             mainTitle: headerTitle,
+            headerImage: headerImage,
             prompt: headerSubtitle,
-            // TODO: pass headerImage
             primaryActionTitle: primaryButtonTitle,
             secondaryActionTitle: secondaryButtonTitle)
     }
