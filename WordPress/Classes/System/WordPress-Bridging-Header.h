@@ -33,6 +33,8 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
+#import "MenuItem.h"
+#import "MenuItemsViewController.h"
 
 #import "NavBarTitleDropdownButton.h"
 #import "NSObject+Helpers.h"
