@@ -12,7 +12,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
-    // MARK: Private Properties
+    // MARK: - Private Properties
 
     // Used to present the menu sheet for contextual menu.
     // NOTE: Remove this once we drop support for iOS 13.
@@ -49,6 +49,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return frameView
     }()
 
+    // MARK: Top row views
+
     private lazy var promptLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -68,6 +70,61 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
         return view
     }()
+
+    // MARK: Middle row views
+
+    // TODO: For testing purposes. Remove once we actually have real avatar URLs.
+    private var answerCount = 3
+
+    private var answerInfoText: String {
+        let stringFormat = (answerCount == 1 ? Strings.answerInfoSingularFormat : Strings.answerInfoPluralFormat)
+        return String(format: stringFormat, answerCount)
+    }
+
+    private var avatarTrainContainerView: UIView {
+        // TODO: Refactor this once we have real avatar URLs.
+        let avatarURLs: [URL?] = (0..<min(answerCount, Constants.maxAvatarCount)).map { _ in nil }
+        let avatarTrainView = AvatarTrainView(avatarURLs: avatarURLs)
+        avatarTrainView.translatesAutoresizingMaskIntoConstraints = false
+
+        let trainContainerView = UIView()
+        trainContainerView.translatesAutoresizingMaskIntoConstraints = false
+        trainContainerView.addSubview(avatarTrainView)
+        NSLayoutConstraint.activate([
+            trainContainerView.topAnchor.constraint(equalTo: avatarTrainView.topAnchor),
+            trainContainerView.bottomAnchor.constraint(equalTo: avatarTrainView.bottomAnchor),
+            trainContainerView.leadingAnchor.constraint(lessThanOrEqualTo: avatarTrainView.leadingAnchor),
+            trainContainerView.trailingAnchor.constraint(equalTo: avatarTrainView.trailingAnchor)
+        ])
+
+        return trainContainerView
+    }
+
+    private var answerInfoLabel: UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = answerInfoText
+        label.font = Style.answerInfoLabelFont
+        label.textColor = Style.answerInfoLabelColor
+        label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+
+        return label
+    }
+
+    private var answerInfoStackView: UIStackView {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = Constants.answerInfoViewSpacing
+        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoLabel])
+
+        return stackView
+    }
+
+    // MARK: Bottom row views
 
     private lazy var answerButton: UIButton = {
         let button = UIButton()
@@ -178,8 +235,13 @@ private extension DashboardPromptsCardCell {
         // TODO: For testing purposes. Remove once we can pull content from remote.
         promptLabel.text = "Cast the movie of your life."
 
-        // TODO: Add train of avatars view.
-        containerStackView.addArrangedSubviews([promptTitleView, (isAnswered ? answeredStateView : answerButton)])
+        containerStackView.addArrangedSubview(promptTitleView)
+
+        if answerCount > 0 {
+            containerStackView.addArrangedSubview(answerInfoStackView)
+        }
+
+        containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
     }
 
     // MARK: Context menu actions
@@ -223,11 +285,17 @@ private extension DashboardPromptsCardCell {
         static let answerButtonTitle = NSLocalizedString("Answer Prompt", comment: "Title for a call-to-action button on the prompts card.")
         static let answeredLabelTitle = NSLocalizedString("✓ Answered", comment: "Title label that indicates the prompt has been answered.")
         static let shareButtonTitle = NSLocalizedString("Share", comment: "Title for a button that allows the user to share their answer to the prompt.")
+        static let answerInfoSingularFormat = NSLocalizedString("%1$d answer", comment: "Singular format string for displaying the number of users "
+                                                                + "that answered the blogging prompt.")
+        static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
+                                                              + "that answered the blogging prompt.")
     }
 
     struct Style {
         static let frameIconImage = UIImage(systemName: "lightbulb")
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
+        static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
+        static let answerInfoLabelColor = UIColor.primary
         static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let buttonTitleColor = UIColor.primary
         static let answeredLabelColor = UIColor.muriel(name: .green, .shade50)
@@ -236,6 +304,8 @@ private extension DashboardPromptsCardCell {
     struct Constants {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
+        static let answerInfoViewSpacing: CGFloat = 6
+        static let maxAvatarCount = 3
         static let cardFrameConstraintPriority = UILayoutPriority(999)
     }
 
