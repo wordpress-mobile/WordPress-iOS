@@ -30,6 +30,10 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         return .hidden
     }
 
+    override var alwaysResetHeaderOnRotation: Bool {
+        true
+    }
+
     init(_ selection: @escaping SiteIntentStep.SiteIntentSelection) {
         self.selection = selection
         tableView = UITableView(frame: .zero, style: .plain)
