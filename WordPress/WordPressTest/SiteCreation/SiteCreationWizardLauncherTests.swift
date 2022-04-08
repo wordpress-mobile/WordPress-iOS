@@ -83,6 +83,9 @@ class SiteCreationWizardLauncherTests: XCTestCase {
     }
 
     func testSiteIntentVariantTracking() throws {
+
+        /// When the Site Creation Wizard Launcher starts, it should fire an event for the variant being tracked
+
         try runSiteIntentVariantTrackingTest(for: intentTreatment)
         try runSiteIntentVariantTrackingTest(for: intentControl)
     }
@@ -99,8 +102,9 @@ class SiteCreationWizardLauncherTests: XCTestCase {
         let _ = SiteCreationWizardLauncher(intentVariant: variant)
 
         //Then
-        let trackedEvent = try XCTUnwrap(TestAnalyticsTracker.tracked.first (where: { $0.event == expectedEvent }))
-        let variation = try XCTUnwrap(trackedEvent.properties[variationEventPropertyKey] as? String)
+        let trackedEvents = try XCTUnwrap(TestAnalyticsTracker.tracked.filter { $0.event == expectedEvent })
+        XCTAssertEqual(trackedEvents.count, 1)
+        let variation = try XCTUnwrap(trackedEvents[0].properties[variationEventPropertyKey] as? String)
         XCTAssertEqual(variation, expectedProperty)
 
         TestAnalyticsTracker.tearDown()
