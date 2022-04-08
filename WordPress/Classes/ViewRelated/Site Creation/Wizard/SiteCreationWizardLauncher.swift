@@ -74,10 +74,10 @@ final class SiteCreationWizardLauncher {
         self.intentVariant = intentVariant
         self.nameVariant = nameVariant
 
-        trackVariations()
+        trackVariants()
     }
 
-    private func trackVariations() {
+    private func trackVariants() {
         SiteCreationAnalyticsHelper.trackSiteIntentExperiment(intentVariant)
         // TODO: Track Site Name
     }
