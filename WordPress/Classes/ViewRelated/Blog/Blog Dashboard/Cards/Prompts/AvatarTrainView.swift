@@ -23,7 +23,7 @@ final class AvatarTrainView: UIView {
         Constants.avatarDiameter + (2 * Constants.borderWidth)
     }
 
-    // MARK: Initializers
+    // MARK: Public Methods
 
     init(avatarURLs: [URL?]) {
         self.avatarURLs = avatarURLs
@@ -34,6 +34,14 @@ final class AvatarTrainView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // redraw border when user interface style changes.
+        if let previousTraitCollection = previousTraitCollection,
+            previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            avatarStackView.subviews.forEach { configureBorder(for: $0) }
+        }
     }
 
 }
@@ -51,8 +59,7 @@ private extension AvatarTrainView {
     func makeAvatarImageView(with avatarURL: URL? = nil) -> UIImageView {
         let imageView = CircularImageView(image: Constants.placeholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.borderWidth = Constants.borderWidth
-        imageView.layer.borderColor = UIColor.basicBackground.cgColor
+        configureBorder(for: imageView)
 
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: imageHeight),
@@ -64,6 +71,11 @@ private extension AvatarTrainView {
         }
 
         return imageView
+    }
+
+    func configureBorder(for view: UIView) {
+        view.layer.borderWidth = Constants.borderWidth
+        view.layer.borderColor = UIColor.basicBackground.cgColor
     }
 
     // MARK: Constants
