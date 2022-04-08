@@ -11,17 +11,19 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
     }
 
     init() {
-
         let featureDescriptionView: BloggingPromptsFeatureDescriptionView = {
             let featureDescriptionView = BloggingPromptsFeatureDescriptionView.loadFromNib()
              featureDescriptionView.translatesAutoresizingMaskIntoConstraints = false
             return featureDescriptionView
         }()
 
+        let headerImage = UIImage(systemName: Style.headerImageName)?
+            .withTintColor(Style.headerImageTintColor)
+            .withRenderingMode(.alwaysOriginal)
+
         super.init(headerTitle: Strings.headerTitle,
                    headerSubtitle: Strings.headerSubtitle,
-                   // TODO: provide lightbulb image
-                   headerImage: nil,
+                   headerImage: headerImage,
                    featureDescriptionView: featureDescriptionView,
                    primaryButtonTitle: Strings.primaryButtonTitle,
                    secondaryButtonTitle: Strings.secondaryButtonTitle)
@@ -55,6 +57,11 @@ private extension BloggingPromptsFeatureIntroduction {
         static let headerSubtitle: String = NSLocalizedString("The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!", comment: "Subtitle displayed on the feature introduction view.")
         static let primaryButtonTitle: String = NSLocalizedString("Try it now", comment: "Primary button title on the feature introduction view.")
         static let secondaryButtonTitle: String = NSLocalizedString("Remind me", comment: "Secondary button title on the feature introduction view.")
+    }
+
+    enum Style {
+        static let headerImageName = "lightbulb"
+        static let headerImageTintColor: UIColor = .orange // TODO: use gradient colors
     }
 
 }
