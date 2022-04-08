@@ -43,6 +43,11 @@ class SiteNameViewController: UIViewController {
         super.viewWillAppear(animated)
         nameView.setTitle(verticalTitle: verticalTitle)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.becomeFirstResponder()
+    }
 }
 
 // MARK: Convenience methods and properties

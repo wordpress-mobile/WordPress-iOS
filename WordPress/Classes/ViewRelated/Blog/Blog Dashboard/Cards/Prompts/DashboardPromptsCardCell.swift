@@ -226,7 +226,7 @@ private extension DashboardPromptsCardCell {
     }
 
     struct Style {
-        static let frameIconImage = UIImage(systemName: "lightbulb")
+        static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
         static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let buttonTitleColor = UIColor.primary
@@ -236,6 +236,7 @@ private extension DashboardPromptsCardCell {
     struct Constants {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
+        static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
     }
 
@@ -293,7 +294,7 @@ private extension DashboardPromptsCardCell {
             case .viewMore(let handler),
                     .skip(let handler),
                     .remove(let handler):
-                return .init(title: title, image: image, handler: handler)
+                return .init(title: title, image: image, destructive: menuAttributes.contains(.destructive), handler: handler)
             }
         }
     }
