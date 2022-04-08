@@ -36,40 +36,6 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
         UIApplication.shared.sendAction(action, to: barButtonItem?.target, from: nil, for: nil)
     }
 
-    func testSiteIntentTracksEventFiresForTreatmentGroup() throws {
-
-        // Given
-        let mockABTestForTreatment = SiteIntentAB.Variant.treatment
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
-        let expectedProperty = treatmentVariant.tracksProperty
-
-        // When
-        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: mockABTestForTreatment, siteNameVariant: nil)
-
-        // Then
-        let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)
-        XCTAssertEqual(firstTracked.event, expectedEvent)
-        let variation = try XCTUnwrap(firstTracked.properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
-    }
-
-    func testSiteIntentTracksEventFiresForControlGroup() throws {
-
-        // Given
-        let mockABTestForControl = SiteIntentAB.Variant.control
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
-        let expectedProperty = controlVariant.tracksProperty
-
-        // When
-        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: mockABTestForControl, siteNameVariant: nil)
-
-        // Then
-        let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)
-        XCTAssertEqual(firstTracked.event, expectedEvent)
-        let variation = try XCTUnwrap(firstTracked.properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
-    }
-
     func testSiteIntentTracksEventFiresWhenViewed() throws {
 
         // Given

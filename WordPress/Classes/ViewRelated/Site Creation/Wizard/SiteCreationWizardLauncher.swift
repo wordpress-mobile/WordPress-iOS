@@ -1,42 +1,53 @@
 import AutomatticTracks
 
 /// Puts together the Site creation wizard, assembling steps.
-final class SiteCreationWizardLauncher: SiteCreationWizardStepInvoker {
-    private var stepOrderer: SiteCreationWizardStepOrderer?
+final class SiteCreationWizardLauncher {
+    private let intentVariant: SiteIntentAB.Variant
+    private let nameVariant: Variation
 
     private lazy var creator: SiteCreator = {
         return SiteCreator()
     }()
 
-    internal lazy var segmentsStep: WizardStep = {
-        let segmentsService = SiteCreationSegmentsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return SiteSegmentsStep(creator: self.creator, service: segmentsService)
-    }()
+    private var shouldShowSiteIntent: Bool {
+        return intentVariant == .treatment && FeatureFlag.siteIntentQuestion.enabled
+    }
 
-    internal lazy var intentStep: WizardStep = {
-        return SiteIntentStep(creator: self.creator)
-    }()
+    private var shouldShowSiteName: Bool {
+        return nameVariant == .treatment(nil) && FeatureFlag.siteName.enabled
+    }
 
-    internal lazy var nameStep: WizardStep = {
-        return SiteNameStep(creator: self.creator)
-    }()
+    lazy var steps: [SiteCreationStep] = {
+        // If Site Intent shouldn't be shown, fall back to the original steps.
+        guard shouldShowSiteIntent else {
+            return [
+                .design,
+                .address,
+                .siteAssembly
+            ]
+        }
 
-    internal lazy var designStep: WizardStep = {
-        return SiteDesignStep(creator: self.creator)
-    }()
+        // If Site Intent should be shown but not the Site Name, only add Site Intent.
+        guard shouldShowSiteName else {
+            return [
+                .intent,
+                .design,
+                .address,
+                .siteAssembly
+            ]
+        }
 
-    internal lazy var addressStep: WizardStep = {
-        let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return WebAddressStep(creator: self.creator, service: addressService)
-    }()
-
-    internal lazy var siteAssemblyStep: WizardStep = {
-        let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService, onDismiss: onDismiss)
+        // If Site Name should be shown, swap out the Site Address step.
+        return [
+            .intent,
+            .name,
+            .design,
+            .siteAssembly
+        ]
     }()
 
     private lazy var wizard: SiteCreationWizard = {
-        return SiteCreationWizard(steps: self.stepOrderer?.steps ?? [])
+        return SiteCreationWizard(steps: steps.map { initStep($0) })
     }()
 
     lazy var ui: UIViewController? = {
@@ -54,26 +65,40 @@ final class SiteCreationWizardLauncher: SiteCreationWizardStepInvoker {
     ///
     private let onDismiss: ((Blog, Bool) -> Void)?
 
-    init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
+    init(
+        intentVariant: SiteIntentAB.Variant = SiteIntentAB.shared.variant,
+        nameVariant: Variation = ABTest.siteNameV1.variation,
+        onDismiss: ((Blog, Bool) -> Void)? = nil
+    ) {
         self.onDismiss = onDismiss
+        self.intentVariant = intentVariant
+        self.nameVariant = nameVariant
 
-        let siteIntentVariant = SiteIntentAB.shared.variant
-        let siteNameVariant = ABTest.siteNameV1.variation
-
-        SiteCreationWizardLauncher.fireInitEvents(siteIntentVariant: siteIntentVariant, siteNameVariant: siteNameVariant)
-
-        stepOrderer = SiteCreationWizardStepOrderer(
-            stepInvoker: self,
-            siteIntentVariant: siteIntentVariant,
-            siteNameVariant: siteNameVariant
-        )
+        trackVariations()
     }
 
-    static func fireInitEvents(siteIntentVariant: SiteIntentAB.Variant?, siteNameVariant: Variation?) {
-        if let siteIntentVariant = siteIntentVariant {
-            SiteCreationAnalyticsHelper.trackSiteIntentExperiment(siteIntentVariant)
-        }
-
+    private func trackVariations() {
+        SiteCreationAnalyticsHelper.trackSiteIntentExperiment(intentVariant)
         // TODO: Track Site Name
+    }
+
+    private func initStep(_ step: SiteCreationStep) -> WizardStep {
+        switch step {
+        case .address:
+            let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            return WebAddressStep(creator: self.creator, service: addressService)
+        case .design:
+            return SiteDesignStep(creator: self.creator)
+        case .intent:
+            return SiteIntentStep(creator: self.creator)
+        case .name:
+            return SiteNameStep(creator: self.creator)
+        case .segments:
+            let segmentsService = SiteCreationSegmentsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            return SiteSegmentsStep(creator: self.creator, service: segmentsService)
+        case .siteAssembly:
+            let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService, onDismiss: onDismiss)
+        }
     }
 }
