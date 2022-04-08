@@ -3,7 +3,7 @@ import Foundation
 class BlogDashboardAnalytics {
     static let shared = BlogDashboardAnalytics()
 
-    private var fired: [WPAnalyticsEvent] = []
+    private var fired: [(WPAnalyticsEvent, [AnyHashable: String])] = []
 
     private init() {}
 
@@ -11,9 +11,9 @@ class BlogDashboardAnalytics {
         fired = []
     }
 
-    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:], blog: Blog? = nil) {
-        if !fired.contains(event) {
-            fired.append(event)
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: String] = [:], blog: Blog? = nil) {
+        if !fired.contains(where: { $0 == (event, properties) }) {
+            fired.append((event, properties))
 
             if let blog = blog {
                 WPAnalytics.track(event, properties: properties, blog: blog)
