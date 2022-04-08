@@ -209,15 +209,28 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        // When switching from compact width to regular width, if the dashboard tab is selected
-        // we must switch to the site menu tab.
+        // When switching between compact and regular width, we need to make sure to select the
+        // appropriate tab. This ensures the following:
         //
-        // This ensures that the site menu is shown in the left pane of the split vc.
+        // 1. Compact -> Regular: If the dashboard tab is selected, switch to the site menu tab
+        // so that the site menu is shown in the left pane of the split vc
         //
-        if previousTraitCollection.horizontalSizeClass == .compact,
-           traitCollection.horizontalSizeClass == .regular,
-           isShowingDashboard {
+        // 2. Regular -> Compact: Switch to the default tab
+        //
+
+        let isCompactToRegularWidth =
+            previousTraitCollection.horizontalSizeClass == .compact &&
+            traitCollection.horizontalSizeClass == .regular
+
+        let isRegularToCompactWidth =
+            previousTraitCollection.horizontalSizeClass == .regular &&
+            traitCollection.horizontalSizeClass == .compact
+
+        if isCompactToRegularWidth, isShowingDashboard {
             segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+            segmentedControlValueChanged()
+        } else if isRegularToCompactWidth {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
             segmentedControlValueChanged()
         }
 
