@@ -132,10 +132,6 @@ private extension BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
-    func isGhostCardsBeingShown() -> Bool {
-        return currentCards.contains(where: {$0.cardType == .ghost})
-    }
-
     func loadingFailure() {
         if blog.dashboardState.hasCachedData {
             viewController?.loadingFailure()
