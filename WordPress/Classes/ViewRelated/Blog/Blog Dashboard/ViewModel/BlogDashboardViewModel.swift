@@ -113,7 +113,7 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
-        let items = cards.map {DashboardItem.cards($0)}
+        let items = cards.map { DashboardItem.cards($0) }
         var snapshot = DashboardSnapshot()
         snapshot.appendSections(DashboardSection.allCases)
         snapshot.appendItems([.quickActions], toSection: .quickActions)
