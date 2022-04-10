@@ -249,6 +249,25 @@ class DashboardCardTests: XCTestCase {
 
     // MARK: Remote Cards
 
+    func testNotShowingRemoteCardsIfResponseNotPresent() {
+        // Given
+        let blog = BlogBuilder(TestContextManager().mainContext).build()
+
+        // When
+        let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowStats = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+
+        // Then
+        XCTAssertFalse(shouldShowDrafts)
+        XCTAssertFalse(shouldShowScheduled)
+        XCTAssertFalse(shouldShowNextPost)
+        XCTAssertFalse(shouldShowCreatePost)
+        XCTAssertFalse(shouldShowStats)
+    }
+
     func testRemoteCardsIdentifiers() {
         // When
         let identifiers = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
