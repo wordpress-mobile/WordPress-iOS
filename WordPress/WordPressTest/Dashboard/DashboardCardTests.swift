@@ -58,9 +58,10 @@ class DashboardCardTests: XCTestCase {
     func testShouldAlwaysShowStatsCard() {
         // Given
         let blog = BlogBuilder(TestContextManager().mainContext).build()
+        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
 
         // When
-        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog)
+        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
 
         // Then
         XCTAssertTrue(shouldShow)
