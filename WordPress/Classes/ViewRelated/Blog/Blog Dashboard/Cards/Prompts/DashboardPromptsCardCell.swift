@@ -155,7 +155,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 // MARK: - BlogDashboardCardConfigurable
 
 extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         self.presenterViewController = viewController
         refreshStackView()
     }

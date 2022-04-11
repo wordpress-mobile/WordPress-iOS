@@ -35,7 +35,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         guard let viewController = viewController else {
             return
         }

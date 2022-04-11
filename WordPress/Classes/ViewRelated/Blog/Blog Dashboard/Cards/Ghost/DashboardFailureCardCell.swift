@@ -56,5 +56,5 @@ class DashboardFailureCardCell: UICollectionViewCell, Reusable {
 }
 
 extension DashboardFailureCardCell: BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) { }
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) { }
 }

@@ -36,21 +36,22 @@ class BlogDashboardViewModel {
         return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, item in
 
             var cellType: DashboardCollectionViewCell.Type
+            var cardType: DashboardCard
             var apiResponse: BlogDashboardRemoteEntity?
             switch item {
             case .quickActions:
-                cellType = DashboardQuickActionsCardCell.self
+                let cellType = DashboardQuickActionsCardCell.self
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardQuickActionsCardCell
+                cell?.configureQuickActionButtons(for: blog, with: viewController)
+                return cell
             case .cards(let cardModel):
-                cellType = cardModel.cardType.cell
-                apiResponse = cardModel.apiResponse
+                let cellType = cardModel.cardType.cell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
+                if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
+                    cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse, cardType: cardModel.cardType)
+                }
+                return cell
             }
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
-
-            if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
-                cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: apiResponse)
-            }
-
-            return cell
 
         }
     }()

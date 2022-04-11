@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
+final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var scrollView: ButtonScrollView = {
         let scrollView = ButtonScrollView()
@@ -56,21 +56,13 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
-            return
-        }
-
-        configureQuickActionButtons(for: blog, with: viewController)
-    }
 }
 
 // MARK: - Button Actions
 
 extension DashboardQuickActionsCardCell {
 
-    private func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+    func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
         statsButton.onTap = { [weak self] in
             self?.showStats(for: blog, from: sourceController)
         }

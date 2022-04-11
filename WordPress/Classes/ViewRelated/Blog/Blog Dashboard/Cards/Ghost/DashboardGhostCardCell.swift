@@ -28,7 +28,7 @@ class DashboardGhostCardCell: UICollectionViewCell, Reusable, BlogDashboardCardC
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         startGhostAnimation(style: GhostCellStyle.muriel)
     }
 
