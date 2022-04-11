@@ -493,13 +493,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         gutenberg.requestHTML()
     }
 
-    func focusTitleIfNeeded() {
-        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false else {
-            return
-        }
-        gutenberg.setFocusOnTitle()
-    }
-
     func showEditorHelp() {
         WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
         gutenberg.showEditorHelp()
@@ -917,7 +910,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             if isOpenedDirectlyForPhotoPost {
                 showMediaSelectionOnStart()
             }
-            focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
         }
     }
