@@ -25,7 +25,7 @@ import WordPressShared
     }
 
     @objc var isAssignedToExperiment: Bool {
-        experimentAssignment != "nonexistent"
+        FeatureFlag.mySiteDashboard.enabled && experimentAssignment != "nonexistent"
     }
 
     func setDefaultSection(_ tab: MySiteViewController.Section) {
