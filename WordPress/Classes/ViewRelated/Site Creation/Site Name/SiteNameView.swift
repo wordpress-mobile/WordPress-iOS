@@ -62,6 +62,8 @@ class SiteNameView: UIView {
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.autocapitalizationType = .sentences
+        searchBar.accessibilityIdentifier = "Website Title"
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString()
         return searchBar
     }()
 
@@ -93,6 +95,10 @@ class SiteNameView: UIView {
         return view
     }()
 
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
     init(siteName: String) {
         self.siteName = siteName
         super.init(frame: .zero)
@@ -118,6 +124,11 @@ class SiteNameView: UIView {
         super.layoutSubviews()
         updateContinueButton()
     }
+
+    override func becomeFirstResponder() -> Bool {
+         super.becomeFirstResponder()
+         return searchBar.becomeFirstResponder()
+     }
 }
 
 // MARK: setup

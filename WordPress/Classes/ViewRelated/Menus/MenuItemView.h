@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)refresh;
 
 /**
+ Refresh the accessibility labels.
+ */
+- (void)refreshAccessibilityLabels;
+
+/**
  The detectedable region of the view for allowing ordering.
  */
 - (CGRect)orderingToggleRect;
