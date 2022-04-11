@@ -38,7 +38,7 @@ class SiteNameViewController: UIViewController {
 
 // MARK: Stip button
 private extension SiteNameViewController {
-    // Skip button
+
     private func configureNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: TextContent.skipButtonTitle,
                                                             style: .done,
