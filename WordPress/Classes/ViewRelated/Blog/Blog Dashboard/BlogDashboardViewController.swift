@@ -10,6 +10,7 @@ protocol BlogDashboardCardConfigurable {
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
+    var presentedPostStatus: String?
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
