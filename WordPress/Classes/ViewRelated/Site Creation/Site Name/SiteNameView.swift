@@ -246,7 +246,7 @@ private extension SiteNameView {
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
-        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later",
+        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later.",
                                                 comment: "Subtitle of the Site Name screen.")
         static let continueButtonTitle = NSLocalizedString("Continue",
                                                            comment: "Title of the Continue button in the Site Name screen.")
