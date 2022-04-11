@@ -4,10 +4,12 @@ import UIKit
 /// Site Name screen for the Site Creation flow
 class SiteNameViewController: UIViewController {
 
-    private let creator: SiteCreator
+    private let siteNameViewFactory: () -> UIView
+    private let onSkip: () -> Void
 
-    init(creator: SiteCreator) {
-        self.creator = creator
+    init(siteNameViewFactory: @escaping () -> UIView, onSkip: @escaping () -> Void) {
+        self.siteNameViewFactory = siteNameViewFactory
+        self.onSkip = onSkip
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -16,10 +18,10 @@ class SiteNameViewController: UIViewController {
     }
 
     override func loadView() {
-        // TODO: SITENAME - This string is here only to test the UI until the implementation is complete.
-        view = SiteNameView(siteName: "Community & Non-Profit")
+        view = siteNameViewFactory()
         removeNavigationBarBorder()
         setTitleForTraitCollection()
+        configureNavigationBar()
 
     }
 
@@ -31,6 +33,22 @@ class SiteNameViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.becomeFirstResponder()
+    }
+}
+
+// MARK: Stip button
+private extension SiteNameViewController {
+    // Skip button
+    private func configureNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: TextContent.skipButtonTitle,
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(skipButtonTapped))
+    }
+
+    @objc
+    private func skipButtonTapped() {
+        onSkip()
     }
 }
 
@@ -54,10 +72,18 @@ private extension SiteNameViewController {
     func setTitleForTraitCollection() {
         title = (traitCollection.verticalSizeClass == .compact ||
                  traitCollection.preferredContentSizeCategory.isAccessibilityCategory) ?
-        Self.titleForVerticalCompactSizeClass :
+        TextContent.titleForVerticalCompactSizeClass :
         ""
     }
+}
 
-    static let titleForVerticalCompactSizeClass = NSLocalizedString("Give your website a name",
-                                                                    comment: "Title for Site Name screen in iPhone landscape.")
+// MARK: Constants
+private extension SiteNameViewController {
+
+    enum TextContent {
+        static let titleForVerticalCompactSizeClass = NSLocalizedString("Give your website a name",
+                                                                        comment: "Title for Site Name screen in iPhone landscape.")
+        static let skipButtonTitle = NSLocalizedString("Skip",
+                                                       comment: "Title for the Skip button in the Site Name Screen.")
+    }
 }
