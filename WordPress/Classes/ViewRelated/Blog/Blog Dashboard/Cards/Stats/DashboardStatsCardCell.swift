@@ -88,7 +88,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
 
         nudgeView?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
 
-        WPAnalytics.track(.dashboardCardShown,
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
     }
