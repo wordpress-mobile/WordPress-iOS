@@ -353,10 +353,6 @@ class AppSettingsViewController: UITableViewController {
 
                 WPAnalytics.track(.initialScreenChanged, properties: ["selected": defaultSection.analyticsDescription])
                 MySiteSettings().setDefaultSection(defaultSection)
-
-                /// If an user changes it's default screen we update the user metadata
-                /// to track the correct experiment assignment.
-                WPAnalytics.refreshMetadata()
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-08 20:28:37+0000 */
+/* Translation-Revision-Date: 2022-04-08 12:47:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0-rc.4 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -962,7 +962,10 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "Ndani automatikisht me të tjerë postime të reja në media shoqërore, që të filloni ta sillni atë publik te sajti juaj.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Famijla Automattic";
+"Automattic Family" = "Familja Automattic";
+
+/* Automotive site intent topic */
+"Automotive" = "Biznes Automobilistik";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Vetëpërditësime";
@@ -1029,6 +1032,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Bëhuni i pari që lë një koment.";
+
+/* Beauty site intent topic */
+"Beauty" = "Bukuri";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Dita Më e Mirë";
@@ -1115,6 +1121,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Të trasha";
+
+/* Books site intent topic */
+"Books" = "Libra";
 
 /* No comment provided by engineer. */
 "Border Radius" = "Rreze Anësh";
@@ -1364,6 +1373,9 @@ translators: Block name. %s: The localized block name */
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Kontrolloni email-in tuaj!";
 
+/* Subtitle shown on the dashboard when it fails to load */
+"Check your internet connection and pull to refresh." = "Kontrolloni lidhjen tuaj internet dhe tërhiqeni që të rifreskohet.";
+
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Kontrolloni lidhjen tuaj në internet dhe riprovoni, ose krijoni një faqe të zbrazët.";
 
@@ -1424,6 +1436,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Zgjidhni një kohë";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own" = "Zgjidhni një temë nga lista më poshtë, ose shtypni tuajën";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Zgjidhni një ikonë sajti unike";
@@ -1642,6 +1657,9 @@ translators: Block name. %s: The localized block name */
 
 /* Setting: WordPress.com Community */
 "Community" = "Bashkësi";
+
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "Bashkësi & Jofitimprurëse";
 
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "E ngjeshur";
@@ -1943,6 +1961,9 @@ translators: Block name. %s: The localized block name */
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "S’iu hoq dot shenja si i padëshiruar";
 
+/* Content show when the dashboard fails to load */
+"Couldn't update. Check that you're online and refresh." = "S’u përditësua dot. Kontrolloni nëse jeni në linjë dhe rifreksojeni.";
+
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "S’u ngarkua figurë e zgjedhur";
 
@@ -2139,6 +2160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Cut block" = "Prije bllokun";
+
+/* DIY site intent topic */
+"DIY" = "DIY";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "E errët";
@@ -2654,6 +2678,12 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Përpunon këtë zë menuje";
 
+/* Education site intent topic */
+"Education" = "Arsim";
+
+/* Placeholder text for the search field int the Site Intent screen. */
+"Eg. Fashion, Poetry, Politics" = "P.sh., Modë, Poezi, Politikë";
+
 /* Accessibility label for the Email text field.
    Account Settings Email label
    Email address text field placeholder
@@ -3026,6 +3056,9 @@ translators: Block name. %s: The localized block name */
 "Failed to insert media.\n Please tap for options." = "Dështoi në futje mediash.\nJu lutemi, prekeni për mundësi.";
 
 /* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "S’u arrit të futej media.\nPrekeni për më tepër hollësi.";
+
+/* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "S’u arrit të ruhen kartela.\nJu lutemi, prekeni për mundësi.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
@@ -3036,6 +3069,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "S’u arrit të ngarkohen kartela.\nJu lutemi, prekeni për mundësi.";
+
+/* Fashion site intent topic */
+"Fashion" = "Modë";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -3094,11 +3130,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Lloj kartele";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film & Televizion";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filtro";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filtroji sipas llojesh veprimtarie";
+
+/* Finance site intent topic */
+"Finance" = "Financë";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Shihni më tepër";
@@ -3211,6 +3253,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "Madhësi Shkronjash";
 
+/* Food site intent topic */
+"Food" = "Ushqim";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Futboll";
 
@@ -3267,6 +3312,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Gallery style" = "Stil galerie";
+
+/* Gaming site intent topic */
+"Gaming" = "Lojëra";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Lulishtari";
@@ -3350,6 +3398,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Hyrja në llogarinë Google dështoi.";
+
+/* Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "E kuptova";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "E mora vesh!";
@@ -3442,6 +3493,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "Titull 6";
+
+/* Health site intent topic */
+"Health" = "Shëndet";
 
 /* Help button */
 "Help" = "Ndihmë";
@@ -3564,6 +3618,9 @@ translators: Block name. %s: The localized block name */
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Nëse doni një sajt, por pa postimet dhe faqet që keni tani, ekipi ynë i asistencës mund të fshijë për ju postime, faqet, media dhe komentet tuaja.";
 
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"If you want to try get more views and traffic check out our top tips" = "Nëse doni të provoni të merrni më tepër parje dhe trafik, shihni ndihmëzat tona kryesuese";
+
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Nëse jeni i pasigurt se ç’do të fshihet, ose ju duhet ndihmë tjetër, mos u merakosni, ekipi ynë i asistencë është këtu që t’i përgjigjet çfarëdo pyetjeje që mund të keni.";
 
@@ -3645,6 +3702,10 @@ translators: Block name. %s: The localized block name */
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Të dhëna mbi kurse dhe veprimtari WordPress.com (në Internet & në rrugë klasike).";
 
+/* The title of the app initial screen settings screen
+   Title of the option to change the default initial screen */
+"Initial Screen" = "Skena Fillestare";
+
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Po gatitet procesi i rikthimit";
 
@@ -3714,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Instalimi i shtojcës së parë në sajtin tuaj mund të hajë deri në 1 minutë. Gjatë kësaj kohe, s’do të jeni në gjendje të bëni ndryshime në sajtin tuaj.";
+
+/* Interior Design site intent topic */
+"Interior Design" = "Dizajn Mjedisesh të Brendshëm";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Ju Paraqesim Postime Shkrimesh";
@@ -3938,6 +4002,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bëmani të ditur kur të mbarojë!";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "Stil Jetese";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "E çelët";
 
@@ -4094,6 +4161,9 @@ translators: Block name. %s: The localized block name */
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Vendor";
+
+/* Local Services site intent topic */
+"Local Services" = "Shërbime Vendore";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
@@ -4478,6 +4548,9 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Dhjetë Kafehanet e Mia Më të Mira";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "I RI!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
@@ -4558,6 +4631,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "Më të rinjtë së pari";
+
+/* News site intent topic */
+"News" = "Lajme";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4831,6 +4907,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "S’e shihni email-in? Shihni te dosja juaj Të padëshiruar ose Të pavlerë.";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "Shënim:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Shënim: Skema e shtyllave mund të jetë ndryshojë sipas temash dhe madhësish ekrani";
@@ -5208,11 +5287,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Fshije Sajtin Përgjithmonë";
 
+/* Personal site intent topic */
+"Personal" = "Personal";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personalizojeni";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fototekë";
+
+/* Photography site intent topic */
+"Photography" = "Fotografi";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Foto";
@@ -5747,6 +5832,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL CSS-je Lexuesi";
 
+/* Real Estate site intent topic */
+"Real Estate" = "Prona të Patundshme";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "Riblogojeni";
 
@@ -5817,6 +5905,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Postimet e Afërta shfaqin nën postime tuajat lëndë të afërt prej sajtit tuaj";
+
+/* Secondary button title on the feature introduction view. */
+"Remind me" = "Kujtoma";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Kujtuesit u hoqën";
@@ -6423,6 +6514,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Përzgjedh këtë element";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "Përzgjedh këtë temë si e synuara për sajtin tuaj.";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Dërgoji Përshtypjet";
 
@@ -6696,6 +6790,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for screen that show site title editor */
 "Site Title" = "Titull Sajti";
 
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "Temë Sajti";
+
 /* The accessibility label for the followed sites search field */
 "Site URL" = "URL sajti";
 
@@ -6774,6 +6871,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Disa blloqe kanë rregullime shtesë. Që të shihni më tepër mundësi, prekni ikonën e rregullimeve poshtë djathtas bllokut.";
+
+/* Title shown on the dashboard when it fails to load */
+"Some data wasn't loaded" = "S’u ngarkuan ca të dhëna";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Ngarkimi i disa mediave dështoi. Ky veprim do të sjellë heqjen nga postimi të krejt mediave që dështuan.\nTë ruhet, sido qoftë?";
@@ -6876,6 +6976,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Përshpejtoni funksionimin e sajtit tuaj";
+
+/* Sports site intent topic */
+"Sports" = "Sporte";
 
 /* Standard post format label */
 "Standard" = "Standard";
@@ -7154,6 +7257,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klasifikim";
+
+/* Technology site intent topic */
+"Technology" = "Teknologji";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Tregonani një grimë për veten.";
@@ -7496,6 +7602,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Që të mund të shtojë foto dhe\/ose video në postimet tuaja, ky aplikacion lyp leje hyrjeje në mediatekën e pajisjes tuaj. Nëse doni ta lejoni këtë, ju lutemi, ndryshoni rregullimet mbi privatësinë.";
 
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Kjo ndërthurje ngjyrash mund të jetë e vështirë për t’u lexuar nga njerëzit. Provoni të përdorni një ngjyrë sfondi më të ndritshme dhe\/ose një ngjyrë më të errët teksti.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Kjo ndërthurje ngjyrash mund të jetë e vështirë për t’u lexuar nga njerëzit. Provoni të përdorni një ngjyrë sfondi më të errët dhe\/ose një ngjyrë më të ndritshme teksti.";
+
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Kjo përkatësi s’është e lirë";
 
@@ -7747,6 +7859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Shpënë te Hedhurinat";
+
+/* Travel site intent topic */
+"Travel" = "Udhëtime";
 
 /* Connect when the SSL certificate is invalid */
 "Trust" = "Besoje";
@@ -8737,6 +8852,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Cila është adresa e sajtit tim?";
 
+/* Select the site's intent. Title */
+"What's your website about?" = "Për çfarë është sajti juaj?";
+
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "Çfarëdo që doni të krijoni ose ndani me të tjerët, do t’ju ndihmojmë ta bëni mu këtu.";
 
@@ -8897,6 +9015,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "Shkrim";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "Shkrim & Poezi";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Pozicion në boshtin X";
 
@@ -8957,6 +9078,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Duke shtuar një etiketë, mund të ndiqni postime lidhur me një subjekt të caktuar.";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Mund të mësoni më tepër dhe të ujdisni kujtues në çfarëdo kohe, që nga Sajti Im > Rregullime > Kujtues Blogimi";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Mund t’i anashkaloni këto rregullime për postime individuale.";
@@ -9151,6 +9275,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";
 
+/* This is shown to the user when their domain search query contains invalid characters. */
+"Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Kërkimi juaj përmban shenja të pambuluara në përkatësi WordPress.com. Lejohen shenjat vijuese: A–Z, a–z, 0–9.";
+
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Adresa e sajtit tuaj shfaqet te shtylla në krye të skenës, kur vizitoni sajtin tuaj nën Safari.";
 
@@ -9288,6 +9415,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "te “Përmirësojeni”";
 
+/* Sentence to justify why the app is asking permission from the user to use their camera. */
+"infoplist.NSCameraUsageDescription" = "Që të bëjë foto ose video për t’u përdorur te postimet tuaja.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationUsageDescription" = "WordPress-i do të donte të shtonte vendndodhjen tuaj në postime te sajte ku keni aktivizuar gjeoetiketimet.";
+
+/* This sentence is shown when the app asks permission from the user to use their location. */
+"infoplist.NSLocationWhenInUseUsageDescription" = "WordPress-i do të donte të shtonte vendndodhjen tuaj në postime te sajte ku keni aktivizuar gjeoetiketimet.";
+
+/* Sentence to justify why the app asks permission from the user to access the device microphone. */
+"infoplist.NSMicrophoneUsageDescription" = "Aktivizoni përdorim mikrofoni për të incizuar zë në videot tuaja.";
+
+/* Sentence to justify why the app asks permission from the user to access their Media Library. */
+"infoplist.NSPhotoLibraryUsageDescription" = "Që të shtohen foto ose video te postimet tuaja.";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "Ruaje si Skicë";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "Ruaje si Skicë";
+
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
+"ios-widget.BOl9KQ" = "Ka ${count} mundësi me përputhje me ‘${site}’.";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "Sajt";
+
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "Sajt";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Përzgjidhni Sajt";
+
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"ios-widget.s4dJhx" = "Sa për ripohim, donit ‘${site}’?";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Përzgjidhni Synim Sajti";
+
 /* Later today */
 "later today" = "më vonë, sot";
 
@@ -9314,6 +9480,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Today */
 "today" = "sot";
+
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "ndihmëza kryesuese";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL e panjohur";
