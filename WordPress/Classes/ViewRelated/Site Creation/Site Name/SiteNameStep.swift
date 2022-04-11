@@ -17,10 +17,9 @@ final class SiteNameStep: WizardStep {
     }
 
     private func didSet(siteName: String?) {
-        if let siteName = siteName {
-            let currentTagline = creator.information?.tagLine
-            creator.information = SiteInformation(title: siteName, tagLine: currentTagline)
-        }
+        // if users go back and then skip, the failable initializer of SiteInformation
+        // will reset the state, avoiding to retain the previous site name
+        creator.information = SiteInformation(title: siteName, tagLine: creator.information?.tagLine)
         delegate?.nextStep()
     }
 }
