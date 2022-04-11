@@ -120,8 +120,8 @@ private extension PostsCardViewController {
     }
 
     func presentEditor() {
-        let editor = EditPostViewController(blog: blog)
-        present(editor, animated: true)
+        let controller = tabBarController as? WPTabBarController
+        controller?.showPostTab()
     }
 
     func notifyOfHeightChange() {
