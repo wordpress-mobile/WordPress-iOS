@@ -7,7 +7,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
     private var viewModel: DashboardStatsViewModel?
     private var frameView: BlogDashboardCardFrameView?
-    private var nudgeButton: DashboardStatsNudgeButton?
+    private var nudgeView: DashboardStatsNudgeView?
     private var statsStackView: DashboardStatsStackView?
 
     private lazy var stackView: UIStackView = {
@@ -48,18 +48,15 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
         frameView.add(subview: statsStackview)
         self.statsStackView = statsStackview
 
-        let nudgeButton = createNudgeButton()
-        frameView.add(subview: nudgeButton)
-        self.nudgeButton = nudgeButton
+        let nudgeView = createNudgeView()
+        frameView.add(subview: nudgeView)
+        self.nudgeView = nudgeView
 
         stackView.addArrangedSubview(frameView)
     }
 
-    private func createNudgeButton() -> DashboardStatsNudgeButton {
-        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
-        nudgeButton.contentEdgeInsets = Constants.nudgeButtonMargins
-
-        return nudgeButton
+    private func createNudgeView() -> DashboardStatsNudgeView {
+        DashboardStatsNudgeView(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
     }
 }
 
@@ -85,11 +82,11 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         statsStackView?.visitors = viewModel?.todaysVisitors
         statsStackView?.likes = viewModel?.todaysLikes
 
-        nudgeButton?.onTap = { [weak self] in
+        nudgeView?.onTap = { [weak self] in
             self?.showNudgeHint(for: blog, from: viewController)
         }
 
-        nudgeButton?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
+        nudgeView?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
 
         WPAnalytics.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
@@ -135,7 +132,6 @@ private extension DashboardStatsCardCell {
     enum Constants {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
-        static let nudgeButtonMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         static let constraintPriority = UILayoutPriority(999)
 
