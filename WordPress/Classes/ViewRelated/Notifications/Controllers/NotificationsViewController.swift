@@ -404,12 +404,15 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         let isRead = note.read
 
-        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
+        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") :
+                             NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
         let action = UIContextualAction(style: .normal, title: title, handler: { (action, view, completionHandler) in
             if isRead {
+                WPAnalytics.track(.notificationMarkAsUnreadTapped)
                 self.markAsUnread(note: note)
             } else {
+                WPAnalytics.track(.notificationMarkAsReadTapped)
                 self.markAsRead(note: note)
             }
             completionHandler(true)
