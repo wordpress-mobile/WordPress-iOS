@@ -128,7 +128,7 @@ extension SiteIntentViewController {
                                                  comment: "Select the site's intent. Title")
         static let navigationBarTitle = NSLocalizedString("Site Topic",
                                                           comment: "Title of the navigation bar, shown when the large title is hidden.")
-        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own",
+        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own.",
                                               comment: "Select the site's intent. Subtitle")
         static let primaryAction = NSLocalizedString("Continue",
                                                      comment: "Button to progress to the next step")
