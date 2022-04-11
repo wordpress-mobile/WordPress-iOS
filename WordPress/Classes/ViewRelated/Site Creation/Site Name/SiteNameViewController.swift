@@ -27,6 +27,11 @@ class SiteNameViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         setTitleForTraitCollection()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.becomeFirstResponder()
+    }
 }
 
 // MARK: Convenience methods and properties

@@ -69,6 +69,45 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
     }
 
+    func configureGhostableTableView() {
+        guard ghostableTableView?.superview == nil else {
+            return
+        }
+
+        let ghostableTableView = PostCardTableView()
+
+        frameView?.addSubview(ghostableTableView)
+
+        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: ghostableTableView.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: ghostableTableView.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: ghostableTableView.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: ghostableTableView.trailingAnchor).isActive = true
+
+        ghostableTableView.isScrollEnabled = false
+        ghostableTableView.separatorStyle = .none
+
+        let postCompactCellNib = BlogDashboardPostCardGhostCell.defaultNib
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+
+        self.ghostableTableView = ghostableTableView
+    }
+
+    func removeGhostableTableView() {
+        ghostableTableView?.removeFromSuperview()
+    }
+
+    func trackPostsDisplayed() {
+        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+    }
+
 }
 
 // MARK: BlogDashboardCardConfigurable
@@ -116,45 +155,6 @@ extension DashboardPostsListCardCell: BlogDashboardCardConfigurable {
 
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
         WPAppAnalytics.track(.openedPosts, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], with: blog)
-    }
-
-    func configureGhostableTableView() {
-        guard ghostableTableView?.superview == nil else {
-            return
-        }
-
-        let ghostableTableView = PostCardTableView()
-
-        frameView?.addSubview(ghostableTableView)
-
-        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: ghostableTableView.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: ghostableTableView.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: ghostableTableView.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: ghostableTableView.trailingAnchor).isActive = true
-
-        ghostableTableView.isScrollEnabled = false
-        ghostableTableView.separatorStyle = .none
-
-        let postCompactCellNib = BlogDashboardPostCardGhostCell.defaultNib
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
-
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        ghostableTableView.removeGhostContent()
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-
-        self.ghostableTableView = ghostableTableView
-    }
-
-    func removeGhostableTableView() {
-        ghostableTableView?.removeFromSuperview()
-    }
-
-    func trackPostsDisplayed() {
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
     }
 
 }

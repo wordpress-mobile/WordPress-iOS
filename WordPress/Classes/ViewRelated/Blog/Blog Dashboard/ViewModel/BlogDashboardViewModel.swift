@@ -2,13 +2,15 @@ import Foundation
 import UIKit
 import CoreData
 
-enum DashboardSection: CaseIterable {
+enum DashboardSection: Int, CaseIterable {
     case quickActions
     case cards
 }
 
+typealias BlogID = Int
+
 enum DashboardItem: Hashable {
-    case quickActions
+    case quickActions(BlogID)
     case cards(DashboardCardModel)
 }
 
@@ -89,8 +91,8 @@ class BlogDashboardViewModel {
         updateCurrentCards(cards: cards)
     }
 
-    func dashboardItem(for sectionIndex: Int) -> DashboardItem? {
-        dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))
+    func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
+        return sectionIndex == DashboardSection.quickActions.rawValue
     }
 }
 
@@ -114,10 +116,11 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
-        let items = cards.map {DashboardItem.cards($0)}
+        let items = cards.map { DashboardItem.cards($0) }
+        let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
         snapshot.appendSections(DashboardSection.allCases)
-        snapshot.appendItems([.quickActions], toSection: .quickActions)
+        snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
     }
@@ -132,10 +135,6 @@ private extension BlogDashboardViewModel {
 // MARK: - Ghost/Skeleton cards and failures
 
 private extension BlogDashboardViewModel {
-
-    func isGhostCardsBeingShown() -> Bool {
-        return currentCards.contains(where: {$0.cardType == .ghost})
-    }
 
     func loadingFailure() {
         if blog.dashboardState.hasCachedData {
