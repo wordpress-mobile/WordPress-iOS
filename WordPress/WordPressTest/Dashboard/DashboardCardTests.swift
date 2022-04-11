@@ -11,12 +11,32 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 
 class DashboardCardTests: XCTestCase {
 
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext!
+    private var blog: Blog!
+
+    override func setUp() {
+        super.setUp()
+
+        contextManager = TestContextManager()
+        context = contextManager.newDerivedContext()
+        blog = BlogBuilder(context).build()
+    }
+
+    override func tearDown() {
+        QuickStartTourGuide.shared.remove(from: blog)
+        context = nil
+        contextManager = nil
+        blog = nil
+        ContextManager.overrideSharedInstance(nil)
+        super.tearDown()
+    }
+
     // MARK: Quick Start
 
     func testShouldShowQuickStartIfEnabledAndDefaultSectionIsDashboard() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         QuickStartTourGuide.shared.setup(for: blog)
 
         // When
@@ -29,7 +49,6 @@ class DashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .siteMenu)
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         QuickStartTourGuide.shared.setup(for: blog)
 
         // When
@@ -42,7 +61,6 @@ class DashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDisabled() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         QuickStartTourGuide.shared.setup(for: blog)
         QuickStartTourGuide.shared.remove(from: blog)
 
@@ -57,7 +75,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldAlwaysShowStatsCard() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
 
         // When
@@ -71,7 +88,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldShowGhostCardOnFirstLoad() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = false
         dashboardState.failedToLoad = false
@@ -85,7 +101,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldNotShowGhostCardIfLoaded() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = true
         dashboardState.failedToLoad = false
@@ -99,7 +114,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldNotShowGhostCardIfFailedToLoad() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = false
         dashboardState.failedToLoad = true
@@ -115,7 +129,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldShowFailureCardOnFirstLoadFailure() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = false
         dashboardState.failedToLoad = true
@@ -129,7 +142,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldNotShowFailureCardIfSecondLoadFailed() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = true
         dashboardState.failedToLoad = true
@@ -143,7 +155,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShouldNotShowFailureCardIfLoaded() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let dashboardState = BlogDashboardState.shared(for: blog)
         dashboardState.hasCachedData = true
         dashboardState.failedToLoad = false
@@ -159,7 +170,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShowingDraftsCardOnly() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: true, hasScheduled: false, hasPublished: false)
 
         // When
@@ -177,7 +187,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShowingScheduledCardOnly() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: false, hasScheduled: true, hasPublished: false)
 
         // When
@@ -195,7 +204,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShowingDraftsAndScheduled() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: true, hasScheduled: true, hasPublished: false)
 
         // When
@@ -213,7 +221,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShowingNextPostCardOnly() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: true)
 
         // When
@@ -231,7 +238,6 @@ class DashboardCardTests: XCTestCase {
 
     func testShowingCreatePostCardOnly() {
         // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
         let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
 
         // When
@@ -250,9 +256,6 @@ class DashboardCardTests: XCTestCase {
     // MARK: Remote Cards
 
     func testNotShowingRemoteCardsIfResponseNotPresent() {
-        // Given
-        let blog = BlogBuilder(TestContextManager().mainContext).build()
-
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: nil)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: nil)

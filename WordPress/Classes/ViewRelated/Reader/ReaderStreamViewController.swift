@@ -882,7 +882,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.shared!.connectionAvailable
+        return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
 
 
