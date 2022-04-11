@@ -294,7 +294,7 @@ private extension DashboardPromptsCardCell {
     }
 
     struct Style {
-        static let frameIconImage = UIImage(systemName: "lightbulb")
+        static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
         static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
         static let answerInfoLabelColor = UIColor.primary
@@ -308,6 +308,7 @@ private extension DashboardPromptsCardCell {
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
         static let maxAvatarCount = 3
+        static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
     }
 

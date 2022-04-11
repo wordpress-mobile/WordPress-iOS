@@ -1,5 +1,6 @@
 19.7
 -----
+* [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
 
 
 19.6
