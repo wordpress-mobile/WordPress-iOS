@@ -87,7 +87,7 @@ class SiteIntentDataTests: XCTestCase {
 
 
     /// Tests that the output isn't changed when whitespace is searched
-    func testWhiteSpaceFiltering() throws {
+    func testWhitespaceFiltering() throws {
         // Given
         let whitespaceSearchTerm = " "
 
