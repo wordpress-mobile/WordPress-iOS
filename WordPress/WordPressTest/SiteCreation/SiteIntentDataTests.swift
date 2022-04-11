@@ -5,7 +5,7 @@ class SiteIntentDataTests: XCTestCase {
 
     /// Tests that a single vertical is returned when there's an exact match
     func testExactFiltering() throws {
-        // given
+        // Given
         let foodSearchTerm = "food"
         let expectedFoodVertical = SiteIntentVertical(
             slug: "food",
@@ -15,16 +15,16 @@ class SiteIntentDataTests: XCTestCase {
             isCustom: false
         )
 
-        // when
+        // When
         let foodSearchResult = SiteIntentData.filterVerticals(with: foodSearchTerm)
 
-        // expect
+        // Then
         XCTAssertEqual(foodSearchResult.count, 1)
         XCTAssertEqual(foodSearchResult[0], expectedFoodVertical)
     }
 
     func testPartialFiltering() throws {
-        // given
+        // Given
         let partialSearchTerm = "tr"
         let expectedVerticals = [
             SiteIntentVertical(
@@ -50,16 +50,16 @@ class SiteIntentDataTests: XCTestCase {
             )
         ]
 
-        // when
+        // When
         let partialResults = SiteIntentData.filterVerticals(with: partialSearchTerm)
 
-        // expect
+        // Then
         XCTAssertEqual(expectedVerticals, partialResults)
     }
 
     /// Tests that a custom vertical is inserted when there isn't an exact match
     func testCustomFiltering() throws {
-        // given
+        // Given
         let fooSearchTerm = "foo"
         let expectedCustomResult = SiteIntentVertical(
             slug: "foo",
@@ -76,10 +76,10 @@ class SiteIntentDataTests: XCTestCase {
             isCustom: false
         )
 
-        // when
+        // When
         let fooSearchResult = SiteIntentData.filterVerticals(with: fooSearchTerm)
 
-        // expect
+        // Then
         XCTAssertEqual(fooSearchResult.count, 2)
         XCTAssertEqual(fooSearchResult[0], expectedCustomResult)
         XCTAssertEqual(fooSearchResult[1], expectedFoodVertical)
@@ -88,39 +88,39 @@ class SiteIntentDataTests: XCTestCase {
 
     /// Tests that the output isn't changed when whitespace is searched
     func testWhiteSpaceFiltering() throws {
-        // given
+        // Given
         let whitespaceSearchTerm = " "
 
-        // when
+        // When
         let emptyStringResult = SiteIntentData.filterVerticals(with: "")
         let whitespaceSearchResult = SiteIntentData.filterVerticals(with: whitespaceSearchTerm)
 
-        // expect
+        // Then
         XCTAssertEqual(whitespaceSearchResult, emptyStringResult)
     }
 
     /// Tests that default verticals are on top of the non-default verticals as this affects output ordering
     func testDefaultsOnTop() throws {
-        // given
+        // Given
         let defaultVerticals = SiteIntentData.allVerticals.filter { $0.isDefault == true }
         let nonDefaultVerticals = SiteIntentData.allVerticals.filter { $0.isDefault == false }
 
-        // when
+        // When
         let allVerticals = (defaultVerticals + nonDefaultVerticals)
 
-        // expect
+        // Then
         XCTAssertEqual(allVerticals, SiteIntentData.allVerticals)
     }
 
     /// Tests that the defaultVerticals properties returns default verticals
     func testDefaultVerticals() throws {
-        // given
+        // Given
         let defaultVerticals = SiteIntentData.defaultVerticals
 
-        // when
+        // When
         let nilNonDefault = defaultVerticals.first(where: { $0.isDefault == false })
 
-        // expect
+        // Then
         XCTAssertNil(nilNonDefault)
     }
 
