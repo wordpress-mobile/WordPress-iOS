@@ -436,6 +436,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         let action = UIContextualAction(style: .normal, title: actionTitle, handler: { (_, _, completionHandler) in
+            WPAppAnalytics.track(approveAction.on ? .notificationsCommentUnapproved : .notificationsCommentApproved,
+                                 withProperties: [Stats.sourceKey: Stats.sourceValue],
+                                 withBlogID: block.metaSiteID)
+
             let actionContext = ActionContext(block: block)
             approveAction.execute(context: actionContext)
             completionHandler(true)
