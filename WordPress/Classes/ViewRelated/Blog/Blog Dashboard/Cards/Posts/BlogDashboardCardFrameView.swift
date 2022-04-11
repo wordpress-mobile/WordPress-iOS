@@ -47,12 +47,14 @@ class BlogDashboardCardFrameView: UIView {
 
     /// Chevron displayed in case there's any action associated
     private lazy var chevronImageView: UIImageView = {
-        let chevronImageView = UIImageView(image: UIImage.gridicon(.chevronRight, size: Constants.iconSize).withRenderingMode(.alwaysTemplate))
+        let chevronImage = UIImage.gridicon(.chevronRight, size: Constants.iconSize).withRenderingMode(.alwaysTemplate)
+        let chevronImageView = UIImageView(image: chevronImage.imageFlippedForRightToLeftLayoutDirection())
         chevronImageView.frame = CGRect(x: 0, y: 0, width: Constants.iconSize.width, height: Constants.iconSize.height)
         chevronImageView.tintColor = .listIcon
         chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         chevronImageView.isAccessibilityElement = false
         chevronImageView.isHidden = true
+        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return chevronImageView
     }()
 
@@ -66,6 +68,7 @@ class BlogDashboardCardFrameView: UIView {
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
         button.isHidden = true
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.on(.touchUpInside) { [weak self] _ in
             self?.onEllipsisButtonTap?()
         }

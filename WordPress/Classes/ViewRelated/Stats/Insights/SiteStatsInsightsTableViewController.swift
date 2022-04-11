@@ -210,6 +210,8 @@ private extension SiteStatsInsightsTableViewController {
                 if viewsCount != nil {
                     trackNudgeShown(for: hintType)
                 }
+            case InsightType.customize where !insightsToShow.contains(.customize):
+                insightsToShow = insightsToShow.filter { $0 != .growAudience }
             default:
                 break
             }
