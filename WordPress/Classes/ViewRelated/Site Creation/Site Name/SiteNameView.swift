@@ -5,7 +5,8 @@ import WordPressShared
 /// content view for SiteNameViewController
 class SiteNameView: UIView {
 
-    private let siteName: String
+    private var siteVerticalName: String
+    private let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -83,9 +84,13 @@ class SiteNameView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         button.setTitle(TextContent.continueButtonTitle, for: .normal)
-        // TODO: SITENAME - This button is still missing a target, development is WIP.
+        button.addTarget(self, action: #selector(navigateToNextScreen), for: .touchUpInside)
         return button
     }()
+
+    @objc private func navigateToNextScreen() {
+        onContinue(searchBar.text)
+    }
 
     private lazy var continueButtonView: UIView = {
         let view = UIView()
@@ -99,8 +104,9 @@ class SiteNameView: UIView {
         return true
     }
 
-    init(siteName: String) {
-        self.siteName = siteName
+    init(siteVerticalName: String, onContinue: @escaping (String?) -> Void) {
+        self.siteVerticalName = siteVerticalName
+        self.onContinue = onContinue
         super.init(frame: .zero)
         backgroundColor = .basicBackground
         addSubview(mainStackView)
