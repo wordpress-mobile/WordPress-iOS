@@ -12,8 +12,8 @@ enum DashboardCard: String, CaseIterable {
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
-    case nextPost
-    case createPost
+    case nextPost = "create_next"
+    case createPost = "create_first"
 
     // Card placeholder for when loading data
     case ghost
@@ -28,9 +28,9 @@ enum DashboardCard: String, CaseIterable {
         case .scheduledPosts:
             return DashboardPostsListCardCell.self
         case .nextPost:
-            fallthrough
+            return DashboardEmptyPostsCardCell.self
         case .createPost:
-            return DashboardPostsCardCell.self // TODO: Return diff cell for each posts card
+            return DashboardEmptyPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
         case .prompts:

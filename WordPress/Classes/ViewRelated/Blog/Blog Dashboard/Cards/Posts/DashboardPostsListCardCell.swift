@@ -86,6 +86,7 @@ extension DashboardPostsListCardCell: BlogDashboardCardConfigurable {
             configureScheduledList(blog: blog)
             status = .scheduled
         default:
+            assertionFailure("Cell used with wrong card type")
             return
         }
         viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self, shouldSync: true)
