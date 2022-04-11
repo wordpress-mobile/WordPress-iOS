@@ -89,7 +89,7 @@ class SiteNameView: UIView {
     }()
 
     @objc private func navigateToNextScreen() {
-        onContinue(searchBar.text)
+        onContinue(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     private lazy var continueButtonView: UIView = {
