@@ -97,7 +97,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         WPAnalytics.track(.dashboardCardItemTapped,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
-        StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
+        StatsViewController.show(for: blog, from: sourceController)
         WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
     }
 
