@@ -24,6 +24,10 @@ import WordPressShared
         return "nonexistent"
     }
 
+    @objc var isAssignedToExperiment: Bool {
+        experimentAssignment != "nonexistent"
+    }
+
     func setDefaultSection(_ tab: MySiteViewController.Section) {
         userDefaults.set(tab.rawValue, forKey: Constants.defaultSectionKey)
         WPAnalytics.track(.mySiteDefaultTabExperimentVariantAssigned, properties: ["default_tab_experiment": experimentAssignment])
