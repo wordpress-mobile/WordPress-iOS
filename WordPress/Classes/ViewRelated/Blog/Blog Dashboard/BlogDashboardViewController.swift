@@ -123,6 +123,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
+        collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
         }
@@ -189,10 +190,9 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
-        let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
+        let isQuickActionSection = viewModel.dashboardItem(for: sectionIndex) == .quickActions
         let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
-        let bottomInset = isLastSection ? Constants.verticalSectionInset : 0
+        let bottomInset = isQuickActionSection ? 0 : Constants.verticalSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
@@ -258,7 +258,7 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 24
+        static let cellSpacing: CGFloat = 20
     }
 }
 

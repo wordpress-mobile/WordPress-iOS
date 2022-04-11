@@ -2,7 +2,7 @@ import Foundation
 
 /// Represents a card in the dashboard collection view
 struct DashboardCardModel: Hashable {
-    let id: DashboardCard
+    let cardType: DashboardCard
     let dotComID: Int
     let apiResponse: BlogDashboardRemoteEntity?
 
@@ -22,21 +22,21 @@ struct DashboardCardModel: Hashable {
                 view. The `hashableDictionary`, `id`, and the `dotComID` is used to differentiate one
                 card from the other.
     */
-    init(id: DashboardCard, dotComID: Int, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
-        self.id = id
+    init(cardType: DashboardCard, dotComID: Int, hashableDictionary: NSDictionary? = nil, entity: BlogDashboardRemoteEntity? = nil) {
+        self.cardType = cardType
         self.dotComID = dotComID
         self.hashableDictionary = hashableDictionary
         self.apiResponse = entity
     }
 
     static func == (lhs: DashboardCardModel, rhs: DashboardCardModel) -> Bool {
-        lhs.id == rhs.id &&
+        lhs.cardType == rhs.cardType &&
         lhs.dotComID == rhs.dotComID &&
         lhs.hashableDictionary == rhs.hashableDictionary
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(cardType)
         hasher.combine(dotComID)
         hasher.combine(hashableDictionary)
     }

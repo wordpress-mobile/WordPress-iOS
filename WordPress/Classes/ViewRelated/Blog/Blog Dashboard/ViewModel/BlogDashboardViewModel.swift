@@ -2,8 +2,18 @@ import Foundation
 import UIKit
 import CoreData
 
-typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardCardSection, DashboardCardModel>
-typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardCardSection, DashboardCardModel>
+enum DashboardSection: CaseIterable {
+    case quickActions
+    case cards
+}
+
+enum DashboardItem: Hashable {
+    case quickActions
+    case cards(DashboardCardModel)
+}
+
+typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardSection, DashboardItem>
+typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardSection, DashboardItem>
 
 class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
@@ -21,13 +31,21 @@ class BlogDashboardViewModel {
             return nil
         }
 
-        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, identifier in
+        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, item in
 
-            let cellType = identifier.id.cell
+            var cellType: DashboardCollectionViewCell.Type
+            var apiResponse: BlogDashboardRemoteEntity?
+            switch item {
+            case .quickActions:
+                cellType = DashboardQuickActionsCardCell.self
+            case .cards(let cardModel):
+                cellType = cardModel.cardType.cell
+                apiResponse = cardModel.apiResponse
+            }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
 
             if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
-                cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: identifier.apiResponse)
+                cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: apiResponse)
             }
 
             return cell
@@ -71,8 +89,8 @@ class BlogDashboardViewModel {
         apply(snapshot: snapshot)
     }
 
-    func card(for sectionIndex: Int) -> DashboardCard? {
-        dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))?.id
+    func dashboardItem(for sectionIndex: Int) -> DashboardItem? {
+        dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))
     }
 }
 
@@ -105,7 +123,16 @@ private extension BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func isGhostCardsBeingShown() -> Bool {
-        dataSource?.snapshot().sectionIdentifiers.filter { $0.id == .ghost }.count == 1
+        let ghostCells = dataSource?.snapshot().itemIdentifiers.filter({ item in
+            switch item {
+            case .quickActions:
+                return false
+            case .cards(let cardModel):
+                return cardModel.cardType == .ghost
+            }
+        })
+        let ghostCellsCount = ghostCells?.count ?? 0
+        return ghostCellsCount > 0
     }
 
     func loadingFailure() {

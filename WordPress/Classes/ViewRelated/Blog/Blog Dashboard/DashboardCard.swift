@@ -8,7 +8,6 @@ import Foundation
 /// If the card `isRemote` the `String` should match its
 /// identifier on the backend.
 enum DashboardCard: String, CaseIterable {
-    case quickActions
     case quickStart
     case prompts
     case todaysStats = "todays_stats"
@@ -21,8 +20,6 @@ enum DashboardCard: String, CaseIterable {
     /// If the card is backed by API data
     var isRemote: Bool {
         switch self {
-        case .quickActions:
-            return false
         case .quickStart:
             return false
         case .posts:
@@ -40,8 +37,6 @@ enum DashboardCard: String, CaseIterable {
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
-        case .quickActions:
-            return DashboardQuickActionsCardCell.self
         case .quickStart:
             return DashboardQuickStartCardCell.self
         case .posts:
@@ -59,8 +54,6 @@ enum DashboardCard: String, CaseIterable {
 
     func shouldShow(for blog: Blog, mySiteSettings: MySiteSettings = MySiteSettings()) -> Bool {
         switch self {
-        case .quickActions:
-            return true
         case .quickStart:
             return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
         case .posts:
