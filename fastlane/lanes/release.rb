@@ -246,7 +246,7 @@ end
 # prompt if a given flag is true
 #
 # @param [String] message The text to pass to `UI.confirm` to show the user
-# @param [Boolean] bypass A flag that allows bypassing the `UI.confirm` promt, i.e. acting as if the prompt returned `true`
+# @param [Boolean] bypass A flag that allows bypassing the `UI.confirm` prompt, i.e. acting as if the prompt returned `true`
 def prompt_for_confirmation(message:, bypass:)
   return true if bypass
 
