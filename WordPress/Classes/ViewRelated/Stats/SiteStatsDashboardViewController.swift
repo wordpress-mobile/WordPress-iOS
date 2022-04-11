@@ -79,13 +79,6 @@ class SiteStatsDashboardViewController: UIViewController {
         return button
     }()
 
-    // MARK: Public Functions
-
-    /// When called, the initial selected `StatsPeriodType` is set to days instead of insights.
-    @objc public func forceShowStatsForTodayPeriod() {
-        self.currentSelectedPeriod = .days
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {
