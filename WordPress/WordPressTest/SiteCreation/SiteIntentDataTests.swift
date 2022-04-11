@@ -3,14 +3,6 @@ import XCTest
 
 class SiteIntentDataTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     /// Tests that a single vertical is returned when there's an exact match
     func testExactFiltering() throws {
         // given
@@ -29,6 +21,40 @@ class SiteIntentDataTests: XCTestCase {
         // expect
         XCTAssertEqual(foodSearchResult.count, 1)
         XCTAssertEqual(foodSearchResult[0], expectedFoodVertical)
+    }
+
+    func testPartialFiltering() throws {
+        // given
+        let partialSearchTerm = "tr"
+        let expectedVerticals = [
+            SiteIntentVertical(
+                slug: "tr",
+                localizedTitle: "tr",
+                emoji: "＋",
+                isDefault: false,
+                isCustom: true
+            ),
+            SiteIntentVertical(
+                slug: "travel",
+                localizedTitle: NSLocalizedString("Travel", comment: "Travel site intent topic"),
+                emoji: "✈️",
+                isDefault: true,
+                isCustom: false
+            ),
+            SiteIntentVertical(
+                slug: "writing_poetry",
+                localizedTitle: NSLocalizedString("Writing & Poetry", comment: "Writing & Poetry site intent topic"),
+                emoji: "📓",
+                isDefault: false,
+                isCustom: false
+            )
+        ]
+
+        // when
+        let partialResults = SiteIntentData.filterVerticals(with: partialSearchTerm)
+
+        // expect
+        XCTAssertEqual(expectedVerticals, partialResults)
     }
 
     /// Tests that a custom vertical is inserted when there isn't an exact match

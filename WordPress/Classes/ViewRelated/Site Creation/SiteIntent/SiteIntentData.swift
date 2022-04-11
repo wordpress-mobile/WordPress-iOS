@@ -41,30 +41,24 @@ struct SiteIntentData {
 
     // Filters verticals based on search term and prepends a custom vertical if there were no exact matches
     static func filterVerticals(with term: String) -> [SiteIntentVertical] {
-        let trimmedTerm = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedAndLowercasedTerm = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
-        guard !trimmedTerm.isEmpty else {
+        guard !trimmedAndLowercasedTerm.isEmpty else {
             return allVerticals
         }
 
-        let matchedVerticals = allVerticals.filter { $0.localizedTitle.lowercased().contains(trimmedTerm.lowercased()) }
-        let customVertical = customVertical(from: matchedVerticals, term: trimmedTerm)
+        guard let exactMatch = allVerticals.first(where: { $0.localizedTitle.lowercased() == trimmedAndLowercasedTerm }) else {
+            let customVertical = SiteIntentVertical(
+                slug: trimmedAndLowercasedTerm,
+                localizedTitle: term,
+                emoji: "＋",
+                isCustom: true
+            )
 
-        return ([customVertical] + matchedVerticals).compactMap { $0 }
-    }
-
-    // Returns a custom vertical if there were no exact matches in the supplied array of verticals
-    private static func customVertical(from verticals: [SiteIntentVertical], term: String) -> SiteIntentVertical? {
-        guard !verticals.contains(where: { $0.localizedTitle.lowercased() == term.lowercased() }) else {
-            return nil
+            return [customVertical] + allVerticals.filter { $0.localizedTitle.lowercased().contains(trimmedAndLowercasedTerm) }
         }
 
-        return SiteIntentVertical(
-            slug: term.lowercased(),
-            localizedTitle: term,
-            emoji: "＋",
-            isCustom: true
-        )
+        return [exactMatch]
     }
 }
 
