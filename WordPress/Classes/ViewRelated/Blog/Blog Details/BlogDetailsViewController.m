@@ -34,7 +34,9 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
-CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
+CGFloat const BlogDetailQuickStartSectionHeaderHeight = 48.0;
+CGFloat const BlogDetailSectionTitleHeaderHeight = 40.0;
+CGFloat const BlogDetailSectionsSpacing = 20.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -646,20 +648,29 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - iOS 10 bottom padding
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return UITableViewAutomaticDimension;
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = self.tableSections[sectionNum];
+    BOOL isLastSection = sectionNum == self.tableSections.count - 1;
+    BOOL hasTitle = section.footerTitle != nil && ![section.footerTitle isEmpty];
+    if (hasTitle) {
+        return UITableViewAutomaticDimension;
+    }
+    if (isLastSection) {
+        return BlogDetailSectionsSpacing;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
+    BOOL hasTitle = section.title != nil && ![section.title isEmpty];
 
-    if (section.showQuickStartMenu == true || sectionNum == 0) {
-        return BlogDetailQuickStartSectionHeight;
-    } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
-        // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
-        return 0.0;
+    if (section.showQuickStartMenu == true) {
+        return BlogDetailQuickStartSectionHeaderHeight;
+    } else if (hasTitle) {
+        return BlogDetailSectionTitleHeaderHeight;
     }
-    return UITableViewAutomaticDimension;
+    return BlogDetailSectionsSpacing;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -1221,10 +1232,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
         return [self quickStartHeaderWithTitle:section.title];
-    } else if (sectionNum == 0) {
-        return nil;
     }
-
     return nil;
 }
 
