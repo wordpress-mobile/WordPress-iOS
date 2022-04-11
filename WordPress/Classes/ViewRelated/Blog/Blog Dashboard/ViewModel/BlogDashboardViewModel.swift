@@ -2,13 +2,15 @@ import Foundation
 import UIKit
 import CoreData
 
-enum DashboardSection: CaseIterable {
+enum DashboardSection: Int, CaseIterable {
     case quickActions
     case cards
 }
 
+typealias BlogID = Int
+
 enum DashboardItem: Hashable {
-    case quickActions
+    case quickActions(BlogID)
     case cards(DashboardCardModel)
 }
 
@@ -21,6 +23,8 @@ class BlogDashboardViewModel {
     private let managedObjectContext: NSManagedObjectContext
 
     var blog: Blog
+
+    private var currentCards: [DashboardCardModel] = []
 
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
@@ -68,29 +72,26 @@ class BlogDashboardViewModel {
     func loadCards(completion: (() -> Void)? = nil) {
         viewController?.showLoading()
 
-        service.fetch(blog: blog, completion: { [weak self] snapshot in
+        service.fetch(blog: blog, completion: { [weak self] cards in
             self?.viewController?.stopLoading()
-            self?.apply(snapshot: snapshot)
+            self?.updateCurrentCards(cards: cards)
             completion?()
-        }, failure: { [weak self] snapshot in
+        }, failure: { [weak self] cards in
             self?.viewController?.stopLoading()
             self?.loadingFailure()
-
-            if let snapshot = snapshot {
-                self?.apply(snapshot: snapshot)
-            }
+            self?.updateCurrentCards(cards: cards)
 
             completion?()
         })
     }
 
     func loadCardsFromCache() {
-        let snapshot = service.fetchLocal(blog: blog)
-        apply(snapshot: snapshot)
+        let cards = service.fetchLocal(blog: blog)
+        updateCurrentCards(cards: cards)
     }
 
-    func dashboardItem(for sectionIndex: Int) -> DashboardItem? {
-        dataSource?.itemIdentifier(for: IndexPath(row: 0, section: sectionIndex))
+    func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
+        return sectionIndex == DashboardSection.quickActions.rawValue
     }
 }
 
@@ -98,7 +99,9 @@ class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
-    func apply(snapshot: DashboardSnapshot) {
+    func updateCurrentCards(cards: [DashboardCardModel]) {
+        currentCards = cards
+        let snapshot = createSnapshot(from: cards)
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
 
@@ -111,6 +114,16 @@ private extension BlogDashboardViewModel {
         }
     }
 
+    func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
+        let items = cards.map { DashboardItem.cards($0) }
+        let dotComID = blog.dotComID?.intValue ?? 0
+        var snapshot = DashboardSnapshot()
+        snapshot.appendSections(DashboardSection.allCases)
+        snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
+        snapshot.appendItems(items, toSection: .cards)
+        return snapshot
+    }
+
     func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
         if position.y > 0 {
             scrollView.setContentOffset(position, animated: false)
@@ -121,19 +134,6 @@ private extension BlogDashboardViewModel {
 // MARK: - Ghost/Skeleton cards and failures
 
 private extension BlogDashboardViewModel {
-
-    func isGhostCardsBeingShown() -> Bool {
-        let ghostCells = dataSource?.snapshot().itemIdentifiers.filter({ item in
-            switch item {
-            case .quickActions:
-                return false
-            case .cards(let cardModel):
-                return cardModel.cardType == .ghost
-            }
-        })
-        let ghostCellsCount = ghostCells?.count ?? 0
-        return ghostCellsCount > 0
-    }
 
     func loadingFailure() {
         if blog.dashboardState.hasCachedData {
