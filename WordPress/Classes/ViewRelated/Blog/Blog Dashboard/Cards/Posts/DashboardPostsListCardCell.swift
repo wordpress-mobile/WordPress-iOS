@@ -1,11 +1,3 @@
-//
-//  DashboardPostsListCardCell.swift
-//  WordPress
-//
-//  Created by Hassaan El-Garem on 11/04/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import UIKit
 
 class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
