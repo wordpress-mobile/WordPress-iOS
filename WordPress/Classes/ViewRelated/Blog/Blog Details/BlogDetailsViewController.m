@@ -732,7 +732,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     
-    if (AppConfiguration.showsQuickActions) {
+    if (AppConfiguration.showsQuickActions && ![[MySiteSettings alloc] isAssignedToExperiment]) {
         [marr addObject:[self quickActionsSectionViewModel]];
     }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
