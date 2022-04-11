@@ -41,12 +41,14 @@ struct SiteIntentData {
 
     // Filters verticals based on search term and prepends a custom vertical if there were no exact matches
     static func filterVerticals(with term: String) -> [SiteIntentVertical] {
-        guard !term.isEmpty else {
+        let trimmedTerm = term.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedTerm.isEmpty else {
             return allVerticals
         }
 
-        let matchedVerticals = allVerticals.filter { $0.localizedTitle.lowercased().contains(term.lowercased()) }
-        let customVertical = customVertical(from: matchedVerticals, term: term)
+        let matchedVerticals = allVerticals.filter { $0.localizedTitle.lowercased().contains(trimmedTerm.lowercased()) }
+        let customVertical = customVertical(from: matchedVerticals, term: trimmedTerm)
 
         return ([customVertical] + matchedVerticals).compactMap { $0 }
     }
