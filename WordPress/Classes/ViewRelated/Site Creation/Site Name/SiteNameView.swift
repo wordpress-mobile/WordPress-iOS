@@ -142,9 +142,12 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        let fullTitle = String(format: TextContent.title, siteName)
+        if !siteVerticalName.isEmpty {
+            siteVerticalName = " " + siteVerticalName
+        }
+        let fullTitle = String(format: TextContent.title, siteVerticalName)
         let attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: siteName) else {
+        guard let range = fullTitle.nsRange(of: siteVerticalName) else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
@@ -239,7 +242,7 @@ private extension SiteNameView {
 private extension SiteNameView {
 
     enum TextContent {
-        static let title = NSLocalizedString("Give your %@ website a name",
+        static let title = NSLocalizedString("Give your%@ website a name",
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
