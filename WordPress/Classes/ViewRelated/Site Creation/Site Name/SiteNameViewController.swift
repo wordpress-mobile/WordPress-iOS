@@ -19,7 +19,6 @@ class SiteNameViewController: UIViewController {
 
     override func loadView() {
         view = siteNameViewFactory()
-        removeNavigationBarBorder()
         setTitleForTraitCollection()
         configureNavigationBar()
 
@@ -36,10 +35,12 @@ class SiteNameViewController: UIViewController {
     }
 }
 
-// MARK: Stip button
+// MARK: Navigation Bar
 private extension SiteNameViewController {
 
-    private func configureNavigationBar() {
+    func configureNavigationBar() {
+        removeNavigationBarBorder()
+        // Add skip button
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: TextContent.skipButtonTitle,
                                                             style: .done,
                                                             target: self,
@@ -50,14 +51,9 @@ private extension SiteNameViewController {
     private func skipButtonTapped() {
         onSkip()
     }
-}
-
-// MARK: Convenience methods and properties
-private extension SiteNameViewController {
 
     /// Removes the separator line at the bottom of the navigation bar
     func removeNavigationBarBorder() {
-
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.backgroundColor = .basicBackground
         navBarAppearance.shadowColor = .clear
@@ -67,8 +63,12 @@ private extension SiteNameViewController {
         navigationItem.compactAppearance = navBarAppearance
         setNeedsStatusBarAppearanceUpdate()
     }
+}
 
-    // hides or show title depending on the vertical size class ands accessibility category
+// MARK: Title
+private extension SiteNameViewController {
+
+    // hides or shows the title depending on the vertical size class ands accessibility category
     func setTitleForTraitCollection() {
         title = (traitCollection.verticalSizeClass == .compact ||
                  traitCollection.preferredContentSizeCategory.isAccessibilityCategory) ?
