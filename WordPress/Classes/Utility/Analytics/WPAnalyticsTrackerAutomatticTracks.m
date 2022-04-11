@@ -79,17 +79,37 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 }
 
 - (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
-    if (properties == nil) {
-        DDLogInfo(@"🔵 Tracked: %@", event);
-    } else {
-        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+
+        /// If the Dashboard is enabled, we add this property for all events
+        /// about what is the default tab assigned
+        /// This value can be: `site_menu`, `dashboard` or `nonexistent`
+        NSMutableDictionary *propertiesWithTabExperiment = properties != nil ? properties.mutableCopy : @{}.mutableCopy;
+        propertiesWithTabExperiment[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
+
+        NSArray<NSString *> *propertyKeys = [[propertiesWithTabExperiment allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, propertiesWithTabExperiment[key]];
         }] componentsJoinedByString:@", "];
         DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
-    }
 
-    [self.tracksService trackEventName:event withCustomProperties:properties];
+        [self.tracksService trackEventName:event withCustomProperties:propertiesWithTabExperiment];
+
+    } else {
+
+        if (properties == nil) {
+            DDLogInfo(@"🔵 Tracked: %@", event);
+        } else {
+            NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+            NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
+                return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
+            }] componentsJoinedByString:@", "];
+            DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
+        }
+
+        [self.tracksService trackEventName:event withCustomProperties:properties];
+
+    }
 }
 
 - (void)beginSession
@@ -162,13 +182,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
     userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
-
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-        /// If the Dashboard is enabled, we add this property for all events
-        /// about what is the default tab assigned
-        /// This value can be: `site_menu`, `dashboard` or `nonexistent`
-        userProperties[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
-    }
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
