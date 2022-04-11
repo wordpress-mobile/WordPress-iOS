@@ -1,5 +1,17 @@
 import UIKit
 
+final class DashboardDraftPostsCardCell: DashboardPostsListCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .draftPosts)
+    }
+}
+
+final class DashboardScheduledPostsCardCell: DashboardPostsListCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .scheduledPosts)
+    }
+}
+
 class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Views
@@ -104,7 +116,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
 // MARK: BlogDashboardCardConfigurable
 
-extension DashboardPostsListCardCell: BlogDashboardCardConfigurable {
+extension DashboardPostsListCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         self.blog = blog
         self.viewController = viewController

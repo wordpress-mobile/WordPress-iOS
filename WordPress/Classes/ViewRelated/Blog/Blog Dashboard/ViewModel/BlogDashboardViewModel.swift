@@ -50,7 +50,7 @@ class BlogDashboardViewModel {
                 let cellType = cardModel.cardType.cell
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
                 if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
-                    cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse, cardType: cardModel.cardType)
+                    cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse)
                 }
                 return cell
             }
