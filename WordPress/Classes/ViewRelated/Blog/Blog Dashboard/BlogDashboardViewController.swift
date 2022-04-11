@@ -100,9 +100,9 @@ final class BlogDashboardViewController: UIViewController {
 
         self.blog = blog
         viewModel.blog = blog
+        BlogDashboardAnalytics.shared.reset()
         viewModel.loadCardsFromCache()
         viewModel.loadCards()
-        BlogDashboardAnalytics.shared.reset()
     }
 
     @objc func refreshControlPulled() {
