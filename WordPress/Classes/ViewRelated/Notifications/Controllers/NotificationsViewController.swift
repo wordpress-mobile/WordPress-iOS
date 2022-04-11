@@ -427,43 +427,22 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return nil
         }
 
-        var actions: [UIContextualAction] = []
-
-        // Trash comment
-        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()),
-            let command = trashAction.command,
-            let title = command.actionTitle {
-            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
-                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
-                    guard let request = request else {
-                        return
-                    }
-                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
-                })
-                trashAction.execute(context: actionContext)
-                completionHandler(true)
-            })
-            action.backgroundColor = command.actionColor
-            actions.append(action)
-        }
-
         // Approve comment
-        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
+        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled,
+              approveEnabled == true,
+              let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()),
+              let actionTitle = approveAction.command?.actionTitle else {
             return nil
         }
 
-        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        if let title = approveAction?.command?.actionTitle {
-            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
-                let actionContext = ActionContext(block: block)
-                approveAction?.execute(context: actionContext)
-                completionHandler(true)
-            })
-            action.backgroundColor = approveAction?.command?.actionColor
-            actions.append(action)
-        }
+        let action = UIContextualAction(style: .normal, title: actionTitle, handler: { (_, _, completionHandler) in
+            let actionContext = ActionContext(block: block)
+            approveAction.execute(context: actionContext)
+            completionHandler(true)
+        })
+        action.backgroundColor = approveAction.command?.actionColor
 
-        let configuration = UISwipeActionsConfiguration(actions: actions)
+        let configuration = UISwipeActionsConfiguration(actions: [action])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
