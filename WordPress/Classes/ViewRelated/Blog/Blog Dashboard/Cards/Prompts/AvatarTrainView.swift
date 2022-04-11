@@ -1,6 +1,6 @@
 import UIKit
 
-/// A view that shows a train of faces.
+/// A view that shows a train of circular avatar images.
 ///
 final class AvatarTrainView: UIView {
 
@@ -12,7 +12,7 @@ final class AvatarTrainView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = Constants.spacing
+        stackView.spacing = Constants.imageViewSpacing
 
         return stackView
     }()
@@ -81,7 +81,7 @@ private extension AvatarTrainView {
     // MARK: Constants
 
     struct Constants {
-        static let spacing: CGFloat = -4
+        static let imageViewSpacing: CGFloat = -4
         static let avatarDiameter: CGFloat = 20
         static let borderWidth: CGFloat = 2
         static let placeholderImage: UIImage = .gravatarPlaceholderImage
