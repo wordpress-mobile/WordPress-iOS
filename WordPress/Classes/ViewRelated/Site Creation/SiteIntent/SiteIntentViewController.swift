@@ -4,12 +4,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let tableView: UITableView
 
-    private var selectedVertical: SiteIntentVertical? {
-        didSet {
-            itemSelectionChanged(selectedVertical != nil)
-        }
-    }
-
     private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
         didSet {
             contentSizeWillChange()
@@ -195,21 +189,13 @@ extension SiteIntentViewController: UISearchBarDelegate {
             return
         }
 
-        availableVerticals = SiteIntentData.getVerticals()
+        availableVerticals = SiteIntentData.allVerticals
         tableView.reloadData()
         tableView.scrollToView(searchBar.searchTextField, animated: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
-        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmedSearch.isEmpty {
-            SiteIntentData.clearCustomVerticals()
-        } else {
-            SiteIntentData.insertCustomVertical(trimmedSearch)
-        }
-
-        availableVerticals = SiteIntentData.getVerticals(trimmedSearch)
+        availableVerticals = SiteIntentData.filterVerticals(with: searchText)
         tableView.reloadData()
     }
 }
