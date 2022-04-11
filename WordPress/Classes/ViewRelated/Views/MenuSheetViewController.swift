@@ -17,6 +17,18 @@ class MenuSheetViewController: UITableViewController {
         let title: String
         let image: UIImage?
         let handler: () -> Void
+        let destructive: Bool
+
+        init(title: String, image: UIImage? = nil, destructive: Bool = false, handler: @escaping () -> Void) {
+            self.title = title
+            self.image = image
+            self.handler = handler
+            self.destructive = destructive
+        }
+
+        var foregroundColor: UIColor {
+            return destructive ? .error : .text
+        }
     }
 
     private let itemSource: [[MenuItem]]
@@ -96,8 +108,10 @@ extension MenuSheetViewController {
               }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
-        cell.tintColor = .text
+        cell.tintColor = item.foregroundColor
+        cell.textLabel?.textColor = item.foregroundColor
         cell.textLabel?.setText(item.title)
+        cell.textLabel?.numberOfLines = 0
         cell.accessoryView = UIImageView(image: item.image?.withTintColor(.text))
 
         return cell
@@ -131,6 +145,7 @@ private extension MenuSheetViewController {
     func configureTable() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.sectionHeaderHeight = 0
+        tableView.bounces = false
 
         // draw the separators from edge to edge.
         tableView.separatorInset = .zero

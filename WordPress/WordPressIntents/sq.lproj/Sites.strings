@@ -2,5 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>BOl9KQ</key>
+    <string>Ka ${count} mundësi me përputhje me ‘${site}’.</string>
+    <key>ILcGmf</key>
+    <string>Sajt</string>
+    <key>cyajMn</key>
+    <string>Sajt</string>
+    <key>gpCwrM</key>
+    <string>Përzgjidhni Sajt</string>
+    <key>s4dJhx</key>
+    <string>Sa për ripohim, donit ‘${site}’?</string>
+    <key>tVvJ9c</key>
+    <string>Përzgjidhni Synim Sajti</string>
+  </dict>
 </plist>

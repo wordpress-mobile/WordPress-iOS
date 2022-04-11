@@ -20,10 +20,9 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     }
 
     func siteIntentViewControllerMaker() throws -> SiteIntentViewController {
-        let mockABTestForTreatment = SiteCreationIntentTests.SiteIntentABMock(variant: treatmentVariant)
         let mockSiteCreator = SiteCreator()
-        let siteIntentStep = SiteIntentStep(siteIntentAB: mockABTestForTreatment, creator: mockSiteCreator)
-        let siteIntentViewController = try XCTUnwrap(siteIntentStep?.content as? SiteIntentViewController)
+        let siteIntentStep = SiteIntentStep(creator: mockSiteCreator)
+        let siteIntentViewController = try XCTUnwrap(siteIntentStep.content as? SiteIntentViewController)
         return siteIntentViewController
     }
 
@@ -35,42 +34,6 @@ class SiteCreationIntentTracksEventTests: XCTestCase {
     func tap(_ barButtonItem: UIBarButtonItem?) throws {
         let action = try XCTUnwrap(barButtonItem?.action)
         UIApplication.shared.sendAction(action, to: barButtonItem?.target, from: nil, for: nil)
-    }
-
-    func testSiteIntentTracksEventFiresForTreatmentGroup() throws {
-
-        // Given
-        let mockABTestForTreatment = SiteCreationIntentTests.SiteIntentABMock(variant: treatmentVariant)
-        let mockSiteCreator = SiteCreator()
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
-        let expectedProperty = treatmentVariant.tracksProperty
-
-        // When
-        let _ = SiteIntentStep(siteIntentAB: mockABTestForTreatment, creator: mockSiteCreator)
-
-        // Then
-        let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)
-        XCTAssertEqual(firstTracked.event, expectedEvent)
-        let variation = try XCTUnwrap(firstTracked.properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
-    }
-
-    func testSiteIntentTracksEventFiresForControlGroup() throws {
-
-        // Given
-        let mockABTestForControl = SiteCreationIntentTests.SiteIntentABMock(variant: controlVariant)
-        let mockSiteCreator = SiteCreator()
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationIntentQuestionExperiment.value
-        let expectedProperty = controlVariant.tracksProperty
-
-        // When
-        let _ = SiteIntentStep(siteIntentAB: mockABTestForControl, creator: mockSiteCreator)
-
-        // Then
-        let firstTracked = try XCTUnwrap(TestAnalyticsTracker.tracked.first)
-        XCTAssertEqual(firstTracked.event, expectedEvent)
-        let variation = try XCTUnwrap(firstTracked.properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
     }
 
     func testSiteIntentTracksEventFiresWhenViewed() throws {

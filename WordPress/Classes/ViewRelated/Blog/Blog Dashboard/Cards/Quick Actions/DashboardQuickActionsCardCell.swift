@@ -127,6 +127,11 @@ extension DashboardQuickActionsCardCell {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            scrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
+            stackView.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
     }
 }
 
