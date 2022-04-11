@@ -30,6 +30,10 @@ class BlogDashboardViewModel {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
 
+    var currentPostsInfo: BlogDashboardPostsInfo? {
+        service.postsInfo
+    }
+
     private lazy var dataSource: DashboardDataSource? = {
         guard let viewController = viewController else {
             return nil

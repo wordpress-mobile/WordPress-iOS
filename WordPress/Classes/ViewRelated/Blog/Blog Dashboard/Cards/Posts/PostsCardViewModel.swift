@@ -11,6 +11,7 @@ protocol PostsCardView: AnyObject {
     func showNextPostPrompt()
     func hideNextPrompt()
     func firstPostPublished()
+    func updatePostsInfo(hasPosts: Bool)
 }
 
 /// Responsible for populating a table view with posts
@@ -69,7 +70,7 @@ class PostsCardViewModel: NSObject {
         do {
             try fetchedResultsController.performFetch()
             viewController?.tableView.reloadData()
-            showNextPostPromptIfNeeded()
+            updatePostsInfoIfNeeded()
         } catch {
             print("Fetch failed")
         }
@@ -191,7 +192,8 @@ private extension PostsCardViewModel {
             for: blog,
             success: { [weak self] posts in
                 if posts?.count == 0 {
-                    self?.showNextPostPrompt()
+                    self?.updatePostsInfoIfNeeded()
+                    self?.viewController?.hideLoading()
                 }
 
                 self?.hideLoading()
@@ -200,7 +202,7 @@ private extension PostsCardViewModel {
                 self?.syncing = nil
 
                 if self?.numberOfPosts == 0 {
-                    self?.showNextPostPromptIfNeeded()
+                    self?.updatePostsInfoIfNeeded()
                     self?.showLoadingFailureError()
                 }
         })
@@ -229,11 +231,6 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showNextPostPrompt() {
-        showNextPostPromptIfNeeded()
-        viewController?.hideLoading()
-    }
-
     func showLoadingFailureError() {
         viewController?.showError(message: Strings.loadingFailure, retry: true)
         viewController?.hideLoading()
@@ -250,12 +247,9 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showNextPostPromptIfNeeded() {
-        if let postsCount = fetchedResultsController?.fetchedObjects?.count,
-           postsCount == 0, !isSyncing() {
-            viewController?.showNextPostPrompt()
-        } else {
-            viewController?.hideNextPrompt()
+    func updatePostsInfoIfNeeded() {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
+            viewController?.updatePostsInfo(hasPosts: false)
         }
     }
 
@@ -308,7 +302,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         dataSource.apply(snapshot as Snapshot,
                          animatingDifferences: shouldAnimate,
                          completion: { [weak self] in
-            self?.showNextPostPromptIfNeeded()
+            self?.updatePostsInfoIfNeeded() // TODO: Move this outside completion
             self?.checkIfPostIsPublished()
         })
     }

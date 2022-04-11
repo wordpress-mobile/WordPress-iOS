@@ -11,6 +11,9 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
     var presentedPostStatus: String?
+    var currentPostsInfo: BlogDashboardPostsInfo? {
+        viewModel.currentPostsInfo
+    }
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
@@ -77,6 +80,10 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         stopAlertTimer()
+    }
+
+    func reloadCardsLocally() {
+        viewModel.loadCardsFromCache()
     }
 
     /// If you want to give any feedback when the dashboard

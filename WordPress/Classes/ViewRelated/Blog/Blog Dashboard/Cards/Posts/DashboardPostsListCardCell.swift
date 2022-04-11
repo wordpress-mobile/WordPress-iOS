@@ -217,10 +217,20 @@ extension DashboardPostsListCardCell: PostsCardView {
     }
 
     func firstPostPublished() {
-        // TODO: Should be removed from protocol
+        // TODO: This might not be needed
+        viewController?.currentPostsInfo?.hasPublished = true
+        viewController?.reloadCardsLocally()
     }
 
-
+    func updatePostsInfo(hasPosts: Bool) {
+        if status == .draft {
+            viewController?.currentPostsInfo?.hasDrafts = hasPosts
+        }
+        if status == .scheduled {
+            viewController?.currentPostsInfo?.hasScheduled = hasPosts
+        }
+        viewController?.reloadCardsLocally()
+    }
 }
 
 extension BlogDashboardViewController: EditorAnalyticsProperties {

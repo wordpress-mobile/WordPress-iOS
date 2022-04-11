@@ -42,7 +42,7 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
+    func shouldShow(for blog: Blog, postsInfo: BlogDashboardPostsInfo? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
         switch self {
         case .quickStart:
             return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
@@ -55,7 +55,7 @@ enum DashboardCard: String, CaseIterable {
         case .createPost:
             fallthrough
         case .todaysStats:
-            return self.shouldShowRemoteCard(apiResponse: apiResponse)
+            return self.shouldShowRemoteCard(postsInfo: postsInfo)
         case .prompts:
             return FeatureFlag.bloggingPrompts.enabled
         case .ghost:
@@ -65,19 +65,19 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
-        guard let apiResponse = apiResponse else {
+    private func shouldShowRemoteCard(postsInfo: BlogDashboardPostsInfo?) -> Bool {
+        guard let postsInfo = postsInfo else {
             return false
         }
         switch self {
         case .draftPosts:
-            return apiResponse.hasDrafts
+            return postsInfo.hasDrafts
         case .scheduledPosts:
-            return apiResponse.hasScheduled
+            return postsInfo.hasScheduled
         case .nextPost:
-            return apiResponse.hasNoDraftsOrScheduled && apiResponse.hasPublished
+            return postsInfo.hasNoDraftsOrScheduled && postsInfo.hasPublished
         case .createPost:
-            return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
+            return postsInfo.hasNoDraftsOrScheduled && !postsInfo.hasPublished
         case .todaysStats:
             return true
         default:
@@ -90,23 +90,5 @@ enum DashboardCard: String, CaseIterable {
     enum RemoteDashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
-    }
-}
-
-private extension BlogDashboardRemoteEntity {
-    var hasDrafts: Bool {
-        return (self.posts?.draft?.count ?? 0) > 0
-    }
-
-    var hasScheduled: Bool {
-        return (self.posts?.scheduled?.count ?? 0) > 0
-    }
-
-    var hasNoDraftsOrScheduled: Bool {
-        return !hasDrafts && !hasScheduled
-    }
-
-    var hasPublished: Bool {
-        return self.posts?.hasPublished ?? true
     }
 }
