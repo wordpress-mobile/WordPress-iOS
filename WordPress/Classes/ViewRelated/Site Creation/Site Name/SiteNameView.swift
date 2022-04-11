@@ -142,7 +142,9 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        let selectedVerticalName = "*" + siteVerticalName + "*"
+        // enclose the vertical name between two characters that are not in the title
+        // (and reasonably never will..) to distinguish it from any substring in the title
+        let selectedVerticalName = "😎" + siteVerticalName + "🙃"
         let fullTitle = String(format: TextContent.title, selectedVerticalName)
         var attributedTitle = NSMutableAttributedString(string: fullTitle)
         guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
