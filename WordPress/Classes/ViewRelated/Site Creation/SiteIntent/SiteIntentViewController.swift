@@ -138,7 +138,7 @@ extension SiteIntentViewController {
                                                        comment: "Continue without making a selection")
         static let cancelButtonTitle = NSLocalizedString("Cancel",
                                                          comment: "Cancel site creation")
-        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
+        static let searchTextFieldPlaceholder = NSLocalizedString("E.g. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title of the continue button for the Site Intent screen.")
     }
 
