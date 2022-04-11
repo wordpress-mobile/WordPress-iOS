@@ -170,14 +170,25 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var answeredStateView: UIView = {
         let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
         stackView.spacing = Constants.answeredButtonsSpacing
+        stackView.addArrangedSubviews([answeredLabel, shareButton])
 
-        // added some spacer views to make the label and button look more centered together.
-        stackView.addArrangedSubviews([UIView(), answeredLabel, shareButton, UIView()])
+        // center the stack view's contents based on its total intrinsic width (instead of having it stretched edge to edge).
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(stackView)
 
-        return stackView
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            containerView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            containerView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor),
+            containerView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor)
+        ])
+
+        return containerView
     }()
 
     // Defines the structure of the contextual menu items.
