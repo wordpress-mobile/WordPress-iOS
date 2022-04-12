@@ -243,6 +243,9 @@ class PostCoordinator: NSObject {
             if uploadedPost.isScheduled() {
                 self?.notifyNewPostScheduled()
             }
+            else if uploadedPost.isPublished() {
+                self?.notifyNewPostPublished()
+            }
 
             SearchManager.shared.indexItem(uploadedPost)
 

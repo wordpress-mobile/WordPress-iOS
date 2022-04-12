@@ -108,6 +108,7 @@ private extension BlogDashboardViewModel {
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
@@ -144,8 +145,11 @@ private extension BlogDashboardViewModel {
     // In case a draft is saved and the drafts card
     // is not appearing, we show it.
     @objc func showDraftsCardIfNeeded() {
-        currentPostsInfo?.hasDrafts = true
-        if !currentCards.contains(where: { $0.cardType == .draftPosts }) {
+        guard let currentPostsInfo = currentPostsInfo else {
+            return
+        }
+        if currentPostsInfo.hasDrafts == false {
+            currentPostsInfo.hasDrafts = true
             loadCardsFromCache()
         }
     }
@@ -153,8 +157,23 @@ private extension BlogDashboardViewModel {
     // In case a post is scheduled and the scheduled card
     // is not appearing, we show it.
     @objc func showScheduledCardIfNeeded() {
-        currentPostsInfo?.hasScheduled = true
-        if !currentCards.contains(where: { $0.cardType == .scheduledPosts }) {
+        guard let currentPostsInfo = currentPostsInfo else {
+            return
+        }
+        if currentPostsInfo.hasScheduled == false {
+            currentPostsInfo.hasScheduled = true
+            loadCardsFromCache()
+        }
+    }
+
+    // In case a post is published and create_first card
+    // is showing, we replace it with the create_next card.
+    @objc func showNextPostCardIfNeeded() {
+        guard let currentPostsInfo = currentPostsInfo else {
+            return
+        }
+        if currentPostsInfo.hasPublished == false {
+            currentPostsInfo.hasPublished = true
             loadCardsFromCache()
         }
     }
