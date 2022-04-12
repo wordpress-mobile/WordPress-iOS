@@ -1016,7 +1016,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"my_site_tab_accessed";
             break;
         case WPAnalyticsStatNotificationsCommentApproved:
-            eventName = @"notifications_approved";
+            eventName = @"notifications_comment_approved";
             break;
         case WPAnalyticsStatNotificationsCommentFlaggedAsSpam:
             eventName = @"notifications_flagged_as_spam";
