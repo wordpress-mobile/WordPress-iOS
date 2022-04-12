@@ -136,66 +136,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var trophy: UIView = {
-        let trophy = UIImageView(image: .gridicon(.trophy, size: Metrics.tipsTrophyImageSize))
-        trophy.translatesAutoresizingMaskIntoConstraints = false
-        trophy.tintColor = .secondaryLabel
-        return trophy
-    }()
-
-    private lazy var tipLabel: UILabel = {
-        let tipLabel = UILabel()
-        tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.adjustsFontForContentSizeCategory = true
-        tipLabel.textColor = .secondaryLabel
-        tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
-        tipLabel.text = TextContent.tipPanelTitle
-        return tipLabel
-    }()
-
-    private lazy var tipDescriptionLabel: UILabel = {
-        let tipDescriptionLabel = UILabel()
-        tipDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipDescriptionLabel.adjustsFontForContentSizeCategory = true
-        tipDescriptionLabel.textColor = .secondaryLabel
-        tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        tipDescriptionLabel.text = TextContent.tipPanelDescription
-        tipDescriptionLabel.numberOfLines = 0
-        return tipDescriptionLabel
-    }()
-
-    private lazy var bottomTipPanel: UIView = {
-        let view = UIView()
-        view.backgroundColor = .quaternaryBackground
-        view.layer.cornerRadius = Metrics.tipPanelCornerRadius
-        view.addSubview(tipStackView)
-
-        return view
-    }()
-
-    private lazy var tipStackView: UIStackView = {
-        let tipStackView = UIStackView(arrangedSubviews: [trophy, tipLabelsStackView])
-        tipStackView.spacing = Metrics.tipPanelHorizontalStackSpacing
-        tipStackView.translatesAutoresizingMaskIntoConstraints = false
-        tipStackView.axis = .horizontal
-        tipStackView.alignment = .top
-        return tipStackView
-    }()
-
-    private lazy var tipLabelsStackView: UIStackView = {
-        let tipLabelsStackView = UIStackView(arrangedSubviews: [tipLabel, tipDescriptionLabel])
-        tipLabelsStackView.translatesAutoresizingMaskIntoConstraints = false
-        tipLabelsStackView.axis = .vertical
-        tipLabelsStackView.alignment = .leading
-        tipLabelsStackView.addArrangedSubviews([tipLabel, tipDescriptionLabel])
-        return tipLabelsStackView
-    }()
-
-    private lazy var timeSelectionToTipSpacer: UIView = {
-        makeSpacer()
-    }()
-
-    private lazy var tipToConfirmationButtonSpacer: UIView = {
+    private lazy var timeSelectionToConfirmationButtonSpacer: UIView = {
         makeSpacer()
     }()
 
@@ -305,7 +246,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
         imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
     }
 
@@ -415,16 +355,15 @@ private extension BloggingRemindersFlowSettingsViewController {
         return view
     }
 
-    /// Determines if the calendar image and the tip should be displayed, depending on the screen vertical size
+    /// Determines if the calendar image should be displayed, depending on the screen vertical size
     var shouldShowFullUI: Bool {
         (WPDeviceIdentification.isiPhone() && UIScreen.main.bounds.height >= Metrics.minimumHeightForFullUI) ||
             (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait)
     }
 
-    /// Hides/shows the optional UI Elements (dismiss button, calendar icon, tip)
+    /// Hides/shows the optional UI Elements (dismiss button & calendar icon)
     /// - Parameter isVisible: true if we need to show the elements (Full UI), false otherwise
     func showFullUI(_ isVisible: Bool) {
-        bottomTipPanel.isHidden = !isVisible
         imageView.isHidden = !isVisible
     }
 
@@ -480,9 +419,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             daysOuterStackView,
             frequencyView,
             timeSelectionView,
-            timeSelectionToTipSpacer,
-            bottomTipPanel,
-            tipToConfirmationButtonSpacer,
+            timeSelectionToConfirmationButtonSpacer,
             button,
             confirmationButtonBottomSpacer
         ])
@@ -494,11 +431,9 @@ private extension BloggingRemindersFlowSettingsViewController {
     func configureConstraints() {
         frequencyView.pinSubviewToAllEdges(frequencyLabel)
         timeSelectionView.pinSubviewToAllEdges(timeSelectionStackView)
-        bottomTipPanel.pinSubviewToAllEdges(tipStackView, insets: Metrics.tipPanelMargins)
 
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        tipDescriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         timeSelectionView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
@@ -512,17 +447,14 @@ private extension BloggingRemindersFlowSettingsViewController {
 
             button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
-            tipLabel.heightAnchor.constraint(equalTo: trophy.heightAnchor),
-            timeSelectionToTipSpacer.heightAnchor.constraint(equalTo: tipToConfirmationButtonSpacer.heightAnchor),
-            timeSelectionToTipSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            tipToConfirmationButtonSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            timeSelectionToConfirmationButtonSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
+            timeSelectionToConfirmationButtonSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
     }
 
@@ -613,10 +545,6 @@ private enum TextContent {
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
-
-    static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
-
-    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
@@ -625,23 +553,17 @@ private enum Images {
 
 private enum Metrics {
     static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 56, right: 20)
-    static let tipPanelMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
 
     static let stackSpacing: CGFloat = 24.0
     static let innerStackSpacing: CGFloat = 8.0
     static let afterTitleLabelSpacing: CGFloat = 16.0
     static let afterPromptLabelSpacing: CGFloat = 40.0
-    static let tipPanelHorizontalStackSpacing: CGFloat = 12.0
-    static let tipPanelVerticalStackSpacing: CGFloat = 8.0
 
     static let buttonHeight: CGFloat = 44.0
-    static let tipPanelCornerRadius: CGFloat = 12.0
-    static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
-    static let tipDescriptionHeight: CGFloat = 34.0
     static let frequencyLabelHeight: CGFloat = 30
 
     static let topRowDayCount = 4
 
-    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon and tip.
+    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon.
     static let minimumHeightForFullUI: CGFloat = 812
 }
