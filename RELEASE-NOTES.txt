@@ -1,7 +1,7 @@
 19.7
 -----
 * [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
-
+* [*] Notifications list: remove comment Trash swipe action. [#18349]
 
 19.6
 -----
