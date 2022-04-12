@@ -1512,8 +1512,6 @@
 		8BD34F0C27D14B3C005E931C /* Blog+DashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD34F0A27D14B3C005E931C /* Blog+DashboardState.swift */; };
 		8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */; };
 		8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */; };
-		8BD66ED1278745EC00CCD95A /* PostsCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */; };
-		8BD66ED2278745EC00CCD95A /* PostsCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */; };
 		8BD66ED42787530C00CCD95A /* PostsCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */; };
 		8BD66ED52787530C00CCD95A /* PostsCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */; };
 		8BD6E34A2477514E009AE97C /* TestContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD6E3492477514E009AE97C /* TestContextManager.m */; };
@@ -6245,7 +6243,6 @@
 		8BD34F0A27D14B3C005E931C /* Blog+DashboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+DashboardState.swift"; sourceTree = "<group>"; };
 		8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+Description.swift"; sourceTree = "<group>"; };
 		8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+DescriptionTests.swift"; sourceTree = "<group>"; };
-		8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCardViewController.swift; sourceTree = "<group>"; };
 		8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCardViewModel.swift; sourceTree = "<group>"; };
 		8BD6E3492477514E009AE97C /* TestContextManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestContextManager.m; sourceTree = "<group>"; };
 		8BD6E34B24775164009AE97C /* TestContextManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestContextManager.h; sourceTree = "<group>"; };
@@ -11522,7 +11519,6 @@
 			isa = PBXGroup;
 			children = (
 				8BE6F92827EE26AF0008BDC7 /* Views */,
-				8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */,
 				8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */,
 				8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */,
 				8B065CC527BD5452005BA7AB /* DashboardEmptyPostsCardCell.swift */,
@@ -17533,7 +17529,6 @@
 				F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */,
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
-				8BD66ED1278745EC00CCD95A /* PostsCardViewController.swift in Sources */,
 				FEFC0F892731182C001F7F1D /* CommentService+Replies.swift in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				C81CCD63243AECA100A83E27 /* TenorClient.swift in Sources */,
@@ -20723,7 +20718,6 @@
 				FABB24012602FC2C00C8785C /* LikesListController.swift in Sources */,
 				FABB24022602FC2C00C8785C /* AccountSettingsService.swift in Sources */,
 				FABB24032602FC2C00C8785C /* ReaderCSS.swift in Sources */,
-				8BD66ED2278745EC00CCD95A /* PostsCardViewController.swift in Sources */,
 				FABB24042602FC2C00C8785C /* SafariActivity.m in Sources */,
 				FABB24052602FC2C00C8785C /* WordPress-37-38.xcmappingmodel in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
