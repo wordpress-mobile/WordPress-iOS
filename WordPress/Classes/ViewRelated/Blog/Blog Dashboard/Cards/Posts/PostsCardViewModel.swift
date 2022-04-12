@@ -8,6 +8,7 @@ protocol PostsCardView: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(message: String, retry: Bool)
+    func hideError()
     func showNextPostPrompt()
     func hideNextPrompt()
     func firstPostPublished()
@@ -181,7 +182,8 @@ private extension PostsCardViewModel {
         syncing = (blog.dotComID, status)
 
         // If the userID is nil we need to sync authors
-        if blog.userID == nil {
+        // But only if the user is an admin
+        if blog.userID == nil && blog.isAdmin {
             syncAuthors()
             return
         }
@@ -299,6 +301,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         snapshot.reloadItems(reloadIdentifiers)
 
         let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
+        dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot as Snapshot,
                          animatingDifferences: shouldAnimate,
                          completion: { [weak self] in
@@ -313,6 +316,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
                 fatalError("Cell is not a PostCompactCell")
         }
 
+        viewController?.hideError()
         configurablePostView.configureForDashboard(with: post)
     }
 }

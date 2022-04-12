@@ -1,12 +1,16 @@
-//
-//  DashboardPostsListCardCell.swift
-//  WordPress
-//
-//  Created by Hassaan El-Garem on 11/04/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import UIKit
+
+final class DashboardDraftPostsCardCell: DashboardPostsListCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .draftPosts)
+    }
+}
+
+final class DashboardScheduledPostsCardCell: DashboardPostsListCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .scheduledPosts)
+    }
+}
 
 class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
@@ -112,7 +116,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
 // MARK: BlogDashboardCardConfigurable
 
-extension DashboardPostsListCardCell: BlogDashboardCardConfigurable {
+extension DashboardPostsListCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         self.blog = blog
         self.viewController = viewController
@@ -186,7 +190,7 @@ extension DashboardPostsListCardCell: PostsCardView {
             return
         }
 
-        errorView?.removeFromSuperview()
+        hideError()
         removeGhostableTableView()
 
         if errorView == nil {
@@ -206,6 +210,10 @@ extension DashboardPostsListCardCell: PostsCardView {
         _ = tableView.intrinsicContentSize
 
         WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+    }
+
+    func hideError() {
+        errorView?.removeFromSuperview()
     }
 
     func showNextPostPrompt() {

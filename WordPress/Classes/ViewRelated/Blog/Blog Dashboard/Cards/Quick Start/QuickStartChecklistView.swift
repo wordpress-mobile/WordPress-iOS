@@ -109,7 +109,7 @@ extension QuickStartChecklistView {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
             titleLabel.textColor = .textSubtle
         } else {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: [:])
             titleLabel.textColor = .text
         }
 

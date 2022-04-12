@@ -4,7 +4,7 @@ import WordPressShared
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
 protocol BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard)
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?)
 }
 
 final class BlogDashboardViewController: UIViewController {
