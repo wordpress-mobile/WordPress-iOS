@@ -66,6 +66,7 @@ class BlogDashboardViewModel {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        registerNotifications()
     }
 
     /// Apply the initial configuration when the view loaded
@@ -104,6 +105,11 @@ class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
+    func registerNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
+    }
+
     func updateCurrentCards(cards: [DashboardCardModel]) {
         currentCards = cards
         let snapshot = createSnapshot(from: cards)
@@ -132,6 +138,24 @@ private extension BlogDashboardViewModel {
     func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
         if position.y > 0 {
             scrollView.setContentOffset(position, animated: false)
+        }
+    }
+
+    // In case a draft is saved and the drafts card
+    // is not appearing, we show it.
+    @objc func showDraftsCardIfNeeded() {
+        currentPostsInfo?.hasDrafts = true
+        if !currentCards.contains(where: { $0.cardType == .draftPosts }) {
+            loadCardsFromCache()
+        }
+    }
+
+    // In case a post is scheduled and the scheduled card
+    // is not appearing, we show it.
+    @objc func showScheduledCardIfNeeded() {
+        currentPostsInfo?.hasScheduled = true
+        if !currentCards.contains(where: { $0.cardType == .scheduledPosts }) {
+            loadCardsFromCache()
         }
     }
 }
