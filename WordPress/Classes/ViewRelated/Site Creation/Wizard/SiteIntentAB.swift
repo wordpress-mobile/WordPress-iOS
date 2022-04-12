@@ -1,8 +1,6 @@
-protocol SiteIntentABTestable {
-    var variant: SiteIntentAB.Variant { get }
-}
+import Foundation
 
-class SiteIntentAB: SiteIntentABTestable {
+class SiteIntentAB {
     static let shared = SiteIntentAB()
 
     enum Variant {
