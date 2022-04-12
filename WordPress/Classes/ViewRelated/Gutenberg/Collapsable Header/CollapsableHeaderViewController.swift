@@ -24,6 +24,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         return self.hasAccessoryBar ? .visible : .automatic
     }
 
+    // If set to true, the header will always be pushed down after rotating from compact to regular
+    // If set to false, this will only happen for no results views (default behavior).
+    var alwaysResetHeaderOnRotation: Bool {
+        false
+    }
+
     private let hasDefaultAction: Bool
     private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
@@ -251,13 +257,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        guard isShowingNoResults else {
-            return
-        }
+        guard isShowingNoResults || alwaysResetHeaderOnRotation else { return }
 
         coordinator.animate(alongsideTransition: nil) { (_) in
             self.updateHeaderDisplay()
-            if self.shouldHideAccessoryBar {
+            // we're keeping this only for no results,
+            // as originally intended before introducing the flag alwaysResetHeaderOnRotation
+            if self.shouldHideAccessoryBar, self.isShowingNoResults {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
             }

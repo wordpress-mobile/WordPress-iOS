@@ -5,7 +5,8 @@ import WordPressShared
 /// content view for SiteNameViewController
 class SiteNameView: UIView {
 
-    private let siteName: String
+    private var siteVerticalName: String
+    private let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -83,9 +84,13 @@ class SiteNameView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         button.setTitle(TextContent.continueButtonTitle, for: .normal)
-        // TODO: SITENAME - This button is still missing a target, development is WIP.
+        button.addTarget(self, action: #selector(navigateToNextScreen), for: .touchUpInside)
         return button
     }()
+
+    @objc private func navigateToNextScreen() {
+        onContinue(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines))
+    }
 
     private lazy var continueButtonView: UIView = {
         let view = UIView()
@@ -99,8 +104,9 @@ class SiteNameView: UIView {
         return true
     }
 
-    init(siteName: String) {
-        self.siteName = siteName
+    init(siteVerticalName: String, onContinue: @escaping (String?) -> Void) {
+        self.siteVerticalName = siteVerticalName
+        self.onContinue = onContinue
         super.init(frame: .zero)
         backgroundColor = .basicBackground
         addSubview(mainStackView)
@@ -136,12 +142,17 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        let fullTitle = String(format: TextContent.title, siteName)
-        let attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: siteName) else {
+        // enclose the vertical name between two characters that are not in the title
+        // (and reasonably never will..) to distinguish it from any substring in the title
+        let selectedVerticalName = "😎" + siteVerticalName + "🙃"
+        let fullTitle = String(format: TextContent.title, selectedVerticalName)
+        var attributedTitle = NSMutableAttributedString(string: fullTitle)
+        guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
+        let polishedFullTitle = String(format: TextContent.title, " " + siteVerticalName + " ")
+        attributedTitle = NSMutableAttributedString(string: polishedFullTitle)
         attributedTitle.addAttributes([
             .foregroundColor: UIColor.primary,
         ], range: range)
@@ -233,11 +244,11 @@ private extension SiteNameView {
 private extension SiteNameView {
 
     enum TextContent {
-        static let title = NSLocalizedString("Give your %@ website a name",
+        static let title = NSLocalizedString("Give your%@website a name",
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
-        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later",
+        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later.",
                                                 comment: "Subtitle of the Site Name screen.")
         static let continueButtonTitle = NSLocalizedString("Continue",
                                                            comment: "Title of the Continue button in the Site Name screen.")

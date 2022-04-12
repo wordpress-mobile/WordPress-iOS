@@ -667,7 +667,6 @@ EXTERNAL SOURCES:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/499658e8957e7016376bed1cce206778951bcc45/third-party-podspecs/glog.podspec.json
   Gutenberg:
     :commit: 499658e8957e7016376bed1cce206778951bcc45
@@ -749,6 +748,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/499658e8957e7016376bed1cce206778951bcc45/third-party-podspecs/RNScreens.podspec.json
   RNSVG:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/499658e8957e7016376bed1cce206778951bcc45/third-party-podspecs/RNSVG.podspec.json
+
   RNTAztecView:
     :commit: 499658e8957e7016376bed1cce206778951bcc45
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
