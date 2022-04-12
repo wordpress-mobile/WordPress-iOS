@@ -218,10 +218,16 @@ private extension PostsCardViewModel {
         }
     }
 
-    func updatePostsInfoIfNeeded() {
+    /// Updates the view's posts info if the posts count reached zero and if we are not currently syncing.
+    /// - Returns: Boolean value indicating whether an update was needed or not.
+    /// Returns true if update was needed, false otherwise.
+    @discardableResult
+    func updatePostsInfoIfNeeded() -> Bool {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
             viewController?.updatePostsInfo(hasPosts: false)
+            return true
         }
+        return false
     }
 
     func isSyncing() -> Bool {
@@ -245,6 +251,11 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
             return
         }
+
+        guard updatePostsInfoIfNeeded() == false else {
+            return // Don't update datasource if the view will be updated
+        }
+
         var snapshot = snapshot as Snapshot
         let currentSnapshot = dataSource.snapshot() as Snapshot
 
@@ -262,11 +273,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
 
         let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
         dataSource.defaultRowAnimation = .fade
-        dataSource.apply(snapshot as Snapshot,
-                         animatingDifferences: shouldAnimate,
-                         completion: { [weak self] in
-            self?.updatePostsInfoIfNeeded() // TODO: Move this outside completion
-        })
+        dataSource.apply(snapshot as Snapshot, animatingDifferences: shouldAnimate, completion: nil)
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath, with post: Post) {
