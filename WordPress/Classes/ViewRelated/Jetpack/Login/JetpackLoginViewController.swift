@@ -236,7 +236,7 @@ class JetpackLoginViewController: UIViewController {
 
         completionBlock()
     }
-    
+
     private func openJetpackRemoteInstall() {
         trackStat(.selectedInstallJetpack)
         let controller = JetpackRemoteInstallViewController(blog: blog,
