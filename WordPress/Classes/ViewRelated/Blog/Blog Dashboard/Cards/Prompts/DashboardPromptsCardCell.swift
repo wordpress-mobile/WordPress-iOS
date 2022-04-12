@@ -91,8 +91,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         trainContainerView.translatesAutoresizingMaskIntoConstraints = false
         trainContainerView.addSubview(avatarTrainView)
         NSLayoutConstraint.activate([
-            trainContainerView.topAnchor.constraint(equalTo: avatarTrainView.topAnchor),
-            trainContainerView.bottomAnchor.constraint(equalTo: avatarTrainView.bottomAnchor),
+            trainContainerView.centerYAnchor.constraint(equalTo: avatarTrainView.centerYAnchor),
+            trainContainerView.topAnchor.constraint(lessThanOrEqualTo: avatarTrainView.topAnchor),
+            trainContainerView.bottomAnchor.constraint(greaterThanOrEqualTo: avatarTrainView.bottomAnchor),
             trainContainerView.leadingAnchor.constraint(lessThanOrEqualTo: avatarTrainView.leadingAnchor),
             trainContainerView.trailingAnchor.constraint(equalTo: avatarTrainView.trailingAnchor)
         ])
