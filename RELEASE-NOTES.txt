@@ -2,6 +2,7 @@
 -----
 * [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
 * [*] Notifications list: remove comment Trash swipe action. [#18349]
+* [*] Reader: Fixed a bug that caused cut off content in reader web view [#16106]
 
 19.6
 -----
