@@ -9,9 +9,6 @@ protocol PostsCardView: AnyObject {
     func hideLoading()
     func showError(message: String, retry: Bool)
     func hideError()
-    func showNextPostPrompt()
-    func hideNextPrompt()
-    func firstPostPublished()
     func updatePostsInfo(hasPosts: Bool)
 }
 
@@ -30,8 +27,6 @@ class PostsCardViewModel: NSObject {
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
     private var status: BasePost.Status = .draft
-
-    private var shouldSync: Bool
 
     private var syncing: (NSNumber?, BasePost.Status)?
 
@@ -55,13 +50,12 @@ class PostsCardViewModel: NSObject {
         return cell
     }
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
-        self.shouldSync = shouldSync
 
         super.init()
     }
@@ -97,25 +91,6 @@ class PostsCardViewModel: NSObject {
         postListFilter.title
     }
 
-    /// Update currently displayed posts for the given blog and status
-    func update(blog: Blog, status: BasePost.Status, shouldSync: Bool) {
-        if self.blog != blog || self.status != status {
-            // If blog and/or status is different, reset the VC
-            self.blog = blog
-            self.status = status
-            self.shouldSync = shouldSync
-            self.syncing = nil
-            performInitialLoading()
-            refresh()
-        } else {
-            // If they're the same, just sync if needed
-            self.blog = blog
-            self.status = status
-            self.shouldSync = shouldSync
-            syncIfNeeded()
-        }
-
-    }
 }
 
 // MARK: - Private methods
@@ -128,7 +103,7 @@ private extension PostsCardViewModel {
     func performInitialLoading() {
         updateFilter()
         createFetchedResultsController()
-        syncIfNeeded()
+        sync()
         showLoadingIfNeeded()
     }
 
@@ -156,12 +131,6 @@ private extension PostsCardViewModel {
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return postListFilter.sortDescriptors
-    }
-
-    func syncIfNeeded() {
-        if shouldSync {
-            sync()
-        }
     }
 
     func sync() {
@@ -244,7 +213,7 @@ private extension PostsCardViewModel {
 
     func showLoadingIfNeeded() {
         // Only show loading state if there are no posts at all
-        if numberOfPosts == 0 && shouldSync {
+        if numberOfPosts == 0 {
             viewController?.showLoading()
         }
     }
@@ -252,15 +221,6 @@ private extension PostsCardViewModel {
     func updatePostsInfoIfNeeded() {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
             viewController?.updatePostsInfo(hasPosts: false)
-        }
-    }
-
-    /// If a post is published we want to let the viewController know
-    /// So the prompt can be updated
-    func checkIfPostIsPublished() {
-        if let post = fetchedResultsController.fetchedObjects?.first,
-           post.status == .publish || post.status == .publishPrivate {
-            viewController?.firstPostPublished()
         }
     }
 
@@ -306,7 +266,6 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
                          animatingDifferences: shouldAnimate,
                          completion: { [weak self] in
             self?.updatePostsInfoIfNeeded() // TODO: Move this outside completion
-            self?.checkIfPostIsPublished()
         })
     }
 

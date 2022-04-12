@@ -132,7 +132,7 @@ extension DashboardPostsListCardCell {
             assertionFailure("Cell used with wrong card type")
             return
         }
-        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self, shouldSync: true)
+        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self)
         viewModel?.viewDidLoad()
         tableView.dataSource = viewModel?.diffableDataSource
         viewModel?.refresh()
@@ -214,20 +214,6 @@ extension DashboardPostsListCardCell: PostsCardView {
 
     func hideError() {
         errorView?.removeFromSuperview()
-    }
-
-    func showNextPostPrompt() {
-        // TODO: Should be removed from protocol
-    }
-
-    func hideNextPrompt() {
-        // TODO: Should be removed from protocol
-    }
-
-    func firstPostPublished() {
-        // TODO: This might not be needed
-        viewController?.currentPostsInfo?.hasPublished = true
-        viewController?.reloadCardsLocally()
     }
 
     func updatePostsInfo(hasPosts: Bool) {
