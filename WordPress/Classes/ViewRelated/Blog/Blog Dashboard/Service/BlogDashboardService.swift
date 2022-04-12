@@ -3,6 +3,10 @@ import WordPressKit
 
 class BlogDashboardService {
 
+
+    /// Holds data on the posts displayed in dashboard cards
+    /// Used to instantly update info on posts when user executes certain actions
+    /// Gets reset whenever cards are fetched from the API
     var postsInfo: BlogDashboardPostsInfo?
 
     private let remoteService: DashboardServiceRemote

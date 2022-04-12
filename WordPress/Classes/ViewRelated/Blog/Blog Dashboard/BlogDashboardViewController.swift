@@ -11,9 +11,13 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
     var presentedPostStatus: String?
+
+    /// Holds data on the posts displayed in dashboard cards
+    /// Used to instantly update info on posts when user executes certain actions
     var currentPostsInfo: BlogDashboardPostsInfo? {
         viewModel.currentPostsInfo
     }
+
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {

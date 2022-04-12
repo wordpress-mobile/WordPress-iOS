@@ -30,6 +30,8 @@ class BlogDashboardViewModel {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
 
+    /// Holds data on the posts displayed in dashboard cards
+    /// Used to instantly update info on posts when user executes certain actions
     var currentPostsInfo: BlogDashboardPostsInfo? {
         service.postsInfo
     }
