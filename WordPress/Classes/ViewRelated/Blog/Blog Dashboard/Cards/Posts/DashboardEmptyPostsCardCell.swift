@@ -1,6 +1,20 @@
 import UIKit
 
-/// Card cell prompting  the user to create their next post
+/// Card cell prompting the user to create their first post
+final class DashboardFirstPostCardCell: DashboardEmptyPostsCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .createPost)
+    }
+}
+
+/// Card cell prompting the user to create their next post
+final class DashboardNextPostCardCell: DashboardEmptyPostsCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .nextPost)
+    }
+}
+
+/// Card cell used when no posts are available to display
 class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Views
@@ -107,7 +121,7 @@ class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
 
 // MARK: BlogDashboardCardConfigurable
 
-extension DashboardEmptyPostsCardCell: BlogDashboardCardConfigurable {
+extension DashboardEmptyPostsCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         self.blog = blog
         self.viewController = viewController
