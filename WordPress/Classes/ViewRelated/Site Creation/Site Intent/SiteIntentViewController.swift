@@ -4,12 +4,6 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection
     private let tableView: UITableView
 
-    private var selectedVertical: SiteIntentVertical? {
-        didSet {
-            itemSelectionChanged(selectedVertical != nil)
-        }
-    }
-
     private var availableVerticals: [SiteIntentVertical] = SiteIntentData.defaultVerticals {
         didSet {
             contentSizeWillChange()
@@ -126,7 +120,7 @@ extension SiteIntentViewController {
                                                  comment: "Select the site's intent. Title")
         static let navigationBarTitle = NSLocalizedString("Site Topic",
                                                           comment: "Title of the navigation bar, shown when the large title is hidden.")
-        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own",
+        static let prompt = NSLocalizedString("Choose a topic from the list below or type your own.",
                                               comment: "Select the site's intent. Subtitle")
         static let primaryAction = NSLocalizedString("Continue",
                                                      comment: "Button to progress to the next step")
@@ -136,7 +130,7 @@ extension SiteIntentViewController {
                                                        comment: "Continue without making a selection")
         static let cancelButtonTitle = NSLocalizedString("Cancel",
                                                          comment: "Cancel site creation")
-        static let searchTextFieldPlaceholder = NSLocalizedString("Eg. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
+        static let searchTextFieldPlaceholder = NSLocalizedString("E.g. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title of the continue button for the Site Intent screen.")
     }
 
@@ -193,21 +187,13 @@ extension SiteIntentViewController: UISearchBarDelegate {
             return
         }
 
-        availableVerticals = SiteIntentData.getVerticals()
+        availableVerticals = SiteIntentData.allVerticals
         tableView.reloadData()
         tableView.scrollToView(searchBar.searchTextField, animated: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
-        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmedSearch.isEmpty {
-            SiteIntentData.clearCustomVerticals()
-        } else {
-            SiteIntentData.insertCustomVertical(trimmedSearch)
-        }
-
-        availableVerticals = SiteIntentData.getVerticals(trimmedSearch)
+        availableVerticals = SiteIntentData.filterVerticals(with: searchText)
         tableView.reloadData()
     }
 }
