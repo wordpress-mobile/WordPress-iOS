@@ -29,9 +29,27 @@ class SiteNameViewController: UIViewController {
         setTitleForTraitCollection()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        SiteCreationAnalyticsHelper.trackSiteNameViewed()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.becomeFirstResponder()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent {
+            // Called when popping from a nav controller, e.g. hitting "Back"
+            viewMovingFromParent()
+        }
+    }
+
+    func viewMovingFromParent() {
+        SiteCreationAnalyticsHelper.trackSiteNameCanceled()
     }
 }
 

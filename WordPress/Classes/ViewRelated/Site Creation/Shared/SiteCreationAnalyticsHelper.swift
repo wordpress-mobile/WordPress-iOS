@@ -18,6 +18,7 @@ class SiteCreationAnalyticsHelper {
     private static let verticalSlugKey = "vertical_slug"
     private static let verticalSearchTerm = "search_term"
     private static let variation = "variation"
+    private static let siteNameKey = "site_name"
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -48,6 +49,24 @@ class SiteCreationAnalyticsHelper {
     static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
         let properties = [variation: variant.tracksProperty]
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
+    }
+
+    // MARK: - Site Name
+    static func trackSiteNameViewed() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameViewed)
+    }
+
+    static func trackSiteNameEntered(_ name: String) {
+        let properties = [siteNameKey: name]
+        WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
+    }
+
+    static func trackSiteNameSkipped() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
+    }
+
+    static func trackSiteNameCanceled() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
     }
 
     // MARK: - Site Design

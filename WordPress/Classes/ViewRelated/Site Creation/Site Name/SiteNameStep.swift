@@ -8,6 +8,7 @@ final class SiteNameStep: WizardStep {
 
     var content: UIViewController {
         SiteNameViewController(siteNameViewFactory: makeSiteNameView) { [weak self] in
+            SiteCreationAnalyticsHelper.trackSiteNameSkipped()
             self?.didSet(siteName: nil)
         }
     }
@@ -17,6 +18,10 @@ final class SiteNameStep: WizardStep {
     }
 
     private func didSet(siteName: String?) {
+        if let siteName = siteName {
+            SiteCreationAnalyticsHelper.trackSiteNameEntered(siteName)
+        }
+
         // if users go back and then skip, the failable initializer of SiteInformation
         // will reset the state, avoiding to retain the previous site name
         creator.information = SiteInformation(title: siteName, tagLine: creator.information?.tagLine)
@@ -29,7 +34,7 @@ extension SiteNameStep {
     /// Builds a the view to be used as main content
     private func makeSiteNameView() -> UIView {
         SiteNameView(siteVerticalName: creator.vertical?.localizedTitle ?? "") { [weak self] siteName in
-            self?.didSet(siteName: siteName)
+            self?.didSet(siteName: siteName?.trimmingCharacters(in: .whitespacesAndNewlines))
         }
     }
 }
