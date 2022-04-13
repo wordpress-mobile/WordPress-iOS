@@ -17,8 +17,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     // MARK: Views
 
     private var frameView: BlogDashboardCardFrameView?
-    private var ghostableTableView: UITableView?
-    private var errorView: DashboardCardInnerErrorView?
 
     lazy var tableView: UITableView = {
         let tableView = PostCardTableView()
@@ -27,6 +25,9 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         tableView.backgroundColor = nil
         let postCompactCellNib = PostCompactCell.defaultNib
         tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+        let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
+        tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+        tableView.register(DashboardPostListErrorCell.self, forCellReuseIdentifier: DashboardPostListErrorCell.defaultReuseID)
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -71,41 +72,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
         contentView.addSubview(frameView)
         contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
-    }
-
-    func configureGhostableTableView() {
-        guard ghostableTableView?.superview == nil else {
-            return
-        }
-
-        let ghostableTableView = PostCardTableView()
-
-        frameView?.addSubview(ghostableTableView)
-
-        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: ghostableTableView.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: ghostableTableView.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: ghostableTableView.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: ghostableTableView.trailingAnchor).isActive = true
-
-        ghostableTableView.isScrollEnabled = false
-        ghostableTableView.separatorStyle = .none
-
-        let postCompactCellNib = BlogDashboardPostCardGhostCell.defaultNib
-        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
-
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        ghostableTableView.removeGhostContent()
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-
-        self.ghostableTableView = ghostableTableView
-    }
-
-    func removeGhostableTableView() {
-        ghostableTableView?.removeFromSuperview()
     }
 
     func trackPostsDisplayed() {
@@ -181,40 +147,6 @@ extension DashboardPostsListCardCell: UITableViewDelegate {
 // MARK: PostsCardView
 
 extension DashboardPostsListCardCell: PostsCardView {
-    func showLoading() {
-        configureGhostableTableView()
-    }
-
-    func hideLoading() {
-        guard ghostableTableView?.superview != nil else {
-            return
-        }
-
-        hideError()
-        removeGhostableTableView()
-
-        if errorView == nil {
-            trackPostsDisplayed()
-        }
-    }
-
-    func showError(message: String, retry: Bool) {
-        let errorView = DashboardCardInnerErrorView(message: message, canRetry: retry)
-        errorView.delegate = self
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.addSubview(withFadeAnimation: errorView)
-        tableView.pinSubviewToSafeArea(errorView)
-        self.errorView = errorView
-
-        // Force the table view to recalculate its height
-        _ = tableView.intrinsicContentSize
-
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
-    }
-
-    func hideError() {
-        errorView?.removeFromSuperview()
-    }
 
     func updatePostsInfo(hasPosts: Bool) {
         if status == .draft {
@@ -239,14 +171,6 @@ extension BlogDashboardViewController: EditorAnalyticsProperties {
         }
 
         return properties
-    }
-}
-
-// MARK: - DashboardCardInnerErrorViewDelegate
-
-extension DashboardPostsListCardCell: DashboardCardInnerErrorViewDelegate {
-    func retry() {
-        viewModel?.retry()
     }
 }
 

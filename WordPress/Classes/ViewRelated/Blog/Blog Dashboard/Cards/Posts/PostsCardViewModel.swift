@@ -5,11 +5,19 @@ import UIKit
 protocol PostsCardView: AnyObject {
     var tableView: UITableView { get }
 
-    func showLoading()
-    func hideLoading()
-    func showError(message: String, retry: Bool)
-    func hideError()
     func updatePostsInfo(hasPosts: Bool)
+}
+
+enum PostsListSection {
+    case posts
+    case error
+    case loading
+}
+
+enum PostsListItem: Hashable {
+    case post(NSManagedObjectID)
+    case error
+    case ghost(Int)
 }
 
 /// Responsible for populating a table view with posts
@@ -30,24 +38,36 @@ class PostsCardViewModel: NSObject {
 
     private var syncing: (NSNumber?, BasePost.Status)?
 
+    private var currentState: PostsListSection = .loading {
+        didSet {
+            if oldValue != currentState {
+                forceReloadSnapshot()
+                trackCardDisaplyedIfNeeded()
+            }
+        }
+    }
+
+    private var lastPostsSnapshot: PostsSnapshot?
+
     private weak var viewController: PostsCardView?
 
-    typealias DataSource = UITableViewDiffableDataSource<Int, NSManagedObjectID>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+    typealias DataSource = UITableViewDiffableDataSource<PostsListSection, PostsListItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<PostsListSection, PostsListItem>
+    typealias PostsSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
-    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, objectID) -> UITableViewCell? in
-        guard let self = self,
-            let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
-            return UITableViewCell()
+    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+        guard let self = self else {
+            return nil
+        }
+        switch item {
+        case .post(let objectID):
+            return self.configurePostCell(objectID: objectID, tableView: tableView, indexPath: indexPath)
+        case .error:
+            return self.configureErrorCell(tableView: tableView, indexPath: indexPath)
+        case .ghost:
+            return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
-
-        self.viewController?.hideLoading()
-
-        self.configureCell(cell, at: indexPath, with: post)
-
-        return cell
     }
 
     init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
@@ -93,6 +113,44 @@ class PostsCardViewModel: NSObject {
 
 }
 
+// MARK: Cells Configuration
+
+private extension PostsCardViewModel {
+    private func configurePostCell(objectID: NSManagedObjectID, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
+            return UITableViewCell()
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath) as? PostCompactCell
+
+        cell?.accessoryType = .none
+        cell?.configureForDashboard(with: post)
+
+        return cell ?? UITableViewCell()
+    }
+
+    private func configureErrorCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPostListErrorCell.defaultReuseID, for: indexPath) as? DashboardPostListErrorCell
+
+        cell?.errorMessage = Strings.loadingFailure
+        cell?.onCellTap = { [weak self] in
+            self?.retry()
+        }
+
+        return cell ?? UITableViewCell()
+    }
+
+    private func configureGhostCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath) as? BlogDashboardPostCardGhostCell
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        cell?.contentView.stopGhostAnimation()
+        cell?.contentView.startGhostAnimation(style: style)
+        return cell ?? UITableViewCell()
+    }
+}
+
 // MARK: - Private methods
 
 private extension PostsCardViewModel {
@@ -103,8 +161,8 @@ private extension PostsCardViewModel {
     func performInitialLoading() {
         updateFilter()
         createFetchedResultsController()
-        sync()
         showLoadingIfNeeded()
+        sync()
     }
 
     func createFetchedResultsController() {
@@ -164,17 +222,17 @@ private extension PostsCardViewModel {
             success: { [weak self] posts in
                 if posts?.count == 0 {
                     self?.updatePostsInfoIfNeeded()
-                    self?.viewController?.hideLoading()
                 }
 
                 self?.hideLoading()
                 self?.syncing = nil
             }, failure: { [weak self] _ in
                 self?.syncing = nil
-
                 if self?.numberOfPosts == 0 {
-                    self?.updatePostsInfoIfNeeded()
                     self?.showLoadingFailureError()
+                }
+                else {
+                    self?.hideLoading()
                 }
         })
     }
@@ -203,18 +261,20 @@ private extension PostsCardViewModel {
     }
 
     func showLoadingFailureError() {
-        viewController?.showError(message: Strings.loadingFailure, retry: true)
-        viewController?.hideLoading()
+        currentState = .error
     }
 
     func hideLoading() {
-        viewController?.hideLoading()
+        currentState = .posts
     }
 
     func showLoadingIfNeeded() {
         // Only show loading state if there are no posts at all
         if numberOfPosts == 0 {
-            viewController?.showLoading()
+            currentState = .loading
+        }
+        else {
+            currentState = .posts
         }
     }
 
@@ -228,6 +288,17 @@ private extension PostsCardViewModel {
             return true
         }
         return false
+    }
+
+    func trackCardDisaplyedIfNeeded() {
+        switch currentState {
+        case .posts:
+            WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+        case .error:
+            WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+        case .loading:
+            return
+        }
     }
 
     func isSyncing() -> Bool {
@@ -252,37 +323,67 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             return
         }
 
+        let postsSnapshot = snapshot as PostsSnapshot
+        self.lastPostsSnapshot = postsSnapshot
+
         guard updatePostsInfoIfNeeded() == false else {
             return // Don't update datasource if the view will be updated
         }
 
-        var snapshot = snapshot as Snapshot
         let currentSnapshot = dataSource.snapshot() as Snapshot
-
-        /// Ensure a maximum of `fetchRequest.fetchLimit` items is displayed
-        snapshot.deleteItems(snapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
-
-        let reloadIdentifiers: [NSManagedObjectID] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
-            guard let currentIndex = currentSnapshot.indexOfItem(itemIdentifier), let index = snapshot.indexOfItem(itemIdentifier), index == currentIndex else {
-                return nil
-            }
-            guard let existingObject = try? controller.managedObjectContext.existingObject(with: itemIdentifier), existingObject.isUpdated else { return nil }
-            return itemIdentifier
-        }
-        snapshot.reloadItems(reloadIdentifiers)
-
-        let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
-        dataSource.defaultRowAnimation = .fade
-        dataSource.apply(snapshot as Snapshot, animatingDifferences: shouldAnimate, completion: nil)
+        let finalSnapshot = createSnapshot(currentSnapshot: currentSnapshot, postsSnapshot: postsSnapshot)
+        applySnapshot(finalSnapshot, to: dataSource)
     }
 
-    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath, with post: Post) {
-        cell.accessoryType = .none
-        guard let configurablePostView = cell as? PostCompactCell else {
-                fatalError("Cell is not a PostCompactCell")
+    private func forceReloadSnapshot() {
+        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
+            return
         }
+        let currentSnapshot = dataSource.snapshot() as Snapshot
+        let postsSnapshot = self.lastPostsSnapshot ?? NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>()
+        let snapshot = createSnapshot(currentSnapshot: currentSnapshot, postsSnapshot: postsSnapshot)
+        applySnapshot(snapshot, to: dataSource)
+    }
 
-        viewController?.hideError()
-        configurablePostView.configureForDashboard(with: post)
+    private func createSnapshot(currentSnapshot: Snapshot, postsSnapshot: PostsSnapshot) -> Snapshot {
+        var snapshot = Snapshot()
+        switch currentState {
+        case .posts:
+            var adjustedPostsSnapshot = postsSnapshot
+            adjustedPostsSnapshot.deleteItems(adjustedPostsSnapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
+            let postItems: [PostsListItem] = adjustedPostsSnapshot.itemIdentifiers.map { .post($0) }
+            snapshot.appendSections([.posts])
+            snapshot.appendItems(postItems, toSection: .posts)
+
+            let reloadIdentifiers: [PostsListItem] = snapshot.itemIdentifiers.compactMap { item in
+                guard case PostsListItem.post(let objectID) = item,
+                        let currentIndex = currentSnapshot.indexOfItem(item), let index = postsSnapshot.indexOfItem(objectID), index == currentIndex else {
+                    return nil
+                }
+                guard let existingObject = try? fetchedResultsController.managedObjectContext.existingObject(with: objectID),
+                        existingObject.isUpdated else {
+                            return nil
+                }
+                return item
+            }
+            snapshot.reloadItems(reloadIdentifiers)
+
+        case .error:
+            snapshot.appendSections([.error])
+            snapshot.appendItems([.error], toSection: .error)
+
+        case .loading:
+            let items: [PostsListItem] = (0..<Constants.numberOfPosts).map { .ghost($0) }
+            snapshot.appendSections([.loading])
+            snapshot.appendItems(items, toSection: .loading)
+        }
+        return snapshot
+    }
+
+    private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
+        let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
+        dataSource.defaultRowAnimation = .fade
+        dataSource.apply(snapshot, animatingDifferences: shouldAnimate, completion: nil)
+        viewController?.tableView.allowsSelection = currentState == .posts
     }
 }
