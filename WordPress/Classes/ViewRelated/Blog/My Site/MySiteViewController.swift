@@ -13,7 +13,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             case .dashboard:
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
             case .siteMenu:
-                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
+                return NSLocalizedString("Menu", comment: "Title for the site menu view on the My Site screen")
             }
         }
 

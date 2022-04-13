@@ -44,7 +44,7 @@ private struct Strings {
 
 struct QuickStartSiteMenu {
     private static let descriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen.")
-    private static let descriptionTarget = NSLocalizedString("Site Menu", comment: "The segmented control item to select during a guided tour.")
+    private static let descriptionTarget = NSLocalizedString("Menu", comment: "The segmented control item to select during a guided tour.")
     static let waypoint = QuickStartTour.WayPoint(element: .siteMenu, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
 }
 
