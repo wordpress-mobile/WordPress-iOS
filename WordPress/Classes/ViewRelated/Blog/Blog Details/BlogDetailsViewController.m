@@ -33,6 +33,7 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
+CGFloat const FirstHeaderSectionHeight = 20.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
@@ -653,6 +654,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
+    if ([[MySiteSettings alloc] isAssignedToExperiment] && sectionNum == 0 && (section.title == nil || section.title.isEmpty)) {
+        return FirstHeaderSectionHeight;
+    }
+
     if (section.showQuickStartMenu == true || sectionNum == 0) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
@@ -732,7 +737,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     
-    if (AppConfiguration.showsQuickActions) {
+    if (AppConfiguration.showsQuickActions && ![[MySiteSettings alloc] isAssignedToExperiment]) {
         [marr addObject:[self quickActionsSectionViewModel]];
     }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
