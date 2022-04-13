@@ -1345,6 +1345,8 @@
 		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
+		80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
+		80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -6077,6 +6079,7 @@
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
 		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
+		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -11524,6 +11527,7 @@
 				8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */,
 				8BF1C81927BC00AF00F1C203 /* BlogDashboardCardFrameView.swift */,
 				8B065CC527BD5452005BA7AB /* BlogDashboardNextPostView.swift */,
+				80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -18293,6 +18297,7 @@
 				73BFDA8A211D054800907245 /* Notifiable.swift in Sources */,
 				404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
+				80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,
 				E64595F0256B5D7800F7F90C /* CommentAnalytics.swift in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
 				FA73D7EC27987E4500DF24B3 /* SitePickerViewController+QuickStart.swift in Sources */,
@@ -20866,6 +20871,7 @@
 				FABB24832602FC2C00C8785C /* ReaderSearchViewController.swift in Sources */,
 				FABB24842602FC2C00C8785C /* SiteStatsTableHeaderView.swift in Sources */,
 				FABB24852602FC2C00C8785C /* MediaSizeSliderCell.swift in Sources */,
+				80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,
 				FABB24862602FC2C00C8785C /* NotificationContentRouter.swift in Sources */,
 				178DDD31266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
 				FABB24872602FC2C00C8785C /* PageLayoutService.swift in Sources */,

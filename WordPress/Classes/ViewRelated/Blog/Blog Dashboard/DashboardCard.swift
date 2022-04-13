@@ -24,9 +24,9 @@ enum DashboardCard: String, CaseIterable {
         case .quickStart:
             return DashboardQuickStartCardCell.self
         case .draftPosts:
-            fallthrough
+            return DashboardDraftPostsCardCell.self
         case .scheduledPosts:
-            fallthrough
+            return DashboardScheduledPostsCardCell.self
         case .nextPost:
             fallthrough
         case .createPost:

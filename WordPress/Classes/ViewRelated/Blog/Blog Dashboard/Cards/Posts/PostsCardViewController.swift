@@ -270,11 +270,6 @@ extension PostsCardViewController: DashboardCardInnerErrorViewDelegate {
 
 // MARK: - PostCardTableView
 
-extension NSNotification.Name {
-    /// Fired when a PostCardTableView changes its size
-    static let postCardTableViewSizeChanged = NSNotification.Name("IntrinsicContentSizeUpdated")
-}
-
 private class PostCardTableView: UITableView {
     private var previousHeight: CGFloat = 0
 
