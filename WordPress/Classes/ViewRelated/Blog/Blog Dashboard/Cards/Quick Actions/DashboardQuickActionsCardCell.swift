@@ -90,7 +90,7 @@ extension DashboardQuickActionsCardCell {
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.statsAccessed, blog: blog)
-        StatsViewController.show(for: blog, from: sourceController, showTodayStats: false)
+        StatsViewController.show(for: blog, from: sourceController)
     }
 
     private func showPostList(for blog: Blog, from sourceController: UIViewController) {
@@ -127,6 +127,11 @@ extension DashboardQuickActionsCardCell {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            scrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
+            stackView.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
     }
 }
 

@@ -440,6 +440,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
+    
+    // Required to add / remove "Home" section when switching between regular and compact width
+    [self configureTableViewData];
 
     // Required to update disclosure indicators depending on split view status
     [self reloadTableViewPreservingSelection];
