@@ -333,6 +333,7 @@ import Foundation
     case enhancedSiteCreationSiteNameSkipped
     case enhancedSiteCreationSiteNameEntered
     case enhancedSiteCreationSiteNameViewed
+    case enhancedSiteCreationSiteNameExperiment
 
     // Quick Start
     case quickStartStarted
@@ -903,6 +904,8 @@ import Foundation
             return "enhanced_site_creation_site_name_entered"
         case .enhancedSiteCreationSiteNameViewed:
             return "enhanced_site_creation_site_name_viewed"
+        case .enhancedSiteCreationSiteNameExperiment:
+            return "enhanced_site_creation_site_name_experiment"
 
         } // END OF SWITCH
     }

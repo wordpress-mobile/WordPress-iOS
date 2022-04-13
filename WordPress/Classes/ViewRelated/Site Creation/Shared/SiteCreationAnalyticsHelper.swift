@@ -1,11 +1,23 @@
 import Foundation
 import WordPressKit
+import AutomatticTracks
 
 extension SiteIntentAB.Variant {
     var tracksProperty: String {
         switch self {
         case .treatment: return "treatment"
         case .control: return "control"
+        }
+    }
+}
+
+extension Variation {
+    var tracksProperty: String {
+        switch self {
+        case .treatment:
+            return "treatment"
+        case .control:
+            return "control"
         }
     }
 }
@@ -17,7 +29,7 @@ class SiteCreationAnalyticsHelper {
     private static let previewModeKey = "preview_mode"
     private static let verticalSlugKey = "vertical_slug"
     private static let verticalSearchTerm = "search_term"
-    private static let variation = "variation"
+    private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
 
     // MARK: - Site Intent
@@ -47,7 +59,7 @@ class SiteCreationAnalyticsHelper {
     }
 
     static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
-        let properties = [variation: variant.tracksProperty]
+        let properties = [variationKey: variant.tracksProperty]
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
     }
 
@@ -67,6 +79,11 @@ class SiteCreationAnalyticsHelper {
 
     static func trackSiteNameCanceled() {
         WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
+    }
+
+    static func trackSiteNameExperiment(_ variant: Variation) {
+        let properties = [variationKey: variant.tracksProperty]
+        WPAnalytics.track(.enhancedSiteCreationSiteNameExperiment, properties: properties)
     }
 
     // MARK: - Site Design
