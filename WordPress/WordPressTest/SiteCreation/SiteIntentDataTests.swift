@@ -99,17 +99,16 @@ class SiteIntentDataTests: XCTestCase {
         XCTAssertEqual(whitespaceSearchResult, emptyStringResult)
     }
 
-    /// Tests that default verticals are on top of the non-default verticals as this affects output ordering
-    func testDefaultsOnTop() throws {
+    /// Tests that verticals are in alphabetical order by localized title
+    func testAlphabetizedTitles() throws {
         // Given
-        let defaultVerticals = SiteIntentData.allVerticals.filter { $0.isDefault == true }
-        let nonDefaultVerticals = SiteIntentData.allVerticals.filter { $0.isDefault == false }
+        let allVerticals = SiteIntentData.allVerticals
 
         // When
-        let allVerticals = (defaultVerticals + nonDefaultVerticals)
+        let alphabetizedVerticals = allVerticals.sorted(by: { $0.localizedTitle < $1.localizedTitle })
 
         // Then
-        XCTAssertEqual(allVerticals, SiteIntentData.allVerticals)
+        XCTAssertEqual(alphabetizedVerticals, allVerticals)
     }
 
     /// Tests that the defaultVerticals properties returns default verticals
