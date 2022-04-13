@@ -4,21 +4,14 @@ import AutomatticTracks
 
 class SiteCreationNameTracksEventTests: XCTestCase {
 
-    let featureFlags = FeatureFlagOverrideStore()
-
-    private let controlVariant = Variation.control
-    private let treatmentVariant = Variation.treatment(nil)
-
     private let siteNameEventPropertyKey = "site_name"
 
     override func setUpWithError() throws {
         TestAnalyticsTracker.setup()
-        try featureFlags.override(FeatureFlag.siteName, withValue: true)
     }
 
     override func tearDownWithError() throws {
         TestAnalyticsTracker.tearDown()
-        try featureFlags.override(FeatureFlag.siteName, withValue: false)
     }
 
     func siteNameViewControllerMaker() throws -> SiteNameViewController {
