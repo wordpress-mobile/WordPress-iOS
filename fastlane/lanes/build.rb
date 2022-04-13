@@ -115,12 +115,14 @@ platform :ios do
       api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # FIXME: Keep a close eye on this and revert ASAP.
+    UI.important "The Sentry CLI is currently broken. Skipping Sentry upload till it's fixed. See https://github.com/getsentry/sentry-fastlane-plugin/pull/119."
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
 
     next unless options[:create_release]
 
@@ -165,12 +167,14 @@ platform :ios do
       api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # FIXME: Keep a close eye on this and revert ASAP.
+    UI.important "The Sentry CLI is currently broken. Skipping Sentry upload till it's fixed. See https://github.com/getsentry/sentry-fastlane-plugin/pull/119."
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
   end
 
   # Builds the "WordPress Internal" app and uploads it to App Center
@@ -211,12 +215,14 @@ platform :ios do
       notify_testers: false
     )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # FIXME: Keep a close eye on this and revert ASAP.
+    UI.important "The Sentry CLI is currently broken. Skipping Sentry upload till it's fixed. See https://github.com/getsentry/sentry-fastlane-plugin/pull/119."
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
   end
 
   # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to App Center
@@ -261,12 +267,14 @@ platform :ios do
       notify_testers: false
     )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # FIXME: Keep a close eye on this and revert ASAP.
+    UI.important "The Sentry CLI is currently broken. Skipping Sentry upload till it's fixed. See https://github.com/getsentry/sentry-fastlane-plugin/pull/119."
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
 
     post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
@@ -314,12 +322,14 @@ platform :ios do
       notify_testers: false
     )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # FIXME: Keep a close eye on this and revert ASAP.
+    UI.important "The Sentry CLI is currently broken. Skipping Sentry upload till it's fixed. See https://github.com/getsentry/sentry-fastlane-plugin/pull/119."
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
 
     post_installable_build_pr_comment(app_name: 'Jetpack', build_number: build_number, url_slug: 'jetpack-installable-builds')
   end
