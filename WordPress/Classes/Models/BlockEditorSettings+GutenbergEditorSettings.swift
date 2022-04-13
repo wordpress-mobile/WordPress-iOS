@@ -15,6 +15,10 @@ extension BlockEditorSettings: GutenbergEditorSettings {
         return experimentalFeature(.galleryWithImageBlocks)
     }
 
+    public var quoteBlockV2: Bool {
+        return experimentalFeature(.quoteBlockV2)
+    }
+
     private func elementsByType(_ type: BlockEditorSettingElementTypes) -> [[String: String]]? {
         return elements?.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.order >= rhs.order
@@ -81,7 +85,15 @@ extension BlockEditorSettings {
                                                          type: .experimentalFeatures,
                                                          order: 0,
                                                          context: context)
+        let quoteKey = BlockEditorExperimentalFeatureKeys.quoteBlockV2.rawValue
+        let quoteRefactor = BlockEditorSettingElement(name: quoteKey,
+                                                         value: "\(remoteSettings.quoteBlockV2)",
+                                                         slug: quoteKey,
+                                                         type: .experimentalFeatures,
+                                                         order: 1,
+                                                         context: context)
         parsedElements.insert(galleryRefactor)
+        parsedElements.insert(quoteRefactor)
 
         self.elements = parsedElements
     }
