@@ -26,7 +26,9 @@ extension SiteCreationRequest {
          title: String,
          tagline: String?,
          siteURLString: String,
-         isPublic: Bool) {
+         isPublic: Bool,
+         siteCreationFlow: String?,
+         findAvailableUrl: Bool) {
 
         self.init(segmentIdentifier: segmentIdentifier,
                   siteDesign: siteDesign,
@@ -39,7 +41,9 @@ extension SiteCreationRequest {
                   shouldValidate: true,
                   clientIdentifier: ApiCredentials.client,
                   clientSecret: ApiCredentials.secret,
-                  timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier
+                  timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
+                  siteCreationFlow: siteCreationFlow,
+                  findAvailableUrl: findAvailableUrl
         )
     }
 
@@ -61,7 +65,9 @@ extension SiteCreationRequest {
                   shouldValidate: false,
                   clientIdentifier: request.clientIdentifier,
                   clientSecret: request.clientSecret,
-                  timezoneIdentifier: request.timezoneIdentifier
+                  timezoneIdentifier: request.timezoneIdentifier,
+                  siteCreationFlow: request.siteCreationFlow,
+                  findAvailableUrl: request.findAvailableUrl
         )
     }
 }
