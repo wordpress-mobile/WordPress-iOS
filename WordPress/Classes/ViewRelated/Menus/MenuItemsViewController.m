@@ -162,6 +162,8 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
             itemView.indentationLevel++;
             parentItem = parentItem.parent;
         }
+
+        [itemView refreshAccessibilityLabels];
     }
 }
 
@@ -488,6 +490,9 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
                     if (newParent) {
                         selectedItem.parent = newParent;
+                        MenuItem *precedingSibling = [selectedItem precedingSiblingInOrderedItems:orderedItems];
+                        [self announceOrderingChange:newParent parentChanged:YES before:nil after:precedingSibling];
+
                         modelUpdated = YES;
                     }
 
@@ -500,6 +505,9 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
                             // try to move up the parent tree
                             MenuItem *parent = selectedItem.parent.parent;
                             selectedItem.parent = parent;
+                            MenuItem *precedingSibling = [selectedItem precedingSiblingInOrderedItems:orderedItems];
+                            [self announceOrderingChange:parent parentChanged:YES before:nil after:precedingSibling];
+
                             modelUpdated = YES;
                         }
                     }
@@ -606,6 +614,8 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
                 if ([self nextAvailableItemForOrderingAfterItem:item] == otherItem) {
                     // take the parent of the otherItem, or nil
                     item.parent = otherItem.parent;
+                    [self announceOrderingChange:item.parent parentChanged:YES before:otherItem after:nil];
+
                     updated = YES;
                 }
             }
@@ -616,9 +626,11 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
             if (otherItem.children.count) {
                 // if ordering after a parent, we need to become a child
                 item.parent = otherItem;
+                [self announceOrderingChange:otherItem parentChanged:YES before:nil after:nil];
             } else  {
                 // assuming the item will take the parent of the otherItem's parent, or nil
                 item.parent = otherItem.parent;
+                [self announceOrderingChange:nil parentChanged:NO before:nil after:otherItem];
             }
 
             moveItemAndDescendantsOrderingWithOtherItem(YES);
@@ -631,6 +643,11 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
         if (orderingTouchesBeforeOtherItem) {
             // trying to order the item before the otherItem
+            if (item.parent != otherItem.parent) {
+                [self announceOrderingChange:otherItem.parent parentChanged:YES before:otherItem after:nil];
+            } else {
+                [self announceOrderingChange:nil parentChanged:NO before:otherItem after:nil];
+            }
 
             // assuming the item will become the parent of the otherItem's parent, or nil
             item.parent = otherItem.parent;
@@ -897,6 +914,51 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 - (void)cleanUpOrderingFeedbackGenerator
 {
     self.orderingFeedbackGenerator = nil;
+}
+
+#pragma mark - VoiceOver
+
++ (nullable NSString *)generateOrderingChangeVOString:(nullable MenuItem *)parent parentChanged:(BOOL)parentChanged before:(nullable MenuItem *)before after:(nullable MenuItem *)after {
+    NSMutableArray *stringArray = [[NSMutableArray alloc] init];
+
+    if (parentChanged) {
+        if (parent) {
+            NSString *parentString = NSLocalizedString(@"Child of %@", @"Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item.");
+            [stringArray addObject:[NSString stringWithFormat:parentString, parent.name]];
+        } else {
+            NSString *parentString = NSLocalizedString(@"Top level", @"Screen reader text expressing the menu item is at the top level and has no parent.");
+            [stringArray addObject:parentString];
+        }
+    }
+    if (after) {
+        NSString *afterString = NSLocalizedString(@"After %@", @"Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item.");
+        [stringArray addObject:[NSString stringWithFormat:afterString, after.name]];
+    }
+    if (before) {
+        NSString *beforeString = NSLocalizedString(@"Before %@", @"Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item.");
+        [stringArray addObject:[NSString stringWithFormat:beforeString, before.name]];
+    }
+    if (!stringArray.count) {
+        return nil;
+    }
+
+    return [stringArray componentsJoinedByString:@". "];
+}
+
+/// Used by VoiceOver to announce changes of the Menu UI.
+/// @param parent A new parent of the current item.
+/// @param parentChanged If the parent changed. Needed to infer "Top level" when parent is nil.
+/// @param before A menu item that now precedes the current item.
+/// @param after A menu item that now succeeds the current item.
+- (void)announceOrderingChange:(MenuItem *)parent parentChanged:(BOOL)parentChanged before:(MenuItem *)before after:(MenuItem *)after {
+    if (!UIAccessibilityIsVoiceOverRunning()) {
+        return;
+    }
+
+    NSString *announcement = [MenuItemsViewController generateOrderingChangeVOString:parent parentChanged:parentChanged before:before after:after];
+    if (announcement) {
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, announcement);
+    }
 }
 
 @end

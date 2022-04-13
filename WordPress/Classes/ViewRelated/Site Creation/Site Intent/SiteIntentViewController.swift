@@ -13,10 +13,8 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        WPStyleGuide.configureSearchBar(searchBar)
+        WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
-        searchBar.backgroundColor = .clear
-        searchBar.searchTextField.returnKeyType = .search
         return searchBar
     }()
 

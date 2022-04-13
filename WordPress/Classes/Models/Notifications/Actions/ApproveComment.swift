@@ -1,8 +1,8 @@
-/// Encapsulates logic to approve a cooment
+/// Encapsulates logic to approve a comment
 class ApproveComment: DefaultNotificationActionCommand {
     enum TitleStrings {
-        static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
-        static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+        static let approve = NSLocalizedString("Approve Comment", comment: "Approves a Comment")
+        static let unapprove = NSLocalizedString("Unapprove Comment", comment: "Unapproves a Comment")
     }
 
     enum TitleHints {

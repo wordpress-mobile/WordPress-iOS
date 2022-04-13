@@ -4,7 +4,9 @@ class DynamicHeightCollectionView: AccessibleCollectionView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.invalidateIntrinsicContentSize()
+        if bounds.size != intrinsicContentSize {
+            invalidateIntrinsicContentSize()
+        }
     }
 
     override var intrinsicContentSize: CGSize {
