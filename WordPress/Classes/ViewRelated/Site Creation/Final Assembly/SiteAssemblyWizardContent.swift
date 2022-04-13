@@ -249,12 +249,15 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
 
             self.dismissTapped(viaDone: true) { [blog, weak self] in
                 WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
-                self?.showQuickStartPrompt(for: blog)
+
+                // present quick start, and mark site title as complete if they already selected one
+                let completedSteps: [QuickStartTour] = self?.siteCreator.information?.title == nil ? [] : [QuickStartSiteTitleTour()]
+                self?.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
             }
         }
     }
 
-    private func showQuickStartPrompt(for blog: Blog) {
+    private func showQuickStartPrompt(for blog: Blog, completedSteps: [QuickStartTour] = []) {
         guard !quickStartSettings.promptWasDismissed(for: blog) else {
             return
         }
@@ -266,7 +269,8 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog)
+
+                QuickStartTourGuide.shared.setupWithDelay(for: blog, withCompletedSteps: completedSteps)
             }
         }
         tabBar.present(quickstartPrompt, animated: true)
