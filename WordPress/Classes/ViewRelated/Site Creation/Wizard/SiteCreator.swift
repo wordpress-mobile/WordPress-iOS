@@ -37,22 +37,45 @@ final class SiteCreator {
     /// - Returns: an Encodable object
     ///
     func build() throws -> SiteCreationRequest {
-        guard let domainSuggestion = address else {
+
+        guard let siteName = siteName else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
-        let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
-        let siteDesign = design?.slug ?? "default"
+
+        let siteDesign = design?.slug ?? Strings.defaultDesignSlug
 
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
             siteDesign: siteDesign,
             verticalIdentifier: vertical?.slug,
-            title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
+            title: information?.title ?? Strings.defaultSiteTitle,
             tagline: information?.tagLine ?? "",
             siteURLString: siteName,
-            isPublic: true
+            isPublic: true,
+            siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
+            findAvailableUrl: address == nil
         )
 
         return request
+    }
+
+    /// Returns the domain suggestion if there's one,
+    /// - otherwise a site name if there's one,
+    /// - otherwise the account name if there's one,
+    /// - otherwise nil.
+    private var siteName: String? {
+
+        guard let domainSuggestion = address else {
+            let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+            return information?.title ?? accountService.defaultWordPressComAccount()?.displayName
+        }
+
+        return domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
+    }
+
+    private enum Strings {
+        static let defaultDesignSlug = "default"
+        static let defaultSiteTitle = NSLocalizedString("Site Title", comment: "Site info. Title")
+        static let siteCreationFlowForNoAddress = "with-design-picker"
     }
 }
