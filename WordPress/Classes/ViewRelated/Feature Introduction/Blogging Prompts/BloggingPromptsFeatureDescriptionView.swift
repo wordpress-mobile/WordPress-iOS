@@ -24,6 +24,12 @@ private extension BloggingPromptsFeatureDescriptionView {
         promptCardView.layer.cornerRadius = Style.cardCornerRadius
         promptCardView.layer.borderColor = Style.borderColor
 
+        let promptCard = DashboardPromptsCardCell()
+        promptCard.configureForExampleDisplay()
+        promptCard.translatesAutoresizingMaskIntoConstraints = false
+        promptCardView.addSubview(promptCard)
+        promptCardView.pinSubviewToSafeArea(promptCard)
+
         descriptionLabel.font = Style.labelFont
         descriptionLabel.textColor = Style.textColor
         descriptionLabel.text = Strings.featureDescription
