@@ -4,9 +4,6 @@ import XCTest
 class SiteCreationIntentTracksEventTests: XCTestCase {
 
     let featureFlags = FeatureFlagOverrideStore()
-    let treatmentVariant = SiteIntentAB.Variant.treatment
-
-    let controlVariant = SiteIntentAB.Variant.control
     let variationEventPropertyKey = "variation"
 
     override func setUpWithError() throws {
