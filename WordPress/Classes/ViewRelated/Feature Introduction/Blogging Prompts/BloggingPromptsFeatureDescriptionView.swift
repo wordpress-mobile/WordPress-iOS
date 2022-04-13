@@ -20,20 +20,35 @@ class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
 private extension BloggingPromptsFeatureDescriptionView {
 
     func configureView() {
-        promptCardView.layer.borderWidth = Style.borderWidth
-        promptCardView.layer.cornerRadius = Style.cardCornerRadius
-        promptCardView.layer.borderColor = Style.borderColor
+        configurePromptCard()
+        configureDescription()
+        configureNote()
+    }
 
+    func configurePromptCard() {
         let promptCard = DashboardPromptsCardCell()
         promptCard.configureForExampleDisplay()
         promptCard.translatesAutoresizingMaskIntoConstraints = false
+
+        promptCard.layer.borderWidth = Style.borderWidth
+        promptCard.layer.cornerRadius = Style.cardCornerRadius
+        promptCard.layer.borderColor = Style.borderColor
+
+        promptCard.layer.shadowOffset = Style.cardShadowOffset
+        promptCard.layer.shadowOpacity = Style.cardShadowOpacity
+        promptCard.layer.shadowRadius = Style.cardShadowRadius
+
         promptCardView.addSubview(promptCard)
         promptCardView.pinSubviewToSafeArea(promptCard)
+    }
 
+    func configureDescription() {
         descriptionLabel.font = Style.labelFont
         descriptionLabel.textColor = Style.textColor
         descriptionLabel.text = Strings.featureDescription
+    }
 
+    func configureNote() {
         noteTextView.layer.borderWidth = Style.borderWidth
         noteTextView.layer.cornerRadius = Style.noteCornerRadius
         noteTextView.layer.borderColor = Style.borderColor
@@ -69,7 +84,10 @@ private extension BloggingPromptsFeatureDescriptionView {
         static let textColor: UIColor = .textSubtle
         static let noteInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         static let noteCornerRadius: CGFloat = 6
-        static let cardCornerRadius: CGFloat = 16
+        static let cardCornerRadius: CGFloat = 10
+        static let cardShadowRadius: CGFloat = 14
+        static let cardShadowOpacity: Float = 0.15
+        static let cardShadowOffset = CGSize(width: 0, height: 10.0)
         static let borderWidth: CGFloat = 1
         static let borderColor = UIColor.textQuaternary.cgColor
     }
