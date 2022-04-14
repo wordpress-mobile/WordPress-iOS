@@ -32,7 +32,7 @@ private extension BloggingPromptsFeatureDescriptionView {
 
         promptCard.layer.borderWidth = Style.borderWidth
         promptCard.layer.cornerRadius = Style.cardCornerRadius
-        promptCard.layer.borderColor = Style.borderColor
+        promptCard.layer.borderColor = Style.cardBorderColor
 
         promptCard.layer.shadowOffset = Style.cardShadowOffset
         promptCard.layer.shadowOpacity = Style.cardShadowOpacity
@@ -51,7 +51,7 @@ private extension BloggingPromptsFeatureDescriptionView {
     func configureNote() {
         noteTextView.layer.borderWidth = Style.borderWidth
         noteTextView.layer.cornerRadius = Style.noteCornerRadius
-        noteTextView.layer.borderColor = Style.borderColor
+        noteTextView.layer.borderColor = Style.noteBorderColor
         noteTextView.textContainerInset = Style.noteInsets
         configureNoteText()
     }
@@ -88,7 +88,8 @@ private extension BloggingPromptsFeatureDescriptionView {
         static let cardShadowRadius: CGFloat = 14
         static let cardShadowOpacity: Float = 0.15
         static let cardShadowOffset = CGSize(width: 0, height: 10.0)
+        static let cardBorderColor = UIColor(red: 0.882, green: 0.886, blue: 0.886, alpha: 1).cgColor
         static let borderWidth: CGFloat = 1
-        static let borderColor = UIColor.textQuaternary.cgColor
+        static let noteBorderColor = UIColor.textQuaternary.cgColor
     }
 }
