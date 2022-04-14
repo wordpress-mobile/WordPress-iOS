@@ -114,9 +114,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         trainContainerView.translatesAutoresizingMaskIntoConstraints = false
         trainContainerView.addSubview(avatarTrainView)
         NSLayoutConstraint.activate([
-            trainContainerView.topAnchor.constraint(equalTo: avatarTrainView.topAnchor),
-            trainContainerView.bottomAnchor.constraint(equalTo: avatarTrainView.bottomAnchor),
-            trainContainerView.leadingAnchor.constraint(lessThanOrEqualTo: avatarTrainView.leadingAnchor),
+            trainContainerView.centerYAnchor.constraint(equalTo: avatarTrainView.centerYAnchor),
+            trainContainerView.topAnchor.constraint(lessThanOrEqualTo: avatarTrainView.topAnchor),
+            trainContainerView.bottomAnchor.constraint(greaterThanOrEqualTo: avatarTrainView.bottomAnchor),
+            trainContainerView.leadingAnchor.constraint(equalTo: avatarTrainView.leadingAnchor),
             trainContainerView.trailingAnchor.constraint(equalTo: avatarTrainView.trailingAnchor)
         ])
 
@@ -136,15 +137,26 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return label
     }
 
-    private var answerInfoStackView: UIStackView {
+    private var answerInfoView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
         stackView.spacing = Constants.answerInfoViewSpacing
         stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoLabel])
 
-        return stackView
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            containerView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            containerView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor),
+            containerView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor)
+        ])
+
+        return containerView
     }
 
     // MARK: Bottom row views
@@ -195,14 +207,25 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var answeredStateView: UIView = {
         let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
         stackView.spacing = Constants.answeredButtonsSpacing
+        stackView.addArrangedSubviews([answeredLabel, shareButton])
 
-        // added some spacer views to make the label and button look more centered together.
-        stackView.addArrangedSubviews([UIView(), answeredLabel, shareButton, UIView()])
+        // center the stack view's contents based on its total intrinsic width (instead of having it stretched edge to edge).
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(stackView)
 
-        return stackView
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            containerView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            containerView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor),
+            containerView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor)
+        ])
+
+        return containerView
     }()
 
     // Defines the structure of the contextual menu items.
@@ -272,7 +295,7 @@ private extension DashboardPromptsCardCell {
         containerStackView.addArrangedSubview(promptTitleView)
 
         if answerCount > 0 {
-            containerStackView.addArrangedSubview(answerInfoStackView)
+            containerStackView.addArrangedSubview(answerInfoView)
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
