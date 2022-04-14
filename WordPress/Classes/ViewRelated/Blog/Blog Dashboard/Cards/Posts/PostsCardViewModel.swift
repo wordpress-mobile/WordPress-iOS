@@ -86,6 +86,7 @@ class PostsCardViewModel: NSObject {
             try fetchedResultsController.performFetch()
             viewController?.tableView.reloadData()
             updatePostsInfoIfNeeded()
+            showLoadingIfNeeded()
         } catch {
             print("Fetch failed")
         }
