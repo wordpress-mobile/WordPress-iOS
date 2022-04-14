@@ -242,8 +242,7 @@ class PostCoordinator: NSObject {
 
             if uploadedPost.isScheduled() {
                 self?.notifyNewPostScheduled()
-            }
-            else if uploadedPost.isPublished() {
+            } else if uploadedPost.isPublished() {
                 self?.notifyNewPostPublished()
             }
 
