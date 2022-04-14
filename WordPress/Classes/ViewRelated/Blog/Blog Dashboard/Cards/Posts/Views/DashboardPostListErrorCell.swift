@@ -72,6 +72,8 @@ class DashboardPostListErrorCell: UITableViewCell, Reusable {
         contentView.addSubview(stackView)
         contentView.pinSubviewToAllEdges(stackView, priority: Constants.constraintPriority)
 
+        backgroundColor = .clear
+
         self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
     }
 
