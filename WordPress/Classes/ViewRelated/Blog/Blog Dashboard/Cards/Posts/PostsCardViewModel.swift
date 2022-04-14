@@ -231,12 +231,7 @@ private extension PostsCardViewModel {
                 self?.syncing = nil
             }, failure: { [weak self] _ in
                 self?.syncing = nil
-                if self?.numberOfPosts == 0 {
-                    self?.showLoadingFailureError()
-                }
-                else {
-                    self?.hideLoading()
-                }
+                self?.showLoadingFailureErrorIfNeeded()
         })
     }
 
@@ -248,7 +243,7 @@ private extension PostsCardViewModel {
             self?.refresh()
         }, failure: { [weak self] _ in
             self?.syncing = nil
-            self?.showLoadingFailureError()
+            self?.showLoadingFailureErrorIfNeeded()
         })
     }
 
@@ -263,8 +258,14 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showLoadingFailureError() {
-        currentState = .error
+    func showLoadingFailureErrorIfNeeded() {
+        // Only show error state if there are no posts at all
+        if numberOfPosts == 0 {
+            currentState = .error
+        }
+        else {
+            currentState = .posts
+        }
     }
 
     func hideLoading() {
