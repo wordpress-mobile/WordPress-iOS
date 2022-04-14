@@ -6,6 +6,7 @@
 * [**] Block Editor: Quote block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/40133]
 * [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]
 * [*] Block Editor: Remove banner error notification on upload failure [https://github.com/WordPress/gutenberg/pull/39694]
+* [*] My Site: display site name in My Site screen nav title [#18373]
 
 19.6
 -----

@@ -125,6 +125,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
+            updateNavigationTitle(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
         }
@@ -249,6 +250,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
+    func updateNavigationTitle(for blog: Blog) {
+        let blogName = blog.settings?.name
+        let title = blogName != nil && blogName?.isEmpty == false
+            ? blogName
+            : Strings.mySite
+        navigationItem.title = title
+    }
+
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
         let hideSegmentedControl =
@@ -327,7 +336,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
-        navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
+        navigationItem.title = Strings.mySite
+        navigationItem.backButtonTitle = Strings.mySite
 
         // Workaround:
         //
@@ -394,6 +404,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
 
@@ -753,6 +764,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.segmentedControlValueChanged()
             }
 
+            self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
@@ -882,6 +894,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         static let segmentedControlYOffset: CGFloat = 24
         static let segmentedControlHeight: CGFloat = 32
         static let siteMenuSpotlightOffset: CGFloat = 8
+    }
+
+    private enum Strings {
+        static let mySite = NSLocalizedString("My Site", comment: "Title of My Site tab")
     }
 }
 
