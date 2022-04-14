@@ -59,6 +59,10 @@ final class SiteCreator {
         return request
     }
 
+    var hasSiteTitle: Bool {
+        information?.title != nil
+    }
+
     /// Returns the domain suggestion if there's one,
     /// - otherwise a site name if there's one,
     /// - otherwise the account name if there's one,
