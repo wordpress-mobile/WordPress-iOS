@@ -102,9 +102,9 @@ class BlogDashboardViewModel {
 private extension BlogDashboardViewModel {
 
     func registerNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
