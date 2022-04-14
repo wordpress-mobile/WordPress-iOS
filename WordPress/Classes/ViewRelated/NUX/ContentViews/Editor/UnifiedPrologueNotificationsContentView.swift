@@ -1,7 +1,19 @@
 import SwiftUI
 
+struct UnifiedPrologueNotificationsTextContent {
+    let topElementTitle: String
+    let middleElementTitle: String
+    let bottomElementTitle: String
+}
+
 /// Prologue notifications page contents
 struct UnifiedPrologueNotificationsContentView: View {
+    private let textContent: UnifiedPrologueNotificationsTextContent
+
+    init(_ textContent: UnifiedPrologueNotificationsTextContent? = nil) {
+        self.textContent = textContent ?? Appearance.textContent
+    }
+    
     var body: some View {
         GeometryReader { content in
             let spacingUnit = content.size.height * 0.06
@@ -13,12 +25,13 @@ struct UnifiedPrologueNotificationsContentView: View {
                                                weight: .regular,
                                                design: .default)
 
+
             VStack {
                 Spacer()
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
-                        Text(string: Appearance.topElementTitle)
+                        Text(string: textContent.topElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -50,7 +63,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.middleImage, size: notificationIconSize)
-                        Text(string: Appearance.middleElementTitle)
+                        Text(string: textContent.middleElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -67,7 +80,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.bottomImage, size: notificationIconSize)
-                        Text(string: Appearance.bottomElementTitle)
+                        Text(string: textContent.bottomElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -113,5 +126,10 @@ private extension UnifiedPrologueNotificationsContentView {
         static let topElementTitle: String = NSLocalizedString("*Madison Ruiz* liked your post", comment: "Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
         static let middleElementTitle: String = NSLocalizedString("You received *50 likes* on your site today", comment: "Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text.")
         static let bottomElementTitle: String = NSLocalizedString("*Johann Brandt* responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+
+        static let textContent = UnifiedPrologueNotificationsTextContent(topElementTitle: Self.topElementTitle,
+                                                                         middleElementTitle: Self.middleElementTitle,
+                                                                         bottomElementTitle: Self.bottomElementTitle)
+
     }
 }
