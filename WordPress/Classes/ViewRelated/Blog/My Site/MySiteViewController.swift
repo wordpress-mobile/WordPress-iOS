@@ -337,6 +337,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
         navigationItem.title = Strings.mySite
+        navigationItem.backButtonTitle = Strings.mySite
 
         // Workaround:
         //
