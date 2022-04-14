@@ -224,7 +224,7 @@ private extension PostsCardViewModel {
             success: { [weak self] posts in
                 self?.updateDashboardStateWithSuccessfulSync()
                 if posts?.count == 0 {
-                    self?.updatePostsInfoIfNeeded()
+                    self?.removeViewIfNeeded()
                 }
 
                 self?.hideLoading()
@@ -293,7 +293,7 @@ private extension PostsCardViewModel {
     /// - Returns: Boolean value indicating whether an update was needed or not.
     /// Returns true if update was needed, false otherwise.
     @discardableResult
-    func updatePostsInfoIfNeeded() -> Bool {
+    func removeViewIfNeeded() -> Bool {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
             view?.removeIfNeeded()
             return true
@@ -337,7 +337,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         let postsSnapshot = snapshot as PostsSnapshot
         self.lastPostsSnapshot = postsSnapshot
 
-        guard updatePostsInfoIfNeeded() == false else {
+        guard removeViewIfNeeded() == false else {
             return // Don't update datasource if the view will be updated
         }
 
