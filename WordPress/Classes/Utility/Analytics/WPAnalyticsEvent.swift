@@ -271,6 +271,8 @@ import Foundation
     case notificationsPreviousTapped
     case notificationsNextTapped
     case notificationsMarkAllReadTapped
+    case notificationMarkAsReadTapped
+    case notificationMarkAsUnreadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -784,12 +786,17 @@ import Foundation
         case .accountCloseCompleted:
             return "account_close_completed"
 
+        // Notifications
         case .notificationsPreviousTapped:
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
         case .notificationsMarkAllReadTapped:
             return "notifications_mark_all_read_tapped"
+        case .notificationMarkAsReadTapped:
+            return "notification_mark_as_read_tapped"
+        case .notificationMarkAsUnreadTapped:
+            return "notification_mark_as_unread_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:

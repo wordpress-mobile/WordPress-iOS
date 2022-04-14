@@ -82,7 +82,7 @@ extension DashboardQuickActionsCardCell {
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.statsAccessed, blog: blog)
-        StatsViewController.show(for: blog, from: sourceController, showTodayStats: false)
+        StatsViewController.show(for: blog, from: sourceController)
     }
 
     private func showPostList(for blog: Blog, from sourceController: UIViewController) {

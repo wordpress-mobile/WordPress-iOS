@@ -1,7 +1,8 @@
 import Foundation
 
 struct SiteIntentData {
-    private static var verticals: [SiteIntentVertical] = [
+
+    static let allVerticals: [SiteIntentVertical] = [
         .init("food", NSLocalizedString("Food", comment: "Food site intent topic"), "🍔", isDefault: true),
         .init("news", NSLocalizedString("News", comment: "News site intent topic"), "🗞️", isDefault: true),
         .init("lifestyle", NSLocalizedString("Lifestyle", comment: "Lifestyle site intent topic"), "☕", isDefault: true),
@@ -32,31 +33,32 @@ struct SiteIntentData {
         .init("sports", NSLocalizedString("Sports", comment: "Sports site intent topic"), "⚽"),
         .init("technology", NSLocalizedString("Technology", comment: "Technology site intent topic"), "💻"),
         .init("writing_poetry", NSLocalizedString("Writing & Poetry", comment: "Writing & Poetry site intent topic"), "📓")
-    ]
+    ].sorted(by: { $0.localizedTitle < $1.localizedTitle })
 
     static let defaultVerticals: [SiteIntentVertical] = {
-        verticals.filter { $0.isDefault }
+        allVerticals.filter { $0.isDefault }
     }()
 
-    static func getVerticals(_ term: String = "") -> [SiteIntentVertical] {
-        term.isEmpty ?
-        verticals :
-        verticals.filter {
-            $0.localizedTitle.lowercased().contains(term.lowercased())
-        }
-    }
+    // Filters verticals based on search term and prepends a custom vertical if there were no exact matches
+    static func filterVerticals(with term: String) -> [SiteIntentVertical] {
+        let trimmedAndLowercasedTerm = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
-    static func insertCustomVertical(_ term: String) {
-        clearCustomVerticals()
-        guard !verticals.contains(where: { $0.localizedTitle.lowercased() == term.lowercased() }) else {
-            return
+        guard !trimmedAndLowercasedTerm.isEmpty else {
+            return allVerticals
         }
-        let customVertical = SiteIntentVertical(term.lowercased(), term, "＋", isCustom: true)
-        verticals.insert(customVertical, at: 0)
-    }
 
-    static func clearCustomVerticals() {
-        verticals = verticals.filter { !$0.isCustom }
+        guard let exactMatch = allVerticals.first(where: { $0.localizedTitle.lowercased() == trimmedAndLowercasedTerm }) else {
+            let customVertical = SiteIntentVertical(
+                slug: trimmedAndLowercasedTerm,
+                localizedTitle: term,
+                emoji: "＋",
+                isCustom: true
+            )
+
+            return [customVertical] + allVerticals.filter { $0.localizedTitle.lowercased().contains(trimmedAndLowercasedTerm) }
+        }
+
+        return [exactMatch]
     }
 }
 

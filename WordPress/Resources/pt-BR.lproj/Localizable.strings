@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-06 18:17:48+0000 */
+/* Translation-Revision-Date: 2022-04-12 18:22:19+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1659,7 +1659,7 @@ translators: Block name. %s: The localized block name */
 "Community" = "Comunidade";
 
 /* Community & Non-Profit site intent topic */
-"Community & Non-Profit" = "Comunidade e ONGs";
+"Community & Non-Profit" = "Comunidade e trabalho beneficente";
 
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compacta";
@@ -2165,7 +2165,7 @@ translators: Block name. %s: The localized block name */
 "Cut block" = "Recortar bloco";
 
 /* DIY site intent topic */
-"DIY" = "Faça você mesmo";
+"DIY" = "DIY (faça você mesmo)";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Escuro";
@@ -2685,7 +2685,7 @@ translators: Block name. %s: The localized block name */
 "Education" = "Educação";
 
 /* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "Ex. Moda, Poesia, Política";
+"Eg. Fashion, Poetry, Politics" = "Ex.: moda, poesia, política";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -4172,7 +4172,7 @@ translators: Block name. %s: The localized block name */
 "Local" = "Local";
 
 /* Local Services site intent topic */
-"Local Services" = "Comércio local";
+"Local Services" = "Serviços locais";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
@@ -4558,7 +4558,7 @@ translators: Block name. %s: The localized block name */
 "My Top Ten Cafes" = "Minhas 10 cafeterias preferidas";
 
 /* Title for disclaimer in the dashboard's custom What's New page. */
-"NEW!" = "NOVO!";
+"NEW!" = "NOVIDADE!";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
@@ -7370,7 +7370,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The basics" = "Noções básicas";
 
 /* Subtitle displayed on the feature introduction view. */
-"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "A melhor forma de melhorar sua escrita é criando um hábito de publicação e compartilhamento com outras pessoas. Aí é onde os Lembretes podem ajudar!";
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "A melhor forma de aprimorar sua escrita é fazer dela um hábito e compartilhá-la com outras pessoas. É aí que entram as sugestões!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "O certificado para este servidor é inválido. Você talvez esteja conectando a um servidor que está fingindo ser \"%@\", o que poderia colocar suas informações confidenciais em risco.";
@@ -8874,7 +8874,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "What's my site address?" = "O que é o endereço do meu site?";
 
 /* Select the site's intent. Title */
-"What's your website about?" = "Sobre o que é o seu site?";
+"What's your website about?" = "Qual o propósito do seu site?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "O que você quiser criar ou compartilhar, nós te ajudaremos aqui.";
@@ -9503,7 +9503,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "today" = "hoje";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
-"top tips" = "dicas importantes";
+"top tips" = "principais dicas";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecida";

@@ -85,7 +85,7 @@ class PostsCardViewModel: NSObject {
         do {
             try fetchedResultsController.performFetch()
             view?.tableView.reloadData()
-            updatePostsInfoIfNeeded()
+            removeViewIfNeeded()
             showLoadingIfNeeded()
         } catch {
             print("Fetch failed")
@@ -304,9 +304,9 @@ private extension PostsCardViewModel {
     func trackCardDisaplyedIfNeeded() {
         switch currentState {
         case .posts:
-            WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
         case .error:
-            WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
         case .loading:
             return
         }

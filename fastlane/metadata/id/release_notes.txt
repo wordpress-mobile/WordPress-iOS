@@ -1,0 +1,7 @@
+Berita besar untuk para penggemar situs — layar Situs Saya menjadi lebih baik. Sekarang Anda akan melihat dua tab baru yang dapat Anda gunakan: Menu Situs dan Beranda.
+
+Tab Beranda berisi kartu-kartu ringkas dengan informasi detail tentang situs Anda, termasuk konsep, penerbitan terjadwal, dan statistik hari ini. Atau, jika Anda sedang terburu-buru, Anda dapat dengan mudah menuju ke bagian lain dari aplikasi.
+
+Kita semua berupaya membangun komunikasi yang jelas. Itu sebabnya kami menambahkan teks pemberitahuan eror baru ke proses pengunggahan foto. Gunanya untuk mengantisipasi jika Anda mencoba mengunggah foto dari perangkat tanpa terlebih dahulu memberikan izin akses ke foto pada aplikasi.
+
+Ketika aplikasi menampilkan pemberitahuan, maka akan hilang perlahan jika Anda tidak membutuhkannya lagi. Menghilang ke kiri layar.

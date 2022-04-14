@@ -138,7 +138,7 @@ extension DashboardEmptyPostsCardCell {
             return
         }
 
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": cardType.rawValue])
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": cardType.rawValue])
     }
 }
 
@@ -146,11 +146,8 @@ extension DashboardEmptyPostsCardCell {
 
 private extension DashboardEmptyPostsCardCell {
     func presentEditor() {
-        guard let blog = blog, let viewController = viewController else {
-            return
-        }
-        let editor = EditPostViewController(blog: blog)
-        viewController.present(editor, animated: true)
+        let controller = viewController?.tabBarController as? WPTabBarController
+        controller?.showPostTab()
     }
 }
 

@@ -75,7 +75,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     }
 
     func trackPostsDisplayed() {
-        WPAnalytics.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
     }
 
 }

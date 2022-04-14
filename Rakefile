@@ -73,7 +73,23 @@ namespace :dependencies do
     task :install do
       fold('install.cocoapds') do
         pod %w[install]
+      rescue
+        puts "Attempting to fix Gutenberg-Mobile local podspecs failing to install — since that is one of the most common reason for `pod install` to fail — then retrying…\n\n"
+        Rake::Task['dependencies:pod:fix_gbm_pods'].invoke
+        pod %w[install]
       end
+    end
+
+    task :fix_gbm_pods do
+      require 'yaml'
+
+      deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
+      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}
+      gbm_pods = deps.map do |pod|
+        GBM_POD_REGEX.match(pod)&.captures&.first
+      end.compact
+
+      pod ['update', *gbm_pods]
     end
 
     task :clean do
