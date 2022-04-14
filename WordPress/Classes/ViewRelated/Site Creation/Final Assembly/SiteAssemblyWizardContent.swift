@@ -103,45 +103,39 @@ final class SiteAssemblyWizardContent: UIViewController {
     // MARK: Private behavior
 
     private func attemptSiteCreation() {
-        do {
-            let creationRequest = try siteCreator.build()
+        let creationRequest = siteCreator.build()
 
-            service.createSite(creationRequest: creationRequest) { [weak self] status in
-                guard let self = self else {
-                    return
-                }
-
-                if status == .failed {
-                    let errorType: ErrorStateViewType
-                    if self.isNetworkActive == false {
-                        errorType = .networkUnreachable
-                    } else {
-                        errorType = .siteLoading
-                    }
-                    self.installErrorStateViewController(with: errorType)
-                } else if status == .succeeded {
-                    let blog = self.service.createdBlog
-                    // Default all new blogs to use Gutenberg
-                    if let createdBlog = blog {
-                        let gutenbergSettings = GutenbergSettings()
-                        gutenbergSettings.softSetGutenbergEnabled(true, for: createdBlog, source: .onSiteCreation)
-                        gutenbergSettings.postSettingsToRemote(for: createdBlog)
-                    }
-
-                    self.contentView.siteURLString = blog?.url as String?
-                    self.contentView.siteName = blog?.displayURL as String?
-                    self.createdBlog = blog
-
-                    // This stat is part of a funnel that provides critical information.  Before
-                    // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-                    SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
-                }
-
-                self.contentView.status = status
+        service.createSite(creationRequest: creationRequest) { [weak self] status in
+            guard let self = self else {
+                return
             }
-        } catch {
-            DDLogError("Unable to proceed in Site Creation flow due to an unexpected error")
-            assertionFailure(error.localizedDescription)
+
+            if status == .failed {
+                let errorType: ErrorStateViewType
+                if self.isNetworkActive == false {
+                    errorType = .networkUnreachable
+                } else {
+                    errorType = .siteLoading
+                }
+                self.installErrorStateViewController(with: errorType)
+            } else if status == .succeeded {
+                let blog = self.service.createdBlog
+                // Default all new blogs to use Gutenberg
+                if let createdBlog = blog {
+                    let gutenbergSettings = GutenbergSettings()
+                    gutenbergSettings.softSetGutenbergEnabled(true, for: createdBlog, source: .onSiteCreation)
+                    gutenbergSettings.postSettingsToRemote(for: createdBlog)
+                }
+
+                self.contentView.siteURLString = blog?.url as String?
+                self.contentView.siteName = blog?.displayURL as String?
+                self.createdBlog = blog
+
+                // This stat is part of a funnel that provides critical information.  Before
+                // making ANY modification to this stat please refer to: p4qSXL-35X-p2
+                SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
+            }
+            self.contentView.status = status
         }
     }
 
@@ -272,7 +266,6 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {
-
                 QuickStartTourGuide.shared.setupWithDelay(for: blog, withCompletedSteps: completedSteps)
             }
         }
