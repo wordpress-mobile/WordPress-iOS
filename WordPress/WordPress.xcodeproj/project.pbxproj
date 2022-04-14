@@ -2193,6 +2193,14 @@
 		C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */; };
 		C76F48EE25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */; };
 		C76F490025BA23B000BFEC87 /* JetpackScanHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */; };
+		C77FC90928009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77FC90728009C7000726F00 /* OnboardingQuestionsPromptViewController.swift */; };
+		C77FC90A28009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77FC90728009C7000726F00 /* OnboardingQuestionsPromptViewController.swift */; };
+		C77FC90B28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C77FC90828009C7000726F00 /* OnboardingQuestionsPromptViewController.xib */; };
+		C77FC90C28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C77FC90828009C7000726F00 /* OnboardingQuestionsPromptViewController.xib */; };
+		C77FC90F2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77FC90D2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift */; };
+		C77FC9102800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77FC90D2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift */; };
+		C77FC9112800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */; };
+		C77FC9122800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */; };
 		C78543D225B889CC006CEAFB /* JetpackScanThreatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */; };
 		C789952525816F96001B7B43 /* JetpackScanCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */; };
 		C79C307C26EA915100E88514 /* ReferrerDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E3267F5003008C3B69 /* ReferrerDetailsTableViewController.swift */; };
@@ -6930,6 +6938,10 @@
 		C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryViewController.swift; sourceTree = "<group>"; };
 		C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryCoordinator.swift; sourceTree = "<group>"; };
 		C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackScanHistoryViewController.xib; sourceTree = "<group>"; };
+		C77FC90728009C7000726F00 /* OnboardingQuestionsPromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptViewController.swift; sourceTree = "<group>"; };
+		C77FC90828009C7000726F00 /* OnboardingQuestionsPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingQuestionsPromptViewController.xib; sourceTree = "<group>"; };
+		C77FC90D2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingEnableNotificationsViewController.swift; sourceTree = "<group>"; };
+		C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingEnableNotificationsViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
@@ -12642,6 +12654,7 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				C77FC90628009C3C00726F00 /* Onboarding Questions Prompt */,
 				3F170D2A2654615900F6F670 /* Blogging Reminders */,
 				FA73D7E72798766300DF24B3 /* Site Picker */,
 				1716AEFA25F2926C00CF49EC /* My Site */,
@@ -13610,6 +13623,17 @@
 				C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */,
 			);
 			path = System;
+			sourceTree = "<group>";
+		};
+		C77FC90628009C3C00726F00 /* Onboarding Questions Prompt */ = {
+			isa = PBXGroup;
+			children = (
+				C77FC90728009C7000726F00 /* OnboardingQuestionsPromptViewController.swift */,
+				C77FC90828009C7000726F00 /* OnboardingQuestionsPromptViewController.xib */,
+				C77FC90D2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift */,
+				C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */,
+			);
+			path = "Onboarding Questions Prompt";
 			sourceTree = "<group>";
 		};
 		C7E5F2422799BB1E009BC263 /* cool-blue */ = {
@@ -15854,6 +15878,7 @@
 				C7E5F2532799BD54009BC263 /* cool-blue-icon-app-60x60@3x.png in Resources */,
 				1761F17E26209AEE000815EF /* open-source-icon-app-76x76.png in Resources */,
 				17222DAE261DDDF90047B163 /* spectrum-classic-icon-app-76x76.png in Resources */,
+				C77FC9112800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib in Resources */,
 				17222D9F261DDDF90047B163 /* pink-classic-icon-app-76x76@2x.png in Resources */,
 				439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */,
 				4019B27120885AB900A0C7EB /* ActivityDetailViewController.storyboard in Resources */,
@@ -15960,6 +15985,7 @@
 				1761F17326209AEE000815EF /* open-source-dark-icon-app-60x60@2x.png in Resources */,
 				1761F18B26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png in Resources */,
 				C7E5F25A2799C2B0009BC263 /* blue-icon-app-76x76.png in Resources */,
+				C77FC90B28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */,
 				17222DA6261DDDF90047B163 /* spectrum-icon-app-76x76.png in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				17222D98261DDDF90047B163 /* pink-icon-app-83.5x83.5@2x.png in Resources */,
@@ -16383,6 +16409,7 @@
 				FABB202A2602FC2C00C8785C /* PostSignUpInterstitialViewController.xib in Resources */,
 				FABB202B2602FC2C00C8785C /* CollapsableHeaderViewController.xib in Resources */,
 				FABB202C2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.xib in Resources */,
+				C77FC90C28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */,
 				FABB202D2602FC2C00C8785C /* PostingActivityMonth.xib in Resources */,
 				FABB202E2602FC2C00C8785C /* Menus.storyboard in Resources */,
 				FABB202F2602FC2C00C8785C /* CountriesMapView.xib in Resources */,
@@ -16402,6 +16429,7 @@
 				FABB20422602FC2C00C8785C /* Reader.storyboard in Resources */,
 				FABB20442602FC2C00C8785C /* RestoreWarningView.xib in Resources */,
 				FABB20452602FC2C00C8785C /* JetpackLoginViewController.xib in Resources */,
+				C77FC9122800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib in Resources */,
 				FABB20472602FC2C00C8785C /* StatsNoDataRow.xib in Resources */,
 				FABB20482602FC2C00C8785C /* JetpackScanThreatCell.xib in Resources */,
 				FABB20492602FC2C00C8785C /* JetpackScanStatusCell.xib in Resources */,
@@ -18789,6 +18817,7 @@
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
 				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* MessageAnimator.swift in Sources */,
+				C77FC90F2800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */,
 				FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */,
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
@@ -18816,6 +18845,7 @@
 				3F3DD0AF26FCDA3100F5F121 /* PresentationButton.swift in Sources */,
 				988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
+				C77FC90928009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */,
 				8BE6F92C27EE27DB0008BDC7 /* BlogDashboardPostCardGhostCell.swift in Sources */,
 				FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */,
 				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,
@@ -20122,6 +20152,7 @@
 				FABB221E2602FC2C00C8785C /* PostEditorNavigationBarManager.swift in Sources */,
 				FABB221F2602FC2C00C8785C /* Charts+LargeValueFormatter.swift in Sources */,
 				FABB22202602FC2C00C8785C /* CustomHighlightButton.m in Sources */,
+				C77FC9102800CAC100726F00 /* OnboardingEnableNotificationsViewController.swift in Sources */,
 				FABB22212602FC2C00C8785C /* UniversalLinkRouter.swift in Sources */,
 				FABB22222602FC2C00C8785C /* LightNavigationController.swift in Sources */,
 				FA20751527A86B73001A644D /* UIScrollView+Helpers.swift in Sources */,
@@ -20146,6 +20177,7 @@
 				FABB22332602FC2C00C8785C /* ReaderTableCardCell.swift in Sources */,
 				FABB22342602FC2C00C8785C /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				FABB22352602FC2C00C8785C /* CameraCaptureCoordinator.swift in Sources */,
+				C77FC90A28009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */,
 				FABB22362602FC2C00C8785C /* HomeWidgetCache.swift in Sources */,
 				FABB22372602FC2C00C8785C /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */,
