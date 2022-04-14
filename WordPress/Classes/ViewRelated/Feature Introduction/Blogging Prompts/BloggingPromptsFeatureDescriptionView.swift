@@ -86,7 +86,7 @@ private extension BloggingPromptsFeatureDescriptionView {
         static let noteCornerRadius: CGFloat = 6
         static let cardCornerRadius: CGFloat = 10
         static let cardShadowRadius: CGFloat = 14
-        static let cardShadowOpacity: Float = 0.15
+        static let cardShadowOpacity: Float = 0.1
         static let cardShadowOffset = CGSize(width: 0, height: 10.0)
         static let cardBorderColor = UIColor(red: 0.882, green: 0.886, blue: 0.886, alpha: 1).cgColor
         static let borderWidth: CGFloat = 1
