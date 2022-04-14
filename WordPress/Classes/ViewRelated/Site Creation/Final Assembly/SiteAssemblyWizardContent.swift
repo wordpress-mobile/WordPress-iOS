@@ -251,8 +251,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
                 // present quick start, and mark site title as complete if they already selected one
-                let completedSteps: [QuickStartTour] = self?.siteCreator.information?.title == nil ? [] : [QuickStartSiteTitleTour()]
-                self?.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
+                guard let self = self else {
+                    return
+                }
+                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour()] : []
+                self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
             }
         }
     }
