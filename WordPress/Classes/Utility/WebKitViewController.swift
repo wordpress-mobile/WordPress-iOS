@@ -88,6 +88,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
+    private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
     private var barButtonTintColor: UIColor {
@@ -187,7 +188,16 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        view.pinSubviewAtCenter(stackView)
+        // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
+        let safeArea = self.view.safeAreaLayoutGuide
+
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+
+        // this constraint saved as a varible so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
+        let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        stackViewBottomAnchor = stackViewBottom
+        NSLayoutConstraint.activate([stackViewBottom])
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
@@ -299,6 +309,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationController?.isToolbarHidden = secureInteraction
 
         guard !secureInteraction else {
+            // if not a secure interaction/view, no toolbar is displayed, so deactivate constraint pinning stack view to safe area
+            stackViewBottomAnchor?.isActive = false
             return
         }
 
