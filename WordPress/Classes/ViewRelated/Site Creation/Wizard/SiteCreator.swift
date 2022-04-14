@@ -37,11 +37,9 @@ final class SiteCreator {
     ///
     func build() -> SiteCreationRequest {
 
-        let siteDesign = design?.slug ?? Strings.defaultDesignSlug
-
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
-            siteDesign: siteDesign,
+            siteDesign: design?.slug ?? Strings.defaultDesignSlug,
             verticalIdentifier: vertical?.slug,
             title: information?.title ?? Strings.defaultSiteTitle,
             tagline: information?.tagLine ?? "",
