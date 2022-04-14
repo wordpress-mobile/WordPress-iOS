@@ -17,7 +17,6 @@ extension DomainSuggestion {
 enum SiteCreationRequestAssemblyError: Error {
     case invalidSegmentIdentifier
     case invalidVerticalIdentifier
-    case invalidDomain
 }
 
 // MARK: - SiteCreator
@@ -36,11 +35,7 @@ final class SiteCreator {
     ///
     /// - Returns: an Encodable object
     ///
-    func build() throws -> SiteCreationRequest {
-
-        guard let siteName = siteName else {
-            throw SiteCreationRequestAssemblyError.invalidDomain
-        }
+    func build() -> SiteCreationRequest {
 
         let siteDesign = design?.slug ?? Strings.defaultDesignSlug
 
@@ -50,12 +45,11 @@ final class SiteCreator {
             verticalIdentifier: vertical?.slug,
             title: information?.title ?? Strings.defaultSiteTitle,
             tagline: information?.tagLine ?? "",
-            siteURLString: siteName,
+            siteURLString: siteURLString,
             isPublic: true,
             siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
-            findAvailableUrl: address == nil
+            findAvailableURL: address == nil
         )
-
         return request
     }
 
@@ -65,15 +59,12 @@ final class SiteCreator {
 
     /// Returns the domain suggestion if there's one,
     /// - otherwise a site name if there's one,
-    /// - otherwise the account name if there's one,
-    /// - otherwise nil.
-    private var siteName: String? {
+    /// - otherwise an empty string.
+    private var siteURLString: String {
 
         guard let domainSuggestion = address else {
-            let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-            return information?.title ?? accountService.defaultWordPressComAccount()?.displayName
+            return information?.title ?? ""
         }
-
         return domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
     }
 
