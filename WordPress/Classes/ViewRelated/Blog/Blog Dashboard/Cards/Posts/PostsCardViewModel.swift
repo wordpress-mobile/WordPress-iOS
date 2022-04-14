@@ -100,6 +100,7 @@ class PostsCardViewModel: NSObject {
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         performInitialLoading()
+        refresh()
     }
 
     /// Return the post at the given IndexPath
