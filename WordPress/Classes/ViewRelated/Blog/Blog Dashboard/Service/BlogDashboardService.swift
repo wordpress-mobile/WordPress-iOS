@@ -3,12 +3,6 @@ import WordPressKit
 
 class BlogDashboardService {
 
-
-    /// Holds data on the posts displayed in dashboard cards
-    /// Used to instantly update info on posts when user executes certain actions
-    /// Gets reset whenever cards are fetched from the API
-    var postsInfo: BlogDashboardPostsInfo?
-
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
     private let postsParser: BlogDashboardPostsParser
@@ -42,8 +36,6 @@ class BlogDashboardService {
                 blog.dashboardState.failedToLoad = false
 
                 self?.persistence.persist(cards: cardsDictionary, for: dotComID)
-
-                self?.postsInfo = .create(from: cards)
 
                 guard let items = self?.parse(cards, blog: blog, dotComID: dotComID) else {
                     failure?([])
@@ -88,9 +80,8 @@ private extension BlogDashboardService {
 
     func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
         var items: [DashboardCardModel] = []
-        let postsInfo = postsInfo ?? .create(from: entity)
         DashboardCard.allCases.forEach { card in
-            guard card.shouldShow(for: blog, postsInfo: postsInfo) else {
+            guard card.shouldShow(for: blog, apiResponse: entity) else {
                 return
             }
 

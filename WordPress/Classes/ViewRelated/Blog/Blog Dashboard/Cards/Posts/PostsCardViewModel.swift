@@ -5,7 +5,7 @@ import UIKit
 protocol PostsCardView: AnyObject {
     var tableView: UITableView { get }
 
-    func updatePostsInfo(hasPosts: Bool)
+    func removeIfNeeded()
 }
 
 enum PostsListSection {
@@ -220,6 +220,7 @@ private extension PostsCardViewModel {
             with: options,
             for: blog,
             success: { [weak self] posts in
+                self?.updateDashboardStateWithSuccessfulSync()
                 if posts?.count == 0 {
                     self?.updatePostsInfoIfNeeded()
                 }
@@ -278,13 +279,24 @@ private extension PostsCardViewModel {
         }
     }
 
-    /// Updates the view's posts info if the posts count reached zero and if we are not currently syncing.
+    func updateDashboardStateWithSuccessfulSync() {
+        switch status {
+        case .draft:
+            blog.dashboardState.draftsSynced = true
+        case .scheduled:
+            blog.dashboardState.scheduledSynced = true
+        default:
+            return
+        }
+    }
+
+    /// Triggers the view to remove itself if the posts count reached zero and if we are not currently syncing.
     /// - Returns: Boolean value indicating whether an update was needed or not.
     /// Returns true if update was needed, false otherwise.
     @discardableResult
     func updatePostsInfoIfNeeded() -> Bool {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
-            viewController?.updatePostsInfo(hasPosts: false)
+            viewController?.removeIfNeeded()
             return true
         }
         return false

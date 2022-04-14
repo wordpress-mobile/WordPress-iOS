@@ -30,12 +30,6 @@ class BlogDashboardViewModel {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
 
-    /// Holds data on the posts displayed in dashboard cards
-    /// Used to instantly update info on posts when user executes certain actions
-    var currentPostsInfo: BlogDashboardPostsInfo? {
-        service.postsInfo
-    }
-
     private lazy var dataSource: DashboardDataSource? = {
         guard let viewController = viewController else {
             return nil
@@ -147,11 +141,7 @@ private extension BlogDashboardViewModel {
     // In case a draft is saved and the drafts card
     // is not appearing, we show it.
     @objc func showDraftsCardIfNeeded() {
-        guard let currentPostsInfo = currentPostsInfo else {
-            return
-        }
-        if currentPostsInfo.hasDrafts == false {
-            currentPostsInfo.hasDrafts = true
+        if !currentCards.contains(where: { $0.cardType == .draftPosts }) {
             loadCardsFromCache()
         }
     }
@@ -159,11 +149,7 @@ private extension BlogDashboardViewModel {
     // In case a post is scheduled and the scheduled card
     // is not appearing, we show it.
     @objc func showScheduledCardIfNeeded() {
-        guard let currentPostsInfo = currentPostsInfo else {
-            return
-        }
-        if currentPostsInfo.hasScheduled == false {
-            currentPostsInfo.hasScheduled = true
+        if !currentCards.contains(where: { $0.cardType == .scheduledPosts }) {
             loadCardsFromCache()
         }
     }
@@ -171,11 +157,7 @@ private extension BlogDashboardViewModel {
     // In case a post is published and create_first card
     // is showing, we replace it with the create_next card.
     @objc func showNextPostCardIfNeeded() {
-        guard let currentPostsInfo = currentPostsInfo else {
-            return
-        }
-        if currentPostsInfo.hasPublished == false {
-            currentPostsInfo.hasPublished = true
+        if !currentCards.contains(where: { $0.cardType == .createPost }) {
             loadCardsFromCache()
         }
     }

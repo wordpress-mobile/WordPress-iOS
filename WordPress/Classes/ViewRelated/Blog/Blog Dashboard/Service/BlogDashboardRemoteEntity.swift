@@ -9,10 +9,10 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
         var hasPublished: Bool?
         var draft: [BlogDashboardPost]?
         var scheduled: [BlogDashboardPost]?
-
-        // We don't rely on the data from the API to show posts
-        struct BlogDashboardPost: Decodable, Hashable { }
     }
+
+    // We don't rely on the data from the API to show posts
+    struct BlogDashboardPost: Decodable, Hashable { }
 
     struct BlogDashboardStats: Decodable, Hashable {
         var views: Int?

@@ -148,13 +148,7 @@ extension DashboardPostsListCardCell: UITableViewDelegate {
 
 extension DashboardPostsListCardCell: PostsCardView {
 
-    func updatePostsInfo(hasPosts: Bool) {
-        if status == .draft {
-            viewController?.currentPostsInfo?.hasDrafts = hasPosts
-        }
-        if status == .scheduled {
-            viewController?.currentPostsInfo?.hasScheduled = hasPosts
-        }
+    func removeIfNeeded() {
         viewController?.reloadCardsLocally()
     }
 }

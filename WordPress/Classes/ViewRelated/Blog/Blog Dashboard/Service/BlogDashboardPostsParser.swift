@@ -19,19 +19,25 @@ class BlogDashboardPostsParser {
             return postsDictionary
         }
 
-        if !posts.hasDrafts {
-            // Check for local drafts
-            if let localDraftsCount = numberOfPosts(for: blog, filter: PostListFilter.draftFilter()),
-               localDraftsCount > 0 {
-                posts["draft"] = [0...localDraftsCount].map { _ in [:] }
+        if let localDraftsCount = numberOfPosts(for: blog, filter: PostListFilter.draftFilter()) {
+            if blog.dashboardState.draftsSynced { // If drafts are synced, depend on local data
+                posts["draft"] = Array(repeatElement([:], count: localDraftsCount))
+            }
+            else { // If drafts are not synced, only depend on local data if the cards API returns zero posts
+                if !posts.hasDrafts, localDraftsCount > 0 {
+                    posts["draft"] = Array(repeatElement([:], count: localDraftsCount))
+                }
             }
         }
 
-        if !posts.hasScheduled {
-            // Check for local scheduled
-            if let localScheduledCount = numberOfPosts(for: blog, filter: PostListFilter.scheduledFilter()),
-               localScheduledCount > 0 {
-                posts["scheduled"] = [0...localScheduledCount].map { _ in [:] }
+        if let localScheduledCount = numberOfPosts(for: blog, filter: PostListFilter.scheduledFilter()) {
+            if blog.dashboardState.scheduledSynced { // If scheduled posts are synced, depend on local data
+                posts["scheduled"] = Array(repeatElement([:], count: localScheduledCount))
+            }
+            else { // If scheduled posts are not synced, only depend on local data if the cards API returns zero posts
+                if !posts.hasScheduled, localScheduledCount > 0 {
+                    posts["scheduled"] = Array(repeatElement([:], count: localScheduledCount))
+                }
             }
         }
 
