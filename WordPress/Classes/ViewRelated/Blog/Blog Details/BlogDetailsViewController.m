@@ -33,7 +33,6 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
-CGFloat const FirstHeaderSectionHeight = 20.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailQuickStartSectionHeaderHeight = 48.0;
 CGFloat const BlogDetailSectionTitleHeaderHeight = 40.0;
@@ -665,10 +664,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
     BOOL hasTitle = section.title != nil && ![section.title isEmpty];
-
-    if ([[MySiteSettings alloc] isAssignedToExperiment] && sectionNum == 0 && (section.title == nil || section.title.isEmpty)) {
-        return FirstHeaderSectionHeight;
-    }
 
     if (section.showQuickStartMenu == true) {
         return BlogDetailQuickStartSectionHeaderHeight;
