@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingEnableNotificationsViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="detailView" destination="E9E-nc-B5q" id="TAQ-O9-8Aa"/>
+                <outlet property="subTitleLabel" destination="50P-8O-Ctu" id="pXS-z7-qUA"/>
+                <outlet property="titleLabel" destination="cpw-1P-GER" id="cFa-fg-OsW"/>
+                <outlet property="view" destination="Mlb-pH-BGO" id="MJw-sK-TME"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Mlb-pH-BGO">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Enable Notifications?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpw-1P-GER">
+                    <rect key="frame" x="20" y="84" width="374" height="37"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Know when your traffic spikes, or when your site passes a milestone." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="50P-8O-Ctu">
+                    <rect key="frame" x="20" y="136" width="374" height="47"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="E9E-nc-B5q">
+                    <rect key="frame" x="50" y="298" width="314" height="300"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="NE1-LX-zuk"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-r0-F4b" customClass="FancyButton" customModule="WordPressUI">
+                    <rect key="frame" x="20" y="729" width="374" height="55"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="Pou-MS-nGp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Enable Notifications">
+                        <color key="titleColor" name="AccentColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="enableButtonTapped:" destination="-1" eventType="touchUpInside" id="C2V-Lk-KrT"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TsX-gV-qHT">
+                    <rect key="frame" x="20" y="794" width="374" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="ejN-f9-XZG"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Not Now"/>
+                    <connections>
+                        <action selector="skipButtonTappe:" destination="-1" eventType="touchUpInside" id="g9V-Uu-8P9"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="tzQ-KK-xbd"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="E9E-nc-B5q" secondAttribute="trailing" constant="50" id="2NE-YV-gZb"/>
+                <constraint firstItem="50P-8O-Ctu" firstAttribute="leading" secondItem="tzQ-KK-xbd" secondAttribute="leading" constant="20" id="77w-GH-sed"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="bottom" secondItem="TsX-gV-qHT" secondAttribute="bottom" constant="24" id="BtG-i1-PTg"/>
+                <constraint firstItem="0z0-r0-F4b" firstAttribute="leading" secondItem="Mlb-pH-BGO" secondAttribute="leading" constant="20" id="CVW-mG-c3x"/>
+                <constraint firstItem="cpw-1P-GER" firstAttribute="leading" secondItem="tzQ-KK-xbd" secondAttribute="leading" constant="20" id="EHe-ho-A0h"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="cpw-1P-GER" secondAttribute="trailing" constant="20" id="IZE-Vc-DH2"/>
+                <constraint firstItem="50P-8O-Ctu" firstAttribute="top" secondItem="cpw-1P-GER" secondAttribute="bottom" constant="15" id="Inq-uo-ilF"/>
+                <constraint firstItem="E9E-nc-B5q" firstAttribute="leading" secondItem="tzQ-KK-xbd" secondAttribute="leading" constant="50" id="Onj-Gf-yjE"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="50P-8O-Ctu" secondAttribute="trailing" constant="20" id="W7A-CW-FXA"/>
+                <constraint firstItem="TsX-gV-qHT" firstAttribute="leading" secondItem="tzQ-KK-xbd" secondAttribute="leading" constant="20" id="YCR-r0-0DA"/>
+                <constraint firstItem="TsX-gV-qHT" firstAttribute="top" secondItem="0z0-r0-F4b" secondAttribute="bottom" constant="10" id="cUU-zc-3ut"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="TsX-gV-qHT" secondAttribute="trailing" constant="20" id="f37-3J-gTQ"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="0z0-r0-F4b" secondAttribute="trailing" constant="20" id="j4N-kH-CZv"/>
+                <constraint firstItem="E9E-nc-B5q" firstAttribute="centerY" secondItem="Mlb-pH-BGO" secondAttribute="centerY" id="lHY-Yu-oVm"/>
+                <constraint firstItem="cpw-1P-GER" firstAttribute="top" secondItem="tzQ-KK-xbd" secondAttribute="top" constant="40" id="nIL-FQ-Jlo"/>
+            </constraints>
+            <point key="canvasLocation" x="-287" y="142"/>
+        </view>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="zFe-kC-I8f">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vgl-h2-duq">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxd-ly-kkF">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ezz-an-oKG">
+                                    <rect key="frame" x="20" y="0.0" width="374" height="818"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="7xf-c8-bo0">
+                                            <rect key="frame" x="47" y="0.0" width="280" height="40"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="dZY-ri-JoH"/>
+                                            </constraints>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Enable Notifications?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oDr-zg-3W5">
+                                            <rect key="frame" x="46" y="50" width="282" height="37"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Receive " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TzN-uz-Cn3">
+                                            <rect key="frame" x="0.0" y="97" width="374" height="23"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="tJA-x7-edZ">
+                                            <rect key="frame" x="40" y="130" width="294" height="300"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="300" id="Edt-gC-qTg"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="RcB-yL-8Qc">
+                                            <rect key="frame" x="67" y="440" width="240" height="259"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" id="S60-dj-0Xc"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="aRY-tp-nXE" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="0.0" y="709" width="374" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="vCw-vN-zSG"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Enable Notifications">
+                                                <color key="titleColor" name="AccentColor"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="enableButtonTapped:" destination="-1" eventType="touchUpInside" id="dfy-T4-bHx"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ky-zG-AhR">
+                                            <rect key="frame" x="147" y="774" width="80" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="tfi-hg-Dcp"/>
+                                            </constraints>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" title="Not Now"/>
+                                            <connections>
+                                                <action selector="skipButtonTappe:" destination="-1" eventType="touchUpInside" id="fMr-tN-6PA"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <viewLayoutGuide key="safeArea" id="7gJ-Fn-WlF"/>
+                                    <constraints>
+                                        <constraint firstItem="TzN-uz-Cn3" firstAttribute="leading" secondItem="7gJ-Fn-WlF" secondAttribute="leading" id="DAh-tK-TI7"/>
+                                        <constraint firstItem="aRY-tp-nXE" firstAttribute="leading" secondItem="7gJ-Fn-WlF" secondAttribute="leading" id="F2N-au-5Li"/>
+                                        <constraint firstItem="7gJ-Fn-WlF" firstAttribute="trailing" secondItem="aRY-tp-nXE" secondAttribute="trailing" id="WT0-GM-KuM"/>
+                                        <constraint firstItem="7gJ-Fn-WlF" firstAttribute="trailing" secondItem="tJA-x7-edZ" secondAttribute="trailing" constant="40" id="gdF-th-Xwx"/>
+                                        <constraint firstItem="7gJ-Fn-WlF" firstAttribute="trailing" secondItem="TzN-uz-Cn3" secondAttribute="trailing" id="hk9-Nx-Ybt"/>
+                                        <constraint firstItem="tJA-x7-edZ" firstAttribute="leading" secondItem="7gJ-Fn-WlF" secondAttribute="leading" constant="40" id="nXh-FG-EWQ"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="Ezz-an-oKG" firstAttribute="top" secondItem="pxd-ly-kkF" secondAttribute="top" id="XhV-Vl-7X6"/>
+                                <constraint firstAttribute="bottom" secondItem="Ezz-an-oKG" secondAttribute="bottom" id="ceK-2b-VVt"/>
+                                <constraint firstAttribute="trailing" secondItem="Ezz-an-oKG" secondAttribute="trailing" constant="20" id="meG-sA-7Lx"/>
+                                <constraint firstItem="Ezz-an-oKG" firstAttribute="leading" secondItem="pxd-ly-kkF" secondAttribute="leading" constant="20" id="vxm-Ax-Jbf"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="centerY" secondItem="vgl-h2-duq" secondAttribute="centerY" priority="250" id="3cs-nx-Ber"/>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="centerX" secondItem="vgl-h2-duq" secondAttribute="centerX" id="DF3-3J-Icv"/>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="width" secondItem="geF-8z-1YB" secondAttribute="width" id="Eor-9U-rIG"/>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="height" secondItem="geF-8z-1YB" secondAttribute="height" id="Lzr-MJ-dPH"/>
+                        <constraint firstItem="ioB-RV-KO4" firstAttribute="trailing" secondItem="pxd-ly-kkF" secondAttribute="trailing" id="aFF-Rv-Zvu"/>
+                        <constraint firstItem="ioB-RV-KO4" firstAttribute="bottom" secondItem="pxd-ly-kkF" secondAttribute="bottom" priority="250" id="krP-4C-F3p"/>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="leading" secondItem="ioB-RV-KO4" secondAttribute="leading" id="ll8-B1-SEh"/>
+                        <constraint firstItem="pxd-ly-kkF" firstAttribute="top" secondItem="ioB-RV-KO4" secondAttribute="top" id="yLS-Ju-tj8"/>
+                    </constraints>
+                    <viewLayoutGuide key="contentLayoutGuide" id="ioB-RV-KO4"/>
+                    <viewLayoutGuide key="frameLayoutGuide" id="geF-8z-1YB"/>
+                </scrollView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="8vC-ZV-UDE"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vgl-h2-duq" firstAttribute="top" secondItem="8vC-ZV-UDE" secondAttribute="top" id="WEW-9E-rpl"/>
+                <constraint firstItem="8vC-ZV-UDE" firstAttribute="trailing" secondItem="vgl-h2-duq" secondAttribute="trailing" id="eg1-hy-hRf"/>
+                <constraint firstItem="vgl-h2-duq" firstAttribute="leading" secondItem="8vC-ZV-UDE" secondAttribute="leading" id="x4B-FO-KMc"/>
+                <constraint firstItem="8vC-ZV-UDE" firstAttribute="bottom" secondItem="vgl-h2-duq" secondAttribute="bottom" id="xl4-kQ-wtq"/>
+            </constraints>
+            <point key="canvasLocation" x="446" y="142"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
