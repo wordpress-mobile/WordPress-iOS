@@ -24,6 +24,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Configure Your WordPress App Development Environment
 
+1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file.
 1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
 1. Once completed, run `rake xcode` to open the project in Xcode.
 
