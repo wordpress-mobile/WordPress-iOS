@@ -38,7 +38,7 @@ class PostsCardViewModel: NSObject {
 
     private var syncing: (NSNumber?, BasePost.Status)?
 
-    private var currentState: PostsListSection = .posts {
+    private var currentState: PostsListSection = .loading {
         didSet {
             if oldValue != currentState {
                 forceReloadSnapshot()
@@ -275,6 +275,9 @@ private extension PostsCardViewModel {
         // Only show loading state if there are no posts at all
         if numberOfPosts == 0 && isSyncing() {
             currentState = .loading
+        }
+        else {
+            currentState = .posts
         }
     }
 
