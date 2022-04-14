@@ -278,7 +278,7 @@ task :xcode => [:dependencies] do
   sh "open #{XCODE_WORKSPACE}"
 end
 
-desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
+desc "Install and configure WordPress iOS and its dependencies - External Contributors"
 namespace :init do
 task :oss => %w[
   install:xcode:check
@@ -288,7 +288,7 @@ task :oss => %w[
   credentials:setup
 ]
 
-desc "Install and configure WordPress iOS and it's dependencies - Automattic Developers"
+desc "Install and configure WordPress iOS and its dependencies - Automattic Developers"
 task :developer => %w[
   install:xcode:check
   dependencies
