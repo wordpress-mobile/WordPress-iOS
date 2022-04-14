@@ -98,7 +98,7 @@ extension DashboardPostsListCardCell {
             assertionFailure("Cell used with wrong card type")
             return
         }
-        viewModel = PostsCardViewModel(blog: blog, status: status, viewController: self)
+        viewModel = PostsCardViewModel(blog: blog, status: status, view: self)
         viewModel?.viewDidLoad()
         tableView.dataSource = viewModel?.diffableDataSource
         viewModel?.refresh()

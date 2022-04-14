@@ -49,13 +49,13 @@ class PostsCardViewModel: NSObject {
 
     private var lastPostsSnapshot: PostsSnapshot?
 
-    private weak var viewController: PostsCardView?
+    private weak var view: PostsCardView?
 
     typealias DataSource = UITableViewDiffableDataSource<PostsListSection, PostsListItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<PostsListSection, PostsListItem>
     typealias PostsSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
-    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
         guard let self = self else {
             return nil
         }
@@ -70,9 +70,9 @@ class PostsCardViewModel: NSObject {
 
     }
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, view: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
-        self.viewController = viewController
+        self.view = view
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
@@ -84,7 +84,7 @@ class PostsCardViewModel: NSObject {
     func refresh() {
         do {
             try fetchedResultsController.performFetch()
-            viewController?.tableView.reloadData()
+            view?.tableView.reloadData()
             updatePostsInfoIfNeeded()
             showLoadingIfNeeded()
         } catch {
@@ -295,7 +295,7 @@ private extension PostsCardViewModel {
     @discardableResult
     func updatePostsInfoIfNeeded() -> Bool {
         if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
-            viewController?.removeIfNeeded()
+            view?.removeIfNeeded()
             return true
         }
         return false
@@ -330,7 +330,7 @@ private extension PostsCardViewModel {
 
 extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
+        guard let dataSource = view?.tableView.dataSource as? DataSource else {
             return
         }
 
@@ -347,7 +347,7 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     }
 
     private func forceReloadSnapshot() {
-        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
+        guard let dataSource = view?.tableView.dataSource as? DataSource else {
             return
         }
         let currentSnapshot = dataSource.snapshot() as Snapshot
@@ -392,9 +392,9 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     }
 
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
-        let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
+        let shouldAnimate = view?.tableView.numberOfSections != 0 && view?.tableView.numberOfRows(inSection: 0) != 0
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: shouldAnimate, completion: nil)
-        viewController?.tableView.allowsSelection = currentState == .posts
+        view?.tableView.allowsSelection = currentState == .posts
     }
 }
