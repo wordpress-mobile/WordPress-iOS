@@ -281,7 +281,7 @@ extension SiteNameView: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // disable the continue button if the text is either empty or contains only spaces, newlines or tabs.
-        continueButton.isEnabled = !searchText.filter { !$0.isWhitespace }.isEmpty
+        continueButton.isEnabled = searchText.first(where: { !$0.isWhitespace }) != nil
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
