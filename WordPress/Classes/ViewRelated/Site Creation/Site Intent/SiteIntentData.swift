@@ -33,7 +33,7 @@ struct SiteIntentData {
         .init("sports", NSLocalizedString("Sports", comment: "Sports site intent topic"), "⚽"),
         .init("technology", NSLocalizedString("Technology", comment: "Technology site intent topic"), "💻"),
         .init("writing_poetry", NSLocalizedString("Writing & Poetry", comment: "Writing & Poetry site intent topic"), "📓")
-    ]
+    ].sorted(by: { $0.localizedTitle < $1.localizedTitle })
 
     static let defaultVerticals: [SiteIntentVertical] = {
         allVerticals.filter { $0.isDefault }

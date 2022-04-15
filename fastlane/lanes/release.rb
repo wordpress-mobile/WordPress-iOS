@@ -63,9 +63,16 @@ platform :ios do
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
 
-    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
-    push_to_git_remote(tags: false)
-    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the beta build?',
+      bypass: ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+    )
+      push_to_git_remote(tags: false)
+      trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    else
+      UI.message('Aborting code freeze completion. See you later.')
+    end
+
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -233,4 +240,15 @@ def print_release_notes_reminder
   MSG
 
   message.lines.each { |l| UI.important(l.chomp) }
+end
+
+# Wrapper around Fastlane `UI.confirm` that adds the option to bypass the
+# prompt if a given flag is true
+#
+# @param [String] message The text to pass to `UI.confirm` to show the user
+# @param [Boolean] bypass A flag that allows bypassing the `UI.confirm` prompt, i.e. acting as if the prompt returned `true`
+def prompt_for_confirmation(message:, bypass:)
+  return true if bypass
+
+  UI.confirm(message)
 end

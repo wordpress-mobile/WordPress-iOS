@@ -118,6 +118,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // This is public so its delegate can be set directly.
     @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
+    @IBOutlet private weak var moderationBarView: UIView!
 
     @IBOutlet private weak var highlightBarView: UIView!
 
@@ -389,7 +390,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateModerationBarVisibility() {
-        moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
+        moderationBarView.isHidden = !isModerationEnabled || hidesModerationBar
     }
 
     func updateContainerLeadingConstraint() {
