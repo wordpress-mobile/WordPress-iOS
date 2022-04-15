@@ -2,15 +2,6 @@ import Foundation
 import WordPressKit
 import AutomatticTracks
 
-extension SiteIntentAB.Variant {
-    var tracksProperty: String {
-        switch self {
-        case .treatment: return "treatment"
-        case .control: return "control"
-        }
-    }
-}
-
 extension Variation {
     var tracksProperty: String {
         switch self {
@@ -56,11 +47,6 @@ class SiteCreationAnalyticsHelper {
 
     static func trackSiteIntentCanceled() {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
-    }
-
-    static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
-        let properties = [variationKey: variant.tracksProperty]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
     }
 
     // MARK: - Site Name
