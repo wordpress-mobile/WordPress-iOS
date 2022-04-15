@@ -80,7 +80,7 @@
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Not Now"/>
                     <connections>
-                        <action selector="skipButtonTappe:" destination="-1" eventType="touchUpInside" id="g9V-Uu-8P9"/>
+                        <action selector="skipButtonTapped:" destination="-1" eventType="touchUpInside" id="pFf-mg-T7T"/>
                     </connections>
                 </button>
             </subviews>

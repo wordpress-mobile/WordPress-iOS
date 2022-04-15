@@ -5,10 +5,30 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var detailView: UIView!
 
-    var promptSelection: OnboardingOption?
+    var selectedOption: OnboardingOption = .notifications
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        applyStyles()
+        updateContent()
+    }
+}
+
+// MARK: - IBAction's
+extension OnboardingEnableNotificationsViewController {
+    @IBAction func enableButtonTapped(_ sender: Any) {
+        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
+            DispatchQueue.main.async {
+                self.dismiss(animated: true)
+            }
+        }
+    }
+
+    @IBAction func skipButtonTapped(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+}
 
 // MARK: - Trait Collection Handling
 extension OnboardingEnableNotificationsViewController {
@@ -25,72 +45,77 @@ extension OnboardingEnableNotificationsViewController {
         updateContent(for: traitCollection)
     }
 }
+
+// MARK: - Private Helpers
+private extension OnboardingEnableNotificationsViewController {
+    func applyStyles() {
         navigationController?.navigationBar.isHidden = true
+
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
         titleLabel.textColor = .text
 
-        subTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .regular)
+        subTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .regular)
         subTitleLabel.textColor = .text
+    }
 
-        let option = promptSelection ?? .notifications
-
+    func updateContent() {
         let text: String
-        let detail: UIView
+        let notificationContent: UnifiedPrologueNotificationsContent?
 
-        switch option {
+        switch selectedOption {
         case .stats:
-            text = "Know when your traffic spikes, or when your site passes a milestone."
-            detail = UIView.embedSwiftUIView(UnifiedPrologueStatsContentView())
-
+            text = StatsStrings.subTitle
+            notificationContent = .init(topElementTitle: StatsStrings.notificationTopTitle,
+                                        middleElementTitle: StatsStrings.notificationMiddleTitle,
+                                        bottomElementTitle: StatsStrings.notificationBottomTitle,
+                                        topImage: "view-milestone-1k",
+                                        middleImage: "traffic-surge-icon")
         case .writing:
-            text = "Stay in touch with your audience with like and comment notifications."
-            detail = UIView.embedSwiftUIView(UnifiedPrologueNotificationsContentView())
+            text = WritingStrings.subTitle
+            notificationContent = nil
 
-        case .notifications:
-            text = "Tap the Allow button to enable notifications."
-            detail = UIView.embedSwiftUIView(UnifiedPrologueNotificationsContentView())
+        case .notifications, .other:
+            text = DefaultStrings.subTitle
+            notificationContent = nil
 
         case .reader:
-            text = "Know when your favorite authors post new content."
-            detail = UIView.embedSwiftUIView(UnifiedPrologueReaderContentView())
-
-        case .other:
-            text = "Tap the Allow button to enable notifications."
-            detail = UIView.embedSwiftUIView(UnifiedPrologueNotificationsContentView())
+            text = ReaderStrings.subTitle
+            notificationContent = .init(topElementTitle: ReaderStrings.notificationTopTitle,
+                                        middleElementTitle: ReaderStrings.notificationMiddleTitle,
+                                        bottomElementTitle: ReaderStrings.notificationBottomTitle)
         }
+
 
         subTitleLabel.text = text
 
-        detail.frame.size.width = detailView.frame.width
-        detailView.addSubview(detail)
-
-        detail.pinSubviewToAllEdges(detailView)
-
-        if option == .notifications {
-            
-        }
+        // Convert the image view to a UIView and embed it
+        let imageView = UIView.embedSwiftUIView(UnifiedPrologueNotificationsContentView(notificationContent))
+        imageView.frame.size.width = detailView.frame.width
+        detailView.addSubview(imageView)
+        imageView.pinSubviewToAllEdges(detailView)
     }
+}
 
-    private func showPrompt() {
-        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
-            DispatchQueue.main.async {
-                self.dismiss(animated: true)
-            }
-        }
-    }
+// MARK: - Constants / Strings
+private struct StatsStrings {
+    static let subTitle = NSLocalizedString("Know when your site is getting more traffic, new followers, or when it passes a new milestone!", comment: "Subtitle giving the user more context about why to enable notifications.")
 
-    @IBAction func enableButtonTapped(_ sender: Any) {
-        showPrompt()
-    }
+    static let notificationTopTitle = NSLocalizedString("Congratulations! Your site passed *1000 all-time* views!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationMiddleTitle = NSLocalizedString("Your site appears to be getting *more traffic* than usual!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* is now following your site!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+}
 
-    @IBAction func skipButtonTappe(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-    }
+private struct WritingStrings {
+    static let subTitle = NSLocalizedString("Stay in touch with your audience with like and comment notifications.", comment: "Subtitle giving the user more context about why to enable notifications.")
+}
 
-    private func configure(button: UIButton) {
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
-        button.setTitleColor(.text, for: .normal)
-        button.titleLabel?.textAlignment = .left
-        button.titleEdgeInsets.left = 10
-    }
+private struct DefaultStrings {
+    static let subTitle = NSLocalizedString("Stay in touch with like and comment notifications.", comment: "Subtitle giving the user more context about why to enable notifications.")
+}
+
+private struct ReaderStrings {
+    static let subTitle = NSLocalizedString("Know when your favorite authors post new content.", comment: "Subtitle giving the user more context about why to enable notifications.")
+    static let notificationTopTitle = NSLocalizedString("*Madison Ruiz* added a new post to their site", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationMiddleTitle = NSLocalizedString("You received *50 likes* on your comment", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* responded to your comment", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
 }
