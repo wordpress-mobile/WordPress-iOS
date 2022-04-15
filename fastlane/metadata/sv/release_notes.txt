@@ -1,0 +1,7 @@
+Stora nyheter – skärmen Min webbplats blev precis mycket bättre. Den innehåller nu två nya flikar som du kan växla mellan: Webbplatsmeny och Hem.
+
+Fliken Hem innehåller även praktiska kort med mer information om din webbplats, inklusive utkast, schemalagda inlägg och dagens statistik. Om du har bråttom kan du dessutom enkelt gå till en annan sektion i appen.
+
+Vi älskar tydlig kommunikation. Därför har vi lagt till en ny felmeddelandetext till fotouppladdningsprocessen – om du skulle försöka ladda upp ett foto från din enhet utan att först ge appen tillåtelse att komma åt dina foton.
+
+Slutligen, när notiser visas i appen tonas de nu ut på ett snyggare sätt när du inte längre behöver dem. Utgång till vänster om scenen.
