@@ -7,6 +7,7 @@
 * [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]
 * [*] Block Editor: Remove banner error notification on upload failure [https://github.com/WordPress/gutenberg/pull/39694]
 * [*] My Site: display site name in My Site screen nav title [#18373]
+* [*] [internal] Site creation: Adds a new screen asking the user the name of the site [#18280]
 
 19.6
 -----
