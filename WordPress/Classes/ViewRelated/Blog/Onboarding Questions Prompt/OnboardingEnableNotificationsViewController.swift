@@ -10,6 +10,21 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+// MARK: - Trait Collection Handling
+extension OnboardingEnableNotificationsViewController {
+    func updateContent(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+
+        // Hide the detail image if the text is too large
+        detailView.isHidden = contentSize.isAccessibilityCategory
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateContent(for: traitCollection)
+    }
+}
         navigationController?.navigationBar.isHidden = true
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
         titleLabel.textColor = .text
