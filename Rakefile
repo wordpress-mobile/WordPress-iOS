@@ -18,7 +18,36 @@ desc 'Install required dependencies'
 task :dependencies => %w[dependencies:check assets:check]
 
 namespace :dependencies do
-  task :check => %w[bundler:check bundle:check credentials:apply pod:check lint:check]
+  task :check => %w[ruby:check bundler:check bundle:check credentials:apply pod:check lint:check]
+
+  namespace :ruby do
+    task :check do
+      unless ruby_version_is_match?
+        #show a warning that Ruby doesn't match .ruby-version
+        puts '====================================================================================='
+        puts 'Warning: Your local Ruby version doesn\'t match .ruby-version'
+        puts ''
+        puts ".ruby-version:\t#{get_ruby_repo_version}"
+        puts "Your Ruby:\t#{RUBY_VERSION}"
+        puts ''
+        puts 'Refer to the WPiOS docs on setting the exact version with rbenv.'
+        puts ''
+        puts 'Press enter to continue anyway'
+        puts '====================================================================================='
+        STDIN.gets.strip
+      end
+    end
+
+    #compare repo Ruby version to local
+    def ruby_version_is_match?
+      get_ruby_repo_version == RUBY_VERSION
+    end
+
+    #get Ruby version defined in the repo
+    def get_ruby_repo_version
+      repo_version = File.read('./.ruby-version').strip
+    end
+  end
 
   namespace :bundler do
     task :check do
@@ -73,7 +102,23 @@ namespace :dependencies do
     task :install do
       fold('install.cocoapds') do
         pod %w[install]
+      rescue
+        puts "Attempting to fix Gutenberg-Mobile local podspecs failing to install — since that is one of the most common reason for `pod install` to fail — then retrying…\n\n"
+        Rake::Task['dependencies:pod:fix_gbm_pods'].invoke
+        pod %w[install]
       end
+    end
+
+    task :fix_gbm_pods do
+      require 'yaml'
+
+      deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
+      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}
+      gbm_pods = deps.map do |pod|
+        GBM_POD_REGEX.match(pod)&.captures&.first
+      end.compact
+
+      pod ['update', *gbm_pods]
     end
 
     task :clean do
@@ -262,7 +307,7 @@ task :xcode => [:dependencies] do
   sh "open #{XCODE_WORKSPACE}"
 end
 
-desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
+desc "Install and configure WordPress iOS and its dependencies - External Contributors"
 namespace :init do
 task :oss => %w[
   install:xcode:check
@@ -272,7 +317,7 @@ task :oss => %w[
   credentials:setup
 ]
 
-desc "Install and configure WordPress iOS and it's dependencies - Automattic Developers"
+desc "Install and configure WordPress iOS and its dependencies - Automattic Developers"
 task :developer => %w[
   install:xcode:check
   dependencies
@@ -307,7 +352,7 @@ namespace :install do
           puts 'Xcode installed'
         end
 
-        puts 'Checking CI recommendded installed Xcode version'
+        puts 'Checking CI recommended installed Xcode version'
 
         unless xcode_version_is_correct?
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake

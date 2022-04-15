@@ -200,6 +200,13 @@ extension SitePickerViewController {
 
             self?.blogDetailHeaderView.setTitleLoading(false)
             self?.blogDetailHeaderView.refreshSiteTitle()
+
+            guard let parent = self?.parent as? MySiteViewController else {
+                return
+            }
+
+            parent.updateNavigationTitle(for: blog)
+
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
             self?.blogDetailHeaderView.setTitleLoading(false)

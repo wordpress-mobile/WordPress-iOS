@@ -79,7 +79,7 @@ final class SiteCreationWizardLauncher {
 
     private func trackVariants() {
         SiteCreationAnalyticsHelper.trackSiteIntentExperiment(intentVariant)
-        // TODO: Track Site Name
+        SiteCreationAnalyticsHelper.trackSiteNameExperiment(nameVariant)
     }
 
     private func initStep(_ step: SiteCreationStep) -> WizardStep {

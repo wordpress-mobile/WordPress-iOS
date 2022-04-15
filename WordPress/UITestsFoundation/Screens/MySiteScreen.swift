@@ -77,7 +77,8 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func removeSelfHostedSite() {
-        app.cells[ElementStringIDs.removeSiteButton].tap()
+        app.tables[ElementStringIDs.blogTable].swipeUp(velocity: .fast)
+        app.cells[ElementStringIDs.removeSiteButton].doubleTap()
 
         let removeButton: XCUIElement
         if XCUIDevice.isPad {
