@@ -328,6 +328,13 @@ import Foundation
     case enhancedSiteCreationIntentQuestionViewed
     case enhancedSiteCreationIntentQuestionExperiment
 
+    // Site Name
+    case enhancedSiteCreationSiteNameCanceled
+    case enhancedSiteCreationSiteNameSkipped
+    case enhancedSiteCreationSiteNameEntered
+    case enhancedSiteCreationSiteNameViewed
+    case enhancedSiteCreationSiteNameExperiment
+
     // Quick Start
     case quickStartStarted
 
@@ -887,6 +894,18 @@ import Foundation
             return "enhanced_site_creation_intent_question_viewed"
         case .enhancedSiteCreationIntentQuestionExperiment:
             return "enhanced_site_creation_intent_question_experiment"
+
+        // Site Name
+        case .enhancedSiteCreationSiteNameCanceled:
+            return "enhanced_site_creation_site_name_canceled"
+        case .enhancedSiteCreationSiteNameSkipped:
+            return "enhanced_site_creation_site_name_skipped"
+        case .enhancedSiteCreationSiteNameEntered:
+            return "enhanced_site_creation_site_name_entered"
+        case .enhancedSiteCreationSiteNameViewed:
+            return "enhanced_site_creation_site_name_viewed"
+        case .enhancedSiteCreationSiteNameExperiment:
+            return "enhanced_site_creation_site_name_experiment"
 
         } // END OF SWITCH
     }

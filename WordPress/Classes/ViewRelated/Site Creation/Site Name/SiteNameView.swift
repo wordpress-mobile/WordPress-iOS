@@ -6,7 +6,7 @@ import WordPressShared
 class SiteNameView: UIView {
 
     private var siteVerticalName: String
-    private let onContinue: (String?) -> Void
+    let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -89,7 +89,7 @@ class SiteNameView: UIView {
     }()
 
     @objc private func navigateToNextScreen() {
-        onContinue(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines))
+        onContinue(searchBar.text)
     }
 
     private lazy var continueButtonView: UIView = {
