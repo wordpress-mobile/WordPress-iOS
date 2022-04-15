@@ -41,7 +41,7 @@ final class SiteCreator {
             segmentIdentifier: segment?.identifier,
             siteDesign: design?.slug ?? Strings.defaultDesignSlug,
             verticalIdentifier: vertical?.slug,
-            title: information?.title ?? Strings.defaultSiteTitle,
+            title: information?.title ?? "",
             tagline: information?.tagLine ?? "",
             siteURLString: siteURLString,
             isPublic: true,
@@ -68,7 +68,6 @@ final class SiteCreator {
 
     private enum Strings {
         static let defaultDesignSlug = "default"
-        static let defaultSiteTitle = NSLocalizedString("Site Title", comment: "Site info. Title")
         static let siteCreationFlowForNoAddress = "with-design-picker"
     }
 }
