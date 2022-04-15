@@ -16,17 +16,19 @@ class WordPressAuthenticationManager: NSObject {
     private let authenticationHandler: AuthenticationHandler?
 
     private let quickStartSettings: QuickStartSettings
-
+    private let jetpackInstallPromptSettings: JetpackInstallPromptSettings
     private let recentSiteService: RecentSitesService
 
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
          quickStartSettings: QuickStartSettings = QuickStartSettings(),
-         recentSiteService: RecentSitesService = RecentSitesService()) {
+         recentSiteService: RecentSitesService = RecentSitesService(),
+         jetpackInstallPromptSettings: JetpackInstallPromptSettings = JetpackInstallPromptSettings()) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
         self.quickStartSettings = quickStartSettings
         self.recentSiteService = recentSiteService
+        self.jetpackInstallPromptSettings = jetpackInstallPromptSettings
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -343,7 +345,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+
+            guard shouldPresentJetpackInstallPrompt(for: blog) else {
+                presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+                return
+            }
+
+            presentJetpackInstallPrompt(for: blog, in: navigationController, onDismiss: onDismiss)
             return
         }
 
@@ -438,6 +446,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return true
         }
 
+        return false
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
@@ -580,6 +589,45 @@ private extension WordPressAuthenticationManager {
     }
 }
 
+// MARK: - Jetpack Install Prompt
+//
+private extension WordPressAuthenticationManager {
+    private func shouldPresentJetpackInstallPrompt(for blog: Blog) -> Bool {
+        return jetpackInstallPromptSettings.canDisplay(for: blog)
+    }
+
+    private func presentJetpackInstallPrompt(for blog: Blog,
+                                             in navigationController: UINavigationController,
+                                             onDismiss: (() -> Void)? = nil) {
+        let viewController = JetpackInstallPromptViewController(blog: blog)
+        let windowManager = self.windowManager
+
+        viewController.dismiss = { dismissAction in
+            let completion: (() -> Void)?
+
+            switch dismissAction {
+            case .noThanks:
+                self.jetpackInstallPromptSettings.setPromptWasDismissed(true, for: blog)
+                completion = nil
+            case .install:
+                completion = {
+                    NotificationCenter.default.post(name: .installJetpack, object: nil)
+                }
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
+
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
 
 // MARK: - WordPressAuthenticatorManager
 //

@@ -152,6 +152,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
+        subscribeToJetpackInstallNotifications()
         subscribeToContentSizeCategory()
         startObservingQuickStart()
     }
@@ -249,6 +250,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
+    
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
         let hideSegmentedControl =
@@ -398,7 +400,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    private func syncBlogs() {
+    func syncBlogs() {
         guard let account = defaultAccount() else {
             return
         }

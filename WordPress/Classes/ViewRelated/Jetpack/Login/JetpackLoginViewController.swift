@@ -62,6 +62,10 @@ class JetpackLoginViewController: UIViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupControls()
+
+        if promptType == .installPrompt {
+            openJetpackRemoteInstall()
+        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -188,6 +192,9 @@ class JetpackLoginViewController: UIViewController {
             properties["source"] = "stats"
         case .notifications:
             properties["source"] = "notifications"
+
+        case .installPrompt:
+            properties["source"] = "install_prompt"
         }
 
         if let blog = blog {
@@ -209,13 +216,25 @@ class JetpackLoginViewController: UIViewController {
 
     private func jetpackIsCanceled() {
         trackStat(.installJetpackCanceled)
-        dismiss(animated: true, completion: completionBlock)
+
+        guard let completionBlock = completionBlock else {
+            dismiss(animated: true)
+            return
+        }
+
+        completionBlock()
     }
 
     private func jetpackIsCompleted() {
         trackStat(.installJetpackCompleted)
         trackStat(.signedInToJetpack, blog: blog)
-        dismiss(animated: true, completion: completionBlock)
+
+        guard let completionBlock = completionBlock else {
+            dismiss(animated: true)
+            return
+        }
+
+        completionBlock()
     }
 
     private func openJetpackRemoteInstall() {
@@ -223,9 +242,16 @@ class JetpackLoginViewController: UIViewController {
         let controller = JetpackRemoteInstallViewController(blog: blog,
                                                             delegate: self,
                                                             promptType: promptType)
-        let navController = UINavigationController(rootViewController: controller)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+
+        // If we're already in a nav controller then push don't present again
+        guard promptType == .installPrompt, let navController = navigationController else {
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+            return
+        }
+
+        navController.pushViewController(controller, animated: false)
     }
 
     // MARK: - Actions
@@ -277,12 +303,16 @@ extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
 public enum JetpackLoginPromptType {
     case stats
     case notifications
+    case installPrompt
 
     var image: UIImage? {
         switch self {
         case .stats:
             return UIImage(named: "wp-illustration-stats")
         case .notifications:
+            return UIImage(named: "wp-illustration-notifications")
+        case .installPrompt:
+            // This shouldn't be seen
             return UIImage(named: "wp-illustration-notifications")
         }
     }
@@ -295,6 +325,10 @@ public enum JetpackLoginPromptType {
         case .notifications:
             return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from notifications")
+        case .installPrompt:
+            // This shouldn't be seen
+            return ""
+
         }
     }
 }
