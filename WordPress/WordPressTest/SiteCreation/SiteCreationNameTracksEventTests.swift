@@ -141,10 +141,10 @@ class SiteCreationNameTracksEventTests: XCTestCase {
     private func getContinueButton(from view: UIView) -> UIButton? {
         var continueButton: UIButton?
 
-        for subview in view.subviews {
-            continueButton = getContinueButton(from: subview)
+        view.subviews.forEach {
+            continueButton = getContinueButton(from: $0)
 
-            if let searchBar = subview as? UISearchBar,
+            if let searchBar = $0 as? UISearchBar,
                 let button = searchBar.inputAccessoryView?.subviews.first as? UIButton {
                 continueButton = button
             }
