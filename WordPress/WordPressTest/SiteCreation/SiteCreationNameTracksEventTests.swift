@@ -151,5 +151,4 @@ class SiteCreationNameTracksEventTests: XCTestCase {
         }
         return continueButton
     }
-
 }
