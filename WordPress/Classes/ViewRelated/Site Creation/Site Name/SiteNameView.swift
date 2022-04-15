@@ -6,7 +6,7 @@ import WordPressShared
 class SiteNameView: UIView {
 
     private var siteVerticalName: String
-    let onContinue: (String?) -> Void
+    private let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!

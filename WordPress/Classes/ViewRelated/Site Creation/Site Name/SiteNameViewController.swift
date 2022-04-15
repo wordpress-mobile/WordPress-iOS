@@ -5,11 +5,20 @@ import UIKit
 class SiteNameViewController: UIViewController {
 
     private let siteNameViewFactory: () -> UIView
+    private let onView: () -> Void
     private let onSkip: () -> Void
+    private let onCancel: () -> Void
 
-    init(siteNameViewFactory: @escaping () -> UIView, onSkip: @escaping () -> Void) {
+    init(
+        siteNameViewFactory: @escaping () -> UIView,
+        onView: @escaping () -> Void,
+        onSkip: @escaping () -> Void,
+        onCancel: @escaping () -> Void
+    ) {
         self.siteNameViewFactory = siteNameViewFactory
+        self.onView = onView
         self.onSkip = onSkip
+        self.onCancel = onCancel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -29,14 +38,10 @@ class SiteNameViewController: UIViewController {
         setTitleForTraitCollection()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        SiteCreationAnalyticsHelper.trackSiteNameViewed()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.becomeFirstResponder()
+        onView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -44,12 +49,8 @@ class SiteNameViewController: UIViewController {
 
         if isMovingFromParent {
             // Called when popping from a nav controller, e.g. hitting "Back"
-            viewMovingFromParent()
+            onCancel()
         }
-    }
-
-    func viewMovingFromParent() {
-        SiteCreationAnalyticsHelper.trackSiteNameCanceled()
     }
 }
 

@@ -7,9 +7,14 @@ final class SiteNameStep: WizardStep {
     private let creator: SiteCreator
 
     var content: UIViewController {
-        SiteNameViewController(siteNameViewFactory: makeSiteNameView) { [weak self] in
-            SiteCreationAnalyticsHelper.trackSiteNameSkipped()
-            self?.didSet(siteName: nil)
+        weak var weakSelf = self
+
+        return SiteNameViewController(siteNameViewFactory: makeSiteNameView) {
+            weakSelf?.didView()
+        } onSkip: {
+            weakSelf?.didSkip()
+        } onCancel: {
+            weakSelf?.didCancel()
         }
     }
 
@@ -17,7 +22,20 @@ final class SiteNameStep: WizardStep {
         self.creator = creator
     }
 
-    private func didSet(siteName: String?) {
+    func didView() {
+        SiteCreationAnalyticsHelper.trackSiteNameViewed()
+    }
+
+    func didCancel() {
+        SiteCreationAnalyticsHelper.trackSiteNameCanceled()
+    }
+
+    func didSkip() {
+        SiteCreationAnalyticsHelper.trackSiteNameSkipped()
+        didSet(siteName: nil)
+    }
+
+    func didSet(siteName: String?) {
         if let siteName = siteName {
             SiteCreationAnalyticsHelper.trackSiteNameEntered(siteName)
         }
