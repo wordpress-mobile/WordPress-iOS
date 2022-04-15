@@ -48,7 +48,7 @@ class OnboardingQuestionsPromptViewController: UIViewController, UINavigationCon
 
     private func pushToNotificationsPrompt(option: OnboardingOption ) {
         let controller = OnboardingEnableNotificationsViewController()
-        controller.promptSelection = option
+        controller.selectedOption = option
         navigationController?.pushViewController(controller, animated: true)
     }
 }
