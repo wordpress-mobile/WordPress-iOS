@@ -7,7 +7,7 @@ import XCTest
 
 class SiteCreatorTests: XCTestCase {
 
-    private var siteCreator: SiteCreator?
+    private var siteCreator: SiteCreator!
 
     override func setUp() {
         super.setUp()
@@ -45,25 +45,25 @@ class SiteCreatorTests: XCTestCase {
     }
 
     // If a domain suggestion is present, it should be used as site address
-    // siteCreationFlow should be nil, and findAvailableUrl should be false
+    // siteCreationFlow should be nil, and findAvailableUrl should be false.
     func testRequestUsesDomainSuggestionIfAvailable() {
         // Given
         XCTAssertNotNil(siteCreator)
         // When
-        let request = siteCreator!.build()
+        let request = siteCreator.build()
         // Then
         XCTAssertNil(request.siteCreationFlow)
         XCTAssertFalse(request.findAvailableURL)
     }
 
     // If a domain suggestion is NOT present, the site name should be used to find a valid URL.
-    // siteCreationFlow should be NOT nil, and findAvailableUrl should be true
+    // siteCreationFlow should be NOT nil, and findAvailableUrl should be true.
     func testRequestUsesSiteNameWithNoDomainSuggestion() {
         // Given
         XCTAssertNotNil(siteCreator)
         // When
-        siteCreator!.address = nil
-        let request = siteCreator!.build()
+        siteCreator.address = nil
+        let request = siteCreator.build()
         // Then
         XCTAssertNotNil(request.siteCreationFlow)
         XCTAssertTrue(request.findAvailableURL)
@@ -71,14 +71,14 @@ class SiteCreatorTests: XCTestCase {
     }
 
     // if neither a domain suggestion nor a site name are available, the request
-    // will fallback to an empty string
-    // siteCreationFlow should be NOT nil, and findAvailableUrl should be true
+    // will fallback to an empty string.
+    // siteCreationFlow should be NOT nil, and findAvailableUrl should be true.
     func testRequesFallsbackWithNoDomainSuggestionAndNoSiteName() {
         // Given
         XCTAssertNotNil(siteCreator)
         // When
-        siteCreator!.address = nil
-        siteCreator?.information = nil
+        siteCreator.address = nil
+        siteCreator.information = nil
         let request = siteCreator!.build()
         // Then
         XCTAssertNotNil(request.siteCreationFlow)
