@@ -44,12 +44,8 @@ class SiteNameViewController: UIViewController {
 
         if isMovingFromParent {
             // Called when popping from a nav controller, e.g. hitting "Back"
-            viewMovingFromParent()
+            SiteCreationAnalyticsHelper.trackSiteNameCanceled()
         }
-    }
-
-    func viewMovingFromParent() {
-        SiteCreationAnalyticsHelper.trackSiteNameCanceled()
     }
 }
 

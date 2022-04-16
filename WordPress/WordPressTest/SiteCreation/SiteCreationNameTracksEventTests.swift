@@ -104,11 +104,20 @@ class SiteCreationNameTracksEventTests: XCTestCase {
     func testSiteNameTracksEventFiresWhenCanceled() throws {
 
         // Given
-        let siteNameViewController = try siteNameViewControllerMaker()
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameCanceled.value
+        /// same as SiteNameViewController, but simulates moving from parent
+        class MockSiteNameViewController: SiteNameViewController {
+            override var isMovingFromParent: Bool {
+                true
+            }
+        }
+        let siteNameViewController = MockSiteNameViewController(
+            siteNameViewFactory: { SiteNameView(siteVerticalName: "",
+                                               onContinue: {_ in }) },
+            onSkip: { })
 
+        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameCanceled.value
         // When
-        siteNameViewController.viewMovingFromParent()
+        siteNameViewController.viewWillDisappear(false)
 
         // Then
         let trackedEvent = try XCTUnwrap(TestAnalyticsTracker.tracked.last?.event)
