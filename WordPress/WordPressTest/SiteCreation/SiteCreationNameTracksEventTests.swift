@@ -116,6 +116,7 @@ class SiteCreationNameTracksEventTests: XCTestCase {
             onSkip: { })
 
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameCanceled.value
+
         // When
         siteNameViewController.viewWillDisappear(false)
 
