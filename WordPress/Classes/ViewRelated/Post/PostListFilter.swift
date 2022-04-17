@@ -109,10 +109,10 @@ import Foundation
     /// - existing draft/pending posts transitioned to another status (e.g. published)
     ///   but not uploaded yet
     ///
-    @objc class func draftFilter() -> PostListFilter {
+    @objc class func draftFilter(includeRecentlyTrashed: Bool = true) -> PostListFilter {
         let filterType: Status = .draft
         let statuses: [BasePost.Status] = [.draft, .pending]
-
+        let statusesAfterSync: [BasePost.Status] = includeRecentlyTrashed ? [.draft, .pending, .trash] : [.draft, .pending]
         let statusesForLocalDrafts: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
 
         let query =
@@ -127,7 +127,7 @@ import Foundation
             + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
         let predicate = NSPredicate(format: query,
                                     statuses.strings,
-                                    statuses.strings,
+                                    statusesAfterSync.strings,
                                     BasePost.defaultPostIDValue,
                                     statusesForLocalDrafts.strings,
                                     BasePost.defaultPostIDValue,

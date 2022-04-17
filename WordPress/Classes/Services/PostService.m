@@ -604,6 +604,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     
     RemotePost *remotePost = [self remotePostWithPost:post];
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
+    post.statusAfterSync = PostStatusTrash;
+    post.latest.statusAfterSync = PostStatusTrash;
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
 
