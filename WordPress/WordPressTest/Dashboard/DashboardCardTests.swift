@@ -9,7 +9,7 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
     }
 }
 
-class DashboardCardTests: XCTestCase {
+class ZDashboardCardTests: XCTestCase {
 
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
@@ -282,8 +282,8 @@ class DashboardCardTests: XCTestCase {
     // MARK: Helpers
 
     private func buildEntity(hasDrafts: Bool, hasScheduled: Bool, hasPublished: Bool) -> BlogDashboardRemoteEntity {
-        let drafts = hasDrafts ? [BlogDashboardRemoteEntity.BlogDashboardPosts.BlogDashboardPost()] : []
-        let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPosts.BlogDashboardPost()] : []
+        let drafts = hasDrafts ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
+        let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
         return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil)
     }

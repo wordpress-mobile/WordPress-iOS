@@ -12,8 +12,8 @@ enum DashboardCard: String, CaseIterable {
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
-    case nextPost
-    case createPost
+    case nextPost = "create_next"
+    case createPost = "create_first"
 
     // Card placeholder for when loading data
     case ghost
@@ -28,9 +28,9 @@ enum DashboardCard: String, CaseIterable {
         case .scheduledPosts:
             return DashboardScheduledPostsCardCell.self
         case .nextPost:
-            fallthrough
+            return DashboardNextPostCardCell.self
         case .createPost:
-            return DashboardPostsCardCell.self // TODO: Return diff cell for each posts card
+            return DashboardFirstPostCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
         case .prompts:
@@ -94,19 +94,19 @@ enum DashboardCard: String, CaseIterable {
 }
 
 private extension BlogDashboardRemoteEntity {
-    var hasDrafts: Bool {
-        return (self.posts?.draft?.count ?? 0) > 0
-    }
+     var hasDrafts: Bool {
+         return (self.posts?.draft?.count ?? 0) > 0
+     }
 
-    var hasScheduled: Bool {
-        return (self.posts?.scheduled?.count ?? 0) > 0
-    }
+     var hasScheduled: Bool {
+         return (self.posts?.scheduled?.count ?? 0) > 0
+     }
 
-    var hasNoDraftsOrScheduled: Bool {
-        return !hasDrafts && !hasScheduled
-    }
+     var hasNoDraftsOrScheduled: Bool {
+         return !hasDrafts && !hasScheduled
+     }
 
-    var hasPublished: Bool {
-        return self.posts?.hasPublished ?? true
-    }
-}
+     var hasPublished: Bool {
+         return self.posts?.hasPublished ?? true
+     }
+ }

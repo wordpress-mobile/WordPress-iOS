@@ -11,6 +11,7 @@ final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
     var presentedPostStatus: String?
+
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
@@ -58,7 +59,6 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
-        addNewPostAvailableObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -77,6 +77,10 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         stopAlertTimer()
+    }
+
+    func reloadCardsLocally() {
+        viewModel.loadCardsFromCache()
     }
 
     /// If you want to give any feedback when the dashboard
@@ -144,10 +148,6 @@ final class BlogDashboardViewController: UIViewController {
 
     private func addQuickStartObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
-
-    private func addNewPostAvailableObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .newPostAvailableForDashboard, object: nil)
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {

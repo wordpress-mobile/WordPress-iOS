@@ -62,6 +62,7 @@ class BlogDashboardViewModel {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        registerNotifications()
     }
 
     /// Apply the initial configuration when the view loaded
@@ -100,6 +101,12 @@ class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
+    func registerNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
+    }
+
     func updateCurrentCards(cards: [DashboardCardModel]) {
         currentCards = cards
         let snapshot = createSnapshot(from: cards)
@@ -128,6 +135,30 @@ private extension BlogDashboardViewModel {
     func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
         if position.y > 0 {
             scrollView.setContentOffset(position, animated: false)
+        }
+    }
+
+    // In case a draft is saved and the drafts card
+    // is not appearing, we show it.
+    @objc func showDraftsCardIfNeeded() {
+        if !currentCards.contains(where: { $0.cardType == .draftPosts }) {
+            loadCardsFromCache()
+        }
+    }
+
+    // In case a post is scheduled and the scheduled card
+    // is not appearing, we show it.
+    @objc func showScheduledCardIfNeeded() {
+        if !currentCards.contains(where: { $0.cardType == .scheduledPosts }) {
+            loadCardsFromCache()
+        }
+    }
+
+    // In case a post is published and create_first card
+    // is showing, we replace it with the create_next card.
+    @objc func showNextPostCardIfNeeded() {
+        if !currentCards.contains(where: { $0.cardType == .createPost }) {
+            loadCardsFromCache()
         }
     }
 }
