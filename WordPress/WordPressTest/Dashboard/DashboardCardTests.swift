@@ -9,7 +9,7 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
     }
 }
 
-class DashboardCardTests: XCTestCase {
+class ZDashboardCardTests: XCTestCase {
 
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
