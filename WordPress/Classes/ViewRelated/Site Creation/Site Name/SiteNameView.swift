@@ -6,7 +6,7 @@ import WordPressShared
 class SiteNameView: UIView {
 
     private var siteVerticalName: String
-    private let onContinue: (String?) -> Void
+    let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -89,7 +89,7 @@ class SiteNameView: UIView {
     }()
 
     @objc private func navigateToNextScreen() {
-        onContinue(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines))
+        onContinue(searchBar.text)
     }
 
     private lazy var continueButtonView: UIView = {
@@ -280,7 +280,8 @@ private extension SiteNameView {
 extension SiteNameView: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        continueButton.isEnabled = !searchText.isEmpty
+        // disable the continue button if the text is either empty or contains only spaces, newlines or tabs.
+        continueButton.isEnabled = searchText.first(where: { !$0.isWhitespace }) != nil
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

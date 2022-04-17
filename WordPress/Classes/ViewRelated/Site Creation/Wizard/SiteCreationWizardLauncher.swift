@@ -2,7 +2,6 @@ import AutomatticTracks
 
 /// Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
-    private let intentVariant: SiteIntentAB.Variant
     private let nameVariant: Variation
 
     private lazy var creator: SiteCreator = {
@@ -10,7 +9,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     private var shouldShowSiteIntent: Bool {
-        return intentVariant == .treatment && FeatureFlag.siteIntentQuestion.enabled
+        return FeatureFlag.siteIntentQuestion.enabled
     }
 
     private var shouldShowSiteName: Bool {
@@ -66,20 +65,17 @@ final class SiteCreationWizardLauncher {
     private let onDismiss: ((Blog, Bool) -> Void)?
 
     init(
-        intentVariant: SiteIntentAB.Variant = SiteIntentAB.shared.variant,
         nameVariant: Variation = ABTest.siteNameV1.variation,
         onDismiss: ((Blog, Bool) -> Void)? = nil
     ) {
         self.onDismiss = onDismiss
-        self.intentVariant = intentVariant
         self.nameVariant = nameVariant
 
         trackVariants()
     }
 
     private func trackVariants() {
-        SiteCreationAnalyticsHelper.trackSiteIntentExperiment(intentVariant)
-        // TODO: Track Site Name
+        SiteCreationAnalyticsHelper.trackSiteNameExperiment(nameVariant)
     }
 
     private func initStep(_ step: SiteCreationStep) -> WizardStep {

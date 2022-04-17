@@ -74,6 +74,10 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
         featureIntroductionDelegate?.secondaryActionSelected?()
     }
 
+    @IBAction func closeButtonTapped() {
+        dismiss(animated: true)
+    }
+
 }
 
 private extension FeatureIntroductionViewController {
@@ -89,10 +93,6 @@ private extension FeatureIntroductionViewController {
             contentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
-    }
-
-    @IBAction func closeButtonTapped() {
-        dismiss(animated: true)
     }
 
 }

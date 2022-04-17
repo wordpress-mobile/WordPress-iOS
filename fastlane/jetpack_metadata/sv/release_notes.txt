@@ -1,7 +1,7 @@
 Stora nyheter – skärmen Min webbplats blev precis mycket bättre. Den innehåller nu två nya flikar som du kan växla mellan: Webbplatsmeny och Hem.
 
-Fliken Hem innehåller även praktiska kort med mer information om din webbplats, inklusive utkast, schemalagda inlägg och dagens statistik. Or, if you’re in a hurry, you can easily head over to another section of the app.
+Fliken Hem innehåller även praktiska kort med mer information om din webbplats, inklusive utkast, schemalagda inlägg och dagens statistik. Om du har bråttom kan du dessutom enkelt gå till en annan sektion i appen.
 
-We’re all about clear communication. That’s why we’ve added new error text to the photo upload process, just in case you try to upload a photo from your device without giving the app photo permission first.
+Vi älskar tydlig kommunikation. Därför har vi lagt till en ny felmeddelandetext till fotouppladdningsprocessen – om du skulle försöka ladda upp ett foto från din enhet utan att först ge appen tillåtelse att komma åt dina foton.
 
-Finally, when in-app notices pop up, they now fade out more smoothly when you don’t need them anymore. Exit stage left.
+Slutligen, när notiser visas i appen tonas de nu ut på ett snyggare sätt när du inte längre behöver dem. Utgång till vänster om scenen.

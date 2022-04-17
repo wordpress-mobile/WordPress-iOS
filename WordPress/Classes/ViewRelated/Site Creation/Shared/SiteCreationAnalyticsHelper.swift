@@ -1,11 +1,14 @@
 import Foundation
 import WordPressKit
+import AutomatticTracks
 
-extension SiteIntentAB.Variant {
+extension Variation {
     var tracksProperty: String {
         switch self {
-        case .treatment: return "treatment"
-        case .control: return "control"
+        case .treatment:
+            return "treatment"
+        case .control:
+            return "control"
         }
     }
 }
@@ -17,7 +20,8 @@ class SiteCreationAnalyticsHelper {
     private static let previewModeKey = "preview_mode"
     private static let verticalSlugKey = "vertical_slug"
     private static let verticalSearchTerm = "search_term"
-    private static let variation = "variation"
+    private static let variationKey = "variation"
+    private static let siteNameKey = "site_name"
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -45,9 +49,27 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
     }
 
-    static func trackSiteIntentExperiment(_ variant: SiteIntentAB.Variant) {
-        let properties = [variation: variant.tracksProperty]
-        WPAnalytics.track(.enhancedSiteCreationIntentQuestionExperiment, properties: properties)
+    // MARK: - Site Name
+    static func trackSiteNameViewed() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameViewed)
+    }
+
+    static func trackSiteNameEntered(_ name: String) {
+        let properties = [siteNameKey: name]
+        WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
+    }
+
+    static func trackSiteNameSkipped() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
+    }
+
+    static func trackSiteNameCanceled() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
+    }
+
+    static func trackSiteNameExperiment(_ variant: Variation) {
+        let properties = [variationKey: variant.tracksProperty]
+        WPAnalytics.track(.enhancedSiteCreationSiteNameExperiment, properties: properties)
     }
 
     // MARK: - Site Design

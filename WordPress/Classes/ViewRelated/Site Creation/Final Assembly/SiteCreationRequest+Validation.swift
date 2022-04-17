@@ -19,6 +19,8 @@ extension SiteCreationRequest {
     ///   - tagline: tagline for the pending site
     ///   - siteURLString: the URL string for the pending site
     ///   - isPublic: whether or not the pending site should be public
+    ///   - siteCreationFlow: string that identifies the site creation flow
+    ///   - findAvailableURL: true if the site creation should find an available url from the provided `siteURLString`
     ///
     init(segmentIdentifier: Int64?,
          siteDesign: String?,
@@ -26,7 +28,9 @@ extension SiteCreationRequest {
          title: String,
          tagline: String?,
          siteURLString: String,
-         isPublic: Bool) {
+         isPublic: Bool,
+         siteCreationFlow: String?,
+         findAvailableURL: Bool) {
 
         self.init(segmentIdentifier: segmentIdentifier,
                   siteDesign: siteDesign,
@@ -39,7 +43,9 @@ extension SiteCreationRequest {
                   shouldValidate: true,
                   clientIdentifier: ApiCredentials.client,
                   clientSecret: ApiCredentials.secret,
-                  timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier
+                  timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
+                  siteCreationFlow: siteCreationFlow,
+                  findAvailableURL: findAvailableURL
         )
     }
 
@@ -61,7 +67,9 @@ extension SiteCreationRequest {
                   shouldValidate: false,
                   clientIdentifier: request.clientIdentifier,
                   clientSecret: request.clientSecret,
-                  timezoneIdentifier: request.timezoneIdentifier
+                  timezoneIdentifier: request.timezoneIdentifier,
+                  siteCreationFlow: request.siteCreationFlow,
+                  findAvailableURL: request.findAvailableURL
         )
     }
 }

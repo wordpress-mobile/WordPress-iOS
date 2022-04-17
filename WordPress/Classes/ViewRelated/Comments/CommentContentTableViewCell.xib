@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -166,11 +166,24 @@
                                     </view>
                                 </subviews>
                             </stackView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Z-LV-01Y" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="353" width="288" height="83"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LK0-LA-c0R" userLabel="Moderation Bar View">
+                                <rect key="frame" x="0.0" y="353" width="288" height="93"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Z-LV-01Y" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="288" height="83"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="qRm-Qi-IXu"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="qRm-Qi-IXu"/>
+                                    <constraint firstAttribute="trailing" secondItem="T1Z-LV-01Y" secondAttribute="trailing" id="5pw-Ri-Jfp"/>
+                                    <constraint firstItem="T1Z-LV-01Y" firstAttribute="top" secondItem="LK0-LA-c0R" secondAttribute="top" constant="10" id="YQw-pq-YQg"/>
+                                    <constraint firstItem="T1Z-LV-01Y" firstAttribute="leading" secondItem="LK0-LA-c0R" secondAttribute="leading" id="h1E-6A-mIn"/>
+                                    <constraint firstAttribute="bottom" secondItem="T1Z-LV-01Y" secondAttribute="bottom" id="vnN-EZ-EwQ"/>
+                                    <constraint firstAttribute="height" constant="93" placeholder="YES" id="wqW-2g-tUS"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -201,6 +214,7 @@
                 <outlet property="highlightBarView" destination="mNJ-fg-sKO" id="fjf-gA-HoE"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>
+                <outlet property="moderationBarView" destination="LK0-LA-c0R" id="5mo-la-sEw"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
             </connections>
