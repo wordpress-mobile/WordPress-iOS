@@ -1,4 +1,5 @@
 import Gridicons
+import Foundation
 
 protocol QuickStartTour {
     typealias WayPoint = (element: QuickStartTourElement, description: NSAttributedString)
@@ -92,13 +93,18 @@ struct QuickStartViewTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to preview", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("View Site", comment: "The menu item to select during a guided tour.")
-        return [(element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.house)))]
-    }()
+    var waypoints: [WayPoint]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of previewing your site.", comment: "This value is used to set the accessibility hint text for previewing a user's site.")
+
+    init(blog: Blog) {
+        let descriptionBase = NSLocalizedString("Select %@ to view your site", comment: "A step in a guided tour for quick start. %@ will be the site url.")
+        let descriptionTarget = (blog.displayURL ?? "") as String
+
+        self.waypoints = [
+            (element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
+        ]
+    }
 }
 
 struct QuickStartThemeTour: QuickStartTour {

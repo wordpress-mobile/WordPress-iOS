@@ -42,7 +42,7 @@ class QuickStartChecklistViewController: UITableViewController {
         switch type {
         case .customize:
             return QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
-                                                    tours: QuickStartTourGuide.customizeListTours)
+                                                    tours: QuickStartTourGuide.customizeListTours(for: blog))
         case .grow:
             return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
                                                     tours: QuickStartTourGuide.growListTours)
