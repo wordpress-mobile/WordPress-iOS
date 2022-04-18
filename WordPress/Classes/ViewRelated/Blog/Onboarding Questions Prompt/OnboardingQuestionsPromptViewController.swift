@@ -117,8 +117,9 @@ private extension OnboardingQuestionsPromptViewController {
     private func style(button: UIButton) {
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
         button.setTitleColor(.text, for: .normal)
-        button.titleLabel?.textAlignment = .left
+        button.titleLabel?.textAlignment = .natural
         button.titleEdgeInsets.left = 10
+        button.flipInsetsForRightToLeftLayoutDirection()
         button.imageView?.contentMode = .scaleAspectFit
     }
 }

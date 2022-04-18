@@ -51,7 +51,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vZc-Ui-n4c" customClass="FancyButton" customModule="WordPressUI">
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vZc-Ui-n4c" customClass="FancyButton" customModule="WordPressUI">
                                             <rect key="frame" x="20" y="141.66666666666666" width="334" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="vLw-WE-Hwa"/>
@@ -65,8 +65,8 @@
                                                 <action selector="didTapStats:" destination="-1" eventType="touchUpInside" id="RCG-HK-Bew"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QSf-1g-Q0C" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="206.66666666666663" width="334" height="185"/>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QSf-1g-Q0C" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="206.66666666666666" width="334" height="54.999999999999972"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="ajb-Ej-ySY"/>
                                             </constraints>
@@ -77,8 +77,8 @@
                                                 <action selector="didTapWriting:" destination="-1" eventType="touchUpInside" id="HTi-5r-U8t"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="wordWrap" preferredBehavioralStyle="mac" translatesAutoresizingMaskIntoConstraints="NO" id="CDq-op-qjQ" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="401.66666666666669" width="334" height="55"/>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" preferredBehavioralStyle="mac" translatesAutoresizingMaskIntoConstraints="NO" id="CDq-op-qjQ" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="271.66666666666669" width="334" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="rUc-4S-Bfz"/>
                                             </constraints>
@@ -92,8 +92,8 @@
                                                 <action selector="didTapNotifications:" destination="-1" eventType="touchUpInside" id="mnk-tN-bqk"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-OI-DPA" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="466.66666666666669" width="334" height="55.000000000000057"/>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-OI-DPA" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="336.66666666666669" width="334" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="IXy-Xc-PPb"/>
                                             </constraints>
@@ -104,8 +104,8 @@
                                                 <action selector="didTapReader:" destination="-1" eventType="touchUpInside" id="f3O-X6-kBP"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KwB-px-6X8" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="531.66666666666663" width="334" height="55"/>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KwB-px-6X8" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="401.66666666666669" width="334" height="185.00000000000006"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="F8y-fV-N8k"/>
                                             </constraints>
@@ -121,12 +121,12 @@
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqk-b2-4xT">
-                                            <rect key="frame" x="158.66666666666666" y="692" width="57" height="44"/>
+                                            <rect key="frame" x="146.66666666666666" y="692" width="81" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="VDE-E0-c6D"/>
                                             </constraints>
                                             <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain" title="Skip"/>
+                                            <buttonConfiguration key="configuration" style="plain" image="cloud-upload" title="Skip"/>
                                             <connections>
                                                 <action selector="skip:" destination="-1" eventType="touchUpInside" id="Reh-V6-ZJt"/>
                                             </connections>
@@ -190,6 +190,7 @@
         </view>
     </objects>
     <resources>
+        <image name="cloud-upload" width="24" height="24"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
