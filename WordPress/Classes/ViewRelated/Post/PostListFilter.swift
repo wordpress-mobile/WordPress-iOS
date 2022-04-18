@@ -108,8 +108,6 @@ import Foundation
     /// - existing draft/pending posts
     /// - existing draft/pending posts transitioned to another status (e.g. published)
     ///   but not uploaded yet
-    /// - recentely trashed posts: posts that have been trashed but the trash API request hasn't finsihed yet.
-    ///   Not included if the corresponding flag is false. Yet the flag defaults to true
     ///
     @objc class func draftFilter(includeRecentlyTrashed: Bool = true) -> PostListFilter {
         let filterType: Status = .draft
