@@ -74,7 +74,7 @@ class BlogDetailHeaderView: UIView {
         titleView.titleButton.setTitle(title, for: .normal)
     }
 
-    @objc func toggleSpotlightOnSiteTitle() {
+    func toggleSpotlightOnSiteTitle() {
         titleView.titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
@@ -82,7 +82,7 @@ class BlogDetailHeaderView: UIView {
         titleView.subtitleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.viewSite)
     }
 
-    @objc func toggleSpotlightOnSiteIcon() {
+    func toggleSpotlightOnSiteIcon() {
         titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
