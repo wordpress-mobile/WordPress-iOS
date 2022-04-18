@@ -1,0 +1,7 @@
+Site hayranları için harika bir habermiz var - Sitem ekranınız artık çok daha iyi. Artık geçiş yapabileceğiniz iki yeni sekme göreceksiniz: Site Menüsü ve Ana Sayfa.
+
+Ana Sayfa sekmesi ayrıca taslaklar, zamanlanmış gönderiler ve günün istatistikleri dahil olmak üzere siteniz hakkında daha fazla bilgi içeren kullanışlı kartlar içeriyor. Veya aceleniz varsa, uygulamanın başka bir bölümüne kolayca gidebilirsiniz.
+
+Hepimiz açık bir iletişimden yanayız. Bazen uygulamaya fotoğraf izni vermeden cihazınızdan fotoğraf yüklemeye çalışabilirsiniz; işte bu tür durumlar için fotoğraf yükleme işlemine yeni bir hata metni ekledik.
+
+Son olarak, uygulama içi bildirimler açıldığında, artık ihtiyacınız olmadığında daha sorunsuz bir şekilde kayboluyorlar. Çıkış tarafı soldadır.
