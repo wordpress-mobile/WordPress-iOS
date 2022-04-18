@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
@@ -107,7 +108,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             return (0..<min(answerCount, Constants.maxAvatarCount)).map { _ in nil }
         }()
 
-        let avatarTrainView = AvatarTrainView(avatarURLs: avatarURLs)
+        let avatarTrainView = AvatarTrainView(avatarURLs: avatarURLs, placeholderImage: Style.avatarPlaceholderImage)
         avatarTrainView.translatesAutoresizingMaskIntoConstraints = false
 
         let trainContainerView = UIView()
@@ -351,6 +352,7 @@ private extension DashboardPromptsCardCell {
 
     struct Style {
         static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
+        static let avatarPlaceholderImage = UIImage(color: .init(hexString: "EEEEEE"))
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
         static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
         static let answerInfoLabelColor = UIColor.primary
