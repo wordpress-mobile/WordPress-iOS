@@ -92,6 +92,7 @@ struct QuickStartViewTour: QuickStartTour {
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
     var waypoints: [WayPoint]
 
