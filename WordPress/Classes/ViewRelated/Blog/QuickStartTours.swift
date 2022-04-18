@@ -87,7 +87,7 @@ struct QuickStartViewTour: QuickStartTour {
     let analyticsKey = "view_site"
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: View your site", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
+    let description = NSLocalizedString("Preview your site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
