@@ -120,19 +120,12 @@ class PostServiceWPComTests: XCTestCase {
 
         let remotePost = createRemotePost(.trash)
         remoteMock.remotePostToReturnOnTrashPost = remotePost
-        remoteMock.responseDelay = 0.1
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
-            self.service.trashPost(post, success: {
-                done()
-            }, failure: self.impossibleFailureBlock)
-
-            // Assert immediately
-            expect(post.statusAfterSync).to(equal(.trash))
-            expect(revision.statusAfterSync).to(equal(.trash))
-            expect(post.status).to(equal(.publish))
-            expect(revision.status).to(equal(.publish))
+         self.service.trashPost(post, success: {
+             done()
+         }, failure: self.impossibleFailureBlock)
         }
 
         // Assert
@@ -343,9 +336,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         case fail
     }
 
-    /// Delay in seconds
-    var responseDelay: Double = 0
-
     var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
@@ -364,39 +354,39 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     private(set) var invocationsCountOfUpdate = 0
 
     override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             success(self.remotePostToReturnOnGetPostWithID)
         }
     }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             success(self.remotePostsToReturnOnSyncPostsOfType)
         }
     }
 
     override func update(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             self.invocationsCountOfUpdate += 1
             success(self.remotePostToReturnOnUpdatePost)
         }
     }
 
     override func createPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             self.invocationsCountOfCreatePost += 1
             success(self.remotePostToReturnOnCreatePost)
         }
     }
 
     override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             success(self.remotePostToReturnOnTrashPost)
         }
     }
 
     override func autoSave(_ post: RemotePost, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             self.invocationsCountOfAutoSave += 1
 
             switch self.autoSaveStubbedBehavior {
@@ -414,7 +404,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
                                     excludeUserIDs: [NSNumber]?,
                                     success: (([RemoteLikeUser], NSNumber) -> Void)!,
                                     failure: ((Error?) -> Void)!) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + responseDelay) {
+        DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
                 success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
             } else {

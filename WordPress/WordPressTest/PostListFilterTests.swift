@@ -117,26 +117,6 @@ class PostListFilterTests: XCTestCase {
         expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
     }
 
-    func testDraftFilterDoesNotincludeRecentlyTrashedPosts() {
-        // Arrange
-        let predicate = PostListFilter.draftFilter(includeRecentlyTrashed: false).predicateForFetchRequest
-        let recentelyDeletedPost = createPost(.draft, hasRemote: true, statusAfterSync: .trash)
-
-        // Assert
-        let postIncluded = predicate.evaluate(with: recentelyDeletedPost)
-        XCTAssertFalse(postIncluded)
-    }
-
-    func testDraftFilterIncludesRecentelyTrashedPostsIfNeeded() {
-        // Arrange
-        let predicate = PostListFilter.draftFilter(includeRecentlyTrashed: true).predicateForFetchRequest
-        let recentelyDeletedPost = createPost(.draft, hasRemote: true, statusAfterSync: .trash)
-
-        // Assert
-        let postIncluded = predicate.evaluate(with: recentelyDeletedPost)
-        XCTAssertTrue(postIncluded)
-    }
-
     func testPublishedFilterIncludesExistingPrivateAndRemotePublishedPosts() {
         // Arrange
         let predicate = PostListFilter.publishedFilter().predicateForFetchRequest

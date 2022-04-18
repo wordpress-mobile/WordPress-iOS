@@ -28,7 +28,7 @@ class PostsCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private var postListFilter: PostListFilter = PostListFilter.draftFilter(includeRecentlyTrashed: false)
+    private var postListFilter: PostListFilter = PostListFilter.draftFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
@@ -204,7 +204,7 @@ private extension PostsCardViewModel {
     func updateFilter() {
         switch status {
         case .draft:
-            self.postListFilter = PostListFilter.draftFilter(includeRecentlyTrashed: false)
+            self.postListFilter = PostListFilter.draftFilter()
         case .scheduled:
             self.postListFilter = PostListFilter.scheduledFilter()
         default:
