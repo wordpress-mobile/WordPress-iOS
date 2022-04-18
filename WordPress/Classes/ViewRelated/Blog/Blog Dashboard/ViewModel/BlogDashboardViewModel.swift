@@ -26,6 +26,14 @@ class BlogDashboardViewModel {
 
     private var currentCards: [DashboardCardModel] = []
 
+    private lazy var draftStatusesToSync: [String] = {
+        return PostListFilter.draftFilter().statuses.strings
+    }()
+
+    private lazy var scheduledStatusesToSync: [String] = {
+        return PostListFilter.scheduledFilter().statuses.strings
+    }()
+
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
@@ -109,6 +117,20 @@ private extension BlogDashboardViewModel {
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
         currentCards = cards
+        syncPosts(for: cards)
+        applySnapshot(for: cards)
+    }
+
+    func syncPosts(for cards: [DashboardCardModel]) {
+        if cards.hasDrafts {
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: draftStatusesToSync)
+        }
+        if cards.hasScheduled {
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: scheduledStatusesToSync)
+        }
+    }
+
+    func applySnapshot(for cards: [DashboardCardModel]) {
         let snapshot = createSnapshot(from: cards)
         let scrollView = viewController?.mySiteScrollView
         let position = scrollView?.contentOffset
@@ -171,5 +193,15 @@ private extension BlogDashboardViewModel {
         if blog.dashboardState.hasCachedData {
             viewController?.loadingFailure()
         }
+    }
+}
+
+private extension Collection where Element == DashboardCardModel {
+    var hasDrafts: Bool {
+        return contains(where: { $0.cardType == .draftPosts })
+    }
+
+    var hasScheduled: Bool {
+        return contains(where: { $0.cardType == .scheduledPosts })
     }
 }
