@@ -1618,17 +1618,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                        animated:YES
                      completion:nil];
 
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    
     QuickStartTourGuide *guide = [QuickStartTourGuide shared];
 
     if ([guide isCurrentElement:QuickStartTourElementViewSite]) {
         [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+        [parentVC toggleSpotlightOnSitePicker];
     } else {
         // Just mark as completed if we've viewed the site and aren't
         //  currently working on the View Site tour.
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
     parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
