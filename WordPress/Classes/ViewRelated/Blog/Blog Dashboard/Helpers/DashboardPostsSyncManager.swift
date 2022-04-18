@@ -78,7 +78,6 @@ class DashboardPostsSyncManager {
             self?.stopSyncingStatuses(toBeSynced, for: blog)
             self?.notifyListenersOfPostsSync(success: false, blog: blog, posts: nil, for: toBeSynced)
         }
-
     }
 
     func syncAuthors(blog: Blog, success: @escaping SyncSuccessBlock, failure: @escaping SyncFailureBlock) {
@@ -102,8 +101,6 @@ class DashboardPostsSyncManager {
     private func stopSyncingStatuses(_ statuses: [String], for blog: Blog) {
         blog.dashboardState.syncingStatuses = blog.dashboardState.syncingStatuses.filter({ !statuses.contains($0) })
     }
-
-    // MARK: Constants
 
     enum Constants {
         static let numberOfPostsToSync: NSNumber = 3

@@ -114,7 +114,6 @@ class PostsCardViewModel: NSObject {
         DashboardPostsSyncManager.shared.removeListener(self)
         fetchedResultsController.delegate = nil
     }
-
 }
 
 // MARK: Cells Configuration
@@ -285,10 +284,15 @@ private extension PostsCardViewModel {
 
 extension PostsCardViewModel: DashboardPostsSyncManagerListener {
     func postsSynced(success: Bool, blog: Blog, posts: [AbstractPost]?, for statuses: [String]) {
+        let currentStatuses = postListFilter.statuses.strings
+        guard self.blog == blog, currentStatuses.allSatisfy(statuses.contains) else {
+            return
+        }
+
         isSyncing = false
         if success {
             updateDashboardStateWithSuccessfulSync()
-            if posts?.count == 0 {
+            if numberOfPosts == 0 {
                 removeViewIfNeeded()
             }
 

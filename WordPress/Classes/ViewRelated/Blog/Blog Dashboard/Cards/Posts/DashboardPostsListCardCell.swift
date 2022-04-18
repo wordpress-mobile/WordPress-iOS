@@ -54,8 +54,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         commonInit()
     }
 
-    // MARK: Overriden Functions
-
     override func prepareForReuse() {
         super.prepareForReuse()
         viewModel?.stopObserving()
