@@ -18,10 +18,12 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-    private lazy var postStatusesToSync: [String] = {
-        let draftStatuses = PostListFilter.draftFilter().statuses.strings
-        let scheduledStatuses = PostListFilter.scheduledFilter().statuses.strings
-        return draftStatuses + scheduledStatuses
+    private lazy var draftStatusesToSync: [String] = {
+        return PostListFilter.draftFilter().statuses.strings
+    }()
+
+    private lazy var scheduledStatusesToSync: [String] = {
+        return PostListFilter.scheduledFilter().statuses.strings
     }()
 
     lazy var collectionView: DynamicHeightCollectionView = {
@@ -75,7 +77,8 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
-        DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: postStatusesToSync)
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: draftStatusesToSync)
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: scheduledStatusesToSync)
         QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
         startAlertTimer()
 
