@@ -16,6 +16,7 @@ extension SitePickerViewController {
             }
 
             self?.blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+            self?.blogDetailHeaderView.toggleSpotlightOnSiteUrl()
             self?.blogDetailHeaderView.refreshIconImage()
         }
     }
@@ -37,6 +38,7 @@ extension SitePickerViewController {
 
     func toggleSpotlightOnHeaderView() {
         blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+        blogDetailHeaderView.toggleSpotlightOnSiteUrl()
         blogDetailHeaderView.toggleSpotlightOnSiteIcon()
     }
 

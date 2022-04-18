@@ -38,6 +38,7 @@ class BlogDetailHeaderView: UIView {
         didSet {
             refreshIconImage()
             toggleSpotlightOnSiteTitle()
+            toggleSpotlightOnSiteUrl()
             refreshSiteTitle()
 
             if let displayURL = blog?.displayURL as String? {
@@ -75,6 +76,10 @@ class BlogDetailHeaderView: UIView {
 
     @objc func toggleSpotlightOnSiteTitle() {
         titleView.titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
+    }
+
+    func toggleSpotlightOnSiteUrl() {
+        titleView.subtitleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.viewSite)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
@@ -240,8 +245,8 @@ fileprivate extension BlogDetailHeaderView {
             return siteIconView
         }()
 
-        let subtitleButton: UIButton = {
-            let button = UIButton()
+        let subtitleButton: SpotlightableButton = {
+            let button = SpotlightableButton(type: .custom)
 
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
