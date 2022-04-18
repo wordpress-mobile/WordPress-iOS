@@ -406,11 +406,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self cancelCompletedToursIfNeeded];
     [self createUserActivity];
     [self startAlertTimer];
-
-    if (self.shouldScrollToViewSite == YES) {
-        [self scrollToElement:QuickStartTourElementViewSite];
-        self.shouldScrollToViewSite = NO;
-    }
     
     QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
     
@@ -1026,7 +1021,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                callback:^{
         [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
     }];
-    viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
 
