@@ -324,7 +324,7 @@ open class QuickStartTourGuide: NSObject {
     static func customizeListTours(for blog: Blog) -> [QuickStartTour] {
         return [
             QuickStartCreateTour(),
-            QuickStartSiteTitleTour(),
+            QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
             QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),

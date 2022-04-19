@@ -100,7 +100,8 @@ struct QuickStartViewTour: QuickStartTour {
 
     init(blog: Blog) {
         let descriptionBase = NSLocalizedString("Select %@ to view your site", comment: "A step in a guided tour for quick start. %@ will be the site url.")
-        let descriptionTarget = (blog.displayURL ?? "") as String
+        let placeholder = NSLocalizedString("Site URL", comment: "The item to select during a guided tour.")
+        let descriptionTarget = (blog.displayURL as String?) ?? placeholder
 
         self.waypoints = [
             (element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
@@ -218,14 +219,19 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
     let shownInBlogDetails = false
 
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
-        let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
-        return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
-    }()
+    var waypoints: [WayPoint]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
+    
+    init(blog: Blog) {
+        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
+        let descriptionTarget = blog.title ?? placeholder
+
+        self.waypoints = [
+            (element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
+        ]
+    }
 }
 
 struct QuickStartSiteIconTour: QuickStartTour {
