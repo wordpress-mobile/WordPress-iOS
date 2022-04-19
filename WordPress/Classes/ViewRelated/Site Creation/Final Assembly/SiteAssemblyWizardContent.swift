@@ -248,7 +248,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 guard let self = self else {
                     return
                 }
-                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour()] : []
+                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
                 self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
             }
         }
