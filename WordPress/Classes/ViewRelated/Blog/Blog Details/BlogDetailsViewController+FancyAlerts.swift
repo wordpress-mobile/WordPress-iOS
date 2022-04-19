@@ -114,29 +114,24 @@ extension BlogDetailsViewController {
         return QuickStartTourGuide.shouldShowChecklist(for: blog)
     }
 
-    @objc func showQuickStartCustomize() {
-        showQuickStart(with: .customize)
-    }
+    @objc func showQuickStart() {
+        let currentCollections = QuickStartToursCollection.collections(for: blog)
+        guard let collectionToShow = currentCollections.first else {
+            return
+        }
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
+        let navigationViewController = UINavigationController(rootViewController: checklist)
+        present(navigationViewController, animated: true)
 
-    @objc func showQuickStartGrow() {
-        showQuickStart(with: .grow)
-    }
+        QuickStartTourGuide.shared.visited(.checklist)
+
+        createButtonCoordinator?.hideCreateButtonTooltip()    }
 
     @objc func cancelCompletedToursIfNeeded() {
         if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
             // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
             QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
         }
-    }
-
-    private func showQuickStart(with type: QuickStartType) {
-        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
-        let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true)
-
-        QuickStartTourGuide.shared.visited(.checklist)
-
-        createButtonCoordinator?.hideCreateButtonTooltip()
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {

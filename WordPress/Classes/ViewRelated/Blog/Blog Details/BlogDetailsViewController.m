@@ -1707,7 +1707,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         
         // quick start was just enabled
         if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
-            [self showQuickStartCustomize];
+            [self showQuickStart];
         }
         [self reloadTableViewPreservingSelection];
     }
