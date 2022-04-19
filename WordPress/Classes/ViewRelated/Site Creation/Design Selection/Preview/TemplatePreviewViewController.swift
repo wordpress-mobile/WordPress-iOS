@@ -100,10 +100,13 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     private func styleButtons() {
+        let isLastSiteCreationStep = ABTest.siteNameV1.variation == .treatment(nil) && FeatureFlag.siteName.enabled
+        let mainButtonTitle = isLastSiteCreationStep ? NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
+            : NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
-        primaryActionButton.setTitle(NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"), for: .normal)
+        primaryActionButton.setTitle(mainButtonTitle, for: .normal)
     }
 
     private func configurePreviewDeviceButton() {
