@@ -61,7 +61,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         self.isLastSiteCreationStep = ABTest.siteNameV1.variation == .treatment(nil) && FeatureFlag.siteName.enabled
         let primaryButtonTitle = self.isLastSiteCreationStep ? NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
             : NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
-        
+
         super.init(
             analyticsLocation: "site_creation",
             mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
