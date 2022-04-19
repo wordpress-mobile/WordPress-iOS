@@ -2,6 +2,7 @@
 -----
 * [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. [#18405]
 
+
 19.7
 -----
 * [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]

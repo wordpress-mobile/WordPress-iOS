@@ -23,6 +23,12 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ to fix threats.";
 
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d answer";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d answers";
+
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
 "%1$d Comment" = "%1$d Comment";
 
@@ -364,6 +370,9 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "A file contains a malicious code pattern";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "A good name is short and memorable.\nYou can change it later.";
+
 /* Age between dates equaling one month. */
 "a month" = "a month";
 
@@ -531,6 +540,9 @@
 "Add blocks" = "Add blocks";
 
 /* No comment provided by engineer. */
+"Add Blocks" = "Add Blocks";
+
+/* No comment provided by engineer. */
 "Add button text" = "Add button text";
 
 /* Alert option to add document contents into a blog post. */
@@ -645,6 +657,9 @@
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Advanced";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "After %@";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -806,6 +821,9 @@
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonymous";
 
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Answer Prompt";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "App Icon";
@@ -832,6 +850,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Approve";
+
+/* Approves a Comment */
+"Approve Comment" = "Approve Comment";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1069,6 +1090,9 @@
 
 /* Beauty site intent topic */
 "Beauty" = "Beauty";
+
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Before %@";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Best Day";
@@ -1321,6 +1345,9 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Careful!";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "Cast the movie of your life.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categories";
@@ -1428,6 +1455,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Checking purchases…";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Child of %@";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Choose";
 
@@ -1459,7 +1489,7 @@
 "Choose a time" = "Choose a time";
 
 /* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own" = "Choose a topic from the list below or type your own";
+"Choose a topic from the list below or type your own." = "Choose a topic from the list below or type your own.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Choose a unique site icon";
@@ -1860,7 +1890,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continue";
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
@@ -2494,7 +2525,7 @@
 "Double tap and hold to edit" = "Double tap and hold to edit";
 
 /* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Double tap and hold to move this menu item up or down";
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy.";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Double tap to add a block";
@@ -2631,6 +2662,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicate block";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "E.g. Fashion, Poetry, Politics";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
 
@@ -2736,9 +2770,6 @@
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "eg. 44";
-
-/* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "Eg. Fashion, Poetry, Politics";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3105,13 +3136,7 @@
 "Failed Media Export" = "Failed Media Export";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
@@ -3444,6 +3469,13 @@
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Give your website a name";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "Give your%@website a name";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3466,7 +3498,8 @@
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google sign up failed.";
 
-/* Title for the continue button in the dashboard's custom What's New page. */
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Got it";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
@@ -3685,9 +3718,6 @@
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
-/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
-"If you want to try get more views and traffic check out our top tips" = "If you want to try get more views and traffic check out our top tips";
-
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have.";
 
@@ -3854,6 +3884,9 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Interested in building your audience? Check out our top tips";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Interior Design";
@@ -4478,7 +4511,9 @@
 /* No comment provided by engineer. */
 "Mention" = "Mention";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
@@ -4551,6 +4586,9 @@
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Most Popular Time";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Move %@";
 
 /* No comment provided by engineer. */
 "Move block down" = "Move block down";
@@ -4644,7 +4682,8 @@
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -5674,9 +5713,6 @@
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
 
@@ -5822,6 +5858,9 @@
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projects";
+
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Prompts";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -6014,7 +6053,7 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Related Posts displays relevant content from your site below your posts";
 
-/* Secondary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Remind me";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -6044,6 +6083,9 @@
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Remove Featured Image";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Remove from dashboard";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -6715,6 +6757,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
 
@@ -6895,10 +6938,6 @@
 /* Title for the Language Picker View */
 "Site Language" = "Site Language";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site not found";
 
@@ -6919,7 +6958,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
@@ -6948,7 +6986,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6956,6 +6995,9 @@
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Skip Quick Start";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Skip this prompt";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter results";
@@ -7826,9 +7868,6 @@
    Title for the time zone selector */
 "Time Zone" = "Time Zone";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
 
@@ -7911,7 +7950,8 @@
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Tools";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Top level";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
@@ -8013,8 +8053,8 @@
 /* No comment provided by engineer. */
 "Try another search term" = "Try another search term";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Try it now";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8216,6 +8256,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Unapprove";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Unapprove Comment";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Unapproves the Comment.";
@@ -8565,6 +8608,9 @@
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "View more";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "View more prompts";
 
 /* Button label for viewing a post */
 "View Post" = "View Post";
@@ -9574,6 +9620,9 @@
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Users & Authors";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Answered";
 
 
 /* MARK: - InfoPlist.strings */
