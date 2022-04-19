@@ -306,6 +306,7 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let icon = UIImage.gridicon(.statsAlt)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
