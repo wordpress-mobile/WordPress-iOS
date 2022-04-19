@@ -125,7 +125,8 @@ extension BlogDetailsViewController {
 
         QuickStartTourGuide.shared.visited(.checklist)
 
-        createButtonCoordinator?.hideCreateButtonTooltip()    }
+        createButtonCoordinator?.hideCreateButtonTooltip()
+    }
 
     @objc func cancelCompletedToursIfNeeded() {
         if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
