@@ -154,7 +154,7 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if currentTourOrigin == .blogDashboard && tour.shownInBlogDetails && !UIDevice.isPad() {
+        if currentTourOrigin == .blogDashboard && tour.mustBeShownFromBlogDetails && !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
             tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)

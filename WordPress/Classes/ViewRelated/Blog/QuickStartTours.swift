@@ -15,7 +15,7 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get set }
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
-    var shownInBlogDetails: Bool { get }
+    var mustBeShownFromBlogDetails: Bool { get }
 }
 
 extension QuickStartTour {
@@ -31,7 +31,7 @@ extension QuickStartTour {
         }
     }
 
-    var shownInBlogDetails: Bool {
+    var mustBeShownFromBlogDetails: Bool {
         get {
             return true
         }
@@ -92,7 +92,7 @@ struct QuickStartViewTour: QuickStartTour {
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint]
 
@@ -163,7 +163,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
-    let shownInBlogDetails = false
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -182,7 +182,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -217,7 +217,7 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let icon = UIImage.gridicon(.pencil)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint]
 
@@ -243,7 +243,7 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let mustBeShownFromBlogDetails = false
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
