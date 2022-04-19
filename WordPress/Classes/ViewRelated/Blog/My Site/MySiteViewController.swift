@@ -679,6 +679,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
+    @objc
+    func toggleSpotlightOnSitePicker() {
+        sitePickerViewController?.toggleSpotlightOnHeaderView()
+    }
+
     // MARK: - Blog Details UI Logic
 
     private func hideBlogDetails() {
