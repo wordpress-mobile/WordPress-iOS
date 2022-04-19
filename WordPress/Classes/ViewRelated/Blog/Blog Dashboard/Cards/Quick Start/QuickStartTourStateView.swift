@@ -22,8 +22,8 @@ final class QuickStartTourStateView: UIView {
 
     func configure(blog: Blog, sourceController: UIViewController, checklistTappedTracker: QuickStartChecklistTappedTracker? = nil) {
         stackView.removeAllSubviews()
-        let avaialbleCollections = QuickStartToursCollection.collections(for: blog)
-        for collection in avaialbleCollections {
+        let availableCollections = QuickStartToursCollection.collections(for: blog)
+        for collection in availableCollections {
             let checklistView = QuickStartChecklistView()
             checklistView.translatesAutoresizingMaskIntoConstraints = false
             checklistView.configure(collection: collection, blog: blog)

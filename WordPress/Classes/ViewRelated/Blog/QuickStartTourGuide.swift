@@ -56,7 +56,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        let list = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
     }
@@ -69,7 +69,7 @@ open class QuickStartTourGuide: NSObject {
         let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
         let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
         let unavailableTours = Array(Set(completedTours + skippedTours))
-        let allTours = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        let allTours = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
 
         guard isQuickStartEnabled(for: blog),
             recentlyTouredBlog == blog else {
@@ -183,7 +183,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc func completeViewSiteTour(forBlog blog: Blog) {
-        complete(tour: QuickStartViewTour(), silentlyForBlog: blog)
+        complete(tour: QuickStartViewTour(blog: blog), silentlyForBlog: blog)
     }
 
     @objc func completeSharingTour(forBlog blog: Blog) {
@@ -282,14 +282,14 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static var customizeListTours: [QuickStartTour] {
+    static func customizeListTours(for blog: Blog) -> [QuickStartTour] {
         return [
             QuickStartCreateTour(),
-            QuickStartSiteTitleTour(),
+            QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
             QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
-            QuickStartViewTour()
+            QuickStartViewTour(blog: blog)
         ]
     }
 
@@ -357,7 +357,7 @@ private extension QuickStartTourGuide {
     /// - Parameter blog: blog to check
     /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        let list = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 

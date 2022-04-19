@@ -12,7 +12,7 @@ struct QuickStartToursCollection {
     let analyticsKey: String
     let tours: [QuickStartTour]
 
-    private static var customizeToursCollection: QuickStartToursCollection {
+    private static func customizeToursCollection(blog: Blog) -> QuickStartToursCollection {
         let title = NSLocalizedString("Customize Your Site",
                                       comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
         let hint = NSLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
@@ -21,16 +21,16 @@ struct QuickStartToursCollection {
         let analyticsKey = "customize"
         let tours: [QuickStartTour] = [
             QuickStartCreateTour(),
-            QuickStartSiteTitleTour(),
+            QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
             QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
-            QuickStartViewTour()
+            QuickStartViewTour(blog: blog)
         ]
         return QuickStartToursCollection(title: title, hint: hint, completedImageName: completedImageName, analyticsKey: analyticsKey, tours: tours)
     }
 
-    private static var growToursCollection: QuickStartToursCollection {
+    private static func growToursCollection() -> QuickStartToursCollection {
         let title = NSLocalizedString("Grow Your Audience",
                                       comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
         let hint = NSLocalizedString("A series of steps to assist with growing your site's audience.",
@@ -50,6 +50,6 @@ struct QuickStartToursCollection {
 
     static func collections(for blog: Blog) -> [QuickStartToursCollection] {
         // TODO: Save QuickStartType in blog. Retrieve it here and return collections accordingly
-        return [.customizeToursCollection, .growToursCollection]
+        return [customizeToursCollection(blog: blog), growToursCollection()]
     }
 }

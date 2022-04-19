@@ -19,21 +19,6 @@ extension BlogDetailsViewController {
                 switch info {
                 case .pages, .editHomepage, .sharing, .stats:
                     self?.scroll(to: info)
-                case .viewSite:
-                    self?.scroll(to: info)
-
-                    guard let self = self,
-                        let navigationController = self.navigationController,
-                        navigationController.visibleViewController != self else {
-                        return
-                    }
-
-                    self.dismiss(animated: true) {
-                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                        self.shouldScrollToViewSite = true
-
-                        navigationController.popToRootViewController(animated: true)
-                    }
                 default:
                     break
                 }
@@ -125,7 +110,8 @@ extension BlogDetailsViewController {
 
         QuickStartTourGuide.shared.visited(.checklist)
 
-        createButtonCoordinator?.hideCreateButtonTooltip()    }
+        createButtonCoordinator?.hideCreateButtonTooltip()
+    }
 
     @objc func cancelCompletedToursIfNeeded() {
         if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
