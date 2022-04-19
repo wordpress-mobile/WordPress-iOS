@@ -15,7 +15,6 @@ class DashboardPostsSyncManager {
 
     private let postService: PostService
     private let blogService: BlogService
-    private let lock = NSRecursiveLock()
     @Atomic private var listeners: [DashboardPostsSyncManagerListener] = []
 
     // MARK: Shared Instance
