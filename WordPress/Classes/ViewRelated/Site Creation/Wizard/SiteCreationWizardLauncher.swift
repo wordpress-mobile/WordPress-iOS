@@ -84,7 +84,9 @@ final class SiteCreationWizardLauncher {
             let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
             return WebAddressStep(creator: self.creator, service: addressService)
         case .design:
-            return SiteDesignStep(creator: self.creator)
+            // we call dropLast to remove .siteAssembly
+            let isLastStep = steps.dropLast().last == .design
+            return SiteDesignStep(creator: self.creator, isLastStep: isLastStep)
         case .intent:
             return SiteIntentStep(creator: self.creator)
         case .name:

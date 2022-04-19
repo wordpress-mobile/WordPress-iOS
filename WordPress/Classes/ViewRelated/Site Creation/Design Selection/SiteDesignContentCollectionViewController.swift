@@ -27,6 +27,7 @@ class SiteDesignSection: CategorySection {
 
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
+    private let createsSite: Bool
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
 
     let completion: SiteDesignStep.SiteDesignSelection
@@ -55,17 +56,22 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         return sections[sectionIndex].designs[position]
     }
 
-    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
-        let isLastSiteCreationStep = ABTest.siteNameV1.variation == .treatment(nil) && FeatureFlag.siteName.enabled
-        let primaryButtonTitle = isLastSiteCreationStep ? NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
-            : NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
+        self.createsSite = createsSite
+
+        let primaryActionTitle: String
+        if createsSite {
+            primaryActionTitle = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
+        } else {
+            primaryActionTitle = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
+        }
 
         super.init(
             analyticsLocation: "site_creation",
             mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
             prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
-            primaryActionTitle: primaryButtonTitle,
+            primaryActionTitle: primaryActionTitle,
             secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
         )
     }
@@ -154,7 +160,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     override func secondaryActionSelected(_ sender: Any) {
         guard let design = selectedDesign else { return }
 
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, createsSite: createsSite, onDismissWithDeviceSelected: { [weak self] device in
             self?.selectedPreviewDevice = device
         }, completion: completion)
 
