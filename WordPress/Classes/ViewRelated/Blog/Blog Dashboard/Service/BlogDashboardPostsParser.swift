@@ -38,6 +38,16 @@ class BlogDashboardPostsParser {
             }
         }
 
+        // Make sure only one draft is present
+        if posts.hasDrafts {
+            posts["draft"] = [[:]] // Only one post is needed
+        }
+
+        // Make sure only one scheduled post is present
+        if posts.hasScheduled {
+            posts["scheduled"] = [[:]] // Only one post is needed
+        }
+
         return posts
     }
 

@@ -54,6 +54,11 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         commonInit()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel?.stopObserving()
+    }
+
     // MARK: Helpers
 
     private func commonInit() {

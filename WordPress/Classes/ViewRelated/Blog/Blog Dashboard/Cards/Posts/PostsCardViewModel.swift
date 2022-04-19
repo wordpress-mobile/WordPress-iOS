@@ -28,15 +28,13 @@ class PostsCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private let postService: PostService
-
     private var postListFilter: PostListFilter = PostListFilter.draftFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
     private var status: BasePost.Status = .draft
 
-    private var syncing: (NSNumber?, BasePost.Status)?
+    private var isSyncing = false
 
     private var currentState: PostsListSection = .loading {
         didSet {
@@ -74,7 +72,6 @@ class PostsCardViewModel: NSObject {
         self.blog = blog
         self.view = view
         self.managedObjectContext = managedObjectContext
-        self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
 
         super.init()
@@ -113,6 +110,10 @@ class PostsCardViewModel: NSObject {
         postListFilter.title
     }
 
+    func stopObserving() {
+        DashboardPostsSyncManager.shared.removeListener(self)
+        fetchedResultsController.delegate = nil
+    }
 }
 
 // MARK: Cells Configuration
@@ -161,6 +162,7 @@ private extension PostsCardViewModel {
     }
 
     func performInitialLoading() {
+        DashboardPostsSyncManager.shared.addListener(self)
         updateFilter()
         createFetchedResultsController()
         showLoadingIfNeeded()
@@ -194,57 +196,9 @@ private extension PostsCardViewModel {
     }
 
     func sync() {
+        isSyncing = true
         let filter = postListFilter
-
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses.strings
-        options.authorID = blog.userID
-        options.number = Constants.numberOfPostsToSync
-        options.order = .descending
-        options.orderBy = .byModified
-        options.purgesLocalSync = true
-
-        guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
-            return
-        }
-
-        syncing = (blog.dotComID, status)
-
-        // If the userID is nil we need to sync authors
-        // But only if the user is an admin
-        if blog.userID == nil && blog.isAdmin {
-            syncAuthors()
-            return
-        }
-
-        postService.syncPosts(
-            ofType: .post,
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                self?.updateDashboardStateWithSuccessfulSync()
-                if posts?.count == 0 {
-                    self?.removeViewIfNeeded()
-                }
-
-                self?.hideLoading()
-                self?.syncing = nil
-            }, failure: { [weak self] _ in
-                self?.syncing = nil
-                self?.showLoadingFailureErrorIfNeeded()
-        })
-    }
-
-    func syncAuthors() {
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-        blogService.syncAuthors(for: blog, success: { [weak self] in
-            self?.syncing = nil
-            self?.performInitialLoading()
-            self?.refresh()
-        }, failure: { [weak self] _ in
-            self?.syncing = nil
-            self?.showLoadingFailureErrorIfNeeded()
-        })
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: filter.statuses.strings)
     }
 
     func updateFilter() {
@@ -274,7 +228,7 @@ private extension PostsCardViewModel {
 
     func showLoadingIfNeeded() {
         // Only show loading state if there are no posts at all
-        if numberOfPosts == 0 && isSyncing() {
+        if numberOfPosts == 0 && isSyncing {
             currentState = .loading
         }
         else {
@@ -298,7 +252,7 @@ private extension PostsCardViewModel {
     /// Returns true if update was needed, false otherwise.
     @discardableResult
     func removeViewIfNeeded() -> Bool {
-        if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing() {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing {
             view?.removeIfNeeded()
             return true
         }
@@ -316,10 +270,6 @@ private extension PostsCardViewModel {
         }
     }
 
-    func isSyncing() -> Bool {
-        syncing != nil
-    }
-
     enum Constants {
         static let numberOfPosts = 3
         static let numberOfPostsToSync: NSNumber = 3
@@ -327,6 +277,30 @@ private extension PostsCardViewModel {
 
     enum Strings {
         static let loadingFailure = NSLocalizedString("Unable to load posts right now.", comment: "Message for when posts fail to load on the dashboard")
+    }
+}
+
+// MARK: DashboardPostsSyncManagerListener
+
+extension PostsCardViewModel: DashboardPostsSyncManagerListener {
+    func postsSynced(success: Bool, blog: Blog, posts: [AbstractPost]?, for statuses: [String]) {
+        let currentStatuses = postListFilter.statuses.strings
+        guard self.blog == blog, currentStatuses.allSatisfy(statuses.contains) else {
+            return
+        }
+
+        isSyncing = false
+        if success {
+            updateDashboardStateWithSuccessfulSync()
+            if numberOfPosts == 0 {
+                removeViewIfNeeded()
+            }
+
+            hideLoading()
+        }
+        else {
+            showLoadingFailureErrorIfNeeded()
+        }
     }
 }
 

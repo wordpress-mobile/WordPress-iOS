@@ -28,6 +28,8 @@ class BlogDashboardState {
         !hasCachedData && failedToLoad
     }
 
+    @Atomic var syncingStatuses: [String] = []
+
     private init() { }
 
     /// Return the dashboard state for the given blog
