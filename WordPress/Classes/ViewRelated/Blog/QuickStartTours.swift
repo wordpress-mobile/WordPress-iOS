@@ -222,7 +222,7 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     var waypoints: [WayPoint]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
-    
+
     init(blog: Blog) {
         let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
