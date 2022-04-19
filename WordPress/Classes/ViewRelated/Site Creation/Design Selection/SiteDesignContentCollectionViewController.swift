@@ -28,6 +28,7 @@ class SiteDesignSection: CategorySection {
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
+    private let isLastSiteCreationStep: Bool
 
     let completion: SiteDesignStep.SiteDesignSelection
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
@@ -57,12 +58,15 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
-
+        self.isLastSiteCreationStep = ABTest.siteNameV1.variation == .treatment(nil) && FeatureFlag.siteName.enabled
+        let primaryButtonTitle = self.isLastSiteCreationStep ? NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
+            : NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
+        
         super.init(
             analyticsLocation: "site_creation",
             mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
             prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
-            primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
+            primaryActionTitle: primaryButtonTitle,
             secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
         )
     }
@@ -100,7 +104,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(title: self.isLastSiteCreationStep ? NSLocalizedString("Skip and create", comment: "Continue without making a selection") : NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
 
