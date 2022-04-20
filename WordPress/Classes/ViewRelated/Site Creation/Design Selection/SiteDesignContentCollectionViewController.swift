@@ -60,20 +60,21 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         self.completion = completion
         self.createsSite = createsSite
 
-        let primaryActionTitle: String
-        if createsSite {
-            primaryActionTitle = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design")
-        } else {
-            primaryActionTitle = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
-        }
-
         super.init(
             analyticsLocation: "site_creation",
-            mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-            prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
-            primaryActionTitle: primaryActionTitle,
-            secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
+            mainTitle: TextContent.mainTitle,
+            prompt: TextContent.subtitle,
+            primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
+            secondaryActionTitle: TextContent.previewButton
         )
+    }
+
+    private enum TextContent {
+        static let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
+        static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
+        static let createSiteButton = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design.")
+        static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
+        static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
     }
 
     required init?(coder: NSCoder) {
