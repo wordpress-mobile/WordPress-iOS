@@ -242,6 +242,14 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(TableFooterRow())
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            // Remove any header rows for the new appearance
+            tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
+
+            let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
+            return ImmuTable(sections: sections)
+        }
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: tableRows)
@@ -532,6 +540,7 @@ private extension SiteStatsInsightsViewModel {
     func createCommentsRow() -> TabbedTotalsStatsRow {
         return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
                                                tabDataForCommentType(.insightsCommentsPosts)],
+                                    statSection: .insightsCommentsAuthors,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: false)
     }
@@ -578,6 +587,7 @@ private extension SiteStatsInsightsViewModel {
     func createFollowersRow() -> TabbedTotalsStatsRow {
         return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                tabDataForFollowerType(.insightsFollowersEmail)],
+                                    statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true)
     }

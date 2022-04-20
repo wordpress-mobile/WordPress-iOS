@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-class LatestPostSummaryCell: UITableViewCell, NibLoadable, Accessible {
+class LatestPostSummaryCell: StatsBaseCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -53,6 +53,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable, Accessible {
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
+        statSection = .insightsLatestPostSummary
 
         // If there is no summary data, there is no post. Show Create Post option.
         guard let lastPostInsight = lastPostInsight else {
