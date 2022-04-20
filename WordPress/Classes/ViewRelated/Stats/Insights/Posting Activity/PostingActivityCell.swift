@@ -1,6 +1,6 @@
 import UIKit
 
-class PostingActivityCell: UITableViewCell, NibLoadable, Accessible {
+class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -28,6 +28,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable, Accessible {
 
     func configure(withData monthsData: [[PostingStreakEvent]], andDelegate delegate: SiteStatsInsightsDelegate?) {
         siteStatsInsightsDelegate = delegate
+        statSection = .insightsPostingActivity
         addMonths(monthsData: monthsData)
     }
 

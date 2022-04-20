@@ -38,7 +38,7 @@ final class QuickStartTourStateView: UIView {
     func configure(blog: Blog, sourceController: UIViewController, checklistTappedTracker: QuickStartChecklistTappedTracker? = nil) {
 
         customizeChecklistView.configure(
-            tours: QuickStartTourGuide.customizeListTours,
+            tours: QuickStartTourGuide.customizeListTours(for: blog),
             blog: blog,
             title: Strings.customizeTitle,
             hint: Strings.customizeHint

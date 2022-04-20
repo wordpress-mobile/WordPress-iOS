@@ -1,6 +1,6 @@
 import UIKit
 
-class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
+class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -15,7 +15,6 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
-    private var statSection: StatSection?
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - View
@@ -35,6 +34,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
         self.dataRows = dataRows
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+
         addRows()
         toggleViewMore()
     }
