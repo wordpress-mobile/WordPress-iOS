@@ -535,7 +535,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             UIView.animate(withDuration: animationSpeed, delay: 0, options: .curveEaseInOut, animations: {
                 self.footerHeightContraint.constant = hasSelectedItem ? self.footerHeight : 0
                 self.footerView.setNeedsLayout()
-                self.footerView.layoutIfNeeded()
+                self.view.layoutIfNeeded()
             })
             return
         }
