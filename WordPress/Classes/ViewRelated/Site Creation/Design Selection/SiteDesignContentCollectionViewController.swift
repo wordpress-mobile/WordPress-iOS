@@ -69,21 +69,13 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         )
     }
 
-    private enum TextContent {
-        static let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
-        static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
-        static let createSiteButton = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design.")
-        static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
-        static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = TextContent.backButtonTitle
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
@@ -110,7 +102,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(title: TextContent.skipButtonTitle, style: .done, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
 
@@ -125,7 +117,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             return
         }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: TextContent.cancelButtonTitle, style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
@@ -172,9 +164,22 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private func handleError(_ error: Error) {
         SiteCreationAnalyticsHelper.trackError(error)
-        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        let titleText = TextContent.errorTitle
+        let subtitleText = TextContent.errorSubtitle
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
+    }
+
+    private enum TextContent {
+        static let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
+        static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
+        static let createSiteButton = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design.")
+        static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
+        static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
+        static let backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation.")
+        static let skipButtonTitle = NSLocalizedString("Skip", comment: "Continue without making a selection.")
+        static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel site creation.")
+        static let errorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        static let errorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
     }
 }
 
