@@ -100,7 +100,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func showQuickStart() {
-        let currentCollections = QuickStartToursCollection.collections(for: blog)
+        let currentCollections = QuickStartFactory.collections(for: blog)
         guard let collectionToShow = currentCollections.first else {
             return
         }
