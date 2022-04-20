@@ -155,15 +155,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return button
     }()
 
-    private lazy var bloggingPromptsInfoButtonView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bloggingPromptsInfoButton)
-        return view
-    }()
-
     private lazy var bloggingPromptsTitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsTitle, bloggingPromptsInfoButtonView, makeSpacer()])
+        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsTitle, bloggingPromptsInfoButton, makeSpacer()])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Metrics.BloggingPrompts.titleSpacing
         stackView.alignment = .center
@@ -173,6 +166,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var bloggingPromptsDescription: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .subheadline)
         label.text = TextContent.bloggingPromptsDescription
         label.textColor = .textSubtle
@@ -188,27 +182,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return bloggingPromptsSwitch
     }()
 
-    private lazy var bloggingPromptsSwitchView: UIView = {
+    private lazy var bloggingPromptsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bloggingPromptsSwitch)
+        view.addSubviews([bloggingPromptsTitleStackView, bloggingPromptsDescription, bloggingPromptsSwitch])
+        view.isHidden = !FeatureFlag.bloggingPrompts.enabled
         return view
-    }()
-
-    private lazy var bloggingPromptsLabelsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsTitleStackView, bloggingPromptsDescription])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = Metrics.BloggingPrompts.labelsSpacing
-        return stackView
-    }()
-
-    private lazy var bloggingPromptsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsLabelsStackView, bloggingPromptsSwitchView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.isHidden = !FeatureFlag.bloggingPrompts.enabled
-        return stackView
     }()
 
     private lazy var bloggingPromptsToConfirmationButtonSpacer: UIView = {
@@ -502,7 +481,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             daysOuterStackView,
             frequencyView,
             timeSelectionView,
-            bloggingPromptsStackView,
+            bloggingPromptsView,
             bloggingPromptsToConfirmationButtonSpacer,
             button,
         ])
@@ -510,20 +489,23 @@ private extension BloggingRemindersFlowSettingsViewController {
         stackView.setCustomSpacing(Metrics.afterTitleLabelSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
         stackView.setCustomSpacing(Metrics.afterTimeSelectionViewSpacing, after: timeSelectionView)
+        stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
+        stackView.setCustomSpacing(WPDeviceIdentification.isiPad() ? Metrics.stackSpacing : .zero,
+                                   after: bloggingPromptsToConfirmationButtonSpacer)
     }
 
     func configureConstraints() {
         frequencyView.pinSubviewToAllEdges(frequencyLabel)
         timeSelectionView.pinSubviewToAllEdges(timeSelectionStackView)
-        bloggingPromptsInfoButtonView.pinSubviewToAllEdges(bloggingPromptsInfoButton)
 
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         timeSelectionView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-        bloggingPromptsDescription.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        bloggingPromptsTitle.setContentCompressionResistancePriority(.required, for: .vertical)
         bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
+        bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
@@ -542,17 +524,35 @@ private extension BloggingRemindersFlowSettingsViewController {
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
+        ])
 
+        configureBloggingPromptsConstraints()
+    }
+
+    func configureBloggingPromptsConstraints() {
+        guard FeatureFlag.bloggingPrompts.enabled else {
+            NSLayoutConstraint.activate([
+                bloggingPromptsView.widthAnchor.constraint(equalToConstant: .zero),
+                bloggingPromptsView.heightAnchor.constraint(equalToConstant: .zero),
+            ])
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            bloggingPromptsTitleStackView.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsTitleStackView.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsTitleStackView.topAnchor.constraint(equalTo: bloggingPromptsView.topAnchor),
+            bloggingPromptsDescription.topAnchor.constraint(equalTo: bloggingPromptsTitleStackView.bottomAnchor,
+                                                            constant: Metrics.BloggingPrompts.labelsSpacing),
+            bloggingPromptsDescription.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsDescription.bottomAnchor.constraint(equalTo: bloggingPromptsView.bottomAnchor),
+            bloggingPromptsSwitch.leadingAnchor.constraint(greaterThanOrEqualTo: bloggingPromptsDescription.trailingAnchor,
+                                                           constant: Metrics.BloggingPrompts.switchLeading),
+            bloggingPromptsSwitch.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsSwitch.centerYAnchor.constraint(equalTo: bloggingPromptsView.centerYAnchor),
             bloggingPromptsInfoButton.heightAnchor.constraint(equalToConstant: Metrics.BloggingPrompts.infoButtonHeight),
             bloggingPromptsInfoButton.widthAnchor.constraint(equalTo: bloggingPromptsInfoButton.heightAnchor),
-            bloggingPromptsSwitch.topAnchor.constraint(greaterThanOrEqualTo: bloggingPromptsSwitchView.topAnchor,
-                                                       constant: Metrics.BloggingPrompts.switchMargins.top),
-            bloggingPromptsSwitch.bottomAnchor.constraint(lessThanOrEqualTo: bloggingPromptsSwitchView.bottomAnchor,
-                                                          constant: Metrics.BloggingPrompts.switchMargins.bottom),
-            bloggingPromptsSwitch.leadingAnchor.constraint(equalTo: bloggingPromptsSwitchView.leadingAnchor,
-                                                           constant: Metrics.BloggingPrompts.switchMargins.left),
-            bloggingPromptsSwitch.trailingAnchor.constraint(equalTo: bloggingPromptsSwitchView.trailingAnchor),
-            bloggingPromptsStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            bloggingPromptsView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
 
@@ -674,6 +674,6 @@ private enum Metrics {
         static let titleSpacing: CGFloat = 5.0
         static let labelsSpacing: CGFloat = 2.0
         static let infoButtonHeight: CGFloat = 16.0
-        static let switchMargins = UIEdgeInsets(top: 6.0, left: 16.0, bottom: -7.0, right: 0.0)
+        static let switchLeading: CGFloat = 16.0
     }
 }
