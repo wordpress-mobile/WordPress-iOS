@@ -147,7 +147,19 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .setupQuickStart, .removeQuickStart:
+                    self?.loadCardsFromCache()
+                default:
+                    break
+                }
+            }
+        }
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {

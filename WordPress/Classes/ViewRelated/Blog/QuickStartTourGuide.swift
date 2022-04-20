@@ -41,6 +41,10 @@ open class QuickStartTourGuide: NSObject {
         tourInProgress = false
 
         WPAnalytics.track(.quickStartStarted)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.setupQuickStart])
     }
 
     func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -53,6 +57,10 @@ open class QuickStartTourGuide: NSObject {
         blog.removeAllTours()
         endCurrentTour()
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.removeQuickStart])
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
