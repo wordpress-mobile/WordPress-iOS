@@ -172,7 +172,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     private enum TextContent {
         static let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
         static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
-        static let createSiteButton = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design.")
+        static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
         static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
         static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
         static let backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation.")

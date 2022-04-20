@@ -30,7 +30,7 @@ class SiteDesignTests: XCTestCase {
         // given
         let creator = SiteCreator()
         let siteDesignStep = SiteDesignStep(creator: creator, isLastStep: true)
-        let expectedPrimaryTitle = "Create site"
+        let expectedPrimaryTitle = "Create Site"
 
         // when
         let siteDesignVC = try XCTUnwrap(siteDesignStep.content as? SiteDesignContentCollectionViewController)
@@ -63,7 +63,7 @@ class SiteDesignTests: XCTestCase {
         // given
         let siteDesignPreviewVC = SiteDesignPreviewViewController(
             siteDesign: remoteDesign, selectedPreviewDevice: nil, createsSite: true, onDismissWithDeviceSelected: nil, completion: {design in })
-        let expectedPrimaryTitle = "Create site"
+        let expectedPrimaryTitle = "Create Site"
 
         // when
         siteDesignPreviewVC.loadViewIfNeeded()

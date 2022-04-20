@@ -30,7 +30,7 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
 
     private enum TextContent {
         static let previewTitle = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design.")
-        static let createSiteButton = NSLocalizedString("Create site", comment: "Title for the button to progress with creating the site with the selected design.")
+        static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
         static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
     }
 }
