@@ -141,7 +141,19 @@ extension DashboardQuickActionsCardCell {
 
     private func startObservingQuickStart() {
         NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
             self?.toggleSpotlightOnStatsButton()
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .stats:
+                    self?.autoScrollToStatsButton()
+                default:
+                    break
+                }
+            }
         }
     }
 
@@ -151,6 +163,10 @@ extension DashboardQuickActionsCardCell {
 
     private func toggleSpotlightOnStatsButton() {
         statsButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.stats)
+    }
+
+    private func autoScrollToStatsButton() {
+        scrollView.scrollToEnd(animated: true)
     }
 }
 

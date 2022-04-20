@@ -2,7 +2,9 @@ import UIKit
 
 extension UIScrollView {
 
-    // Scroll to a specific view so that it's top is at the top our scrollview
+    // MARK: - Vertical scrollview
+
+    // Scroll to a specific view in a vertical scrollview so that it's top is at the top our scrollview
     @objc func scrollToView(_ view: UIView, animated: Bool) {
         if let origin = view.superview {
 
@@ -41,6 +43,15 @@ extension UIScrollView {
         let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + adjustedContentInset.bottom)
         if bottomOffset.y > 0 {
             setContentOffset(bottomOffset, animated: animated)
+        }
+    }
+
+    // MARK: - Horizontal scrollview
+
+    func scrollToEnd(animated: Bool) {
+        let endOffset = CGPoint(x: contentSize.width - bounds.size.width, y: 0)
+        if endOffset.x > 0 {
+            setContentOffset(endOffset, animated: animated)
         }
     }
 
