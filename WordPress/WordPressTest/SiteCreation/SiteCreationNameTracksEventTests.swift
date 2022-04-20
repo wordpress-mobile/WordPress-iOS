@@ -21,47 +21,6 @@ class SiteCreationNameTracksEventTests: XCTestCase {
         return siteIntentViewController
     }
 
-    class MockSiteNameStep: WizardStep {
-        weak var delegate: WizardDelegate?
-        private let creator: SiteCreator
-
-        var expectedProperty = ""
-
-        var content: UIViewController {
-            SiteNameViewController(siteNameViewFactory: makeSiteNameView) { [weak self] in
-                SiteCreationAnalyticsHelper.trackSiteNameSkipped()
-                self?.didSet(siteName: nil)
-            }
-        }
-
-        init(creator: SiteCreator) {
-            self.creator = creator
-        }
-
-        private func didSet(siteName: String?) {
-            if let siteName = siteName {
-                SiteCreationAnalyticsHelper.trackSiteNameEntered(siteName)
-            }
-
-            creator.information = SiteInformation(title: siteName, tagLine: creator.information?.tagLine)
-            delegate?.nextStep()
-        }
-
-        private func makeSiteNameView() -> UIView {
-            SiteNameView(siteVerticalName: creator.vertical?.localizedTitle ?? "") { [weak self] _ in
-                self?.didSet(siteName: self?.expectedProperty ?? "")
-            }
-        }
-    }
-
-    func mockSiteNameViewControllerMaker(expectedProperty: String) throws -> SiteNameViewController {
-        let siteCreator = SiteCreator()
-        let mockSiteNameStep = MockSiteNameStep(creator: siteCreator)
-        mockSiteNameStep.expectedProperty = expectedProperty
-        let siteIntentViewController = try XCTUnwrap(mockSiteNameStep.content as? SiteNameViewController)
-        return siteIntentViewController
-    }
-
     func load(_ siteNameViewController: SiteNameViewController) {
         siteNameViewController.loadViewIfNeeded()
         siteNameViewController.viewDidLoad()
@@ -129,7 +88,7 @@ class SiteCreationNameTracksEventTests: XCTestCase {
 
         // Given
         let expectedProperty = "My Test Site"
-        let siteNameViewController = try mockSiteNameViewControllerMaker(expectedProperty: expectedProperty)
+        let siteNameViewController = try siteNameViewControllerMaker()
         let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameEntered.value
         siteNameViewController.loadViewIfNeeded()
 
@@ -137,6 +96,12 @@ class SiteCreationNameTracksEventTests: XCTestCase {
             XCTFail("Unable to find continue button")
             return
         }
+        guard let searchBar = getSearchBar(from: siteNameViewController.view) else {
+            XCTFail("Unable to find search bar")
+            return
+        }
+        searchBar.text = expectedProperty
+
         // When
         button.sendActions(for: .touchUpInside)
 
@@ -160,5 +125,19 @@ class SiteCreationNameTracksEventTests: XCTestCase {
             }
         }
         return continueButton
+    }
+
+    /// Gets a reference to the search bar in a `SiteNameView` instance
+    private func getSearchBar(from view: UIView) -> UISearchBar? {
+        var searchBar: UISearchBar?
+
+        view.subviews.forEach {
+            searchBar = getSearchBar(from: $0)
+
+            if let bar = $0 as? UISearchBar {
+                searchBar = bar
+            }
+        }
+        return searchBar
     }
 }
