@@ -144,14 +144,14 @@ private extension SiteNameView {
     func setupTitleColors() {
         // enclose the vertical name between two characters that are not in the title
         // (and reasonably never will..) to distinguish it from any substring in the title
-        let selectedVerticalName = "😎" + siteVerticalName + "🙃"
+        let selectedVerticalName = "😎" + siteVerticalName.dropFirst().dropLast() + "🙃"
         let fullTitle = String(format: TextContent.title, selectedVerticalName)
         var attributedTitle = NSMutableAttributedString(string: fullTitle)
         guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
-        let polishedFullTitle = String(format: TextContent.title, " " + siteVerticalName + " ")
+        let polishedFullTitle = String(format: TextContent.title, siteVerticalName)
         attributedTitle = NSMutableAttributedString(string: polishedFullTitle)
         attributedTitle.addAttributes([
             .foregroundColor: UIColor.primary,
@@ -244,7 +244,7 @@ private extension SiteNameView {
 private extension SiteNameView {
 
     enum TextContent {
-        static let title = NSLocalizedString("Give your%@website a name",
+        static let title = NSLocalizedString("Give your %@ website a name",
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
