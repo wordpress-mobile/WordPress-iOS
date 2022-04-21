@@ -25,6 +25,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIntentQuestion
     case landInTheEditor
     case siteName
+    case quickStartForExistingUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -80,6 +81,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .siteName:
             return true
+        case .quickStartForExistingUsers:
+            return false
         }
     }
 
@@ -152,6 +155,8 @@ extension FeatureFlag {
             return "Land In The Editor"
         case .siteName:
             return "Site Name"
+        case .quickStartForExistingUsers:
+            return "Quick Start for existing users V2"
         }
     }
 
