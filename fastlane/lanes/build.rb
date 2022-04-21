@@ -368,8 +368,8 @@ platform :ios do
     qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{CGI.escape(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
       You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
-        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
-        <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
+        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below to access App Center</li>
+        <li>Then installing the build number <code>#{build_number}</code> on your iPhone</li>
       </ul>
       <img src='#{qr_code_url}' width='150' height='150' /><br />
       If you need access to App Center, please ask a maintainer to add you.
