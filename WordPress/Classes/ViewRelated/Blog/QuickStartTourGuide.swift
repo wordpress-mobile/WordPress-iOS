@@ -42,6 +42,7 @@ open class QuickStartTourGuide: NSObject {
         tourInProgress = false
         blog.quickStartType = type
 
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
         WPAnalytics.track(.quickStartStarted)
     }
 
