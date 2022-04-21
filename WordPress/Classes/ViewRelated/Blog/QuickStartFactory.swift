@@ -13,6 +13,7 @@ class QuickStartFactory {
             guard let completedTours = blog.completedQuickStartTours, completedTours.count > 0 else {
                 return []
             }
+            // This is to support tours started before quickStartType was added.
             fallthrough
         case .newSite:
             return [QuickStartCustomizeToursCollection(blog: blog), QuickStartGrowToursCollection(blog: blog)]
