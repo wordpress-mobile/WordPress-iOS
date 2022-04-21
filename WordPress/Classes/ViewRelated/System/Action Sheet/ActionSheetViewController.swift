@@ -45,11 +45,13 @@ class ActionSheetViewController: UIViewController {
         }
     }
 
+    let headerView: UIView?
     let buttons: [ActionSheetButton]
-    let headerTitle: String
+    let buttonHeaderTitle: String
 
-    init(headerTitle: String, buttons: [ActionSheetButton]) {
-        self.headerTitle = headerTitle
+    init(headerView: UIView? = nil, buttonHeaderTitle: String, buttons: [ActionSheetButton]) {
+        self.headerView = headerView
+        self.buttonHeaderTitle = buttonHeaderTitle
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
     }
@@ -83,7 +85,7 @@ class ActionSheetViewController: UIViewController {
         headerLabelView.pinSubviewToAllEdges(headerLabel, insets: Constants.Header.insets)
 
         headerLabel.font = WPStyleGuide.fontForTextStyle(.headline)
-        headerLabel.text = headerTitle
+        headerLabel.text = buttonHeaderTitle
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
@@ -100,10 +102,13 @@ class ActionSheetViewController: UIViewController {
 
         NSLayoutConstraint.activate(buttonConstraints)
 
-        let stackView = UIStackView(arrangedSubviews: [
-            gripButton,
-            headerLabelView
-        ] + buttonViews)
+        let stackView = UIStackView(arrangedSubviews: [gripButton])
+
+        if let headerView = headerView {
+            stackView.addArrangedSubview(headerView)
+        }
+
+        stackView.addArrangedSubviews([headerLabelView] + buttonViews)
 
         stackView.setCustomSpacing(Constants.Header.spacing, after: gripButton)
         stackView.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)

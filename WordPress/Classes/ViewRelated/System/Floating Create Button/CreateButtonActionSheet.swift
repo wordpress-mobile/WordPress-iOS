@@ -12,7 +12,7 @@ class CreateButtonActionSheet: ActionSheetViewController {
 
     init(actions: [ActionSheetItem]) {
         let buttons = actions.map { $0.makeButton() }
-        super.init(headerTitle: Constants.title, buttons: buttons)
+        super.init(buttonHeaderTitle: Constants.title, buttons: buttons)
     }
 
     required init?(coder: NSCoder) {
