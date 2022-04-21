@@ -4,7 +4,7 @@ SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
-APPCENTER_OWNER_TYPE = 'organization'      
+APPCENTER_OWNER_TYPE = 'organization'
 
 # Lanes related to Building and Testing the code
 #
@@ -350,7 +350,7 @@ platform :ios do
   end
 
   # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
-  # 
+  #
   # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
   #
   # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
@@ -359,13 +359,13 @@ platform :ios do
   #
   # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
   #
-  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
+  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)
     UI.message("Successfully built and uploaded installable build `#{build_number}` to AppCenter.")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
-    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
+    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{CGI.escape(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
       You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
         <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
