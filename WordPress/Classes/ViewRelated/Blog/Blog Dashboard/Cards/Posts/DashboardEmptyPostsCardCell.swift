@@ -1,7 +1,31 @@
 import UIKit
 
-/// View prompting the user to create their next post
-class BlogDashboardNextPostView: UIView {
+/// Card cell prompting the user to create their first post
+final class DashboardFirstPostCardCell: DashboardEmptyPostsCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .createPost)
+    }
+}
+
+/// Card cell prompting the user to create their next post
+final class DashboardNextPostCardCell: DashboardEmptyPostsCardCell, BlogDashboardCardConfigurable {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        super.configure(blog: blog, viewController: viewController, apiResponse: apiResponse, cardType: .nextPost)
+    }
+}
+
+/// Card cell used when no posts are available to display
+class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
+
+    // MARK: Views
+
+    private lazy var frameView: BlogDashboardCardFrameView = {
+        let frameView = BlogDashboardCardFrameView()
+        frameView.translatesAutoresizingMaskIntoConstraints = false
+        frameView.hideHeader()
+        return frameView
+    }()
+
     private lazy var mainStackView: UIStackView = {
         let mainStackView = UIStackView()
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,20 +78,21 @@ class BlogDashboardNextPostView: UIView {
         return imageView
     }()
 
-    var onTap: (() -> Void)?
+    // MARK: Private Variables
 
-    var hasPublishedPosts: Bool = true {
-        didSet {
-            titleLabel.text = hasPublishedPosts ? Strings.nextPostTitle : Strings.firstPostTitle
-            descriptionLabel.text = hasPublishedPosts ? Strings.nextPostDescription : Strings.firstPostDescription
-        }
-    }
+    /// The VC presenting this cell
+    private weak var viewController: BlogDashboardViewController?
+    private var blog: Blog?
+
+    // MARK: Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+        contentView.addSubview(frameView)
+        contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
+
+        frameView.add(subview: mainStackView)
 
         mainStackView.addArrangedSubviews([
             contentStackView,
@@ -83,19 +108,58 @@ class BlogDashboardNextPostView: UIView {
         addGestureRecognizer(tap)
     }
 
-    @objc private func promptTapped() {
-        onTap?()
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Actions
+
+    @objc private func promptTapped() {
+        presentEditor()
+    }
+}
+
+// MARK: BlogDashboardCardConfigurable
+
+extension DashboardEmptyPostsCardCell {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
+        self.blog = blog
+        self.viewController = viewController
+
+        switch cardType {
+        case .createPost:
+            titleLabel.text = Strings.firstPostTitle
+            descriptionLabel.text = Strings.firstPostDescription
+        case .nextPost:
+            titleLabel.text = Strings.nextPostTitle
+            descriptionLabel.text = Strings.nextPostDescription
+        default:
+            assertionFailure("Cell used with wrong card type")
+            return
+        }
+
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": cardType.rawValue])
+    }
+}
+
+// MARK: Private Helpers
+
+private extension DashboardEmptyPostsCardCell {
+    func presentEditor() {
+        let controller = viewController?.tabBarController as? WPTabBarController
+        controller?.showPostTab()
+    }
+}
+
+// MARK: Constants
+
+extension DashboardEmptyPostsCardCell {
     private enum Constants {
         static let horizontalSpacing: CGFloat = 16
         static let verticalSpacing: CGFloat = 10
         static let padding = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         static let imageSize = CGSize(width: 70, height: 70)
+        static let constraintPriority = UILayoutPriority(999)
     }
 
     private enum Strings {

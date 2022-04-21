@@ -8,6 +8,8 @@ final class AvatarTrainView: UIView {
 
     private var avatarURLs: [URL?]
 
+    private var placeholderImage: UIImage
+
     private lazy var avatarStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +27,9 @@ final class AvatarTrainView: UIView {
 
     // MARK: Public Methods
 
-    init(avatarURLs: [URL?]) {
+    init(avatarURLs: [URL?], placeholderImage: UIImage? = nil) {
         self.avatarURLs = avatarURLs
+        self.placeholderImage = placeholderImage ?? Constants.placeholderImage
         super.init(frame: .zero)
 
         setupViews()
@@ -57,7 +60,7 @@ private extension AvatarTrainView {
     }
 
     func makeAvatarImageView(with avatarURL: URL? = nil) -> UIImageView {
-        let imageView = CircularImageView(image: Constants.placeholderImage)
+        let imageView = CircularImageView(image: placeholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         configureBorder(for: imageView)
 
@@ -67,7 +70,7 @@ private extension AvatarTrainView {
         ])
 
         if let avatarURL = avatarURL {
-            imageView.downloadImage(from: avatarURL, placeholderImage: Constants.placeholderImage)
+            imageView.downloadImage(from: avatarURL, placeholderImage: placeholderImage)
         }
 
         return imageView
@@ -81,7 +84,7 @@ private extension AvatarTrainView {
     // MARK: Constants
 
     struct Constants {
-        static let imageViewSpacing: CGFloat = -4
+        static let imageViewSpacing: CGFloat = -5
         static let avatarDiameter: CGFloat = 20
         static let borderWidth: CGFloat = 2
         static let placeholderImage: UIImage = .gravatarPlaceholderImage

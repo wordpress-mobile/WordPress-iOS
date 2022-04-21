@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,16 +18,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Tyj-5B-MLc" userLabel="Subtitles Stack View">
-                        <rect key="frame" x="16" y="7" width="291" height="16"/>
+                        <rect key="frame" x="16" y="7" width="291" height="14.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbE-CG-voj">
-                                <rect key="frame" x="0.0" y="0.0" width="145.5" height="16"/>
+                                <rect key="frame" x="0.0" y="0.0" width="145.5" height="14.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfF-g0-7Iu">
-                                <rect key="frame" x="145.5" y="0.0" width="145.5" height="16"/>
+                                <rect key="frame" x="145.5" y="0.0" width="145.5" height="14.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,7 +38,7 @@
                         </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="w2N-OJ-hIR">
-                        <rect key="frame" x="0.0" y="0.0" width="323" height="200"/>
+                        <rect key="frame" x="0.0" y="28.5" width="323" height="171.5"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBd-Ut-Uch" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="323" height="0.5"/>
@@ -68,7 +68,7 @@
                     <constraint firstAttribute="trailing" secondItem="cBd-Ut-Uch" secondAttribute="trailing" id="bwo-8W-tHL"/>
                     <constraint firstAttribute="bottom" secondItem="9px-XX-eCP" secondAttribute="bottom" id="e26-py-r2V"/>
                     <constraint firstItem="9px-XX-eCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfo-Hn-1HP"/>
-                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sza-97-qoA"/>
+                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" constant="7" id="w86-Wi-KtN"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -77,9 +77,10 @@
                 <outlet property="dataSubtitleLabel" destination="DfF-g0-7Iu" id="JdZ-nM-kKj"/>
                 <outlet property="itemSubtitleLabel" destination="vbE-CG-voj" id="eZl-wI-KfG"/>
                 <outlet property="rowsStackView" destination="w2N-OJ-hIR" id="5DU-xj-fcC"/>
-                <outlet property="rowsStackViewTopConstraint" destination="sza-97-qoA" id="s2p-EA-TTR"/>
+                <outlet property="rowsStackViewTopConstraint" destination="w86-Wi-KtN" id="uyG-4u-hdw"/>
                 <outlet property="subtitleStackView" destination="Tyj-5B-MLc" id="Ddg-AW-G7w"/>
                 <outlet property="subtitlesStackViewTopConstraint" destination="3w8-O5-egA" id="Qsd-dr-iv9"/>
+                <outlet property="topConstraint" destination="3w8-O5-egA" id="aqp-6y-dwu"/>
                 <outlet property="topSeparatorLine" destination="cBd-Ut-Uch" id="C1i-Zd-yPU"/>
             </connections>
             <point key="canvasLocation" x="55.200000000000003" y="17.991004497751124"/>
