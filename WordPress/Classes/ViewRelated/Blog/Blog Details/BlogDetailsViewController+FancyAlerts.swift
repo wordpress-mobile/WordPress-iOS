@@ -93,10 +93,10 @@ extension BlogDetailsViewController {
                 return false
             }
 
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
+            return QuickStartTourGuide.quickStartEnabled(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
         }
 
-        return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        return QuickStartTourGuide.quickStartEnabled(for: blog)
     }
 
     @objc func showQuickStart() {
