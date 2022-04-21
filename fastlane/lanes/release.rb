@@ -72,7 +72,6 @@ platform :ios do
     else
       UI.message('Aborting code freeze completion. See you later.')
     end
-
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
