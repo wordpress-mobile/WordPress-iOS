@@ -20,10 +20,10 @@ class QuickStartFactoryTests: XCTestCase {
         ContextManager.overrideSharedInstance(nil)
     }
 
-    func testCollectionsForExistingUser() {
+    func testCollectionsForExistingSite() {
         // Given
         let blog = newTestBlog(id: 1)
-        blog.quickStartType = .existingUser
+        blog.quickStartType = .existingSite
 
         // When
         let collections = QuickStartFactory.collections(for: blog)
@@ -33,10 +33,10 @@ class QuickStartFactoryTests: XCTestCase {
         XCTAssertTrue(collections[0] is QuickStartGetToKnowAppCollection)
     }
 
-    func testCollectionsForNewUser() {
+    func testCollectionsForNewSite() {
         // Given
         let blog = newTestBlog(id: 1)
-        blog.quickStartType = .newUser
+        blog.quickStartType = .newSite
 
         // When
         let collections = QuickStartFactory.collections(for: blog)
@@ -74,10 +74,10 @@ class QuickStartFactoryTests: XCTestCase {
         XCTAssertTrue(collections[1] is QuickStartGrowToursCollection)
     }
 
-    func testToursForExistingUser() {
+    func testToursForExistingSite() {
         // Given
         let blog = newTestBlog(id: 1)
-        blog.quickStartType = .existingUser
+        blog.quickStartType = .existingSite
 
         // When
         let tours = QuickStartFactory.allTours(for: blog)
@@ -89,10 +89,10 @@ class QuickStartFactoryTests: XCTestCase {
         XCTAssertTrue(tours[2] is QuickStartFollowTour)
     }
 
-    func testToursForNewUser() {
+    func testToursForNewSite() {
         // Given
         let blog = newTestBlog(id: 1)
-        blog.quickStartType = .newUser
+        blog.quickStartType = .newSite
 
         // When
         let tours = QuickStartFactory.allTours(for: blog)
