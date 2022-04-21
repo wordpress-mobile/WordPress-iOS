@@ -575,7 +575,8 @@ private extension WordPressAuthenticationManager {
         // Otherwise, show the My Site screen for the specified blog and after a short delay,
         // trigger the Quick Start tour
         self.windowManager.showAppUI(for: blog, completion: {
-            QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newUser)
+            let quickStartType: QuickStartType = FeatureFlag.quickStartForExistingUsers.enabled ? .existingSite : .newSite
+            QuickStartTourGuide.shared.setupWithDelay(for: blog, type: quickStartType)
         })
     }
 }

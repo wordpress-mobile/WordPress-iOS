@@ -266,7 +266,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newUser, withCompletedSteps: completedSteps)
+                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newSite, withCompletedSteps: completedSteps)
             }
         }
         tabBar.present(quickstartPrompt, animated: true)
