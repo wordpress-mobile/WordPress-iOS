@@ -132,9 +132,9 @@ class SiteNameView: UIView {
     }
 
     override func becomeFirstResponder() -> Bool {
-         super.becomeFirstResponder()
-         return searchBar.becomeFirstResponder()
-     }
+        super.becomeFirstResponder()
+        return searchBar.becomeFirstResponder()
+    }
 }
 
 // MARK: setup
@@ -142,20 +142,22 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        // enclose the vertical name between two characters that are not in the title
-        // (and reasonably never will..) to distinguish it from any substring in the title
-        let selectedVerticalName = "😎" + siteVerticalName + "🙃"
-        let fullTitle = String(format: TextContent.title, selectedVerticalName)
-        var attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
+        // find the index where the vertical name goes, so that it won't be confused
+        // with any word in the title
+        let replacementIndex = NSString(string: TextContent.title).range(of: "%@")
+
+        guard !siteVerticalName.isEmpty, replacementIndex.length > 0 else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
-        let polishedFullTitle = String(format: TextContent.title, " " + siteVerticalName + " ")
-        attributedTitle = NSMutableAttributedString(string: polishedFullTitle)
+
+        let fullTitle = String(format: TextContent.title, siteVerticalName)
+        let attributedTitle = NSMutableAttributedString(string: fullTitle)
+        let replacementRange = NSRange(location: replacementIndex.location, length: siteVerticalName.utf16.count)
+
         attributedTitle.addAttributes([
             .foregroundColor: UIColor.primary,
-        ], range: range)
+        ], range: replacementRange)
         titleLabel.attributedText = attributedTitle
     }
 
@@ -244,7 +246,7 @@ private extension SiteNameView {
 private extension SiteNameView {
 
     enum TextContent {
-        static let title = NSLocalizedString("Give your%@website a name",
+        static let title = NSLocalizedString("Give your %@ website a name",
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
