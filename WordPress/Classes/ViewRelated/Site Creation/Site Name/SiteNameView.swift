@@ -24,6 +24,8 @@ class SiteNameView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = Metrics.numberOfLinesInTitle
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.titleMinimumScaleFactor
         return label
     }()
 
@@ -132,9 +134,9 @@ class SiteNameView: UIView {
     }
 
     override func becomeFirstResponder() -> Bool {
-         super.becomeFirstResponder()
-         return searchBar.becomeFirstResponder()
-     }
+        super.becomeFirstResponder()
+        return searchBar.becomeFirstResponder()
+    }
 }
 
 // MARK: setup
@@ -262,9 +264,11 @@ private extension SiteNameView {
         // search bar
         static let searchbarHeight: CGFloat = 64
         // title and subtitle
-        static let numberOfLinesInTitle = 0
+        static let numberOfLinesInTitle = 3
         static let numberOfLinesInSubtitle = 0
         static let titlesInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let verticalNameDisplayLimit = 32
+        static let titleMinimumScaleFactor: CGFloat = 0.75
         //continue button
         static let continueButtonStandardPadding: CGFloat = 16
         static let continueButtonAdditionaliPadPadding: CGFloat = 8
