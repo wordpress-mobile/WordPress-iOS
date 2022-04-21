@@ -149,7 +149,10 @@ private extension SiteNameView {
         let selectedVerticalName = "😎" + siteVerticalName + "🙃"
         let fullTitle = String(format: TextContent.title, selectedVerticalName)
         var attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
+        // Use default title if the vertical name is empty or too long
+        guard let range = fullTitle.nsRange(of: selectedVerticalName),
+              !siteVerticalName.isEmpty,
+              siteVerticalName.count <= Metrics.verticalNameDisplayLimit else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
