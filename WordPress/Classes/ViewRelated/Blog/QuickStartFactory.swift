@@ -23,6 +23,6 @@ class QuickStartFactory {
     }
 
     static func allTours(for blog: Blog) -> [QuickStartTour] {
-        collections(for: blog).flatMap({$0.tours} )
+        collections(for: blog).flatMap { $0.tours }
     }
 }
