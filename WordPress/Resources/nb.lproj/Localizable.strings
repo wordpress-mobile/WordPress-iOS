@@ -610,6 +610,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Godkjenn";
 
+/* Approves a Comment */
+"Approve Comment" = "Godkjenn kommentar";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Godkjent";
@@ -1361,7 +1364,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Fortsett";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2213,12 +2217,6 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Mislyktes";
-
-/* No comment provided by engineer. */
-"Failed to insert audio file." = "Kunne ikke sette inn lydfil.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Kunne ikke sette inn media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Kunne ikke sette inn medie.\nTrykk for flere valg.";
@@ -3154,7 +3152,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Nevne";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Meny";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -3284,7 +3284,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Navn";
 
 /* Error to be displayed when a tag is empty */
@@ -4902,6 +4903,7 @@ translators: Block name. %s: The localized block name */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Del";
 
@@ -5051,7 +5053,6 @@ translators: Block name. %s: The localized block name */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Nettstedstittel";
@@ -5098,7 +5099,8 @@ translators: Block name. %s: The localized block name */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Hopp over";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5766,9 +5768,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "På tide å fullføre oppsettet av nettsiden din! Vår sjekkliste forklarer de neste trinnene.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tips";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for å få mest mulig ut av WordPress.com";
 
@@ -5830,7 +5829,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Verktøy";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Toppnivå";
 
 /* Shortened version of the main title to be used in back navigation
@@ -5917,8 +5917,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -6036,6 +6036,9 @@ translators: Block name. %s: The localized block name */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Merk som ikke godkjent";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Merk kommentar som ikke godkjent";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Gjør kommentaren ikke godkjent.";

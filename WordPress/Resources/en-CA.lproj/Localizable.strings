@@ -1804,7 +1804,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continue";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2425,9 +2426,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Double tap and hold to edit";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Double tap and hold to move this menu item up or down";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Double tap to add a block";
 
@@ -3017,13 +3015,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Failed marking Notifications as read";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
@@ -4317,7 +4309,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Mention";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4483,7 +4477,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -5483,9 +5478,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
-
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
 
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
@@ -6520,6 +6512,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
 
@@ -6682,10 +6675,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Site Language";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
 
@@ -6694,7 +6683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
@@ -6751,7 +6739,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -7605,9 +7594,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Time to finish setting up your site! Our checklist walks you through the next steps.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
 
@@ -7687,7 +7673,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Tools";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Top level";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7786,8 +7773,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Try another search term";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Try it now";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
