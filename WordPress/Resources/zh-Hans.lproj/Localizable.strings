@@ -805,6 +805,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "批准";
 
+/* Approves a Comment */
+"Approve Comment" = "批准评论";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "通过";
@@ -1437,9 +1440,6 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish time picker */
 "Choose a time" = "选择时间";
 
-/* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own" = "请从以下列表中选择主题或输入自己的主题";
-
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "选择唯一站点图标";
 
@@ -1822,7 +1822,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "继续";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2449,9 +2450,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "轻点两次并按住以进行编辑";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "双击并按住可向上或向下移动此菜单项";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "轻点两次以添加区块";
 
@@ -2683,9 +2681,6 @@ translators: Block name. %s: The localized block name */
 
 /* Education site intent topic */
 "Education" = "教育";
-
-/* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "例如 时尚、诗歌、政治";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3047,13 +3042,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "未能将通知标为已读";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "未能插入音频文件。";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "无法插入音频文件。请轻点以查看选项。";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "未能插入媒体。";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "无法插入媒体。\n请轻点以查看选项。";
@@ -3405,7 +3394,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 注册失败。";
 
-/* Title for the continue button in the dashboard's custom What's New page. */
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "知道了";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
@@ -3623,9 +3613,6 @@ translators: Block name. %s: The localized block name */
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "如果您想要某个网站，但不想保留其中现有的任何博客和页面，我们的支持团队可以为您删除相关博客、页面、媒体以及评论。";
-
-/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
-"If you want to try get more views and traffic check out our top tips" = "如果您想获得更多的浏览量和流量，请查看我们的重要贴士";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "如果您不确定要删除的内容或需要任何帮助，我们的支持团队可随时解答您提出的任何问题，尽请放心。";
@@ -4393,7 +4380,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "提及";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "菜单";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4562,7 +4551,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "名称";
 
 /* Error to be displayed when a tag is empty */
@@ -5578,9 +5568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "定期发布可帮助吸引受众。 提醒可帮助您按计划执行。";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "定期发表有助于吸引受众！";
 
@@ -5918,7 +5905,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "“相关文章”在您的文章下方显示您站点中的相关内容";
 
-/* Secondary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "提醒我";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -6623,6 +6610,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "分享";
 
@@ -6785,10 +6773,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "站点语言";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "站点菜单";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "站点重定向";
 
@@ -6797,7 +6781,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "站点标题";
@@ -6857,7 +6840,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "跳过";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -7729,9 +7713,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "是时候完成站点设置了！我们的清单将指引您进入下一步。";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "提示";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "有关畅享 WordPress.com 的提示。";
 
@@ -7811,7 +7792,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "工具";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "最上级";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7913,8 +7895,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "尝试其他搜索字词";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "立即试用";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8119,6 +8101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "驳回";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "驳回评论";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "不赞成评论。";

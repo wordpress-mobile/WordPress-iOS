@@ -38,6 +38,9 @@
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Zatwierdź";
 
+/* Approves a Comment */
+"Approve Comment" = "Zatwierdź komentarz";
+
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -593,6 +596,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Odrzuć";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Cofnij akceptację komentarza";
 
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";

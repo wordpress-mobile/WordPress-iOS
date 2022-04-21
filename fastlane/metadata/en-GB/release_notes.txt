@@ -1,7 +1,0 @@
-Big news, site fans—your My Site screen just got better. You’ll now see two new tabs you can switch between: Site Menu and Home.
-
-The Home tab also contains handy cards with more information about your site, including drafts, scheduled posts, and today’s stats. Or, if you’re in a hurry, you can easily head over to another section of the app.
-
-We’re all about clear communication. That’s why we’ve added new error text to the photo upload process, just in case you try to upload a photo from your device without giving the app photo permission first.
-
-Finally, when in-app notices pop up, they now fade out more smoothly when you don’t need them anymore. Exit stage left.

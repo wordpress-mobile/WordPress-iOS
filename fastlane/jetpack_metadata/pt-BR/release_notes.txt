@@ -1,7 +1,0 @@
-Boas notícias, amantes de sites: a tela Meu site acabou de ficar ainda melhor. Agora você verá duas novas guias, que podem ser alternadas: Início e Menu do site.
-
-A guia Início tem cartões com mais informações sobre seu site, como rascunhos, posts agendados e estatísticas do dia. Ou, se você está com pressa, é só ir direto para outra seção do site.
-
-Gostamos de deixar tudo bem claro. Por isso, adicionamos uma nova mensagem de erro para o processo de upload de foto, para o caso de você tentar fazer upload pelo seu dispositivo sem conceder permissão ao aplicativo para acessar suas fotos antes.
-
-Por fim, agora os que avisos aparecem no aplicativo somem mais suavemente quando você não precisa mais deles. Saindo de cena.
