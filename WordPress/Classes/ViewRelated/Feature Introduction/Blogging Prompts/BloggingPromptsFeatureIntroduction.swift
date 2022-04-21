@@ -4,6 +4,8 @@ import UIKit
 
 class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
 
+   var presenter: BloggingPromptsIntroductionPresenter?
+
     private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType
 
     enum InteractionType {
@@ -80,7 +82,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
             return
         }
 
-        // TODO: show site selector/draft post
+        presenter?.primaryButtonSelected()
     }
 
     func secondaryActionSelected() {
@@ -88,7 +90,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
             return
         }
 
-        // TODO: show site selector/Blogging Reminders
+        presenter?.secondaryButtonSelected()
     }
 
 }

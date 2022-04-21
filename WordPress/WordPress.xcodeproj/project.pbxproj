@@ -1780,6 +1780,8 @@
 		9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9881296D219CF1310075FF33 /* StatsCellHeader.xib */; };
 		98830A922747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */; };
 		98830A932747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */; };
+		9887560C2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9887560B2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift */; };
+		9887560D2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9887560B2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift */; };
 		98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98880A4822B2E5E400464538 /* TwoColumnCell.swift */; };
 		98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98880A4922B2E5E400464538 /* TwoColumnCell.xib */; };
 		988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988AC37422F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift */; };
@@ -6507,6 +6509,7 @@
 		98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButtonTableViewCell.swift; sourceTree = "<group>"; };
 		9884B143236224F80021D8E9 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9884B145236225230021D8E9 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9887560B2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsIntroductionPresenter.swift; sourceTree = "<group>"; };
 		98880A4822B2E5E400464538 /* TwoColumnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoColumnCell.swift; sourceTree = "<group>"; };
 		98880A4922B2E5E400464538 /* TwoColumnCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwoColumnCell.xib; sourceTree = "<group>"; };
 		988AC37422F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileDownloadsStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -12245,6 +12248,7 @@
 				98BC522327F6245700D6E8C2 /* BloggingPromptsFeatureIntroduction.swift */,
 				98BC522927F6259700D6E8C2 /* BloggingPromptsFeatureDescriptionView.swift */,
 				98BC522C27F62B6300D6E8C2 /* BloggingPromptsFeatureDescriptionView.xib */,
+				9887560B2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift */,
 			);
 			path = "Blogging Prompts";
 			sourceTree = "<group>";
@@ -18239,6 +18243,7 @@
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */,
 				7E4123C220F4097B00DF8486 /* FormattableContentFormatter.swift in Sources */,
+				9887560C2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
@@ -20565,6 +20570,7 @@
 				FABB236B2602FC2C00C8785C /* AddInsightTableViewController.swift in Sources */,
 				FABB236C2602FC2C00C8785C /* StatSection.swift in Sources */,
 				FABB236D2602FC2C00C8785C /* ReaderDetailCoordinator.swift in Sources */,
+				9887560D2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				FABB236E2602FC2C00C8785C /* AccountService.m in Sources */,
 				FABB236F2602FC2C00C8785C /* MediaLibraryPickerDataSource.m in Sources */,
 				FABB23702602FC2C00C8785C /* PostStatsViewModel.swift in Sources */,
