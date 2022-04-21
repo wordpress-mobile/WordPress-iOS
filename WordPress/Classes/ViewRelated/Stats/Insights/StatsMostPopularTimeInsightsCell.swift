@@ -1,13 +1,5 @@
 import UIKit
 
-struct StatsMostPopularTimeData {
-    var mostPopularDayTitle: String
-    var mostPopularTimeTitle: String
-    var mostPopularDay: String
-    var mostPopularTime: String
-    var dayPercentage: String
-    var timePercentage: String
-}
 
 class StatsMostPopularTimeInsightsCell: StatsBaseCell {
     private var data: StatsMostPopularTimeData? = nil
@@ -156,3 +148,45 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
     }
 }
 
+// MARK: - Data / View Model
+
+struct StatsMostPopularTimeData {
+    var mostPopularDayTitle: String
+    var mostPopularTimeTitle: String
+    var mostPopularDay: String
+    var mostPopularTime: String
+    var dayPercentage: String
+    var timePercentage: String
+}
+
+// MARK: - Model Formatting Helpers
+
+extension StatsAnnualAndMostPopularTimeInsight {
+    func formattedMostPopularDay() -> String? {
+        guard var mostPopularWeekday = mostPopularDayOfWeek.weekday else {
+            return nil
+        }
+
+        var calendar = Calendar.init(identifier: .gregorian)
+        calendar.locale = Locale.autoupdatingCurrent
+
+        // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
+        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
+        return calendar.standaloneWeekdaySymbols[mostPopularWeekday]
+    }
+
+    func formattedMostPopularTime() -> String? {
+        var calendar = Calendar.init(identifier: .gregorian)
+        calendar.locale = Locale.autoupdatingCurrent
+
+        guard let hour = mostPopularHour.hour,
+              let timeModifiedDate = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: Date()) else {
+            return nil
+        }
+
+        let timeFormatter = DateFormatter()
+        timeFormatter.setLocalizedDateFormatFromTemplate("h a")
+
+        return timeFormatter.string(from: timeModifiedDate).uppercased()
+    }
+}
