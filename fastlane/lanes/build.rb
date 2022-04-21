@@ -271,7 +271,7 @@ platform :ios do
     post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
-  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to AppCenter
+  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
@@ -351,16 +351,16 @@ platform :ios do
 
   # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
   #
-  # Use this only after `upload_to_app_center` as been called, as it announces how said AppCenter build can be installed.
+  # Use this only after `upload_to_app_center` as been called, as it announces how said App Center build can be installed.
   #
   # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
   # @param [String] build_number The App Center's build number for this build
-  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in AppCenter (e.g. `WPiOS-One-Offs`)
+  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in App Center (e.g. `WPiOS-One-Offs`)
   #
   # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
   #
   def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)
-    UI.message("Successfully built and uploaded installable build `#{build_number}` to AppCenter.")
+    UI.message("Successfully built and uploaded installable build `#{build_number}` to App Center.")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
