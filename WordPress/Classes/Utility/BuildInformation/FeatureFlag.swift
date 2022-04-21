@@ -156,7 +156,7 @@ extension FeatureFlag {
         case .siteName:
             return "Site Name"
         case .quickStartForExistingUsers:
-            return "Quick Start for existing users V2"
+            return "Quick Start For Existing Users"
         }
     }
 
