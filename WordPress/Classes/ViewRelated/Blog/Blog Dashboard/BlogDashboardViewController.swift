@@ -33,6 +33,11 @@ final class BlogDashboardViewController: UIViewController {
         return refreshControl
     }()
 
+    /// The "My Site" parent view controller
+    var mySiteViewController: MySiteViewController? {
+        return parent as? MySiteViewController
+    }
+
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
         return view.superview?.superview as? UIScrollView
@@ -155,6 +160,9 @@ final class BlogDashboardViewController: UIViewController {
                 switch element {
                 case .setupQuickStart, .removeQuickStart:
                     self?.loadCardsFromCache()
+                case .stats:
+                    self?.mySiteScrollView?.scrollToTop(animated: true)
+                    self?.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
                 default:
                     break
                 }
@@ -278,6 +286,7 @@ extension BlogDashboardViewController {
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
+        static let bottomPaddingForQuickStartNotices: CGFloat = 80
     }
 }
 
