@@ -20,6 +20,10 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
+    @objc var mustBeShownInBlogDetails: Bool {
+        currentTourState?.tour.mustBeShownFromBlogDetails ?? false
+    }
+
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
 
