@@ -31,7 +31,7 @@ open class QuickStartTourGuide: NSObject {
     private override init() {}
 
     func setup(for blog: Blog, type: QuickStartType, withCompletedSteps steps: [QuickStartTour] = []) {
-        if type == .newUser {
+        if type == .newSite {
             let createTour = QuickStartCreateTour()
             completed(tour: createTour, for: blog)
         }

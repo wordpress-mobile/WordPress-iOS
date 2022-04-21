@@ -2,8 +2,8 @@ import Foundation
 
 enum QuickStartType: Int {
     case undefined
-    case newUser
-    case existingUser
+    case newSite
+    case existingSite
 }
 
 class QuickStartFactory {
@@ -14,9 +14,9 @@ class QuickStartFactory {
                 return []
             }
             fallthrough
-        case .newUser:
+        case .newSite:
             return [QuickStartCustomizeToursCollection(blog: blog), QuickStartGrowToursCollection(blog: blog)]
-        case .existingUser:
+        case .existingSite:
             return [QuickStartGetToKnowAppCollection(blog: blog)]
         }
     }
