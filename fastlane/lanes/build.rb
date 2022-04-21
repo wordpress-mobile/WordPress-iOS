@@ -371,7 +371,7 @@ platform :ios do
         <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below to access App Center</li>
         <li>Then installing the build number <code>#{build_number}</code> on your iPhone</li>
       </ul>
-      <img src='#{qr_code_url}' width='150' height='150' /><br />
+      <img src='#{qr_code_url}' width='150' height='150' />
       If you need access to App Center, please ask a maintainer to add you.
     COMMENT_BODY
 
