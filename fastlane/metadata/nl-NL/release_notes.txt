@@ -1,7 +1,0 @@
-Groot nieuws voor websitefans: het scherm Mijn site is verbeterd. Je ziet nu twee nieuwe tabbladen waar je tussen kunt wisselen: Sitemenu en Startpagina.
-
-Het tabblad Startpagina bevat tevens handige kaders met meer informatie over je site, waaronder concepten, geplande berichten en de statistieken van vandaag. Maar als je haast hebt, kun je gemakkelijk naar een ander deel van de app gaan.
-
-Wij zijn groot voorstander van heldere communicatie. Daarom hebben we een nieuwe foutmeldingstekst toegevoegd bij het uploaden van foto's, voor het geval je een foto vanaf je apparaat probeert te uploaden zonder de app eerst toegang tot foto's te geven.
-
-Ten slotte vervagen pop-upmeldingen binnen de app geleidelijker als je ze niet meer nodig hebt. Goed, we houden het weer voor gezien.
