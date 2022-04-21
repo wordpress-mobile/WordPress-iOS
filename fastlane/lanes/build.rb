@@ -351,7 +351,7 @@ platform :ios do
 
   # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
   #
-  # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
+  # Use this only after `upload_to_app_center` as been called, as it announces how said AppCenter build can be installed.
   #
   # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
   # @param [String] build_number The App Center's build number for this build
