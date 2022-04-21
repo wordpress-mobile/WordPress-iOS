@@ -372,8 +372,7 @@ platform :ios do
         <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
         <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
       </ul>
-      <img src='#{qr_code_url}' width='150' height='150' /> 
-      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.<br />
+      <img src='#{qr_code_url}' width='150' height='150' /><br />
       If you need access to App Center, please ask a maintainer to add you.
     COMMENT_BODY
 
