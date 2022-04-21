@@ -416,7 +416,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide visited: QuickStartTourElementSiteMenu];
     }
     
-    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
+    tourGuide.currentTourEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
@@ -1182,8 +1182,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     
     BOOL shouldShowSpotlight =
-        tourGuide.currentTourOrigin == QuickStartTourOriginBlogDetails ||
-        (![self splitViewControllerIsHorizontallyCompact] && tourGuide.mustBeShownInBlogDetails);
+        tourGuide.currentTourEntryPoint == QuickStartTourEntryPointBlogDetails ||
+        (![self splitViewControllerIsHorizontallyCompact] && tourGuide.currentTourMustBeShownFromBlogDetails);
     
     if ([tourGuide isCurrentElement:row.quickStartIdentifier] && shouldShowSpotlight) {
         row.accessoryView = [QuickStartSpotlightView new];

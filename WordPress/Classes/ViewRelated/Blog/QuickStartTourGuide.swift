@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
-@objc enum QuickStartTourOrigin: Int {
+@objc enum QuickStartTourEntryPoint: Int {
     case unknown
     case blogDetails
     case blogDashboard
@@ -28,7 +28,16 @@ open class QuickStartTourGuide: NSObject {
     private(set) var tourInProgress = false
 
     /// Represents the origin from which the current tour is triggered
-    @objc var currentTourOrigin: QuickStartTourOrigin = .unknown
+    @objc var currentTourEntryPoint: QuickStartTourEntryPoint = .unknown
+
+    /// A flag indicating if the current tour can only be shown from blog details or not.
+    @objc var currentTourMustBeShownFromBlogDetails: Bool {
+        guard let tourState = currentTourState else {
+            return false
+        }
+
+        return tourState.tour.possibleEntryPoints == [.blogDetails]
+    }
 
     @objc static let shared = QuickStartTourGuide()
 
@@ -166,7 +175,7 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if currentTourOrigin == .blogDashboard && tour.mustBeShownFromBlogDetails && !UIDevice.isPad() {
+        if currentTourEntryPoint == .blogDashboard && tour.mustBeShownFromBlogDetails && !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
             tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)
