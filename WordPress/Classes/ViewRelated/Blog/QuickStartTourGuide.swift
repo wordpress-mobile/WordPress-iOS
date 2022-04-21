@@ -248,6 +248,13 @@ open class QuickStartTourGuide: NSObject {
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
+
+            if let taskCompleteDescription = tourState.tour.taskCompleteDescription {
+                let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription)
+                let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+
             completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
 

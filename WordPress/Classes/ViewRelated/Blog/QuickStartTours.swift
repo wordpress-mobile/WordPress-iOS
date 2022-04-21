@@ -16,6 +16,7 @@ protocol QuickStartTour {
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
     var mustBeShownFromBlogDetails: Bool { get }
+    var taskCompleteDescription: NSAttributedString? { get }
 }
 
 extension QuickStartTour {
@@ -34,6 +35,12 @@ extension QuickStartTour {
     var mustBeShownFromBlogDetails: Bool {
         get {
             return true
+        }
+    }
+
+    var taskCompleteDescription: NSAttributedString? {
+        get {
+            return nil
         }
     }
 }
@@ -307,6 +314,12 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let mustBeShownFromBlogDetails = false
+
+    var taskCompleteDescription: NSAttributedString? = {
+        let descriptionBase = NSLocalizedString("%@ Return to My Site screen when you're ready for the next tip.", comment: "Title of the task complete hint for the Quick Start Tour")
+        let descriptionTarget = NSLocalizedString("Task complete.", comment: "A hint about the completed guided tour.")
+        return descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.checkmark))
+    }()
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
