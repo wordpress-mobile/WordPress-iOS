@@ -59,3 +59,25 @@ struct QuickStartGrowToursCollection: QuickStartToursCollection {
         ]
     }
 }
+
+struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
+    let title: String
+    let hint: String
+    let completedImageName: String
+    let analyticsKey: String
+    let tours: [QuickStartTour]
+
+    init(blog: Blog) {
+        self.title = NSLocalizedString("Get to know the WordPress app",
+                                      comment: "Name of the Quick Start list that guides users through a few tasks to explore the WordPress app.")
+        self.hint = NSLocalizedString("A series of steps helping you to explore the app.",
+                                     comment: "A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button.")
+        self.completedImageName = "wp-illustration-tasks-complete-site" // TODO: Could be changed
+        self.analyticsKey = "get-to-know"
+        self.tours = [
+            QuickStartCheckStatsTour(),
+            QuickStartViewTour(blog: blog),
+            QuickStartFollowTour()
+        ]
+    }
+}
