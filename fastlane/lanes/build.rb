@@ -360,8 +360,7 @@ platform :ios do
   # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
   #
   def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build `#{build_number}` here: #{download_url}")
+    UI.message("Successfully built and uploaded installable build `#{build_number}` to AppCenter.")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
