@@ -217,7 +217,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if userDefaults.notificationsTabAccessCount < Constants.inlineTabAccessCount {
             userDefaults.notificationsTabAccessCount += 1
         }
-        
+
         // Don't show the notification primers if we already asked during onboarding
         if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
             return
