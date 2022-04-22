@@ -20,10 +20,6 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
-    @objc var mustBeShownInBlogDetails: Bool {
-        currentTourState?.tour.mustBeShownFromBlogDetails ?? false
-    }
-
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
 
@@ -175,7 +171,9 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if currentTourEntryPoint == .blogDashboard && tour.mustBeShownFromBlogDetails && !UIDevice.isPad() {
+        if currentTourEntryPoint == .blogDashboard &&
+            tour.possibleEntryPoints == [.blogDetails] &&
+            !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
             tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)
