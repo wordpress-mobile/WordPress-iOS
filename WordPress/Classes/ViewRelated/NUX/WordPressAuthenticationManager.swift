@@ -358,30 +358,40 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             fatalError()
         }
 
-        epilogueViewController.credentials = credentials
-
-        epilogueViewController.onBlogSelected = { [weak self] blog in
+        let onBlogSelected: ((Blog) -> Void) = { [weak self] blog in
             guard let self = self else {
                 return
             }
 
-            self.recentSiteService.touch(blog: blog)
+            // If the user just signed in, refresh the A/B assignments
+            ABTest.start()
 
+            self.recentSiteService.touch(blog: blog)
             self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
         }
 
-        epilogueViewController.onCreateNewSite = {
-            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
-            guard let wizard = wizardLauncher.ui else {
-                return
+        // If the user has only 1 blog, skip the site selector and go right to the next step
+        guard numberOfBlogs() == 1, let firstBlog = firstBlog() else {
+            epilogueViewController.credentials = credentials
+            epilogueViewController.onBlogSelected = onBlogSelected
+
+            epilogueViewController.onCreateNewSite = {
+                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
+                guard let wizard = wizardLauncher.ui else {
+                    return
+                }
+
+                navigationController.present(wizard, animated: true)
+                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
             }
 
-            navigationController.present(wizard, animated: true)
-            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+            navigationController.delegate = epilogueViewController
+            navigationController.pushViewController(epilogueViewController, animated: true)
+
+            return
         }
 
-        navigationController.delegate = epilogueViewController
-        navigationController.pushViewController(epilogueViewController, animated: true)
+        onBlogSelected(firstBlog)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
@@ -429,11 +439,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return true
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
-
-        return numberOfBlogs > 0
+        return numberOfBlogs() > 0
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
@@ -534,10 +540,27 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     }
 }
 
+// MARK: - Blog Count Helpers
+private extension WordPressAuthenticationManager {
+    private func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+
+        return numberOfBlogs
+    }
+
+    private func firstBlog() -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs?.first
+    }
+}
+
 // MARK: - Onboarding Questions Prompt
 private extension WordPressAuthenticationManager {
-    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController,
-                                                  onDismiss: (() -> Void)? = nil) {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
         let windowManager = self.windowManager
 
         let coordinator = OnboardingQuestionsCoordinator()
