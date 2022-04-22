@@ -24,6 +24,8 @@ class SiteNameView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = Metrics.numberOfLinesInTitle
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.titleMinimumScaleFactor
         return label
     }()
 
@@ -132,9 +134,9 @@ class SiteNameView: UIView {
     }
 
     override func becomeFirstResponder() -> Bool {
-         super.becomeFirstResponder()
-         return searchBar.becomeFirstResponder()
-     }
+        super.becomeFirstResponder()
+        return searchBar.becomeFirstResponder()
+    }
 }
 
 // MARK: setup
@@ -147,7 +149,10 @@ private extension SiteNameView {
         let selectedVerticalName = "😎" + siteVerticalName + "🙃"
         let fullTitle = String(format: TextContent.title, selectedVerticalName)
         var attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
+        // Use default title if the vertical name is empty or too long
+        guard let range = fullTitle.nsRange(of: selectedVerticalName),
+              !siteVerticalName.isEmpty,
+              siteVerticalName.count <= Metrics.verticalNameDisplayLimit else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
@@ -233,10 +238,22 @@ private extension SiteNameView {
 
     /// hides or shows titles based on the passed boolean parameter
     func hideTitlesIfNeeded() {
-        let isAccessibility = traitCollection.verticalSizeClass == .compact || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        let isVerylarge = [UIContentSizeCategory.extraExtraLarge, UIContentSizeCategory.extraExtraExtraLarge].contains(traitCollection.preferredContentSizeCategory)
+        let isAccessibility = traitCollection.verticalSizeClass == .compact ||
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+        let isVerylarge = [
+            UIContentSizeCategory.extraExtraLarge,
+            UIContentSizeCategory.extraExtraExtraLarge
+        ].contains(traitCollection.preferredContentSizeCategory)
+
         titleLabelView.isHidden = isAccessibility
-        subtitleLabelView.isHidden = isAccessibility || isVerylarge
+
+        subtitleLabelView.isHidden = isAccessibility || isVerylarge || isIphoneSEorSmaller
+    }
+
+    var isIphoneSEorSmaller: Bool {
+        UIScreen.main.nativeBounds.height <= Metrics.smallerIphonesNativeBoundsHeight &&
+        UIScreen.main.nativeScale <= Metrics.nativeScale
     }
 }
 
@@ -262,9 +279,11 @@ private extension SiteNameView {
         // search bar
         static let searchbarHeight: CGFloat = 64
         // title and subtitle
-        static let numberOfLinesInTitle = 0
+        static let numberOfLinesInTitle = 3
         static let numberOfLinesInSubtitle = 0
         static let titlesInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let verticalNameDisplayLimit = 32
+        static let titleMinimumScaleFactor: CGFloat = 0.75
         //continue button
         static let continueButtonStandardPadding: CGFloat = 16
         static let continueButtonAdditionaliPadPadding: CGFloat = 8
@@ -272,8 +291,10 @@ private extension SiteNameView {
         static func continueButtonViewFrame(_ accessoryWidth: CGFloat) -> CGRect {
             CGRect(x: 0, y: 0, width: accessoryWidth, height: 76)
         }
+        // native bounds height and scale of iPhone SE 3rd gen and iPhone 8
+        static let smallerIphonesNativeBoundsHeight: CGFloat = 1334
+        static let nativeScale: CGFloat = 2
     }
-
 }
 
 // MARK: search bar delegate
