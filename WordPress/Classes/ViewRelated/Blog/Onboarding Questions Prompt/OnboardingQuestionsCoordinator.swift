@@ -51,6 +51,7 @@ extension OnboardingQuestionsCoordinator {
         }
 
         track(.onboardingQuestionsItemSelected, option: option)
+        UserDefaults.standard.onboardingQuestionSelected = option
 
         // Check if notification's are already enabled
         // If they are just dismiss, if not then prompt
@@ -87,5 +88,22 @@ extension OnboardingQuestionsCoordinator {
     func notificationsSkipped(selection: OnboardingOption) {
         track(.onboardingEnableNotificationsSkipped, option: selection)
         dismiss(selection: selection)
+    }
+}
+
+
+extension UserDefaults {
+    private static let questionKey = "onboarding_question_selection"
+    var onboardingQuestionSelected: OnboardingOption? {
+        get {
+            if let str = string(forKey: Self.questionKey) {
+                return OnboardingOption(rawValue: str)
+            }
+
+            return nil
+        }
+        set {
+            set(newValue?.rawValue, forKey: Self.questionKey)
+        }
     }
 }
