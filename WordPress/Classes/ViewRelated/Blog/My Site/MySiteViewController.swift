@@ -154,6 +154,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
         startObservingQuickStart()
+        startObservingOnboardingPrompt()
     }
 
     override func viewWillAppear(_ animated: Bool) {
