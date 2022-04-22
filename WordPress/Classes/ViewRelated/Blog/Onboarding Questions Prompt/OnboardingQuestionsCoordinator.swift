@@ -73,6 +73,7 @@ extension OnboardingQuestionsCoordinator {
 extension OnboardingQuestionsCoordinator {
     func notificationsDisplayed(option: OnboardingOption) {
         track(.onboardingEnableNotificationsDisplayed, option: option)
+        UserDefaults.standard.onboardingNotificationsPromptDisplayed = true
     }
 
     func notificationsEnabledTapped(selection: OnboardingOption) {
@@ -93,7 +94,18 @@ extension OnboardingQuestionsCoordinator {
 
 
 extension UserDefaults {
+    private static let promptKey = "onboarding_notifications_prompt_displayed"
     private static let questionKey = "onboarding_question_selection"
+
+    var onboardingNotificationsPromptDisplayed: Bool {
+        get {
+            bool(forKey: Self.promptKey)
+        }
+        set {
+            set(newValue, forKey: Self.promptKey)
+        }
+    }
+
     var onboardingQuestionSelected: OnboardingOption? {
         get {
             if let str = string(forKey: Self.questionKey) {
