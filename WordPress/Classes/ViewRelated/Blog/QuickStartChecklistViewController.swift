@@ -1,24 +1,8 @@
 import Gridicons
 
-@objc enum QuickStartType: Int {
-    case customize
-    case grow
-}
-
-private extension QuickStartType {
-    var analyticsKey: String {
-        switch self {
-        case .customize:
-            return "customize"
-        case .grow:
-            return "grow"
-        }
-    }
-}
-
 class QuickStartChecklistViewController: UITableViewController {
     private var blog: Blog
-    private var type: QuickStartType
+    private var collection: QuickStartToursCollection
     private var observer: NSObjectProtocol?
     private var dataManager: QuickStartChecklistManager? {
         didSet {
@@ -26,38 +10,18 @@ class QuickStartChecklistViewController: UITableViewController {
             tableView?.delegate = dataManager
         }
     }
-    private lazy var tasksCompleteScreen: TasksCompleteScreenConfiguration = {
-        switch type {
-        case .customize:
-            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                    imageName: "wp-illustration-tasks-complete-site")
-        case .grow:
-            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                    imageName: "wp-illustration-tasks-complete-audience")
-        }
-    }()
-    private lazy var configuration: QuickStartChecklistConfiguration = {
-        switch type {
-        case .customize:
-            return QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
-                                                    tours: QuickStartTourGuide.customizeListTours(for: blog))
-        case .grow:
-            return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
-                                                    tours: QuickStartTourGuide.growListTours)
-        }
-    }()
+
     private lazy var successScreen: NoResultsViewController = {
         let successScreen = NoResultsViewController.controller()
         successScreen.view.frame = tableView.bounds
         successScreen.view.backgroundColor = .listBackground
-        successScreen.configure(title: tasksCompleteScreen.title,
-                                subtitle: tasksCompleteScreen.subtitle,
-                                image: tasksCompleteScreen.imageName)
+        successScreen.configure(title: Constants.tasksCompleteScreenTitle,
+                                subtitle: Constants.tasksCompleteScreenSubtitle,
+                                image: collection.completedImageName)
         successScreen.updateView()
         return successScreen
     }()
+
     private lazy var closeButtonItem: UIBarButtonItem = {
         let cancelButton = WPStyleGuide.buttonForBar(with: Constants.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
@@ -65,14 +29,14 @@ class QuickStartChecklistViewController: UITableViewController {
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
 
         let accessibleFormat = NSLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
-        cancelButton.accessibilityLabel = String(format: accessibleFormat, self.configuration.title)
+        cancelButton.accessibilityLabel = String(format: accessibleFormat, self.collection.title)
 
         return UIBarButtonItem(customView: cancelButton)
     }()
 
-    init(blog: Blog, type: QuickStartType) {
+    init(blog: Blog, collection: QuickStartToursCollection) {
         self.blog = blog
-        self.type = type
+        self.collection = collection
         super.init(style: .plain)
         startObservingForQuickStart()
     }
@@ -86,11 +50,11 @@ class QuickStartChecklistViewController: UITableViewController {
 
         configureTableView()
 
-        navigationItem.title = configuration.title
+        navigationItem.title = collection.title
         navigationItem.leftBarButtonItem = closeButtonItem
 
         dataManager = QuickStartChecklistManager(blog: blog,
-                                                 tours: configuration.tours,
+                                                 tours: collection.tours,
                                                  didSelectTour: { [weak self] tour in
             DispatchQueue.main.async { [weak self] in
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
@@ -107,7 +71,7 @@ class QuickStartChecklistViewController: UITableViewController {
             }
         }, didTapHeader: { [unowned self] expand in
             let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed
-            WPAnalytics.track(event, withProperties: [Constants.analyticsTypeKey: self.type.analyticsKey])
+            WPAnalytics.track(event, withProperties: [Constants.analyticsTypeKey: self.collection.analyticsKey])
             self.checkForSuccessScreen(expand)
         })
 
@@ -120,7 +84,7 @@ class QuickStartChecklistViewController: UITableViewController {
         // should display bg and trigger qs notification
 
         WPAnalytics.track(.quickStartChecklistViewed,
-                          withProperties: [Constants.analyticsTypeKey: type.analyticsKey])
+                          withProperties: [Constants.analyticsTypeKey: collection.analyticsKey])
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -183,7 +147,7 @@ private extension QuickStartChecklistViewController {
 
     @objc private func closeWasPressed(sender: UIButton) {
         WPAnalytics.track(.quickStartTypeDismissed,
-                          withProperties: [Constants.analyticsTypeKey: type.analyticsKey])
+                          withProperties: [Constants.analyticsTypeKey: collection.analyticsKey])
         dismiss(animated: true, completion: nil)
     }
 }
@@ -205,8 +169,6 @@ private enum Constants {
     static let closeButtonModalImage = UIImage.gridicon(.cross)
     static let estimatedRowHeight: CGFloat = 90.0
     static let successScreenFadeAnimationDuration: TimeInterval = 0.3
-    static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
-    static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
     static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
     static let tasksCompleteScreenSubtitle = NSLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
 }

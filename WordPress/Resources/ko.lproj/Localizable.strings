@@ -1428,9 +1428,6 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish time picker */
 "Choose a time" = "시간을 선택하세요.";
 
-/* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own" = "아래 목록에 있는 주제 선택 또는 원하는 주제 입력";
-
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "고유한 사이트 아이콘 선택";
 
@@ -1813,7 +1810,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "계속";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2440,9 +2438,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "편집하려면 두 번 탭하고 길게 누르세요.";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "두 번 누르고 유지하여 이 메뉴 항목을 위 또는 아래로 이동하기";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "블록을 추가하려면 두 번 탭하세요.";
 
@@ -2674,9 +2669,6 @@ translators: Block name. %s: The localized block name */
 
 /* Education site intent topic */
 "Education" = "교육";
-
-/* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "예: 패션, 시, 정치";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3038,13 +3030,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "알림을 읽음으로 표시 실패";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "오디오 파일 삽입에 실패했습니다.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "오디오 파일 삽입에 실패했습니다. 옵션을 보려면 누르세요.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "미디어를 삽입하는 데 실패했습니다.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "미디어 삽입에 실패했습니다.\n 옵션을 보려면 탭하세요.";
@@ -3396,7 +3382,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 가입에 실패했습니다.";
 
-/* Title for the continue button in the dashboard's custom What's New page. */
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "알겠습니다";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
@@ -3614,9 +3601,6 @@ translators: Block name. %s: The localized block name */
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "사이트를 원하지만, 지금 글이나 페이지를 가지고 있지 않다면, 글, 페이지, 미디어, 그리고 댓글을 지원팀이 지울 수 있습니다.";
-
-/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
-"If you want to try get more views and traffic check out our top tips" = "더 많은 조회수와 트래픽을 받으려면 최고의 팁을 확인하세요";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "삭제 대상을 잘 모르겠거나 다른 도움이 필요할 경우 언제든지 문의하시면 지원팀에서 답변해드리겠습니다.";
@@ -4384,7 +4368,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "멘션";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "메뉴";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4553,7 +4539,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "이름";
 
 /* Error to be displayed when a tag is empty */
@@ -5566,9 +5553,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "정기적으로 글을 작성하면 방문자 유치에 도움이 될 수 있습니다. 알림은 회원님을 추적하는 데 도움이 됩니다.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "정기적으로 글을 작성하면 잠재 고객 유치에 도움이 됩니다!";
 
@@ -5906,7 +5890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
 
-/* Secondary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "나에게 알림";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -6611,6 +6595,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "공유";
 
@@ -6781,7 +6766,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "사이트 제목";
@@ -6841,7 +6825,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "생략하기";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -7713,9 +7698,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "사이트 설정을 완료할 시간입니다! 체크리스트가 다음 단계를 안내합니다.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "팁";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
 
@@ -7795,7 +7777,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "도구";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "최상위";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7897,8 +7880,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "다른 검색어 시도";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "지금 사용해 보기";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */

@@ -280,6 +280,9 @@
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprovar";
 
+/* Approves a Comment */
+"Approve Comment" = "Aprovar comentário";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Aprovado";
@@ -684,7 +687,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continuar";
 
 /* Menus alert button title to continue making changes. */
@@ -1636,7 +1640,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Médio";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -2521,6 +2527,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Partilhar";
 
@@ -2585,7 +2592,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Título do site";
@@ -2614,7 +2620,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Saltar";
 
 /* Label for the slug field. Should be the same as WP core. */
@@ -3081,6 +3088,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Reprovar";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Desaprovar comentário";
 
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Indisponível";

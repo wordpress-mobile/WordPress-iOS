@@ -1,7 +1,0 @@
-Tolle Neuigkeiten für Website-Fans: Dein „Meine Website“-Bildschirm wurde verbessert. Dir werden jetzt zwei Tabs angezeigt, zwischen denen zu wechseln kannst: „Website-Menü“ und „Startseite“.
-
-Der Tab „Startseite“ enthält auch praktische Karten mit weiteren Informationen über deine Website, einschließlich Entwürfen, geplanten Beiträgen und aktuellen Statistiken. Wenn du es eilig hast, kannst du auch einfach zu einem anderen Bereich der App wechseln.
-
-Uns liegt eine klare Kommunikation am Herzen. Daher haben wir beim Hochladen von Fotos einen neuen Fehlertext eingefügt, falls du versuchst, ein Foto von deinem Gerät hochzuladen, ohne der App vorher die Fotoberechtigung zu erteilen.
-
-Außerdem werden In-App-Benachrichtigungen jetzt weicher ausgeblendet, wenn du sie nicht mehr brauchst. Das war's.
