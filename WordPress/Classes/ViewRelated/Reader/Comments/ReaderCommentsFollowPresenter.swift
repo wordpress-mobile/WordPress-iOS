@@ -65,13 +65,9 @@ class ReaderCommentsFollowPresenter: NSObject {
                     return
                 }
 
-                // Show notice with Enable option.
-                self?.presentingViewController.displayActionableNotice(title: Messages.promptTitle,
-                                                                       message: Messages.promptMessage,
-                                                                       actionTitle: Messages.enableActionTitle,
-                                                                       actionHandler: { (accepted: Bool) in
-                    self?.handleNotificationsButtonTapped(canUndo: true)
-                })
+                // Show notice with Undo option. Push Notifications are opt-out.
+                self?.trackNotificationsToggled(isNotificationEnabled: true)
+                self?.updateNotificationSettings(shouldEnableNotifications: true, canUndo: true)
             }
         }
 
@@ -98,39 +94,11 @@ class ReaderCommentsFollowPresenter: NSObject {
     /// - Parameter completion: Block called as soon the view controller has been removed.
     ///
     @objc func handleNotificationsButtonTapped(canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
-        trackNotificationsToggled()
+        trackNotificationsToggled(isNotificationEnabled: !post.receivesCommentNotifications)
 
-        let desiredState = !self.post.receivesCommentNotifications
-        let action: PostSubscriptionAction = desiredState ? .enableNotification : .disableNotification
+        let shouldEnableNotifications = !self.post.receivesCommentNotifications
 
-        followCommentsService?.toggleNotificationSettings(desiredState, success: { [weak self] in
-            completion?(true)
-            self?.informDelegateNotificationComplete(success: true)
-
-            guard let self = self else {
-                return
-            }
-
-            guard canUndo else {
-                let title = self.noticeTitle(forAction: action, success: true)
-                self.presentingViewController.displayNotice(title: title)
-                return
-            }
-
-            let title = self.noticeTitle(forAction: action, success: true)
-
-            self.presentingViewController.displayActionableNotice(title: title,
-                                                                  actionTitle: Messages.undoActionTitle,
-                                                                  actionHandler: { (accepted: Bool) in
-                self.handleNotificationsButtonTapped(canUndo: false)
-            })
-        }, failure: { [weak self] error in
-            DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
-            let title = self?.noticeTitle(forAction: action, success: false) ?? ""
-            self?.presentingViewController.displayNotice(title: title)
-            completion?(false)
-            self?.informDelegateNotificationComplete(success: false)
-        })
+        updateNotificationSettings(shouldEnableNotifications: shouldEnableNotifications, canUndo: canUndo, completion: completion)
     }
 
     // MARK: - Notification Sheet
@@ -148,6 +116,40 @@ class ReaderCommentsFollowPresenter: NSObject {
 // MARK: - Private Extension
 
 private extension ReaderCommentsFollowPresenter {
+
+    private func updateNotificationSettings(shouldEnableNotifications: Bool, canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
+        let action: PostSubscriptionAction = shouldEnableNotifications ? .enableNotification : .disableNotification
+
+        followCommentsService?.toggleNotificationSettings(shouldEnableNotifications, success: { [weak self] in
+            completion?(true)
+            self?.informDelegateNotificationComplete(success: true)
+
+            guard let self = self else {
+                return
+            }
+
+            guard canUndo else {
+                let title = self.noticeTitle(forAction: action, success: true)
+                self.presentingViewController.displayNotice(title: title)
+                return
+            }
+
+            let title = Messages.promptTitle
+
+            self.presentingViewController.displayActionableNotice(title: title,
+                                                                  message: "You'll get notifications in the app",
+                                                                  actionTitle: Messages.undoActionTitle,
+                                                                  actionHandler: { (accepted: Bool) in
+                self.handleNotificationsButtonTapped(canUndo: false)
+            })
+        }, failure: { [weak self] error in
+            DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
+            let title = self?.noticeTitle(forAction: action, success: false) ?? ""
+            self?.presentingViewController.displayNotice(title: title)
+            completion?(false)
+            self?.informDelegateNotificationComplete(success: false)
+        })
+    }
 
     func showBottomSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
         let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
@@ -212,9 +214,9 @@ private extension ReaderCommentsFollowPresenter {
         WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
     }
 
-    func trackNotificationsToggled() {
+    func trackNotificationsToggled(isNotificationEnabled: Bool) {
         var properties = [String: Any]()
-        properties[AnalyticsKeys.notificationsEnabled] = !post.receivesCommentNotifications
+        properties[AnalyticsKeys.notificationsEnabled] = isNotificationEnabled
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeySource] = sourceForTracks()
         WPAnalytics.trackReader(.readerToggleCommentNotifications, properties: properties)
