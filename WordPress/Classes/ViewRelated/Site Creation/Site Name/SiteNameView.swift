@@ -5,7 +5,8 @@ import WordPressShared
 /// content view for SiteNameViewController
 class SiteNameView: UIView {
 
-    private let siteName: String
+    private var siteVerticalName: String
+    private let onContinue: (String?) -> Void
 
     // Continue button constraints: will always be set in the initialzer, so it's fine to implicitly unwrap
     private var continueButtonTopConstraint: NSLayoutConstraint!
@@ -62,6 +63,8 @@ class SiteNameView: UIView {
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .continue)
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.autocapitalizationType = .sentences
+        searchBar.accessibilityIdentifier = "Website Title"
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString()
         return searchBar
     }()
 
@@ -81,9 +84,13 @@ class SiteNameView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         button.setTitle(TextContent.continueButtonTitle, for: .normal)
-        // TODO: SITENAME - This button is still missing a target, development is WIP.
+        button.addTarget(self, action: #selector(navigateToNextScreen), for: .touchUpInside)
         return button
     }()
+
+    @objc private func navigateToNextScreen() {
+        onContinue(searchBar.text)
+    }
 
     private lazy var continueButtonView: UIView = {
         let view = UIView()
@@ -93,8 +100,13 @@ class SiteNameView: UIView {
         return view
     }()
 
-    init(siteName: String) {
-        self.siteName = siteName
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
+    init(siteVerticalName: String, onContinue: @escaping (String?) -> Void) {
+        self.siteVerticalName = siteVerticalName
+        self.onContinue = onContinue
         super.init(frame: .zero)
         backgroundColor = .basicBackground
         addSubview(mainStackView)
@@ -118,6 +130,11 @@ class SiteNameView: UIView {
         super.layoutSubviews()
         updateContinueButton()
     }
+
+    override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        return searchBar.becomeFirstResponder()
+    }
 }
 
 // MARK: setup
@@ -125,15 +142,22 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        let fullTitle = String(format: TextContent.title, siteName)
-        let attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: siteName) else {
+        // find the index where the vertical name goes, so that it won't be confused
+        // with any word in the title
+        let replacementIndex = NSString(string: TextContent.title).range(of: "%@")
+
+        guard !siteVerticalName.isEmpty, replacementIndex.length > 0 else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
+
+        let fullTitle = String(format: TextContent.title, siteVerticalName)
+        let attributedTitle = NSMutableAttributedString(string: fullTitle)
+        let replacementRange = NSRange(location: replacementIndex.location, length: siteVerticalName.utf16.count)
+
         attributedTitle.addAttributes([
             .foregroundColor: UIColor.primary,
-        ], range: range)
+        ], range: replacementRange)
         titleLabel.attributedText = attributedTitle
     }
 
@@ -226,7 +250,7 @@ private extension SiteNameView {
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
-        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later",
+        static let subtitle = NSLocalizedString("A good name is short and memorable.\nYou can change it later.",
                                                 comment: "Subtitle of the Site Name screen.")
         static let continueButtonTitle = NSLocalizedString("Continue",
                                                            comment: "Title of the Continue button in the Site Name screen.")
@@ -258,7 +282,8 @@ private extension SiteNameView {
 extension SiteNameView: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        continueButton.isEnabled = !searchText.isEmpty
+        // disable the continue button if the text is either empty or contains only spaces, newlines or tabs.
+        continueButton.isEnabled = searchText.first(where: { !$0.isWhitespace }) != nil
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

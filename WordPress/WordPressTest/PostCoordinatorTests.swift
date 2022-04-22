@@ -456,7 +456,7 @@ class PostCoordinatorTests: XCTestCase {
     }
 }
 
-private class PostServiceMock: PostService {
+class PostServiceMock: PostService {
     struct UploadPostInvocation {
         let post: AbstractPost
         let forceDraftIfCreating: Bool
@@ -475,6 +475,11 @@ private class PostServiceMock: PostService {
 
     /// Succeed in uploading the post but return nil
     var returnNilPost = false
+
+    // Sync posts variables
+    var syncShouldSucceed = true
+    var syncPostsCalled = false
+    var returnSyncedPosts: [AbstractPost]?
 
     override func uploadPost(_ post: AbstractPost, forceDraftIfCreating: Bool, success: ((AbstractPost?) -> Void)?, failure: ((Error?) -> Void)?) {
         lastUploadPostInvocation = UploadPostInvocation(post: post, forceDraftIfCreating: forceDraftIfCreating)
@@ -500,6 +505,16 @@ private class PostServiceMock: PostService {
 
     override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
         didCallMarkAsFailedAndDraftIfNeeded = true
+    }
+
+    override func syncPosts(ofType postType: PostServiceType, with options: PostServiceSyncOptions, for blog: Blog, success: @escaping PostServiceSyncSuccess, failure: @escaping PostServiceSyncFailure) {
+        syncPostsCalled = true
+        if syncShouldSucceed {
+            success(returnSyncedPosts)
+        }
+        else {
+            failure(nil)
+        }
     }
 }
 

@@ -10,6 +10,8 @@ protocol BlogDashboardCardConfigurable {
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
+    var presentedPostStatus: String?
+
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
@@ -57,7 +59,6 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
-        addNewPostAvailableObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -76,6 +77,10 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         stopAlertTimer()
+    }
+
+    func reloadCardsLocally() {
+        viewModel.loadCardsFromCache()
     }
 
     /// If you want to give any feedback when the dashboard
@@ -100,6 +105,7 @@ final class BlogDashboardViewController: UIViewController {
 
         self.blog = blog
         viewModel.blog = blog
+        BlogDashboardAnalytics.shared.reset()
         viewModel.loadCardsFromCache()
         viewModel.loadCards()
     }
@@ -123,6 +129,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
+        collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
         }
@@ -136,15 +143,11 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addWillEnterForegroundObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCards), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     private func addQuickStartObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
-
-    private func addNewPostAvailableObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .newPostAvailableForDashboard, object: nil)
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -168,6 +171,11 @@ final class BlogDashboardViewController: UIViewController {
 
         viewModel.loadCardsFromCache()
     }
+
+    @objc private func willEnterForeground() {
+        BlogDashboardAnalytics.shared.reset()
+        loadCards()
+    }
 }
 
 // MARK: - Collection view layout
@@ -189,10 +197,9 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
-        let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
+        let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
         let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
-        let bottomInset = isLastSection ? Constants.verticalSectionInset : 0
+        let bottomInset = isQuickActionSection ? 0 : Constants.verticalSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
@@ -258,7 +265,7 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 24
+        static let cellSpacing: CGFloat = 20
     }
 }
 

@@ -271,6 +271,8 @@ import Foundation
     case notificationsPreviousTapped
     case notificationsNextTapped
     case notificationsMarkAllReadTapped
+    case notificationMarkAsReadTapped
+    case notificationMarkAsUnreadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -325,6 +327,13 @@ import Foundation
     case enhancedSiteCreationIntentQuestionSearchFocused
     case enhancedSiteCreationIntentQuestionViewed
     case enhancedSiteCreationIntentQuestionExperiment
+
+    // Site Name
+    case enhancedSiteCreationSiteNameCanceled
+    case enhancedSiteCreationSiteNameSkipped
+    case enhancedSiteCreationSiteNameEntered
+    case enhancedSiteCreationSiteNameViewed
+    case enhancedSiteCreationSiteNameExperiment
 
     // Quick Start
     case quickStartStarted
@@ -794,12 +803,17 @@ import Foundation
         case .accountCloseCompleted:
             return "account_close_completed"
 
+        // Notifications
         case .notificationsPreviousTapped:
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
         case .notificationsMarkAllReadTapped:
             return "notifications_mark_all_read_tapped"
+        case .notificationMarkAsReadTapped:
+            return "notification_mark_as_read_tapped"
+        case .notificationMarkAsUnreadTapped:
+            return "notification_mark_as_unread_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
@@ -906,6 +920,17 @@ import Foundation
             return "onboarding_enable_notifications_skipped"
         case .onboardingEnableNotificationsEnableTapped:
             return "onboarding_enable_notifications_enable_tapped"
+        // Site Name
+        case .enhancedSiteCreationSiteNameCanceled:
+            return "enhanced_site_creation_site_name_canceled"
+        case .enhancedSiteCreationSiteNameSkipped:
+            return "enhanced_site_creation_site_name_skipped"
+        case .enhancedSiteCreationSiteNameEntered:
+            return "enhanced_site_creation_site_name_entered"
+        case .enhancedSiteCreationSiteNameViewed:
+            return "enhanced_site_creation_site_name_viewed"
+        case .enhancedSiteCreationSiteNameExperiment:
+            return "enhanced_site_creation_site_name_experiment"
 
         } // END OF SWITCH
     }

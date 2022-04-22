@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:32:28+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -915,7 +915,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "ขนาดกลาง";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "เมนู";
 
 /* Title of Months stats filter. */
@@ -1526,6 +1528,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "แบ่งปัน";
 
@@ -1553,7 +1556,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "หัวข้อเว็บ";
@@ -1579,7 +1581,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "ข้าม";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */

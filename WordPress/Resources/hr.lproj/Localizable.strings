@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:34:02+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -60,6 +60,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Odobri";
+
+/* Approves a Comment */
+"Approve Comment" = "Odobri Komentar";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Jeste li sigurni da želite izbrisati ovaj post? ";
@@ -823,6 +826,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Podijeli ";
 
@@ -840,7 +844,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Preskoči";
 
 /* Error title when updating the account password fails */
@@ -907,9 +912,6 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Pojavila se greška prilikom učitavanja plana";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Savjet";
-
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
@@ -966,6 +968,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Odbaci";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Neodobren Komentar";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Nepoznata greška.";

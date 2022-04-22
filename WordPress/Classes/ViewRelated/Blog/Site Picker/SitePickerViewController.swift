@@ -187,8 +187,8 @@ extension SitePickerViewController {
         blog.settings?.name = title
         blogDetailHeaderView.setTitleLoading(true)
 
-        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(),
-                                                    silentlyForBlog: blog)
+        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(blog: blog),
+                                            silentlyForBlog: blog)
 
         blogService.updateSettings(for: blog, success: { [weak self] in
             NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
@@ -200,6 +200,13 @@ extension SitePickerViewController {
 
             self?.blogDetailHeaderView.setTitleLoading(false)
             self?.blogDetailHeaderView.refreshSiteTitle()
+
+            guard let parent = self?.parent as? MySiteViewController else {
+                return
+            }
+
+            parent.updateNavigationTitle(for: blog)
+
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
             self?.blogDetailHeaderView.setTitleLoading(false)

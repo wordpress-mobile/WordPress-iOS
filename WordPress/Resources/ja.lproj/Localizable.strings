@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-25 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-04-08 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -805,6 +805,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "承認する";
 
+/* Approves a Comment */
+"Approve Comment" = "コメントを承認";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "承認済み";
@@ -964,6 +967,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic ファミリー";
 
+/* Automotive site intent topic */
+"Automotive" = "自動車";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
 
@@ -1029,6 +1035,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "最初のコメントを投稿してみましょう。";
+
+/* Beauty site intent topic */
+"Beauty" = "美容";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "最高記録日";
@@ -1115,6 +1124,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "太字";
+
+/* Books site intent topic */
+"Books" = "本";
 
 /* No comment provided by engineer. */
 "Border Radius" = "境界の半径";
@@ -1646,6 +1658,9 @@ translators: Block name. %s: The localized block name */
 /* Setting: WordPress.com Community */
 "Community" = "コミュニティ";
 
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "コミュニティ & 非営利";
+
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "コンパクト";
 
@@ -1807,7 +1822,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "次へ";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2149,6 +2165,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Cut block" = "ブロックを切り取る";
 
+/* DIY site intent topic */
+"DIY" = "DIY";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "ダーク";
 
@@ -2431,9 +2450,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "ダブルタップと長押しで編集";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "このメニュー項目を移動するにはダブルタップして長押ししてください";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "ダブルタップしてブロックを追加";
 
@@ -2662,6 +2678,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "このメニュー項目を編集";
+
+/* Education site intent topic */
+"Education" = "教育";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3023,13 +3042,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "「通知」を既読としてマークできませんでした";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "音声ファイルの挿入に失敗しました。";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "音声ファイルの挿入に失敗しました。 タップすると、オプションが表示されます。";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "メディアの挿入に失敗しました。";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "メディアの挿入に失敗しました。\nタップしてオプションを表示できます。";
@@ -3048,6 +3061,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "ファイルのアップロードに失敗しました。\nタップすると、オプションが表示されます。";
+
+/* Fashion site intent topic */
+"Fashion" = "ファッション";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -3106,11 +3122,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "ファイルの種類";
 
+/* Film & Television site intent topic */
+"Film & Television" = "映画 & テレビ";
+
 /* Title of the filter button in the Reader */
 "Filter" = "フィルター";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "アクティビティタイプで絞り込み";
+
+/* Finance site intent topic */
+"Finance" = "ファイナンス";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "さらに詳しく";
@@ -3128,6 +3150,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "名前";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "フィットネス & 運動";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "すべて修正";
@@ -3223,6 +3248,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "文字サイズ";
 
+/* Food site intent topic */
+"Food" = "食べ物";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "フットボール";
 
@@ -3279,6 +3307,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Gallery style" = "ギャラリースタイル";
+
+/* Gaming site intent topic */
+"Gaming" = "ゲーム";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "ガーデニング";
@@ -3362,6 +3393,10 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google の登録に失敗しました。";
+
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "理解しました";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "承知しました !";
@@ -3454,6 +3489,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "見出し6";
+
+/* Health site intent topic */
+"Health" = "健康";
 
 /* Help button */
 "Help" = "ヘルプ";
@@ -3731,6 +3769,12 @@ translators: Block name. %s: The localized block name */
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "サイトに最初のプラグインをインストールするには最長で1分かかる場合があります。その間、サイトへの変更は行うことができなくなります。";
 
+/* Interior Design site intent topic */
+"Interior Design" = "インテリアデザイン";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Prompts" = "プロンプトのご紹介";
+
 /* Stories intro header title */
 "Introducing Story Posts" = "ストーリー投稿の紹介";
 
@@ -3954,6 +3998,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "完了時間を知らせてください !";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "ライフスタイル";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "ライト";
 
@@ -4110,6 +4157,9 @@ translators: Block name. %s: The localized block name */
 
 /* Status for Media object that is only exists locally. */
 "Local" = "ローカル";
+
+/* Local Services site intent topic */
+"Local Services" = "地域サービス";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
@@ -4330,7 +4380,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "メンション";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "メニュー";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4494,9 +4546,13 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "私のお気に入りカフェトップ10";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "新規";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "名前";
 
 /* Error to be displayed when a tag is empty */
@@ -4574,6 +4630,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "新しいものから表示";
+
+/* News site intent topic */
+"News" = "ニュース";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4847,6 +4906,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "メールが表示されない場合は、 スパムメールや迷惑メールのフォルダーを確認してください。";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "注:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "注: カラムのレイアウトはテーマ、画面サイズによって異なります";
@@ -5174,6 +5236,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "親ページの更新に成功しました。";
 
+/* Parenting site intent topic */
+"Parenting" = "育児";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5224,11 +5289,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "サイトを完全に削除する";
 
+/* Personal site intent topic */
+"Personal" = "パーソナル";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "カスタマイズ";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "フォトライブラリ";
+
+/* Photography site intent topic */
+"Photography" = "写真";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "写真";
@@ -5497,9 +5568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "定期的に投稿すれば、読者を集めるのに役立ちます。 リマインダーにより常に情報を把握できます。";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期的に投稿することで読者の興味を引きつけ、新たなサイト訪問者を獲得できます。";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "定期的に投稿することで、読者を増やすことができます。";
 
@@ -5763,6 +5831,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
 
+/* Real Estate site intent topic */
+"Real Estate" = "不動産";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "リブログ";
 
@@ -5833,6 +5904,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
+
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
+"Remind me" = "後で再通知";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "リマインダーを削除しました";
@@ -6439,6 +6513,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "この商品を選択します";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "サイトの目的としてこのテーマを選択します。";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "意見を送る";
 
@@ -6533,6 +6610,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "共有";
 
@@ -6695,10 +6773,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "サイトの言語";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "サイトメニュー";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "サイト転送";
 
@@ -6707,10 +6781,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "サイトのタイトル";
+
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "サイトのテーマ";
 
 /* The accessibility label for the followed sites search field */
 "Site URL" = "サイト URL";
@@ -6764,7 +6840,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "スキップ";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6898,6 +6975,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "サイトをスピードアップ";
+
+/* Sports site intent topic */
+"Sports" = "スポーツ";
 
 /* Standard post format label */
 "Standard" = "標準";
@@ -7177,6 +7257,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "投稿カテゴリー・タグ";
 
+/* Technology site intent topic */
+"Technology" = "テクノロジー";
+
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "ご自身についてお知らせください。";
 
@@ -7269,6 +7352,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The basics" = "基本操作";
+
+/* Subtitle displayed on the feature introduction view. */
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "執筆の腕を磨くのに一番よい方法は、執筆習慣を身に付け、他の人と共有することです。そこでプロンプトの出番です !";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "このサーバーの証明書が無効です。「%@」を偽装しているサーバーに接続中の可能性があるため、機密情報が危険にさらされる恐れがあります。\n\nこの証明書をそのまま信頼しますか ?";
@@ -7627,9 +7713,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "サイトの設定の最終段階です。チェックリストで次のステップの詳細をご覧ください。";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "ヒント";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "WordPress.com を最大限に活用するためのヒント。";
 
@@ -7709,7 +7792,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "ツール";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "トップレベル";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7776,6 +7860,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of trashed Comments filter. */
 "Trashed" = "ゴミ箱";
 
+/* Travel site intent topic */
+"Travel" = "旅行";
+
 /* Connect when the SSL certificate is invalid */
 "Trust" = "信用する";
 
@@ -7808,8 +7895,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "別の検索キーワードを試す";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "今すぐ試す";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8014,6 +8101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "非承認";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "非承認コメント";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "コメントを承認しません。";
@@ -8725,6 +8815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll notify you when its done." = "終了時には通知が表示されます。";
 
+/* Description of Blogging Prompts displayed in the Feature Introduction view. */
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "ダッシュボードに毎日新しいプロンプトを表示して、アイデアが次々と浮かぶようサポートします !";
+
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "引き続きサイトのバックアップを試みています。";
 
@@ -8764,6 +8857,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "ご使用のサイトアドレス。";
+
+/* Select the site's intent. Title */
+"What's your website about?" = "どのような内容のサイトですか ?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "作成または共有するものにかかわらず、こちらでお手伝いします。";
@@ -8925,6 +9021,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "投稿設定";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "文章と詩";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X軸位置";
 
@@ -8985,6 +9084,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "トピックを追加すると、特定の内容に関する投稿をフォローできます。";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "「参加サイト > 設定 > ブログ投稿のリマインダー」でいつでも詳細を確認し、リマインダーを設定できます。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "各投稿のこれらの設定を上書きできます。";
@@ -9384,6 +9486,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Today */
 "today" = "今日";
+
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "最高のヒント";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "不明な URL";

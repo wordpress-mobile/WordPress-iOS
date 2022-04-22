@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:34:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -30,6 +30,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Jóváhagyás";
+
+/* Approves a Comment */
+"Approve Comment" = "Hozzászólás Jóváhagyása";
 
 /* No comment provided by engineer. */
 "Authenticating" = "Bejelentkezés";
@@ -766,6 +769,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Megosztás";
 
@@ -774,7 +778,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Honlap neve";
@@ -791,7 +794,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Kihagyás";
 
 /* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
@@ -934,6 +938,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Elutasítás";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Hozzászólás elutasítása";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Ismeretlen hiba";

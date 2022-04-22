@@ -11,7 +11,7 @@ extension MySiteViewController {
                 switch element {
                 case .noSuchElement:
                     self?.additionalSafeAreaInsets = .zero
-                case .siteIcon, .siteTitle:
+                case .siteIcon, .siteTitle, .viewSite:
                     self?.scrollView.scrollToTop(animated: true)
 
                     self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)

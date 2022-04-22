@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-25 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-04-08 13:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -958,6 +958,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic 회원";
 
+/* Automotive site intent topic */
+"Automotive" = "자동차";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
 
@@ -1023,6 +1026,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "먼저 댓글을 남겨주세요.";
+
+/* Beauty site intent topic */
+"Beauty" = "미용";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "안녕히 계세요.";
@@ -1109,6 +1115,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "굵게";
+
+/* Books site intent topic */
+"Books" = "책";
 
 /* No comment provided by engineer. */
 "Border Radius" = "경계선 반경";
@@ -1637,6 +1646,9 @@ translators: Block name. %s: The localized block name */
 /* Setting: WordPress.com Community */
 "Community" = "커뮤니티";
 
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "공동체 및 비영리";
+
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "콤팩트";
 
@@ -1798,7 +1810,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "계속";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2140,6 +2153,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Cut block" = "블록 잘라내기";
 
+/* DIY site intent topic */
+"DIY" = "DIY";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "검정";
 
@@ -2422,9 +2438,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "편집하려면 두 번 탭하고 길게 누르세요.";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "두 번 누르고 유지하여 이 메뉴 항목을 위 또는 아래로 이동하기";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "블록을 추가하려면 두 번 탭하세요.";
 
@@ -2653,6 +2666,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "이 메뉴 항목 편집하기";
+
+/* Education site intent topic */
+"Education" = "교육";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3014,13 +3030,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "알림을 읽음으로 표시 실패";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "오디오 파일 삽입에 실패했습니다.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "오디오 파일 삽입에 실패했습니다. 옵션을 보려면 누르세요.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "미디어를 삽입하는 데 실패했습니다.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "미디어 삽입에 실패했습니다.\n 옵션을 보려면 탭하세요.";
@@ -3039,6 +3049,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "파일 업로드에 실패했습니다.\n옵션을 누르시기 바랍니다.";
+
+/* Fashion site intent topic */
+"Fashion" = "패션";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "패스트메일";
@@ -3097,11 +3110,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "파일 형식";
 
+/* Film & Television site intent topic */
+"Film & Television" = "영화 및 텔레비전";
+
 /* Title of the filter button in the Reader */
 "Filter" = "필터";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "활동 유형으로 필터";
+
+/* Finance site intent topic */
+"Finance" = "금융";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "더 찾아보기";
@@ -3119,6 +3138,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "이름";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "피트니스 및 운동";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "모두 고치기";
@@ -3214,6 +3236,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "글꼴 크기";
 
+/* Food site intent topic */
+"Food" = "음식";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "축구";
 
@@ -3270,6 +3295,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Gallery style" = "갤러리 스타일";
+
+/* Gaming site intent topic */
+"Gaming" = "게임";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "원예";
@@ -3353,6 +3381,10 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 가입에 실패했습니다.";
+
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "알겠습니다";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "알겠습니다!";
@@ -3445,6 +3477,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "헤딩 6";
+
+/* Health site intent topic */
+"Health" = "건강";
 
 /* Help button */
 "Help" = "도움말";
@@ -3722,6 +3757,12 @@ translators: Block name. %s: The localized block name */
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "첫 번째 플러그인을 사이트에 설치하는 데에는 최대 1분이 소요될 수 있습니다. 이 시간 동안은 사이트를 변경할 수 없습니다.";
 
+/* Interior Design site intent topic */
+"Interior Design" = "인테리어 디자인";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Prompts" = "프롬프트 소개";
+
 /* Stories intro header title */
 "Introducing Story Posts" = "이야기 글 소개";
 
@@ -3945,6 +3986,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "완료되면 알려주세요!";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "라이프스타일";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "밝음";
 
@@ -4101,6 +4145,9 @@ translators: Block name. %s: The localized block name */
 
 /* Status for Media object that is only exists locally. */
 "Local" = "로컬";
+
+/* Local Services site intent topic */
+"Local Services" = "지역 봉사";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
@@ -4321,7 +4368,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "멘션";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "메뉴";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4485,9 +4534,13 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "상위 10개 카페";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "신규!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "이름";
 
 /* Error to be displayed when a tag is empty */
@@ -4565,6 +4618,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "최근 댓글 먼저";
+
+/* News site intent topic */
+"News" = "뉴스";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4835,6 +4891,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "이메일이 보이지 않으세요? 스팸이나 정크 메일 폴더를 확인하세요.";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "참고:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "안내: 컬럼 레이아웃은 테마와 화면 크기에 따라 달라질 수도 있습니다";
@@ -5162,6 +5221,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "상위 페이지가 업데이트되었습니다.";
 
+/* Parenting site intent topic */
+"Parenting" = "육아";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5212,11 +5274,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "영구적으로 사이트 삭제";
 
+/* Personal site intent topic */
+"Personal" = "개인";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "개인 설정";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "사진 라이브러리";
+
+/* Photography site intent topic */
+"Photography" = "사진";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "사진";
@@ -5485,9 +5553,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "정기적으로 글을 작성하면 방문자 유치에 도움이 될 수 있습니다. 알림은 회원님을 추적하는 데 도움이 됩니다.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "정기적으로 글을 작성하면 잠재 고객 유치에 도움이 됩니다!";
 
@@ -5751,6 +5816,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "리더 CSS URL";
 
+/* Real Estate site intent topic */
+"Real Estate" = "부동산";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "리블로그";
 
@@ -5821,6 +5889,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
+
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
+"Remind me" = "나에게 알림";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "알림 제거됨";
@@ -6427,6 +6498,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "이 항목 선택하기";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "사이트의 의도로 이 주제를 선택하세요.";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "의견 보내기";
 
@@ -6521,6 +6595,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "공유";
 
@@ -6691,10 +6766,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "사이트 제목";
+
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "사이트 주제";
 
 /* The accessibility label for the followed sites search field */
 "Site URL" = "사이트 URL";
@@ -6748,7 +6825,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "생략하기";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6882,6 +6960,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "사이트 속도 향상";
+
+/* Sports site intent topic */
+"Sports" = "스포츠";
 
 /* Standard post format label */
 "Standard" = "기본";
@@ -7161,6 +7242,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "분류";
 
+/* Technology site intent topic */
+"Technology" = "기술";
+
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "귀하에 대한 정보를 주세요.";
 
@@ -7253,6 +7337,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The basics" = "기본 사항";
+
+/* Subtitle displayed on the feature introduction view. */
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "더 좋은 작가가 되는 가장 좋은 방법은 글쓰기를 습관화하고 다른 사람과 공유하는 것입니다. 그래서 프롬프트가 필요합니다!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "이 서버의 인증서가 올바르지 않습니다. “%@”(으)로 사칭한 서버에 연결 중일 수 있습니다. 기밀 정보가 노출될 수 있습니다.\n\n그래도 인증서를 신뢰하시겠어요?";
@@ -7611,9 +7698,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "사이트 설정을 완료할 시간입니다! 체크리스트가 다음 단계를 안내합니다.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "팁";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
 
@@ -7693,7 +7777,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "도구";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "최상위";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7760,6 +7845,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of trashed Comments filter. */
 "Trashed" = "삭제됨";
 
+/* Travel site intent topic */
+"Travel" = "여행";
+
 /* Connect when the SSL certificate is invalid */
 "Trust" = "신뢰함";
 
@@ -7792,8 +7880,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "다른 검색어 시도";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "지금 사용해 보기";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8709,6 +8797,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll notify you when its done." = "완료되면 알려드립니다.";
 
+/* Description of Blogging Prompts displayed in the Feature Introduction view. */
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "영감을 발휘할 수 있도록 알림판에 매일 새로운 프롬프트가 표시됩니다!";
+
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "그래도 사이트 백업은 시도됩니다.";
 
@@ -8748,6 +8839,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "내 사이트 주소는 무엇인가요?";
+
+/* Select the site's intent. Title */
+"What's your website about?" = "웹사이트의 주제가 무엇인가요?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "무엇을 만들거나 공유하려고 한다면, 지금 여기서 도와드리겠습니다.";
@@ -8909,6 +9003,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "쓰기";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "글쓰기 및 시";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X-축 위치";
 
@@ -8969,6 +9066,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "특정 주제에 토픽을 추가하여 글을 따를 수 있습니다.";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "내 사이트 > 설정 > 블로깅 알림에서 언제든지 자세히 알아보고 알림을 설정할 수 있습니다.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "개별 글에 대해 이러한 설정을 우선 적용할 수 있습니다.";
@@ -9368,6 +9468,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Today */
 "today" = "오늘";
+
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "최고의 팁";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "알 수 없는 url";

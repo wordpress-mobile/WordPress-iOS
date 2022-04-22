@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
+/* Translation-Revision-Date: 2022-04-11 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -805,6 +805,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Onayla";
 
+/* Approves a Comment */
+"Approve Comment" = "Yorumu onayla";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Onaylı";
@@ -964,6 +967,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic Ailesi";
 
+/* Automotive site intent topic */
+"Automotive" = "Otomotiv";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Otomatik güncellemeler";
 
@@ -1029,6 +1035,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "İlk yorum bırakan siz olun.";
+
+/* Beauty site intent topic */
+"Beauty" = "Güzellik";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "En iyi gün";
@@ -1115,6 +1124,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Kalın";
+
+/* Books site intent topic */
+"Books" = "Kitaplar";
 
 /* No comment provided by engineer. */
 "Border Radius" = "Kenar yuvarlaklığı";
@@ -1646,6 +1658,9 @@ translators: Block name. %s: The localized block name */
 /* Setting: WordPress.com Community */
 "Community" = "Topluluk";
 
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "Topluluk ve Kâr Amacı Gütmeyen Kuruluş";
+
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Kompakt";
 
@@ -1807,7 +1822,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Devam et";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2149,6 +2165,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Cut block" = "Bloğu kes";
 
+/* DIY site intent topic */
+"DIY" = "Kendin Yap";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Koyu";
 
@@ -2431,9 +2450,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Düzenlemek için çift dokunup basılı tutun";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Bu menü öğesini yukarı veya aşağı taşımak için iki kez dokunup basılı tutun";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Blok eklemek için çift dokunun";
 
@@ -2662,6 +2678,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Bu menü öğesini düzenler";
+
+/* Education site intent topic */
+"Education" = "Eğitim";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3023,13 +3042,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Bildirim okundu olarak işaretlenirken hata oluştu";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Ses dosyası eklenemedi.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Ses dosyası eklenemedi. Seçenekler için lütfen dokunun.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Medya eklenemedi.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Ortam eklenemedi.\n Lütfen seçenekler için dokunun.";
@@ -3048,6 +3061,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Dosyalar yüklenemedi.\nSeçenekler için lütfen dokunun.";
+
+/* Fashion site intent topic */
+"Fashion" = "Moda";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -3106,11 +3122,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Dosya tipi";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film ve Televizyon";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filtre";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Etkinlik türüne göre filtrele";
+
+/* Finance site intent topic */
+"Finance" = "Finans";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Daha fazlasını bul";
@@ -3128,6 +3150,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Ad";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "Fitness ve Egzersiz";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Tümünü düzelt";
@@ -3223,6 +3248,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "Font Boyutu";
 
+/* Food site intent topic */
+"Food" = "Yiyecek";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Futbol";
 
@@ -3279,6 +3307,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Gallery style" = "Galeri biçimi";
+
+/* Gaming site intent topic */
+"Gaming" = "Oyun";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Bahçe İşçiliği";
@@ -3362,6 +3393,10 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google oturum açma başarısız oldu.";
+
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "Anladım";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Anladım!";
@@ -3454,6 +3489,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "Başlık 6";
+
+/* Health site intent topic */
+"Health" = "Sağlık";
 
 /* Help button */
 "Help" = "Yardım";
@@ -3731,6 +3769,12 @@ translators: Block name. %s: The localized block name */
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Sitenize ilk eklentinin yüklenmesi 1 dakika kadar sürebilir. Bu sırada sitenizde değişiklik yapamayacaksınız.";
 
+/* Interior Design site intent topic */
+"Interior Design" = "İç Tasarım";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Prompts" = "Bilgilerle Tanışın";
+
 /* Stories intro header title */
 "Introducing Story Posts" = "Öykü Yayınlarına Giriş";
 
@@ -3954,6 +3998,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bittiğinde bana haber ver!";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "Yaşam Tarzı";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Açık";
 
@@ -4110,6 +4157,9 @@ translators: Block name. %s: The localized block name */
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Yerel";
+
+/* Local Services site intent topic */
+"Local Services" = "Yerel Hizmetler";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
@@ -4330,7 +4380,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Bahsetme";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menü";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4494,9 +4546,13 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "En Sevdiğim On Kafe";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "YENİ!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Ad";
 
 /* Error to be displayed when a tag is empty */
@@ -4574,6 +4630,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "İlk en yeni";
+
+/* News site intent topic */
+"News" = "Haberler";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4847,6 +4906,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "E-postayı görmüyor musunuz? İstenmeyen posta klasörünüzü kontrol edin.";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "Not:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Not: Sütun düzeni, temalar ve ekran boyutları arasında değişiklik gösterebilir";
@@ -5174,6 +5236,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "Üst sayfa başarıyla güncellendi.";
 
+/* Parenting site intent topic */
+"Parenting" = "Ebeveynlik";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5224,11 +5289,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Bu siteyi kalıcı olarak sil";
 
+/* Personal site intent topic */
+"Personal" = "Kişisel";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Kişiselleştir";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fotoğraf kütüphanesi";
+
+/* Photography site intent topic */
+"Photography" = "Fotoğrafçılık";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Fotoğraflar";
@@ -5497,9 +5568,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Düzenli olarak paylaşım yapmak, bir kitle oluşturmaya yardımcı olabilir. Hatırlatıcılar her şeyi takip etmenize yardımcı olur.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Düzenli olarak paylaşım yapmak, okuyucularınızın ilgisini ve sitenize de yeni ziyaretçileri çekmenize yardımcı olabilir.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Düzenli olarak paylaşım yapmak, hedef kitlenizi oluşturmanıza yardımcı olur!";
 
@@ -5763,6 +5831,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Okuyucu CSS URLsi";
 
+/* Real Estate site intent topic */
+"Real Estate" = "Emlak";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "Yeniden blogla";
 
@@ -5833,6 +5904,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "İlişkili yazılar, yazılarınızın altında sitenizin içeriği ile alakalı içerik gösterir";
+
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
+"Remind me" = "Bana hatırlat";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Hatırlatıcılar kaldırıldı";
@@ -6439,6 +6513,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Bu öğeyi seçer";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "Bu konuyu sitenizin amacı olarak seçer.";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Geri bildirim gönder";
 
@@ -6533,6 +6610,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Paylaş";
 
@@ -6695,10 +6773,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Site dili";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Site menüsü";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Site yönlendirme";
 
@@ -6707,10 +6781,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site başlığı";
+
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "Site Konusu";
 
 /* The accessibility label for the followed sites search field */
 "Site URL" = "Site adresi";
@@ -6764,7 +6840,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Atla";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6898,6 +6975,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Sitenizi hızlandırın";
+
+/* Sports site intent topic */
+"Sports" = "Spor";
 
 /* Standard post format label */
 "Standard" = "Standart";
@@ -7177,6 +7257,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Kategorilendirme";
 
+/* Technology site intent topic */
+"Technology" = "Teknoloji";
+
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Bize biraz kendinizden bahsedin.";
 
@@ -7269,6 +7352,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The basics" = "Temel bilgiler";
+
+/* Subtitle displayed on the feature introduction view. */
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Daha iyi bir yazar olmanın en iyi yolu, yazma alışkanlığı kazanmak ve başkalarıyla paylaşmaktır - işte burada Bilgiler devreye girer!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Bu sunucunun sertifikası geçersiz. “%@” taklidi yapan bir siteye bağlanıyor olabilirsiniz ki bu kişisel bilgilerinizin ele geçirilebilmesi açısından büyük bir risktir.\n\nSertifikaya güvenip devam etmek istiyor musunuz?";
@@ -7627,9 +7713,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Site kurulumunuzu tamamlamanın zamanı geldi! Listemiz bir sonraki adımları size açıklar.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "İpucu";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "WordPress.com#&8217;dan en fazlasını almak için ipuçları.";
 
@@ -7709,7 +7792,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Araçlar";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "En üst seviye";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7776,6 +7860,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of trashed Comments filter. */
 "Trashed" = "Çöpe atıldı";
 
+/* Travel site intent topic */
+"Travel" = "Seyahat";
+
 /* Connect when the SSL certificate is invalid */
 "Trust" = "Güven";
 
@@ -7808,8 +7895,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Başka bir arama terimi deneyin";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Şimdi deneyin";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8014,6 +8101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Onayı kaldır";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Yorum onayını kaldır";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Yorum onayını kaldırır.";
@@ -8725,6 +8815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll notify you when its done." = "Tamamlandığında sizi bilgilendireceğiz.";
 
+/* Description of Blogging Prompts displayed in the Feature Introduction view. */
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "Yaratıcı fikirlerin fışkırmasına yardımcı olmak için her gün size panonuzda yeni bir bilgi göstereceğiz!";
+
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "Yine de sitenizi yedeklemeyi deneyeceğiz.";
 
@@ -8764,6 +8857,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Sitemin adresi ne?";
+
+/* Select the site's intent. Title */
+"What's your website about?" = "Web siteniz ne hakkında?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "İster oluşturun, ister paylaşın, yapmak istediğinizi yapabilmeniz için yardımcı olacağız.";
@@ -8925,6 +9021,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "Yazma";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "Yazı ve Şiir";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X Ekseni Konumu";
 
@@ -8985,6 +9084,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Konu ekleyerek belirli bir konuyla ilgili gönderileri takip edebilirsiniz.";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "İstediğiniz zaman Sitem > Ayarlar > Blog Hatırlatıcıları bölümünden daha fazla bilgi edinebilir ve hatırlatıcı oluşturabilirsiniz.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Bu ayarları yazı özelinde değiştirebilirsiniz.";
@@ -9384,6 +9486,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Today */
 "today" = "bugün";
+
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "en iyi ipuçları";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "bilinmeyen url";

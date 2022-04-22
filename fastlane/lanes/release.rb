@@ -63,9 +63,15 @@ platform :ios do
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
 
-    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
-    push_to_git_remote(tags: false)
-    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the beta build?',
+      bypass: ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+    )
+      push_to_git_remote(tags: false)
+      trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    else
+      UI.message('Aborting code freeze completion. See you later.')
+    end
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -78,9 +84,7 @@ platform :ios do
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
     version = ios_get_app_version
     trigger_beta_build(branch_to_build: "release/#{version}")
@@ -133,9 +137,7 @@ platform :ios do
     check_all_translations(interactive: true)
 
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
 
     # Wrap up
@@ -233,4 +235,15 @@ def print_release_notes_reminder
   MSG
 
   message.lines.each { |l| UI.important(l.chomp) }
+end
+
+# Wrapper around Fastlane `UI.confirm` that adds the option to bypass the
+# prompt if a given flag is true
+#
+# @param [String] message The text to pass to `UI.confirm` to show the user
+# @param [Boolean] bypass A flag that allows bypassing the `UI.confirm` prompt, i.e. acting as if the prompt returned `true`
+def prompt_for_confirmation(message:, bypass:)
+  return true if bypass
+
+  UI.confirm(message)
 end

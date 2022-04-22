@@ -1,4 +1,5 @@
 import Gridicons
+import Foundation
 
 protocol QuickStartTour {
     typealias WayPoint = (element: QuickStartTourElement, description: NSAttributedString)
@@ -44,7 +45,7 @@ private struct Strings {
 
 struct QuickStartSiteMenu {
     private static let descriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen.")
-    private static let descriptionTarget = NSLocalizedString("Site Menu", comment: "The segmented control item to select during a guided tour.")
+    private static let descriptionTarget = NSLocalizedString("Menu", comment: "The segmented control item to select during a guided tour.")
     static let waypoint = QuickStartTour.WayPoint(element: .siteMenu, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
 }
 
@@ -87,18 +88,25 @@ struct QuickStartViewTour: QuickStartTour {
     let analyticsKey = "view_site"
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: View your site", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
+    let description = NSLocalizedString("Preview your site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let shownInBlogDetails = false
 
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to preview", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("View Site", comment: "The menu item to select during a guided tour.")
-        return [(element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.house)))]
-    }()
+    var waypoints: [WayPoint]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of previewing your site.", comment: "This value is used to set the accessibility hint text for previewing a user's site.")
+
+    init(blog: Blog) {
+        let descriptionBase = NSLocalizedString("Select %@ to view your site", comment: "A step in a guided tour for quick start. %@ will be the site url.")
+        let placeholder = NSLocalizedString("Site URL", comment: "The item to select during a guided tour.")
+        let descriptionTarget = (blog.displayURL as String?) ?? placeholder
+
+        self.waypoints = [
+            (element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
+        ]
+    }
 }
 
 struct QuickStartThemeTour: QuickStartTour {
@@ -211,14 +219,19 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
     let shownInBlogDetails = false
 
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
-        let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
-        return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
-    }()
+    var waypoints: [WayPoint]
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
+
+    init(blog: Blog) {
+        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
+        let descriptionTarget = blog.title ?? placeholder
+
+        self.waypoints = [
+            (element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
+        ]
+    }
 }
 
 struct QuickStartSiteIconTour: QuickStartTour {

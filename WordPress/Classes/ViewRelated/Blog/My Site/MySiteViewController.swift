@@ -13,7 +13,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             case .dashboard:
                 return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
             case .siteMenu:
-                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
+                return NSLocalizedString("Menu", comment: "Title for the site menu view on the My Site screen")
             }
         }
 
@@ -125,6 +125,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
+            updateNavigationTitle(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
         }
@@ -202,6 +203,42 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         createButtonCoordinator?.presentingTraitCollectionWillChange(traitCollection, newTraitCollection: newCollection)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let previousTraitCollection = previousTraitCollection,
+            let blog = blog else {
+            return
+        }
+
+        // When switching between compact and regular width, we need to make sure to select the
+        // appropriate tab. This ensures the following:
+        //
+        // 1. Compact -> Regular: If the dashboard tab is selected, switch to the site menu tab
+        // so that the site menu is shown in the left pane of the split vc
+        //
+        // 2. Regular -> Compact: Switch to the default tab
+        //
+
+        let isCompactToRegularWidth =
+            previousTraitCollection.horizontalSizeClass == .compact &&
+            traitCollection.horizontalSizeClass == .regular
+
+        let isRegularToCompactWidth =
+            previousTraitCollection.horizontalSizeClass == .regular &&
+            traitCollection.horizontalSizeClass == .compact
+
+        if isCompactToRegularWidth, isShowingDashboard {
+            segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
+            segmentedControlValueChanged()
+        } else if isRegularToCompactWidth {
+            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
+            segmentedControlValueChanged()
+        }
+
+        updateSegmentedControl(for: blog)
+    }
+
     private func subscribeToContentSizeCategory() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didChangeDynamicType),
@@ -214,9 +251,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
+    func updateNavigationTitle(for blog: Blog) {
+        let blogName = blog.settings?.name
+        let title = blogName != nil && blogName?.isEmpty == false
+            ? blogName
+            : Strings.mySite
+        navigationItem.title = title
+    }
+
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
-        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device is an iPad
-        let hideSegmentedControl = !FeatureFlag.mySiteDashboard.enabled || !blog.isAccessibleThroughWPCom() || !splitViewControllerIsHorizontallyCompact
+        // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
+        let hideSegmentedControl =
+            !FeatureFlag.mySiteDashboard.enabled ||
+            !blog.isAccessibleThroughWPCom() ||
+            !splitViewControllerIsHorizontallyCompact
 
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
@@ -288,7 +336,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
-        navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
+        navigationItem.title = Strings.mySite
+        navigationItem.backButtonTitle = Strings.mySite
 
         // Workaround:
         //
@@ -355,6 +404,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
 
@@ -636,6 +686,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
+    @objc
+    func toggleSpotlightOnSitePicker() {
+        sitePickerViewController?.toggleSpotlightOnHeaderView()
+    }
+
     // MARK: - Blog Details UI Logic
 
     private func hideBlogDetails() {
@@ -720,6 +775,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
+            self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
@@ -849,6 +905,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         static let segmentedControlYOffset: CGFloat = 24
         static let segmentedControlHeight: CGFloat = 32
         static let siteMenuSpotlightOffset: CGFloat = 8
+    }
+
+    private enum Strings {
+        static let mySite = NSLocalizedString("My Site", comment: "Title of My Site tab")
     }
 }
 

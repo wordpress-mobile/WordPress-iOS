@@ -74,14 +74,14 @@ final class QuickStartChecklistView: UIView {
         stopObservingQuickStart()
     }
 
-    func configure(tours: [QuickStartTour], blog: Blog, title: String, hint: String) {
-        self.tours = tours
+    func configure(collection: QuickStartToursCollection, blog: Blog) {
+        self.tours = collection.tours
         self.blog = blog
-        titleLabel.text = title
+        titleLabel.text = collection.title
 
         isAccessibilityElement = true
         accessibilityTraits = .button
-        accessibilityHint = hint
+        accessibilityHint = collection.hint
 
         updateViews()
     }
@@ -109,7 +109,7 @@ extension QuickStartChecklistView {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
             titleLabel.textColor = .textSubtle
         } else {
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: [NSAttributedString.Key.strikethroughStyle: []])
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: [:])
             titleLabel.textColor = .text
         }
 

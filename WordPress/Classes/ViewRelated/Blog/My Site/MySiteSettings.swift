@@ -1,9 +1,13 @@
 import Foundation
 import WordPressShared
 
+protocol DefaultSectionProvider {
+    var defaultSection: MySiteViewController.Section { get }
+}
+
 /// A helper class for My Site that manages the default section to display
 ///
-@objc final class MySiteSettings: NSObject {
+@objc final class MySiteSettings: NSObject, DefaultSectionProvider {
 
     private var userDefaults: UserDefaults {
         UserDefaults.standard
@@ -22,6 +26,10 @@ import WordPressShared
         }
 
         return "nonexistent"
+    }
+
+    @objc var isAssignedToExperiment: Bool {
+        FeatureFlag.mySiteDashboard.enabled && experimentAssignment != "nonexistent"
     }
 
     func setDefaultSection(_ tab: MySiteViewController.Section) {

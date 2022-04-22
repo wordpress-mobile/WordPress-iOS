@@ -56,7 +56,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        let list = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
     }
@@ -69,7 +69,7 @@ open class QuickStartTourGuide: NSObject {
         let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
         let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
         let unavailableTours = Array(Set(completedTours + skippedTours))
-        let allTours = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        let allTours = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
 
         guard isQuickStartEnabled(for: blog),
             recentlyTouredBlog == blog else {
@@ -183,7 +183,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc func completeViewSiteTour(forBlog blog: Blog) {
-        complete(tour: QuickStartViewTour(), silentlyForBlog: blog)
+        complete(tour: QuickStartViewTour(blog: blog), silentlyForBlog: blog)
     }
 
     @objc func completeSharingTour(forBlog blog: Blog) {
@@ -266,34 +266,6 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
-    func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
-        let title = NSLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
-        let message = NSLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
-                                            comment: "Description shown in alert to confirm skipping all quick start items")
-
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when canceling alert in quick start"))
-
-        let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
-            let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
-            let completedIDs = completedTours.map { $0.tourID }
-
-            for tour in QuickStartTourGuide.checklistTours {
-                if !completedIDs.contains(tour.key) {
-                    blog.completeTour(tour.key)
-                }
-            }
-
-            whenSkipped()
-
-            WPAnalytics.track(.quickStartChecklistSkippedAll)
-        }
-        alertController.preferredAction = skipAction
-
-        WPTabBarController.sharedInstance()?.present(alertController, animated: true)
-    }
-
     static func countChecklistCompleted(in list: [QuickStartTour], for blog: Blog) -> Int {
         let allChecklistTourIDs =  list.map { $0.key }
         let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
@@ -310,25 +282,14 @@ open class QuickStartTourGuide: NSObject {
         currentTourState = nil
     }
 
-    static var checklistTours: [QuickStartTour] {
+    static func customizeListTours(for blog: Blog) -> [QuickStartTour] {
         return [
             QuickStartCreateTour(),
-            QuickStartViewTour(),
-            QuickStartThemeTour(),
-            QuickStartShareTour(),
-            QuickStartPublishTour(),
-            QuickStartFollowTour()
-        ]
-    }
-
-    static var customizeListTours: [QuickStartTour] {
-        return [
-            QuickStartCreateTour(),
-            QuickStartSiteTitleTour(),
+            QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
             QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
-            QuickStartViewTour()
+            QuickStartViewTour(blog: blog)
         ]
     }
 
@@ -396,18 +357,7 @@ private extension QuickStartTourGuide {
     /// - Parameter blog: blog to check
     /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
-        return countChecklistCompleted(in: list, for: blog) >= list.count
-    }
-
-    /// Check if all the original (V1) tours have been completed
-    ///
-    /// - Parameter blog: a Blog to check
-    /// - Returns: boolean, true if all the tours have been completed
-    /// - Note: This method is needed for upgrade/migration to V2 and should not
-    ///         be removed when the V2 feature flag is removed.
-    func allOriginalToursCompleted(for blog: Blog) -> Bool {
-        let list = QuickStartTourGuide.checklistTours
+        let list = QuickStartTourGuide.customizeListTours(for: blog) + QuickStartTourGuide.growListTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 

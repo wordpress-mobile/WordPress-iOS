@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
+final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var scrollView: ButtonScrollView = {
         let scrollView = ButtonScrollView()
@@ -56,21 +56,13 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
-            return
-        }
-
-        configureQuickActionButtons(for: blog, with: viewController)
-    }
 }
 
 // MARK: - Button Actions
 
 extension DashboardQuickActionsCardCell {
 
-    private func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+    func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
         statsButton.onTap = { [weak self] in
             self?.showStats(for: blog, from: sourceController)
         }
@@ -90,7 +82,7 @@ extension DashboardQuickActionsCardCell {
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
         trackQuickActionsEvent(.statsAccessed, blog: blog)
-        StatsViewController.show(for: blog, from: sourceController, showTodayStats: false)
+        StatsViewController.show(for: blog, from: sourceController)
     }
 
     private func showPostList(for blog: Blog, from sourceController: UIViewController) {
@@ -127,6 +119,11 @@ extension DashboardQuickActionsCardCell {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            scrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
+            stackView.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
     }
 }
 

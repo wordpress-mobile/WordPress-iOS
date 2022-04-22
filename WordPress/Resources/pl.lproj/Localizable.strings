@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-04-04 06:09:00+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: pl */
 
 /* Plan yearly price */
@@ -37,6 +37,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Zatwierdź";
+
+/* Approves a Comment */
+"Approve Comment" = "Zatwierdź komentarz";
 
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
@@ -593,6 +596,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Odrzuć";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Cofnij akceptację komentarza";
 
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";

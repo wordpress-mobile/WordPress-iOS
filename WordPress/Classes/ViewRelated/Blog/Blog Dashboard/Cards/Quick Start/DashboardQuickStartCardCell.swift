@@ -46,7 +46,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
 
         tourStateView.configure(blog: blog, sourceController: viewController, checklistTappedTracker: checklistTappedTracker)
 
-        WPAnalytics.track(.dashboardCardShown,
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.quickStart.rawValue],
                           blog: blog)
     }

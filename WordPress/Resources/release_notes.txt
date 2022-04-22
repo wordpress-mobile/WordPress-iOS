@@ -1,7 +1,11 @@
-Big news, site fans—your My Site screen just got better. You’ll now see two new tabs you can switch between: Site Menu and Home.
+We made a small but mighty change to the block editor: the “Add Block” button is more visible when you first open the editor with no blocks selected. We also removed one of three error notifications when a media or audio block fails to upload—it felt like overkill.
 
-The Home tab also contains handy cards with more information about your site, including drafts, scheduled posts, and today’s stats. Or, if you’re in a hurry, you can easily head over to another section of the app.
+You’ll hear some accessibility tweaks in the VoiceOver experience when you’re rearranging menu items. Instructions and notices are clearer, and the menu hierarchy makes more sense out loud.
 
-We’re all about clear communication. That’s why we’ve added new error text to the photo upload process, just in case you try to upload a photo from your device without giving the app photo permission first.
+We added a new screen to the site creation process where you can enter your site’s intent. We tested this screen with a small group of users, and we think you’ll like it, too.
 
-Finally, when in-app notices pop up, they now fade out more smoothly when you don’t need them anymore. Exit stage left.
+Web previews won’t cut off bottom-of-the-screen notifications when your browser toolbar is visible.
+
+What’s in a name? Well, if your site has one, you’ll see it in the My Site navigation title.
+
+When you swipe left on a comment in your Notifications, you won’t see the “Trash” option anymore. Instead you’ll see “Unapprove Comment” and “Approve Comment.” We approve.

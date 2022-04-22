@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-05 06:18:55+0000 */
+/* Translation-Revision-Date: 2022-04-18 23:18:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d gillar";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d svar";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d svar";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d är klara";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "En fil innehåller ett skadligt kodmönster";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Ett bra namn är kort och lätt att komma ihåg.\nDu kan ändra det senare.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Ett nytt sätt att skapa och publicera engagerande innehåll på din webbplats.";
 
@@ -480,6 +489,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Lägg till block före";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "Lägg till block";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Lägg till innehållet i inlägget";
@@ -620,6 +632,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avancerat";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "Efter %@";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -778,6 +793,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonym";
 
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Svara på förslaget";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "App-ikon";
@@ -804,6 +822,9 @@ translators: Block name. %s: The localized block name */
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Godkänn";
+
+/* Approves a Comment */
+"Approve Comment" = "Godkänn";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1035,6 +1056,9 @@ translators: Block name. %s: The localized block name */
 
 /* Beauty site intent topic */
 "Beauty" = "Skönhet";
+
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Före %@";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Bästa dagen";
@@ -1438,7 +1462,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Välj en tid";
 
 /* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own" = "Välj ett ämne från listan nedan eller skriv ditt eget";
+"Choose a topic from the list below or type your own." = "Välj ett ämne från listan nedan eller skriv ditt eget.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Välj en unik webbplats-ikon";
@@ -1822,7 +1846,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Fortsätt";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2450,7 +2475,7 @@ translators: Block name. %s: The localized block name */
 "Double tap and hold to edit" = "Dubbeltryck och håll ned för att redigera";
 
 /* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Dubbeltryck och håll nedtryckt för att flytta detta menyobjekt uppåt eller nedåt";
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Dubbeltryck och håll ned för att flytta detta menyval upp eller ner. Flytta horisontellt för att ändra hierarki.";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Dubbeltryck för att lägga till ett block";
@@ -2584,6 +2609,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicera block";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "T.ex. mode, poesi, politik";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Varje block har sina egna inställningar. För att se dem trycker du på blocket i fråga. Inställningarna visas i verktygsfältet längst ned på skärmen.";
 
@@ -2683,9 +2711,6 @@ translators: Block name. %s: The localized block name */
 
 /* Education site intent topic */
 "Education" = "Utbildning";
-
-/* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "T.ex. mode, poesi, politik";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3047,13 +3072,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Lyckades inte markera aviseringarna som lästa";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Misslyckades att infoga ljudfil.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Kunde inte lägga in ljudfil. Tryck för att visa alternativ.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Misslyckades att infoga media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Det gick inte att placera in media.\nKnacka här för alternativ.";
@@ -3383,6 +3402,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Ge din webbplats ett namn som återspeglar dess personlighet och ämnesområde. Första intrycket är viktigt!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Ge din webbplats ett namn";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "Ge din%@webbplats ett namn";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3405,7 +3431,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Registrering via Google misslyckades.";
 
-/* Title for the continue button in the dashboard's custom What's New page. */
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Jag förstår";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
@@ -3623,9 +3650,6 @@ translators: Block name. %s: The localized block name */
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Om du vill ha en webbplats, men inte någon av de tjänster och sidor du har nu, kan vårt supportteam radera dina inlägg, sidor, media, och kommentarer.";
-
-/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
-"If you want to try get more views and traffic check out our top tips" = "Om du vill få fler besök och mer trafik rekommenderar vi våra bästa tips";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Om du undrar över vad som kommer att raderas eller om du behöver någon hjälp kan du lugnt kontakta vårt supportteam som är redo att besvara alla dina frågor.";
@@ -4393,7 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Omnämnande";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Meny";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4466,6 +4492,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populäraste tidpunkten";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Flytta %@";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "Flytta bilden bakåt";
@@ -4562,7 +4591,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Namn";
 
 /* Error to be displayed when a tag is empty */
@@ -5578,9 +5608,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Det är lättare att bygga upp en publik om du publicerar regelbundet. Med påminnelser är det lättare att hålla takten.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Genom att publicera regelbundet kan du bidra till att hålla dina läsare engagerade och locka nya besökare till webbplatsen.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Genom att publicera regelbundet bygger du upp en större publik!";
 
@@ -5726,6 +5753,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projekt";
+
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Förslag";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -5918,7 +5948,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Relaterade inlägg visar relevant innehåll från din webbplats nedanför dina inlägg";
 
-/* Secondary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Påminn mig";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -5969,6 +5999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Ta bort block";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Ta bort från adminpanelen";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
@@ -6623,6 +6656,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Dela";
 
@@ -6785,10 +6819,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Webbplatsens språk";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Webbplatsens meny";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Omdirigera webbplats";
 
@@ -6797,7 +6827,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Webbplatsrubrik";
@@ -6857,7 +6886,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Hoppa över";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6865,6 +6895,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Hoppa över snabbstarten";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Hoppa över detta förslag";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Resultat från ”snedstrecksinfogaren”";
@@ -7729,9 +7762,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Nu är det dags för webbplatsens avslutande inställningar! Vår checklista visar vad du behöver göra.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tips";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips för att få ut så mycket som möjligt av WordPress.com.";
 
@@ -7811,7 +7841,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Verktyg";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Toppnivå";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7913,8 +7944,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Prova en annan sökterm";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Prova nu";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8119,6 +8150,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Förkasta";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Förkasta kommentar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Godkänner ej kommentaren.";
@@ -8457,6 +8491,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Visa mer";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Visa fler förslag";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Visning för din webbplats hittills";
@@ -9621,4 +9658,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Användare och Skribenter";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Besvarat";
 

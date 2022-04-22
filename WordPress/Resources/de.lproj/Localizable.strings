@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-23 11:54:08+0000 */
+/* Translation-Revision-Date: 2022-04-08 09:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -805,6 +805,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Genehmige";
 
+/* Approves a Comment */
+"Approve Comment" = "Kommentar genehmigen";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Freigegeben";
@@ -964,6 +967,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic-Familie";
 
+/* Automotive site intent topic */
+"Automotive" = "Automobil";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische Updates";
 
@@ -1115,6 +1121,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Fett";
+
+/* Books site intent topic */
+"Books" = "Bücher";
 
 /* No comment provided by engineer. */
 "Border Radius" = "Rahmenradius";
@@ -1646,6 +1655,9 @@ translators: Block name. %s: The localized block name */
 /* Setting: WordPress.com Community */
 "Community" = "Community";
 
+/* Community & Non-Profit site intent topic */
+"Community & Non-Profit" = "Community und gemeinnützige Organisationen";
+
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Kompakt";
 
@@ -1807,7 +1819,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Weiter";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2149,6 +2162,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Cut block" = "Block ausschneiden";
 
+/* DIY site intent topic */
+"DIY" = "Heimwerken";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Dunkel";
 
@@ -2431,9 +2447,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Zum Bearbeiten zweimal tippen und halten";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Um diesen Menüeintrag nach oben oder unten zu verschieben, zweimal tippen und gedrückt halten";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Zum Hinzufügen eines Blocks zweimal tippen";
 
@@ -2662,6 +2675,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Hiermit wird dieser Menüeintrag bearbeitet";
+
+/* Education site intent topic */
+"Education" = "Bildung";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3023,13 +3039,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Benachrichtigungen konnten nicht als gelesen markiert werden";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Audiodatei kann nicht eingefügt werden.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Audiodatei kann nicht eingefügt werden. Für Optionen hier tippen.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Das Medium konnte nicht eingefügt werden.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Das Einfügen von Medien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
@@ -3048,6 +3058,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Das Hochladen der Dateien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
+
+/* Fashion site intent topic */
+"Fashion" = "Mode";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -3106,11 +3119,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Dateityp";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film und Fernsehen";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filtern";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Nach Aktivitätstyp filtern";
+
+/* Finance site intent topic */
+"Finance" = "Finanzen";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Mehr erfahren";
@@ -3128,6 +3147,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Vorname";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "Fitness und Sport";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Alles beheben";
@@ -3222,6 +3244,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Font Size" = "Schriftgröße";
+
+/* Food site intent topic */
+"Food" = "Essen";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "American Football";
@@ -3363,6 +3388,10 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Anmeldung mit Google fehlgeschlagen.";
 
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "OK";
+
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Verstanden!";
 
@@ -3454,6 +3483,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "Überschrift 6";
+
+/* Health site intent topic */
+"Health" = "Gesundheit";
 
 /* Help button */
 "Help" = "Hilfe";
@@ -3730,6 +3762,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Die Installation des ersten Plugins auf deiner Website kann bis zu einer Minute dauern. Während dieser Zeit kannst du keine Änderungen an deiner Website vornehmen.";
+
+/* Interior Design site intent topic */
+"Interior Design" = "Innenarchitektur";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Prompts" = "Neu: Themenvorschläge";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Neu: Story-Beiträge";
@@ -4111,6 +4149,9 @@ translators: Block name. %s: The localized block name */
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokal";
 
+/* Local Services site intent topic */
+"Local Services" = "Lokale Dienstleistungen";
+
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
    Title of the Local Changes Badge */
 "Local changes" = "Lokale Änderungen";
@@ -4330,7 +4371,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Erwähnung";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menü";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4494,9 +4537,13 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Meine Top 10 Cafés";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "NEU!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -4574,6 +4621,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "Neuester zuerst";
+
+/* News site intent topic */
+"News" = "Nachrichten";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4847,6 +4897,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Du siehst die E-Mail nicht? Überprüfe deinen Spam- oder Junk-E-Mail-Ordner.";
+
+/* Label for the note displayed in the Feature Introduction view. */
+"Note:" = "Hinweis:";
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Hinweis: Das Spaltenlayout kann je nach Theme und Bildschirmgröße variieren";
@@ -5174,6 +5227,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "Übergeordnete Seite wurde erfolgreich aktualisiert.";
 
+/* Parenting site intent topic */
+"Parenting" = "Kindererziehung";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5224,11 +5280,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Website endgültig löschen";
 
+/* Personal site intent topic */
+"Personal" = "Persönlich";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personalisieren";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Foto-Bibliothek";
+
+/* Photography site intent topic */
+"Photography" = "Fotografie";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Fotos";
@@ -5497,9 +5559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Regelmäßiges Veröffentlichen kann dir helfen, eine Zielgruppe aufzubauen. Erinnerungen helfen dir, dein Ziel zu erreichen.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Durch regelmäßige Beiträge bindest du deine Leser und lockst neue Besucher auf deine Website.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Regelmäßiges Veröffentlichen von Beiträgen hilft dir, eine Zielgruppe aufzubauen!";
 
@@ -5763,6 +5822,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader-CSS-URL";
 
+/* Real Estate site intent topic */
+"Real Estate" = "Immobilien";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "Rebloggen";
 
@@ -5833,6 +5895,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Als „Ähnliche Beiträge“ werden relevante Inhalte von deiner Website unter deinen Beiträgen angezeigt.";
+
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
+"Remind me" = "Später daran erinnern";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Entfernte Erinnerungen";
@@ -6439,6 +6504,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Dieses Element auswählen";
 
+/* Accessibility hint for a topic in the Site Creation intents view. */
+"Selects this topic as the intent for your site." = "Dieses Thema wird als Intent für deine Website ausgewählt.";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Feedback senden";
 
@@ -6533,6 +6601,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Teilen";
 
@@ -6695,10 +6764,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Website-Sprache";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Website-Menü";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Website-Weiterleitung";
 
@@ -6707,10 +6772,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Website-Titel";
+
+/* Title of the navigation bar, shown when the large title is hidden. */
+"Site Topic" = "Website-Thema";
 
 /* The accessibility label for the followed sites search field */
 "Site URL" = "Webseiten-URL";
@@ -6764,7 +6831,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Überspringen";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -6898,6 +6966,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Verkürze die Ladezeit deiner Website";
+
+/* Sports site intent topic */
+"Sports" = "Sport";
 
 /* Standard post format label */
 "Standard" = "Standard";
@@ -7177,6 +7248,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
+/* Technology site intent topic */
+"Technology" = "Technologie";
+
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Erzähle ein wenig über dich.";
 
@@ -7269,6 +7343,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The basics" = "Die Grundlagen";
+
+/* Subtitle displayed on the feature introduction view. */
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Wenn du deine Schreibkünste verbessern willst, kreiere deinen eigenen Schreibstil und teile ihn mit anderen – und dabei helfen dir unsere Themenvorschläge!";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Du könntest zu einem Server verbinden, der nur vorgibt \"%@\" zu sein, was ein Sicherheitsrisiko darstellt.\n\nMöchtest Du dem Zertifikat trotzdem vertrauen?";
@@ -7627,9 +7704,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Schließe nun die Einrichtung deiner Website ab! Unsere Checkliste leitet dich durch die nächsten Schritte.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tipp";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tipps, um das Meiste aus WordPress.com herauszukriegen.";
 
@@ -7709,7 +7783,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Werkzeuge";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Oberste Ebene";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7776,6 +7851,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of trashed Comments filter. */
 "Trashed" = "In den Papierkorb verschoben.";
 
+/* Travel site intent topic */
+"Travel" = "Reisen";
+
 /* Connect when the SSL certificate is invalid */
 "Trust" = "Vertrauen";
 
@@ -7808,8 +7886,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Versuche es mit einem anderen Suchbegriff";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Jetzt versuchen";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8014,6 +8092,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Zurückweisen";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Kommentar zurückweisen";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Kennzeichnet den Kommentar als nicht genehmigt.";
@@ -8725,6 +8806,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll notify you when its done." = "Wir benachrichtigen dich, wenn es fertig ist.";
 
+/* Description of Blogging Prompts displayed in the Feature Introduction view. */
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "Wir zeigen dir jeden Tag einen neuen Themenvorschlag in deinem Dashboard, um deine Kreativität anzuregen!";
+
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "Wir versuchen trotzdem, ein Backup deiner Website zu erstellen.";
 
@@ -8764,6 +8848,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Wie lautet meine Website-Adresse?";
+
+/* Select the site's intent. Title */
+"What's your website about?" = "Worum geht es auf deiner Website?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "Was immer du erstellen oder teilen möchtest, wir helfen dir dabei, es genau hier zu tun.";
@@ -8925,6 +9012,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "Schreiben";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "Kreatives Schreiben und Poesie";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Position auf der x-Achse";
 
@@ -8985,6 +9075,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Du kannst Beiträgen zu einem bestimmten Thema folgen, indem du ein Thema hinzufügst.";
+
+/* Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Unter Meine Website > Einstellungen > Blog-Erinnerungen kannst du jederzeit mehr erfahren und Erinnerungen festlegen.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
@@ -9384,6 +9477,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Today */
 "today" = "heute";
+
+/* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
+"top tips" = "Top-Tipps";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "Unbekannte URL";

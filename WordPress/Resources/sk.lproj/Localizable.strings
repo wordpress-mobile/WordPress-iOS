@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:30:13+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.3 */
+/* Generator: GlotPress/3.0.0 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -900,7 +900,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Pokračovať";
 
 /* Menus alert button title to continue making changes. */
@@ -2181,7 +2182,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Stredný";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -2259,7 +2262,8 @@
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Názov";
 
 /* Error to be displayed when a tag is empty */
@@ -3450,6 +3454,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Zdieľať";
 
@@ -3544,7 +3549,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Názov webovej stránky";
@@ -3576,7 +3580,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Preskočiť";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -4150,7 +4155,8 @@
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Zapína a vypína nezoradený zoznam štýlov";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Najvyššia úroveň";
 
 /* Shortened version of the main title to be used in back navigation

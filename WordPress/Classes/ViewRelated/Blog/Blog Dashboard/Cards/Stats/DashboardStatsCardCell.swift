@@ -7,7 +7,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
     private var viewModel: DashboardStatsViewModel?
     private var frameView: BlogDashboardCardFrameView?
-    private var nudgeButton: DashboardStatsNudgeButton?
+    private var nudgeView: DashboardStatsNudgeView?
     private var statsStackView: DashboardStatsStackView?
 
     private lazy var stackView: UIStackView = {
@@ -48,18 +48,15 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
         frameView.add(subview: statsStackview)
         self.statsStackView = statsStackview
 
-        let nudgeButton = createNudgeButton()
-        frameView.add(subview: nudgeButton)
-        self.nudgeButton = nudgeButton
+        let nudgeView = createNudgeView()
+        frameView.add(subview: nudgeView)
+        self.nudgeView = nudgeView
 
         stackView.addArrangedSubview(frameView)
     }
 
-    private func createNudgeButton() -> DashboardStatsNudgeButton {
-        let nudgeButton = DashboardStatsNudgeButton(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
-        nudgeButton.contentEdgeInsets = Constants.nudgeButtonMargins
-
-        return nudgeButton
+    private func createNudgeView() -> DashboardStatsNudgeView {
+        DashboardStatsNudgeView(title: Strings.nudgeButtonTitle, hint: Strings.nudgeButtonHint)
     }
 }
 
@@ -85,13 +82,13 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         statsStackView?.visitors = viewModel?.todaysVisitors
         statsStackView?.likes = viewModel?.todaysLikes
 
-        nudgeButton?.onTap = { [weak self] in
+        nudgeView?.onTap = { [weak self] in
             self?.showNudgeHint(for: blog, from: viewController)
         }
 
-        nudgeButton?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
+        nudgeView?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
 
-        WPAnalytics.track(.dashboardCardShown,
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
     }
@@ -100,7 +97,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         WPAnalytics.track(.dashboardCardItemTapped,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
-        StatsViewController.show(for: blog, from: sourceController, showTodayStats: true)
+        StatsViewController.show(for: blog, from: sourceController)
         WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
     }
 
@@ -128,14 +125,13 @@ private extension DashboardStatsCardCell {
 
     enum Strings {
         static let statsTitle = NSLocalizedString("Today's Stats", comment: "Title for the card displaying today's stats.")
-        static let nudgeButtonTitle = NSLocalizedString("If you want to try get more views and traffic check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
+        static let nudgeButtonTitle = NSLocalizedString("Interested in building your audience? Check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
     }
 
     enum Constants {
         static let spacing: CGFloat = 20
         static let iconSize = CGSize(width: 18, height: 18)
-        static let nudgeButtonMargins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
 
         static let constraintPriority = UILayoutPriority(999)
 

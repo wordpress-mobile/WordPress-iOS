@@ -6,8 +6,6 @@
 @property (nonatomic, weak) Blog *blog;
 @property (nonatomic, copy) void (^dismissBlock)(void);
 
-+ (void)showForBlog:(nonnull Blog *)blog
-               from:(nonnull UIViewController *)controller
-     showTodayStats:(BOOL)showTodayStats;
++ (void)showForBlog:(nonnull Blog *)blog from:(nonnull UIViewController *)controller;
 
 @end
