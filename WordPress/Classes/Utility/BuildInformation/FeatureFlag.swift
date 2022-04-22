@@ -62,7 +62,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupBGProcessingTask:
             return true
         case .domains:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .timeZoneSuggester:
             return true
         case .aboutScreen:
