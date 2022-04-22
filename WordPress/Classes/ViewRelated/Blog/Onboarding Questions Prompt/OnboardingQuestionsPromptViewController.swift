@@ -2,18 +2,6 @@ import UIKit
 import WordPressUI
 import WordPressShared
 
-extension NSNotification.Name {
-    static let installJetpack = NSNotification.Name(rawValue: "Meowww")
-}
-
-enum OnboardingOption {
-    case stats
-    case writing
-    case notifications
-    case reader
-    case other
-}
-
 class OnboardingQuestionsPromptViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -24,6 +12,18 @@ class OnboardingQuestionsPromptViewController: UIViewController, UINavigationCon
     @IBOutlet weak var readButton: UIButton!
     @IBOutlet weak var notSureButton: UIButton!
     @IBOutlet weak var skipButton: UIButton!
+
+    let coordinator: OnboardingQuestionsCoordinator
+    
+    init(with coordinator: OnboardingQuestionsCoordinator) {
+        self.coordinator = coordinator
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        self.init(with: OnboardingQuestionsCoordinator())
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,38 +45,32 @@ class OnboardingQuestionsPromptViewController: UIViewController, UINavigationCon
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
        return [.portrait, .portraitUpsideDown]
     }
-
-    private func pushToNotificationsPrompt(option: OnboardingOption ) {
-        let controller = OnboardingEnableNotificationsViewController()
-        controller.selectedOption = option
-        navigationController?.pushViewController(controller, animated: true)
-    }
 }
 
 // MARK: - IBAction's
 extension OnboardingQuestionsPromptViewController {
     @IBAction func didTapStats(_ sender: Any) {
-        pushToNotificationsPrompt(option: .stats)
+        coordinator.didSelect(option: .stats)
     }
 
     @IBAction func didTapWriting(_ sender: Any) {
-        pushToNotificationsPrompt(option: .writing)
+        coordinator.didSelect(option: .writing)
     }
 
     @IBAction func didTapNotifications(_ sender: Any) {
-        pushToNotificationsPrompt(option: .notifications)
+        coordinator.didSelect(option: .notifications)
     }
 
     @IBAction func didTapReader(_ sender: Any) {
-        pushToNotificationsPrompt(option: .reader)
+        coordinator.didSelect(option: .reader)
     }
 
     @IBAction func didTapNotSure(_ sender: Any) {
-        pushToNotificationsPrompt(option: .other)
+        coordinator.didSelect(option: .showMeAround)
     }
 
     @IBAction func skip(_ sender: Any) {
-        dismiss(animated: true)
+        coordinator.dismiss(selection: .skip)
     }
 }
 
@@ -119,8 +113,8 @@ private extension OnboardingQuestionsPromptViewController {
         button.setTitleColor(.text, for: .normal)
         button.titleLabel?.textAlignment = .natural
         button.titleEdgeInsets.left = 10
-        button.flipInsetsForRightToLeftLayoutDirection()
         button.imageView?.contentMode = .scaleAspectFit
+        button.flipInsetsForRightToLeftLayoutDirection()
     }
 }
 
@@ -128,6 +122,10 @@ private extension OnboardingQuestionsPromptViewController {
 extension OnboardingQuestionsPromptViewController {
     func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
         return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
     }
 }
 

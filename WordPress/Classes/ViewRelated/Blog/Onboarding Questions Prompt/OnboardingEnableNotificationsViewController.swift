@@ -4,8 +4,20 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var detailView: UIView!
+    
+    let option: OnboardingOption
+    let coordinator: OnboardingQuestionsCoordinator
 
-    var selectedOption: OnboardingOption = .notifications
+    init(with coordinator: OnboardingQuestionsCoordinator, option: OnboardingOption) {
+        self.coordinator = coordinator
+        self.option = option
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required convenience init?(coder: NSCoder) {
+        self.init(with: OnboardingQuestionsCoordinator(), option: .notifications)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,13 +32,13 @@ extension OnboardingEnableNotificationsViewController {
     @IBAction func enableButtonTapped(_ sender: Any) {
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             DispatchQueue.main.async {
-                self.dismiss(animated: true)
+                self.coordinator.dismiss(selection: self.option)
             }
         }
     }
 
     @IBAction func skipButtonTapped(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
+        coordinator.dismiss(selection: option)
     }
 }
 
@@ -62,7 +74,7 @@ private extension OnboardingEnableNotificationsViewController {
         let text: String
         let notificationContent: UnifiedPrologueNotificationsContent?
 
-        switch selectedOption {
+        switch option {
         case .stats:
             text = StatsStrings.subTitle
             notificationContent = .init(topElementTitle: StatsStrings.notificationTopTitle,
@@ -74,7 +86,7 @@ private extension OnboardingEnableNotificationsViewController {
             text = WritingStrings.subTitle
             notificationContent = nil
 
-        case .notifications, .other:
+        case .notifications, .showMeAround, .skip:
             text = DefaultStrings.subTitle
             notificationContent = nil
 

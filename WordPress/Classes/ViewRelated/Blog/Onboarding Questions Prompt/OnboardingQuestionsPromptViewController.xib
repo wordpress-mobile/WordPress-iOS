@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <accessibilityOverrides dynamicTypePreference="11"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -38,7 +38,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="csX-G4-jUX">
                                     <rect key="frame" x="20" y="0.0" width="374" height="736"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="WPd-b7-OmY">
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="WPd-b7-OmY" userLabel="Spacer View">
                                             <rect key="frame" x="47" y="0.0" width="280" height="40"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
@@ -66,7 +66,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QSf-1g-Q0C" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="206.66666666666666" width="334" height="54.999999999999972"/>
+                                            <rect key="frame" x="20" y="206.66666666666663" width="334" height="185"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="ajb-Ej-ySY"/>
                                             </constraints>
@@ -78,7 +78,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" preferredBehavioralStyle="mac" translatesAutoresizingMaskIntoConstraints="NO" id="CDq-op-qjQ" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="271.66666666666669" width="334" height="55"/>
+                                            <rect key="frame" x="20" y="401.66666666666669" width="334" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="rUc-4S-Bfz"/>
                                             </constraints>
@@ -93,7 +93,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-OI-DPA" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="336.66666666666669" width="334" height="55"/>
+                                            <rect key="frame" x="20" y="466.66666666666669" width="334" height="55.000000000000057"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="IXy-Xc-PPb"/>
                                             </constraints>
@@ -105,7 +105,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KwB-px-6X8" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="401.66666666666669" width="334" height="185.00000000000006"/>
+                                            <rect key="frame" x="20" y="531.66666666666663" width="334" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="F8y-fV-N8k"/>
                                             </constraints>
@@ -116,17 +116,17 @@
                                                 <action selector="didTapNotSure:" destination="-1" eventType="touchUpInside" id="rgT-w3-vu7"/>
                                             </connections>
                                         </button>
-                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="prj-v9-v12">
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="prj-v9-v12" userLabel="Spacer View">
                                             <rect key="frame" x="47" y="596.66666666666663" width="280" height="85.333333333333371"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqk-b2-4xT">
-                                            <rect key="frame" x="146.66666666666666" y="692" width="81" height="44"/>
+                                            <rect key="frame" x="158.66666666666666" y="692" width="57" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="VDE-E0-c6D"/>
                                             </constraints>
                                             <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain" image="cloud-upload" title="Skip"/>
+                                            <buttonConfiguration key="configuration" style="plain" title="Skip"/>
                                             <connections>
                                                 <action selector="skip:" destination="-1" eventType="touchUpInside" id="Reh-V6-ZJt"/>
                                             </connections>
@@ -186,11 +186,10 @@
                 <constraint firstItem="5qq-DW-ke8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iaA-Mr-uee"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5qq-DW-ke8" secondAttribute="bottom" id="xkg-Lr-gLu"/>
             </constraints>
-            <point key="canvasLocation" x="-191" y="128"/>
+            <point key="canvasLocation" x="-229" y="53"/>
         </view>
     </objects>
     <resources>
-        <image name="cloud-upload" width="24" height="24"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
