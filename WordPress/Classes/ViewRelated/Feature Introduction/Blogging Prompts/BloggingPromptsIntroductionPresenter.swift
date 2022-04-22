@@ -66,8 +66,22 @@ private extension BloggingPromptsIntroductionPresenter {
     }
 
     func showPostCreation() {
-        // TODO: show post creation
-        navigationController.dismiss(animated: true, completion: nil)
+        guard let blog = accountSites?.first,
+              let presentingViewController = presentingViewController else {
+            navigationController.dismiss(animated: true)
+            return
+        }
+
+        // TODO: pre-populate post content with prompt content.
+        // Do something similar to `ReaderReblogPresenter:prepareForReblog`?
+        let editor = EditPostViewController(blog: blog)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .bloggingPromptsFeatureIntroduction
+
+        navigationController.dismiss(animated: true, completion: { [weak self] in
+            presentingViewController.present(editor, animated: false)
+            self?.trackPostEditorShown(blog)
+        })
     }
 
     func showRemindersScheduling() {
@@ -82,6 +96,12 @@ private extension BloggingPromptsIntroductionPresenter {
                                           for: blog,
                                           source: .bloggingPromptsFeatureIntroduction)
         })
+    }
+
+    func trackPostEditorShown(_ blog: Blog) {
+        WPAppAnalytics.track(.editorCreatedPost,
+                             withProperties: [WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"],
+                             with: blog)
     }
 
 }
