@@ -4,7 +4,7 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var detailView: UIView!
-    
+
     let option: OnboardingOption
     let coordinator: OnboardingQuestionsCoordinator
 

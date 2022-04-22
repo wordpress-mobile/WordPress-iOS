@@ -14,13 +14,12 @@ class OnboardingQuestionsPromptViewController: UIViewController, UINavigationCon
     @IBOutlet weak var skipButton: UIButton!
 
     let coordinator: OnboardingQuestionsCoordinator
-    
+
     init(with coordinator: OnboardingQuestionsCoordinator) {
         self.coordinator = coordinator
-        
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required convenience init?(coder: NSCoder) {
         self.init(with: OnboardingQuestionsCoordinator())
     }
