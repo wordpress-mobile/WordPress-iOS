@@ -24,21 +24,19 @@ class OnboardingEnableNotificationsViewController: UIViewController {
 
         applyStyles()
         updateContent()
+
+        coordinator.notificationsDisplayed(option: option)
     }
 }
 
 // MARK: - IBAction's
 extension OnboardingEnableNotificationsViewController {
     @IBAction func enableButtonTapped(_ sender: Any) {
-        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
-            DispatchQueue.main.async {
-                self.coordinator.dismiss(selection: self.option)
-            }
-        }
+        coordinator.notificationsEnabledTapped(selection: option)
     }
 
     @IBAction func skipButtonTapped(_ sender: Any) {
-        coordinator.dismiss(selection: option)
+        coordinator.notificationsSkipped(selection: option)
     }
 }
 

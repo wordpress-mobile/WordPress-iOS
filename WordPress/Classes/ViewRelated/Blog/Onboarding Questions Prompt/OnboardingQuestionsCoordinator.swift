@@ -1,14 +1,13 @@
 import Foundation
 import UIKit
 
-enum OnboardingOption {
-    case stats
-    case writing
-    case notifications
-    case reader
-    case showMeAround
-
-    case skip
+enum OnboardingOption: String {
+    case stats = "stats"
+    case writing = "writing"
+    case notifications = "notifications"
+    case reader = "reader"
+    case showMeAround = "show_me_around"
+    case skip = "skip"
 }
 
 extension NSNotification.Name {
@@ -23,7 +22,36 @@ class OnboardingQuestionsCoordinator {
         onDismiss?(selection)
     }
 
+    func track(_ event: WPAnalyticsEvent, option: OnboardingOption? = nil) {
+        guard let option = option else {
+            WPAnalytics.track(event)
+            return
+        }
+
+        let properties = ["item": option.rawValue]
+        WPAnalytics.track(event, properties: properties)
+    }
+}
+
+// MARK: - Questions View Handling
+extension OnboardingQuestionsCoordinator {
+    func questionsDisplayed() {
+        track(.onboardingQuestionsDisplayed)
+    }
+
+    func questionsSkipped(option: OnboardingOption) {
+        dismiss(selection: option)
+        track(.onboardingQuestionsSkipped)
+    }
+
     func didSelect(option: OnboardingOption) {
+        guard option != .skip else {
+            questionsSkipped(option: option)
+            return
+        }
+
+        track(.onboardingQuestionsItemSelected, option: option)
+
         // Check if notification's are already enabled
         // If they are just dismiss, if not then prompt
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { [weak self] settings in
@@ -37,5 +65,27 @@ class OnboardingQuestionsCoordinator {
                 self.navigationController?.pushViewController(controller, animated: true)
             }
         })
+    }
+}
+
+// MARK: - Notifications Handling
+extension OnboardingQuestionsCoordinator {
+    func notificationsDisplayed(option: OnboardingOption) {
+        track(.onboardingEnableNotificationsDisplayed, option: option)
+    }
+
+    func notificationsEnabledTapped(selection: OnboardingOption) {
+        track(.onboardingEnableNotificationsEnableTapped, option: selection)
+
+        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
+            DispatchQueue.main.async {
+                self.dismiss(selection: selection)
+            }
+        }
+    }
+
+    func notificationsSkipped(selection: OnboardingOption) {
+        track(.onboardingEnableNotificationsSkipped, option: selection)
+        dismiss(selection: selection)
     }
 }

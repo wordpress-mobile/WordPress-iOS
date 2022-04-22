@@ -32,6 +32,8 @@ class OnboardingQuestionsPromptViewController: UIViewController, UINavigationCon
 
         applyStyles()
         updateButtonTitles()
+
+        coordinator.questionsDisplayed()
     }
 
     // MARK: - View Methods
@@ -69,7 +71,7 @@ extension OnboardingQuestionsPromptViewController {
     }
 
     @IBAction func skip(_ sender: Any) {
-        coordinator.dismiss(selection: .skip)
+        coordinator.didSelect(option: .skip)
     }
 }
 
