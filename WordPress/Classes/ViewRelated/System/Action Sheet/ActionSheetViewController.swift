@@ -47,11 +47,11 @@ class ActionSheetViewController: UIViewController {
 
     let headerView: UIView?
     let buttons: [ActionSheetButton]
-    let buttonHeaderTitle: String
+    let headerTitle: String
 
-    init(headerView: UIView? = nil, buttonHeaderTitle: String, buttons: [ActionSheetButton]) {
+    init(headerView: UIView? = nil, headerTitle: String, buttons: [ActionSheetButton]) {
         self.headerView = headerView
-        self.buttonHeaderTitle = buttonHeaderTitle
+        self.headerTitle = headerTitle
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,7 +85,7 @@ class ActionSheetViewController: UIViewController {
         headerLabelView.pinSubviewToAllEdges(headerLabel, insets: Constants.Header.insets)
 
         headerLabel.font = WPStyleGuide.fontForTextStyle(.headline)
-        headerLabel.text = buttonHeaderTitle
+        headerLabel.text = headerTitle
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
