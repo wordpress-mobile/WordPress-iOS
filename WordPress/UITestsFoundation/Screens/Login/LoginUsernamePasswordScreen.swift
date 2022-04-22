@@ -67,7 +67,7 @@ public class LoginUsernamePasswordScreen: ScreenObject {
         fill(username: username, password: password)
         try dismissQuickStartPromptIfNeeded()
         try dismissOnboardingQuestionsPromptIfNeeded()
-        
+
         return try MySiteScreen()
     }
 
