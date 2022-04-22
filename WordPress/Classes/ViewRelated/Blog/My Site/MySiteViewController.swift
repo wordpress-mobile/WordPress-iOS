@@ -220,8 +220,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
         if !hideSegmentedControl && switchTabsIfNeeded {
-            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
-            segmentedControlValueChanged()
+            switchTab(to: mySiteSettings.defaultSection)
         }
     }
 
@@ -426,6 +425,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             hideBlogDetails()
             showDashboard(for: blog)
         }
+    }
+
+    /// Changes between the site menu and dashboard
+    /// - Parameter section: The section to switch to
+    func switchTab(to section: Section) {
+        segmentedControl.selectedSegmentIndex = section.rawValue
+        segmentedControlValueChanged()
     }
 
     // MARK: - Child VC logic
@@ -710,8 +716,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
 
             if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
-                self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
-                self.segmentedControlValueChanged()
+                self.switchTab(to: .siteMenu)
             }
 
             self.updateSegmentedControl(for: blog)
