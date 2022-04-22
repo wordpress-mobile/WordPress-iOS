@@ -23,8 +23,11 @@ open class QuickStartTourGuide: NSObject {
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
 
-    /// Represents the origin from which the current tour is triggered
-    @objc var currentTourEntryPoint: QuickStartTourEntryPoint = .unknown
+    /// Represents the current entry point.
+    @objc var currentEntryPoint: QuickStartTourEntryPoint = .unknown
+
+    /// Represents the entry point where the current tour in progress was triggered from.
+    @objc var entryPointForCurrentTour: QuickStartTourEntryPoint = .unknown
 
     /// A flag indicating if the current tour can only be shown from blog details or not.
     @objc var currentTourMustBeShownFromBlogDetails: Bool {
@@ -171,7 +174,7 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if currentTourEntryPoint == .blogDashboard &&
+        if currentEntryPoint == .blogDashboard &&
             tour.possibleEntryPoints == [.blogDetails] &&
             !UIDevice.isPad() {
             var tourToAdjust = tour
@@ -192,6 +195,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
 
+        entryPointForCurrentTour = currentEntryPoint
         tourInProgress = true
         showCurrentStep()
     }
@@ -266,6 +270,7 @@ open class QuickStartTourGuide: NSObject {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
             }
 
+            entryPointForCurrentTour = .unknown
             completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
 
@@ -350,9 +355,9 @@ open class QuickStartTourGuide: NSObject {
     static func customizeListTours(for blog: Blog) -> [QuickStartTour] {
         return [
             QuickStartCreateTour(),
-            QuickStartSiteTitleTour(blog: blog),
-            QuickStartSiteIconTour(),
-            QuickStartEditHomepageTour(),
+//            QuickStartSiteTitleTour(blog: blog),
+//            QuickStartSiteIconTour(),
+//            QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
             QuickStartViewTour(blog: blog)
         ]
@@ -360,9 +365,9 @@ open class QuickStartTourGuide: NSObject {
 
     static var growListTours: [QuickStartTour] {
         return [
-            QuickStartShareTour(),
-            QuickStartPublishTour(),
-            QuickStartFollowTour(),
+//            QuickStartShareTour(),
+//            QuickStartPublishTour(),
+//            QuickStartFollowTour(),
             QuickStartCheckStatsTour()
     // Temporarily disabled
     //        QuickStartExplorePlansTour()

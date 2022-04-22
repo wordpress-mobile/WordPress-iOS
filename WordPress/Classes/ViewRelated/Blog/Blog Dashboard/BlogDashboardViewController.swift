@@ -74,7 +74,7 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
-        QuickStartTourGuide.shared.currentTourEntryPoint = .blogDashboard
+        QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)

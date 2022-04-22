@@ -149,6 +149,10 @@ extension DashboardQuickActionsCardCell {
                 case .noSuchElement:
                     self?.statsButton.shouldShowSpotlight = false
                 case .stats:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                        return
+                    }
+
                     self?.statsButton.shouldShowSpotlight = true
                     self?.autoScrollToStatsButton()
                 default:
