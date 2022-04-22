@@ -352,7 +352,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        //Present the epilogue view
+        // Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -367,16 +367,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
             self.recentSiteService.touch(blog: blog)
 
-            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                } else {
-                    self.windowManager.showAppUI(for: blog)
-                }
-                return
-            }
-
-            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
         }
 
         epilogueViewController.onCreateNewSite = {
@@ -540,6 +531,37 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 WPAnalytics.refreshMetadata()
             }
         }
+    }
+}
+
+// MARK: - Onboarding Questions Prompt
+private extension WordPressAuthenticationManager {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController,
+                                                  onDismiss: (() -> Void)? = nil) {
+        let windowManager = self.windowManager
+
+        let coordinator = OnboardingQuestionsCoordinator()
+        coordinator.navigationController = navigationController
+
+        let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
+
+        coordinator.onDismiss = { selectedOption in
+            let completion: (() -> Void)? = {
+                let userInfo = ["option": selectedOption]
+
+                NotificationCenter.default.post(name: .onboardingPromptWasDismissed, object: nil, userInfo: userInfo)
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
+
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
 
