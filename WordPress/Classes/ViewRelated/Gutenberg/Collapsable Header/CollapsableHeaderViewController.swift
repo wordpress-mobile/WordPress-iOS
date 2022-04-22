@@ -502,12 +502,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// - The primary and secondary action buttons are always displayed.
     /// - The defaultActionButton is never displayed.
     /// Therefore:
-    /// - itemSelectionChanged is called to accomplish the two points above.
+    /// - The footerView with the action buttons is shown.
     /// - The selectedStateButtonsContainer axis is set to vertical.
     /// - The primaryActionButton is moved to the top of the stack view.
     func configureVerticalButtonView() {
         usesVerticalActionButtons = true
-        itemSelectionChanged(true)
+
+        footerHeightContraint.constant = footerHeight
         selectedStateButtonsContainer.axis = .vertical
 
         selectedStateButtonsContainer.removeArrangedSubview(primaryActionButton)
