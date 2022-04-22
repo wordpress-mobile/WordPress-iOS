@@ -1351,15 +1351,15 @@
 		80EF672327F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
 		80EF672527F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */; };
 		80EF672627F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */; };
-		80EF928D280E83110064A971 /* QuickStartToursCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928C280E83110064A971 /* QuickStartToursCollection.swift */; };
-		80EF928E280E83110064A971 /* QuickStartToursCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928C280E83110064A971 /* QuickStartToursCollection.swift */; };
-		80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
-		80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
 		80EF9284280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9283280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift */; };
 		80EF9286280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */; };
 		80EF9287280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */; };
 		80EF928A280D28140064A971 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9289280D28140064A971 /* Atomic.swift */; };
 		80EF928B280D28140064A971 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9289280D28140064A971 /* Atomic.swift */; };
+		80EF928D280E83110064A971 /* QuickStartToursCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928C280E83110064A971 /* QuickStartToursCollection.swift */; };
+		80EF928E280E83110064A971 /* QuickStartToursCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928C280E83110064A971 /* QuickStartToursCollection.swift */; };
+		80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
+		80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
 		821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
@@ -6084,11 +6084,11 @@
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
-		80EF928C280E83110064A971 /* QuickStartToursCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartToursCollection.swift; sourceTree = "<group>"; };
-		80EF928F28105CFA0064A971 /* QuickStartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactory.swift; sourceTree = "<group>"; };
 		80EF9283280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsSyncManagerTests.swift; sourceTree = "<group>"; };
 		80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsSyncManager.swift; sourceTree = "<group>"; };
 		80EF9289280D28140064A971 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		80EF928C280E83110064A971 /* QuickStartToursCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartToursCollection.swift; sourceTree = "<group>"; };
+		80EF928F28105CFA0064A971 /* QuickStartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactory.swift; sourceTree = "<group>"; };
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -15300,6 +15300,7 @@
 			buildConfigurationList = 3F526C612538CF2C0069706C /* Build configuration list for PBXNativeTarget "WordPressStatsWidgets" */;
 			buildPhases = (
 				0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */,
+				09DBEA51281333610019724E /* [Lint] Check AppLocalizedString usage */,
 				3F526C482538CF2A0069706C /* Sources */,
 				3F526C492538CF2A0069706C /* Frameworks */,
 				3F526C4A2538CF2A0069706C /* Resources */,
@@ -15340,6 +15341,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 733F36152126197800988727 /* Build configuration list for PBXNativeTarget "WordPressNotificationContentExtension" */;
 			buildPhases = (
+				09DBEA52281333700019724E /* [Lint] Check AppLocalizedString usage */,
 				733F35FF2126197800988727 /* Sources */,
 				733F36002126197800988727 /* Frameworks */,
 				733F36012126197800988727 /* Resources */,
@@ -15358,6 +15360,7 @@
 			buildConfigurationList = 7358E6C4210BD318002323EB /* Build configuration list for PBXNativeTarget "WordPressNotificationServiceExtension" */;
 			buildPhases = (
 				BAE780768320204E29A6FE5B /* [CP] Check Pods Manifest.lock */,
+				09DBEA53281333770019724E /* [Lint] Check AppLocalizedString usage */,
 				7358E6B4210BD318002323EB /* Sources */,
 				7358E6B5210BD318002323EB /* Frameworks */,
 				7358E6B6210BD318002323EB /* Resources */,
@@ -15377,6 +15380,7 @@
 			buildConfigurationList = 74576681202B558C00F42E40 /* Build configuration list for PBXNativeTarget "WordPressDraftActionExtension" */;
 			buildPhases = (
 				74CC431A202B5C73000DAE1A /* [CP] Check Pods Manifest.lock */,
+				09DBEA4D281333060019724E /* [Lint] Check AppLocalizedString usage */,
 				7457666E202B558C00F42E40 /* Sources */,
 				7457666F202B558C00F42E40 /* Frameworks */,
 				74576670202B558C00F42E40 /* Resources */,
@@ -15415,6 +15419,7 @@
 			buildConfigurationList = 932225B71C7CE50400443B02 /* Build configuration list for PBXNativeTarget "WordPressShareExtension" */;
 			buildPhases = (
 				4F4D5C2BB6478A3E90ADC3C5 /* [CP] Check Pods Manifest.lock */,
+				09DBEA4C281329ED0019724E /* [Lint] Check AppLocalizedString usage */,
 				932225A31C7CE50300443B02 /* Sources */,
 				932225A41C7CE50300443B02 /* Frameworks */,
 				932225A51C7CE50300443B02 /* Resources */,
@@ -15434,6 +15439,7 @@
 			buildConfigurationList = 93E5284D19A7741A003A1A9C /* Build configuration list for PBXNativeTarget "WordPressTodayWidget" */;
 			buildPhases = (
 				4CB8AA817C9BD74F3416B27C /* [CP] Check Pods Manifest.lock */,
+				09DBEA4E2813334B0019724E /* [Lint] Check AppLocalizedString usage */,
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
@@ -15453,6 +15459,7 @@
 			buildConfigurationList = 98A3C2FF239997DB0048D38D /* Build configuration list for PBXNativeTarget "WordPressThisWeekWidget" */;
 			buildPhases = (
 				591AAEE0843D274DDFF16F69 /* [CP] Check Pods Manifest.lock */,
+				09DBEA50281333590019724E /* [Lint] Check AppLocalizedString usage */,
 				98A3C2EB239997DA0048D38D /* Sources */,
 				98A3C2EC239997DA0048D38D /* Frameworks */,
 				98A3C2ED239997DA0048D38D /* Resources */,
@@ -15472,6 +15479,7 @@
 			buildConfigurationList = 98D31B9E2396ED7F009CFF43 /* Build configuration list for PBXNativeTarget "WordPressAllTimeWidget" */;
 			buildPhases = (
 				FF1C536C9FA7489B5AAA0FC2 /* [CP] Check Pods Manifest.lock */,
+				09DBEA4F281333530019724E /* [Lint] Check AppLocalizedString usage */,
 				98D31B8A2396ED7E009CFF43 /* Sources */,
 				98D31B8B2396ED7E009CFF43 /* Frameworks */,
 				98D31B8C2396ED7E009CFF43 /* Resources */,
@@ -15510,6 +15518,7 @@
 			buildConfigurationList = F1F163DC25658B4D003DC13B /* Build configuration list for PBXNativeTarget "WordPressIntents" */;
 			buildPhases = (
 				CE51D1C75430FDDD21B27F64 /* [CP] Check Pods Manifest.lock */,
+				09DBEA542813337F0019724E /* [Lint] Check AppLocalizedString usage */,
 				F1F163BA25658B4D003DC13B /* Sources */,
 				F1F163BB25658B4D003DC13B /* Frameworks */,
 				F1F163BC25658B4D003DC13B /* Resources */,
@@ -16583,6 +16592,177 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA4C281329ED0019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA4D281333060019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA4E2813334B0019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA4F281333530019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA50281333590019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA51281333610019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA52281333700019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA53281333770019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		09DBEA542813337F0019724E /* [Lint] Check AppLocalizedString usage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Lint] Check AppLocalizedString usage";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/zsh -euo pipefail";
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */ = {
