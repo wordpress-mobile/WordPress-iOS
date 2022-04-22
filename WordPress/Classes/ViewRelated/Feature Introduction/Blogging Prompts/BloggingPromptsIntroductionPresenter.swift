@@ -5,7 +5,7 @@ import UIKit
 /// and directs the flow according to which action button is tapped.
 /// - Try it: the answer prompt flow.
 /// - Remind me: the blogging reminders flow.
-/// - If the account has multiple sites, a site picker is displayed before either of the above.
+/// - If the account has multiple sites, a site selector is displayed before either of the above.
 
 class BloggingPromptsIntroductionPresenter: NSObject {
 
@@ -62,7 +62,7 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showSiteSelector() {
         // TODO: show site selector
-        navigationController.dismiss(animated: true, completion: nil)
+        navigationController.dismiss(animated: true)
     }
 
     func showPostCreation() {
@@ -87,7 +87,7 @@ private extension BloggingPromptsIntroductionPresenter {
     func showRemindersScheduling() {
         guard let blog = accountSites?.first,
         let presentingViewController = presentingViewController else {
-            navigationController.dismiss(animated: true, completion: nil)
+            navigationController.dismiss(animated: true)
             return
         }
 
