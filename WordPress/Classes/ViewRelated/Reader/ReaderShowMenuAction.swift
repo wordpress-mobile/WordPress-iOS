@@ -136,7 +136,9 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderSubscribeCommentsAction().execute(with: post, context: context)
+                                                    ReaderSubscribeCommentsAction().execute(with: post, context: context) {
+                                                        (vc as? ReaderDetailViewController)?.updateFollowButtonState()
+                                                    }
                                                 }
             })
         }

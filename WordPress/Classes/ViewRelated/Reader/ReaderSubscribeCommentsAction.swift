@@ -9,6 +9,7 @@ final class ReaderSubscribeCommentsAction {
         let service = FollowCommentsService(post: post)
         service?.toggleSubscribed(post.isSubscribedComments, success: { success in
             ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: success)
+            completion?()
         }, failure: { error in
             DDLogError("Error toggling comment subscription status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
