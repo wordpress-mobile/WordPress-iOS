@@ -4,13 +4,13 @@ import Nimble
 @testable import WordPress
 
 class ReaderCardTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var testContext: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         testContext = contextManager.newDerivedContext()
     }
 

@@ -7,7 +7,7 @@ final class CommentServiceTests: XCTestCase {
 
     private var remoteMock: CommentServiceRemoteRESTMock!
     private var service: CommentService!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
@@ -17,7 +17,7 @@ final class CommentServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()

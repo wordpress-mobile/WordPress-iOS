@@ -3,7 +3,7 @@ import XCTest
 
 class GutenbergSettingsTests: XCTestCase {
 
-    fileprivate var contextManager: TestContextManager!
+    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
     private let gutenbergContent = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
 
@@ -43,7 +43,7 @@ class GutenbergSettingsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         Environment.replaceEnvironment(contextManager: contextManager)

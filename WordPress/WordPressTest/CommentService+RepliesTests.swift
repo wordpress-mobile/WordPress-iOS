@@ -16,7 +16,7 @@ final class CommentService_RepliesTests: XCTestCase {
         "sites/\(siteID)/comments"
     }
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
@@ -27,7 +27,7 @@ final class CommentService_RepliesTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         commentService = CommentService(managedObjectContext: context)
         accountService = makeAccountService()
     }

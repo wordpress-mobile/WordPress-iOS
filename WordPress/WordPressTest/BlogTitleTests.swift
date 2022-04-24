@@ -4,11 +4,11 @@ import XCTest
 class BlogTitleTests: XCTestCase {
 
     private var blog: Blog!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL

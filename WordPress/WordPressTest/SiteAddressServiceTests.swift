@@ -4,7 +4,7 @@ import Nimble
 
 class SiteAddressServiceTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -14,7 +14,7 @@ class SiteAddressServiceTests: XCTestCase {
     var mockedResponse: Any!
 
     override func setUpWithError() throws {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         remoteApi = MockWordPressComRestApi()
         service = DomainsServiceAdapter(managedObjectContext: context, api: remoteApi)
 

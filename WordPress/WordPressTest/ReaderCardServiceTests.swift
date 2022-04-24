@@ -6,14 +6,14 @@ import Nimble
 
 class ReaderCardServiceTests: XCTestCase {
 
-    private var coreDataStack: TestContextManager!
+    private var coreDataStack: ContextManagerMock!
     private var remoteService: ReaderPostServiceRemote!
     private var followedInterestsService: ReaderFollowedInterestsServiceMock!
     private var apiMock: WordPressComMockRestApi!
 
     override func setUp() {
         super.setUp()
-        coreDataStack = TestContextManager()
+        coreDataStack = ContextManagerMock()
         apiMock = WordPressComMockRestApi()
         followedInterestsService = ReaderFollowedInterestsServiceMock(context: coreDataStack.mainContext)
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)

@@ -3,13 +3,13 @@
 
 #import "Blog.h"
 #import "BlogSiteVisibilityHelper.h"
-#import "TestContextManager.h"
+#import "ContextManagerMock.h"
 
 @interface BlogSiteVisibilityHelperTest : XCTestCase
 @end
 
 @interface BlogSiteVisibilityHelperTest ()
-@property (nonatomic, strong) TestContextManager *testContextManager;
+@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
 @end
 
 @implementation BlogSiteVisibilityHelperTest
@@ -18,14 +18,14 @@
 {
     [super setUp];
     
-    self.testContextManager = [TestContextManager new];
+    self.coreDataStack = [ContextManagerMock new];
 }
 
 - (void)tearDown
 {
     [super tearDown];
 
-    self.testContextManager = nil;
+    self.coreDataStack = nil;
 }
 
 - (void)testSiteVisibilityValuesForJetpackConnectedBlog
@@ -140,10 +140,10 @@
 - (Blog *)newBlog
 {
     Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-                                                       inManagedObjectContext:self.testContextManager.mainContext];
+                                                       inManagedObjectContext:self.coreDataStack.mainContext];
     
     blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings"
-                                                                  inManagedObjectContext:self.testContextManager.mainContext];
+                                                                  inManagedObjectContext:self.coreDataStack.mainContext];
     blog.isHostedAtWPcom = YES;
     
     return blog;

@@ -11,7 +11,7 @@ import Nimble
 /// We weren't able to figure out why but it seems a race condition + Core data
 /// For now, renaming the suite to change the execution order solves the issue.
 class ZBlogDashboardServiceTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     private var service: BlogDashboardService!
@@ -26,7 +26,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)

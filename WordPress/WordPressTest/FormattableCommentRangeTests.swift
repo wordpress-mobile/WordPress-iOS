@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 final class NotificationCommentRangeTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     private var subject: NotificationCommentRange?
 
@@ -17,7 +17,7 @@ final class NotificationCommentRangeTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         subject = NotificationCommentRange(commentID: Constants.commentId, properties: mockProperties())
     }
 

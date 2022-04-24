@@ -3,7 +3,7 @@ import XCTest
 @testable import WordPress
 
 class BlogServiceAuthorTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var blogService: BlogService!
     var context: NSManagedObjectContext {
         return contextManager.mainContext
@@ -12,7 +12,7 @@ class BlogServiceAuthorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         blogService = BlogService(managedObjectContext: contextManager.mainContext)
     }
 

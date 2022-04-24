@@ -2,10 +2,10 @@ import XCTest
 @testable import WordPress
 
 class ReaderSelectInterestsCoordinatorTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
     }
 
     override func tearDown() {

@@ -23,7 +23,7 @@ final class MarkAsSpamActionTests: XCTestCase {
 
     private var action: MarkAsSpam?
     let utility = NotificationUtility()
-    private var testContextManager: TestContextManager!
+    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -32,7 +32,7 @@ final class MarkAsSpamActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = ContextManagerMock()
         action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }

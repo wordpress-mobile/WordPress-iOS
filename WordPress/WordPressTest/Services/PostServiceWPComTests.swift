@@ -11,7 +11,7 @@ class PostServiceWPComTests: XCTestCase {
 
     private var remoteMock: PostServiceRESTMock!
     private var service: PostService!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -23,7 +23,7 @@ class PostServiceWPComTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
 
         remoteMock = PostServiceRESTMock()
 

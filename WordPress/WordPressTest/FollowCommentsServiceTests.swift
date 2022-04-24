@@ -5,7 +5,7 @@ import WordPressKit
 
 class FollowCommentsServiceTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -16,7 +16,7 @@ class FollowCommentsServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
     }
 
     override func tearDown() {

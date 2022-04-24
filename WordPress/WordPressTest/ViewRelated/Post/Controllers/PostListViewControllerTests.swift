@@ -7,13 +7,13 @@ import Nimble
 class PostListViewControllerTests: XCTestCase {
 
     // TODO: Can be removed
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         super.setUp()
     }
 

@@ -45,7 +45,7 @@ class PostNoticeViewModelTests: XCTestCase {
         }
     }
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     // MARK: - Test Setup
@@ -53,7 +53,7 @@ class PostNoticeViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 
@@ -249,8 +249,7 @@ class PostNoticeViewModelTests: XCTestCase {
 
     func testFailedPublishedUploadedDraftPostsPublishButtonWillMarkForAutoUpload() {
         // Given
-        let context = ContextManager.shared.mainContext
-        let post = PostBuilder(context)
+        let post = PostBuilder(contextManager.mainContext)
             .drafted()
             .with(title: "I've been drafted!")
             .withRemote()

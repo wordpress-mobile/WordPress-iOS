@@ -2,14 +2,14 @@ import XCTest
 @testable import WordPress
 
 class DomainCreditEligibilityTests: XCTestCase {
-    private var manager: TestContextManager!
+    private var manager: ContextManagerMock!
     private var mainContext: NSManagedObjectContext {
         return manager.mainContext
     }
 
     override func setUp() {
         super.setUp()
-        manager = TestContextManager()
+        manager = ContextManagerMock()
     }
 
     override func tearDown() {

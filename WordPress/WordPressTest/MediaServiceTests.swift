@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 class MediaServiceTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var mediaService: MediaService!
     private var mediaBuilder: MediaBuilder!
     private var postBuilder: PostBuilder!
@@ -13,7 +13,7 @@ class MediaServiceTests: XCTestCase {
     }
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         mediaService = MediaService(managedObjectContext: context)
         mediaBuilder = MediaBuilder(context)
         postBuilder = PostBuilder(context)

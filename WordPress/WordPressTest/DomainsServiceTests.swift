@@ -9,7 +9,7 @@ class DomainsServiceTests: XCTestCase {
 
     var remote: DomainsServiceRemote!
     var testBlog: Blog!
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var context: NSManagedObjectContext {
         contextManager.mainContext
     }
@@ -22,7 +22,7 @@ class DomainsServiceTests: XCTestCase {
 
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         testBlog = makeTestBlog()
     }
 

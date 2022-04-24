@@ -1,14 +1,14 @@
 #import <XCTest/XCTest.h>
-#import "TestContextManager.h"
+#import "ContextManagerMock.h"
 
 @interface Blog_ObjcTests : XCTestCase
-@property (strong, nonatomic) TestContextManager *contextManager;
+@property (strong, nonatomic) ContextManagerMock *contextManager;
 @end
 
 @implementation Blog_ObjcTests
 
 - (void)setUp {
-    self.contextManager = [TestContextManager new];
+    self.contextManager = [ContextManagerMock new];
     [super setUp];
 }
 

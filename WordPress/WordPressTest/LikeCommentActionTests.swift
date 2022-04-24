@@ -32,7 +32,7 @@ final class LikeCommentActionTests: XCTestCase {
 
     private var action: LikeComment?
     private let utility = NotificationUtility()
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -41,7 +41,7 @@ final class LikeCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         action = TestableLikeComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }

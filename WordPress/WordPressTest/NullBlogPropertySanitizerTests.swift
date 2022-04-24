@@ -7,7 +7,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     private var keyValueDatabase: StubKeyValueDatabase!
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
@@ -18,7 +18,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         keyValueDatabase = StubKeyValueDatabase()
         nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueDatabase, context: context)
     }

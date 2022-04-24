@@ -3,13 +3,13 @@ import XCTest
 @testable import WordPress
 
 class AccountServiceTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var accountService: AccountService!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 

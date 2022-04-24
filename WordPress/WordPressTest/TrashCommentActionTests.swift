@@ -22,7 +22,7 @@ final class TrashCommentActionTests: XCTestCase {
 
     private var action: TrashComment?
     let utils = NotificationUtility()
-    private var testContextManager: TestContextManager!
+    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -31,7 +31,7 @@ final class TrashCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utils.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = ContextManagerMock()
         action = TestableTrashComment(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }

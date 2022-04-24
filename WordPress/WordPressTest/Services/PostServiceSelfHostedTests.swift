@@ -14,7 +14,7 @@ class PostServiceSelfHostedTests: XCTestCase {
 
     private var remoteMock: PostServiceXMLRPCMock!
     private var service: PostService!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -26,7 +26,7 @@ class PostServiceSelfHostedTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
 
         remoteMock = PostServiceXMLRPCMock()
 

@@ -6,13 +6,13 @@ import Nimble
 
 class AztecPostViewControllerAttachmentTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 

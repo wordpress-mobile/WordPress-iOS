@@ -7,7 +7,7 @@ import Nimble
 private typealias StatusMessages = PostCardStatusViewModel.StatusMessages
 
 class PostCardCellTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     private var postCell: PostCardCell!
@@ -16,7 +16,7 @@ class PostCardCellTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
 
         postCell = postCellFromNib()

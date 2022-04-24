@@ -19,7 +19,7 @@ private class TestableEditorSettingsService: EditorSettingsService {
 }
 
 class EditorSettingsServiceTest: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var context: NSManagedObjectContext!
     var remoteApi: MockWordPressComRestApi!
     var service: EditorSettingsService!
@@ -28,7 +28,7 @@ class EditorSettingsServiceTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()

@@ -9,7 +9,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
         "sites/\(siteID)/blogging-prompts"
     }
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -21,7 +21,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()

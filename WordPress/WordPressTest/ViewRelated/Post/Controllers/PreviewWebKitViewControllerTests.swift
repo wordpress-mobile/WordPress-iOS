@@ -6,14 +6,14 @@ class PreviewWebKitViewControllerTests: XCTestCase {
     private var rootWindow: UIWindow!
     private var navController = UINavigationController()
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
 
         rootWindow = UIWindow(frame: UIScreen.main.bounds)
         rootWindow.isHidden = false

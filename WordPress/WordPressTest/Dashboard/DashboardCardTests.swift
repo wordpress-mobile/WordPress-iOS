@@ -11,14 +11,14 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 
 class ZDashboardCardTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var blog: Blog!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = BlogBuilder(context).build()
     }

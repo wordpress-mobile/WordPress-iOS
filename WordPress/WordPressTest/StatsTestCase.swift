@@ -5,10 +5,10 @@ import CoreData
 // A thin wrapper round XCTestCase for Stats test to avoid repeating boilerplate.
 class StatsTestCase: XCTestCase {
 
-    fileprivate var manager: TestContextManager!
+    fileprivate var manager: ContextManagerMock!
 
     override func setUp() {
-        manager = TestContextManager()
+        manager = ContextManagerMock()
     }
 
     var mainContext: NSManagedObjectContext {

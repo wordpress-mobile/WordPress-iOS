@@ -7,14 +7,14 @@ import Nimble
 /// Test cases for PostService.markAsFailedAndDraftIfNeeded()
 class PostServiceUploadingListTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
     }
 
     override func tearDown() {

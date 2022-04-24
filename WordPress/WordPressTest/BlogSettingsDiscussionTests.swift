@@ -3,10 +3,10 @@ import Foundation
 
 
 class BlogSettingsDiscussionTests: XCTestCase {
-    fileprivate var manager: TestContextManager!
+    fileprivate var manager: ContextManagerMock!
 
     override func setUp() {
-        manager = TestContextManager()
+        manager = ContextManagerMock()
     }
 
     override func tearDown() {

@@ -5,17 +5,17 @@ import CoreData
 @testable import WordPress
 
 class ContextManagerTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
     }
 
     override func tearDown() {
         super.tearDown()
-        // Note: We'll force TestContextManager override reset, since, for (unknown reasons) the TestContextManager
+        // Note: We'll force ContextManager override reset, since, for (unknown reasons) the ContextManager
         // might be retained more than expected, and it may break other core data based tests.
         contextManager.tearDown()
     }

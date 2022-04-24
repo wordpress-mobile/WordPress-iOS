@@ -3,11 +3,12 @@ import XCTest
 class BlogVideoLimitsTests: XCTestCase {
 
     private var blog: Blog!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        contextManager = TestContextManager()
+        try super.setUpWithError()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL
@@ -15,6 +16,7 @@ class BlogVideoLimitsTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         blog = nil
     }
 

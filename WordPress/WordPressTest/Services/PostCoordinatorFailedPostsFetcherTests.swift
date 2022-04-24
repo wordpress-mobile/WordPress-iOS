@@ -3,7 +3,7 @@
 import Nimble
 
 class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     private var fetcher: PostCoordinator.FailedPostsFetcher!
@@ -11,7 +11,7 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         fetcher = PostCoordinator.FailedPostsFetcher(context)
     }

@@ -9,7 +9,7 @@ import OHHTTPStubs
 class NotificationSyncMediatorTests: XCTestCase {
     /// CoreData Context Manager
     ///
-    fileprivate var manager: TestContextManager!
+    fileprivate var manager: ContextManagerMock!
 
     /// WordPress REST API
     ///
@@ -29,12 +29,12 @@ class NotificationSyncMediatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        manager = TestContextManager()
+        manager = ContextManagerMock()
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
         mediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
 
         // Note:
-        // Since the TestContextManager actually changed, and thus, the entire Core Data stack,
+        // Since the ContextManagerMock actually changed, and thus, the entire Core Data stack,
         // we'll need to manually reset the global shared Derived Context.
         // This definitely won't be needed in the actual app.
         //

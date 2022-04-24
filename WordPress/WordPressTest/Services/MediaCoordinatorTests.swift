@@ -4,7 +4,7 @@ import Nimble
 @testable import WordPress
 
 class MediaCoordinatorTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -13,7 +13,7 @@ class MediaCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         coordinator = MediaCoordinator(MediaServiceFactoryMock())
     }
 

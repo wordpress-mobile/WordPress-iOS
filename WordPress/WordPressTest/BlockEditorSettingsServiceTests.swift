@@ -10,7 +10,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     private let blockSettingsThemeJSONResponseFilename = "wp-block-editor-v1-settings-success-ThemeJSON"
 
     private var service: BlockEditorSettingsService!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext! {
         contextManager.mainContext
     }
@@ -19,7 +19,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     private var blog: Blog!
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         mockRemoteApi = MockWordPressComRestApi()
         blog = BlogBuilder(context)
             .with(wordPressVersion: "5.8")

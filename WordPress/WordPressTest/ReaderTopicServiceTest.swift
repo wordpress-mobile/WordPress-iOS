@@ -6,7 +6,7 @@ import CoreData
 
 final class ReaderTopicSwiftTest: XCTestCase {
 
-    private var testContextManager: TestContextManager!
+    private var testContextManager: ContextManagerMock!
     private var context: NSManagedObjectContext? {
         testContextManager.mainContext
     }
@@ -16,7 +16,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = ContextManagerMock()
     }
 
     override func tearDown() {
