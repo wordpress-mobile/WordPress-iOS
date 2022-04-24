@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'xcodeproj'
-require 'yaml'
 
 REPO_ROOT = Pathname.new(__dir__) + '../..'
 
