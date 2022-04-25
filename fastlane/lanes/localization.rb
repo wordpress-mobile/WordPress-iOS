@@ -50,6 +50,44 @@ GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES = {
   'zh-tw' => 'zh-Hant'  # Chinese (Taiwan)
 }.freeze
 
+# List of locales used for AppStore metadata
+# { GlotPress code => AppStore Connect language code }
+GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = {
+  'ar' => 'ar-SA',
+  'da' => 'da',
+  'de' => 'de-DE',
+  'en-au' => 'en-AU',
+  'en-ca' => 'en-CA',
+  'en-gb' => 'en-GB',
+  'es' => 'es-ES',
+  'es-mx' => 'es-MX',
+  'fr' => 'fr-FR',
+  'he' => 'he',
+  'id' => 'id',
+  'it' => 'it',
+  'ja' => 'ja',
+  'ko' => 'ko',
+  'nl' => 'nl-NL',
+  'nb' => 'no',
+  'pt-br' => 'pt-BR',
+  'pt' => 'pt-PT',
+  'ru' => 'ru',
+  'sv' => 'sv',
+  'th' => 'th',
+  'tr' => 'tr',
+  'zh-cn' => 'zh-Hans',
+  'zh-tw' => 'zh-Hant',
+}.freeze
+
+# List of GlotPress keys => file to extract when downloading the metadata from GlotPress
+APPSTORECONNECT_METADATA_KEYS_MAP = {
+  what_new_key: { desc: "release_notes.txt", max_size: 4000 },
+  app_store_name: { desc: "name.txt", max_size: 30 },
+  app_store_subtitle: { desc: "subtitle.txt", max_size: 30 },
+  app_store_desc: { desc: "description.txt", max_size: 4000 },
+  app_store_keywords: { desc: "keywords.txt", max_size: 100 },
+}
+
 # List of `.strings` files manually maintained by developers (as opposed to being automatically extracted from code and generated)
 # which we will merge into the main `Localizable.strings` file imported by GlotPress, then extract back once we download the translations.
 # Each `.strings` file to be merged/extracted is associated with a prefix to add the the keys being used to avoid conflicts and differentiate.
@@ -214,7 +252,6 @@ platform :ios do
     )
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
-    # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
     download_wordpress_localized_app_store_metadata
     download_jetpack_localized_app_store_metadata
   end
@@ -223,25 +260,18 @@ platform :ios do
   #
   desc 'Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app'
   lane :download_wordpress_localized_app_store_metadata do
-    # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-
-    # No need to `cd` into `fastlane` because of how Fastlane manages its paths internally.
-    sh './download_metadata.swift wordpress'
-
-    # @TODO: Make the `fastlane/metadata/en-US/release_notes.txt` path be the source of truth for the original copies in the future.
+    # FIXME: We should make the `fastlane/metadata/default/release_notes.txt` path be the source of truth for the original copies in the future.
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
-    # In the meantime, since GlotPress doesn't have the `en-US` notes because those are the ones used as originals, just copy the file to the right place for `deliver` to find
-    metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata')
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
-    FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
+    # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
+    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+    FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
-    metadata_path = File.join(metadata_directory, '**', '*.txt')
-    git_add(path: metadata_path, shell_escape: true)
-    git_commit(
-      path: metadata_path,
-      message: 'Update WordPress metadata translations',
-      allow_nothing_to_commit: true
+    # Download metadata translations from GlotPress
+    download_localized_app_store_metadata(
+      glotpress_project_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
+      metadata_directory: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata'),
+      commit_message: 'Update WordPress metadata translations'
     )
   end
 
@@ -249,24 +279,42 @@ platform :ios do
   #
   desc 'Downloads the localized metadata (for App Store Connect) from GlotPress for the Jetpack app'
   lane :download_jetpack_localized_app_store_metadata do
-    # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-
-    # No need to `cd` into `fastlane` because of how Fastlane manages its paths internally.
-    sh './download_metadata.swift jetpack'
-
-    # @TODO: Make the `fastlane/jetpack_metadata/en-US/release_notes.txt` path be the source of truth for the original copies in the future.
+    # FIXME: We should make the `fastlane/jetpack_metadata/default/release_notes.txt` path be the source of truth for the original copies in the future.
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
-    # In the meantime, since GlotPress doesn't have the `en-US` notes because those are the ones used as originals, just copy the file to the right place for `deliver` to find
-    metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
-    FileUtils.cp(release_notes_source, File.join(metadata_directory, 'en-US', 'release_notes.txt'))
+    # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
+    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+    FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
-    metadata_path = File.join(metadata_directory, '**', '*.txt')
-    git_add(path: metadata_path, shell_escape: true)
+    # Download metadata translations from GlotPress
+    download_localized_app_store_metadata(
+      glotpress_project_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      metadata_directory: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
+      commit_message: 'Update Jetpack metadata translations'
+    )
+  end
+
+  def download_localized_app_store_metadata(glotpress_project_url:,metadata_directory:,commit_message:)
+    # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
+
+    what_new_key = "v#{ios_get_app_version}-whats-new"
+    gp_downloadmetadata(
+      project_url: glotpress_project_url,
+      target_files: APPSTORECONNECT_METADATA_KEYS_MAP,
+      locales: GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES,
+      download_path: metadata_directory
+    )
+
+    # Ensure that `.txt` files in `en-US` don't differ from the source we have in `default`
+    APPSTORECONNECT_METADATA_KEYS_MAP.values.map { |h| h[:desc] }.each do |file|
+      FileUtils.cp(File.join(metadata_directory, 'default', file), File.join(metadata_directory, 'en-US', file))
+    end
+
+    metadata_files_glob = File.join(metadata_directory, '**', '*.txt')
+    git_add(path: metadata_files_glob, shell_escape: false)
     git_commit(
-      path: metadata_path,
-      message: 'Update Jetpack metadata translations',
+      path: metadata_files_glob,
+      message: commit_message,
       allow_nothing_to_commit: true
     )
   end
