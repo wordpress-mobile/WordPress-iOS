@@ -110,9 +110,9 @@ private extension OnboardingEnableNotificationsViewController {
 private struct StatsStrings {
     static let subTitle = NSLocalizedString("Know when your site is getting more traffic, new followers, or when it passes a new milestone!", comment: "Subtitle giving the user more context about why to enable notifications.")
 
-    static let notificationTopTitle = NSLocalizedString("Congratulations! Your site passed *1000 all-time* views!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
-    static let notificationMiddleTitle = NSLocalizedString("Your site appears to be getting *more traffic* than usual!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
-    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* is now following your site!", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationTopTitle = NSLocalizedString("Congratulations! Your site passed *1000 all-time* views!", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
+    static let notificationMiddleTitle = NSLocalizedString("Your site appears to be getting *more traffic* than usual!", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
+    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* is now following your site!", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
 }
 
 private struct WritingStrings {
@@ -125,7 +125,7 @@ private struct DefaultStrings {
 
 private struct ReaderStrings {
     static let subTitle = NSLocalizedString("Know when your favorite authors post new content.", comment: "Subtitle giving the user more context about why to enable notifications.")
-    static let notificationTopTitle = NSLocalizedString("*Madison Ruiz* added a new post to their site", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
-    static let notificationMiddleTitle = NSLocalizedString("You received *50 likes* on your comment", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
-    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* responded to your comment", comment: "Example notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+    static let notificationTopTitle = NSLocalizedString("*Madison Ruiz* added a new post to their site", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
+    static let notificationMiddleTitle = NSLocalizedString("You received *50 likes* on your comment", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
+    static let notificationBottomTitle = NSLocalizedString("*Johann Brandt* responded to your comment", comment: "Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text.")
 }
