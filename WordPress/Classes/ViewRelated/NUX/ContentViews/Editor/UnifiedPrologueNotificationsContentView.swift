@@ -130,10 +130,10 @@ private extension UnifiedPrologueNotificationsContentView {
         static let topElementTitle: String = NSLocalizedString("*Madison Ruiz* liked your post", comment: "Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
         static let middleElementTitle: String = NSLocalizedString("You received *50 likes* on your site today", comment: "Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text.")
         static let bottomElementTitle: String = NSLocalizedString("*Johann Brandt* responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
-
+        
         static let textContent = UnifiedPrologueNotificationsContent(topElementTitle: Self.topElementTitle,
-                                                                         middleElementTitle: Self.middleElementTitle,
-                                                                         bottomElementTitle: Self.bottomElementTitle)
-
+                                                                     middleElementTitle: Self.middleElementTitle,
+                                                                     bottomElementTitle: Self.bottomElementTitle)
+        
     }
 }
