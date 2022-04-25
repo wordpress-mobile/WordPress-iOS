@@ -316,9 +316,9 @@ open class QuickStartTourGuide: NSObject {
     static func customizeListTours(for blog: Blog) -> [QuickStartTour] {
         return [
             QuickStartCreateTour(),
-//            QuickStartSiteTitleTour(blog: blog),
-//            QuickStartSiteIconTour(),
-//            QuickStartEditHomepageTour(),
+            QuickStartSiteTitleTour(blog: blog),
+            QuickStartSiteIconTour(),
+            QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
             QuickStartViewTour(blog: blog)
         ]
@@ -326,9 +326,9 @@ open class QuickStartTourGuide: NSObject {
 
     static var growListTours: [QuickStartTour] {
         return [
-//            QuickStartShareTour(),
-//            QuickStartPublishTour(),
-//            QuickStartFollowTour(),
+            QuickStartShareTour(),
+            QuickStartPublishTour(),
+            QuickStartFollowTour(),
             QuickStartCheckStatsTour()
     // Temporarily disabled
     //        QuickStartExplorePlansTour()
