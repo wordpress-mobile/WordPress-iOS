@@ -15,7 +15,12 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get set }
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
-    var shownInBlogDetails: Bool { get }
+    var taskCompleteDescription: NSAttributedString? { get }
+
+    /// Represents where the tour can be shown from.
+    var possibleEntryPoints: Set<QuickStartTourEntryPoint> { get }
+
+    var mustBeShownInBlogDetails: Bool { get }
 }
 
 extension QuickStartTour {
@@ -31,9 +36,15 @@ extension QuickStartTour {
         }
     }
 
-    var shownInBlogDetails: Bool {
+    var taskCompleteDescription: NSAttributedString? {
         get {
-            return true
+            return nil
+        }
+    }
+
+    var mustBeShownInBlogDetails: Bool {
+        get {
+            return possibleEntryPoints == [.blogDetails]
         }
     }
 }
@@ -58,6 +69,7 @@ struct QuickStartChecklistTour: QuickStartTour {
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your checklist", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -77,6 +89,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 
@@ -92,7 +105,7 @@ struct QuickStartViewTour: QuickStartTour {
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint]
 
@@ -118,6 +131,7 @@ struct QuickStartThemeTour: QuickStartTour {
     let icon = UIImage.gridicon(.themes)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to discover new themes", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -137,6 +151,7 @@ struct QuickStartShareTour: QuickStartTour {
     let icon = UIImage.gridicon(.share)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -163,7 +178,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
-    let shownInBlogDetails = false
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -182,7 +197,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -217,7 +232,7 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let icon = UIImage.gridicon(.pencil)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint]
 
@@ -243,7 +258,7 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let shownInBlogDetails = false
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -263,6 +278,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -282,6 +298,7 @@ struct QuickStartEditHomepageTour: QuickStartTour {
     let icon = UIImage.gridicon(.house)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -306,6 +323,13 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let icon = UIImage.gridicon(.statsAlt)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+
+    var taskCompleteDescription: NSAttributedString? = {
+        let descriptionBase = NSLocalizedString("%@ Return to My Site screen when you're ready for the next task.", comment: "Title of the task complete hint for the Quick Start Tour")
+        let descriptionTarget = NSLocalizedString("Task complete.", comment: "A hint about the completed guided tour.")
+        return descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.checkmark))
+    }()
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -325,6 +349,7 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let icon = UIImage.gridicon(.plans)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your current plan and other available plans.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -346,6 +371,7 @@ struct QuickStartCongratulationsTour: QuickStartTour {
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
 
