@@ -17,7 +17,12 @@ extension BlogDetailsViewController {
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
-                case .pages, .editHomepage, .sharing, .stats:
+                case .stats:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDetails else {
+                        return
+                    }
+                    fallthrough
+                case .pages, .editHomepage, .sharing:
                     self?.scroll(to: info)
                 default:
                     break
@@ -93,10 +98,10 @@ extension BlogDetailsViewController {
                 return false
             }
 
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
+            return QuickStartTourGuide.quickStartEnabled(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
         }
 
-        return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        return QuickStartTourGuide.quickStartEnabled(for: blog)
     }
 
     @objc func showQuickStart() {

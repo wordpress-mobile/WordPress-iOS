@@ -139,9 +139,14 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.annualAndMostPopularTimeStatus,
                                         block: {
-                                            return TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
-                                                                     statSection: .insightsMostPopularTime,
-                                                                     siteStatsInsightsDelegate: nil)
+                    if FeatureFlag.statsNewInsights.enabled {
+                        return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
+                                                 siteStatsInsightsDelegate: nil)
+                    } else {
+                        return TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
+                                                 statSection: .insightsMostPopularTime,
+                                                 siteStatsInsightsDelegate: nil)
+                    }
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
@@ -321,6 +326,11 @@ private extension SiteStatsInsightsViewModel {
     struct MostPopularStats {
         static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
         static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
+        static let viewPercentage = NSLocalizedString(
+            "stats.insights.mostPopularCard.viewPercentage",
+            value: "%d%% of views",
+            comment: "Label showing the percentage of views to a user's site which fall on a particular day."
+        )
     }
 
     struct FollowerTotals {
@@ -366,35 +376,36 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
-    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
+
+    func createMostPopularStatsRowData() -> StatsMostPopularTimeData? {
         guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
-            var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
-            let mostPopularHour = mostPopularStats.mostPopularHour.hour,
-            mostPopularStats.mostPopularDayOfWeekPercentage > 0
-            else {
-                return []
+              let dayString = mostPopularStats.formattedMostPopularDay(),
+              let timeString = mostPopularStats.formattedMostPopularTime(),
+              mostPopularStats.mostPopularDayOfWeekPercentage > 0
+        else {
+            return nil
         }
 
-        var calendar = Calendar.init(identifier: .gregorian)
-        calendar.locale = Locale.autoupdatingCurrent
+        let dayPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularDayOfWeekPercentage)
+        let hourPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularHourPercentage)
 
-        // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
-        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
-        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday]
+        return StatsMostPopularTimeData(mostPopularDayTitle: MostPopularStats.bestDay, mostPopularTimeTitle: MostPopularStats.bestHour, mostPopularDay: dayString, mostPopularTime: timeString.uppercased(), dayPercentage: dayPercentage, timePercentage: hourPercentage)
+    }
 
-        guard let timeModifiedDate = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date()) else {
+    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
+        guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
+              let dayString = mostPopularStats.formattedMostPopularDay(),
+              let timeString = mostPopularStats.formattedMostPopularTime(),
+              mostPopularStats.mostPopularDayOfWeekPercentage > 0
+        else {
             return []
         }
 
-        let timeFormatter = DateFormatter()
-        timeFormatter.setLocalizedDateFormatFromTemplate("h a")
-
-        let timeString = timeFormatter.string(from: timeModifiedDate)
-
         return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
-                                   leftColumnData: dayString,
-                                   rightColumnName: MostPopularStats.bestHour,
-                                   rightColumnData: timeString.uppercased())]
+                                           leftColumnData: dayString,
+                                           rightColumnName: MostPopularStats.bestHour,
+                                           rightColumnData: timeString)]
+
     }
 
     func createTotalFollowersRows() -> [StatsTwoColumnRowData] {
