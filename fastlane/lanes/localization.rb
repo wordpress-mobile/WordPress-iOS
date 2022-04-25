@@ -11,9 +11,9 @@ GLOTPRESS_APP_STRINGS_URL = 'https://translate.wordpress.org/projects/apps/ios/d
 GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
 GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
 
-# List of locales used for the app strings
-# TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
+# List of locales used for the app strings (GlotPress code => `*.lproj` folder name`)
 #
+# TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
 GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES = {
   'ar' => 'ar',         # Arabic
   'bg' => 'bg',         # Bulgarian
@@ -50,8 +50,9 @@ GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES = {
   'zh-tw' => 'zh-Hant'  # Chinese (Taiwan)
 }.freeze
 
-# List of locales used for AppStore metadata
-# { GlotPress code => AppStore Connect language code }
+# Mapping of all locales which can be used for AppStore metadata (Glotpress code => AppStore Connect code)
+#
+# TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
 GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = {
   'ar' => 'ar-SA',
   'da' => 'da',
@@ -79,14 +80,19 @@ GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = {
   'zh-tw' => 'zh-Hant',
 }.freeze
 
+# Locales used in AppStore for WordPress metadata
+WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.keys.freeze # all of them
+# Locales used in AppStore for Jetpack metadata
+JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br ru sv tr zh-cn zh-tw].freeze
+
 # List of GlotPress keys => file to extract when downloading the metadata from GlotPress
-APPSTORECONNECT_METADATA_KEYS_MAP = {
+APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP = {
   what_new_key: { desc: "release_notes.txt", max_size: 4000 },
   app_store_name: { desc: "name.txt", max_size: 30 },
   app_store_subtitle: { desc: "subtitle.txt", max_size: 30 },
   app_store_desc: { desc: "description.txt", max_size: 4000 },
   app_store_keywords: { desc: "keywords.txt", max_size: 100 },
-}
+}.freeze
 
 # List of `.strings` files manually maintained by developers (as opposed to being automatically extracted from code and generated)
 # which we will merge into the main `Localizable.strings` file imported by GlotPress, then extract back once we download the translations.
@@ -261,7 +267,7 @@ platform :ios do
   desc 'Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app'
   lane :download_wordpress_localized_app_store_metadata do
     metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata')
-    
+
     # FIXME: We should make the `fastlane/metadata/default/release_notes.txt` path be the source of truth for the original copies in the future.
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
@@ -273,6 +279,7 @@ platform :ios do
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
       metadata_directory: metadata_directory,
+      locales: WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES,
       commit_message: 'Update WordPress metadata translations'
     )
   end
@@ -293,24 +300,27 @@ platform :ios do
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      locales: JETPACK_METADATA_GLOTPRESS_LOCALE_CODES,
       metadata_directory: metadata_directory,
       commit_message: 'Update Jetpack metadata translations'
     )
   end
 
-  def download_localized_app_store_metadata(glotpress_project_url:,metadata_directory:,commit_message:)
+  def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
+    locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
+    
     what_new_key = "v#{ios_get_app_version}-whats-new"
     gp_downloadmetadata(
       project_url: glotpress_project_url,
-      target_files: APPSTORECONNECT_METADATA_KEYS_MAP,
-      locales: GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES,
+      target_files: APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP,
+      locales: locales_map,
       download_path: metadata_directory
     )
 
     # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default` by mistake
-    APPSTORECONNECT_METADATA_KEYS_MAP.values.map { |h| h[:desc] }.each do |file|
+    APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP.values.map { |h| h[:desc] }.each do |file|
       en_file_path = File.join(metadata_directory, 'en-US', file)
       UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is our source of truth for those. " \
         + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
