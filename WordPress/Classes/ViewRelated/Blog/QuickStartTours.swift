@@ -17,6 +17,8 @@ protocol QuickStartTour {
     var showWaypointNotices: Bool { get }
     var taskCompleteDescription: NSAttributedString? { get }
     var possibleEntryPoints: Set<QuickStartTourEntryPoint> { get }
+
+    var mustBeShownInBlogDetails: Bool { get }
 }
 
 extension QuickStartTour {
@@ -41,6 +43,12 @@ extension QuickStartTour {
     var possibleEntryPoints: Set<QuickStartTourEntryPoint> {
         get {
             return []
+        }
+    }
+
+    var mustBeShownInBlogDetails: Bool {
+        get {
+            return possibleEntryPoints == [.blogDetails]
         }
     }
 }

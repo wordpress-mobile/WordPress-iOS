@@ -35,7 +35,7 @@ open class QuickStartTourGuide: NSObject {
             return false
         }
 
-        return tourState.tour.possibleEntryPoints == [.blogDetails]
+        return tourState.tour.mustBeShownInBlogDetails
     }
 
     @objc static let shared = QuickStartTourGuide()
@@ -175,7 +175,7 @@ open class QuickStartTourGuide: NSObject {
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
         if currentEntryPoint == .blogDashboard &&
-            tour.possibleEntryPoints == [.blogDetails] &&
+            tour.mustBeShownInBlogDetails &&
             !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
