@@ -49,8 +49,8 @@ struct ReaderPostMenuButtonTitles {
     static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
     static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
-    static let followConversation = NSLocalizedString("Follow conversation by email", comment: "Verb. Button title. Follow the comments on a post.")
-    static let unFollowConversation = NSLocalizedString("Unfollow conversation by email", comment: "Verb. Button title. The user is following the comments on a post.")
+    static let followConversation = NSLocalizedString("Follow Conversation", comment: "Verb. Button title. Follow the comments on a post.")
+    static let unFollowConversation = NSLocalizedString("Unfollow Conversation", comment: "Verb. Button title. The user is following the comments on a post.")
 }
 
 /// A collection of helper methods used by the Reader.
@@ -349,12 +349,25 @@ struct ReaderPostMenuButtonTitles {
 
     class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
         let title: String
+        let message: String?
+        let actionTitle: String?
         if success {
             title = subscribing ? NoticeMessages.commentFollowSuccess : NoticeMessages.commentUnfollowSuccess
+            message = subscribing ? NoticeMessages.commentFollowSuccessMessage : nil
+            actionTitle = subscribing ? NoticeMessages.commentFollowActionTitle : nil
         } else {
             title = subscribing ? NoticeMessages.commentFollowFail : NoticeMessages.commentUnfollowFail
+            message = nil
+            actionTitle = nil
         }
-        dispatchNotice(Notice(title: title))
+        dispatchNotice(
+            Notice(
+                title: title,
+                message: message,
+                actionTitle: actionTitle,
+                actionHandler: nil
+            )
+        )
     }
 
     class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
@@ -432,7 +445,9 @@ struct ReaderPostMenuButtonTitles {
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
         static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
-        static let commentFollowSuccess = NSLocalizedString("Successfully followed conversation", comment: "The app successfully subscribed to the comments for the post")
+        static let commentFollowSuccess = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
+        static let commentFollowSuccessMessage = NSLocalizedString("You'll get notifications in the app", comment: "The app successfully subscribed to the comments for the post")
+        static let commentFollowActionTitle = NSLocalizedString("Undo", comment: "Revert enabling notification after successfully subcribing to the comments for the post.")
         static let commentUnfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
         static let commentFollowFail = NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post")
         static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
