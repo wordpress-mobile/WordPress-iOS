@@ -9,6 +9,22 @@ extension Blog {
         return quickStartTours?.filter { $0.skipped }
     }
 
+    var quickStartType: QuickStartType {
+        get {
+            guard let value = quickStartTypeValue?.intValue,
+                    let type = QuickStartType(rawValue: value) else {
+                return .undefined
+            }
+            return type
+        }
+
+        set {
+            quickStartTypeValue = NSNumber(value: newValue.rawValue)
+            let context = managedObjectContext ?? ContextManager.sharedInstance().mainContext
+            ContextManager.sharedInstance().saveContextAndWait(context)
+        }
+    }
+
     public func skipTour(_ tourID: String) {
         let tourState = findOrCreate(tour: tourID)
         tourState.skipped = true

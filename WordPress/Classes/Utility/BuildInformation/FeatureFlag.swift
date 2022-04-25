@@ -27,6 +27,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsNewAppearance
     case statsNewInsights
     case siteName
+    case quickStartForExistingUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -86,6 +87,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .siteName:
             return true
+        case .quickStartForExistingUsers:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -166,6 +169,8 @@ extension FeatureFlag {
             return "New Cards for Stats Insights"
         case .siteName:
             return "Site Name"
+        case .quickStartForExistingUsers:
+            return "Quick Start For Existing Users"
         }
     }
 

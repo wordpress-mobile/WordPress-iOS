@@ -329,21 +329,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
-            guard let self = self else {
-                // If self is nil the user will be stuck on the login and not able to progress
-                // Trigger a fatal so we can track this better in Sentry.
-                // This case should be very rare.
-                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
-            }
-
-            self.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
-        }
+        let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
+        let onDismissQuickStartPromptForExistingSiteHandler = onDismissQuickStartPromptHandler(type: .existingSite, onDismiss: onDismiss)
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPromptForExistingSiteHandler)
             return
         }
 
@@ -375,12 +367,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
                 return
             }
-
-            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
+            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
         }
 
         epilogueViewController.onCreateNewSite = {
-            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
+            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
             guard let wizard = wizardLauncher.ui else {
                 return
             }
@@ -542,7 +534,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
 // MARK: - Quick Start Prompt
 private extension WordPressAuthenticationManager {
-    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog, Bool) -> Void)?) {
+
+    typealias QuickStartOnDismissHandler = (Blog, Bool) -> Void
+
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: QuickStartOnDismissHandler?) {
         // If the quick start prompt has already been dismissed,
         // then show the My Site screen for the specified blog
         guard !quickStartSettings.promptWasDismissed(for: blog) else {
@@ -562,21 +557,30 @@ private extension WordPressAuthenticationManager {
         navigationController.pushViewController(quickstartPrompt, animated: true)
     }
 
-    func onDismissQuickStartPrompt(for blog: Blog, onDismiss: @escaping () -> Void) {
-        onDismiss()
+    func onDismissQuickStartPromptHandler(type: QuickStartType, onDismiss: @escaping () -> Void) -> QuickStartOnDismissHandler {
+        return { [weak self] blog, _ in
+            guard let self = self else {
+                // If self is nil the user will be stuck on the login and not able to progress
+                // Trigger a fatal so we can track this better in Sentry.
+                // This case should be very rare.
+                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
+            }
 
-        // If the quick start prompt has already been dismissed,
-        // then show the My Site screen for the specified blog
-        guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-            self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-            return
+            onDismiss()
+
+            // If the quick start prompt has already been dismissed,
+            // then show the My Site screen for the specified blog
+            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                return
+            }
+
+            // Otherwise, show the My Site screen for the specified blog and after a short delay,
+            // trigger the Quick Start tour
+            self.windowManager.showAppUI(for: blog, completion: {
+                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: type)
+            })
         }
-
-        // Otherwise, show the My Site screen for the specified blog and after a short delay,
-        // trigger the Quick Start tour
-        self.windowManager.showAppUI(for: blog, completion: {
-            QuickStartTourGuide.shared.setupWithDelay(for: blog)
-        })
     }
 }
 

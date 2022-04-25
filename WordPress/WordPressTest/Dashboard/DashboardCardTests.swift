@@ -37,7 +37,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldShowQuickStartIfEnabledAndDefaultSectionIsDashboard() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
 
         // When
         let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
@@ -49,7 +49,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .siteMenu)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
 
         // When
         let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
@@ -61,7 +61,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDisabled() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
         QuickStartTourGuide.shared.remove(from: blog)
 
         // When

@@ -1357,6 +1357,7 @@
 		80EF928E280E83110064A971 /* QuickStartToursCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928C280E83110064A971 /* QuickStartToursCollection.swift */; };
 		80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
 		80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
+		80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */; };
 		80EF9284280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9283280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift */; };
 		80EF9286280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */; };
 		80EF9287280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */; };
@@ -6089,6 +6090,7 @@
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
 		80EF928C280E83110064A971 /* QuickStartToursCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartToursCollection.swift; sourceTree = "<group>"; };
 		80EF928F28105CFA0064A971 /* QuickStartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactory.swift; sourceTree = "<group>"; };
+		80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactoryTests.swift; sourceTree = "<group>"; };
 		80EF9283280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsSyncManagerTests.swift; sourceTree = "<group>"; };
 		80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsSyncManager.swift; sourceTree = "<group>"; };
 		80EF9289280D28140064A971 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
@@ -11311,6 +11313,7 @@
 				F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */,
 				FAE8EE9B273AD0A800A65307 /* QuickStartSettingsTests.swift */,
 				179501CC27A01D4100882787 /* PublicizeAuthorizationURLComponentsTests.swift */,
+				80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -19520,6 +19523,7 @@
 				57889AB823589DF100DAE56D /* PageBuilder.swift in Sources */,
 				3FDDFE9627C8178C00606933 /* SiteStatsInformationTests.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
+				80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
 				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
 				C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */,

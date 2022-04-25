@@ -45,7 +45,7 @@ enum DashboardCard: String, CaseIterable {
     func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
         switch self {
         case .quickStart:
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && mySiteSettings.defaultSection == .dashboard
+            return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
         case .draftPosts:
             fallthrough
         case .scheduledPosts:
