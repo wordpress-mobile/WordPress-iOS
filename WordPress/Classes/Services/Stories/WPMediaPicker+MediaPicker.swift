@@ -52,7 +52,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate,
                                                       presenter: tabBar,
-                                                      shouldDisableLongVideos: !blog.hasPaidPlan)
+                                                      blog: blog)
         let options = WPMediaPickerOptions()
         options.allowCaptureOfMedia = false
 
@@ -85,17 +85,15 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     private weak var kanvasDelegate: KanvasMediaPickerViewControllerDelegate?
     private weak var presenter: UIViewController?
-
-    private let shouldDisableLongVideos: Bool
-
+    private let blog: Blog
     private var cancellables = Set<AnyCancellable>()
 
     init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate,
          presenter: UIViewController,
-         shouldDisableLongVideos: Bool = false) {
+         blog: Blog) {
         self.kanvasDelegate = kanvasDelegate
         self.presenter = presenter
-        self.shouldDisableLongVideos = shouldDisableLongVideos
+        self.blog = blog
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
@@ -175,7 +173,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        picker != self && asset.exceedsFreeSitesAllowance() && shouldDisableLongVideos
+        picker != self && !blog.canUploadAsset(asset)
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
@@ -209,7 +207,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if picker != self, asset.exceedsFreeSitesAllowance(), shouldDisableLongVideos {
+        if picker != self, !blog.canUploadAsset(asset) {
             presentVideoLimitExceededFromPicker(on: picker)
             return false
         }
