@@ -260,6 +260,8 @@ platform :ios do
   #
   desc 'Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app'
   lane :download_wordpress_localized_app_store_metadata do
+    metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata')
+    
     # FIXME: We should make the `fastlane/metadata/default/release_notes.txt` path be the source of truth for the original copies in the future.
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
@@ -270,7 +272,7 @@ platform :ios do
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
-      metadata_directory: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata'),
+      metadata_directory: metadata_directory,
       commit_message: 'Update WordPress metadata translations'
     )
   end
@@ -279,6 +281,8 @@ platform :ios do
   #
   desc 'Downloads the localized metadata (for App Store Connect) from GlotPress for the Jetpack app'
   lane :download_jetpack_localized_app_store_metadata do
+    metadata_directory = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata')
+
     # FIXME: We should make the `fastlane/jetpack_metadata/default/release_notes.txt` path be the source of truth for the original copies in the future.
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
@@ -289,7 +293,7 @@ platform :ios do
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
-      metadata_directory: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
+      metadata_directory: metadata_directory,
       commit_message: 'Update Jetpack metadata translations'
     )
   end
