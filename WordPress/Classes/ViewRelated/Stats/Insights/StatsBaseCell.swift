@@ -5,7 +5,7 @@ class StatsBaseCell: UITableViewCell {
 
     @IBOutlet var topConstraint: NSLayoutConstraint!
 
-    private var headingBottomConstraint: NSLayoutConstraint!
+    private var headingBottomConstraint: NSLayoutConstraint?
 
     /// Finds the item from the top constraint that's not the content view itself.
     /// - Returns: `topConstraint`'s `firstItem` or `secondItem`, whichever is not this cell's content view.
@@ -23,12 +23,6 @@ class StatsBaseCell: UITableViewCell {
             let title = statSection?.title ?? ""
             updateHeadingLabel(with: title)
         }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        configureHeadingLabel(with: topConstraint)
     }
 
     func configureHeadingLabel(with topConstraint: NSLayoutConstraint) {
@@ -53,7 +47,7 @@ class StatsBaseCell: UITableViewCell {
 
             // Create a new constraint between the heading label and the first item of the existing top constraint
             headingBottomConstraint = headingLabel.bottomAnchor.constraint(equalTo: anchor, constant: -(Metrics.padding + constant))
-            headingBottomConstraint.isActive = true
+            headingBottomConstraint?.isActive = true
         }
     }
 
@@ -62,15 +56,19 @@ class StatsBaseCell: UITableViewCell {
             return
         }
 
+        if headingBottomConstraint == nil {
+            configureHeadingLabel(with: topConstraint)
+        }
+
         headingLabel.text = title
 
         let hasTitle = !title.isEmpty
 
-        headingBottomConstraint.isActive = hasTitle
+        headingBottomConstraint?.isActive = hasTitle
         topConstraint.isActive = !hasTitle
     }
 
-    private enum Metrics {
+    enum Metrics {
         static let padding: CGFloat = 16.0
     }
 }
