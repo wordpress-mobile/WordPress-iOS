@@ -326,7 +326,7 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var taskCompleteDescription: NSAttributedString? = {
-        let descriptionBase = NSLocalizedString("%@ Return to My Site screen when you're ready for the next tip.", comment: "Title of the task complete hint for the Quick Start Tour")
+        let descriptionBase = NSLocalizedString("%@ Return to My Site screen when you're ready for the next task.", comment: "Title of the task complete hint for the Quick Start Tour")
         let descriptionTarget = NSLocalizedString("Task complete.", comment: "A hint about the completed guided tour.")
         return descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.checkmark))
     }()

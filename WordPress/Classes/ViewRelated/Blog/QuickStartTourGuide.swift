@@ -15,6 +15,7 @@ open class QuickStartTourGuide: NSObject {
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
+    private var taskCompleteWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
@@ -263,13 +264,7 @@ open class QuickStartTourGuide: NSObject {
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
-
-            if let taskCompleteDescription = tourState.tour.taskCompleteDescription {
-                let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription)
-                let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
-                ActionDispatcher.dispatch(NoticeAction.post(notice))
-            }
-
+            showTaskCompleteNoticeIfNeeded(for: tourState.tour)
             entryPointForCurrentTour = .unknown
             completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
@@ -283,6 +278,29 @@ open class QuickStartTourGuide: NSObject {
         } else {
             showNextStep(nextStep)
         }
+    }
+
+    private func showTaskCompleteNoticeIfNeeded(for tour: QuickStartTour) {
+
+        guard let taskCompleteDescription = tour.taskCompleteDescription else {
+            return
+        }
+
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            guard let self = self else {
+                return
+            }
+            ActionDispatcher.dispatch(NoticeAction.clearWithTag(self.noticeTag))
+            self.taskCompleteWorkItem?.cancel()
+            self.taskCompleteWorkItem = nil
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.taskCompleteTimeout, execute: newWorkItem)
+        taskCompleteWorkItem = newWorkItem
+
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription)
+        let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     private func showNextStep(_ nextStep: TourState) {
@@ -468,6 +486,7 @@ private extension QuickStartTourGuide {
     private struct Constants {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
+        static let taskCompleteTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
         static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
     }
