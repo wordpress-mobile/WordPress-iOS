@@ -16,6 +16,8 @@ protocol QuickStartTour {
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
     var taskCompleteDescription: NSAttributedString? { get }
+
+    /// Represents where the tour can be shown from.
     var possibleEntryPoints: Set<QuickStartTourEntryPoint> { get }
 
     var mustBeShownInBlogDetails: Bool { get }
@@ -37,12 +39,6 @@ extension QuickStartTour {
     var taskCompleteDescription: NSAttributedString? {
         get {
             return nil
-        }
-    }
-
-    var possibleEntryPoints: Set<QuickStartTourEntryPoint> {
-        get {
-            return []
         }
     }
 
@@ -93,6 +89,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 
