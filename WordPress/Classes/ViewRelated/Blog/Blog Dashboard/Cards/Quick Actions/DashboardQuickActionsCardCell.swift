@@ -61,14 +61,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
     deinit {
         stopObservingQuickStart()
     }
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
-            return
-        }
-
-        configureQuickActionButtons(for: blog, with: viewController)
-    }
 }
 
 // MARK: - Button Actions
