@@ -309,8 +309,7 @@ platform :ios do
   def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
-    locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
-    
+    locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)    
     what_new_key = "v#{ios_get_app_version}-whats-new"
     gp_downloadmetadata(
       project_url: glotpress_project_url,
@@ -318,6 +317,7 @@ platform :ios do
       locales: locales_map,
       download_path: metadata_directory
     )
+    files_to_commit = [File.join(metadata_directory, '**', '*')]
 
     # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default` by mistake
     APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP.values.map { |h| h[:desc] }.each do |file|
@@ -326,10 +326,19 @@ platform :ios do
         + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
     end
 
-    metadata_files_glob = File.join(metadata_directory, '**', '*.txt')
-    git_add(path: metadata_files_glob, shell_escape: false)
+    # Ensure even empty locale folders have an empty `.gitkeep` file (in case we don't have any translation at all ready for some locales)
+    locales_map.values.each do |locale|
+      gitkeep = File.join(metadata_directory, locale, '.gitkeep')
+      next if File.exist?(gitkeep)
+      FileUtils.mkdir_p(File.dirname(gitkeep))
+      FileUtils.touch(gitkeep)
+      files_to_commit.append(gitkeep)
+    end
+
+    # Commit
+    git_add(path: files_to_commit, shell_escape: false)
     git_commit(
-      path: metadata_files_glob,
+      path: files_to_commit,
       message: commit_message,
       allow_nothing_to_commit: true
     )
