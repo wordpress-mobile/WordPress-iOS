@@ -154,15 +154,23 @@ final class BlogDashboardViewController: UIViewController {
     private func addQuickStartObserver() {
         NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
 
+            guard let self = self else {
+                return
+            }
+
             if let info = notification.userInfo,
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
                 switch element {
                 case .setupQuickStart, .removeQuickStart:
-                    self?.loadCardsFromCache()
+                    self.loadCardsFromCache()
                 case .stats:
-                    self?.mySiteScrollView?.scrollToTop(animated: true)
-                    self?.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
+                    if self.embeddedInScrollView {
+                        self.mySiteScrollView?.scrollToTop(animated: true)
+                    } else {
+                        self.collectionView.scrollToTop(animated: true)
+                    }
+                    self.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
                 default:
                     break
                 }
