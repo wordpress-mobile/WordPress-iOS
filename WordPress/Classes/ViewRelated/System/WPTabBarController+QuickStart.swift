@@ -41,6 +41,10 @@ extension WPTabBarController {
         QuickStartTourGuide.shared.visited(.readerTab)
     }
 
+    @objc func alertQuickStartThatNotificationsWasTapped() {
+        QuickStartTourGuide.shared.visited(.notifications)
+    }
+
     @objc func alertQuickStartThatOtherTabWasTapped() {
         QuickStartTourGuide.shared.visited(.tabFlipped)
     }
