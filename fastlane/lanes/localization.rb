@@ -202,6 +202,7 @@ platform :ios do
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
+      app_store_name: File.join(source_metadata_folder, 'name.txt'),
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
       app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
@@ -210,8 +211,7 @@ platform :ios do
       'screenshot-text-3' => File.join(source_metadata_folder, 'promo_screenshot_3.txt'),
       'screenshot-text-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
       'screenshot-text-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
-      'screenshot-text-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt'),
-      app_store_name: File.join(source_metadata_folder, 'name.txt')
+      'screenshot-text-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt')
     }
 
     ios_update_metadata_source(
