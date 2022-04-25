@@ -86,7 +86,7 @@ private extension BloggingPromptsIntroductionPresenter {
             completion()
         }
 
-        let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: blogService.lastUsedOrFirstBlog()?.dotComID,
+        let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: nil,
                                                                 successHandler: successHandler,
                                                                 dismissHandler: dismissHandler)
 
