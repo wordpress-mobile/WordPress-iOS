@@ -521,7 +521,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             visualEffect.isHidden = true
         }
     }
-    
+
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
     /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
     private var stashedOffset: CGPoint? = nil
