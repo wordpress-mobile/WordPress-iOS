@@ -3,6 +3,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
+    private var followCommentsService: FollowCommentsService?
 
     var imageRequestAuthToken: String? = nil
     var isLoggedIn: Bool = false
@@ -92,7 +93,17 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin, source: ReaderPostMenuSource.card)
+        followCommentsService = FollowCommentsService(post: post)
+
+        ReaderMenuAction(logged: isLoggedIn).execute(
+            post: post,
+            context: context,
+            readerTopic: topic,
+            anchor: sender,
+            vc: origin,
+            source: ReaderPostMenuSource.card,
+            followCommentsService: followCommentsService!
+        )
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 

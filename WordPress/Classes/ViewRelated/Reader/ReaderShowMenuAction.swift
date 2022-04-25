@@ -12,7 +12,9 @@ final class ReaderShowMenuAction {
                  readerTopic: ReaderAbstractTopic? = nil,
                  anchor: UIView,
                  vc: UIViewController,
-                 source: ReaderPostMenuSource) {
+                 source: ReaderPostMenuSource,
+                 followCommentsService: FollowCommentsService
+    ) {
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -132,15 +134,16 @@ final class ReaderShowMenuAction {
         // Comment Subscription (Follow Comments by Email)
         if post.canSubscribeComments {
             let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
-            alertController.addActionWithTitle(buttonTitle,
-                                               style: .default,
-                                               handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderSubscribeCommentsAction().execute(with: post, context: context) {
-                                                        (vc as? ReaderDetailViewController)?.updateFollowButtonState()
-                                                    }
-                                                }
-            })
+            alertController.addActionWithTitle(
+                buttonTitle,
+                style: .default,
+                handler: { (action: UIAlertAction) in
+                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                        ReaderSubscribeCommentsAction().execute(with: post, context: context, followCommentsService: followCommentsService) {
+                            (vc as? ReaderDetailViewController)?.updateFollowButtonState()
+                        }
+                    }
+                })
         }
 
         if WPDeviceIdentification.isiPad() {

@@ -100,6 +100,8 @@ class ReaderDetailCoordinator {
         return URL(string: postURLString)
     }
 
+    private var followCommentsService: FollowCommentsService?
+
     /// The total number of Likes for the post.
     /// Passed to ReaderDetailLikesListController to display in the view title.
     private var totalLikes = 0
@@ -413,12 +415,17 @@ class ReaderDetailCoordinator {
             return
         }
 
-        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
-                                                                     context: context,
-                                                                     readerTopic: readerTopic,
-                                                                     anchor: anchorView,
-                                                                     vc: viewController,
-                                                                     source: ReaderPostMenuSource.details)
+        followCommentsService = FollowCommentsService(post: post)
+
+        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(
+            post: post,
+            context: context,
+            readerTopic: readerTopic,
+            anchor: anchorView,
+            vc: viewController,
+            source: ReaderPostMenuSource.details,
+            followCommentsService: followCommentsService!
+        )
 
         WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
