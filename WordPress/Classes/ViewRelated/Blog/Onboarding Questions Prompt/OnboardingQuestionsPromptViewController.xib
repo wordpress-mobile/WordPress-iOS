@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <device id="ipad11_0rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <accessibilityOverrides dynamicTypePreference="11"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -26,33 +26,33 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5qq-DW-ke8">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                    <rect key="frame" x="177" y="24" width="480" height="1150"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-VK-fi4">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="1150"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="csX-G4-jUX">
-                                    <rect key="frame" x="20" y="0.0" width="374" height="736"/>
+                                    <rect key="frame" x="20" y="0.0" width="440" height="1150"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="WPd-b7-OmY" userLabel="Spacer View">
-                                            <rect key="frame" x="47" y="0.0" width="280" height="40"/>
+                                            <rect key="frame" x="80" y="0.0" width="280" height="40"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="HdW-le-Jvf"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="What would you like to focus on?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dBQ-Sd-akv">
-                                            <rect key="frame" x="20.333333333333343" y="50.000000000000007" width="333.66666666666663" height="81.666666666666686"/>
+                                            <rect key="frame" x="53.5" y="50" width="333.5" height="82"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vZc-Ui-n4c" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="141.66666666666666" width="334" height="55"/>
+                                            <rect key="frame" x="20" y="142" width="400" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="vLw-WE-Hwa"/>
                                             </constraints>
@@ -66,7 +66,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QSf-1g-Q0C" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="206.66666666666663" width="334" height="185"/>
+                                            <rect key="frame" x="20" y="207" width="400" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="ajb-Ej-ySY"/>
                                             </constraints>
@@ -78,7 +78,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" preferredBehavioralStyle="mac" translatesAutoresizingMaskIntoConstraints="NO" id="CDq-op-qjQ" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="401.66666666666669" width="334" height="55"/>
+                                            <rect key="frame" x="20" y="272" width="400" height="505"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="rUc-4S-Bfz"/>
                                             </constraints>
@@ -93,7 +93,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-OI-DPA" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="466.66666666666669" width="334" height="55.000000000000057"/>
+                                            <rect key="frame" x="20" y="787" width="400" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="IXy-Xc-PPb"/>
                                             </constraints>
@@ -105,7 +105,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KwB-px-6X8" customClass="FancyButton" customModule="WordPressUI">
-                                            <rect key="frame" x="20" y="531.66666666666663" width="334" height="55"/>
+                                            <rect key="frame" x="20" y="852" width="400" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="F8y-fV-N8k"/>
                                             </constraints>
@@ -117,11 +117,11 @@
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="prj-v9-v12" userLabel="Spacer View">
-                                            <rect key="frame" x="47" y="596.66666666666663" width="280" height="85.333333333333371"/>
+                                            <rect key="frame" x="80" y="917" width="280" height="179"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqk-b2-4xT">
-                                            <rect key="frame" x="158.66666666666666" y="692" width="57" height="44"/>
+                                            <rect key="frame" x="191.5" y="1106" width="57" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="VDE-E0-c6D"/>
                                             </constraints>
@@ -165,6 +165,7 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="480" id="Co3-Ui-CIZ"/>
                         <constraint firstItem="SbK-VK-fi4" firstAttribute="top" secondItem="sQ5-Oa-1dH" secondAttribute="top" id="WaL-kg-DZa"/>
                         <constraint firstItem="sQ5-Oa-1dH" firstAttribute="trailing" secondItem="SbK-VK-fi4" secondAttribute="trailing" id="Yz0-PM-0fE"/>
                         <constraint firstItem="SbK-VK-fi4" firstAttribute="centerY" secondItem="5qq-DW-ke8" secondAttribute="centerY" priority="250" id="h9l-n4-0oy"/>
@@ -181,9 +182,11 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="5qq-DW-ke8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="cn4-tK-ms6"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5qq-DW-ke8" secondAttribute="trailing" id="dFk-LP-c0X"/>
-                <constraint firstItem="5qq-DW-ke8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iaA-Mr-uee"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="9HK-dL-1rG"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="DYZ-nG-GI6"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="750" id="cn4-tK-ms6"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5qq-DW-ke8" secondAttribute="trailing" priority="750" id="dFk-LP-c0X"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" priority="750" id="iaA-Mr-uee"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5qq-DW-ke8" secondAttribute="bottom" id="xkg-Lr-gLu"/>
             </constraints>
             <point key="canvasLocation" x="-229" y="53"/>
