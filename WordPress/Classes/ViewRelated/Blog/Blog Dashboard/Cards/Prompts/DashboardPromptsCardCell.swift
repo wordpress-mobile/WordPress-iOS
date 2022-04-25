@@ -88,7 +88,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var answerCount: Int = {
         if forExampleDisplay {
-            return Constants.maxAvatarCount
+            return Constants.exampleAnswerCount
         }
         // TODO: For testing purposes. Remove once we actually have real avatar URLs.
         return 3
@@ -366,6 +366,7 @@ private extension DashboardPromptsCardCell {
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
         static let maxAvatarCount = 3
+        static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
     }

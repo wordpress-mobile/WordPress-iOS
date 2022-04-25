@@ -154,4 +154,5 @@ enum PostEditorEntryPoint: String {
     case unknown
     case postsList
     case dashboard
+    case bloggingPromptsFeatureIntroduction
 }
