@@ -126,7 +126,7 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
   lane :update_wordpress_appstore_strings do |options|
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
@@ -160,7 +160,7 @@ platform :ios do
   #
   desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
   lane :update_jetpack_appstore_strings do |options|
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
