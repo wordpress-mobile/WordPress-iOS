@@ -159,7 +159,7 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func autoScrollToStatsButton() {
-        scrollView.scrollToEnd(animated: true)
+        scrollView.scrollHorizontallyToView(statsButton, animated: true)
     }
 }
 

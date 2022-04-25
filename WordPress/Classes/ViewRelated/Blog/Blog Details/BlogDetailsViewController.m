@@ -1402,7 +1402,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                [parentVC.scrollView scrollToView:cell animated:true];
+                [parentVC.scrollView scrollVerticallyToView:cell animated:true];
             }
             rowCount++;
         }
