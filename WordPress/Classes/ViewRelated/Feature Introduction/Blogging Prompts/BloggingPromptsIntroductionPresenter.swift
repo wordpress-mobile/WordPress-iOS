@@ -22,9 +22,6 @@ class BloggingPromptsIntroductionPresenter: NSObject {
 
     private var siteSelectorNavigationController: UINavigationController?
     private var selectedBlog: Blog?
-    private lazy var blogService: BlogService = {
-        return BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-    }()
 
     private lazy var accountSites: [Blog]? = {
         return AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
