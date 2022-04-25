@@ -76,6 +76,7 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
         self.analyticsKey = "get-to-know"
         self.tours = [
             QuickStartCheckStatsTour(),
+            QuickStartNotificationsTour(),
             QuickStartViewTour(blog: blog),
             QuickStartFollowTour()
         ]
