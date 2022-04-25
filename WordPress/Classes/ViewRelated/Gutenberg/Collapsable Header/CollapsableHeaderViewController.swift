@@ -515,6 +515,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         selectedStateButtonsContainer.insertArrangedSubview(primaryActionButton, at: 0)
     }
 
+    /// A public interface to hide the header blur.
+    func hideHeaderVisualEffects() {
+        visualEffects.forEach { (visualEffect) in
+            visualEffect.isHidden = true
+        }
+    }
+    
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
     /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
     private var stashedOffset: CGPoint? = nil
