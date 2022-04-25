@@ -286,19 +286,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
 
-        let newWorkItem = DispatchWorkItem { [weak self] in
-            guard let self = self else {
-                return
-            }
-            ActionDispatcher.dispatch(NoticeAction.clearWithTag(self.noticeTag))
-            self.taskCompleteWorkItem?.cancel()
-            self.taskCompleteWorkItem = nil
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.taskCompleteTimeout, execute: newWorkItem)
-        taskCompleteWorkItem = newWorkItem
-
-        let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription)
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
         let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -486,7 +474,6 @@ private extension QuickStartTourGuide {
     private struct Constants {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
-        static let taskCompleteTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
         static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
     }
