@@ -368,29 +368,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             epilogueViewController.onBlogSelected = onBlogSelected
 
             epilogueViewController.onCreateNewSite = {
-                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
+                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
                 guard let wizard = wizardLauncher.ui else {
                     return
                 }
 
                 navigationController.present(wizard, animated: true)
                 WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
-            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                } else {
-                    self.windowManager.showAppUI(for: blog)
-                }
-                return
-            }
-            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
-            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
-        }
-
-        epilogueViewController.onCreateNewSite = {
-            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
-            guard let wizard = wizardLauncher.ui else {
-                return
             }
 
             navigationController.delegate = epilogueViewController

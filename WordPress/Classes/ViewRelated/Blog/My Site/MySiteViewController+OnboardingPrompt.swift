@@ -38,7 +38,7 @@ extension MySiteViewController {
         case .showMeAround:
             // Start the quick start
             if let blog = blog {
-                QuickStartTourGuide.shared.setup(for: blog)
+                QuickStartTourGuide.shared.setup(for: blog, type: .existingSite)
             }
         case .skip:
             // Do nothing
