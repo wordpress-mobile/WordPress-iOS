@@ -305,9 +305,11 @@ platform :ios do
       download_path: metadata_directory
     )
 
-    # Ensure that `.txt` files in `en-US` don't differ from the source we have in `default`
+    # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default` by mistake
     APPSTORECONNECT_METADATA_KEYS_MAP.values.map { |h| h[:desc] }.each do |file|
-      FileUtils.cp(File.join(metadata_directory, 'default', file), File.join(metadata_directory, 'en-US', file))
+      en_file_path = File.join(metadata_directory, 'en-US', file)
+      UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is our source of truth for those. " \
+        + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
     end
 
     metadata_files_glob = File.join(metadata_directory, '**', '*.txt')
