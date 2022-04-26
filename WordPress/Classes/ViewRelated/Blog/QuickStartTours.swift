@@ -191,22 +191,22 @@ struct QuickStartPublishTour: QuickStartTour {
 struct QuickStartFollowTour: QuickStartTour {
     let key = "quick-start-follow-tour"
     let analyticsKey = "follow_site"
-    let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Follow other sites", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
+    let title = NSLocalizedString("Connect with other sites", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Connect with other sites", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Discover and follow sites that inspire you.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to find other sites.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
-        let step2DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
+        let step2DescriptionBase = NSLocalizedString("Select %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
+        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.cog)))
 
         return [step1, step2]
     }()
