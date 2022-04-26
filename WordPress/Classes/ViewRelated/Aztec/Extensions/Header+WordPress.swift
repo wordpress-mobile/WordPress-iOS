@@ -20,7 +20,7 @@ extension Header.HeaderType {
 
     var description: String {
         switch self {
-        case .none: return AppLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
+        case .none: return NSLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
         case .h1: return AppLocalizedString("Heading 1", comment: "H1 Aztec Style")
         case .h2: return AppLocalizedString("Heading 2", comment: "H2 Aztec Style")
         case .h3: return AppLocalizedString("Heading 3", comment: "H3 Aztec Style")
