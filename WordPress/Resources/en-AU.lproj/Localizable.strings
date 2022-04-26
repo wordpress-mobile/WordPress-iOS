@@ -1093,7 +1093,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continue";
 
 /* Menus alert button title to continue making changes. */
@@ -2583,7 +2584,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -2682,7 +2685,8 @@
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -4072,6 +4076,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
 
@@ -4199,7 +4204,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
@@ -4231,7 +4235,8 @@
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -4911,7 +4916,8 @@
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Toggles the unordered list style";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Top level";
 
 /* Shortened version of the main title to be used in back navigation
@@ -4983,8 +4989,8 @@
    Share extension error dialog retry button label. */
 "Try again" = "Try again";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Try it now";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */

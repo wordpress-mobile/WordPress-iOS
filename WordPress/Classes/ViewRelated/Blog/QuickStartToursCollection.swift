@@ -72,7 +72,7 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
                                       comment: "Name of the Quick Start list that guides users through a few tasks to explore the WordPress app.")
         self.hint = NSLocalizedString("A series of steps helping you to explore the app.",
                                      comment: "A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button.")
-        self.completedImageName = "wp-illustration-tasks-complete-site" // TODO: Could be changed
+        self.completedImageName = "wp-illustration-tasks-complete-site"
         self.analyticsKey = "get-to-know"
         self.tours = [
             QuickStartCheckStatsTour(),

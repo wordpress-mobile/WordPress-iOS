@@ -72,6 +72,8 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementEditHomepage = 21,
     QuickStartTourElementSiteMenu = 22,
     QuickStartTourElementNotifications = 23,
+    QuickStartTourElementSetupQuickStart = 24,
+    QuickStartTourElementRemoveQuickStart = 25,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {

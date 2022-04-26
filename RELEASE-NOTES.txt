@@ -1,12 +1,15 @@
 19.8
 -----
+* [**] Self hosted sites are not restricted by video length during media uploads [https://github.com/wordpress-mobile/WordPress-iOS/pull/18414]
 * [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
+* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
+* [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
 
 19.7
 -----
 * [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
 * [*] Notifications list: remove comment Trash swipe action. [#18349]
-* [*] Reader: Fixed a bug that caused cut off content in reader web view [#16106]
+* [*] Web previews now abide by safe areas when a toolbar is shown [#18127]
 * [*] Site creation: Adds a new screen asking the user the intent of the site [#18367]
 * [**] Block Editor: Quote block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/40133]
 * [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]

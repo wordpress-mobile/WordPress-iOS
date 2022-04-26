@@ -4,6 +4,19 @@ final class QuickActionButton: UIButton {
 
     var onTap: (() -> Void)?
 
+    var shouldShowSpotlight: Bool = false {
+        didSet {
+            spotlightView.isHidden = !shouldShowSpotlight
+        }
+    }
+
+    private lazy var spotlightView: QuickStartSpotlightView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
     convenience init(title: String, image: UIImage) {
         self.init(frame: .zero)
         setTitle(title, for: .normal)
@@ -22,6 +35,7 @@ final class QuickActionButton: UIButton {
     private func setup() {
         configureTitleLabel()
         configureInsets()
+        configureSpotlightView()
 
         layer.cornerRadius = Metrics.cornerRadius
         backgroundColor = .listForeground
@@ -41,6 +55,18 @@ final class QuickActionButton: UIButton {
         titleEdgeInsets = Metrics.titleEdgeInsets
     }
 
+    private func configureSpotlightView() {
+        addSubview(spotlightView)
+        bringSubviewToFront(spotlightView)
+
+        NSLayoutConstraint.activate(
+            [
+                spotlightView.centerYAnchor.constraint(equalTo: centerYAnchor),
+                spotlightView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.spotlightOffset)
+            ]
+        )
+    }
+
     @objc private func buttonTapped() {
         onTap?()
     }
@@ -54,6 +80,7 @@ extension QuickActionButton {
         static let contentVerticalOffset = 12.0
         static let contentLeadingOffset = 16.0
         static let contentTrailingOffset = 24.0
+        static let spotlightOffset = 8.0
 
         static let contentEdgeInsets = UIEdgeInsets(
             top: contentVerticalOffset,

@@ -1,10 +1,11 @@
-* [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
-* [*] Notifications list: remove comment Trash swipe action. [#18349]
-* [*] Reader: Fixed a bug that caused cut off content in reader web view [#16106]
-* [*] Site creation: Adds a new screen asking the user the intent of the site [#18367]
-* [**] Block Editor: Quote block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/40133]
-* [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]
-* [*] Block Editor: Remove banner error notification on upload failure [https://github.com/WordPress/gutenberg/pull/39694]
-* [*] My Site: display site name in My Site screen nav title [#18373]
-* [*] [internal] Site creation: Adds a new screen asking the user the name of the site [#18280]
+We made a small but mighty change to the block editor: the “Add Block” button is more visible when you first open the editor with no blocks selected. We also removed one of three error notifications when a media or audio block fails to upload—it felt like overkill.
 
+You’ll hear some accessibility tweaks in the VoiceOver experience when you’re rearranging menu items. Instructions and notices are clearer, and the menu hierarchy makes more sense out loud.
+
+We added a new screen to the site creation process where you can enter your site’s intent. We tested this screen with a small group of users, and we think you’ll like it, too.
+
+Web previews won’t cut off bottom-of-the-screen notifications when your browser toolbar is visible.
+
+What’s in a name? Well, if your site has one, you’ll see it in the My Site navigation title.
+
+When you swipe left on a comment in your Notifications, you won’t see the “Trash” option anymore. Instead you’ll see “Unapprove Comment” and “Approve Comment.” We approve.

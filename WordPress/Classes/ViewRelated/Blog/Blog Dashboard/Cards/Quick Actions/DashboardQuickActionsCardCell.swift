@@ -51,10 +51,15 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        startObservingQuickStart()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
+    }
+
+    deinit {
+        stopObservingQuickStart()
     }
 }
 
@@ -124,6 +129,37 @@ extension DashboardQuickActionsCardCell {
             scrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
             stackView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }
+    }
+
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .noSuchElement:
+                    self?.statsButton.shouldShowSpotlight = false
+                case .stats:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                        return
+                    }
+
+                    self?.statsButton.shouldShowSpotlight = true
+                    self?.autoScrollToStatsButton()
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    private func stopObservingQuickStart() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    private func autoScrollToStatsButton() {
+        scrollView.scrollHorizontallyToView(statsButton, animated: true)
     }
 }
 

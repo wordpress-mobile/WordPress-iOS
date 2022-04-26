@@ -388,7 +388,9 @@ class InvitePersonViewController: UITableViewController {
                 // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
                 return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
             case .inviteLink:
-                return NSLocalizedString("Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.", comment: "Footer text for Invite Links section of the Invite People screen.")
+                return NSLocalizedString("invite_people_invite_link_footer",
+                    value: "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.",
+                    comment: "Footer text for Invite Links section of the Invite People screen.")
             default:
                 return nil
             }

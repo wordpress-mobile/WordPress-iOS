@@ -27,6 +27,7 @@ class SiteDesignSection: CategorySection {
 
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
+    private let createsSite: Bool
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
 
     let completion: SiteDesignStep.SiteDesignSelection
@@ -55,15 +56,16 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         return sections[sectionIndex].designs[position]
     }
 
-    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
+        self.createsSite = createsSite
 
         super.init(
             analyticsLocation: "site_creation",
-            mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-            prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
-            primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-            secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
+            mainTitle: TextContent.mainTitle,
+            prompt: TextContent.subtitle,
+            primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
+            secondaryActionTitle: TextContent.previewButton
         )
     }
 
@@ -73,7 +75,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = TextContent.backButtonTitle
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
@@ -100,7 +102,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(title: TextContent.skipButtonTitle, style: .done, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
 
@@ -115,7 +117,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             return
         }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: TextContent.cancelButtonTitle, style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
@@ -151,7 +153,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     override func secondaryActionSelected(_ sender: Any) {
         guard let design = selectedDesign else { return }
 
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, createsSite: createsSite, onDismissWithDeviceSelected: { [weak self] device in
             self?.selectedPreviewDevice = device
         }, completion: completion)
 
@@ -162,9 +164,22 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private func handleError(_ error: Error) {
         SiteCreationAnalyticsHelper.trackError(error)
-        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        let titleText = TextContent.errorTitle
+        let subtitleText = TextContent.errorSubtitle
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
+    }
+
+    private enum TextContent {
+        static let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
+        static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
+        static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
+        static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
+        static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
+        static let backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation.")
+        static let skipButtonTitle = NSLocalizedString("Skip", comment: "Continue without making a selection.")
+        static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel site creation.")
+        static let errorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        static let errorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
     }
 }
 

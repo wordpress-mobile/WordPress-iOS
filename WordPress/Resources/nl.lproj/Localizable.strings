@@ -805,6 +805,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Toestaan";
 
+/* Approves a Comment */
+"Approve Comment" = "Reactie toestaan";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Goedgekeurd";
@@ -1804,7 +1807,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Doorgaan";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2425,9 +2429,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Tik tweemaal en houd ingedrukt om te bewerken";
 
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Dubbel tikken en vasthouden om dit menu-item naar boven of beneden te verplaatsen";
-
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Tik tweemaal om een blok toe te voegen";
 
@@ -3017,13 +3018,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Meldingen als gelezen markeren mislukt";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Audiobestand invoegen is mislukt.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Invoegen van audiobestand mislukt. Tik voor opties.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Media invoegen is mislukt.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Invoegen media mislukt.\n Tik voor opties.";
@@ -4321,7 +4316,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Vermelden";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4487,7 +4484,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Naam";
 
 /* Error to be displayed when a tag is empty */
@@ -5487,9 +5485,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Regelmatig publiceren kan je helpen bij het bouwen van een publiek. Herinneringen houden je in het spoor.";
-
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Regelmatig publiceren kan je lezers betrokken houden en nieuwe bezoekers naar je site aantrekken.";
 
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Regelmatig publiceren helpt je publiek opbouwen!";
@@ -6524,6 +6519,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Delen";
 
@@ -6686,10 +6682,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Site taal";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Site menu";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Sitedoorverwijzing";
 
@@ -6698,7 +6690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site titel";
@@ -6755,7 +6746,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label when skipping all quick start items
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Overslaan";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -7609,9 +7601,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Tijd om je site af te ronden! Onze checklist leidt je door de volgende stappen.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips om WordPress.com optimaal te benutten.";
 
@@ -7691,7 +7680,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Gereedschap";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Bovenste niveau";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7790,8 +7780,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Probeer een andere zoekterm";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Probeer het nu";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -7996,6 +7986,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Afkeuren";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Ongemodereerde reactie";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Wordt gebruikt om de reactie af te keuren.";

@@ -264,6 +264,28 @@ struct TwoColumnStatsRow: ImmuTableRow {
     }
 }
 
+struct MostPopularTimeInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsMostPopularTimeInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let data: StatsMostPopularTimeData?
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
+
 // MARK: - Insights Management
 
 struct AddInsightRow: ImmuTableRow {
