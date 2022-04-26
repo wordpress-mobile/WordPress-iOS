@@ -172,12 +172,12 @@ private extension String {
 
 // MARK: - Helper Structs
 private struct Strings {
-    static let stats = NSLocalizedString("Checking stats", comment: "Title of a button")
-    static let writing = NSLocalizedString("Writing blog posts", comment: "Title of a button")
-    static let notifications = NSLocalizedString("Staying up to date with notifications", comment: "Title of a button")
-    static let reader = NSLocalizedString("Reading posts from other sites", comment: "Title of a button")
-    static let notSure = NSLocalizedString("Not sure, show me around", comment: "Title of a button")
-    static let skip = NSLocalizedString("Skip", comment: "Title of a button")
+    static let stats = NSLocalizedString("Checking stats", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
+    static let writing = NSLocalizedString("Writing blog posts", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
+    static let notifications = NSLocalizedString("Staying up to date with notifications", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
+    static let reader = NSLocalizedString("Reading posts from other sites", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
+    static let notSure = NSLocalizedString("Not sure, show me around", comment: "Button that allows users unsure of what selection they'd like ")
+    static let skip = NSLocalizedString("Skip", comment: "Button that allows the user to skip the prompt and be brought to the app")
 }
 
 private struct Constants {
