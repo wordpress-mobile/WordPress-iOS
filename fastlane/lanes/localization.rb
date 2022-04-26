@@ -319,10 +319,10 @@ platform :ios do
     )
     files_to_commit = [File.join(metadata_directory, '**', '*')]
 
-    # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default` by mistake
+    # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default`
     APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP.values.map { |h| h[:desc] }.each do |file|
       en_file_path = File.join(metadata_directory, 'en-US', file)
-      UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is our source of truth for those. " \
+      UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is the source of truth. " \
         + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
     end
 
