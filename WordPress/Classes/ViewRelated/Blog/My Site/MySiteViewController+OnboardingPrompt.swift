@@ -25,21 +25,17 @@ extension MySiteViewController {
             controller?.showPostTab(completion: {
                 self.startAlertTimer()
             })
-        case .notifications:
-            // Open the notifications tab
-            let controller = tabBarController as? WPTabBarController
-            controller?.showNotificationsTab()
-        case .reader:
-            // Open the reader tab
-            let controller = tabBarController as? WPTabBarController
-            controller?.showReaderTab()
+
         case .showMeAround:
             // Start the quick start
             if let blog = blog {
                 QuickStartTourGuide.shared.setup(for: blog, type: .existingSite)
             }
-        case .skip:
-            // Do nothing
+
+        case .skip, .reader, .notifications:
+            // Skip: Do nothing
+            // Reader and notifications will be handled by:
+            // WPAuthenticationManager.handleOnboardingQuestionsWillDismiss
             break
         }
     }

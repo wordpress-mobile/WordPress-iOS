@@ -558,9 +558,10 @@ private extension WordPressAuthenticationManager {
         let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
 
         coordinator.onDismiss = { selectedOption in
+            self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
+
             let completion: (() -> Void)? = {
                 let userInfo = ["option": selectedOption]
-
                 NotificationCenter.default.post(name: .onboardingPromptWasDismissed, object: nil, userInfo: userInfo)
             }
 
@@ -575,6 +576,19 @@ private extension WordPressAuthenticationManager {
 
         navigationController.pushViewController(viewController, animated: true)
     }
+
+
+    /// To prevent a weird jump from the MySite tab to the reader/notifications tab
+    /// We'll pre-switch to the users selected tab before the login flow dismisses
+    private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
+        if option == .reader {
+            WPTabBarController.sharedInstance().showReaderTab()
+        } else if option == .notifications {
+            WPTabBarController.sharedInstance().showNotificationsTab()
+        }
+    }
+
+
 }
 
 // MARK: - Quick Start Prompt
