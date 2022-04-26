@@ -85,15 +85,6 @@ WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES = GLOTPRESS_TO_ASC_METADATA_LOCALE_COD
 # Locales used in AppStore for Jetpack metadata
 JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br ru sv tr zh-cn zh-tw].freeze
 
-# List of GlotPress keys => file to extract when downloading the metadata from GlotPress
-APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP = {
-  what_new_key: { desc: "release_notes.txt", max_size: 4000 },
-  app_store_name: { desc: "name.txt", max_size: 30 },
-  app_store_subtitle: { desc: "subtitle.txt", max_size: 30 },
-  app_store_desc: { desc: "description.txt", max_size: 4000 },
-  app_store_keywords: { desc: "keywords.txt", max_size: 100 },
-}.freeze
-
 # List of `.strings` files manually maintained by developers (as opposed to being automatically extracted from code and generated)
 # which we will merge into the main `Localizable.strings` file imported by GlotPress, then extract back once we download the translations.
 # Each `.strings` file to be merged/extracted is associated with a prefix to add the the keys being used to avoid conflicts and differentiate.
@@ -310,17 +301,24 @@ platform :ios do
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
     locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)    
-    what_new_key = "v#{ios_get_app_version}-whats-new"
+    target_files = {
+      "v#{ios_get_app_version}-whats-new": { desc: "release_notes.txt", max_size: 4000 },
+      app_store_name: { desc: "name.txt", max_size: 30 },
+      app_store_subtitle: { desc: "subtitle.txt", max_size: 30 },
+      app_store_desc: { desc: "description.txt", max_size: 4000 },
+      app_store_keywords: { desc: "keywords.txt", max_size: 100 },
+    }
+  
     gp_downloadmetadata(
       project_url: glotpress_project_url,
-      target_files: APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP,
+      target_files: target_files,
       locales: locales_map,
       download_path: metadata_directory
     )
     files_to_commit = [File.join(metadata_directory, '**', '*.txt')]
 
     # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default`
-    APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP.values.map { |h| h[:desc] }.each do |file|
+    target_files.values.map { |h| h[:desc] }.each do |file|
       en_file_path = File.join(metadata_directory, 'en-US', file)
       UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is the source of truth. " \
         + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
