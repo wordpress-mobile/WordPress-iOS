@@ -62,7 +62,16 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        searchButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.readerSearch)
+        super.viewWillAppear(animated)
+
+        if QuickStartTourGuide.shared.isCurrentElement(.readerSearch) {
+
+            if viewModel.selectedIndex != ReaderTabConstants.discoverIndex {
+                viewModel.showTab(at: ReaderTabConstants.discoverIndex)
+            }
+
+            settingsButton.shouldShowSpotlight = true
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -116,6 +125,7 @@ class ReaderTabViewController: UIViewController {
 // MARK: - Navigation Buttons
 extension ReaderTabViewController {
     @objc private func didTapSettingsButton() {
+        settingsButton.shouldShowSpotlight = false
         viewModel.presentManage(from: self)
     }
 
