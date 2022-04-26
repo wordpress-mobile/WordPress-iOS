@@ -8,7 +8,7 @@ final class ReaderSubscribeCommentsAction {
 
         let subscribing = !post.isSubscribedComments
 
-        followCommentsService.toggleSubscribed(!subscribing, success: { subscribeSuccess in
+        followCommentsService.toggleSubscribed(post.isSubscribedComments, success: { subscribeSuccess in
             followCommentsService.toggleNotificationSettings(subscribing, success: {
                 ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: subscribeSuccess) { actionSuccess in
                     self.disableNotificationSettings(followCommentsService: followCommentsService)
