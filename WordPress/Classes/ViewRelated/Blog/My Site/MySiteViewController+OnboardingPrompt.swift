@@ -16,11 +16,9 @@ extension MySiteViewController {
         switch option {
         case .stats:
             // Show the stats view for the current blog
-            // We have to switch to the "Site Menu" first
-            switchTab(to: .siteMenu)
-
-            // Show the stats tab
-            blogDetailsViewController?.showStats(from: .button)
+            if let blog = blog {
+                StatsViewController.show(for: blog, from: self)
+            }
         case .writing:
             // Open the editor
             let controller = tabBarController as? WPTabBarController
