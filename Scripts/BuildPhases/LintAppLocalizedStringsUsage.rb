@@ -28,7 +28,7 @@ else
 end
 
 violations_count = 0
-targets_to_analyze.map do |target|
+targets_to_analyze.each do |target|
   build_phase = target.build_phases.find { |p| p.is_a?(Xcodeproj::Project::Object::PBXSourcesBuildPhase) }
   next if build_phase.nil?
 
