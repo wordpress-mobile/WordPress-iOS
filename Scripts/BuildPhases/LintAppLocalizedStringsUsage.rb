@@ -35,6 +35,7 @@ targets_to_analyze.each do |target|
   puts "Linting extension target #{target.name} for improper NSLocalizedString usage..."
   source_files = build_phase.files_references.map(&:real_path).select { |f| ['.m', '.swift'].any? { |ext| f.extname == ext } }
   source_files.each { |f| violations_count += lint(file_path: f, target_name: target.name) }
+  puts "Done."
 end
 
 exit 1 if violations_count > 0
