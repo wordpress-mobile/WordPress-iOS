@@ -508,6 +508,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     func configureVerticalButtonView() {
         usesVerticalActionButtons = true
 
+        footerView.backgroundColor = .systemBackground
         footerHeightContraint.constant = footerHeight
         selectedStateButtonsContainer.axis = .vertical
 
