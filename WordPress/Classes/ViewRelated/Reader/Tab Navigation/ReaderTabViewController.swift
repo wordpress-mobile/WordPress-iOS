@@ -64,7 +64,7 @@ class ReaderTabViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if QuickStartTourGuide.shared.isCurrentElement(.readerSearch) {
+        if QuickStartTourGuide.shared.isCurrentElement(.readerDiscoverSettings) {
 
             if viewModel.selectedIndex != ReaderTabConstants.discoverIndex {
                 viewModel.showTab(at: ReaderTabConstants.discoverIndex)

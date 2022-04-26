@@ -206,7 +206,7 @@ struct QuickStartFollowTour: QuickStartTour {
 
         let step2DescriptionBase = NSLocalizedString("Select %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step2DescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.cog)))
+        let step2: WayPoint = (element: .readerDiscoverSettings, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.cog)))
 
         return [step1, step2]
     }()
