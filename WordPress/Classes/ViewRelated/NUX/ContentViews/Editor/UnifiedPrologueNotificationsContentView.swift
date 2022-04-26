@@ -134,6 +134,5 @@ private extension UnifiedPrologueNotificationsContentView {
         static let textContent = UnifiedPrologueNotificationsContent(topElementTitle: Self.topElementTitle,
                                                                      middleElementTitle: Self.middleElementTitle,
                                                                      bottomElementTitle: Self.bottomElementTitle)
-        
     }
 }
