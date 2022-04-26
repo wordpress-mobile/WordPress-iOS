@@ -2,12 +2,12 @@ import Foundation
 import UIKit
 
 enum OnboardingOption: String {
-    case stats = "stats"
-    case writing = "writing"
-    case notifications = "notifications"
-    case reader = "reader"
+    case stats
+    case writing
+    case notifications
+    case reader
     case showMeAround = "show_me_around"
-    case skip = "skip"
+    case skip
 }
 
 extension NSNotification.Name {
