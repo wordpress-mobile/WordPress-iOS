@@ -118,7 +118,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 private extension ReaderCommentsFollowPresenter {
 
     private func updateNotificationSettings(shouldEnableNotifications: Bool, canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
-        let action: PostSubscriptionAction = shouldEnableNotifications ? .enableNotification : .disableNotification
+        let action: ReaderHelpers.PostSubscriptionAction = shouldEnableNotifications ? .enableNotification : .disableNotification
 
         followCommentsService?.toggleNotificationSettings(shouldEnableNotifications, success: { [weak self] in
             completion?(true)
@@ -129,22 +129,21 @@ private extension ReaderCommentsFollowPresenter {
             }
 
             guard canUndo else {
-                let title = self.noticeTitle(forAction: action, success: true)
+                let title = ReaderHelpers.noticeTitle(forAction: action, success: true)
                 self.presentingViewController.displayNotice(title: title)
                 return
             }
 
-            let title = Messages.promptTitle
-
-            self.presentingViewController.displayActionableNotice(title: title,
-                                                                  message: "You'll get notifications in the app",
-                                                                  actionTitle: Messages.undoActionTitle,
-                                                                  actionHandler: { (accepted: Bool) in
+            self.presentingViewController.displayActionableNotice(
+                title: Messages.promptTitle,
+                message: Messages.promptMessage,
+                actionTitle: Messages.undoActionTitle,
+                actionHandler: { (accepted: Bool) in
                 self.handleNotificationsButtonTapped(canUndo: false)
             })
         }, failure: { [weak self] error in
             DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
-            let title = self?.noticeTitle(forAction: action, success: false) ?? ""
+            let title = ReaderHelpers.noticeTitle(forAction: action, success: false)
             self?.presentingViewController.displayNotice(title: title)
             completion?(false)
             self?.informDelegateNotificationComplete(success: false)
@@ -178,29 +177,9 @@ private extension ReaderCommentsFollowPresenter {
 
         // In-app notifications prompt
         static let promptTitle = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
-        static let promptMessage = NSLocalizedString("Enable in-app notifications?", comment: "Hint for the action button that enables notification for new comments")
+        static let promptMessage = NSLocalizedString("You'll get notifications in the app", comment: "Message for the action with opt-out revert action.")
         static let enableActionTitle = NSLocalizedString("Enable", comment: "Button title to enable notifications for new comments")
         static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts the previous notification operation")
-    }
-
-    /// Enumerates the kind of actions available in relation to post subscriptions.
-    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
-    enum PostSubscriptionAction: Int {
-        case enableNotification
-        case disableNotification
-    }
-
-    func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
-        switch (action, success) {
-        case (.enableNotification, true):
-            return NSLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
-        case (.enableNotification, false):
-            return NSLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
-        case (.disableNotification, true):
-            return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
-        case (.disableNotification, false):
-            return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
-        }
     }
 
     // MARK: - Tracks

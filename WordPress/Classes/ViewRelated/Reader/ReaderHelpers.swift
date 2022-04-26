@@ -347,7 +347,7 @@ struct ReaderPostMenuButtonTitles {
         dispatchToggleFollowSiteMessage(siteTitle: site.title, siteID: site.siteID, follow: follow, success: success)
     }
 
-    class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
+    class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool, actionHandler: ((Bool) -> Void)?) {
         let title: String
         let message: String?
         let actionTitle: String?
@@ -365,9 +365,14 @@ struct ReaderPostMenuButtonTitles {
                 title: title,
                 message: message,
                 actionTitle: actionTitle,
-                actionHandler: nil
+                actionHandler: actionHandler
             )
         )
+    }
+
+    class func dispatchToggleCommentNotificationMessage(subscribing: Bool, success: Bool) {
+        let action: ReaderHelpers.PostSubscriptionAction = subscribing ? .enableNotification : .disableNotification
+        dispatchNotice(Notice(title: noticeTitle(forAction: action, success: success)))
     }
 
     class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
@@ -410,6 +415,28 @@ struct ReaderPostMenuButtonTitles {
 
         dispatchNotice(notice)
     }
+
+    /// Enumerates the kind of actions available in relation to post subscriptions.
+    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
+    enum PostSubscriptionAction: Int {
+        case enableNotification
+        case disableNotification
+    }
+
+    class func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
+        switch (action, success) {
+        case (.enableNotification, true):
+            return NSLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
+        case (.enableNotification, false):
+            return NSLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
+        case (.disableNotification, true):
+            return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
+        case (.disableNotification, false):
+            return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
+        }
+    }
+
+
 
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))

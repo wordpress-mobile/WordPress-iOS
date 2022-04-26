@@ -8,17 +8,29 @@ final class ReaderSubscribeCommentsAction {
 
         let subscribing = !post.isSubscribedComments
 
-        followCommentsService.toggleSubscribed(!subscribing, success: { success in
+        followCommentsService.toggleSubscribed(!subscribing, success: { subscribeSuccess in
             followCommentsService.toggleNotificationSettings(subscribing, success: {
-                ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: success)
+                ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: subscribeSuccess) { actionSuccess in
+                    self.disableNotificationSettings(followCommentsService: followCommentsService)
+                }
                 completion?()
             }, failure: { error in
-                DDLogError("Error toggling comment subscription status: \(error.debugDescription)")
+                DDLogError("Error toggling comment notification status: \(error.debugDescription)")
                 ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
+                ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: subscribing, success: false)
             })
         }, failure: { error in
             DDLogError("Error toggling comment subscription status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
+        })
+    }
+
+    private func disableNotificationSettings(followCommentsService: FollowCommentsService) {
+        followCommentsService.toggleNotificationSettings(false, success: {
+            ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: true)
+        }, failure: { error in
+            DDLogError("Error toggling comment notification status: \(error.debugDescription)")
+            ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: false)
         })
     }
 }
