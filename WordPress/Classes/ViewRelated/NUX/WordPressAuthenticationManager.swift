@@ -363,27 +363,27 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         // If the user has only 1 blog, skip the site selector and go right to the next step
-        guard numberOfBlogs() == 1, let firstBlog = firstBlog() else {
-            epilogueViewController.credentials = credentials
-            epilogueViewController.onBlogSelected = onBlogSelected
-
-            epilogueViewController.onCreateNewSite = {
-                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
-                guard let wizard = wizardLauncher.ui else {
-                    return
-                }
-
-                navigationController.present(wizard, animated: true)
-                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
-            }
-
-            navigationController.delegate = epilogueViewController
-            navigationController.pushViewController(epilogueViewController, animated: true)
-
+        if numberOfBlogs() == 1, let firstBlog = firstBlog() {
+            onBlogSelected(firstBlog)
             return
         }
 
-        onBlogSelected(firstBlog)
+        epilogueViewController.credentials = credentials
+        epilogueViewController.onBlogSelected = onBlogSelected
+
+        epilogueViewController.onCreateNewSite = {
+            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+
+            navigationController.present(wizard, animated: true)
+            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+        }
+
+        navigationController.delegate = epilogueViewController
+        navigationController.pushViewController(epilogueViewController, animated: true)
+
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
