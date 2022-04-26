@@ -13,19 +13,10 @@
 # Inspiration: https://mgrebenets.github.io/xcode/2019/04/04/xcode-build-phases-and-environment
 #
 
-if command -v rbenv; then
-  echo "Configuring rbenv..."
-  # Add `rbenv` ships to PATH
-  export PATH="$HOME/.rbenv/shims:$PATH"
-  # Check expected ruby version
-  echo "Checking version..."
-  rbenv version
-elif [[ -f "$HOME/.rvm/bin" ]]; then
-  echo "Configuring rvm..."
-  # Add `rvm` to PATH
-  export PATH="$HOME/.rvm/bin:$PATH"
-  # Load the expected Ruby version from `.ruby-version` — See https://rvm.io/rvm/basics#post-install-configuration
-  RUBY_VERSION="$(cat .ruby-version)"
+# Add `rbenv` and `rvm` binaries to PATH, so that we support both
+export PATH="$HOME/.rbenv/shims:$HOME/.rvm/bin:$PATH"
+RUBY_VERSION="$(cat "${PROJECT_DIR}/../.ruby-version")"
+if command -v rvm; then
   source "$(rvm "${RUBY_VERSION}" do rvm env --path | tail -n1)"
 fi
 
