@@ -77,10 +77,6 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))
     }
 
-    static func trackSiteDesignThumbnailModeButtonTapped(_ previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignThumbnailModeButtonTapped, withProperties: commonProperties(previewMode))
-    }
-
     static func trackSiteDesignSkipped() {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
