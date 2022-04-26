@@ -16610,8 +16610,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA4D281333060019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16629,8 +16629,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA4E2813334B0019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16648,8 +16648,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA4F281333530019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16667,8 +16667,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA50281333590019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16686,8 +16686,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA51281333610019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16705,8 +16705,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA52281333700019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16724,8 +16724,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA53281333770019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16743,8 +16743,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09DBEA542813337F0019724E /* [Lint] Check AppLocalizedString usage */ = {
@@ -16762,8 +16762,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/zsh -euo pipefail";
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "bundle exec ruby \"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.rb\" \"${TARGET_NAME}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */ = {
