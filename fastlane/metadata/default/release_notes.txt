@@ -1,0 +1,11 @@
+We made a small but mighty change to the block editor: the “Add Block” button is more visible when you first open the editor with no blocks selected. We also removed one of three error notifications when a media or audio block fails to upload—it felt like overkill.
+
+You’ll hear some accessibility tweaks in the VoiceOver experience when you’re rearranging menu items. Instructions and notices are clearer, and the menu hierarchy makes more sense out loud.
+
+We added a new screen to the site creation process where you can enter your site’s intent. We tested this screen with a small group of users, and we think you’ll like it, too.
+
+Web previews won’t cut off bottom-of-the-screen notifications when your browser toolbar is visible.
+
+What’s in a name? Well, if your site has one, you’ll see it in the My Site navigation title.
+
+When you swipe left on a comment in your Notifications, you won’t see the “Trash” option anymore. Instead you’ll see “Unapprove Comment” and “Approve Comment.” We approve.
