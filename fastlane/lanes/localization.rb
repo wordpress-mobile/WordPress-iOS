@@ -317,7 +317,7 @@ platform :ios do
       locales: locales_map,
       download_path: metadata_directory
     )
-    files_to_commit = [File.join(metadata_directory, '**', '*')]
+    files_to_commit = [File.join(metadata_directory, '**', '*.txt')]
 
     # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default`
     APPSTORECONNECT_METADATA_KEYS_TO_FILES_MAP.values.map { |h| h[:desc] }.each do |file|
