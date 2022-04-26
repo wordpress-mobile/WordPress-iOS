@@ -360,6 +360,32 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of exploring plans for your site.", comment: "This value is used to set the accessibility hint text for exploring plans on the user's site.")
 }
 
+struct QuickStartNotificationsTour: QuickStartTour {
+    let key = "quick-start-notifications-tour"
+    let analyticsKey = "notifications"
+    let title = NSLocalizedString("Check your notifications", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Check your notifications", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Get real time updates from your pocket.", comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.bell)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+
+    var taskCompleteDescription: NSAttributedString? = {
+        let descriptionBase = NSLocalizedString("%@ Tip: get updates faster by enabling push notifications.", comment: "Title of the task complete hint for the Quick Start Tour")
+        let descriptionTarget = NSLocalizedString("Task complete.", comment: "A hint about the completed guided tour.")
+        return descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.checkmark))
+    }()
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Select the %@ tab to get updates on the go.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Notifications", comment: "The item to select during a guided tour.")
+        return [(element: .notifications, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.bell)))]
+    }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of checking your notifications.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
+}
+
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
 private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
 struct QuickStartCongratulationsTour: QuickStartTour {
