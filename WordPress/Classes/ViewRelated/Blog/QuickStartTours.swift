@@ -369,6 +369,13 @@ struct QuickStartNotificationsTour: QuickStartTour {
     let icon = UIImage.gridicon(.bell)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+
+    var taskCompleteDescription: NSAttributedString? = {
+        let descriptionBase = NSLocalizedString("%@ Tip: get updates faster by enabling push notifications.", comment: "Title of the task complete hint for the Quick Start Tour")
+        let descriptionTarget = NSLocalizedString("Task complete.", comment: "A hint about the completed guided tour.")
+        return descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.checkmark))
+    }()
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select the %@ tab to get updates on the go.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
