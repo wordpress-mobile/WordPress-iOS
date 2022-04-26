@@ -11,6 +11,7 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
+    private let settingsButton: SpotlightableButton = SpotlightableButton(type: .custom)
     private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
@@ -72,18 +73,18 @@ class ReaderTabViewController: UIViewController {
 
     func setupNavigationButtons() {
         // Settings Button
-        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(didTapSettingsButton))
+        settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
+        settingsButton.setImage(.gridicon(.cog), for: .normal)
+        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
 
         // Search Button
-        searchButton.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+        searchButton.spotlightOffset = ReaderTabConstants.spotlightOffset
         searchButton.setImage(.gridicon(.search), for: .normal)
         searchButton.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
 
+        let settingsButton = UIBarButtonItem(customView: settingsButton)
         let searchBarButton = UIBarButtonItem(customView: searchButton)
 
         navigationItem.rightBarButtonItems = [searchBarButton, settingsButton]
@@ -172,5 +173,6 @@ extension ReaderTabViewController {
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
         static let discoverIndex = 1
+        static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
     }
 }
