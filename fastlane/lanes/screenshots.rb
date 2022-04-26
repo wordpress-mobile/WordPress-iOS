@@ -3,39 +3,6 @@
 require 'fileutils'
 
 #################################################
-# Constants
-#################################################
-
-# rubocop:disable Style/WordArray
-GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = [
-  ['ar', 'ar-SA'],
-  ['en-gb', 'en-US'],
-  ['en-gb', 'en-GB'],
-  ['en-ca', 'en-CA'],
-  ['en-au', 'en-AU'],
-  ['da', 'da'],
-  ['de', 'de-DE'],
-  ['es', 'es-ES'],
-  ['fr', 'fr-FR'],
-  ['he', 'he'],
-  ['id', 'id'],
-  ['it', 'it'],
-  ['ja', 'ja'],
-  ['ko', 'ko'],
-  ['nl', 'nl-NL'],
-  ['nb', 'no'],
-  ['pt-br', 'pt-BR'],
-  ['pt', 'pt-PT'],
-  ['ru', 'ru'],
-  ['sv', 'sv'],
-  ['th', 'th'],
-  ['tr', 'tr'],
-  ['zh-cn', 'zh-Hans'],
-  ['zh-tw', 'zh-Hant']
-].freeze
-# rubocop:enable Style/WordArray
-
-#################################################
 # Lanes
 #################################################
 
