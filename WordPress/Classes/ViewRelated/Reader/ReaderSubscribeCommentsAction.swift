@@ -16,12 +16,13 @@ final class ReaderSubscribeCommentsAction {
                 completion?()
             }, failure: { error in
                 DDLogError("Error toggling comment notification status: \(error.debugDescription)")
-                ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
-                ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: subscribing, success: false)
+                ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: false)
+                failure?(error)
             })
         }, failure: { error in
             DDLogError("Error toggling comment subscription status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleSubscribeCommentErrorMessage(subscribing: subscribing)
+            failure?(error)
         })
     }
 
