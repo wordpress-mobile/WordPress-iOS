@@ -204,9 +204,19 @@ struct QuickStartFollowTour: QuickStartTour {
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
-        let step2DescriptionBase = NSLocalizedString("Select %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerDiscoverSettings, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.cog)))
+        let step2DiscoverDescriptionBase = NSLocalizedString("Use %@ to find sites and tags.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DiscoverDescriptionTarget = NSLocalizedString("Discover", comment: "The menu item to select during a guided tour.")
+        let step2DiscoverDescription = step2DiscoverDescriptionBase.highlighting(phrase: step2DiscoverDescriptionTarget, icon: nil)
+
+        let step2SettingsDescriptionBase = NSLocalizedString("Try selecting %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2SettingsDescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
+        let step2SettingsDescription = step2SettingsDescriptionBase.highlighting(phrase: step2SettingsDescriptionTarget, icon: .gridicon(.cog))
+
+        /// Combined description for step 2
+        let step2Format = NSAttributedString(string: "%@ %@")
+        let step2Description = NSAttributedString(format: step2Format, args: step2DiscoverDescription, step2SettingsDescription)
+
+        let step2: WayPoint = (element: .readerDiscoverSettings, description: step2Description)
 
         return [step1, step2]
     }()
@@ -428,5 +438,17 @@ private extension String {
         static var highlightColor: UIColor {
             .invertedLabel
         }
+    }
+}
+
+private extension NSAttributedString {
+    convenience init(format: NSAttributedString, args: NSAttributedString...) {
+        let mutableNSAttributedString = NSMutableAttributedString(attributedString: format)
+
+        args.forEach { (attributedString) in
+            let range = NSString(string: mutableNSAttributedString.string).range(of: "%@")
+            mutableNSAttributedString.replaceCharacters(in: range, with: attributedString)
+        }
+        self.init(attributedString: mutableNSAttributedString)
     }
 }
