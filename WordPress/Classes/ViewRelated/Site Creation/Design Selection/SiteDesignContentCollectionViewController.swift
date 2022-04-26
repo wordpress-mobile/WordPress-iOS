@@ -49,7 +49,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             tableView.reloadData()
         }
     }
-    var previewDeviceButtonItem: UIBarButtonItem?
 
     var selectedDesign: RemoteSiteDesign? {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return nil }
@@ -79,7 +78,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
-        configurePreviewDeviceButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
     }
 
@@ -106,12 +104,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         navigationItem.rightBarButtonItem = skip
     }
 
-    private func configurePreviewDeviceButton() {
-        let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
-        previewDeviceButtonItem = button
-        navigationItem.rightBarButtonItems?.append(button)
-    }
-
     private func configureCloseButton() {
         guard navigationController?.viewControllers.first == self else {
             return
@@ -124,21 +116,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         presentedViewController?.dismiss(animated: true)
         SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
-    }
-
-    @objc private func previewDeviceButtonTapped() {
-        SiteCreationAnalyticsHelper.trackSiteDesignThumbnailModeButtonTapped(selectedPreviewDevice)
-        let popoverContentController = PreviewDeviceSelectionViewController()
-        popoverContentController.selectedOption = selectedPreviewDevice
-        popoverContentController.onDeviceChange = { [weak self] device in
-            guard let self = self else { return }
-            SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
-            self.selectedPreviewDevice = device
-        }
-
-        popoverContentController.modalPresentationStyle = .popover
-        popoverContentController.popoverPresentationController?.delegate = self
-        self.present(popoverContentController, animated: true, completion: nil)
     }
 
     override func primaryActionSelected(_ sender: Any) {
@@ -187,32 +164,5 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         fetchSiteDesigns()
-    }
-}
-
-// MARK: UIPopoverPresentationDelegate
-extension SiteDesignContentCollectionViewController {
-    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
-            return
-        }
-
-        popoverPresentationController.permittedArrowDirections = .up
-        popoverPresentationController.barButtonItem = previewDeviceButtonItem
-    }
-
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Reset our source rect and view for a transition to a new size
-        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
-                return
-        }
-
-        prepareForPopoverPresentation(popoverPresentationController)
     }
 }
