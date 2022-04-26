@@ -1393,6 +1393,8 @@
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
+		836498C828172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */; };
+		836498C928172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */; };
 		8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* WPTableViewActivityCell.m */; };
 		839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
 		839B150C2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
@@ -6141,6 +6143,7 @@
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+BloggingPrompts.swift"; sourceTree = "<group>"; };
 		8370D10811FA499A009D650F /* WPTableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* WPTableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewActivityCell.m; sourceTree = "<group>"; };
 		839B150A2795DEE0009F5E77 /* UIView+Margins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Margins.swift"; sourceTree = "<group>"; };
@@ -13464,6 +13467,7 @@
 			isa = PBXGroup;
 			children = (
 				BE1071FB1BC75E7400906AFF /* WPStyleGuide+Blog.swift */,
+				836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */,
 			);
 			name = Style;
 			sourceTree = "<group>";
@@ -17839,6 +17843,7 @@
 				D853723C21952DC90076F461 /* SiteSegmentsStep.swift in Sources */,
 				32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
 				FEC3B81726C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */,
+				836498C828172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */,
 				FF70A3221FD5840500BC270D /* PHAsset+Metadata.swift in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */,
@@ -20390,6 +20395,7 @@
 				FABB22C52602FC2C00C8785C /* ActivityStore.swift in Sources */,
 				FABB22C62602FC2C00C8785C /* NSAttributedString+WPRichText.swift in Sources */,
 				FABB22C72602FC2C00C8785C /* StatsTotalRow.swift in Sources */,
+				836498C928172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */,
 				C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */,
 				80EF672327F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
 				FABB22C82602FC2C00C8785C /* SiteCreationAnalyticsHelper.swift in Sources */,

@@ -67,7 +67,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private lazy var promptLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Style.promptContentFont
+        label.font = WPStyleGuide.BloggingPrompts.promptContentFont
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -129,8 +129,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = answerInfoText
-        label.font = Style.answerInfoLabelFont
-        label.textColor = Style.answerInfoLabelColor
+        label.font = WPStyleGuide.BloggingPrompts.answerInfoLabelFont
+        label.textColor = WPStyleGuide.BloggingPrompts.answerInfoLabelColor
         label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -166,8 +166,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.answerButtonTitle, for: .normal)
-        button.setTitleColor(Style.buttonTitleColor, for: .normal)
-        button.titleLabel?.font = Style.buttonTitleFont
+        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
 
@@ -178,8 +178,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var answeredLabel: UILabel = {
         let label = UILabel()
-        label.font = Style.buttonTitleFont
-        label.textColor = Style.answeredLabelColor
+        label.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
+        label.textColor = WPStyleGuide.BloggingPrompts.answeredLabelColor
         label.text = Strings.answeredLabelTitle
 
         // The 'answered' label needs to be close to the Share button.
@@ -195,8 +195,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.shareButtonTitle, for: .normal)
-        button.setTitleColor(Style.buttonTitleColor, for: .normal)
-        button.titleLabel?.font = Style.buttonTitleFont
+        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.contentHorizontalAlignment = .leading
@@ -353,12 +353,6 @@ private extension DashboardPromptsCardCell {
     struct Style {
         static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
         static let avatarPlaceholderImage = UIImage(color: .quaternarySystemFill)
-        static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
-        static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
-        static let answerInfoLabelColor = UIColor.primary
-        static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)
-        static let buttonTitleColor = UIColor.primary
-        static let answeredLabelColor = UIColor.muriel(name: .green, .shade50)
     }
 
     struct Constants {
