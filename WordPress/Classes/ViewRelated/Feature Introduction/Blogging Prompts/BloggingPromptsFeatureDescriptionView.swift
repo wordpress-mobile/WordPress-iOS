@@ -28,15 +28,17 @@ private extension BloggingPromptsFeatureDescriptionView {
     func configurePromptCard() {
         let promptCard = DashboardPromptsCardCell()
         promptCard.configureForExampleDisplay()
-        promptCard.translatesAutoresizingMaskIntoConstraints = false
 
-        promptCard.layer.cornerRadius = Style.cardCornerRadius
-        promptCard.layer.shadowOffset = Style.cardShadowOffset
-        promptCard.layer.shadowOpacity = Style.cardShadowOpacity
-        promptCard.layer.shadowRadius = Style.cardShadowRadius
+        // The DashboardPromptsCardCell doesn't resize dynamically when used in this context.
+        // So use its cardFrameView instead.
+        promptCard.cardFrameView.translatesAutoresizingMaskIntoConstraints = false
+        promptCard.cardFrameView.layer.cornerRadius = Style.cardCornerRadius
+        promptCard.cardFrameView.layer.shadowOffset = Style.cardShadowOffset
+        promptCard.cardFrameView.layer.shadowOpacity = Style.cardShadowOpacity
+        promptCard.cardFrameView.layer.shadowRadius = Style.cardShadowRadius
 
-        promptCardView.addSubview(promptCard)
-        promptCardView.pinSubviewToSafeArea(promptCard)
+        promptCardView.addSubview(promptCard.cardFrameView)
+        promptCardView.pinSubviewToAllEdges(promptCard.cardFrameView)
     }
 
     func configureDescription() {

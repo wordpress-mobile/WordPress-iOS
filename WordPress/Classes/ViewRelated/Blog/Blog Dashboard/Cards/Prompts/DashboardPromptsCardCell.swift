@@ -13,33 +13,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
-    /// When set to true, a "default" version of the card is displayed. That is:
-    /// - `maxAvatarCount` number of avatars.
-    /// - `maxAvatarCount` answer count.
-    /// - `examplePrompt` prompt label.
-    /// - disabled user interaction.
-    private var forExampleDisplay: Bool = false {
-        didSet {
-            isUserInteractionEnabled = false
-            isAnswered = false
-        }
-    }
-
-    // MARK: - Private Properties
-
-    // Used to present the menu sheet for contextual menu.
-    // NOTE: Remove this once we drop support for iOS 13.
-    private weak var presenterViewController: BlogDashboardViewController? = nil
-
-    private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Constants.spacing
-        return stackView
-    }()
-
-    private lazy var cardFrameView: BlogDashboardCardFrameView = {
+    // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
+    lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.title = Strings.cardFrameTitle
@@ -60,6 +35,32 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
 
         return frameView
+    }()
+
+    // MARK: - Private Properties
+
+    /// When set to true, a "default" version of the card is displayed. That is:
+    /// - `maxAvatarCount` number of avatars.
+    /// - `maxAvatarCount` answer count.
+    /// - `examplePrompt` prompt label.
+    /// - disabled user interaction.
+    private var forExampleDisplay: Bool = false {
+        didSet {
+            isUserInteractionEnabled = false
+            isAnswered = false
+        }
+    }
+
+    // Used to present the menu sheet for contextual menu.
+    // NOTE: Remove this once we drop support for iOS 13.
+    private weak var presenterViewController: BlogDashboardViewController? = nil
+
+    private lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = Constants.spacing
+        return stackView
     }()
 
     // MARK: Top row views
