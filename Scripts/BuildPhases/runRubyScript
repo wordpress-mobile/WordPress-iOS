@@ -1,0 +1,36 @@
+#!/bin/bash -eu
+
+# Use this to run a Ruby script from a "Script Build Phase" from Xcode.
+#
+# Since shell scripts ran by Xcode  do not source the user shell profile, typical user setups like the configurations of `rbenv` or `rvm` would not be set up properly.
+# This script check if either rbenv or rvm is installed on the Mac and runs the setup steps as appririate, before running the ruby script via `bundle exec`
+#
+# Usage:
+#   `runRubyScript <script_name.rb> <optional_args>`
+#
+# Where <script_name.rb` can be either an absolute path, or a path relative to this runRubyScript wrapper script.
+#
+# Inspiration: https://mgrebenets.github.io/xcode/2019/04/04/xcode-build-phases-and-environment
+#
+
+if command -v rbenv; then
+  echo "Configuring rbenv..."
+  # Add `rbenv` ships to PATH
+  export PATH="$HOME/.rbenv/shims:$PATH"
+  # Check expected ruby version
+  echo "Checking version..."
+  rbenv version
+elif [[ -f "$HOME/.rvm/bin" ]]; then
+  echo "Configuring rvm..."
+  # Add `rvm` to PATH
+  export PATH="$HOME/.rvm/bin:$PATH"
+  # Load the expected Ruby version from `.ruby-version` — See https://rvm.io/rvm/basics#post-install-configuration
+  RUBY_VERSION="$(cat .ruby-version)"
+  source "$(rvm "${RUBY_VERSION}" do rvm env --path | tail -n1)"
+fi
+
+# Run the script with bundle exec
+echo "Running the script using 'bundle exec' ..."
+cd "$(dirname "${BASH_SOURCE[0]}")"
+bundle exec ruby "$@"
+cd -
