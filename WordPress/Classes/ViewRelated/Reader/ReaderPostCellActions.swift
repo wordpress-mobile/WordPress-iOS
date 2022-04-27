@@ -89,11 +89,13 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost, let origin = origin else {
+        guard let post = provider as? ReaderPost,
+              let origin = origin,
+              let _followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        followCommentsService = FollowCommentsService(post: post)
+        followCommentsService = _followCommentsService
 
         ReaderMenuAction(logged: isLoggedIn).execute(
             post: post,
@@ -102,7 +104,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             anchor: sender,
             vc: origin,
             source: ReaderPostMenuSource.card,
-            followCommentsService: followCommentsService!
+            followCommentsService: _followCommentsService
         )
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
@@ -129,10 +131,10 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         ReaderFollowAction().execute(with: post,
                                      context: context,
                                      completion: { follow in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
-                                     }, failure: { follow, _ in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
-                                     })
+            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
+        }, failure: { follow, _ in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
+        })
     }
 
     func toggleSavedForLater(for post: ReaderPost) {
