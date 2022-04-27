@@ -35,6 +35,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     var selectedIndexPath: IndexPath? = nil
     private var sections: [SiteDesignSection] = []
     internal override var categorySections: [CategorySection] { get { sections }}
+
     var siteDesigns = RemoteSiteDesigns() {
         didSet {
             if oldValue.categories.count == 0 {
@@ -66,6 +67,9 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
             secondaryActionTitle: TextContent.previewButton
         )
+
+        // show mobile thumbnails for all devices
+        selectedPreviewDevice = .mobile
     }
 
     required init?(coder: NSCoder) {
@@ -130,9 +134,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     override func secondaryActionSelected(_ sender: Any) {
         guard let design = selectedDesign else { return }
 
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, createsSite: createsSite, onDismissWithDeviceSelected: { [weak self] device in
-            self?.selectedPreviewDevice = device
-        }, completion: completion)
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: PreviewDevice.default, createsSite: createsSite, onDismissWithDeviceSelected: nil, completion: completion)
 
         let navController = GutenbergLightNavigationController(rootViewController: previewVC)
         navController.modalPresentationStyle = .pageSheet
