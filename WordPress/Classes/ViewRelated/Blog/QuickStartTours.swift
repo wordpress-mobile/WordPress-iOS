@@ -397,6 +397,13 @@ struct QuickStartMediaUploadTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
+    var waypoints: [WayPoint] = {
+        let step1DescriptionBase = NSLocalizedString("Select %@ to see your current library.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionTarget = NSLocalizedString("Media", comment: "The menu item to select during a guided tour.")
+        let step1: WayPoint = (element: .mediaScreen, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.image)))
+        return [step1]
+    }()
+
     let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading new media.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
