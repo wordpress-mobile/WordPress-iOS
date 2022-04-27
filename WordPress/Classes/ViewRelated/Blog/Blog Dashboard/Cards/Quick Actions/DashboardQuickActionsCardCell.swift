@@ -147,6 +147,13 @@ extension DashboardQuickActionsCardCell {
 
                     self?.statsButton.shouldShowSpotlight = true
                     self?.autoScrollToStatsButton()
+                case .mediaScreen:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                        return
+                    }
+
+                    self?.mediaButton.shouldShowSpotlight = true
+                    self?.autoScrollToMediaButton()
                 default:
                     break
                 }
@@ -160,6 +167,10 @@ extension DashboardQuickActionsCardCell {
 
     private func autoScrollToStatsButton() {
         scrollView.scrollHorizontallyToView(statsButton, animated: true)
+    }
+
+    private func autoScrollToMediaButton() {
+        scrollView.scrollHorizontallyToView(mediaButton, animated: true)
     }
 }
 

@@ -164,7 +164,7 @@ final class BlogDashboardViewController: UIViewController {
                 switch element {
                 case .setupQuickStart, .removeQuickStart:
                     self.loadCardsFromCache()
-                case .stats:
+                case .stats, .mediaScreen:
                     if self.embeddedInScrollView {
                         self.mySiteScrollView?.scrollToTop(animated: true)
                     } else {
