@@ -12,7 +12,6 @@ class ReaderTabViewController: UIViewController {
     }()
 
     private let settingsButton: SpotlightableButton = SpotlightableButton(type: .custom)
-    private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
@@ -81,22 +80,21 @@ class ReaderTabViewController: UIViewController {
     }
 
     func setupNavigationButtons() {
+        // Search Button
+        let searchButton = UIBarButtonItem(image: UIImage.gridicon(.search),
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapSearchButton))
+        searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
+
         // Settings Button
         settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
         settingsButton.setImage(.gridicon(.cog), for: .normal)
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
-
-        // Search Button
-        searchButton.spotlightOffset = ReaderTabConstants.spotlightOffset
-        searchButton.setImage(.gridicon(.search), for: .normal)
-        searchButton.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
-        searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-
         let settingsButton = UIBarButtonItem(customView: settingsButton)
-        let searchBarButton = UIBarButtonItem(customView: searchButton)
 
-        navigationItem.rightBarButtonItems = [searchBarButton, settingsButton]
+        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
     }
 
     override func loadView() {
