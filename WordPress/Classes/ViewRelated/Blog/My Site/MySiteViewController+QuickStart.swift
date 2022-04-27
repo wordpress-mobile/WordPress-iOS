@@ -9,16 +9,20 @@ extension MySiteViewController {
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
                 switch element {
-                case .noSuchElement:
+                case .noSuchElement, .newpost:
                     self?.additionalSafeAreaInsets = .zero
+
                 case .siteIcon, .siteTitle, .viewSite:
                     self?.scrollView.scrollToTop(animated: true)
+                    self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
-                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
                 case .siteMenu:
                     self?.siteMenuSpotlightIsShown = true
+                    self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
-                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
+                case .pages, .editHomepage, .sharing, .stats, .readerTab, .notifications:
+                    self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
+
                 default:
                     break
                 }
@@ -27,6 +31,6 @@ extension MySiteViewController {
     }
 
     private enum Constants {
-        static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
+        static let quickStartNoticeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
     }
 }
