@@ -2,8 +2,8 @@
 
 # Use this to run a Ruby script from a "Script Build Phase" from Xcode.
 #
-# Since shell scripts ran by Xcode  do not source the user shell profile, typical user setups like the configurations of `rbenv` or `rvm` would not be set up properly.
-# This script check if either rbenv or rvm is installed on the Mac and runs the setup steps as appririate, before running the ruby script via `bundle exec`
+# Since shell scripts ran by Xcode do not source the user shell profile, typical user setups like the configurations of `rbenv` or `rvm` would not be set up properly.
+# This script check if either `rbenv` or `rvm` is installed on the Mac and runs the setup steps as appropriate, before running the ruby script via `bundle exec`
 #
 # Usage:
 #   `runRubyScript <script_name.rb> <optional_args>`
