@@ -386,6 +386,20 @@ struct QuickStartNotificationsTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of checking your notifications.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
+struct QuickStartMediaUploadTour: QuickStartTour {
+    let key = "quick-start-media-upload-tour"
+    let analyticsKey = "media"
+    let title = NSLocalizedString("Upload photos or videos", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Upload photos or videos", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Bring media straight from your device or camera to your site.", comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.addImage)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading new media.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
+}
+
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
 private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
 struct QuickStartCongratulationsTour: QuickStartTour {
