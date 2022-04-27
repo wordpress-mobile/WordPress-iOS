@@ -337,6 +337,7 @@ import Foundation
 
     // Quick Start
     case quickStartStarted
+    case quickStartTapped
 
     /// A String that represents the event
     var value: String {
@@ -878,6 +879,8 @@ import Foundation
         // Quick Start
         case .quickStartStarted:
             return "quick_start_started"
+        case .quickStartTapped:
+            return "quick_start_tapped"
 
         // Site Intent Question
         case .enhancedSiteCreationIntentQuestionCanceled:
