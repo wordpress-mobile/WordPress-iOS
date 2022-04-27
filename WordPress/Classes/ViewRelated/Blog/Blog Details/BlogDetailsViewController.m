@@ -1448,7 +1448,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
 
 - (void)showPeople

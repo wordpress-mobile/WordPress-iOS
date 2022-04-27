@@ -62,7 +62,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         controller.navigationItem.largeTitleDisplayMode = .never
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
-        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
+        QuickStartTourGuide.shared.visited(.mediaScreen)
     }
 
     deinit {
