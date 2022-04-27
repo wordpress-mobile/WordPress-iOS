@@ -335,7 +335,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPromptForExistingSiteHandler)
+            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
             return
         }
 
