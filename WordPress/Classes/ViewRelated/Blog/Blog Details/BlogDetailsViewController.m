@@ -909,6 +909,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             callback:^{
                    [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
                                                             }];
+    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
     [rows addObject:mediaRow];
 
     BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
