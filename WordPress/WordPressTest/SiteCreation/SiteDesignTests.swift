@@ -73,4 +73,19 @@ class SiteDesignTests: XCTestCase {
         let currentTitle = siteDesignPreviewVC.primaryActionButton.currentTitle
         XCTAssertEqual(expectedPrimaryTitle, currentTitle)
     }
+
+    /// Tests that the selected preview device cannot be changed from mobile
+    func testSiteDesignPreviewDeviceIsAlwaysMobile() throws {
+
+        // given
+        let siteDesignVC = SiteDesignContentCollectionViewController(createsSite: false) { _ in }
+        let expectedDevice = PreviewDeviceSelectionViewController.PreviewDevice.mobile
+        XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
+
+        // when
+        siteDesignVC.selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
+
+        // then
+        XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
+    }
 }
