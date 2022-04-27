@@ -82,8 +82,8 @@ private extension OnboardingEnableNotificationsViewController {
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
         titleLabel.textColor = .text
 
-        subTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .regular)
-        subTitleLabel.textColor = .text
+        subTitleLabel.font = .preferredFont(forTextStyle: .title3)
+        subTitleLabel.textColor = .secondaryLabel
     }
 
     func updateContent() {
