@@ -14,7 +14,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     }
 
     // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
-    lazy var cardFrameView: BlogDashboardCardFrameView = {
+    private(set) lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.title = Strings.cardFrameTitle
