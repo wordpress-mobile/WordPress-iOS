@@ -255,6 +255,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
+        QuickStartTourGuide.shared.visited(.mediaAdd)
         showOptionsMenu()
     }
 
