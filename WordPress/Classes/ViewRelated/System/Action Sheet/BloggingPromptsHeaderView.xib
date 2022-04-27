@@ -48,7 +48,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqk-gy-gv5">
-                            <rect key="frame" x="125" y="48" width="99" height="22.5"/>
+                            <rect key="frame" x="125" y="48" width="99" height="23.5"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Answer Prompt">
                                 <directionalEdgeInsets key="contentInsets" top="16" leading="0.0" bottom="16" trailing="0.0"/>
@@ -58,7 +58,7 @@
                             </connections>
                         </button>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="74j-gh-nmq">
-                            <rect key="frame" x="100.5" y="70.5" width="148" height="20.5"/>
+                            <rect key="frame" x="100.5" y="71.5" width="148" height="20.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✓ Answered" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttu-81-Rjc">
                                     <rect key="frame" x="0.0" y="0.0" width="94.5" height="20.5"/>
@@ -79,11 +79,8 @@
                             </subviews>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9KN-UC-IRC">
-                            <rect key="frame" x="0.0" y="91" width="349" height="1"/>
+                            <rect key="frame" x="0.0" y="92" width="349" height="0.0"/>
                             <color key="backgroundColor" systemColor="separatorColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="Fe2-Kr-HkA"/>
-                            </constraints>
                         </view>
                     </subviews>
                     <constraints>
@@ -107,6 +104,7 @@
                 <outlet property="answeredLabel" destination="ttu-81-Rjc" id="qUD-tY-fry"/>
                 <outlet property="answeredStackView" destination="74j-gh-nmq" id="mWB-ce-YU3"/>
                 <outlet property="containerStackView" destination="HBh-15-Hby" id="ce7-Wx-TUC"/>
+                <outlet property="dividerView" destination="9KN-UC-IRC" id="Wnd-hZ-yio"/>
                 <outlet property="promptLabel" destination="Rye-vB-0gG" id="VoE-0W-soe"/>
                 <outlet property="shareButton" destination="deu-kl-qJY" id="4ur-ok-U6p"/>
                 <outlet property="titleLabel" destination="BJN-uB-YYG" id="zxX-90-kDD"/>

@@ -9,6 +9,7 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var answeredStackView: UIStackView!
     @IBOutlet private weak var answeredLabel: UILabel!
     @IBOutlet private weak var shareButton: UIButton!
+    @IBOutlet private weak var dividerView: UIView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,6 +35,7 @@ private extension BloggingPromptsHeaderView {
         configureSpacing()
         configureStrings()
         configureStyles()
+        configureConstraints()
     }
 
     func configureSpacing() {
@@ -63,6 +65,12 @@ private extension BloggingPromptsHeaderView {
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+    }
+
+    func configureConstraints() {
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+        ])
     }
 
     // MARK: - Constants
