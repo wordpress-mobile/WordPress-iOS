@@ -29,7 +29,8 @@ extension MySiteViewController {
         case .showMeAround:
             // Start the quick start
             if let blog = blog {
-                QuickStartTourGuide.shared.setup(for: blog, type: .existingSite)
+                let type: QuickStartType = FeatureFlag.quickStartForExistingUsers.enabled ? .existingSite : .newSite
+                QuickStartTourGuide.shared.setup(for: blog, type: type)
             }
 
         case .skip, .reader, .notifications:
