@@ -74,18 +74,41 @@ class SiteDesignTests: XCTestCase {
         XCTAssertEqual(expectedPrimaryTitle, currentTitle)
     }
 
-    /// Tests that the selected preview device cannot be changed from mobile
+    /// Tests that the preview device on the Design view cannot be changed
     func testSiteDesignPreviewDeviceIsAlwaysMobile() throws {
 
         // given
         let siteDesignVC = SiteDesignContentCollectionViewController(createsSite: false) { _ in }
         let expectedDevice = PreviewDeviceSelectionViewController.PreviewDevice.mobile
-        XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
 
         // when
+        XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
         siteDesignVC.selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
 
         // then
         XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
+    }
+
+    /// Tests that the preview device on the Preview view can be changed
+    func testSiteDesignPreviewPreviewDeviceCanBeChanged() throws {
+
+        // given
+        let siteDesignPreviewVC = SiteDesignPreviewViewController(
+            siteDesign: remoteDesign,
+            selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice.mobile,
+            createsSite: true,
+            onDismissWithDeviceSelected: nil,
+            completion: {design in }
+        )
+        let expectedDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
+
+        // when
+        siteDesignPreviewVC.loadViewIfNeeded()
+        siteDesignPreviewVC.viewDidLoad()
+        XCTAssertEqual(siteDesignPreviewVC.selectedPreviewDevice, PreviewDeviceSelectionViewController.PreviewDevice.mobile)
+        siteDesignPreviewVC.selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
+
+        // then
+        XCTAssertEqual(siteDesignPreviewVC.selectedPreviewDevice, expectedDevice)
     }
 }
