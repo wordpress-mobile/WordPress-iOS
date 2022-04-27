@@ -521,6 +521,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         visualEffects.forEach { (visualEffect) in
             visualEffect.isHidden = true
         }
+        navigationController?.navigationBar.backgroundColor = .systemBackground
     }
 
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
