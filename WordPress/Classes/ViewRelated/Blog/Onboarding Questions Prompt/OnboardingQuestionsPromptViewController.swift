@@ -2,7 +2,7 @@ import UIKit
 import WordPressUI
 import WordPressShared
 
-class OnboardingQuestionsPromptViewController: UIViewController, UINavigationControllerDelegate {
+class OnboardingQuestionsPromptViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
 
@@ -120,7 +120,7 @@ private extension OnboardingQuestionsPromptViewController {
 }
 
 // MARK: - UINavigation Controller Delegate
-extension OnboardingQuestionsPromptViewController {
+extension OnboardingQuestionsPromptViewController: UINavigationControllerDelegate {
     func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
         return supportedInterfaceOrientations
     }

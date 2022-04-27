@@ -22,10 +22,17 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.delegate = self
+
         applyStyles()
         updateContent()
 
         coordinator.notificationsDisplayed(option: option)
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return [.portrait, .portraitUpsideDown]
     }
 }
 
@@ -53,6 +60,17 @@ extension OnboardingEnableNotificationsViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         updateContent(for: traitCollection)
+    }
+}
+
+// MARK: - UINavigation Controller Delegate
+extension OnboardingEnableNotificationsViewController: UINavigationControllerDelegate {
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
     }
 }
 
