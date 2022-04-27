@@ -36,6 +36,11 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     private var sections: [SiteDesignSection] = []
     internal override var categorySections: [CategorySection] { get { sections }}
 
+    override var selectedPreviewDevice: PreviewDevice {
+        get { .mobile }
+        set { /* no op */ }
+    }
+
     var siteDesigns = RemoteSiteDesigns() {
         didSet {
             if oldValue.categories.count == 0 {
@@ -67,9 +72,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
             secondaryActionTitle: TextContent.previewButton
         )
-
-        // show mobile thumbnails for all devices
-        selectedPreviewDevice = .mobile
     }
 
     required init?(coder: NSCoder) {
