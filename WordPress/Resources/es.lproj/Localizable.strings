@@ -40,7 +40,7 @@
 "%1$@ to fix this threat." = "%1$@ para corregir esta amenaza.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix threats." = "%1$@ para corregir las amenazas.";
+"%1$@ to fix threats." = "Hacked to trigger linter error";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
 "%1$d Comment" = "%1$d comentario";
