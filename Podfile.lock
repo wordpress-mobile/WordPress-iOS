@@ -499,7 +499,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.5)
-  - WPMediaPicker (1.8.3)
+  - WPMediaPicker (1.8.3-beta.1)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -595,7 +595,7 @@ DEPENDENCIES:
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.3)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `issue/386-empty-view-placement`)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.74.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -644,7 +644,6 @@ SPEC REPOS:
     - WordPressMocks
     - WordPressShared
     - WordPressUI
-    - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -753,6 +752,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.74.0
+  WPMediaPicker:
+    :branch: issue/386-empty-view-placement
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.74.0/third-party-podspecs/Yoga.podspec.json
 
@@ -768,6 +770,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.74.0
+  WPMediaPicker:
+    :commit: 0c09a04d38553c440e396a59b490f0406729fd5d
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -857,7 +862,7 @@ SPEC CHECKSUMS:
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
-  WPMediaPicker: 0f4f20c7f661b46d33283f1ac2adceb98718fffa
+  WPMediaPicker: 0bcc78d3f1f2e14a369f318bbe930b8ea1d65ae5
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 2ca978c40e0fd6d7f54bcb1602bc0cbbc79454a7
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -869,6 +874,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 4ec8f8e1fe1324b2079ae08999bcc274e8232655
+PODFILE CHECKSUM: 4a6b2e4e9e08956fd4025238314208173585b4ca
 
 COCOAPODS: 1.11.2
