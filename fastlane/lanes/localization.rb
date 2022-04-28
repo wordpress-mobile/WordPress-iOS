@@ -215,8 +215,8 @@ platform :ios do
 
     # Finally, also download the AppStore metadata (app title, keywords, etc.)
     # @FIXME: Replace this whole lane with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
-    download_wordpress_localized_app_store_metadata
-    download_jetpack_localized_app_store_metadata
+    # download_wordpress_localized_app_store_metadata
+    # download_jetpack_localized_app_store_metadata
   end
 
   # Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app.
