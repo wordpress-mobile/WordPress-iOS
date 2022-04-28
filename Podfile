@@ -22,7 +22,7 @@ workspace 'WordPress.xcworkspace'
 def wordpress_shared
     #pod 'WordPressShared', '~> 1.17.1'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/remove-design-thumbnail-button-tapped'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'feature/site-design-revamp'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
     #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
