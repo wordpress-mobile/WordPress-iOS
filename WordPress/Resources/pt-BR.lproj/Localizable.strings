@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-12 18:22:19+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:10:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: pt_BR */
@@ -8329,9 +8329,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Usar ícone de botão";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use este link para integrar os membros da sua equipe sem ter que convidá-los um por um. Qualquer pessoa que visitar este URL poderá se inscrever em sua organização, mesmo que tenha recebido o link de outra pessoa, então certifique-se de compartilhá-lo com pessoas de confiança.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Usar este site";
 
@@ -9435,6 +9432,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Para adicionar fotos ou vídeos aos seus posts.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Use este link para integrar os membros da sua equipe sem ter que convidá-los um por um. Qualquer pessoa que visitar este URL poderá se inscrever em sua organização, mesmo que tenha recebido o link de outra pessoa, então certifique-se de compartilhá-lo com pessoas de confiança.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Salvar como rascunho";

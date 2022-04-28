@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-08 12:47:02+0000 */
+/* Translation-Revision-Date: 2022-04-27 10:59:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: sq_AL */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Pëlqime";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d përgjigje";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d përgjigje";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d nga %2$d të plotësuara";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Një kartelë përmban rregullsi kodi dashakeq";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Një emër i mirë do të ishte i shkurtër dhe që mbahet mend.\nMund ta ndryshoni më vonë.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Një rrugë e re për të krijuar dhe botuar lëndë tërheqëse në sajtin tuaj.";
 
@@ -480,6 +489,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Shtoni Bllok Para";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "Shtoni Blloqe";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Shtoje Lëndën te Postimi";
@@ -620,6 +632,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Të mëtejshme";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "Pas %@";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -804,6 +819,9 @@ translators: Block name. %s: The localized block name */
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Miratoje";
+
+/* Approves a Comment */
+"Approve Comment" = "Miratojeni Komentin";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1035,6 +1053,9 @@ translators: Block name. %s: The localized block name */
 
 /* Beauty site intent topic */
 "Beauty" = "Bukuri";
+
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Para %@";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Dita Më e Mirë";
@@ -1398,6 +1419,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Po kontrollohen blerjet…";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Pjellë e %@";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Zgjidhni";
 
@@ -1436,6 +1460,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Zgjidhni një kohë";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Zgjidhni një temë nga lista më poshtë, ose shtypni tuajën.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Zgjidhni një ikonë sajti unike";
@@ -2444,6 +2471,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Për përpunim, prekeni dyfish dhe mbajeni të prekur";
 
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Prekeni dy herë dhe mbajeni të prekur, që ta lëvizni këtë element menuje sipër a poshtë. Që t’i ndryshoni hierarkinë, lëvizeni horizontalisht.";
+
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Që të shtoni një bllok, prekeni dy herë";
 
@@ -2575,6 +2605,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Përsëdyte bllokun";
+
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "P.sh., Modë, Poezi, Politikë";
 
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Çdo bllok ka rregullimet e veta. Për t’i gjetur, klikoni mbi një bllok. Rregullimet e tij do të shfaqen te paneli në fund të ekranit.";
@@ -3363,6 +3396,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Jepini sajtit tuaj një emër që pasqyron personalitetin dhe subjektin e tij. Përshtypja e parë ka vlerë!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Jepini sajtit tuaj një emër";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "Jepini your%@website një emër";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3759,6 +3799,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Instalimi i shtojcës së parë në sajtin tuaj mund të hajë deri në 1 minutë. Gjatë kësaj kohe, s’do të jeni në gjendje të bëni ndryshime në sajtin tuaj.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Ju intereson të ndërtoni publikun tuaj? Shihni ndihmëzat tona kryesuese?";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Dizajn Mjedisesh të Brendshëm";
@@ -4443,6 +4486,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Koha Më Popullore";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Lëvizeni %@";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "Shpjere Figurën Prapa";
@@ -5941,6 +5987,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Hiqe bllokun";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Hiqe nga pulti";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
@@ -8081,6 +8130,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Unapproves a comment */
 "Unapprove" = "Shmiratoje";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Shmiratojeni Komentin";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Heq miratimin e Komentit.";
 
@@ -8304,9 +8356,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Use icon button" = "Përdor buton ikone";
-
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Përdoreni këtë lidhje për hapat e mirëseardhjes për anëtarët e ekipit tuaj, pa u dashur t’i ftoni tek e tek. Gjithkush që viziton këtë URL, do të jetë në gjendje të regjistrohet në entin tuaj, madje edhe nëse lidhjen e marrin nga dikush tjetër, ndaj sigurohuni se ua jepni personave të besuar.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Përdor këtë sajt";
@@ -9409,6 +9458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Që të shtohen foto ose video te postimet tuaja.";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Përdoreni këtë lidhje për mirëseardhjen e anëtarëve të ekipit tuaj, pa pasur nevojë t’i ftoni ata tek për tek. Cilido që viziton këtë URL, do të jetë në gjendje të regjistrohet në entin tuaj, madje edhe nëse lidhjen e morën nga dikush tjetër, ndaj kujdesuni t’ua jepni personave të besuar.";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Ruaje si Skicë";
 
@@ -9579,4 +9631,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Përdorues & Autorë";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Me Përgjigje";
 

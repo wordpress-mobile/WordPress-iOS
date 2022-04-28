@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-18 23:18:45+0000 */
+/* Translation-Revision-Date: 2022-04-23 13:27:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: sv_SE */
@@ -1315,6 +1315,9 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Var försiktig!";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "Cast the movie of your life.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorier";
@@ -1421,6 +1424,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrollerar inköp...";
+
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Child of %@";
 
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Välj";
@@ -3805,6 +3811,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Det kan ta upp till en minut att installera ditt första tillägg på webbplatsen. Under denna tid kan du inte göra några ändringar på din webbplats.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Interested in building your audience? Check out our top tips";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Inredningsdesign";
@@ -8378,9 +8387,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Använd ikonknapp";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Använd denna länk för att lägga till gruppmedlemmar utan att behöva bjuda in dem en i taget. Vem som helst som besöker denna URL kommer att kunna registrera sig i er organisation, även om de fått länken från någon annan. Se därför till att bara ge länken till personer du litar på.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Använd den här webbplatsen";
 
@@ -9487,6 +9493,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "För att lägga till bilder eller videoklipp i dina inlägg.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Använd denna länk för att låta dina teammedlemmar gå med utan att behöva bjuda in dem en och en. Vem som helst som besöker denna URL kan registrera sig till din organisation, även om de har fått länken från någon annan, så se till att du delar den med betrodda personer.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Spara som utkast";
