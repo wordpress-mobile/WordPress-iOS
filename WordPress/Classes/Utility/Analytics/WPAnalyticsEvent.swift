@@ -80,6 +80,7 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
+    case readerMoreToggleFollowConversation
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -472,6 +473,8 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerToggleCommentNotifications:
             return "reader_toggle_comment_notifications"
+        case .readerMoreToggleFollowConversation:
+            return "reader_more_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:

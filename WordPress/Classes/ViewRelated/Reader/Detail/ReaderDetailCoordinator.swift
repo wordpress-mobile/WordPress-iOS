@@ -412,11 +412,11 @@ class ReaderDetailCoordinator {
         guard let post = post,
               let context = post.managedObjectContext,
               let viewController = viewController,
-              let _followCommentsService = FollowCommentsService(post: post) else {
+              let followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        followCommentsService = _followCommentsService
+        self.followCommentsService = followCommentsService
 
         ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(
             post: post,
@@ -425,7 +425,7 @@ class ReaderDetailCoordinator {
             anchor: anchorView,
             vc: viewController,
             source: ReaderPostMenuSource.details,
-            followCommentsService: _followCommentsService
+            followCommentsService: followCommentsService
         )
 
         WPAnalytics.trackReader(.readerArticleDetailMoreTapped)

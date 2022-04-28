@@ -49,8 +49,8 @@ struct ReaderPostMenuButtonTitles {
     static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
     static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
-    static let followConversation = NSLocalizedString("Follow Conversation", comment: "Verb. Button title. Follow the comments on a post.")
-    static let unFollowConversation = NSLocalizedString("Unfollow Conversation", comment: "Verb. Button title. The user is following the comments on a post.")
+    static let followConversation = NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
+    static let unFollowConversation = NSLocalizedString("Unfollow conversation", comment: "Verb. Button title. The user is following the comments on a post.")
 }
 
 /// A collection of helper methods used by the Reader.

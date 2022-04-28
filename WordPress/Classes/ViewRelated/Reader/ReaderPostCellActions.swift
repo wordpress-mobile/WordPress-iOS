@@ -91,11 +91,11 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         guard let post = provider as? ReaderPost,
               let origin = origin,
-              let _followCommentsService = FollowCommentsService(post: post) else {
+              let followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        followCommentsService = _followCommentsService
+        self.followCommentsService = followCommentsService
 
         ReaderMenuAction(logged: isLoggedIn).execute(
             post: post,
@@ -104,7 +104,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             anchor: sender,
             vc: origin,
             source: ReaderPostMenuSource.card,
-            followCommentsService: _followCommentsService
+            followCommentsService: followCommentsService
         )
         WPAnalytics.trackReader(.postCardMoreTapped)
     }

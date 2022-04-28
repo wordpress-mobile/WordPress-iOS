@@ -1,3 +1,4 @@
+import UIKit
 /// Encapsulates a command to create and handle the extended menu for each post in Reader
 final class ReaderShowMenuAction {
     private let isLoggedIn: Bool
@@ -131,7 +132,7 @@ final class ReaderShowMenuAction {
                                             ReaderShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
         })
 
-        // Comment Subscription (Follow Comments by Email)
+        // Comment Subscription (Follow Comments by Email & Notifications)
         if post.canSubscribeComments {
             let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
             alertController.addActionWithTitle(
@@ -141,6 +142,7 @@ final class ReaderShowMenuAction {
                     if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                         ReaderSubscribeCommentsAction().execute(with: post, context: context, followCommentsService: followCommentsService) {
                             (vc as? ReaderDetailViewController)?.updateFollowButtonState()
+                            Self.trackToggleCommentSubscription(isSubscribed: post.isSubscribedComments, post: post, sourceViewController: vc)
                         }
                     }
                 })
@@ -175,4 +177,24 @@ final class ReaderShowMenuAction {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 
+    private static func trackToggleCommentSubscription(isSubscribed: Bool, post: ReaderPost, sourceViewController: UIViewController) {
+        var properties = [String: Any]()
+        properties[WPAppAnalyticsKeyFollowAction] = isSubscribed ? "followed" : "unfollowed"
+        properties["notifications_enabled"] = isSubscribed
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeySource] = Self.sourceForTrackingEvents(sourceViewController: sourceViewController)
+        WPAnalytics.trackReader(.readerMoreToggleFollowConversation, properties: properties)
+    }
+
+    private static func sourceForTrackingEvents(sourceViewController: UIViewController) -> String {
+        if sourceViewController is ReaderCommentsViewController {
+            return "reader_threaded_comments"
+        } else if sourceViewController is ReaderDetailViewController {
+            return "reader_post_details_comments"
+        } else if sourceViewController is ReaderStreamViewController {
+            return "reader"
+        }
+
+        return "unknown"
+    }
 }
