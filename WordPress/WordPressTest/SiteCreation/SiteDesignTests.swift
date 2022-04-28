@@ -88,27 +88,4 @@ class SiteDesignTests: XCTestCase {
         // then
         XCTAssertEqual(siteDesignVC.selectedPreviewDevice, expectedDevice)
     }
-
-    /// Tests that the preview device on the Preview view can be changed
-    func testSiteDesignPreviewPreviewDeviceCanBeChanged() throws {
-
-        // given
-        let siteDesignPreviewVC = SiteDesignPreviewViewController(
-            siteDesign: remoteDesign,
-            selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice.mobile,
-            createsSite: true,
-            onDismissWithDeviceSelected: nil,
-            completion: {design in }
-        )
-        let expectedDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
-
-        // when
-        siteDesignPreviewVC.loadViewIfNeeded()
-        siteDesignPreviewVC.viewDidLoad()
-        XCTAssertEqual(siteDesignPreviewVC.selectedPreviewDevice, PreviewDeviceSelectionViewController.PreviewDevice.mobile)
-        siteDesignPreviewVC.selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.tablet
-
-        // then
-        XCTAssertEqual(siteDesignPreviewVC.selectedPreviewDevice, expectedDevice)
-    }
 }
