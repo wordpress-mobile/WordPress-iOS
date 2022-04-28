@@ -406,11 +406,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self cancelCompletedToursIfNeeded];
     [self createUserActivity];
     [self startAlertTimer];
-
-    if (self.shouldScrollToViewSite == YES) {
-        [self scrollToElement:QuickStartTourElementViewSite];
-        self.shouldScrollToViewSite = NO;
-    }
     
     QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
     
@@ -421,8 +416,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide visited: QuickStartTourElementSiteMenu];
     }
     
-    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
-
+    tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
@@ -1026,7 +1020,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                callback:^{
         [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
     }];
-    viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
 
@@ -1184,7 +1177,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [WPStyleGuide configureTableViewCell:cell];
     }
-    if ([[QuickStartTourGuide shared] isCurrentElement:row.quickStartIdentifier]) {
+    
+    QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
+    
+    
+    BOOL shouldShowSpotlight =
+        tourGuide.entryPointForCurrentTour == QuickStartTourEntryPointBlogDetails ||
+        tourGuide.currentTourMustBeShownFromBlogDetails;
+    
+    if ([tourGuide isCurrentElement:row.quickStartIdentifier] && shouldShowSpotlight) {
         row.accessoryView = [QuickStartSpotlightView new];
     } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
         row.accessoryView = nil;
@@ -1401,7 +1402,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                [parentVC.scrollView scrollToView:cell animated:true];
+                [parentVC.scrollView scrollVerticallyToView:cell animated:true];
             }
             rowCount++;
         }
@@ -1624,17 +1625,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                        animated:YES
                      completion:nil];
 
+    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
+    
     QuickStartTourGuide *guide = [QuickStartTourGuide shared];
 
     if ([guide isCurrentElement:QuickStartTourElementViewSite]) {
         [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+        [parentVC toggleSpotlightOnSitePicker];
     } else {
         // Just mark as completed if we've viewed the site and aren't
         //  currently working on the View Site tour.
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
     parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
@@ -1707,7 +1710,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         
         // quick start was just enabled
         if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
-            [self showQuickStartCustomize];
+            [self showQuickStart];
         }
         [self reloadTableViewPreservingSelection];
     }

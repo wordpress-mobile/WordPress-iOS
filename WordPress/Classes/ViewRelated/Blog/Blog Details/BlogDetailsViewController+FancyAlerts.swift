@@ -17,23 +17,13 @@ extension BlogDetailsViewController {
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
-                case .pages, .editHomepage, .sharing, .stats:
-                    self?.scroll(to: info)
-                case .viewSite:
-                    self?.scroll(to: info)
-
-                    guard let self = self,
-                        let navigationController = self.navigationController,
-                        navigationController.visibleViewController != self else {
+                case .stats:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDetails else {
                         return
                     }
-
-                    self.dismiss(animated: true) {
-                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                        self.shouldScrollToViewSite = true
-
-                        navigationController.popToRootViewController(animated: true)
-                    }
+                    fallthrough
+                case .pages, .editHomepage, .sharing:
+                    self?.scroll(to: info)
                 default:
                     break
                 }
@@ -108,18 +98,24 @@ extension BlogDetailsViewController {
                 return false
             }
 
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
+            return QuickStartTourGuide.quickStartEnabled(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
         }
 
-        return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        return QuickStartTourGuide.quickStartEnabled(for: blog)
     }
 
-    @objc func showQuickStartCustomize() {
-        showQuickStart(with: .customize)
-    }
+    @objc func showQuickStart() {
+        let currentCollections = QuickStartFactory.collections(for: blog)
+        guard let collectionToShow = currentCollections.first else {
+            return
+        }
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
+        let navigationViewController = UINavigationController(rootViewController: checklist)
+        present(navigationViewController, animated: true)
 
-    @objc func showQuickStartGrow() {
-        showQuickStart(with: .grow)
+        QuickStartTourGuide.shared.visited(.checklist)
+
+        createButtonCoordinator?.hideCreateButtonTooltip()
     }
 
     @objc func cancelCompletedToursIfNeeded() {
@@ -127,16 +123,6 @@ extension BlogDetailsViewController {
             // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
             QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
         }
-    }
-
-    private func showQuickStart(with type: QuickStartType) {
-        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
-        let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true)
-
-        QuickStartTourGuide.shared.visited(.checklist)
-
-        createButtonCoordinator?.hideCreateButtonTooltip()
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {

@@ -24,7 +24,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsPerformanceImprovements
     case siteIntentQuestion
     case landInTheEditor
+    case statsNewAppearance
+    case statsNewInsights
     case siteName
+    case quickStartForExistingUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -78,9 +81,19 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .landInTheEditor:
             return false
+        case .statsNewAppearance:
+            return false
+        case .statsNewInsights:
+            return false
         case .siteName:
             return true
+        case .quickStartForExistingUsers:
+            return BuildConfiguration.current == .localDeveloper
         }
+    }
+
+    var disabled: Bool {
+        return enabled == false
     }
 
     /// This key must match the server-side one for remote feature flagging
@@ -150,8 +163,14 @@ extension FeatureFlag {
             return "Site Intent Question"
         case .landInTheEditor:
             return "Land In The Editor"
+        case .statsNewAppearance:
+            return "New Appearance for Stats"
+        case .statsNewInsights:
+            return "New Cards for Stats Insights"
         case .siteName:
             return "Site Name"
+        case .quickStartForExistingUsers:
+            return "Quick Start For Existing Users"
         }
     }
 

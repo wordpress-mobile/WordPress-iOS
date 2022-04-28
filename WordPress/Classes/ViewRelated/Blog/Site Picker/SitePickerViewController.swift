@@ -187,8 +187,8 @@ extension SitePickerViewController {
         blog.settings?.name = title
         blogDetailHeaderView.setTitleLoading(true)
 
-        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(),
-                                                    silentlyForBlog: blog)
+        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(blog: blog),
+                                            silentlyForBlog: blog)
 
         blogService.updateSettings(for: blog, success: { [weak self] in
             NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)

@@ -502,16 +502,26 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// - The primary and secondary action buttons are always displayed.
     /// - The defaultActionButton is never displayed.
     /// Therefore:
-    /// - itemSelectionChanged is called to accomplish the two points above.
+    /// - The footerView with the action buttons is shown.
     /// - The selectedStateButtonsContainer axis is set to vertical.
     /// - The primaryActionButton is moved to the top of the stack view.
     func configureVerticalButtonView() {
         usesVerticalActionButtons = true
-        itemSelectionChanged(true)
+
+        footerView.backgroundColor = .systemBackground
+        footerHeightContraint.constant = footerHeight
         selectedStateButtonsContainer.axis = .vertical
 
         selectedStateButtonsContainer.removeArrangedSubview(primaryActionButton)
         selectedStateButtonsContainer.insertArrangedSubview(primaryActionButton, at: 0)
+    }
+
+    /// A public interface to hide the header blur.
+    func hideHeaderVisualEffects() {
+        visualEffects.forEach { (visualEffect) in
+            visualEffect.isHidden = true
+        }
+        navigationController?.navigationBar.backgroundColor = .systemBackground
     }
 
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
@@ -535,7 +545,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             UIView.animate(withDuration: animationSpeed, delay: 0, options: .curveEaseInOut, animations: {
                 self.footerHeightContraint.constant = hasSelectedItem ? self.footerHeight : 0
                 self.footerView.setNeedsLayout()
-                self.footerView.layoutIfNeeded()
+                // call layoutIfNeeded on the parent view to smoothly update constraints
+                // more info: https://stackoverflow.com/a/12664093
+                self.view.layoutIfNeeded()
             })
             return
         }

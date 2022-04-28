@@ -7,7 +7,7 @@ import UIKit
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-class TopTotalsCell: UITableViewCell, NibLoadable {
+class TopTotalsCell: StatsBaseCell, NibLoadable {
 
     // MARK: - Properties
 
@@ -19,6 +19,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    private var originalSubtitleStackViewTopConstant: CGFloat = 0
+    private var subtitlesStackViewHeightConstraint: NSLayoutConstraint? = nil
 
     private var forDetails = false
     private var limitRowsDisplayed = true
@@ -32,11 +34,19 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        subtitlesStackViewHeightConstraint = subtitleStackView.heightAnchor.constraint(equalToConstant: 0)
+        originalSubtitleStackViewTopConstant = subtitlesStackViewTopConstraint.constant
+    }
+
     // MARK: - Configure
 
     func configure(itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
+                   statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
@@ -48,6 +58,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
+        self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.siteStatsReferrerDelegate = siteStatsReferrerDelegate
@@ -112,16 +123,29 @@ private extension TopTotalsCell {
     ///
     func setSubtitleVisibility() {
         subtitleStackView.layoutIfNeeded()
-        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
             bottomSeparatorLine.isHidden = true
-            rowsStackViewTopConstraint.constant = subtitlesProvided ? subtitleHeight : 0
+
+            updateSubtitleConstraints(showSubtitles: subtitlesProvided)
             return
         }
 
-        let showSubtitles = !dataRows.isEmpty && subtitlesProvided
-        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
+        updateSubtitleConstraints(showSubtitles: !dataRows.isEmpty && subtitlesProvided)
+    }
+
+    private func updateSubtitleConstraints(showSubtitles: Bool) {
+        if showSubtitles {
+            rowsStackViewTopConstraint.constant = originalSubtitleStackViewTopConstant
+            subtitlesStackViewTopConstraint.constant = originalSubtitleStackViewTopConstant
+            subtitlesStackViewHeightConstraint?.isActive = false
+            subtitleStackView.isHidden = false
+        } else {
+            rowsStackViewTopConstraint.constant = 0
+            subtitlesStackViewTopConstraint.constant = 0
+            subtitlesStackViewHeightConstraint?.isActive = true
+            subtitleStackView.isHidden = true
+        }
     }
 
     // MARK: - Child Row Handling

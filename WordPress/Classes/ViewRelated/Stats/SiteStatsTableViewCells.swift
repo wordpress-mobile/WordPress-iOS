@@ -192,6 +192,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
+    let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let showTotalCount: Bool
     let action: ImmuTableAction? = nil
@@ -203,6 +204,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
         }
 
         cell.configure(tabsData: tabsData,
+                       statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        showTotalCount: showTotalCount)
     }
@@ -233,6 +235,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
+                       statSection: dataRows.first?.statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
@@ -260,6 +263,28 @@ struct TwoColumnStatsRow: ImmuTableRow {
         cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
+
+struct MostPopularTimeInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsMostPopularTimeInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let data: StatsMostPopularTimeData?
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
 
 // MARK: - Insights Management
 

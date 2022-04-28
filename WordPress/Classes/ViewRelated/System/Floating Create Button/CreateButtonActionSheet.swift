@@ -11,8 +11,9 @@ class CreateButtonActionSheet: ActionSheetViewController {
     }
 
     init(actions: [ActionSheetItem]) {
+        let headerView = FeatureFlag.bloggingPrompts.enabled ? BloggingPromptsHeaderView.loadFromNib() : nil
         let buttons = actions.map { $0.makeButton() }
-        super.init(headerTitle: Constants.title, buttons: buttons)
+        super.init(headerView: headerView, headerTitle: Constants.title, buttons: buttons)
     }
 
     required init?(coder: NSCoder) {

@@ -85,6 +85,7 @@ private extension FeatureIntroductionViewController {
     func configureView() {
         navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
         scrollView.addSubview(contentView)
+        hideHeaderVisualEffects()
 
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
