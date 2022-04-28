@@ -47,6 +47,10 @@ final class AvatarTrainView: UIView {
         }
     }
 
+    override func layoutSubviews() {
+        avatarStackView.arrangedSubviews.forEach({ configureBorder(for: $0) })
+    }
+
 }
 
 // MARK: Private Helpers
@@ -62,7 +66,6 @@ private extension AvatarTrainView {
     func makeAvatarImageView(with avatarURL: URL? = nil) -> UIImageView {
         let imageView = CircularImageView(image: placeholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        configureBorder(for: imageView)
 
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: imageHeight),
@@ -77,6 +80,7 @@ private extension AvatarTrainView {
     }
 
     func configureBorder(for view: UIView) {
+        view.layer.masksToBounds = true
         view.layer.borderWidth = Constants.borderWidth
         view.layer.borderColor = UIColor.listForeground.cgColor
     }
