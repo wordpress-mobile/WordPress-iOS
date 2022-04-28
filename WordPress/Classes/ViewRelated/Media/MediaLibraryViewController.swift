@@ -448,6 +448,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     // MARK: ClipsToBounds KVO Observer
 
+    /// The content view of the navigation bar causes the spotlight view on the add button to be clipped.
+    /// This ensures that `clipsToBounds` of the content view is always `false`.
+    /// Without this, `clipsToBounds` reverts to `true` at some point during the view lifecycle. This happens asynchronously,
+    /// so we can't confidently reset it. Hence the need for KVO.
     private func startObservingNavigationBarClipsToBounds() {
         kvoTokens = navigationController?.navigationBar.subviews.map({ subview in
             return subview.observe(\.clipsToBounds, options: .new, changeHandler: { view, change in
