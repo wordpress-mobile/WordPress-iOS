@@ -10,7 +10,7 @@ class Xcodeproj {
     /// Semantic type for strings that correspond to an object' UUID in the `pbxproj` file
     typealias ObjectUUID = String
 
-    /// Builds an `Xcodeproj` instance by parsing the an `.xcodeproj` or `pbxproj` file at the provided URL
+    /// Builds an `Xcodeproj` instance by parsing the `.xcodeproj` or `.pbxproj` file at the provided URL.
     init(url: URL) throws {
         projectURL = url.pathExtension == "xcodeproj" ? URL(fileURLWithPath: "project.pbxproj", relativeTo: url) : url
         let data = try Data(contentsOf: projectURL)
@@ -19,7 +19,7 @@ class Xcodeproj {
     }
 
     /// An internal mapping listing the parent ObjectUUID for each ObjectUUID.
-    /// - Build by recursing top-to-bottom in the various `PBXGroup` objects of the project to visit all the children objects,
+    /// - Built by recursing top-to-bottom in the various `PBXGroup` objects of the project to visit all the children objects,
     ///   and storing which parent object they belong to.
     /// - Used by the `resolveURL` method to find the real path of a `PBXReference`, as we need to navigate from the `PBXReference` object
     ///   up into the chain of parent `PBXGroup` containers to construct the successive relative paths of groups using `sourceTree = "<group>"`
