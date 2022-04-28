@@ -362,7 +362,7 @@ private extension DashboardPromptsCardCell {
         static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
         static var avatarPlaceholderImage: UIImage {
             // this needs to be computed so the color is correct depending on the user interface style.
-            return UIImage(color: .systemGray4)
+            return UIImage(color: .init(light: .quaternarySystemFill, dark: .systemGray4))
         }
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
         static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
