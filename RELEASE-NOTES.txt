@@ -4,6 +4,7 @@
 * [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
 * [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
 * [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
+* [**] Follow Conversation flow now enables in-app notifications by default. They were updated to be opt-out rather than opt-in.
 
 19.7
 -----
