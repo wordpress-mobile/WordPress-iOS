@@ -158,5 +158,5 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)updateTableView:(nullable void(^)(void))completion;
 - (void)preloadMetadata;
-- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl  onCompletion:(nullable void(^)(void))completion;
+- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
 @end

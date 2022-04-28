@@ -427,8 +427,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        guard let section = currentSection else {
-            return
+
+        guard let blog = blog,
+              let section = currentSection else {
+                  return
         }
 
         switch section {
@@ -438,12 +440,24 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                     return
                 }
 
-                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
-
         case .dashboard:
+
+            /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
+            /// the dashboard updating fast.
             blogDashboardViewController?.pulledToRefresh { [weak self] in
                 self?.refreshControl.endRefreshing()
+            }
+
+            blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
         }
 
