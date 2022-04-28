@@ -154,7 +154,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             var barButtonItems = [UIBarButtonItem]()
 
-            if blog.userCanUploadMedia && assetCount > 0 {
+            if blog.userCanUploadMedia {
                 addButton.spotlightOffset = Constants.addButtonSpotlightOffset
                 let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
                 let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
