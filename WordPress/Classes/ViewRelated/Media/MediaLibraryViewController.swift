@@ -18,6 +18,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let noResultsView = NoResultsViewController.controller()
     fileprivate let addButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
+    fileprivate var kvoTokens: [NSKeyValueObservation]?
+
     fileprivate var selectedAsset: Media? = nil
 
     fileprivate var capturePresenter: WPMediaCapturePresenter?
@@ -69,6 +71,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     deinit {
         unregisterChangeObserver()
         unregisterUploadCoordinatorObserver()
+        stopObservingNavigationBarClipsToBounds()
     }
 
     private class func pickerOptions() -> WPMediaPickerOptions {
@@ -105,6 +108,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         if let collectionView = collectionView {
             WPStyleGuide.configureColors(view: view, collectionView: collectionView)
         }
+
+        navigationController?.navigationBar.subviews.forEach ({ $0.clipsToBounds = false })
+        startObservingNavigationBarClipsToBounds()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -438,6 +444,21 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         if let uuid = uploadObserverUUID {
             MediaCoordinator.shared.removeObserver(withUUID: uuid)
         }
+    }
+
+    // MARK: ClipsToBounds KVO Observer
+
+    private func startObservingNavigationBarClipsToBounds() {
+        kvoTokens = navigationController?.navigationBar.subviews.map({ subview in
+            return subview.observe(\.clipsToBounds, options: .new, changeHandler: { view, change in
+                guard let newValue = change.newValue, newValue else { return }
+                view.clipsToBounds = false
+            })
+        })
+    }
+
+    private func stopObservingNavigationBarClipsToBounds() {
+        kvoTokens?.forEach({ $0.invalidate() })
     }
 }
 
