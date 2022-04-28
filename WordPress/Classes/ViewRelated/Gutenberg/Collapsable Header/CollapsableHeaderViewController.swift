@@ -508,11 +508,20 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     func configureVerticalButtonView() {
         usesVerticalActionButtons = true
 
+        footerView.backgroundColor = .systemBackground
         footerHeightContraint.constant = footerHeight
         selectedStateButtonsContainer.axis = .vertical
 
         selectedStateButtonsContainer.removeArrangedSubview(primaryActionButton)
         selectedStateButtonsContainer.insertArrangedSubview(primaryActionButton, at: 0)
+    }
+
+    /// A public interface to hide the header blur.
+    func hideHeaderVisualEffects() {
+        visualEffects.forEach { (visualEffect) in
+            visualEffect.isHidden = true
+        }
+        navigationController?.navigationBar.backgroundColor = .systemBackground
     }
 
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In

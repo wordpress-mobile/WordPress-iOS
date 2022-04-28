@@ -98,11 +98,11 @@ private extension ReaderDetailLikesView {
         case (true, 0):
             summaryLabel.attributedText = highlightedText(SummaryLabelFormats.onlySelf)
         case (true, 1):
-            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singularWithSelf))
+            summaryLabel.attributedText = highlightedText(SummaryLabelFormats.singularWithSelf)
         case (true, _) where totalLikes > 1:
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.pluralWithSelf, totalLikes))
         case (false, 1):
-            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singular))
+            summaryLabel.attributedText = highlightedText(SummaryLabelFormats.singular)
         default:
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.plural, totalLikes))
         }
