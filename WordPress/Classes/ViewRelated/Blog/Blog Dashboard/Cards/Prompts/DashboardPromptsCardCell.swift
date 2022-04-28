@@ -259,6 +259,14 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         super.init(coder: coder)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        //  refresh when the appearance style changed so the placeholder images are correctly recolored.
+        if let previousTraitCollection = previousTraitCollection,
+            previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            refreshStackView()
+        }
+    }
+
     // MARK: - Public Methods
 
     func configureForExampleDisplay() {
@@ -352,7 +360,10 @@ private extension DashboardPromptsCardCell {
 
     struct Style {
         static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
-        static let avatarPlaceholderImage = UIImage(color: .systemGray4)
+        static var avatarPlaceholderImage: UIImage {
+            // this needs to be computed so the color is correct depending on the user interface style.
+            return UIImage(color: .systemGray4)
+        }
         static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
         static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
         static let answerInfoLabelColor = UIColor.primary
