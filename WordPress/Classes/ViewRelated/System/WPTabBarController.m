@@ -457,6 +457,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                 [self alertQuickStartThatReaderWasTapped];
                 break;
             }
+            case WPTabNotifications: {
+                [self alertQuickStartThatNotificationsWasTapped];
+                break;
+            }
             default: break;
         }
 

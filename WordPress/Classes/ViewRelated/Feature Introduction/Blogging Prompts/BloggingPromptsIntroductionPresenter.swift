@@ -5,7 +5,7 @@ import UIKit
 /// and directs the flow according to which action button is tapped.
 /// - Try it: the answer prompt flow.
 /// - Remind me: the blogging reminders flow.
-/// - If the account has multiple sites, a site picker is displayed before either of the above.
+/// - If the account has multiple sites, a site selector is displayed before either of the above.
 
 class BloggingPromptsIntroductionPresenter: NSObject {
 
@@ -19,6 +19,9 @@ class BloggingPromptsIntroductionPresenter: NSObject {
         vc.presenter = self
         return UINavigationController(rootViewController: vc)
     }()
+
+    private var siteSelectorNavigationController: UINavigationController?
+    private var selectedBlog: Blog?
 
     private lazy var accountSites: [Blog]? = {
         return AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
@@ -49,31 +52,73 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     // MARK: - Action Handling
 
     func primaryButtonSelected() {
-        accountHasMultipleSites ? showSiteSelector() : showPostCreation()
+        showSiteSelectorIfNeeded(completion: { [weak self] in
+            self?.showPostCreation()
+        })
     }
 
     func secondaryButtonSelected() {
-        accountHasMultipleSites ? showSiteSelector() : showRemindersScheduling()
+        showSiteSelectorIfNeeded(completion: { [weak self] in
+            self?.showRemindersScheduling()
+        })
     }
 
 }
 
 private extension BloggingPromptsIntroductionPresenter {
 
-    func showSiteSelector() {
-        // TODO: show site selector
-        navigationController.dismiss(animated: true, completion: nil)
+    func showSiteSelectorIfNeeded(completion: @escaping () -> Void) {
+        guard accountHasMultipleSites else {
+            completion()
+            return
+        }
+
+        let successHandler: BlogSelectorSuccessDotComHandler = { [weak self] (dotComID: NSNumber?) in
+            self?.selectedBlog = self?.accountSites?.first(where: { $0.dotComID == dotComID })
+            self?.siteSelectorNavigationController?.dismiss(animated: true)
+            completion()
+        }
+
+        let dismissHandler: BlogSelectorDismissHandler = {
+            completion()
+        }
+
+        let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: nil,
+                                                                successHandler: successHandler,
+                                                                dismissHandler: dismissHandler)
+
+        selectorViewController.displaysOnlyDefaultAccountSites = true
+        selectorViewController.dismissOnCompletion = false
+        selectorViewController.dismissOnCancellation = true
+
+        let selectorNavigationController = UINavigationController(rootViewController: selectorViewController)
+        self.navigationController.present(selectorNavigationController, animated: true)
+        siteSelectorNavigationController = selectorNavigationController
     }
 
     func showPostCreation() {
-        // TODO: show post creation
-        navigationController.dismiss(animated: true, completion: nil)
+        guard let blog = blogToUse(),
+              let presentingViewController = presentingViewController else {
+            navigationController.dismiss(animated: true)
+            return
+        }
+
+        // TODO: pre-populate post content with prompt content.
+        // Do something similar to `ReaderReblogPresenter:prepareForReblog`?
+        let editor = EditPostViewController(blog: blog)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .bloggingPromptsFeatureIntroduction
+
+        navigationController.dismiss(animated: true, completion: { [weak self] in
+            presentingViewController.present(editor, animated: false)
+            self?.trackPostEditorShown(blog)
+        })
     }
 
     func showRemindersScheduling() {
-        guard let blog = accountSites?.first,
+        guard let blog = blogToUse(),
         let presentingViewController = presentingViewController else {
-            navigationController.dismiss(animated: true, completion: nil)
+            navigationController.dismiss(animated: true)
             return
         }
 
@@ -82,6 +127,16 @@ private extension BloggingPromptsIntroductionPresenter {
                                           for: blog,
                                           source: .bloggingPromptsFeatureIntroduction)
         })
+    }
+
+    func blogToUse() -> Blog? {
+        return accountHasMultipleSites ? selectedBlog : accountSites?.first
+    }
+
+    func trackPostEditorShown(_ blog: Blog) {
+        WPAppAnalytics.track(.editorCreatedPost,
+                             withProperties: [WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"],
+                             with: blog)
     }
 
 }

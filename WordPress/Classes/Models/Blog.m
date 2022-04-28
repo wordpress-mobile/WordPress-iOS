@@ -87,6 +87,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic quickStartTours;
+@dynamic quickStartTypeValue;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;

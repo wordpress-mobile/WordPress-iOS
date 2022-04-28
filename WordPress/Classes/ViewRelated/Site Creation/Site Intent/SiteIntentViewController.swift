@@ -189,7 +189,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
 
         availableVerticals = SiteIntentData.allVerticals
         tableView.reloadData()
-        tableView.scrollToView(searchBar.searchTextField, animated: true)
+        tableView.scrollVerticallyToView(searchBar.searchTextField, animated: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

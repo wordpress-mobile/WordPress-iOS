@@ -45,10 +45,12 @@ class ActionSheetViewController: UIViewController {
         }
     }
 
+    let headerView: UIView?
     let buttons: [ActionSheetButton]
     let headerTitle: String
 
-    init(headerTitle: String, buttons: [ActionSheetButton]) {
+    init(headerView: UIView? = nil, headerTitle: String, buttons: [ActionSheetButton]) {
+        self.headerView = headerView
         self.headerTitle = headerTitle
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
@@ -100,10 +102,13 @@ class ActionSheetViewController: UIViewController {
 
         NSLayoutConstraint.activate(buttonConstraints)
 
-        let stackView = UIStackView(arrangedSubviews: [
-            gripButton,
-            headerLabelView
-        ] + buttonViews)
+        let stackView = UIStackView(arrangedSubviews: [gripButton])
+
+        if let headerView = headerView {
+            stackView.addArrangedSubview(headerView)
+        }
+
+        stackView.addArrangedSubviews([headerLabelView] + buttonViews)
 
         stackView.setCustomSpacing(Constants.Header.spacing, after: gripButton)
         stackView.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)
