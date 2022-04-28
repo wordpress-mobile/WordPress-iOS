@@ -16,6 +16,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var isLoading: Bool = false
     fileprivate let noResultsView = NoResultsViewController.controller()
+    fileprivate let addButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -120,6 +121,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaAdd)
+    }
+
     // MARK: - Update view state
 
     fileprivate func updateViewState(for assetCount: Int) {
@@ -143,11 +149,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             var barButtonItems = [UIBarButtonItem]()
 
             if blog.userCanUploadMedia && assetCount > 0 {
-                let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+                addButton.spotlightOffset = Constants.addButtonSpotlightOffset
+                let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
+                let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
+                addButton.setImage(image, for: .normal)
+                addButton.contentEdgeInsets = Constants.addButtonContentInset
+                addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
                 addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
                 addButton.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
 
-                barButtonItems.append(addButton)
+                let addBarButton = UIBarButtonItem(customView: addButton)
+                barButtonItems.append(addBarButton)
             }
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
@@ -157,10 +169,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
                 barButtonItems.append(editButton)
 
-                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
-            } else {
-                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
             }
+            navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
         }
     }
 
@@ -256,6 +266,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     @objc fileprivate func addTapped() {
         QuickStartTourGuide.shared.visited(.mediaAdd)
+        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaAdd)
         showOptionsMenu()
     }
 
@@ -741,5 +752,14 @@ extension MediaLibraryViewController: TenorPickerDelegate {
             mediaCoordinator.addMedia(from: tenorMedia, to: blog, analyticsInfo: info)
             WPAnalytics.track(.tenorUploaded)
         }
+    }
+}
+
+// MARK: Constants
+
+extension MediaLibraryViewController {
+    private enum Constants {
+        static let addButtonSpotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+        static let addButtonContentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
     }
 }
