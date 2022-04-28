@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Card cell prompting the user to create their first post
 final class DashboardFirstPostCardCell: DashboardEmptyPostsCardCell, BlogDashboardCardConfigurable {
@@ -48,7 +49,7 @@ class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Create your first post"
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.title3)
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

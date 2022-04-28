@@ -200,6 +200,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        defer {
+            if AppConfiguration.showsWhatIsNew {
+                WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+            }
+        }
+
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
@@ -211,18 +218,20 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             userDefaults.notificationsTabAccessCount += 1
         }
 
+        // Don't show the notification primers if we already asked during onboarding
+        if userDefaults.onboardingNotificationsPromptDisplayed, userDefaults.notificationsTabAccessCount == 1 {
+            return
+        }
+
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             self.showInlinePrompt()
         }
+
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
-
-        if AppConfiguration.showsWhatIsNew {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1939,13 +1948,12 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func showNotificationPrimerAlertIfNeeded() {
-
-        guard !userDefaults.notificationPrimerAlertWasDisplayed else {
+        guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.displayAlertDelay) {
-                self.showNotificationPrimerAlert()
+            self.showNotificationPrimerAlert()
         }
     }
 
