@@ -427,24 +427,30 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        guard let section = currentSection else {
-            return
+
+        guard let blog = blog,
+              let section = currentSection else {
+                  return
         }
 
-        switch section {
-        case .siteMenu:
-            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
-                guard let self = self else {
-                    return
+        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            self.updateNavigationTitle(for: blog)
+            self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+
+            switch section {
+            case .siteMenu:
+                self.blogDetailsViewController?.pulledToRefresh(with: self.refreshControl)
+            case .dashboard:
+                self.blogDashboardViewController?.pulledToRefresh {
+                    self.refreshControl.endRefreshing()
                 }
-
-                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
             }
 
-        case .dashboard:
-            blogDashboardViewController?.pulledToRefresh { [weak self] in
-                self?.refreshControl.endRefreshing()
-            }
         }
 
         WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])

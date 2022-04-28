@@ -1757,22 +1757,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 #pragma mark - Pull To Refresh
-- (void)pulledToRefresh {
-    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
-}
 
-- (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
+- (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl {
+    
+    [self configureTableViewData];
+    [self reloadTableViewPreservingSelection];
 
-    [self updateTableView: ^{
-        // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
-        // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
-        // down to refresh the site.
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            [refreshControl endRefreshing];
-            
-            completion();
-        });
-    }];
+    // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
+    // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
+    // down to refresh the site.
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [refreshControl endRefreshing];
+    });
 }
 
 @end
