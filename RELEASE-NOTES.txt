@@ -2,7 +2,10 @@
 -----
 * [**] Self hosted sites are not restricted by video length during media uploads [https://github.com/wordpress-mobile/WordPress-iOS/pull/18414]
 * [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
+* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
+* [*] Quick Start: Updated the Reader tour. The tour now highlights the Discover tab and guides users to follow topics via the Settings screen. [#18450]
 * [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
+* [**] We'll now ask users logging in which area of the app they'd like to focus on to build towards a more personalized experience. [#18385]
 
 19.7
 -----

@@ -33,6 +33,11 @@ final class BlogDashboardViewController: UIViewController {
         return refreshControl
     }()
 
+    /// The "My Site" parent view controller
+    var mySiteViewController: MySiteViewController? {
+        return parent as? MySiteViewController
+    }
+
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
         return view.superview?.superview as? UIScrollView
@@ -69,7 +74,7 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
-        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
+        QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
@@ -147,7 +152,30 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            guard let self = self else {
+                return
+            }
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .setupQuickStart, .removeQuickStart:
+                    self.loadCardsFromCache()
+                case .stats:
+                    if self.embeddedInScrollView {
+                        self.mySiteScrollView?.scrollToTop(animated: true)
+                    } else {
+                        self.collectionView.scrollToTop(animated: true)
+                    }
+                    self.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
+                default:
+                    break
+                }
+            }
+        }
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -266,6 +294,7 @@ extension BlogDashboardViewController {
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
+        static let bottomPaddingForQuickStartNotices: CGFloat = 80
     }
 }
 

@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
-@objc enum QuickStartTourOrigin: Int {
+@objc enum QuickStartTourEntryPoint: Int {
     case unknown
     case blogDetails
     case blogDashboard
@@ -15,6 +15,7 @@ open class QuickStartTourGuide: NSObject {
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
+    private var taskCompleteWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
@@ -23,8 +24,20 @@ open class QuickStartTourGuide: NSObject {
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
 
-    /// Represents the origin from which the current tour is triggered
-    @objc var currentTourOrigin: QuickStartTourOrigin = .unknown
+    /// Represents the current entry point.
+    @objc var currentEntryPoint: QuickStartTourEntryPoint = .unknown
+
+    /// Represents the entry point where the current tour in progress was triggered from.
+    @objc var entryPointForCurrentTour: QuickStartTourEntryPoint = .unknown
+
+    /// A flag indicating if the current tour can only be shown from blog details or not.
+    @objc var currentTourMustBeShownFromBlogDetails: Bool {
+        guard let tourState = currentTourState else {
+            return false
+        }
+
+        return tourState.tour.mustBeShownInBlogDetails
+    }
 
     @objc static let shared = QuickStartTourGuide()
 
@@ -44,6 +57,10 @@ open class QuickStartTourGuide: NSObject {
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
         WPAnalytics.track(.quickStartStarted)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.setupQuickStart])
     }
 
     func setupWithDelay(for blog: Blog, type: QuickStartType, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -57,6 +74,10 @@ open class QuickStartTourGuide: NSObject {
         blog.quickStartType = .undefined
         endCurrentTour()
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.removeQuickStart])
     }
 
     @objc static func quickStartEnabled(for blog: Blog) -> Bool {
@@ -156,7 +177,9 @@ open class QuickStartTourGuide: NSObject {
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
-        if currentTourOrigin == .blogDashboard && tour.shownInBlogDetails && !UIDevice.isPad() {
+        if currentEntryPoint == .blogDashboard &&
+            tour.mustBeShownInBlogDetails &&
+            !UIDevice.isPad() {
             var tourToAdjust = tour
             let siteMenuWaypoint = QuickStartSiteMenu.waypoint
             tourToAdjust.waypoints.insert(siteMenuWaypoint, at: 0)
@@ -175,6 +198,7 @@ open class QuickStartTourGuide: NSObject {
             return
         }
 
+        entryPointForCurrentTour = currentEntryPoint
         tourInProgress = true
         showCurrentStep()
     }
@@ -229,7 +253,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing, .siteMenu]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerDiscoverSettings]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -242,6 +266,8 @@ open class QuickStartTourGuide: NSObject {
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
+            showTaskCompleteNoticeIfNeeded(for: tourState.tour)
+            entryPointForCurrentTour = .unknown
             completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
 
@@ -254,6 +280,17 @@ open class QuickStartTourGuide: NSObject {
         } else {
             showNextStep(nextStep)
         }
+    }
+
+    private func showTaskCompleteNoticeIfNeeded(for tour: QuickStartTour) {
+
+        guard let taskCompleteDescription = tour.taskCompleteDescription else {
+            return
+        }
+
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
+        let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     private func showNextStep(_ nextStep: TourState) {

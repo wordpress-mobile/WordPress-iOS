@@ -416,8 +416,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide visited: QuickStartTourElementSiteMenu];
     }
     
-    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
-
+    tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
@@ -1178,7 +1177,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [WPStyleGuide configureTableViewCell:cell];
     }
-    if ([[QuickStartTourGuide shared] isCurrentElement:row.quickStartIdentifier]) {
+    
+    QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
+    
+    
+    BOOL shouldShowSpotlight =
+        tourGuide.entryPointForCurrentTour == QuickStartTourEntryPointBlogDetails ||
+        tourGuide.currentTourMustBeShownFromBlogDetails;
+    
+    if ([tourGuide isCurrentElement:row.quickStartIdentifier] && shouldShowSpotlight) {
         row.accessoryView = [QuickStartSpotlightView new];
     } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
         row.accessoryView = nil;
@@ -1395,7 +1402,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                [parentVC.scrollView scrollToView:cell animated:true];
+                [parentVC.scrollView scrollVerticallyToView:cell animated:true];
             }
             rowCount++;
         }

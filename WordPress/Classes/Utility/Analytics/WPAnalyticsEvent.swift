@@ -338,6 +338,16 @@ import Foundation
     // Quick Start
     case quickStartStarted
 
+    // Onboarding Question Prompt
+    case onboardingQuestionsDisplayed
+    case onboardingQuestionsItemSelected
+    case onboardingQuestionsSkipped
+
+    // Onboarding Enable Notifications Prompt
+    case onboardingEnableNotificationsDisplayed
+    case onboardingEnableNotificationsSkipped
+    case onboardingEnableNotificationsEnableTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -895,6 +905,21 @@ import Foundation
         case .enhancedSiteCreationIntentQuestionExperiment:
             return "enhanced_site_creation_intent_question_experiment"
 
+        // Onboarding Question Prompt
+        case .onboardingQuestionsDisplayed:
+            return "onboarding_questions_displayed"
+        case .onboardingQuestionsItemSelected:
+            return "onboarding_questions_item_selected"
+        case .onboardingQuestionsSkipped:
+            return "onboarding_questions_skipped"
+
+        // Onboarding Enable Notifications Prompt
+        case .onboardingEnableNotificationsDisplayed:
+            return "onboarding_enable_notifications_displayed"
+        case .onboardingEnableNotificationsSkipped:
+            return "onboarding_enable_notifications_skipped"
+        case .onboardingEnableNotificationsEnableTapped:
+            return "onboarding_enable_notifications_enable_tapped"
         // Site Name
         case .enhancedSiteCreationSiteNameCanceled:
             return "enhanced_site_creation_site_name_canceled"

@@ -335,7 +335,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPromptForExistingSiteHandler)
+            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
             return
         }
 
@@ -344,32 +345,32 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        //Present the epilogue view
+        // Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
         }
 
-        epilogueViewController.credentials = credentials
-
-        epilogueViewController.onBlogSelected = { [weak self] blog in
+        let onBlogSelected: ((Blog) -> Void) = { [weak self] blog in
             guard let self = self else {
                 return
             }
 
-            self.recentSiteService.touch(blog: blog)
+            // If the user just signed in, refresh the A/B assignments
+            ABTest.start()
 
-            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                } else {
-                    self.windowManager.showAppUI(for: blog)
-                }
-                return
-            }
-            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
-            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
+            self.recentSiteService.touch(blog: blog)
+            self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
         }
+
+        // If the user has only 1 blog, skip the site selector and go right to the next step
+        if numberOfBlogs() == 1, let firstBlog = firstBlog() {
+            onBlogSelected(firstBlog)
+            return
+        }
+
+        epilogueViewController.credentials = credentials
+        epilogueViewController.onBlogSelected = onBlogSelected
 
         epilogueViewController.onCreateNewSite = {
             let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
@@ -383,6 +384,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         navigationController.delegate = epilogueViewController
         navigationController.pushViewController(epilogueViewController, animated: true)
+
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
@@ -430,11 +432,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return true
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
-
-        return numberOfBlogs > 0
+        return numberOfBlogs() > 0
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
@@ -530,6 +528,68 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             }
         }
     }
+}
+
+// MARK: - Blog Count Helpers
+private extension WordPressAuthenticationManager {
+    private func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+
+        return numberOfBlogs
+    }
+
+    private func firstBlog() -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs?.first
+    }
+}
+
+// MARK: - Onboarding Questions Prompt
+private extension WordPressAuthenticationManager {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+        let windowManager = self.windowManager
+
+        let coordinator = OnboardingQuestionsCoordinator()
+        coordinator.navigationController = navigationController
+
+        let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
+
+        coordinator.onDismiss = { selectedOption in
+            self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
+
+            let completion: (() -> Void)? = {
+                let userInfo = ["option": selectedOption]
+                NotificationCenter.default.post(name: .onboardingPromptWasDismissed, object: nil, userInfo: userInfo)
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+
+    /// To prevent a weird jump from the MySite tab to the reader/notifications tab
+    /// We'll pre-switch to the users selected tab before the login flow dismisses
+    private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
+        if option == .reader {
+            WPTabBarController.sharedInstance().showReaderTab()
+        } else if option == .notifications {
+            WPTabBarController.sharedInstance().showNotificationsTab()
+        }
+    }
+
+
 }
 
 // MARK: - Quick Start Prompt
