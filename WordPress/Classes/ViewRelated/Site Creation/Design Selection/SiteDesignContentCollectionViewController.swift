@@ -41,6 +41,8 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         set { /* no op */ }
     }
 
+    lazy var previewViewSelectedPreviewDevice = selectedPreviewDevice
+
     var siteDesigns = RemoteSiteDesigns() {
         didSet {
             if oldValue.categories.count == 0 {
@@ -136,7 +138,15 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     override func secondaryActionSelected(_ sender: Any) {
         guard let design = selectedDesign else { return }
 
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: PreviewDevice.default, createsSite: createsSite, onDismissWithDeviceSelected: nil, completion: completion)
+        let previewVC = SiteDesignPreviewViewController(
+            siteDesign: design,
+            selectedPreviewDevice: previewViewSelectedPreviewDevice,
+            createsSite: createsSite,
+            onDismissWithDeviceSelected: { [weak self] device in
+                self?.previewViewSelectedPreviewDevice = device
+            },
+            completion: completion
+        )
 
         let navController = GutenbergLightNavigationController(rootViewController: previewVC)
         navController.modalPresentationStyle = .pageSheet
