@@ -16,7 +16,8 @@ import UIKit
 
         let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .quickStartTapped, properties: [:])
 
-        tourStateView.configure(blog: blog, sourceController: viewController,
+        tourStateView.configure(blog: blog,
+                                sourceController: viewController,
                                 checklistTappedTracker: checklistTappedTracker)
     }
 
