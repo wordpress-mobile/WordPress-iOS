@@ -70,7 +70,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         super.init(
             analyticsLocation: "site_creation",
             mainTitle: TextContent.mainTitle,
-            prompt: "",
             primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
             secondaryActionTitle: TextContent.previewButton
         )
@@ -82,7 +81,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        promptView.isHidden = true
         navigationItem.backButtonTitle = TextContent.backButtonTitle
         fetchSiteDesigns()
         configureCloseButton()
