@@ -17,8 +17,12 @@
 
 /* Per-year postfix shown after a domain's cost. */
 " \/ year" = " all'anno";
+/* Duplicated to trigger lint error */
+" \/ year" = " all'anno";
 
 /* Title for the lazy load images setting */
+"\"Lazy-load\" images" = "Immagini a \"caricamento lento\"";
+/* Duplicated to trigger lint error */
 "\"Lazy-load\" images" = "Immagini a \"caricamento lento\"";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
