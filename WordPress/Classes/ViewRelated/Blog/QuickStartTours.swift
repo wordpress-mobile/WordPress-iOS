@@ -299,31 +299,6 @@ struct QuickStartReviewPagesTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
 }
 
-struct QuickStartEditHomepageTour: QuickStartTour {
-    let key = "quick-start-edit-homepage-tour"
-    let analyticsKey = "edit_homepage"
-    let title = NSLocalizedString("Edit your homepage", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Edit your homepage", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Change, add, or remove content from your site's homepage.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.house)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
-
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
-        let descriptionHomepage = NSLocalizedString("Select %@ to edit your Homepage.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let homepageTarget = NSLocalizedString("Homepage", comment: "The item to select during a guided tour.")
-        return [
-            (element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages))),
-            (element: .editHomepage, description: descriptionHomepage.highlighting(phrase: homepageTarget, icon: .gridicon(.house)))
-        ]
-    }()
-
-    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
-}
-
 struct QuickStartCheckStatsTour: QuickStartTour {
     let key = "quick-start-check-stats-tour"
     let analyticsKey = "check_stats"
