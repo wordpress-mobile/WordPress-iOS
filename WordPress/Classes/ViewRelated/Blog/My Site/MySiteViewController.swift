@@ -435,7 +435,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
-            self.blogDetailsViewController?.pulledToRefresh(with: self.refreshControl) { [weak self] in
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
                 guard let self = self else {
                     return
                 }
@@ -447,11 +447,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
             /// the dashboard updating fast.
-            self.blogDashboardViewController?.pulledToRefresh { [weak self] in
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
                 self?.refreshControl.endRefreshing()
             }
 
-            self.blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+            blogService.syncBlogAndAllMetadata(blog) { [weak self] in
                 guard let self = self else {
                     return
                 }
