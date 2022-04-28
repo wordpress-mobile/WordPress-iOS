@@ -41,7 +41,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         set { /* no op */ }
     }
 
-    private lazy var previewViewSelectedPreviewDevice = selectedPreviewDevice
+    private lazy var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     var siteDesigns = RemoteSiteDesigns() {
         didSet {
