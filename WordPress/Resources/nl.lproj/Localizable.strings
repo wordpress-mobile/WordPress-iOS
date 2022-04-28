@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:04:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: nl */
@@ -325,13 +325,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>Een keer<\/strong> per week";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Een<\/strong> keer per week";
+"<strong>Once<\/strong> a week at %@" = "<strong>Een<\/strong> keer per week om %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Twee keer<\/strong> per week";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twee<\/strong> keer per week";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Twee<\/strong> keer per week om %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -1033,6 +1033,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Laat als eerste een reactie achter.";
 
+/* Beauty site intent topic */
+"Beauty" = "Schoonheid";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Beste dag";
 
@@ -1118,6 +1121,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Vet";
+
+/* Books site intent topic */
+"Books" = "Boeken";
 
 /* No comment provided by engineer. */
 "Border Radius" = "Radius rand";
@@ -1427,6 +1433,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Kies een onderwerp van de lijst hieronder of typ je eigen";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Kies een unieke site pictogram";
@@ -2658,6 +2667,9 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Bewerkt dit menu-item";
 
+/* Education site intent topic */
+"Education" = "Onderwijs";
+
 /* Accessibility label for the Email text field.
    Account Settings Email label
    Email address text field placeholder
@@ -3035,6 +3047,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Uploaden van bestanden mislukt.\nTik voor opties.";
 
+/* Fashion site intent topic */
+"Fashion" = "Mode";
+
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
@@ -3092,11 +3107,17 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Bestandstype";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film & televisie";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filteren";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filter op type activiteit";
+
+/* Finance site intent topic */
+"Finance" = "Financiën";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Meer te weten komen";
@@ -3209,6 +3230,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "Lettertype grootte";
 
+/* Food site intent topic */
+"Food" = "Eten";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
 
@@ -3265,6 +3289,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Gallery style" = "Galerij stijl";
+
+/* Gaming site intent topic */
+"Gaming" = "Games";
 
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Tuinieren";
@@ -3327,6 +3354,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Geef je site een naam";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "Geef je%@site een naam";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3348,6 +3382,10 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Aanmelden met Google mislukt.";
+
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "Ik snap het";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Begrepen!";
@@ -3440,6 +3478,9 @@ translators: Block name. %s: The localized block name */
 
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
+
+/* Health site intent topic */
+"Health" = "Gezondheid";
 
 /* Help button */
 "Help" = "Help";
@@ -4392,6 +4433,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populairste tijd";
 
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Verplaats %@";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Verplaats afbeelding naar achteren";
 
@@ -4482,6 +4526,9 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mijn toptien cafés";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "NIEUW!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -4563,6 +4610,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "Nieuwste eerst";
+
+/* News site intent topic */
+"News" = "Nieuws";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -5163,6 +5213,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "Hoofdpagina met succes geüpdatet.";
 
+/* Parenting site intent topic */
+"Parenting" = "Ouderschap";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5213,11 +5266,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Verwijder site permanent";
 
+/* Personal site intent topic */
+"Personal" = "Persoonlijk";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personaliseer";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fotobibliotheek";
+
+/* Photography site intent topic */
+"Photography" = "Fotografie";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Foto's";
@@ -5632,6 +5691,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Projecten";
 
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Prompts";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Openbaar";
@@ -5748,6 +5810,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Real Estate site intent topic */
+"Real Estate" = "Onroerend goed";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Herblog";
@@ -5868,6 +5933,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Verwijder blok";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Verwijder van dashboard";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
@@ -6756,6 +6824,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Snelstart overslaan";
 
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Sla deze prompt over";
+
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter resultaten";
 
@@ -6878,6 +6949,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Versnel je site";
+
+/* Sports site intent topic */
+"Sports" = "Sport";
 
 /* Standard post format label */
 "Standard" = "Standaard";
@@ -7156,6 +7230,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
+
+/* Technology site intent topic */
+"Technology" = "Technologie";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Vertel ons iets over jezelf.";
@@ -8214,9 +8291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Gebruik pictogram knop";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Gebruik deze site";
 
@@ -8327,6 +8401,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Meer weergeven";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Bekijk meer prompts";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Bekijk je site tot zover";
@@ -9291,6 +9368,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "in \"Upgrade\"";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
+
 /* Later today */
 "later today" = "later vandaag";
 
@@ -9434,4 +9514,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Gebruikers en auteurs";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Beantwoord";
 
