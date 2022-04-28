@@ -32,7 +32,7 @@ class ReaderCommentsFollowPresenter: NSObject {
     // MARK: - Subscriptions
 
     /// Toggles the state of conversation subscription.
-    /// When enabled, the user will receive emails for new comments.
+    /// When enabled, the user will receive emails and in-app notifications for new comments.
     ///
     @objc func handleFollowConversationButtonTapped() {
         trackFollowToggled()
