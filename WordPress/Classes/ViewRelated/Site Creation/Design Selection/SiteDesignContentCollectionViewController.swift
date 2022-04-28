@@ -70,7 +70,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         super.init(
             analyticsLocation: "site_creation",
             mainTitle: TextContent.mainTitle,
-            prompt: TextContent.subtitle,
+            prompt: "",
             primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
             secondaryActionTitle: TextContent.previewButton
         )
@@ -82,6 +82,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        promptView.isHidden = true
         navigationItem.backButtonTitle = TextContent.backButtonTitle
         fetchSiteDesigns()
         configureCloseButton()
@@ -162,7 +163,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private enum TextContent {
         static let mainTitle = NSLocalizedString("Choose a theme", comment: "Title for the screen to pick a theme and homepage for a site.")
-        static let subtitle = NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site.")
         static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
         static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
         static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
