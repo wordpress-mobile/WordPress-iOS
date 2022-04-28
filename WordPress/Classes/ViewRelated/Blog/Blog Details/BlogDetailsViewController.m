@@ -1759,7 +1759,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - Pull To Refresh
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
-    
+
     [self updateTableView: ^{
         // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
         // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
