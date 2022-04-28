@@ -1,0 +1,11 @@
+Kami membuat perubahan kecil yang berarti pada editor blok: tombol "Tambah Blok" lebih terlihat saat Anda pertama kali membuka editor tanpa ada blok yang dipilih. Kami juga menghapus salah satu dari tiga pemberitahuan kesalahan saat media atau blok audio gagal diunggah—rasanya berlebihan.
+
+Anda akan mendengar beberapa penyesuaian aksesibilitas pada pengalaman VoiceOver saat Anda mengatur ulang item menu. Panduan dan catatan lebih jelas, dan hirarki menu lebih terstruktur.
+
+Kami menambahkan layar baru ke proses pembuatan situs, tempat Anda dapat menuliskan maksud situs Anda. Kami telah menguji layar tersebut dengan sekelompok kecil pengguna. Kami pikir Anda juga akan menyukainya.
+
+Pratinjau web tidak akan memotong pemberitahuan di bagian bawah layar saat toolbar browser Anda terlihat.
+
+Apa maksud sebuah nama? Nah, jika situs Anda memiliki nama, Anda akan melihatnya di judul navigasi Situs Saya.
+
+Saat Anda menggeser ke kiri pada komentar di Notifikasi, Anda tidak akan melihat opsi "Tong Sampah" lagi. Sebagai gantinya, Anda akan melihat "Komentar yang Tidak Disetujui" dan "Setujui Komentar". Kami menyetujui.
