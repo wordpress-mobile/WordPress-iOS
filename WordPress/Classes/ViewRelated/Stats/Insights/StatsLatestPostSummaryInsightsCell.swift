@@ -213,7 +213,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     }
 
     private enum TextContent {
-        static let publishDate = NSLocalizedString("stats.insights.latestPostSummary.publishDate", value: "Published %@",  comment: "Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago")
+        static let publishDate = NSLocalizedString("stats.insights.latestPostSummary.publishDate", value: "Published %@", comment: "Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago")
         static let views = NSLocalizedString("stats.insights.latestPostSummary.views", value: "Views", comment: "Title for Views count in Latest Post Summary stats card.")
         static let likes = NSLocalizedString("stats.insights.latestPostSummary.likes", value: "Likes", comment: "Title for Likes count in Latest Post Summary stats card.")
         static let comments = NSLocalizedString("stats.insights.latestPostSummary.comments", value: "Comments", comment: "Title for Comments count in Latest Post Summary stats card.")
