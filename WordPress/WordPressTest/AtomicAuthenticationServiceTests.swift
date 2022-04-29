@@ -3,7 +3,7 @@ import UIKit
 import XCTest
 @testable import WordPress
 
-class testGetAuthCookie: XCTestCase {
+class AtomicAuthenticationServiceTests: XCTestCase {
     var contextManager: TestContextManager!
     var atomicService: AtomicAuthenticationService!
 
