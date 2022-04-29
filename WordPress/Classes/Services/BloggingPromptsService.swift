@@ -2,7 +2,6 @@ import CoreData
 import WordPressKit
 
 class BloggingPromptsService {
-
     private let context: NSManagedObjectContext
     private let siteID: NSNumber
     private let remote: BloggingPromptsServiceRemote
@@ -36,7 +35,9 @@ class BloggingPromptsService {
         }
     }
 
-    required init?(context: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog? = nil) {
+    required init?(context: NSManagedObjectContext = ContextManager.shared.mainContext,
+                   remote: BloggingPromptsServiceRemote? = nil,
+                   blog: Blog? = nil) {
         guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
               let siteID = blog?.dotComID ?? account.primaryBlogID else {
             return nil
@@ -44,13 +45,13 @@ class BloggingPromptsService {
 
         self.context = context
         self.siteID = siteID
-        self.remote = .init(wordPressComRestApi: account.wordPressComRestV2Api)
+        self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
     }
 }
 
 // MARK: - Temporary model object
 
-/// This is a temporary model to be replaced with Core Data model once the fields have all been finalized.
+/// TODO: This is a temporary model to be replaced with Core Data model once the fields have all been finalized.
 struct BloggingPrompt {
     let promptID: Int
     let text: String

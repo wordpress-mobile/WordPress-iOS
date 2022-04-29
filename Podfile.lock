@@ -771,7 +771,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.75.0
   WordPressKit:
-    :commit: e5618661d0b8f3aa5371d340e2ccb31fb6df495c
+    :commit: 32b70527fa0c5430598ae0ce3237f43c5967ae07
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
