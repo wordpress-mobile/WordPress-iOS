@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-19 14:58:38+0000 */
+/* Translation-Revision-Date: 2022-04-22 12:27:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: id */
@@ -8387,9 +8387,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Gunakan tombol ikon";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gunakan tautan ini untuk mendaftarkan anggota tim Anda tanpa harus mengundang mereka satu per satu. Siapa pun yang mengunjungi URL berikut akan dapat mendaftar ke organisasi Anda meskipun mereka menerima tautan dari orang lain, jadi pastikan Anda membagikannya dengan orang tepercaya.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Gunakan situs ini";
 
@@ -9496,6 +9493,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Untuk menambahkan foto atau video ke artikel Anda.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Gunakan tautan ini untuk mendaftarkan anggota tim Anda tanpa harus mengundang mereka satu per satu. Siapa pun yang mengunjungi URL berikut akan dapat mendaftar ke organisasi Anda, meski pun mereka menerima tautan dari orang lain, jadi pastikan Anda membagikannya dengan orang tepercaya.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Simpan sebagai Konsep";

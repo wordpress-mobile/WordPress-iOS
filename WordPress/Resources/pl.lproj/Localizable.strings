@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-04 06:09:00+0000 */
+/* Translation-Revision-Date: 2022-04-22 06:43:25+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0 */
 /* Language: pl */
@@ -344,7 +344,7 @@
 "OK" = "OK";
 
 /* Disabled */
-"Off" = "Wyłączone";
+"Off" = "Wyłączono";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.

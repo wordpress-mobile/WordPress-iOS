@@ -1,0 +1,11 @@
+Fizemos uma alteração pequena, mas importante no editor de bloco: o botão "Adicionar bloco" agora está mais visível quando você abre o editor sem selecionar blocos. Também removemos uma das três notificações de erro quando há uma falha ao fazer upload do bloco de mídia ou áudio, pois parecia um excesso.
+
+Você perceberá alguns ajustes de acessibilidade na experiência de VoiceOver quando reorganizar itens do menu. As instruções e os avisos estão mais claros, e a hierarquia de menu faz mais sentido quando lida em voz alta.
+
+Adicionamos uma nova tela ao processo de criação de sites, em que é possível informar a intenção do site. Nós testamos essa tela com um grupo pequeno de usuários e achamos que você também vai gostar.
+
+As visualizações da web não cortarão notificações na parte inferior da tela quando a barra de ferramentas do navegador estiver visível.
+
+O que há em um nome? Bem, se seu site tiver um, você o verá no título de navegação Meu site.
+
+Quando você arrastar para a esquerda em comentários nas Notificações, não verá mais a opção Lixeira. Em vez disso, você verá "Desaprovar comentário" e "Aprovar comentário". Nós aprovamos.

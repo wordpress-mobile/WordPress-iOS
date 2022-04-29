@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-20 17:54:08+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:15:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: he_IL */
@@ -8387,9 +8387,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "הכפתור 'להשתמש בסמל'";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "ניתן להשתמש בקישור זה כדי להזמין את כל חברי הצוות שלך במקביל, במקום לשלוח הזמנות אישיות. לכל אדם שמבקר בכתובת ה-URL הזאת תהיה אפשרות להירשם לארגון שלך, גם אם הוא מקבל את הקישור מאדם אחר ולכן, חשוב לוודא שהקישור נשלח לאנשים מהימנים בלבד.";
-
 /* No comment provided by engineer. */
 "Use this site" = "שימוש באתר זה";
 
@@ -9496,6 +9493,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "ניתן להשתמש בקישור זה כדי להזמין את כל חברי הצוות שלך במקביל, במקום לשלוח הזמנות אישיות. לכל אדם שמבקר בכתובת ה-URL הזאת תהיה אפשרות להירשם לארגון שלך, גם אם הוא מקבל את הקישור מאדם אחר ולכן, חשוב לוודא שהקישור נשלח לאנשים מהימנים בלבד.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "לשמור כטיוטה";

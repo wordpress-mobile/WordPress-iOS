@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-19 05:54:28+0000 */
+/* Translation-Revision-Date: 2022-04-22 13:49:01+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0 */
 /* Language: ro */
@@ -50,7 +50,7 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "O apreciere";
+"%1$d Like" = "%1$d apreciere";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -4383,7 +4383,7 @@ translators: Block name. %s: The localized block name */
 "Media" = "Media";
 
 /* Label for size of media cache in the app. */
-"Media Cache Size" = " Dimensiune cache media";
+"Media Cache Size" = "Dimensiune cache media";
 
 /* Title for alert when access to media capture is not granted */
 "Media Capture" = "Captură media";
@@ -7758,7 +7758,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail" = "Miniatură";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
-"Thumbnail unavailable." = "Miniatură indisponibilă";
+"Thumbnail unavailable." = "Miniatură indisponibilă.";
 
 /* No comment provided by engineer. */
 "Tiled gallery settings" = "Setări galerii placate";
@@ -8389,9 +8389,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Use icon button" = "Folosește butonul icon";
-
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Folosește acest site";
@@ -9415,7 +9412,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "_%1$d bloggers_ like this." = "_%1$d blogeri_ apreciază asta.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_Tu și un alt bloger_ ați apreciat asta.";
+"_You and %1$d blogger_ like this." = "_Tu și %1$d alt bloger_ ați apreciat asta.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Tu și alți %1$d blogeri_ ați apreciat asta.";
@@ -9499,6 +9496,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Să adaugi poze sau videouri în articolele tale.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Salvează ca ciornă";
