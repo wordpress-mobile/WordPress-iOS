@@ -21,7 +21,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
         sut.execute(
             with: readerPost,
             context: context,
-            followCommentsService: service) {
+            followCommentsService: service, sourceViewController: UIViewController()) {
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 1)
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
                 testExpectation.fulfill()
@@ -46,6 +46,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
             with: readerPost,
             context: context,
             followCommentsService: service,
+            sourceViewController: UIViewController(),
             completion: nil) { error in
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 0)
@@ -71,6 +72,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
             with: readerPost,
             context: context,
             followCommentsService: service,
+            sourceViewController: UIViewController(),
             completion: nil) { error in
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 1)
