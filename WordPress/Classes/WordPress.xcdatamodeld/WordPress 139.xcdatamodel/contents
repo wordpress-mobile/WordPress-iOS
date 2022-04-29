@@ -157,6 +157,7 @@
         <attribute name="planID" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="planTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postFormats" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <attribute name="quickStartTypeValue" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="quotaSpaceAllowed" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="quotaSpaceUsed" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" attributeType="String"/>
@@ -984,7 +985,7 @@
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="119"/>
         <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="134"/>
-        <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="869"/>
+        <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="884"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="164"/>
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
