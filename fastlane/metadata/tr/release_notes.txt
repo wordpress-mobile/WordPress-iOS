@@ -1,0 +1,11 @@
+Blok düzenleyicide küçük ama güçlü bir değişiklik yaptık: Düzenleyiciyi hiçbir blok seçili olmadan ilk açtığınızda "Blok Ekle" düğmesi artık daha kolay görülüyor. Ayrıca, bir ortam veya ses bloku yüklenemediğinde görünen ve insanı bezdiren üç hata bildiriminden birini kaldırdık.
+
+Artık menü öğelerini yeniden düznelerken VoiceOver deneyiminde erişilebilirlikle ilgili bazı ipuçları duyacaksınız. Talimatlar ve bildirimler artık daha net, ses özellikli menü hiyerarşisi ise daha anlamlı.
+
+Site oluşturma işlemine sitenizin amacını girebileceğiniz yeni bir ekran eklendi. Bu ekran küçük bir kullanıcı grubuyla test edildi, sizin de beğeneceğinizi düşünüyoruz.
+
+Tarayıcı araç çubuğunuz görünür durumdayken web önizlemeleri artık ekranın alt kısmındaki bildirimleri engellemiyor.
+
+Ya ad? Sitenizde varsa, bunu Sitem gezinme başlığında görürsünüz.
+
+Bildirimlerinizden bir yorumu sola kaydırdığınızda artık "Çöp Kutusu" seçeneğini görmeyeceksiniz. Bunun yerine "Yorumu Onaylama" ve "Yorumu Onayla" mesajlarını göreceksiniz. Biz onaylıyoruz.
