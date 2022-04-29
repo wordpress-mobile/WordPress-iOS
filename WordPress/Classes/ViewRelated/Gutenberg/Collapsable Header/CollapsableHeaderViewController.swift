@@ -12,7 +12,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let accessoryView: UIView?
     let mainTitle: String
     let navigationBarTitle: String?
-    let prompt: String
+    let prompt: String?
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
@@ -189,7 +189,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          mainTitle: String,
          navigationBarTitle: String? = nil,
          headerImage: UIImage? = nil,
-         prompt: String,
+         prompt: String? = nil,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
          defaultActionTitle: String? = nil,
@@ -323,6 +323,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
+        promptView.isHidden = prompt == nil
         promptView.text = prompt
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 

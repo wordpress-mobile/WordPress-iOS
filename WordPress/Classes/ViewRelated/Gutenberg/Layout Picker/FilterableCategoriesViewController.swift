@@ -54,7 +54,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     init(
         analyticsLocation: String,
         mainTitle: String,
-        prompt: String,
+        prompt: String? = nil,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
         defaultActionTitle: String? = nil
