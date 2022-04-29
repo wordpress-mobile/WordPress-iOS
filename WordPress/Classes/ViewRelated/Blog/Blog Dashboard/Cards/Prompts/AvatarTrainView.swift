@@ -43,12 +43,12 @@ final class AvatarTrainView: UIView {
         // redraw border when user interface style changes.
         if let previousTraitCollection = previousTraitCollection,
             previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
-            avatarStackView.subviews.forEach { configureBorder(for: $0) }
+            configureAvatarBorders()
         }
     }
 
     override func layoutSubviews() {
-        avatarStackView.arrangedSubviews.forEach({ configureBorder(for: $0) })
+        configureAvatarBorders()
     }
 
 }
@@ -79,10 +79,12 @@ private extension AvatarTrainView {
         return imageView
     }
 
-    func configureBorder(for view: UIView) {
-        view.layer.masksToBounds = true
-        view.layer.borderWidth = Constants.borderWidth
-        view.layer.borderColor = UIColor.listForeground.cgColor
+    func configureAvatarBorders() {
+        avatarStackView.arrangedSubviews.forEach { view in
+            view.layer.masksToBounds = true
+            view.layer.borderWidth = Constants.borderWidth
+            view.layer.borderColor = UIColor.listForeground.cgColor
+        }
     }
 
     // MARK: Constants
