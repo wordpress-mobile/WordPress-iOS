@@ -1760,9 +1760,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 #pragma mark - Pull To Refresh
-- (void)pulledToRefresh {
-    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
-}
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
@@ -1772,7 +1769,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // down to refresh the site.
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [refreshControl endRefreshing];
-            
+
             completion();
         });
     }];

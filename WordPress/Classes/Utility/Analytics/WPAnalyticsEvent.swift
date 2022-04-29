@@ -337,6 +337,7 @@ import Foundation
 
     // Quick Start
     case quickStartStarted
+    case quickStartTapped
 
     // Onboarding Question Prompt
     case onboardingQuestionsDisplayed
@@ -888,6 +889,8 @@ import Foundation
         // Quick Start
         case .quickStartStarted:
             return "quick_start_started"
+        case .quickStartTapped:
+            return "quick_start_tapped"
 
         // Site Intent Question
         case .enhancedSiteCreationIntentQuestionCanceled:
