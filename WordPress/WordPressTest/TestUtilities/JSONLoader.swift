@@ -4,13 +4,12 @@ import Foundation
 @objc open class JSONLoader: NSObject {
     public typealias JSONDictionary = Dictionary<String, AnyObject>
 
-    /**
-    *  @brief      Loads the specified json file name and returns a dictionary representing it.
-    *
-    *  @param      path    The path of the json file to load.
-    *
-    *  @returns    A dictionary representing the contents of the json file.
-    */
+    /// Loads the specified json file and returns a dictionary representing it.
+    ///
+    /// - Parameters:
+    ///   - name: The name of the file
+    ///   - type: The extension of the file
+    /// - Returns: A dictionary representing the contents of the json file.
     open func loadFile(_ name: String, type: String) -> JSONDictionary? {
 
         let path = Bundle(for: Swift.type(of: self)).path(forResource: name, ofType: type)
@@ -22,13 +21,10 @@ import Foundation
         }
     }
 
-    /**
-     *  @brief      Loads the specified json file name and returns a dictionary representing it.
-     *
-     *  @param      path    The path of the json file to load.
-     *
-     *  @returns    A dictionary representing the contents of the json file.
-     */
+    /// Loads the specified json file and returns a dictionary representing it.
+    ///
+    /// - Parameter path: The path of the json file to load.
+    /// - Returns: A dictionary representing the contents of the json file.
     open func loadFile(_ path: String) -> JSONDictionary? {
 
         if let contents = try? Data(contentsOf: URL(fileURLWithPath: path)) {
@@ -36,6 +32,17 @@ import Foundation
         }
 
         return nil
+    }
+
+    /// Loads the specified json file and returns a dictionary representing it.
+    ///
+    /// - Parameter filename: The full name of the json file to load.
+    /// - Returns: A dictionary representing the contents of the json file.
+    open func loadFile(named filename: String) -> JSONDictionary? {
+        return loadFile(
+            (filename as NSString).deletingPathExtension,
+            type: (filename as NSString).pathExtension
+        )
     }
 
     fileprivate func parseData(_ data: Data) -> JSONDictionary? {

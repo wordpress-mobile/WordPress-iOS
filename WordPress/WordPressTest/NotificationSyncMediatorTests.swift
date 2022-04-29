@@ -155,7 +155,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path) as! WordPress.Notification
+        let note = WordPress.Notification.fixture(fromFile: path, context: manager.mainContext)
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
@@ -187,9 +187,9 @@ class NotificationSyncMediatorTests: XCTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
-        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
-        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+        let note1 = WordPress.Notification.fixture(fromFile: path1, context: manager.mainContext)
+        let note2 = WordPress.Notification.fixture(fromFile: path2, context: manager.mainContext)
+        let note3 = WordPress.Notification.fixture(fromFile: path3, context: manager.mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
@@ -225,9 +225,9 @@ class NotificationSyncMediatorTests: XCTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
-        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
-        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+        let note1 = WordPress.Notification.fixture(fromFile: path1, context: manager.mainContext)
+        let note2 = WordPress.Notification.fixture(fromFile: path2, context: manager.mainContext)
+        let note3 = WordPress.Notification.fixture(fromFile: path3, context: manager.mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
