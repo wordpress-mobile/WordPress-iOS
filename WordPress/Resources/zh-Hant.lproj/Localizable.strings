@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-07 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-04-25 16:21:15+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: zh_TW */
@@ -52,6 +52,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 按讚數";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d 個答案";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d 個答案";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
@@ -342,6 +348,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "好名稱必須簡短易記。\n日後你可隨時變更。";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "使用全新方式在網站上建立及發佈吸睛內容。";
 
@@ -477,6 +486,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "在之前新增區塊";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "新增區塊";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "將內容新增至文章";
@@ -614,6 +626,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "進階";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "%@之後";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -771,6 +786,9 @@ translators: Block name. %s: The localized block name */
 
 /* the comment has an anonymous author. */
 "Anonymous" = "匿名";
+
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "回答提示";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1033,6 +1051,9 @@ translators: Block name. %s: The localized block name */
 /* Beauty site intent topic */
 "Beauty" = "美妝";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "%@之前";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "造訪尖峰日";
 
@@ -1284,6 +1305,9 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "請小心！";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "投放你的人生電影。";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "分類";
@@ -1391,6 +1415,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在確認購買項目…";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "%@的子項";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "選擇";
 
@@ -1429,6 +1456,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "選擇時間";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "請從下方清單選擇一個主題，或輸入你自己的主題。";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "選擇專屬網站圖示";
@@ -2424,6 +2454,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "點兩下並按住不放即可編輯";
 
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "點兩下並按住，即可上下移動此選單項目 水平移動即可變更階層。";
+
 /* No comment provided by engineer. */
 "Double tap to add a block" = "按兩下以新增區塊";
 
@@ -3340,6 +3373,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "為你的網站取個名字";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "為你的%@網站取個名字";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3736,6 +3776,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "在你的網站上安裝第一個外掛程式，可能需要 1 分鐘的時間。在此期間，你無法對你的網站進行任何變更。";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "有興趣培養你的讀者群嗎？ 查看我們的頂尖秘訣。";
 
 /* Interior Design site intent topic */
 "Interior Design" = "室內設計";
@@ -5682,6 +5725,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "專案";
 
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "提示";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "公開";
@@ -5924,6 +5970,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "移除區塊";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "從儀表板移除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "從洞察報告中移除";
@@ -6814,6 +6863,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "略過快速入門";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "略過此提示";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜線插入工具結果";
@@ -8291,9 +8343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "使用圖示按鈕";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "你可以使用此連結一次加入所有團隊成員，無須逐一邀請。 凡是造訪這個 URL 的人，不論以何種方式取得連結，都可以註冊加入貴機構，因此分享網址前，請確認對方值得信任。";
-
 /* No comment provided by engineer. */
 "Use this site" = "使用此網站";
 
@@ -8404,6 +8453,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "檢視更多";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "檢視更多提示";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "你的網站目前為止的瀏覽次數";
@@ -9385,6 +9437,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在你的文章中新增相片或影片。";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "用這個連結直接加入成員，就不需要一個一個邀請。 造訪此 URL 的人都可以註冊你的組織，即使他們是從其他人那裡收到連結，因此請務必與值得信任的人分享。";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "儲存為草稿";
 
@@ -9555,4 +9610,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•使用者和作者";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ 已回答";
 

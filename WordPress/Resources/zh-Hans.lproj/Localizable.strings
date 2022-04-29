@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-08 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-04-23 13:58:49+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: zh_CN */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 人喜欢";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d 条回复";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d 条回复";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "一个包含恶意代码模式的文件";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "好的名称应简短易记。\n您之后可以对此进行更改。";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "在您的站点上创建、发布吸引人内容的新方法。";
 
@@ -480,6 +489,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "在之前添加区块";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "添加区块";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "在文章中添加内容";
@@ -620,6 +632,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "高级";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "在 %@ 之后";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -777,6 +792,9 @@ translators: Block name. %s: The localized block name */
 
 /* the comment has an anonymous author. */
 "Anonymous" = "匿名";
+
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "回复提示";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1039,6 +1057,9 @@ translators: Block name. %s: The localized block name */
 /* Beauty site intent topic */
 "Beauty" = "美容";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "在 %@ 之前";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "最佳日期";
 
@@ -1294,6 +1315,9 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "小心！";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "将您的生活拍成电影。";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "分类目录";
@@ -1401,6 +1425,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在检查购买内容…";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "%@ 的子项";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "选择";
 
@@ -1439,6 +1466,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "选择时间";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "请从以下列表中选择主题或输入自己的主题。";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "选择唯一站点图标";
@@ -2450,6 +2480,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "轻点两次并按住以进行编辑";
 
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "双击并按住可向上或向下移动此菜单项。 水平移动可更改层级。";
+
 /* No comment provided by engineer. */
 "Double tap to add a block" = "轻点两次以添加区块";
 
@@ -2581,6 +2614,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "复制区块";
+
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "例如： 时尚、诗歌、政治";
 
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每个区块都有各自的设置。要找到这些设置，请点击一个区块。区块的设置将出现在屏幕底部的工具栏上。";
@@ -3372,6 +3408,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "为您的站点提供一个反映其个性和主题的名称。 第一印象很重要！";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "为您的网站命名";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "为您的 %@website 命名";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3768,6 +3811,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "在站点上安装第一个插件最多需要 1 分钟。在此期间，您将无法更改自己的站点。";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "想建立受众群体？ 查看我们的实用提示";
 
 /* Interior Design site intent topic */
 "Interior Design" = "室内设计";
@@ -4455,6 +4501,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "人气最高的时间";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "移动 %@";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "向后移动图片";
@@ -5714,6 +5763,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "项目";
 
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "提示";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "公开";
@@ -5956,6 +6008,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "从仪表盘中移除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
@@ -6849,6 +6904,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "跳过“快速启动”";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "跳过此提示";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜杠插入器结果";
@@ -7768,7 +7826,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "要在您的网站上使用“统计”功能，您需要安装Jetpack插件。";
 
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "要将此应用用于 ％@，您需要安装并启用 Jetpack 插件。";
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "要将此应用用于 %@，您需要安装并启用 Jetpack 插件。";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -8329,9 +8387,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "使用图标按钮";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "使用此链接来邀请成员加入您的团队，而不必逐一邀请。任何访问此链接的人都能轻松加入到您的组织，即使他们是从别处收到的链接，因此请确保您与可信的人分享此链接。";
-
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
 
@@ -8442,6 +8497,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "查看更多信息";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "查看更多提示";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "到目前为止您站点的浏览次数";
@@ -9436,6 +9494,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在您的文章内添加照片或视频。";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "使用此链接请团队成员加入，而不必逐个邀请团队成员。 使用此 URL 的任何人都可以注册您的组织（即使他们收到了其他人的链接），因此请确保与值得信任的人共享。";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "保存为草稿";
 
@@ -9606,4 +9667,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•用户与作者";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ 已回复";
 

@@ -1,0 +1,11 @@
+Abbiamo apportato alcune piccole ma significative modifiche all'editor a blocchi: il pulsante "Aggiungi blocco" è ora visibile alla prima apertura dell'editor senza i blocchi selezionati. Abbiamo anche rimosso una delle tre notifiche di errore quando un blocco Media o Audio non si caricava: sembrava eccessivo. 
+
+Sentirai alcune ottimizzazioni all'accessibilità nell'esperienza VoiceOver durante la riorganizzazione degli elementi di menu. Le istruzioni e gli avvisi sono più chiari e la gerarchia del menu ha più senso ad alta voce.
+
+Abbiamo aggiunto una nuova schermata al processo di creazione del sito in cui puoi inserire lo scopo del sito. Abbiamo provato questa schermata con un piccolo gruppo di utenti e pensiamo potrà piacere anche a te.
+
+Le anteprime web non interromperanno le notifiche nella parte inferiore dello schermo quando la barra degli strumenti del browser è visibile.
+
+Cosa c'è in un nome? Se il sito ne ha uno, lo vedrai nel titolo della navigazione Il mio sito.
+
+Quando scorri verso sinistra su un commento nelle Notifiche, non vedrai più l'opzione "Sposta nel cestino". Vedrai invece "Rimuovi l'approvazione del commento" e "Approva commento". Approviamo.
