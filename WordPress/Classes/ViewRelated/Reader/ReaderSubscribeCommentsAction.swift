@@ -47,7 +47,7 @@ final class ReaderSubscribeCommentsAction {
 
     private static func sourceForTrackingEvents(sourceViewController: UIViewController) -> String {
         if sourceViewController is ReaderDetailViewController {
-            return "more_toggle_comment_notifications"
+            return "reader_post_details_menu"
         } else if sourceViewController is ReaderStreamViewController {
             return "reader"
         }
