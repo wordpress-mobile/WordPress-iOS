@@ -140,9 +140,14 @@ final class ReaderShowMenuAction {
                 style: .default,
                 handler: { (action: UIAlertAction) in
                     if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                        ReaderSubscribeCommentsAction().execute(with: post, context: context, followCommentsService: followCommentsService) {
+                        Self.trackToggleCommentSubscription(isSubscribed: post.isSubscribedComments, post: post, sourceViewController: vc)
+
+                        ReaderSubscribeCommentsAction().execute(
+                            with: post,
+                            context: context,
+                            followCommentsService: followCommentsService,
+                            sourceViewController: vc) {
                             (vc as? ReaderDetailViewController)?.updateFollowButtonState()
-                            Self.trackToggleCommentSubscription(isSubscribed: post.isSubscribedComments, post: post, sourceViewController: vc)
                         }
                     }
                 })
@@ -187,9 +192,7 @@ final class ReaderShowMenuAction {
     }
 
     private static func sourceForTrackingEvents(sourceViewController: UIViewController) -> String {
-        if sourceViewController is ReaderCommentsViewController {
-            return "reader_threaded_comments"
-        } else if sourceViewController is ReaderDetailViewController {
+        if sourceViewController is ReaderDetailViewController {
             return "reader_post_details_comments"
         } else if sourceViewController is ReaderStreamViewController {
             return "reader"

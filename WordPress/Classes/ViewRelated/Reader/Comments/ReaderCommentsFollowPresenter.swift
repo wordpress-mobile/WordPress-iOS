@@ -66,7 +66,6 @@ class ReaderCommentsFollowPresenter: NSObject {
                 }
 
                 // Show notice with Undo option. Push Notifications are opt-out.
-                self?.trackNotificationsToggled(isNotificationEnabled: true)
                 self?.updateNotificationSettings(shouldEnableNotifications: true, canUndo: true)
             }
         }

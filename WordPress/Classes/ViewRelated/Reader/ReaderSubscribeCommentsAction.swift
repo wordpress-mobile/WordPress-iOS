@@ -3,6 +3,7 @@ final class ReaderSubscribeCommentsAction {
     func execute(with post: ReaderPost,
                  context: NSManagedObjectContext,
                  followCommentsService: FollowCommentsService,
+                 sourceViewController: UIViewController,
                  completion: (() -> Void)? = nil,
                  failure: ((Error?) -> Void)? = nil) {
 
@@ -12,6 +13,7 @@ final class ReaderSubscribeCommentsAction {
             followCommentsService.toggleNotificationSettings(subscribing, success: {
                 ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: subscribeSuccess) { actionSuccess in
                     self.disableNotificationSettings(followCommentsService: followCommentsService)
+                    Self.trackNotificationUndo(post: post, sourceViewController: sourceViewController)
                 }
                 completion?()
             }, failure: { error in
@@ -33,5 +35,23 @@ final class ReaderSubscribeCommentsAction {
             DDLogError("Error toggling comment notification status: \(error.debugDescription)")
             ReaderHelpers.dispatchToggleCommentNotificationMessage(subscribing: false, success: false)
         })
+    }
+
+    private static func trackNotificationUndo(post: ReaderPost, sourceViewController: UIViewController) {
+        var properties = [String: Any]()
+        properties["notifications_enabled"] = false
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeySource] = sourceForTrackingEvents(sourceViewController: sourceViewController)
+        WPAnalytics.trackReader(.readerToggleCommentNotifications, properties: properties)
+    }
+
+    private static func sourceForTrackingEvents(sourceViewController: UIViewController) -> String {
+        if sourceViewController is ReaderDetailViewController {
+            return "reader_post_details_comments"
+        } else if sourceViewController is ReaderStreamViewController {
+            return "reader"
+        }
+
+        return "unknown"
     }
 }
