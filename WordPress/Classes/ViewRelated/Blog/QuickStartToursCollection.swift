@@ -28,7 +28,6 @@ struct QuickStartCustomizeToursCollection: QuickStartToursCollection {
             QuickStartCreateTour(),
             QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
-            QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
             QuickStartViewTour(blog: blog)
         ]
