@@ -14,4 +14,4 @@ if [ ! -x "${LINTER_EXEC}" ] || ! (shasum -c "${LINTER_EXEC}.shasum" >/dev/null 
   echo "Pre-compiled linter script ready"
 fi
 
-"$LINTER_EXEC" "${PROJECT_FILE_PATH:-$1}" "${TARGET_NAME:-$2}"
+"$LINTER_EXEC" "${PROJECT_FILE_PATH:-$1}" # "${TARGET_NAME:-$2}"
