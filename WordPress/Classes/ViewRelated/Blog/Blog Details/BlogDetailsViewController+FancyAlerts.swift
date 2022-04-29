@@ -5,8 +5,6 @@ private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
 
-    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
-
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {

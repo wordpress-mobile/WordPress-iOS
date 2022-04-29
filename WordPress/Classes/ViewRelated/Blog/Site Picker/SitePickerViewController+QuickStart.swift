@@ -47,8 +47,4 @@ extension SitePickerViewController {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
     }
-
-    private enum Constants {
-        static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
-    }
 }
