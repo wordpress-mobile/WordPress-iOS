@@ -169,17 +169,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // When comments are moderated or edited from the Comments view, update the Comments snippet here.
         NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
-
-
-        // TODO: Remove test code
-        let tooltipAnchor = TooltipAnchor()
-        tooltipAnchor.translatesAutoresizingMaskIntoConstraints = false
-        tooltipAnchor.title = "New"
-        view.addSubview(tooltipAnchor)
-        NSLayoutConstraint.activate([
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tooltipAnchor.bottomAnchor, constant: 68),
-            tooltipAnchor.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor)
-        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
