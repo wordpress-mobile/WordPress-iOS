@@ -177,8 +177,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tooltipAnchor.title = "New"
         view.addSubview(tooltipAnchor)
         NSLayoutConstraint.activate([
-            view.bottomAnchor.constraint(equalTo: tooltipAnchor.bottomAnchor, constant: 100),
-            tooltipAnchor.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tooltipAnchor.bottomAnchor, constant: 68),
+            tooltipAnchor.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor)
         ])
     }
 

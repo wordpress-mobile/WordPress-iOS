@@ -11,6 +11,7 @@ final class TooltipAnchor: UIControl {
     var title: String? {
         didSet {
             titleLabel.text = title
+            accessibilityLabel = title
         }
     }
 
@@ -63,5 +64,12 @@ final class TooltipAnchor: UIControl {
     private func configureUI() {
         backgroundColor = .invertedSystem5
         layer.cornerRadius = Constants.viewHeight / 2
+        addShadow()
+    }
+
+    private func addShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.5
     }
 }
