@@ -2,7 +2,7 @@ import CoreData
 
 extension NSManagedObject {
 
-    /// Loads the contents of any given JSON file into a new NSManagedObject instance.
+    /// Loads the contents of any given JSON file into a new `NSManagedObject` instance.
     ///
     /// This helper method is useful for Unit Testing scenarios.
     ///
