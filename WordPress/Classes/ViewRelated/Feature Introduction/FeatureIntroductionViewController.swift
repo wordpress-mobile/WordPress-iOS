@@ -25,6 +25,20 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
 
     weak var featureIntroductionDelegate: FeatureIntroductionDelegate?
 
+    // MARK: - Header View Configuration
+
+    override var separatorStyle: SeparatorStyle {
+        return .hidden
+    }
+
+    override var alwaysResetHeaderOnRotation: Bool {
+        WPDeviceIdentification.isiPhone()
+    }
+
+    override var alwaysShowHeaderTitles: Bool {
+        true
+    }
+
     // MARK: - Init
 
     init(headerTitle: String,
