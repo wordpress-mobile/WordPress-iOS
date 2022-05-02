@@ -21,27 +21,27 @@ class NotificationUtility {
     }
 
     func loadBadgeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-badge.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-badge.json", insertInto: contextManager.mainContext)
     }
 
     func loadLikeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-like.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
     func loadFollowerNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-new-follower.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-new-follower.json", insertInto: contextManager.mainContext)
     }
 
     func loadCommentNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-replied-comment.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-replied-comment.json", insertInto: contextManager.mainContext)
     }
 
     func loadUnapprovedCommentNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-unapproved-comment.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: contextManager.mainContext)
     }
 
     func loadPingbackNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-pingback.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-pingback.json", insertInto: contextManager.mainContext)
     }
 
     func mockCommentContent() -> FormattableCommentContent {

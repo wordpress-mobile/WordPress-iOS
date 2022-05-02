@@ -100,7 +100,7 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func loadLikeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-like.json", context: contextManager.mainContext)
+        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
     private func mockedActions() -> [FormattableContentAction] {
