@@ -38,6 +38,14 @@ final class TooltipAnchor: UIControl {
         commonInit()
     }
 
+    func dismissByFadingOut() {
+        UIView.animate(withDuration: 0.3) {
+            self.alpha = 0
+        } completion: { _ in
+            self.removeFromSuperview()
+        }
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
