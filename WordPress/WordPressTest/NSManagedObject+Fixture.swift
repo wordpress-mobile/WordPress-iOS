@@ -11,8 +11,8 @@ extension NSManagedObject {
     ///   - context: The managed object context to use
     /// - Returns: A new instance with property values of the given JSON file.
     static func fixture(fromFile fileName: String, context: NSManagedObjectContext) -> Self {
-        guard let jsonObject = JSONLoader().loadFile(named: filename) else {
-            fatalError("Mockup data could not be parsed, the filename is \(filename)")
+        guard let jsonObject = JSONLoader().loadFile(named: fileName) else {
+            fatalError("Mockup data could not be parsed, the filename is \(fileName)")
         }
         let model = Self.init(context: context)
         for (key, value) in jsonObject {
