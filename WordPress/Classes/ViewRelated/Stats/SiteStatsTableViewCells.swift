@@ -140,10 +140,12 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 struct LatestPostSummaryRow: ImmuTableRow {
 
-    typealias CellType = LatestPostSummaryCell
-
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        if FeatureFlag.statsNewInsights.enabled {
+            return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
+        } else {
+            return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
+        }
     }()
 
     let summaryData: StatsLastPostInsight?
@@ -153,7 +155,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? LatestPostSummaryConfigurable else {
             return
         }
 
