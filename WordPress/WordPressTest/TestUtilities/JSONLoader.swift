@@ -4,12 +4,12 @@ import Foundation
 @objc open class JSONLoader: NSObject {
     public typealias JSONDictionary = Dictionary<String, AnyObject>
 
-    /// Loads the specified json file and returns a dictionary representing it.
+    /// Loads the specified JSON file and returns a dictionary representing it.
     ///
     /// - Parameters:
     ///   - name: The name of the file
     ///   - type: The extension of the file
-    /// - Returns: A dictionary representing the contents of the json file.
+    /// - Returns: A dictionary representing the contents of the JSON file.
     open func loadFile(_ name: String, type: String) -> JSONDictionary? {
 
         let path = Bundle(for: Swift.type(of: self)).path(forResource: name, ofType: type)
