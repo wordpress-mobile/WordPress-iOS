@@ -77,7 +77,7 @@
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
     XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     [self waitForExpectations:@[saveExpectation] timeout:2.0];
     WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
