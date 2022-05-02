@@ -101,7 +101,8 @@ class LastPostStatsRecordValueTests: StatsTestCase {
                                            likesCount: 1,
                                            commentsCount: 2,
                                            viewsCount: 3,
-                                           postID: 4)
+                                           postID: 4,
+                                           featuredImageURL: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-wmark.png")!)
 
         let blog = defaultBlog
 
@@ -123,7 +124,8 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         XCTAssertEqual(castedResults.likesCount, 1)
         XCTAssertEqual(castedResults.commentsCount, 2)
         XCTAssertEqual(castedResults.viewsCount, 3)
-        XCTAssertEqual(castedResults.url, URL(string: "google.com") )
+        XCTAssertEqual(castedResults.url, URL(string: "google.com"))
+        XCTAssertEqual(castedResults.featuredImageURL, URL(string: "https://s.w.org/style/images/about/WordPress-logotype-wmark.png"))
     }
 
     @discardableResult func createLastPostStatsRecordValue(parent: StatsRecord) -> LastPostStatsRecordValue {

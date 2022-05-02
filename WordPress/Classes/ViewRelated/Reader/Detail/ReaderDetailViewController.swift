@@ -396,7 +396,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         commentsTableView.reloadData()
     }
 
-    private func updateFollowButtonState() {
+    func updateFollowButtonState() {
         guard let post = post else {
             return
         }

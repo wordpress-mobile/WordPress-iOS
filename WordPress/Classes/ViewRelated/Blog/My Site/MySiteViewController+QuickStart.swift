@@ -20,7 +20,7 @@ extension MySiteViewController {
                     self?.siteMenuSpotlightIsShown = true
                     fallthrough
 
-                case .pages, .editHomepage, .sharing, .stats, .readerTab, .notifications:
+                case .pages, .sharing, .stats, .readerTab, .notifications:
                     self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
                 default:

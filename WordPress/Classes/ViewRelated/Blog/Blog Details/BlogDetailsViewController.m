@@ -395,7 +395,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self cancelCompletedToursIfNeeded];
     [self createUserActivity];
     [self startAlertTimer];
     
