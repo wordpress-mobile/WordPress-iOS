@@ -299,6 +299,6 @@ private extension String {
                                                                             + "notifications in Reader Comments.")
     static let notificationSwitchLabelText = NSLocalizedString("Enable in-app notifications",
                                                                comment: "Describes a switch component that toggles in-app notifications for a followed post.")
-    static let unfollowButtonTitle = NSLocalizedString("Unfollow conversation",
+    static let unfollowButtonTitle = NSLocalizedString("Unfollow Conversation",
                                                        comment: "Title for a button that unsubscribes the user from the post.")
 }
