@@ -126,7 +126,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private var shouldUseCompactLayout: Bool {
-        return alwaysShowHeaderTitles ? false : (traitCollection.verticalSizeClass == .compact)
+        return !alwaysShowHeaderTitles && traitCollection.verticalSizeClass == .compact
     }
 
     private var topInset: CGFloat = 0
