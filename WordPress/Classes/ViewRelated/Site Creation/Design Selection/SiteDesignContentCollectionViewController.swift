@@ -25,7 +25,7 @@ class SiteDesignSection: CategorySection {
     }
 }
 
-class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
+class SiteDesignContentCollectionViewController: FilterableCategoriesViewController {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
     private let createsSite: Bool
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
