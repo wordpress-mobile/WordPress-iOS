@@ -2,7 +2,9 @@
 extension Post {
 
     func prepareForPrompt(_ prompt: Prompt?) {
-        guard let prompt = prompt else { return }
+        guard let prompt = prompt else {
+            return
+        }
         postTitle = prompt.postTitle
         let pullquoteBlock = getPullquoteBlock(title: prompt.promptText,
                                                promptUrl: prompt.promptUrl?.absoluteString,
@@ -35,7 +37,9 @@ private extension Post {
     }
 
     func getUrlHtml(url: String?, urlText: String) -> String {
-        guard let url = url else { return "" }
+        guard let url = url else {
+            return ""
+        }
         return "<a href=\"\(url)\">\(urlText)</a>"
     }
 

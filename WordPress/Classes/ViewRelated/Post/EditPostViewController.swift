@@ -23,7 +23,7 @@ class EditPostViewController: UIViewController {
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
-    let prompt: Prompt?
+    private let prompt: Prompt?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
