@@ -62,8 +62,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
-
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: manager.mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Sync")
@@ -74,7 +73,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 
@@ -129,7 +128,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: manager.mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Sync")
@@ -141,7 +140,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 
@@ -161,7 +160,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssertFalse(note.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: manager.mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -172,7 +171,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
     /// Verifies that Mark Notifications as Read effectively toggles a Notifications' read flag
@@ -197,7 +196,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssertTrue(note2.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: manager.mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -210,7 +209,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
     /// Verifies that Mark Notifications as Read modifies only the specified notifications' read status
@@ -235,7 +234,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssertTrue(note2.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: manager.mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -247,7 +246,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 

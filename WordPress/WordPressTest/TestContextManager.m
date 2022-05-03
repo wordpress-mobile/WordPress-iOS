@@ -14,7 +14,6 @@ static TestContextManager *_instance;
     if (self) {
         // Override the shared ContextManager
         _stack = [[ContextManagerMock alloc] init];
-        _requiresTestExpectation = YES;
     }
 
     return self;
@@ -55,45 +54,19 @@ static TestContextManager *_instance;
     [_stack setMainContext:mainContext];
 }
 
--(void)setTestExpectation:(XCTestExpectation *)testExpectation
-{
-    [_stack setTestExpectation:testExpectation];
-}
-
 - (void)saveContext:(NSManagedObjectContext *)context
 {
-    [self saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-    }];
+    [_stack saveContext:context];
 }
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
     [_stack saveContextAndWait:context];
-    if (self.stack.testExpectation) {
-        [self.stack.testExpectation fulfill];
-        self.stack.testExpectation = nil;
-    } else if (self.stack.requiresTestExpectation) {
-        NSLog(@"No test expectation present for context save");
-    }
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
-    [_stack saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-        completionBlock();
-    }];
+    [_stack saveContext:context withCompletionBlock:completionBlock];
 }
 
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
