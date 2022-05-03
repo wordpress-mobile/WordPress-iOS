@@ -41,8 +41,8 @@ final class EditCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, EditComment.title)
     }
 
-    func testExecuteCallsEdit() {
-        action?.execute(context: utility.mockCommentContext())
+    func testExecuteCallsEdit() throws {
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()

@@ -27,73 +27,73 @@ class ActivityLogTestData {
         return "https://wordpress.com/comment/137726971/7"
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
+    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
+        return try JSONObject.loadFile(named: fileName)
     }
 
-    func getCommentEventDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-comment.json")
+    func getCommentEventDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-comment.json")
     }
 
-    func getPostEventDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-post.json")
+    func getPostEventDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-post.json")
     }
 
-    func getPingbackDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-pingback-content.json")
+    func getPingbackDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-pingback-content.json")
     }
 
-    func getPostContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-post-content.json")
+    func getPostContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-post-content.json")
     }
 
-    func getCommentContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-comment-content.json")
+    func getCommentContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-comment-content.json")
     }
 
-    func getThemeContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-theme-content.json")
+    func getThemeContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-theme-content.json")
     }
 
-    func getSettingsContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-settings-content.json")
+    func getSettingsContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-settings-content.json")
     }
 
-    func getSiteContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-site-content.json")
+    func getSiteContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-site-content.json")
     }
 
-    func getPluginContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-plugin-content.json")
+    func getPluginContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-plugin-content.json")
     }
 
-    func getCommentRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getCommentContentDictionary()
+    func getCommentRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getCommentContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
-    func getPostRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getPostContentDictionary()
+    func getPostRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getPostContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
-    func getThemeRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getThemeContentDictionary()
+    func getThemeRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getThemeContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
-    func getItalicRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getSettingsContentDictionary()
+    func getItalicRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getSettingsContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
-    func getSiteRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getSiteContentDictionary()
+    func getSiteRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getSiteContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
-    func getPluginRangeDictionary() -> [String: AnyObject] {
-        let dictionary = getPluginContentDictionary()
+    func getPluginRangeDictionary() throws -> [String: AnyObject] {
+        let dictionary = try getPluginContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 

@@ -4,17 +4,17 @@ import XCTest
 final class ActivityContentFactoryTests: XCTestCase {
     private let contextManager = TestContextManager()
 
-    func testActivityContentFactoryReturnsExpectedImplementationOfFormattableContent() {
-        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser()).first as? FormattableTextContent
+    func testActivityContentFactoryReturnsExpectedImplementationOfFormattableContent() throws {
+        let subject = ActivityContentFactory.content(from: [try mockBlock()], actionsParser: ActivityActionsParser()).first as? FormattableTextContent
 
         XCTAssertNotNil(subject)
     }
 
-    private func mockBlock() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-activity-content.json")
+    private func mockBlock() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "activity-log-activity-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
+    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
+        return try JSONObject.loadFile(named: fileName)
     }
 }

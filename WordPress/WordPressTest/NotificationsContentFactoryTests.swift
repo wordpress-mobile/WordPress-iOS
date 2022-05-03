@@ -5,41 +5,41 @@ final class NotificationsContentFactoryTests: XCTestCase {
     private let contextManager = TestContextManager()
     private let entityName = Notification.classNameWithoutNamespaces()
 
-    func testTextNotificationReturnsExpectedImplementationOfFormattableContent() {
-        let subject = NotificationContentFactory.content(from: [mockTextContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? NotificationTextContent
+    func testTextNotificationReturnsExpectedImplementationOfFormattableContent() throws {
+        let subject = try NotificationContentFactory.content(from: [mockTextContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? NotificationTextContent
 
         XCTAssertNotNil(subject)
     }
 
-    func testCommentNotificationReturnsExpectedImplementationOfFormattableContent() {
-        let subject = NotificationContentFactory.content(from: [mockCommentContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? FormattableCommentContent
+    func testCommentNotificationReturnsExpectedImplementationOfFormattableContent() throws {
+        let subject = try NotificationContentFactory.content(from: [mockCommentContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? FormattableCommentContent
 
         XCTAssertNotNil(subject)
     }
 
-    func testUserNotificationReturnsExpectedImplementationOfFormattableContent() {
-        let subject = NotificationContentFactory.content(from: [mockUserContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? FormattableUserContent
+    func testUserNotificationReturnsExpectedImplementationOfFormattableContent() throws {
+        let subject = try NotificationContentFactory.content(from: [mockUserContentDictionary()], actionsParser: NotificationActionParser(), parent: loadLikeNotification()).first as? FormattableUserContent
 
         XCTAssertNotNil(subject)
     }
 
-    private func mockTextContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-text-content.json")
+    private func mockTextContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "notifications-text-content.json")
     }
 
-    private func mockCommentContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-comment-content.json")
+    private func mockCommentContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "notifications-comment-content.json")
     }
 
-    private func mockUserContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-user-content.json")
+    private func mockUserContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "notifications-user-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
+    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
+        return try JSONObject.loadFile(named: fileName)
     }
 
-    func loadLikeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
+    func loadLikeNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 }

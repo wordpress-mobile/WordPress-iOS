@@ -13,9 +13,9 @@ final class NotificationTextContentTests: XCTestCase {
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
     }
 
-    override func setUp() {
-        super.setUp()
-        subject = NotificationTextContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        subject = try NotificationTextContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -54,15 +54,15 @@ final class NotificationTextContentTests: XCTestCase {
         XCTAssertNil(value)
     }
 
-    func testKindReturnsButtonForButtonContent() {
-        subject = NotificationTextContent(dictionary: mockButtonContentDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+    func testKindReturnsButtonForButtonContent() throws {
+        subject = try NotificationTextContent(dictionary: mockButtonContentDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
         let notificationKind = subject?.kind
 
         XCTAssertEqual(notificationKind, .button)
     }
 
-    func testParentReturnsValuePassedAsParameter() {
-        let injectedParent = loadLikeNotification()
+    func testParentReturnsValuePassedAsParameter() throws {
+        let injectedParent = try loadLikeNotification()
 
         let parent = subject?.parent
 
@@ -87,20 +87,20 @@ final class NotificationTextContentTests: XCTestCase {
         XCTAssertEqual(action?.identifier, approveCommentIdentifier)
     }
 
-    private func mockDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-text-content.json")
+    private func mockDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "notifications-text-content.json")
     }
 
-    private func mockButtonContentDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-button-text-content.json")
+    private func mockButtonContentDictionary() throws -> [String: AnyObject] {
+        return try getDictionaryFromFile(named: "notifications-button-text-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
+    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
+        return try JSONObject.loadFile(named: fileName)
     }
 
-    private func loadLikeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
+    private func loadLikeNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
     private func mockedActions() -> [FormattableContentAction] {

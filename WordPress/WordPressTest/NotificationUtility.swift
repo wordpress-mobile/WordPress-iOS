@@ -20,38 +20,38 @@ class NotificationUtility {
         return Notification.classNameWithoutNamespaces()
     }
 
-    func loadBadgeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-badge.json", insertInto: contextManager.mainContext)
+    func loadBadgeNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-badge.json", insertInto: contextManager.mainContext)
     }
 
-    func loadLikeNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
+    func loadLikeNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
-    func loadFollowerNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-new-follower.json", insertInto: contextManager.mainContext)
+    func loadFollowerNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-new-follower.json", insertInto: contextManager.mainContext)
     }
 
-    func loadCommentNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-replied-comment.json", insertInto: contextManager.mainContext)
+    func loadCommentNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-replied-comment.json", insertInto: contextManager.mainContext)
     }
 
-    func loadUnapprovedCommentNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: contextManager.mainContext)
+    func loadUnapprovedCommentNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: contextManager.mainContext)
     }
 
-    func loadPingbackNotification() -> WordPress.Notification {
-        return .fixture(fromFile: "notifications-pingback.json", insertInto: contextManager.mainContext)
+    func loadPingbackNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-pingback.json", insertInto: contextManager.mainContext)
     }
 
-    func mockCommentContent() -> FormattableCommentContent {
-        let dictionary = JSONObject.loadFile(named: "notifications-replied-comment.json")
+    func mockCommentContent() throws -> FormattableCommentContent {
+        let dictionary = try JSONObject.loadFile(named: "notifications-replied-comment.json")
         let body = dictionary["body"]
         let blocks = NotificationContentFactory.content(from: body as! [[String: AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: contextManager.mainContext))
         return blocks.filter { $0.kind == .comment }.first! as! FormattableCommentContent
     }
 
-    func mockCommentContext() -> ActionContext<FormattableCommentContent> {
-        return ActionContext(block: mockCommentContent())
+    func mockCommentContext() throws -> ActionContext<FormattableCommentContent> {
+        return try ActionContext(block: mockCommentContent())
     }
 }
