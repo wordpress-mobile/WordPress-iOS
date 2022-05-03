@@ -39,7 +39,7 @@ final class TooltipAnchor: UIControl {
     }
 
     func dismissByFadingOut() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             self.alpha = 0
         } completion: { _ in
             self.removeFromSuperview()
