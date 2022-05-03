@@ -108,6 +108,9 @@
 /* Accessibility label for value in quintillions. Ex: 66.6 quintillion. */
 "%@ quintillion" = "%@ quintillion";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ Return to My Site screen when you're ready for the next task.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ Tag";
 
@@ -116,6 +119,9 @@
 
 /* Accessibility label for value in thousands. Ex: 66.6 thousand. */
 "%@ thousand" = "%@ thousand";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ Tip: get updates faster by enabling push notifications.";
 
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ trillion";
@@ -253,8 +259,17 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Untitled)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* is now following your site!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* responded to your comment";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* added a new post to their site";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
@@ -343,17 +358,17 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_One blogger_ likes this.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_You and another blogger_ like this.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_You_ like this.";
@@ -378,6 +393,9 @@
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "A series of steps helping you to explore the app.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "A series of steps showing you how to add a theme, site icon and more.";
@@ -538,9 +556,6 @@
 
 /* No comment provided by engineer. */
 "Add blocks" = "Add blocks";
-
-/* No comment provided by engineer. */
-"Add Blocks" = "Add Blocks";
 
 /* No comment provided by engineer. */
 "Add button text" = "Add button text";
@@ -821,7 +836,8 @@
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonymous";
 
-/* Title for a call-to-action button on the prompts card. */
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Answer Prompt";
 
 /* Navigates to picker screen to change the app's icon
@@ -1260,7 +1276,6 @@
 "Can't publish an empty post" = "Can't publish an empty post";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1288,6 +1303,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1345,7 +1361,8 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Careful!";
 
-/* Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
 
 /* Label for Categories
@@ -1400,9 +1417,6 @@
 "Change Visibility" = "Change Visibility";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
 
 /* No comment provided by engineer. */
@@ -1447,6 +1461,9 @@
 "Check your network connection and try again. Or draft a post." = "Check your network connection and try again. Or draft a post.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Check your notifications";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Check your site stats";
 
 /* Title of a Quick Start Tour */
@@ -1455,10 +1472,14 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Checking purchases…";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Checking stats";
+
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Child of %@";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Choose";
 
 /* Label for Publish date picker */
@@ -1736,6 +1757,9 @@
 "Completed" = "Completed";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Completed: Check your notifications";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Completed: Check your site stats";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1748,19 +1772,16 @@
 "Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Completed: Connect with other sites";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Completed: Continue with site setup";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Completed: Create your site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Completed: Explore plans";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Completed: Follow other sites";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Completed: Publish a post";
@@ -1804,6 +1825,9 @@
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Congratulations on your purchase!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Congratulations! Your site passed *1000 all-time* views!";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Connect";
@@ -1819,6 +1843,9 @@
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Connect with other bloggers by following, liking and commenting on their posts.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Connect with other sites";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Connect your favorite social media services to automatically share new posts with friends.";
@@ -2117,7 +2144,8 @@
 "Create Post" = "Create Post";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Create Site";
 
 /* Stories intro continue button title */
@@ -2226,8 +2254,7 @@
 /* Customize Insights title */
 "Customize your insights" = "Customize your insights";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customize Your Site";
 
 /* Notification Settings for your own blogs */
@@ -2352,7 +2379,7 @@
    Title of section that contains plugins' description */
 "Description" = "Description";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2409,8 +2436,14 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Disconnecting this account means published posts will no longer be automatically shared to %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Discover";
+
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Discover and follow blogs you love";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Discover and follow sites that inspire you.";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Discover blogs to follow";
@@ -2738,9 +2771,6 @@
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
 
@@ -2843,9 +2873,6 @@
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Enable in-app notifications";
 
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Enable in-app notifications?";
-
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Enable post sharing";
 
@@ -2853,7 +2880,10 @@
 "Enable Publicize" = "Enable Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Enable Quick Start for Site";
+"Enable Quick Start for Existing Site" = "Enable Quick Start for Existing Site";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Enable Quick Start for New Site";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Enable site notifications?";
@@ -3231,9 +3261,6 @@
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Find out more";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Find sites that speak to you, and follow them to get updates when they publish.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
@@ -3275,10 +3302,7 @@
 "Follow Conversation" = "Follow Conversation";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Follow other sites";
+"Follow conversation" = "Follow conversation";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Follow site";
@@ -3430,6 +3454,9 @@
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Get noticed: comment on posts you've read.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Get real time updates from your pocket.";
+
 /* View title for initial auth views. */
 "Get Started" = "Get Started";
 
@@ -3441,6 +3468,9 @@
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Get the ball rolling and increase your post views by sharing your post.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Get to know the WordPress app";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Get your domain";
@@ -3466,15 +3496,15 @@
 /* Cancel */
 "Give Up" = "Give Up";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Give your %@ website a name";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
 
 /* Default title of the Site Name screen.
    Title for Site Name screen in iPhone landscape. */
 "Give your website a name" = "Give your website a name";
-
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your%@website a name" = "Give your%@website a name";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3514,9 +3544,11 @@
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Grow Your Audience";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Guides you through the process of checking your notifications.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Guides you through the process of choosing a theme for your site.";
@@ -3647,8 +3679,7 @@
    Title for the dashboard screen. */
 "Home" = "Home";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -3793,6 +3824,9 @@
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactive, Autoupdates on";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Include prompt";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Included with Site";
 
@@ -3936,6 +3970,9 @@
 /* Invite People Title */
 "Invite People" = "Invite People";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP address";
 
@@ -4051,6 +4088,12 @@
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Keep up to date on your site’s performance.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Know when your favorite authors post new content.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Know when your site is getting more traffic, new followers, or when it passes a new milestone!";
+
 /* An option in a list. Automatically approve comments from known users. */
 "Known user's comments" = "Known user's comments";
 
@@ -4098,6 +4141,9 @@
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Learn more about date and time formatting.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Learn more about prompts";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Learn more about roles";
@@ -5040,6 +5086,9 @@
 /* Display value for Support email field if there is no user email address. */
 "Not Set" = "Not Set";
 
+/* Button that allows users unsure of what selection they'd like  */
+"Not sure, show me around" = "Not sure, show me around";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Note:";
 
@@ -5072,9 +5121,13 @@
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Notification time";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Notification will include a word or short phrase for inspiration";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
 
@@ -5767,9 +5820,9 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Preview";
 
@@ -5792,7 +5845,7 @@
 "Preview Unavailable" = "Preview Unavailable";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Preview your new site to see what your visitors will see.";
+"Preview your site to see what your visitors will see." = "Preview your site to see what your visitors will see.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Previous month";
@@ -5859,7 +5912,8 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projects";
 
-/* Title label for the Prompts card in My Sites tab. */
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
 "Prompts" = "Prompts";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -5978,6 +6032,9 @@
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Reading posts from other sites";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Real Estate";
@@ -6448,7 +6505,6 @@
 "Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Search";
 
@@ -6538,13 +6594,7 @@
 "Select %@ to discover new themes" = "Select %@ to discover new themes";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Select %@ to look for sites with similar interests";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Select %@ to preview";
+"Select %@ to find other sites." = "Select %@ to find other sites.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Select %@ to see how your site is performing.";
@@ -6563,6 +6613,9 @@
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Select %@ to upload a new one.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Select %@ to view your site";
 
 /* No comment provided by engineer. */
 "Select a color" = "Select a color";
@@ -6596,6 +6649,9 @@
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Select State";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Select the %@ tab to get updates on the go.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Select the %@ to add your social media accounts";
@@ -6735,6 +6791,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -6968,7 +7025,8 @@
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Site Topic";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Sites Filter Tab Title
@@ -6984,17 +7042,12 @@
 /* Image size option title. */
 "Size" = "Size";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Skip All";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Skip Quick Start";
 
 /* Menu title to skip today's prompt. */
 "Skip this prompt" = "Skip this prompt";
@@ -7167,11 +7220,38 @@
 /* Displayed in the Stats widgets when there is no network */
 "Stats will be updated next time you're online" = "Stats will be updated next time you're online";
 
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Comments";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Likes";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Published %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Views";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 Most Popular Time";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% of views";
+
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Stay in the loop";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Stay in touch with like and comment notifications.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Stay in touch with your audience with like and comment notifications.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Staying up to date with notifications";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Stick post to the front page";
@@ -7406,6 +7486,9 @@
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tap to view your site";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "Task complete.";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomy";
 
@@ -7534,9 +7617,6 @@
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn\'t save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn\'t save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "The quick start tour will guide you through building a basic site. Are you sure you want to skip? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "The serialization of the request failed.";
@@ -8057,6 +8137,9 @@
    Customize Insights button title */
 "Try it now" = "Try it now";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Try selecting %@ to add topics you like.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Try the new Block Editor";
 
@@ -8277,6 +8360,7 @@
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8290,10 +8374,10 @@
 "Unfollow %@" = "Unfollow %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Unfollow conversation";
+"Unfollow Conversation" = "Unfollow Conversation";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation" = "Unfollow conversation";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Unfollow site";
@@ -8487,6 +8571,9 @@
 /* Use the current image */
 "Use" = "Use";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Use %@ to find sites and tags.";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Use block editor";
 
@@ -8495,9 +8582,6 @@
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Use Sandbox Store";
-
-/* Footer text for Invite Links section of the Invite People screen. */
-"invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Use this site";
@@ -8615,8 +8699,7 @@
 /* Button label for viewing a post */
 "View Post" = "View Post";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
 
 /* Description for view count. Singular. */
@@ -8656,6 +8739,9 @@
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Visit %@ for more";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Visit Dashboard";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visit our documentation page";
@@ -9278,6 +9364,9 @@
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Writing & Poetry";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Writing blog posts";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X-Axis Position";
 
@@ -9434,6 +9523,9 @@
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "You received *50 likes* on your comment";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "You received *50 likes* on your site today";
 
@@ -9458,6 +9550,10 @@
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once</strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once</strong> a week on %1$@ at %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "You'll get notifications in the app";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %1$@ times a week on %2$@.";
@@ -9531,6 +9627,12 @@
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Your site appears to be getting *more traffic* than usual!";
+
 /* Header of the domains list section in the Domains Dashboard. */
 "Your Site Domains" = "Your Site Domains";
 
@@ -9542,6 +9644,9 @@
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Your site has been succesfully restored";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Your site has VaultPress";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Your Site Icon";

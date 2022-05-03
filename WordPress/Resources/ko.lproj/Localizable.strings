@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-08 13:54:09+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:44:22+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: ko_KR */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "좋아요 %1$d개 ";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d개 답변";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d개 답변";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d 완료됨";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "파일에 악성 코드 패턴이 있음";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "좋은 이름은 짧고 인상적입니다.\n나중에 변경할 수 있습니다.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "사이트에서 매력적인 콘텐츠를 만들고 공개하는 새로운 방법입니다.";
 
@@ -480,6 +489,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "다음 블록 이전에 추가하기";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "블록 추가";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "글에 콘텐츠 추가";
@@ -617,6 +629,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "고급";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "%@ 뒤";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "에어메일";
@@ -772,6 +787,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "익명";
 
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "답변 프롬프트";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "앱 아이콘";
@@ -798,6 +816,9 @@ translators: Block name. %s: The localized block name */
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "승인";
+
+/* Approves a Comment */
+"Approve Comment" = "댓글 승인";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1029,6 +1050,9 @@ translators: Block name. %s: The localized block name */
 
 /* Beauty site intent topic */
 "Beauty" = "미용";
+
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "%@ 앞";
 
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "안녕히 계세요.";
@@ -1285,6 +1309,9 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "조심하세요!";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "자신의 인생을 영화로 만들어 보세요.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "카테고리";
@@ -1389,6 +1416,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "구매 확인 중…";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "%@의 하위";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "선택하기";
 
@@ -1427,6 +1457,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "시간을 선택하세요.";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "아래 목록에서 테마를 선택하거나 원하는 테마를 입력하세요.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "고유한 사이트 아이콘 선택";
@@ -2438,6 +2471,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "편집하려면 두 번 탭하고 길게 누르세요.";
 
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "이 메뉴 항목을 위 또는 아래로 이동하려면 두 번 누르고 유지합니다. 계층구조를 변경하려면 가로 방향으로 이동합니다.";
+
 /* No comment provided by engineer. */
 "Double tap to add a block" = "블록을 추가하려면 두 번 탭하세요.";
 
@@ -3360,6 +3396,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "개성과 주제를 반영하는 사이트 제목을 주십시오. 첫 인상이 많은 부분을 차지합니다!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "웹사이트 이름 지정";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "%@ 웹사이트 이름 지정";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "지메일";
 
@@ -3756,6 +3799,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "첫 번째 플러그인을 사이트에 설치하는 데에는 최대 1분이 소요될 수 있습니다. 이 시간 동안은 사이트를 변경할 수 없습니다.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "잠재 고객을 확보하는 데 관심이 있으신가요? 최고의 팁 확인";
 
 /* Interior Design site intent topic */
 "Interior Design" = "인테리어 디자인";
@@ -4443,6 +4489,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "가장 인기 있는 시간";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "%@ 이동";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "이미지를 뒤로 이동";
@@ -5699,6 +5748,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "프로젝트";
 
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "프롬프트";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "공개";
@@ -5941,6 +5993,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "알림판에서 제거";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -6834,6 +6889,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "퀵 스타트 건너뛰기";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "이 프롬프트 건너뛰기";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "슬래시 삽입기 결과";
@@ -8087,6 +8145,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Unapproves a comment */
 "Unapprove" = "비승인";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "댓글 미승인";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "댓글을 승인하지 않습니다.";
 
@@ -8311,9 +8372,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "아이콘 버튼 사용";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "이 링크를 활용하면 일일이 한 명씩 초대하지 않아도 여러 팀원이 팀에 참여할 수 있게 됩니다. 이 URL을 방문하는 사람은 누구나 조직에 가입할 수 있습니다. 다른 사람을 통해서 이 링크를 전달받은 사람도 가입할 수 있기 때문에 신뢰할 수 있는 사람에게만 공유하세요.";
-
 /* No comment provided by engineer. */
 "Use this site" = "이 사이트 사용";
 
@@ -8424,6 +8482,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "더 보기";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "더 많은 프롬프트 보기";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "지금까지 사이트 조회수";
@@ -9418,6 +9479,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "글에 사진이나 비디오를 추가";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "이 링크를 활용하면 일일이 한 명씩 초대하지 않아도 여러 팀원이 팀에 참여할 수 있게 됩니다. 이 URL을 방문하는 사람은 누구나 조직에 가입할 수 있습니다. 다른 사람을 통해서 이 링크를 전달받은 사람도 가입할 수 있기 때문에 신뢰할 수 있는 사람에게만 공유하세요.";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "임시글로 저장";
 
@@ -9588,4 +9652,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• 사용자 및 글쓴이";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ 답변됨";
 

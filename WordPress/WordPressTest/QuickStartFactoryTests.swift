@@ -83,10 +83,11 @@ class QuickStartFactoryTests: XCTestCase {
         let tours = QuickStartFactory.allTours(for: blog)
 
         // Then
-        XCTAssertEqual(tours.count, 3)
+        XCTAssertEqual(tours.count, 4)
         XCTAssertTrue(tours[0] is QuickStartCheckStatsTour)
-        XCTAssertTrue(tours[1] is QuickStartViewTour)
-        XCTAssertTrue(tours[2] is QuickStartFollowTour)
+        XCTAssertTrue(tours[1] is QuickStartNotificationsTour)
+        XCTAssertTrue(tours[2] is QuickStartViewTour)
+        XCTAssertTrue(tours[3] is QuickStartFollowTour)
     }
 
     func testToursForNewSite() {
@@ -98,17 +99,16 @@ class QuickStartFactoryTests: XCTestCase {
         let tours = QuickStartFactory.allTours(for: blog)
 
         // Then
-        XCTAssertEqual(tours.count, 10)
+        XCTAssertEqual(tours.count, 9)
         XCTAssertTrue(tours[0] is QuickStartCreateTour)
         XCTAssertTrue(tours[1] is QuickStartSiteTitleTour)
         XCTAssertTrue(tours[2] is QuickStartSiteIconTour)
-        XCTAssertTrue(tours[3] is QuickStartEditHomepageTour)
-        XCTAssertTrue(tours[4] is QuickStartReviewPagesTour)
-        XCTAssertTrue(tours[5] is QuickStartViewTour)
-        XCTAssertTrue(tours[6] is QuickStartShareTour)
-        XCTAssertTrue(tours[7] is QuickStartPublishTour)
-        XCTAssertTrue(tours[8] is QuickStartFollowTour)
-        XCTAssertTrue(tours[9] is QuickStartCheckStatsTour)
+        XCTAssertTrue(tours[3] is QuickStartReviewPagesTour)
+        XCTAssertTrue(tours[4] is QuickStartViewTour)
+        XCTAssertTrue(tours[5] is QuickStartShareTour)
+        XCTAssertTrue(tours[6] is QuickStartPublishTour)
+        XCTAssertTrue(tours[7] is QuickStartFollowTour)
+        XCTAssertTrue(tours[8] is QuickStartCheckStatsTour)
     }
 
     private func newTestBlog(id: Int) -> Blog {

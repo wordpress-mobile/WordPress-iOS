@@ -170,7 +170,6 @@ final class BlogDashboardViewController: UIViewController {
                     } else {
                         self.collectionView.scrollToTop(animated: true)
                     }
-                    self.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
                 default:
                     break
                 }
@@ -294,7 +293,6 @@ extension BlogDashboardViewController {
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
-        static let bottomPaddingForQuickStartNotices: CGFloat = 80
     }
 }
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-08 09:54:11+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:11:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0 */
 /* Language: de */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Gefällt mir";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d Antwort";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d Antworten";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d von %2$d komplett";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Eine Datei enthält ein bösartiges Codemuster";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Ein guter Name ist kurz und einprägsam.\nDu kannst es später jederzeit ändern.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Eine neue Möglichkeit zum Erstellen und Veröffentlichen ansprechender Inhalte auf deiner Website.";
 
@@ -480,6 +489,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Block davor hinzufügen";
+
+/* No comment provided by engineer. */
+"Add Blocks" = "Blöcke hinzufügen";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Inhalte in Beitrag einfügen";
@@ -620,6 +632,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Erweitert";
+
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "Nach %@";
 
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
@@ -777,6 +792,9 @@ translators: Block name. %s: The localized block name */
 
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonym";
+
+/* Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Auf Themenvorschlag antworten";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1036,6 +1054,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Schreibe den ersten Kommentar.";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Vor %@";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Bester Tag";
 
@@ -1291,6 +1312,9 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Vorsicht!";
 
+/* Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "Dreh einen Film über dein Leben.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorien";
@@ -1398,6 +1422,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Überprüfe Käufe …";
 
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Untergeordneter Menüeintrag von %@";
+
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Auswählen";
 
@@ -1436,6 +1463,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Uhrzeit auswählen";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Wähle ein Thema aus der unten stehenden Liste aus oder gib ein eigenes ein.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Ein einzigartiges Website-Icon auswählen";
@@ -2447,6 +2477,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Zum Bearbeiten zweimal tippen und halten";
 
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Um diesen Menüeintrag nach oben oder unten zu verschieben, zweimal tippen und gedrückt halten. Horizontal verschieben, um die Hierarchie zu ändern.";
+
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Zum Hinzufügen eines Blocks zweimal tippen";
 
@@ -2578,6 +2611,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Block duplizieren";
+
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "z. B. Mode, Poesie, Politik";
 
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Jeder Block hat eigene Einstellungen. Tippe auf den jeweiligen Block, um sie zu finden. Die Einstellungen werden in der Werkzeugleiste unten auf dem Bildschirm angezeigt.";
@@ -3366,6 +3402,13 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Wähle einen Namen für deine Website, der am besten zu ihrer Persönlichkeit und Ausrichtung passt. Erste Eindrücke zählen!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Gib deiner Website einen Namen";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your%@website a name" = "Gib deiner %@-Website einen Namen";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3762,6 +3805,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Die Installation des ersten Plugins auf deiner Website kann bis zu einer Minute dauern. Während dieser Zeit kannst du keine Änderungen an deiner Website vornehmen.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Möchtest du eine Zielgruppe aufbauen? Top-Tipps ansehen";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Innenarchitektur";
@@ -4446,6 +4492,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Beliebteste Zeit";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "%@ verschieben";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "Bild nach hinten verschieben";
@@ -5705,6 +5754,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Projekte";
 
+/* Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Themenvorschläge";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Öffentlich";
@@ -5947,6 +5999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Block entfernen";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Aus Dashboard entfernen";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Aus Einsichten entfernen";
@@ -6840,6 +6895,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Schnellstart überspringen";
+
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Diesen Themenvorschlag überspringen";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Ergebnisse der Schrägstrich-Eingabe";
@@ -8320,9 +8378,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Icon-Button verwenden";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Verwende diesen Link, um deine Teammitglieder einzuladen. Jeder, der diese URL besucht, kann sich bei deiner Organisation registrieren, auch wenn er oder sie den Link von jemand anderem erhalten hat. Teile ihn also nur mit vertrauenswürdigen Personen.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Diese Website verwenden";
 
@@ -8433,6 +8488,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Mehr anzeigen";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Mehr Themenvorschläge anzeigen";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Bisheriger Aufruf deiner Website";
@@ -9427,6 +9485,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Um deinen Beiträgen Fotos oder Videos hinzuzufügen.";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Verwende diesen Link, um deine Teammitglieder einzuladen. Jeder, der diese URL besucht, kann sich bei deiner Organisation registrieren, auch wenn er oder sie den Link von jemand anderem erhalten hat. Teile ihn also nur mit vertrauenswürdigen Personen.";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Als Entwurf speichern";
 
@@ -9597,4 +9658,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Benutzer und Autoren";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Geantwortet";
 

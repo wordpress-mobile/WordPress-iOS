@@ -28,7 +28,6 @@ struct QuickStartCustomizeToursCollection: QuickStartToursCollection {
             QuickStartCreateTour(),
             QuickStartSiteTitleTour(blog: blog),
             QuickStartSiteIconTour(),
-            QuickStartEditHomepageTour(),
             QuickStartReviewPagesTour(),
             QuickStartViewTour(blog: blog)
         ]
@@ -76,6 +75,7 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
         self.analyticsKey = "get-to-know"
         self.tours = [
             QuickStartCheckStatsTour(),
+            QuickStartNotificationsTour(),
             QuickStartViewTour(blog: blog),
             QuickStartFollowTour()
         ]

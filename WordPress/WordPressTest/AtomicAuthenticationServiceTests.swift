@@ -11,7 +11,6 @@ class AtomicAuthenticationServiceTests: XCTestCase {
         super.setUp()
 
         contextManager = TestContextManager()
-        contextManager.requiresTestExpectation = false
 
         let api = WordPressComRestApi(oAuthToken: "")
         let remote = AtomicAuthenticationServiceRemote(wordPressComRestApi: api)

@@ -13,8 +13,6 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
-@synthesize requiresTestExpectation = _requiresTestExpectation;
-@synthesize testExpectation = _testExpectation;
 
 - (instancetype)init
 {
@@ -23,7 +21,6 @@
         // Override the shared ContextManager
         [ContextManager internalSharedInstance];
         [ContextManager overrideSharedInstance:self];
-        _requiresTestExpectation = YES;
     }
 
     return self;
@@ -79,40 +76,13 @@
     return _mainContext;
 }
 
-- (void)saveContext:(NSManagedObjectContext *)context
-{
-    [self saveContext:context withCompletionBlock:^{
-        if (self.testExpectation) {
-            [self.testExpectation fulfill];
-            self.testExpectation = nil;
-        } else if (self.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-    }];
-}
-
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
     [super saveContextAndWait:context];
-    if (self.testExpectation) {
-        [self.testExpectation fulfill];
-        self.testExpectation = nil;
-    } else if (self.requiresTestExpectation) {
-        NSLog(@"No test expectation present for context save");
-    }
-}
-
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
-{
-    [super saveContext:context withCompletionBlock:^{
-        if (self.testExpectation) {
-            [self.testExpectation fulfill];
-            self.testExpectation = nil;
-        } else if (self.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-        completionBlock();
-    }];
+    // FIXME: Remove this method to use superclass one instead
+    // This log magically resolves a deadlock in
+    // `ZDashboardCardTests.testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu`
+    NSLog(@"Context save completed");
 }
 
 - (NSURL *)storeURL

@@ -80,6 +80,7 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
+    case readerMoreToggleFollowConversation
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -337,6 +338,17 @@ import Foundation
 
     // Quick Start
     case quickStartStarted
+    case quickStartTapped
+
+    // Onboarding Question Prompt
+    case onboardingQuestionsDisplayed
+    case onboardingQuestionsItemSelected
+    case onboardingQuestionsSkipped
+
+    // Onboarding Enable Notifications Prompt
+    case onboardingEnableNotificationsDisplayed
+    case onboardingEnableNotificationsSkipped
+    case onboardingEnableNotificationsEnableTapped
 
     /// A String that represents the event
     var value: String {
@@ -472,6 +484,8 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerToggleCommentNotifications:
             return "reader_toggle_comment_notifications"
+        case .readerMoreToggleFollowConversation:
+            return "reader_more_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:
@@ -878,6 +892,8 @@ import Foundation
         // Quick Start
         case .quickStartStarted:
             return "quick_start_started"
+        case .quickStartTapped:
+            return "quick_start_tapped"
 
         // Site Intent Question
         case .enhancedSiteCreationIntentQuestionCanceled:
@@ -895,6 +911,21 @@ import Foundation
         case .enhancedSiteCreationIntentQuestionExperiment:
             return "enhanced_site_creation_intent_question_experiment"
 
+        // Onboarding Question Prompt
+        case .onboardingQuestionsDisplayed:
+            return "onboarding_questions_displayed"
+        case .onboardingQuestionsItemSelected:
+            return "onboarding_questions_item_selected"
+        case .onboardingQuestionsSkipped:
+            return "onboarding_questions_skipped"
+
+        // Onboarding Enable Notifications Prompt
+        case .onboardingEnableNotificationsDisplayed:
+            return "onboarding_enable_notifications_displayed"
+        case .onboardingEnableNotificationsSkipped:
+            return "onboarding_enable_notifications_skipped"
+        case .onboardingEnableNotificationsEnableTapped:
+            return "onboarding_enable_notifications_enable_tapped"
         // Site Name
         case .enhancedSiteCreationSiteNameCanceled:
             return "enhanced_site_creation_site_name_canceled"

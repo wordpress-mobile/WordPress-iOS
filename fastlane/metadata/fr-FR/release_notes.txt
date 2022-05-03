@@ -1,0 +1,11 @@
+Nous avons apporté un petit changement, mais non des moindres, à l’éditeur de blocs : le bouton « Ajouter un bloc » gagne en visibilité lors de la première ouverture de l’éditeur, lorsqu’aucun bloc n’est encore sélectionné. Nous avons également supprimé l’une des trois notifications d’erreur (c’était un peu exagéré) lors de l’échec de chargement d’un bloc média ou audio.
+
+Vous entendrez certains changements dans l’expérience d’accessibilité VoiceOver lors de la réorganisation des éléments de menu. Les instructions et notifications sont plus claires, et la hiérarchie du menu a plus de sens à voix haute.
+
+Nous avons ajouté un nouvel écran au processus de création de site, où vous pouvez saisir l’intention de ce dernier. Nous avons testé cet écran auprès d’un petit groupe d’utilisateurs - il devrait aussi vous plaire !
+
+Les aperçus Web ne couperont pas les notifications au bas de l’écran lorsque la barre d’outils de votre navigateur sera visible.
+
+Un nom bien choisi peut être un réel atout. Si vous avez donné un nom à votre site, vous le verrez dans le titre de navigation de l’écran Mon site.
+
+Lorsque vous effectuerez un balayage vers la gauche sur un commentaire dans vos notifications, vous ne verrez plus l’option « Déplacer vers la corbeille », mais « Désapprouver le commentaire » et « Approuver le commentaire ». On approuve !

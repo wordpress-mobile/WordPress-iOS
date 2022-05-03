@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-04 20:35:21+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:45:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0 */
 /* Language: cs_CZ */
@@ -8323,9 +8323,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Použijte ikonu tlačítka";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Vybrat tuto stránku";
 
@@ -9429,6 +9426,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Chcete přidat fotky a videa do vašeho příspěvku.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Uložit jako koncept";
