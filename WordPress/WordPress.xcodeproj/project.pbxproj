@@ -1832,6 +1832,10 @@
 		989643ED23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */; };
 		989643EE23A0437B0070720A /* WidgetDifferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989643EB23A0437B0070720A /* WidgetDifferenceCell.xib */; };
 		989643EF23A0437B0070720A /* WidgetDifferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989643EB23A0437B0070720A /* WidgetDifferenceCell.xib */; };
+		98A047722821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A047712821CEBF001B4E2D /* BloggingPromptsViewController.swift */; };
+		98A047732821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A047712821CEBF001B4E2D /* BloggingPromptsViewController.swift */; };
+		98A047752821D069001B4E2D /* BloggingPromptsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A047742821D069001B4E2D /* BloggingPromptsViewController.storyboard */; };
+		98A047762821D069001B4E2D /* BloggingPromptsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A047742821D069001B4E2D /* BloggingPromptsViewController.storyboard */; };
 		98A25BD1203CB25F006A5807 /* SignupEpilogueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */; };
 		98A25BD3203CB278006A5807 /* SignupEpilogueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */; };
 		98A3C2F0239997DA0048D38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
@@ -6567,6 +6571,8 @@
 		989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDifferenceCell.swift; sourceTree = "<group>"; };
 		989643EB23A0437B0070720A /* WidgetDifferenceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WidgetDifferenceCell.xib; sourceTree = "<group>"; };
 		98991A1125AE653D00B3BBAC /* WordPress 111.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 111.xcdatamodel"; sourceTree = "<group>"; };
+		98A047712821CEBF001B4E2D /* BloggingPromptsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsViewController.swift; sourceTree = "<group>"; };
+		98A047742821D069001B4E2D /* BloggingPromptsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = BloggingPromptsViewController.storyboard; sourceTree = "<group>"; };
 		98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupEpilogueCell.swift; sourceTree = "<group>"; };
 		98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupEpilogueCell.xib; sourceTree = "<group>"; };
 		98A3C2EF239997DA0048D38D /* WordPressThisWeekWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressThisWeekWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -12282,6 +12288,15 @@
 			path = "Shared Views";
 			sourceTree = "<group>";
 		};
+		98A047702821BFB6001B4E2D /* Blogging Prompts */ = {
+			isa = PBXGroup;
+			children = (
+				98A047712821CEBF001B4E2D /* BloggingPromptsViewController.swift */,
+				98A047742821D069001B4E2D /* BloggingPromptsViewController.storyboard */,
+			);
+			path = "Blogging Prompts";
+			sourceTree = "<group>";
+		};
 		98A3C2F1239997DA0048D38D /* WordPressThisWeekWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -12737,19 +12752,20 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
-				C77FC90628009C3C00726F00 /* Onboarding Questions Prompt */,
-				3F170D2A2654615900F6F670 /* Blogging Reminders */,
-				FA73D7E72798766300DF24B3 /* Site Picker */,
-				1716AEFA25F2926C00CF49EC /* My Site */,
 				F1863714253E49B8003D4BEF /* Add Site */,
-				3F43603423F368BF001DEE70 /* Blog Details */,
+				3F37609B23FD803300F0D87F /* Blog + Me */,
 				FA73D7D7278D9E6300DF24B3 /* Blog Dashboard */,
+				3F43603423F368BF001DEE70 /* Blog Details */,
 				3F43603523F368CA001DEE70 /* Blog List */,
 				3F43603623F36962001DEE70 /* Blog Selector */,
-				3F37609B23FD803300F0D87F /* Blog + Me */,
+				98A047702821BFB6001B4E2D /* Blogging Prompts */,
+				3F170D2A2654615900F6F670 /* Blogging Reminders */,
+				1716AEFA25F2926C00CF49EC /* My Site */,
+				C77FC90628009C3C00726F00 /* Onboarding Questions Prompt */,
 				4395A15E210672C900844E8E /* QuickStart */,
 				E6431DDE1C4E890B00FD8D90 /* Sharing */,
 				FA5C74091C596E69000B528C /* Site Management */,
+				FA73D7E72798766300DF24B3 /* Site Picker */,
 				3F43603823F36A76001DEE70 /* Site Settings */,
 				BE6AB7FB1BC62E0B00D980FC /* Style */,
 			);
@@ -15925,6 +15941,7 @@
 				B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */,
 				FAE4CA6A2732C094003BFDFE /* QuickStartPromptViewController.xib in Resources */,
 				98DCF4A7275945E00008630F /* ReaderDetailNoCommentCell.xib in Resources */,
+				98A047752821D069001B4E2D /* BloggingPromptsViewController.storyboard in Resources */,
 				F5A34D1125DF2F7F00C9654B /* Pacifico-Regular.ttf in Resources */,
 				FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */,
 				1761F17B26209AEE000815EF /* open-source-icon-app-60x60@2x.png in Resources */,
@@ -16587,6 +16604,7 @@
 				FABB20852602FC2C00C8785C /* QuickStartChecklistHeader.xib in Resources */,
 				FABB20862602FC2C00C8785C /* n.caf in Resources */,
 				FABB20882602FC2C00C8785C /* People.storyboard in Resources */,
+				98A047762821D069001B4E2D /* BloggingPromptsViewController.storyboard in Resources */,
 				FABB208A2602FC2C00C8785C /* WidgetNoConnectionCell.xib in Resources */,
 				FABB208B2602FC2C00C8785C /* LatestPostSummaryCell.xib in Resources */,
 				FABB208D2602FC2C00C8785C /* RestorePostTableViewCell.xib in Resources */,
@@ -18308,6 +18326,7 @@
 				8B33BC9527A0C14C00DB5985 /* BlogDetailsViewController+QuickActions.swift in Sources */,
 				98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */,
 				46D6114F2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift in Sources */,
+				98A047722821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				C81CCD81243BF7A600A83E27 /* TenorService.swift in Sources */,
 				8B51844525893F140085488D /* FilterBarView.swift in Sources */,
@@ -20155,6 +20174,7 @@
 				FABB210E2602FC2C00C8785C /* SuggestionService.swift in Sources */,
 				FABB210F2602FC2C00C8785C /* WordPress-41-42.xcmappingmodel in Sources */,
 				24351255264DCA08009BB2B6 /* Secrets.swift in Sources */,
+				98A047732821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */,
 				FABB21102602FC2C00C8785C /* MySiteViewController+FAB.swift in Sources */,
 				FABB21112602FC2C00C8785C /* BaseRestoreOptionsViewController.swift in Sources */,
 				8B4DDF25278F44CC0022494D /* BlogDashboardViewController.swift in Sources */,
