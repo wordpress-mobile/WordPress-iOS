@@ -79,9 +79,6 @@
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw" userLabel="Large Title">
                                     <rect key="frame" x="79" y="48" width="224" height="37"/>
-                                    <accessibility key="accessibilityConfiguration">
-                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                    </accessibility>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -91,9 +88,6 @@
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73" userLabel="Prompt">
                             <rect key="frame" x="16" y="107" width="382" height="36"/>
-                            <accessibility key="accessibilityConfiguration">
-                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                            </accessibility>
                             <constraints>
                                 <constraint firstAttribute="width" priority="750" constant="600" id="Wga-Tr-jFk"/>
                             </constraints>
