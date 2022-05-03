@@ -71,7 +71,8 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
             analyticsLocation: "site_creation",
             mainTitle: TextContent.mainTitle,
             primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
-            secondaryActionTitle: TextContent.previewButton
+            secondaryActionTitle: TextContent.previewButton,
+            showsFilterBar: false
         )
     }
 

@@ -22,7 +22,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
             debounceSelectionChange.call()
         }
     }
-    private let filterBar: CollapsableHeaderFilterBar
+    private let filterBar: CollapsableHeaderFilterBar?
 
     internal var categorySections: [CategorySection] { get {
         fatalError("This should be overridden by the subclass to provide a conforming collection of categories")
@@ -57,14 +57,15 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         prompt: String? = nil,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
-        defaultActionTitle: String? = nil
+        defaultActionTitle: String? = nil,
+        showsFilterBar: Bool = true
     ) {
         self.analyticsLocation = analyticsLocation
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
-        filterBar = CollapsableHeaderFilterBar()
+        filterBar = showsFilterBar ? CollapsableHeaderFilterBar() : nil
         super.init(scrollableView: tableView,
                    mainTitle: mainTitle,
                    prompt: prompt,
@@ -81,7 +82,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
-        filterBar.filterDelegate = self
+        filterBar?.filterDelegate = self
         tableView.dataSource = self
         configureCloseButton()
     }
@@ -102,9 +103,9 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
 
     public func loadingStateChanged(_ isLoading: Bool) {
-        filterBar.shouldShowGhostContent = isLoading
-        filterBar.allowsMultipleSelection = !isLoading
-        filterBar.reloadData()
+        filterBar?.shouldShowGhostContent = isLoading
+        filterBar?.allowsMultipleSelection = !isLoading
+        filterBar?.reloadData()
     }
 }
 
