@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-20 15:45:22+0000 */
+/* Translation-Revision-Date: 2022-04-28 14:56:45+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0 */
 /* Language: ru */
@@ -8387,9 +8387,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Использовать кнопку со значком";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Используйте эту ссылку, чтобы подключить членов вашей команды, не приглашая их по одному. Любой, кто посетит этот URL-адрес, сможет зарегистрироваться в вашей организации, даже если он получил ссылку от кого-то другого, поэтому убедитесь, что вы делитесь ею с доверенными людьми.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Использовать этот сайт";
 
@@ -9496,6 +9493,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Для размещения фотографий и видео в ваших записях.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Используйте эту ссылку, чтобы подключить членов вашей команды, не приглашая их по одному. Любой, кто посетит этот URL-адрес, сможет зарегистрироваться в вашей организации, даже если он получил ссылку от кого-то другого, поэтому убедитесь, что вы делитесь ей с доверенными людьми.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Сохранить как черновик";

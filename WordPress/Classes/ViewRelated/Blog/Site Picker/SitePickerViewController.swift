@@ -252,11 +252,6 @@ extension SitePickerViewController {
             //  currently working on the View Site tour.
             tourGuide.completeViewSiteTour(forBlog: blog)
         }
-
-        guard let parentVC = parent as? MySiteViewController else {
-            return
-        }
-        parentVC.additionalSafeAreaInsets = .zero
     }
 }
 

@@ -379,14 +379,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
     
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-
-    if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-    } else {
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    }
-
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
@@ -403,7 +395,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self cancelCompletedToursIfNeeded];
     [self createUserActivity];
     [self startAlertTimer];
     
@@ -1400,7 +1391,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
                 [parentVC.scrollView scrollVerticallyToView:cell animated:true];
             }
@@ -1638,7 +1628,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
@@ -1760,9 +1749,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 #pragma mark - Pull To Refresh
-- (void)pulledToRefresh {
-    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
-}
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
@@ -1772,7 +1758,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // down to refresh the site.
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [refreshControl endRefreshing];
-            
+
             completion();
         });
     }];

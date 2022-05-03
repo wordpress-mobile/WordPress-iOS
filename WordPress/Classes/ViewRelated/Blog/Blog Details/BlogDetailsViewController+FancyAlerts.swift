@@ -5,8 +5,6 @@ private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
 
-    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
-
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
@@ -22,7 +20,7 @@ extension BlogDetailsViewController {
                         return
                     }
                     fallthrough
-                case .pages, .editHomepage, .sharing:
+                case .pages, .sharing:
                     self?.scroll(to: info)
                 default:
                     break
@@ -116,13 +114,6 @@ extension BlogDetailsViewController {
         QuickStartTourGuide.shared.visited(.checklist)
 
         createButtonCoordinator?.hideCreateButtonTooltip()
-    }
-
-    @objc func cancelCompletedToursIfNeeded() {
-        if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
-            // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
-            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
-        }
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {

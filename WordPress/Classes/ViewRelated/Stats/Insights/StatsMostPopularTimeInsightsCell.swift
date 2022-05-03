@@ -7,6 +7,10 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
 
     // MARK: - Subviews
 
+    private var outerStackView: UIStackView!
+
+    private var noDataLabel: UILabel!
+
     private var topLeftLabel: UILabel!
     private var middleLeftLabel: UILabel!
     private var bottomLeftLabel: UILabel!
@@ -27,20 +31,31 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         fatalError()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        displayNoData(show: false)
+    }
+
     // MARK: - View Configuration
 
     private func configureView() {
-        let stackView = makeOuterStackView()
-        contentView.addSubview(stackView)
+        outerStackView = makeOuterStackView()
+        contentView.addSubview(outerStackView)
 
-        topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: StatsBaseCell.Metrics.padding)
+        topConstraint = outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: StatsBaseCell.Metrics.padding)
 
         NSLayoutConstraint.activate([
             topConstraint,
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -StatsBaseCell.Metrics.padding),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StatsBaseCell.Metrics.padding),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StatsBaseCell.Metrics.padding),
+            outerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -StatsBaseCell.Metrics.padding),
+            outerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StatsBaseCell.Metrics.padding),
+            outerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StatsBaseCell.Metrics.padding),
         ])
+
+        noDataLabel = makeNoDataLabel()
+        contentView.addSubview(noDataLabel)
+        outerStackView.pinSubviewToAllEdges(noDataLabel)
+        noDataLabel.isHidden = true
     }
 
     private func makeOuterStackView() -> UIStackView {
@@ -112,6 +127,7 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         let middleLabel = UILabel()
         middleLabel.textColor = .text
         middleLabel.font = .preferredFont(forTextStyle: .title1).bold()
+        middleLabel.adjustsFontSizeToFitWidth = true
 
         let bottomLabel = UILabel()
         bottomLabel.textColor = .textSubtle
@@ -123,6 +139,22 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         return (topLabel: topLabel, middleLabel: middleLabel, bottomLabel: bottomLabel)
     }
 
+    private func makeNoDataLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .body)
+        label.textColor = .textSubtle
+        label.numberOfLines = 0
+        label.text = TextContent.noData
+
+        return label
+    }
+
+    private func displayNoData(show: Bool) {
+        outerStackView.subviews.forEach({ $0.isHidden = show })
+        noDataLabel.isHidden = !show
+    }
+
     // MARK: Public configuration
 
     func configure(data: StatsMostPopularTimeData?, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
@@ -130,21 +162,28 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         self.statSection = .insightsMostPopularTime
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
-        if let data = data {
-            topLeftLabel.text = data.mostPopularDayTitle
-            middleLeftLabel.text = data.mostPopularDay
-            bottomLeftLabel.text = data.dayPercentage
-
-            topRightLabel.text = data.mostPopularTimeTitle
-            middleRightLabel.text = data.mostPopularTime
-            bottomRightLabel.text = data.timePercentage
+        guard let data = data else {
+            displayNoData(show: true)
+            return
         }
+
+        topLeftLabel.text = data.mostPopularDayTitle
+        middleLeftLabel.text = data.mostPopularDay
+        bottomLeftLabel.text = data.dayPercentage
+
+        topRightLabel.text = data.mostPopularTimeTitle
+        middleRightLabel.text = data.mostPopularTime
+        bottomRightLabel.text = data.timePercentage
     }
 
     private enum Metrics {
-        static let horizontalStackViewSpacing: CGFloat = 32.0
+        static let horizontalStackViewSpacing: CGFloat = 16.0
         static let verticalStackViewSpacing: CGFloat = 8.0
         static let dividerWidth: CGFloat = 1.0
+    }
+
+    private enum TextContent {
+        static let noData = NSLocalizedString("stats.insights.mostPopularTime.noData", value: "Not enough activity. Check back later when your site's had more visitors!", comment: "Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic.")
     }
 }
 

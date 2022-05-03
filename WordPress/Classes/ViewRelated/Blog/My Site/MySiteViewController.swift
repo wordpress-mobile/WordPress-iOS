@@ -155,6 +155,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
         startObservingQuickStart()
+        startObservingOnboardingPrompt()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -268,8 +269,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         segmentedControlContainerView.isHidden = hideSegmentedControl
 
         if !hideSegmentedControl && switchTabsIfNeeded {
-            segmentedControl.selectedSegmentIndex = mySiteSettings.defaultSection.rawValue
-            segmentedControlValueChanged()
+            switchTab(to: mySiteSettings.defaultSection)
         }
     }
 
@@ -427,8 +427,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     private func pulledToRefresh() {
-        guard let section = currentSection else {
-            return
+
+        guard let blog = blog,
+              let section = currentSection else {
+                  return
         }
 
         switch section {
@@ -438,12 +440,24 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                     return
                 }
 
-                self.sitePickerViewController?.blogDetailHeaderView.blog = self.blog
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
-
         case .dashboard:
+
+            /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
+            /// the dashboard updating fast.
             blogDashboardViewController?.pulledToRefresh { [weak self] in
                 self?.refreshControl.endRefreshing()
+            }
+
+            blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
         }
 
@@ -476,6 +490,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             hideBlogDetails()
             showDashboard(for: blog)
         }
+    }
+
+    /// Changes between the site menu and dashboard
+    /// - Parameter section: The section to switch to
+    func switchTab(to section: Section) {
+        segmentedControl.selectedSegmentIndex = section.rawValue
+        segmentedControlValueChanged()
     }
 
     // MARK: - Child VC logic
@@ -765,8 +786,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
 
             if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
-                self.segmentedControl.selectedSegmentIndex = Section.siteMenu.rawValue
-                self.segmentedControlValueChanged()
+                self.switchTab(to: .siteMenu)
             }
 
             self.updateNavigationTitle(for: blog)

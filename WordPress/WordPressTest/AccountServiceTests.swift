@@ -10,7 +10,6 @@ class AccountServiceTests: XCTestCase {
         super.setUp()
 
         contextManager = TestContextManager()
-        contextManager.requiresTestExpectation = false
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 

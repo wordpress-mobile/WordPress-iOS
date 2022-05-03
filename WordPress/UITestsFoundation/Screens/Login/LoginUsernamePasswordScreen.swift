@@ -58,6 +58,7 @@ public class LoginUsernamePasswordScreen: ScreenObject {
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
         fill(username: username, password: password)
         try dismissQuickStartPromptIfNeeded()
+        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySitesScreen()
     }
@@ -65,6 +66,7 @@ public class LoginUsernamePasswordScreen: ScreenObject {
     public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
         try dismissQuickStartPromptIfNeeded()
+        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySiteScreen()
     }
@@ -92,6 +94,16 @@ public class LoginUsernamePasswordScreen: ScreenObject {
             if QuickStartPromptScreen.isLoaded() {
                 Logger.log(message: "Dismising quick start prompt...", event: .i)
                 _ = try QuickStartPromptScreen().selectNoThanks()
+                return
+            }
+        }
+    }
+
+    private func dismissOnboardingQuestionsPromptIfNeeded() throws {
+        try XCTContext.runActivity(named: "Dismiss onboarding questions prompt if needed.") { (activity) in
+            if OnboardingQuestionsPromptScreen.isLoaded() {
+                Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
+                _ = try OnboardingQuestionsPromptScreen().selectSkip()
                 return
             }
         }

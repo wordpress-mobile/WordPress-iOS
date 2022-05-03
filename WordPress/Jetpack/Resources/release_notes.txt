@@ -1,11 +1,12 @@
-We made a small but mighty change to the block editor: the “Add Block” button is more visible when you first open the editor with no blocks selected. We also removed one of three error notifications when a media or audio block fails to upload—it felt like overkill.
+* [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
+* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
+* [*] Quick Start: Updated the Reader tour. The tour now highlights the Discover tab and guides users to follow topics via the Settings screen. [#18450]
+* [*] [internal] Quick Start: Deleted the Edit your homepage tour. [#18469]
+* [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
+* [**] Follow Conversation flow now enables in-app notifications by default. They were updated to be opt-out rather than opt-in. [#18449]
+* [*] Block Editor: Latest Posts block: Add featured image settings [https://github.com/WordPress/gutenberg/pull/39257]
+* [*] Block Editor: Prevent incorrect notices displaying when switching between HTML-Visual mode quickly [https://github.com/WordPress/gutenberg/pull/40415]
+* [*] Block Editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/WordPress/gutenberg/pull/35326]
+* [*] Block Editor: Prevent gaps shown around floating toolbar when using external keyboard [https://github.com/WordPress/gutenberg/pull/40266]
+* [**] We'll now ask users logging in which area of the app they'd like to focus on to build towards a more personalized experience. [#18385]
 
-You’ll hear some accessibility tweaks in the VoiceOver experience when you’re rearranging menu items. Instructions and notices are clearer, and the menu hierarchy makes more sense out loud.
-
-We added a new screen to the site creation process where you can enter your site’s intent. We tested this screen with a small group of users, and we think you’ll like it, too.
-
-Web previews won’t cut off bottom-of-the-screen notifications when your browser toolbar is visible.
-
-What’s in a name? Well, if your site has one, you’ll see it in the My Site navigation title.
-
-When you swipe left on a comment in your Notifications, you won’t see the “Trash” option anymore. Instead you’ll see “Unapprove Comment” and “Approve Comment.” We approve.
