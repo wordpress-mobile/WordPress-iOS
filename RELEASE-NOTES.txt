@@ -1,3 +1,7 @@
+19.9
+-----
+
+
 19.8
 -----
 * [**] Self hosted sites are not restricted by video length during media uploads [https://github.com/wordpress-mobile/WordPress-iOS/pull/18414]
