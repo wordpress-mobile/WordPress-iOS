@@ -96,7 +96,7 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONLoader().loadFile(named: fileName) ?? [:]
+        return JSONObject.loadFile(named: fileName)
     }
 
     private func loadLikeNotification() -> WordPress.Notification {
