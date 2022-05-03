@@ -37,6 +37,7 @@ private extension BloggingPromptsFeatureDescriptionView {
         promptCard.cardFrameView.layer.shadowOpacity = Style.cardShadowOpacity
         promptCard.cardFrameView.layer.shadowRadius = Style.cardShadowRadius
 
+        promptCardView.accessibilityElementsHidden = true
         promptCardView.addSubview(promptCard.cardFrameView)
         promptCardView.pinSubviewToAllEdges(promptCard.cardFrameView)
     }
