@@ -19,10 +19,6 @@ class MediaServiceTests: XCTestCase {
         postBuilder = PostBuilder(context)
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     // MARK: - Tests for failedMediaForUpload(automatedRetry:)
 
     /// Requesting media for manual attempt, no previous automated retry failures

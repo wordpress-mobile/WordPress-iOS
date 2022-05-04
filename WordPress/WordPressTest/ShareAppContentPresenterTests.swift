@@ -27,7 +27,6 @@ final class ShareAppContentPresenterTests: XCTestCase {
         HTTPStubs.removeAllStubs()
         TestAnalyticsTracker.tearDown()
 
-        contextManager.tearDown()
         contextManager = nil
         account = nil
         presenter = nil

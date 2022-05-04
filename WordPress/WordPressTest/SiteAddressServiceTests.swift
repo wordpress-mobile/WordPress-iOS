@@ -23,10 +23,6 @@ class SiteAddressServiceTests: XCTestCase {
         mockedResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     func testSuggestionsWithMatchingTermSuccess() {
         let searchTerm = "domaintesting"
 

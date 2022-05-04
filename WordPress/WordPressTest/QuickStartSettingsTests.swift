@@ -21,11 +21,6 @@ class QuickStartSettingsTests: XCTestCase {
         quickStartSettings = QuickStartSettings(userDefaults: userDefaults)
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func testPromptWasDismissedReturnsFalseIfNotPreviouslyDismissed() {
         let blog = newTestBlog(id: 1)
         let promptWasDismissed = quickStartSettings.promptWasDismissed(for: blog)

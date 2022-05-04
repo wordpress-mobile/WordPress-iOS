@@ -28,10 +28,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     // MARK: Editor `theme_supports` support
     func testThemeSupportsNewTheme() {
         blog = BlogBuilder(context)

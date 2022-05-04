@@ -19,7 +19,6 @@ class AztecPostViewControllerAttachmentTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager.tearDown()
         contextManager = nil
     }
 

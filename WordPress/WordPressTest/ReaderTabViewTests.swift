@@ -15,12 +15,6 @@ class ReaderTabViewTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        contextManager = nil
-        super.tearDown()
-    }
-
     func testRefreshTabBarWithHiddenButtons() {
         // Given
         let store = MockItemsStore()

@@ -13,13 +13,6 @@ class ContextManagerTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        // Note: We'll force ContextManager override reset, since, for (unknown reasons) the ContextManager
-        // might be retained more than expected, and it may break other core data based tests.
-        contextManager.tearDown()
-    }
-
     func testIterativeMigration() {
         let model19Name = "WordPress 19"
 

@@ -43,7 +43,6 @@ class NotificationSettingsServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         HTTPStubs.removeAllStubs()
-        contextManager.tearDown()
     }
 
 

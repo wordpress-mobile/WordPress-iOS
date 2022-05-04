@@ -42,7 +42,6 @@ final class EditCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         utility.tearDown()
-        contextManager.tearDown()
         super.tearDown()
     }
 

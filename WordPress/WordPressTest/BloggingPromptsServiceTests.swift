@@ -29,7 +29,6 @@ final class BloggingPromptsServiceTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         remote = nil
         blog = nil

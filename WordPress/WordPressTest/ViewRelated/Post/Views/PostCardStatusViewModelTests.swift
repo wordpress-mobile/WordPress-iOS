@@ -15,12 +15,6 @@ class PostCardStatusViewModelTests: XCTestCase {
         context = contextManager.newDerivedContext()
     }
 
-    override func tearDown() {
-        context = nil
-        contextManager.tearDown()
-        super.tearDown()
-    }
-
     func testExpectedButtonGroupsForVariousPostAttributeCombinations() {
         // Arrange
         let expectations: [(String, Post, ButtonGroups)] = [

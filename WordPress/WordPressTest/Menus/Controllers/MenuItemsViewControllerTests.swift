@@ -12,11 +12,6 @@ class MenuItemsViewControllerTests: XCTestCase {
         super.setUp()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        super.tearDown()
-    }
-
     /// Tests that no string is provided when there is nothing to announce.
     func testOrderingChangeVOStringNoChanges() {
         let noChanges = MenuItemsViewController.generateOrderingChangeVOString(

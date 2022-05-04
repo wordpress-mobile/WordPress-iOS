@@ -20,11 +20,6 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         rootWindow.rootViewController = navController
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func testMissingPermalink() {
         let post = PostBuilder(context).drafted().build()
 

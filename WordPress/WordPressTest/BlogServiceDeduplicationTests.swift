@@ -19,7 +19,6 @@ class BlogServiceDeduplicationTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        contextManager.tearDown()
         contextManager = nil
         blogService = nil
     }

@@ -9,10 +9,6 @@ class BlogSettingsDiscussionTests: XCTestCase {
         manager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        manager.tearDown()
-    }
-
     func testCommentsAutoapprovalDisabledEnablesManualModerationFlag() {
         let settings = newSettings()
         settings.commentsAutoapproval = .disabled

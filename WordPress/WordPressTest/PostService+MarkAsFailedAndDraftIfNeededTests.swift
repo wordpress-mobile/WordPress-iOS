@@ -17,11 +17,6 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func testMarkAPostAsFailedAndKeepItsStatus() {
         let post = PostBuilder(context)
             .with(status: .pending)

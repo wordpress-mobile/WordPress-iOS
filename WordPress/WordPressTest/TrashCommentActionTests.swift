@@ -40,7 +40,6 @@ final class TrashCommentActionTests: XCTestCase {
         action = nil
         makeNetworkUnavailable()
         utils.tearDown()
-        testContextManager.tearDown()
         super.tearDown()
     }
 

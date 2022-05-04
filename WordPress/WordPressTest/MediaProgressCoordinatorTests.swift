@@ -25,7 +25,6 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
     override func tearDown() {
         context.rollback()
-        contextManager.tearDown()
         mediaProgressCoordinator = nil
         super.tearDown()
     }

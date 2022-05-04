@@ -20,7 +20,6 @@ class FollowCommentsServiceTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         super.tearDown()
     }

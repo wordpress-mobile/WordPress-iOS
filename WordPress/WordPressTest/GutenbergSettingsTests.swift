@@ -56,7 +56,6 @@ class GutenbergSettingsTests: XCTestCase {
 
     override func tearDown() {
         context.rollback()
-        contextManager.tearDown()
         TestAnalyticsTracker.tearDown()
         super.tearDown()
     }

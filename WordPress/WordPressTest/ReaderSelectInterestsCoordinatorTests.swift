@@ -8,10 +8,6 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     func testisFollowingInterestsReturnsFalse() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: false, coreDataStack: contextManager)

@@ -17,11 +17,6 @@ class PostServiceUploadingListTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     /// Returns true if a single post is added to the list
     ///
     func testReturnTrueForSingleUpload() {

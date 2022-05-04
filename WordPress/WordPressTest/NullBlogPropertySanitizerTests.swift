@@ -27,7 +27,6 @@ class NullBlogPropertySanitizerTests: XCTestCase {
         super.tearDown()
         nullBlogPropertySanitizer = nil
         keyValueDatabase = nil
-        contextManager.tearDown()
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {

@@ -29,7 +29,6 @@ class AztecPostViewController_MenuTests: XCTestCase {
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        contextManager.tearDown()
         context = nil
     }
 

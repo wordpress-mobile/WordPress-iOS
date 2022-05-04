@@ -44,11 +44,6 @@ class EditorSettingsServiceTest: XCTestCase {
         AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        super.tearDown()
-    }
-
     func testLocalSettingsMigrationPostAztec() {
         let blog = makeTestBlog()
         // Self-Hosted sites will default to Aztec

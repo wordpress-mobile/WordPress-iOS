@@ -58,7 +58,6 @@ class ReblogTestCase: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         readerPost = nil
         blogService = nil

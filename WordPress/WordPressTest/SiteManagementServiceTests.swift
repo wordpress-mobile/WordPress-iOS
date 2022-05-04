@@ -62,11 +62,6 @@ class SiteManagementServiceTests: XCTestCase {
         mockRemoteService = siteManagementService.mockRemoteService
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func insertBlog(_ context: NSManagedObjectContext) -> Blog {
         let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.xmlrpc = "http://mock.blog/xmlrpc.php"

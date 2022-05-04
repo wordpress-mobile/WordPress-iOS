@@ -69,9 +69,6 @@ class ReaderTabViewModelTests: XCTestCase {
         store = nil
         settingsPresenter = nil
         makeContentControllerExpectation = nil
-
-        contextManager.tearDown()
-        contextManager = nil
     }
 
     func testRefreshTabBar() {

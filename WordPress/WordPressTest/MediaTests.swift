@@ -19,7 +19,6 @@ class MediaTests: XCTestCase {
 
     override func tearDown() {
         context.rollback()
-        contextManager.tearDown()
         super.tearDown()
     }
 

@@ -55,10 +55,6 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let store: BloggingRemindersStore
 
         let contextManager = ContextManagerMock()
-        defer {
-            contextManager.tearDown()
-        }
-
         let context = contextManager.mainContext
         let blog = BlogBuilder(context).build()
 
@@ -98,10 +94,6 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         cancelExpectation.expectedFulfillmentCount = days.count
 
         let contextManager = ContextManagerMock()
-        defer {
-            contextManager.tearDown()
-        }
-
         let context = contextManager.mainContext
         let blog = BlogBuilder(context).build()
 

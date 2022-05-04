@@ -15,11 +15,6 @@ class BlogTitleTests: XCTestCase {
         blog.xmlrpc = Constants.blogURL
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        blog = nil
-    }
-
     func testBlogTitleIsName() throws {
         // Given a blog
         // When blogName is a string

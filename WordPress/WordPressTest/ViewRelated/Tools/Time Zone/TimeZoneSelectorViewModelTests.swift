@@ -22,7 +22,6 @@ class TimeZoneSelectorViewModelTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         viewModel = nil
         timeZoneGroups = nil
 

@@ -17,11 +17,6 @@ class AbstractPostFixLocalMediaURLsTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func testUpdateLocalMediaPathsInCachesDirectory() {
         let post = PostBuilder(context)
             .with(remoteStatus: .failed)

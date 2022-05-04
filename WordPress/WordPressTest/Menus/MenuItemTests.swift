@@ -12,10 +12,6 @@ class MenuItemTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     /// Tests detection of descendants.
     func testIsDescendantOfItem() {
         let itemA = newMenuItem(named: "Item A")

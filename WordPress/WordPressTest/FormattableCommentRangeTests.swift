@@ -22,7 +22,6 @@ final class NotificationCommentRangeTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         subject = nil
         super.tearDown()
     }

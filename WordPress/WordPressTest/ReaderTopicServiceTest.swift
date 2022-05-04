@@ -19,11 +19,6 @@ final class ReaderTopicSwiftTest: XCTestCase {
         testContextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        testContextManager.tearDown()
-        super.tearDown()
-    }
-
     // MARK: - Config / Helpers
 
     func seedTopics() {

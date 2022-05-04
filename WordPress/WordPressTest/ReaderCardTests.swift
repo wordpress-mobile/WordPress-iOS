@@ -14,10 +14,6 @@ class ReaderCardTests: XCTestCase {
         testContext = contextManager.newDerivedContext()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     /// Create a Card of the type post from a RemoteReaderCard
     ///
     func testCreateCardPostFromRemote() {

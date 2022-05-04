@@ -29,7 +29,6 @@ class DomainsServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        contextManager.tearDown()
         HTTPStubs.removeAllStubs()
     }
 

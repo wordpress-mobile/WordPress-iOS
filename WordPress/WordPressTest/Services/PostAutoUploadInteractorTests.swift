@@ -18,7 +18,6 @@ class PostAutoUploadInteractorTests: XCTestCase {
 
     override func tearDown() {
         interactor = nil
-        contextManager.tearDown()
         super.tearDown()
     }
 

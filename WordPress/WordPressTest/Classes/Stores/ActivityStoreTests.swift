@@ -22,7 +22,6 @@ class ActivityStoreTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         dispatcher = nil
         store = nil
 

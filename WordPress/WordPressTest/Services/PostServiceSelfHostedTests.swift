@@ -40,7 +40,6 @@ class PostServiceSelfHostedTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        contextManager.tearDown()
     }
 
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {

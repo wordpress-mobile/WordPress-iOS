@@ -15,11 +15,6 @@ final class BlogTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     // MARK: - Atomic Tests
     func testIsAtomic() {
         let blog = BlogBuilder(context)

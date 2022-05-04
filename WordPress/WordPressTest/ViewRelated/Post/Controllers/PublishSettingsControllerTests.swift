@@ -12,11 +12,6 @@ class PublishSettingsViewControllerTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        contextManager = nil
-    }
-
     func testViewModelDateScheduled() {
         let testDate = Date().addingTimeInterval(5000)
 

@@ -38,11 +38,6 @@ class GravatarServiceTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
-    }
-
     func testServiceSanitizesEmailAddressCapitals() {
         let account = createTestAccount(username: "some", token: "1234", emailAddress: "emAil@wordpress.com")
 

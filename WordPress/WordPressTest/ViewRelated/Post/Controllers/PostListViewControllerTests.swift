@@ -17,11 +17,6 @@ class PostListViewControllerTests: XCTestCase {
         super.setUp()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-        super.tearDown()
-    }
-
     func testShowsGhostableTableView() {
         let blog = BlogBuilder(context).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)

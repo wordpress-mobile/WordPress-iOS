@@ -9,10 +9,6 @@ class ReaderStreamViewControllerTests: XCTestCase {
         contextManager = ContextManagerMock()
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
         let context = contextManager.mainContext

@@ -28,7 +28,6 @@ class MediaCoordinatorTests: XCTestCase {
         wait(for: 0.3)
         contextManager.tearDown()
         coordinator = nil
-        contextManager.tearDown()
     }
 
     func testUploadMediaReturnsTrueIfAllPendingMediaAreQueuedForUpload() {

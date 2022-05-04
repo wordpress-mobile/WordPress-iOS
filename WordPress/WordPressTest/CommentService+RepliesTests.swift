@@ -33,7 +33,6 @@ final class CommentService_RepliesTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         HTTPStubs.removeAllStubs()
 
         contextManager = nil

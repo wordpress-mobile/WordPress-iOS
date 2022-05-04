@@ -45,7 +45,6 @@ class ReaderTabItemsStoreTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         service = nil
         subscription = nil

@@ -50,7 +50,6 @@ final class LikeCommentActionTests: XCTestCase {
         action = nil
         makeNetworkUnavailable()
         utility.tearDown()
-        contextManager.tearDown()
         super.tearDown()
     }
 

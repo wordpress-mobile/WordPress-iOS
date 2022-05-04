@@ -26,7 +26,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
         context.rollback()
-        contextManager.tearDown()
     }
 
     func testMediaPixelSize() {

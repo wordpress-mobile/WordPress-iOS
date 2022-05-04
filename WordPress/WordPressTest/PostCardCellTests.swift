@@ -28,7 +28,6 @@ class PostCardCellTests: XCTestCase {
 
     override func tearDown() {
         context = nil
-        contextManager.tearDown()
         super.tearDown()
     }
 

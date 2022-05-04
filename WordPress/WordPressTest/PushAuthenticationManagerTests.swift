@@ -60,10 +60,6 @@ class PushAuthenticationManagerTests: XCTestCase {
         approvalAlertController.addDefaultActionWithTitle("Approve", handler: nil)
     }
 
-    override func tearDown() {
-        contextManager.tearDown()
-    }
-
     func testIsPushAuthenticationNotificationReturnsTrueWhenPassedTheCorrectPushAuthenticationNoteType() {
         let result = pushAuthenticationManager!.isAuthenticationNotification(["type": "push_auth"])
 
