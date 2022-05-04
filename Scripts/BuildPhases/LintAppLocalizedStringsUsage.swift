@@ -226,6 +226,7 @@ extension Xcodeproj {
     /// Represents a group (aka "folder") contained in the project tree.
     struct PBXGroup: PBXReference {
         enum ISA: String, Decodable { case PBXGroup, XCVersionGroup, PBXVariantGroup }
+        // We don't have a `ISA<Self>` here because we want multiple `isa` values to all be allowed and all decode as a `PBXGroup` instance (`"PBXGroup"`, `"XCVersionGroup"`, `"PBXVariantGroup"`)
         private let isa: ISA
 
         let name: String?
