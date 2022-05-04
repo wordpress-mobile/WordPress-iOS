@@ -12,12 +12,18 @@ final class Tooltip: UIView {
             static let contentStackViewBottom: CGFloat = 4
             static let contentStackViewHorizontal: CGFloat = 16
             static let superHorizontalMargin: CGFloat = 16
+            static let buttonStackViewHeight: CGFloat = 40
         }
     }
 
     enum ButtonAlignment {
         case left
         case right
+    }
+
+    enum ArrowPosition {
+        case top
+        case bottom
     }
 
     /// Determines whether a leading icon for the title, should be placed or not.
@@ -70,6 +76,8 @@ final class Tooltip: UIView {
         }
     }
 
+    var arrowPosition: ArrowPosition = .bottom
+
     private lazy var titleLabel: UILabel = {
         $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .invertedLabel
@@ -85,13 +93,13 @@ final class Tooltip: UIView {
 
     private(set) lazy var primaryButton: UIButton = {
         $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        $0.setTitleColor(.primary, for: .normal)
+        $0.setTitleColor(.primaryLight, for: .normal)
         return $0
     }(UIButton())
 
     private(set) lazy var secondaryButton: UIButton = {
         $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        $0.setTitleColor(.primary, for: .normal)
+        $0.setTitleColor(.primaryLight, for: .normal)
         return $0
     }(UIButton())
 
@@ -149,7 +157,7 @@ final class Tooltip: UIView {
             trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
             bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: Constants.Spacing.contentStackViewBottom),
             widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: 40)
+            buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.Spacing.buttonStackViewHeight)
         ])
     }
 }
