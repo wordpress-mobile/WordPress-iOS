@@ -42,7 +42,7 @@ private extension BloggingPromptsViewController {
         tableView.register(BloggingPromptTableViewCell.defaultNib,
                            forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
 
-        tableView.accessibilityIdentifier  = "Blogging Prompts List"
+        tableView.accessibilityIdentifier = "Blogging Prompts List"
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
