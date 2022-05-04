@@ -6,21 +6,21 @@ import CoreData
 
 final class ReaderTopicSwiftTest: XCTestCase {
 
-    private var testContextManager: CoreDataStack?
-    private var context: NSManagedObjectContext?
+    private var testContextManager: TestContextManager!
+    private var context: NSManagedObjectContext? {
+        testContextManager.mainContext
+    }
     let expectationTimeout = 5.0
 
     // MARK: - Lifecycle
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager.sharedInstance()
-        context = testContextManager?.mainContext
+        testContextManager = TestContextManager()
     }
 
     override func tearDown() {
-        context = nil
-        TestContextManager.overrideSharedInstance(nil)
+        ContextManager.overrideSharedInstance(nil)
         testContextManager = nil
         super.tearDown()
     }

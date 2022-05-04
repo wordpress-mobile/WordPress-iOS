@@ -4,13 +4,30 @@
 @import WordPressShared;
 
 @interface ReaderPostTest : XCTestCase
+
+@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+
 @end
 
 @implementation ReaderPostTest
 
+@synthesize coreDataStack = coreDataStack;
+
+- (void)setUp
+{
+    [super setUp];
+    self.coreDataStack = [[TestContextManager alloc] init];
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+    self.coreDataStack = nil;
+}
+
 - (void)testSiteIconForDisplay
 {
-    NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.coreDataStack mainContext];
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                          inManagedObjectContext:context];
 
@@ -33,7 +50,7 @@
 
 - (void)testDisplayDate
 {
-    NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.coreDataStack mainContext];
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                                      inManagedObjectContext:context];
 

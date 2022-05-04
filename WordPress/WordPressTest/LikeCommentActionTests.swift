@@ -3,9 +3,15 @@ import XCTest
 
 final class LikeCommentActionTests: XCTestCase {
     private class TestableLikeComment: LikeComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -26,6 +32,7 @@ final class LikeCommentActionTests: XCTestCase {
 
     private var action: LikeComment?
     private let utility = NotificationUtility()
+    private var contextManager: TestContextManager!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -34,7 +41,8 @@ final class LikeCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        action = TestableLikeComment(on: Constants.initialStatus)
+        contextManager = TestContextManager()
+        action = TestableLikeComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 

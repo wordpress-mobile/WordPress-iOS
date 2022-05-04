@@ -6,8 +6,6 @@
 // Based on the Feature Flag value
 @implementation TestContextManager
 
-static TestContextManager *_instance;
-
 - (instancetype)init
 {
     self = [super init];
@@ -80,21 +78,6 @@ static TestContextManager *_instance;
                                                                         YES) lastObject];
 
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-+ (instancetype)sharedInstance
-{
-    if (_instance) {
-        return _instance;
-    }
-
-    _instance = [[TestContextManager alloc] init];
-    return _instance;
-}
-
-+ (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager
-{
-    [ContextManager overrideSharedInstance: contextManager];
 }
 
 @end
