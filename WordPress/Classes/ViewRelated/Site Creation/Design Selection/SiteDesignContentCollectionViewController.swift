@@ -39,11 +39,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             tableView.reloadData()
         }
     }
-
-    var selectedPreviewDevice: PreviewDevice {
-        get { .mobile }
-        set { /* no op */ }
-    }
+    let selectedPreviewDevice = PreviewDevice.mobile
 
     init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
