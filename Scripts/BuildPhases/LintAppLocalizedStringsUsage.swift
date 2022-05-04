@@ -25,11 +25,11 @@ class Xcodeproj {
     ///   up into the chain of parent `PBXGroup` containers to construct the successive relative paths of groups using `sourceTree = "<group>"`
     private lazy var referrers: [ObjectUUID: ObjectUUID] = {
         var referrers: [ObjectUUID: ObjectUUID] = [:]
-        func recurseIfGroup(objectID: ObjectUUID, indent: String = "") {
+        func recurseIfGroup(objectID: ObjectUUID) {
             guard let group = try? (self.pbxproj.object(id: objectID) as PBXGroup) else { return }
             for childID in group.children {
                 referrers[childID] = objectID
-                recurseIfGroup(objectID: childID, indent: "\(indent)  ")
+                recurseIfGroup(objectID: childID)
             }
         }
         recurseIfGroup(objectID: self.pbxproj.rootProject.mainGroup)
