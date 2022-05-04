@@ -86,7 +86,14 @@ extension Xcodeproj {
 // MARK: - Implementation Details
 
 /// "Parent" type for all the PBX... types of objects encountered in a pbxproj 
-protocol PBXObject: Decodable {}
+protocol PBXObject: Decodable {
+    static func match(isa: String) -> Bool
+}
+extension PBXObject {
+    static func match(isa: String) -> Bool {
+        isa == String(describing: self)
+    }
+}
 
 /// "Parent" type for PBXObjects referencing relative path information (`PBXFileReference`, `PBXGroup`)
 protocol PBXReference: PBXObject {
@@ -148,21 +155,9 @@ extension Xcodeproj {
         }
     }
 
-    /// Helper type to ensure the `isa` field of a `PBXObject` contains the name of the expected type to decode as its value.
-    struct ISA<T>: RawRepresentable, Decodable, CustomDebugStringConvertible {
-        var rawValue: String
-        init?(rawValue: String) {
-            guard rawValue == String(describing: T.self) else { return nil }
-            self.rawValue = rawValue
-        }
-        var debugDescription: String { self.rawValue }
-    }
-
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents the root project object.
     struct PBXProject: PBXObject {
-        private let isa: ISA<Self>
-
         let mainGroup: ObjectUUID
         let targets: [ObjectUUID]
     }
@@ -171,8 +166,6 @@ extension Xcodeproj {
     /// Represents a native target (i.e. a target building an app, app extension, bundle...).
     /// - note: Does not represent other types of targets like `PBXAggregateTarget`, only native ones.
     struct PBXNativeTarget: PBXObject {
-        private let isa: ISA<Self>
-
         let name: String
         let buildPhases: [ObjectUUID]
         let productType: ProductType
@@ -189,16 +182,12 @@ extension Xcodeproj {
     /// Represents a "Compile Sources" build phase containing a list of files to compile.
     /// - note: Does not represent other types of Build Phases that could exist in the project, only "Compile Sources" one
     struct PBXSourcesBuildPhase: PBXObject {
-        private let isa: ISA<Self>
-
         let files: [ObjectUUID]
     }
 
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a single build file in a `PBXSourcesBuildPhase` build phase.
     struct PBXBuildFile: PBXObject {
-        private let isa: ISA<Self>
-
         let fileRef: ObjectUUID
     }
 
@@ -215,8 +204,6 @@ extension Xcodeproj {
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a reference to a file contained in the project tree.
     struct PBXFileReference: PBXReference {
-        private let isa: ISA<Self>
-
         let name: String?
         let path: String?
         let sourceTree: SourceTree
@@ -225,9 +212,7 @@ extension Xcodeproj {
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a group (aka "folder") contained in the project tree.
     struct PBXGroup: PBXReference {
-        enum ISA: String, Decodable { case PBXGroup, XCVersionGroup, PBXVariantGroup }
-        // We don't have a `ISA<Self>` here because we want multiple `isa` values to all be allowed and all decode as a `PBXGroup` instance (`"PBXGroup"`, `"XCVersionGroup"`, `"PBXVariantGroup"`)
-        private let isa: ISA
+        static func match(isa: String) -> Bool { ["PBXGroup", "XCVersionGroup", "PBXVariantGroup"].contains(isa) }
 
         let name: String?
         let path: String?
@@ -237,6 +222,8 @@ extension Xcodeproj {
 
     /// Fallback type for any unknown `PBXObject` type.
     struct UnknownPBXObject: PBXObject {
+        static func match(isa: String) -> Bool { true }
+
         let isa: String
     }
 
@@ -244,6 +231,7 @@ extension Xcodeproj {
     @propertyWrapper
     struct PBXObjectWrapper: Decodable, CustomDebugStringConvertible {
         let wrappedValue: PBXObject
+
         static let knownTypes: [PBXObject.Type] = [
             PBXProject.self,
             PBXGroup.self,
@@ -254,14 +242,12 @@ extension Xcodeproj {
         ]
 
         init(from decoder: Decoder) throws {
-            // Try to decode each known types in turn, until we find one that succeeds decoding — by having the expected `isa` field value.
-            for objectType in Self.knownTypes {
-                if let object = try? objectType.init(from: decoder) as PBXObject {
-                    self.wrappedValue = object
-                    return
-                }
-            }
-            self.wrappedValue = try UnknownPBXObject(from: decoder) as PBXObject // Fallback
+            let untypedObject = try UnknownPBXObject(from: decoder)
+            if let objectType = Self.knownTypes.first(where: { $0.match(isa: untypedObject.isa) }), let typedObject = try? objectType.init(from: decoder) {
+                self.wrappedValue = typedObject
+             } else {
+                self.wrappedValue = untypedObject
+             }
         }
         var debugDescription: String { String(describing: wrappedValue) }
     }
