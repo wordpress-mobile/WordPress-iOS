@@ -52,18 +52,14 @@ extension Xcodeproj {
     func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] { pbxproj.buildFiles(for: target) }
 
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
-    func resolveURLs(to buildFile: PBXBuildFile) throws -> (urls: [URL], groupName: String?) {
+    func resolveURL(to buildFile: PBXBuildFile) throws -> URL? {
         if let fileRef = try? self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference {
-            let url = resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
-            return (urls: [url], groupName: nil)
+            return resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
         } else {
-            // Cover `XCVersionGroup` (like `*.xcdatamodel`) and `PBXVariantGroup` (like `*.strings`)
-            let group = try self.pbxproj.object(id: buildFile.fileRef) as PBXGroup
-            let urls: [URL] = try group.children.map { childUUID in
-                let fileRef = try self.pbxproj.object(id: childUUID) as PBXFileReference
-                return resolveURL(objectUUID: childUUID, object: fileRef)
-            }
-            return (urls: urls, groupName: group.name)
+            // If the `PBXBuildFile` is pointing to `XCVersionGroup` (like `*.xcdatamodel`) and `PBXVariantGroup` (like `*.strings`)
+            // (instead of a `PBXFileReference`), then in practice each file in the group's `children` will be built by the Build Phase.
+            // In practice we can skip parsing those in our case and save some CPU, as we don't have a need to lint those non-source-code files.
+            return nil // just skip those (but don't throw — those are valid use cases in any pbxproj, just ones we don't care about)
         }
     }
 
@@ -265,7 +261,7 @@ extension Xcodeproj {
 enum LintResult { case ok, skipped, violationsFound([(line: Int, col: Int)]) }
 
 /// Lint a given file for usages of `NSLocalizedString` instead of `AppLocalizedString`
-func lint(fileAt url: URL, target: String) throws -> LintResult {
+func lint(fileAt url: URL, targetName: String) throws -> LintResult {
     guard ["m", "swift"].contains(url.pathExtension) else { return .skipped }
     let content = try String(contentsOf: url)
     var lineNo = 0
@@ -276,7 +272,7 @@ func lint(fileAt url: URL, target: String) throws -> LintResult {
         guard let range = line.range(of: "NSLocalizedString") else { return }
 
         let colNo = line.distance(from: line.startIndex, to: range.lowerBound)
-        let message = "Use `AppLocalizedString` instead of `NSLocalizedString` in source files that are used in the `\(target)` extension target. See paNNhX-nP-p2 for more info."
+        let message = "Use `AppLocalizedString` instead of `NSLocalizedString` in source files that are used in the `\(targetName)` extension target. See paNNhX-nP-p2 for more info."
         print("\(url.path):\(lineNo):\(colNo): error: \(message)")
         violations.append((lineNo, colNo))
     }
@@ -308,15 +304,9 @@ for target in targetsToLint {
     let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
     print("Linting the Build Files for \(target.name):")
     for buildFile in buildFiles {
-        let urlList = try project.resolveURLs(to: buildFile)
-        var indent = "  - "
-        if let name = urlList.groupName {
-            print("\(indent)\(name)")
-            indent = "     '- "
-        }
-        for fileURL in urlList.urls {
-            let result = try lint(fileAt: fileURL.absoluteURL, target: target.name)
-            print("\(indent)\(fileURL.relativePath) [\(result)]")
+        if let fileURL = try project.resolveURL(to: buildFile) {
+            let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
+            print("  - \(fileURL.relativePath) [\(result)]")
             if case .violationsFound(let list) = result { violationsFound += list.count }
         }
     }
