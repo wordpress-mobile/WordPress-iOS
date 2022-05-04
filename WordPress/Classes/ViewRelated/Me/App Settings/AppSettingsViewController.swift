@@ -32,6 +32,7 @@ class AppSettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
+            AppSettingsRow.self,
             DestructiveButtonRow.self,
             TextRow.self,
             ImageSizingRow.self,
@@ -412,6 +413,32 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
     }
 }
 
+fileprivate struct AppSettingsRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellIndicator.self)
+
+    let title: String
+    let showIndicator: Bool
+    let action: ImmuTableAction?
+    let accessibilityIdentifier: String?
+
+    init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
+        self.title = title
+        self.showIndicator = showIndicator
+        self.action = action
+        self.accessibilityIdentifier = accessibilityIdentifier
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! WPTableViewCellIndicator
+        cell.textLabel?.text = title
+        WPStyleGuide.configureTableViewCell(cell)
+        cell.textLabel?.textColor = .primary
+        cell.showIndicator = showIndicator
+        cell.accessibilityTraits = .button
+        cell.accessibilityIdentifier = accessibilityIdentifier
+    }
+}
+
 // MARK: - Table Sections Private Extension
 private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
@@ -464,7 +491,7 @@ private extension AppSettingsViewController {
             action: openPrivacySettings()
         )
 
-        let spotlightClearCacheRow = DestructiveButtonRow(
+        let spotlightClearCacheRow = AppSettingsRow(
             title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
@@ -475,7 +502,7 @@ private extension AppSettingsViewController {
         ]
 
         if #available(iOS 12.0, *) {
-            let siriClearCacheRow = DestructiveButtonRow(
+            let siriClearCacheRow = AppSettingsRow(
                 title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")
