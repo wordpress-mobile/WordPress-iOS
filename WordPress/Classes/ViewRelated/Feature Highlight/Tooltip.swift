@@ -128,6 +128,8 @@ final class Tooltip: UIView {
         }
     }
 
+    private let containerView = UIView()
+
     init() {
         super.init(frame: .zero)
         commonInit()
@@ -139,25 +141,42 @@ final class Tooltip: UIView {
     }
 
     private func commonInit() {
-        backgroundColor = .invertedSystem5
-        layer.cornerRadius = Constants.cornerRadius
+        backgroundColor = .clear
 
+        setUpContainerView()
         setUpConstraints()
     }
 
-    private func setUpConstraints() {
-        translatesAutoresizingMaskIntoConstraints = false
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(contentStackView)
+    private func setUpContainerView() {
+        containerView.backgroundColor = .invertedSystem5
+        containerView.layer.cornerRadius = Constants.cornerRadius
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(containerView)
 
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.Spacing.contentStackViewTop),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
-            trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
-            bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: Constants.Spacing.contentStackViewBottom),
-            widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin),
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+        ])
+    }
+
+    private func setUpConstraints() {
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(contentStackView)
+
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.Spacing.contentStackViewTop),
+            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
+            containerView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
+            containerView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: Constants.Spacing.contentStackViewBottom),
+            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.Spacing.buttonStackViewHeight)
         ])
+    }
+
+    private func addArrowHead() {
+        let arrowPath = UIBezierPath()
     }
 }
