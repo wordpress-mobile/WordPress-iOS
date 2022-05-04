@@ -145,6 +145,7 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
+        addArrowHead()
     }
 
     private func setUpContainerView() {
@@ -178,5 +179,27 @@ final class Tooltip: UIView {
 
     private func addArrowHead() {
         let arrowPath = UIBezierPath()
+        arrowPath.move(to: CGPoint(x: 0, y: 0))
+        arrowPath.addLine(to: CGPoint(x: 9, y: -11))
+        arrowPath.addQuadCurve(to: CGPoint(x: 11, y: -11), controlPoint: CGPoint(x: 10, y: -12))
+        arrowPath.addLine(to: CGPoint(x: 19, y: 0))
+        arrowPath.close()
+
+        // Create a CAShapeLayer
+        let shapeLayer = CAShapeLayer()
+
+        // The Bezier path that we made needs to be converted to
+        // a CGPath before it can be used on a layer.
+        shapeLayer.path = arrowPath.cgPath
+
+        // apply other properties related to the path
+        shapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
+        shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
+        shapeLayer.lineWidth = 1.0
+
+        shapeLayer.position = CGPoint(x: 20, y: 0)
+
+        // add the new layer to our custom view
+        containerView.layer.addSublayer(shapeLayer)
     }
 }
