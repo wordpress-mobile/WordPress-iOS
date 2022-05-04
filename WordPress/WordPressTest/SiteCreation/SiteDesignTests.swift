@@ -8,40 +8,6 @@ class SiteDesignTests: XCTestCase {
         return try! JSONDecoder().decode(RemoteSiteDesign.self, from: siteDesignPayload.data(using: .utf8)!)
     }
 
-    func testSiteDesignPrimaryButtonTextNotLastStep() throws {
-
-        // given
-        let creator = SiteCreator()
-        let siteDesignStep = SiteDesignStep(creator: creator, isLastStep: false)
-        let expectedPrimaryTitle = "Choose"
-
-        // when
-        let siteDesignVC = try XCTUnwrap(siteDesignStep.content as? SiteDesignContentCollectionViewController)
-        siteDesignVC.loadViewIfNeeded()
-        siteDesignVC.viewDidLoad()
-
-        // then
-        let currentTitle = siteDesignVC.primaryActionButton.currentTitle
-        XCTAssertEqual(expectedPrimaryTitle, currentTitle)
-    }
-
-    func testSiteDesignPrimaryButtonTextLastStep() throws {
-
-        // given
-        let creator = SiteCreator()
-        let siteDesignStep = SiteDesignStep(creator: creator, isLastStep: true)
-        let expectedPrimaryTitle = "Create Site"
-
-        // when
-        let siteDesignVC = try XCTUnwrap(siteDesignStep.content as? SiteDesignContentCollectionViewController)
-        siteDesignVC.loadViewIfNeeded()
-        siteDesignVC.viewDidLoad()
-
-        // then
-        let currentTitle = siteDesignVC.primaryActionButton.currentTitle
-        XCTAssertEqual(expectedPrimaryTitle, currentTitle)
-    }
-
     func testSiteDesignPreviewButtonTextNotLastStep() throws {
 
         // given
