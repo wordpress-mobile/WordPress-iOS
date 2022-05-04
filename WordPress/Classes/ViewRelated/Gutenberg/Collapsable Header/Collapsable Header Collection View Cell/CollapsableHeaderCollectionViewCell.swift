@@ -25,6 +25,9 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    /// Set to `true` to disable showing visual decorations like a checkmark or border when a cell is selected.
+    var selectionDecorationsHidden = false
+
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.cancelImageDownload()
@@ -92,6 +95,12 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     private func styleSelectedBorder(animated: Bool = false) {
+        guard !selectionDecorationsHidden else {
+            imageView.layer.borderColor = borderColor.cgColor
+            imageView.layer.borderWidth = borderWith
+            return
+        }
+
         let imageBorderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
         let imageBorderWidth = isSelected ? 2 : borderWith
         guard animated else {
@@ -117,6 +126,11 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     private func checkmarkHidden(_ isHidden: Bool, animated: Bool = false) {
+        guard !selectionDecorationsHidden else {
+            checkmarkContainerView.isHidden = true
+            return
+        }
+
         guard animated else {
             checkmarkContainerView.isHidden = isHidden
             return
