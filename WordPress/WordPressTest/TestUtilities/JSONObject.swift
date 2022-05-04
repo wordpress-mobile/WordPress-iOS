@@ -1,4 +1,3 @@
-
 import Foundation
 
 typealias JSONObject = Dictionary<String, AnyObject>
