@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -eu
 
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 SCRIPT_SRC="${SCRIPT_DIR}/LintAppLocalizedStringsUsage.swift"
