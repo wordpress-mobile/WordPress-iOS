@@ -29,17 +29,26 @@ class BloggingPromptsViewController: UIViewController {
         super.viewDidLoad()
         title = Strings.viewTitle
         configureFilterTabBar()
+        configureTableView()
     }
 
 }
 
-// MARK: - Private Helpers
+// MARK: - Private Methods
 
 private extension BloggingPromptsViewController {
 
+    func configureTableView() {
+        tableView.register(BloggingPromptTableViewCell.defaultNib,
+                           forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
+
+        tableView.accessibilityIdentifier  = "Blogging Prompts List"
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
+    }
+
     enum Strings {
         static let viewTitle = NSLocalizedString("Prompts", comment: "View title for Blogging Prompts list.")
-
     }
 
 }
@@ -54,8 +63,13 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: use custom prompt cell.
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID) as? BloggingPromptTableViewCell else {
+            return UITableViewCell()
+        }
+
+        // TODO: replace answered with BloggingPrompt.
+        cell.configure(answered: indexPath.row > 4)
+        return cell
     }
 
 }
