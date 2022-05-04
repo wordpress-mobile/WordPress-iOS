@@ -87,16 +87,12 @@ final class NotificationTextContentTests: XCTestCase {
         XCTAssertEqual(action?.identifier, approveCommentIdentifier)
     }
 
-    private func mockDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-text-content.json")
+    private func mockDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-text-content.json")
     }
 
-    private func mockButtonContentDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-button-text-content.json")
-    }
-
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
+    private func mockButtonContentDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-button-text-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {

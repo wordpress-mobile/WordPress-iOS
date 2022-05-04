@@ -10,11 +10,8 @@ final class ActivityContentFactoryTests: XCTestCase {
         XCTAssertNotNil(subject)
     }
 
-    private func mockBlock() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "activity-log-activity-content.json")
+    private func mockBlock() throws -> JSONObject {
+        return try .loadFile(named: "activity-log-activity-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
-    }
 }

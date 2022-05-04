@@ -133,20 +133,16 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertNotNil(markAsSpam)
     }
 
-    private func mockDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-comment-content.json")
-    }
-
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
+    private func mockDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {
         return try utility.loadLikeNotification()
     }
 
-    private func loadMeta() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-comment-meta.json")
+    private func loadMeta() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {

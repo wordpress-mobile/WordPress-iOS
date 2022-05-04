@@ -40,31 +40,28 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
         XCTAssertNotNil(subject)
     }
 
-    private func mockCommentRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-comment-range.json")
+    private func mockCommentRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-range.json")
     }
 
-    private func mockIconRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-icon-range.json")
+    private func mockIconRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-icon-range.json")
     }
 
-    private func mockPostRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-post-range.json")
+    private func mockPostRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-post-range.json")
     }
 
-    private func mockSiteRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-site-range.json")
+    private func mockSiteRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-site-range.json")
     }
 
-    private func mockUserRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-user-range.json")
+    private func mockUserRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-range.json")
     }
 
-    private func mockBlockQuoteRange() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-blockquote-range.json")
+    private func mockBlockQuoteRange() throws -> JSONObject {
+        return try .loadFile(named: "notifications-blockquote-range.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
-    }
 }

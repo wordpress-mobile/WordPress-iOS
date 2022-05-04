@@ -23,20 +23,16 @@ final class NotificationsContentFactoryTests: XCTestCase {
         XCTAssertNotNil(subject)
     }
 
-    private func mockTextContentDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-text-content.json")
+    private func mockTextContentDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-text-content.json")
     }
 
-    private func mockCommentContentDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-comment-content.json")
+    private func mockCommentContentDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-content.json")
     }
 
-    private func mockUserContentDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-user-content.json")
-    }
-
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
+    private func mockUserContentDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-content.json")
     }
 
     func loadLikeNotification() throws -> WordPress.Notification {

@@ -129,20 +129,16 @@ final class FormattableUserContentTests: XCTestCase {
         XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
-    private func mockDictionary() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-user-content.json")
-    }
-
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
+    private func mockDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {
         return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
-    private func loadMeta() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "notifications-user-content-meta.json")
+    private func loadMeta() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-content-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {

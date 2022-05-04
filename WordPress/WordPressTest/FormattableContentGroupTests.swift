@@ -59,11 +59,8 @@ final class FormattableContentGroupTests: XCTestCase {
         return FormattableTextContent(text: text, ranges: [], actions: [])
     }
 
-    private func mockActivity() throws -> [String: AnyObject] {
-        return try getDictionaryFromFile(named: "activity-log-activity-content.json")
+    private func mockActivity() throws -> JSONObject {
+        return try .loadFile(named: "activity-log-activity-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) throws -> [String: AnyObject] {
-        return try JSONObject.loadFile(named: fileName)
-    }
 }

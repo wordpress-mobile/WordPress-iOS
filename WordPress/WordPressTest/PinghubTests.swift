@@ -106,7 +106,7 @@ class PingHubTests: XCTestCase {
 
 private extension PingHubTests {
     func loadJSONMessage(name: String) throws -> [String: AnyObject]? {
-        return try JSONObject.loadFile(name, type: "json")
+        return try .loadFile(name, type: "json")
     }
 }
 
