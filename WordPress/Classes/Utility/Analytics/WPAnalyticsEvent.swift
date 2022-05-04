@@ -108,6 +108,7 @@ import Foundation
     case statsReaderDiscoverNudgeTapped
     case statsReaderDiscoverNudgeDismissed
     case statsReaderDiscoverNudgeCompleted
+    case statsLineChartTapped
 
     // Stats - Insights
     case statsCustomizeInsightsShown
@@ -538,6 +539,8 @@ import Foundation
             return "stats_reader_discover_nudge_dismissed"
         case .statsReaderDiscoverNudgeCompleted:
             return "stats_reader_discover_nudge_completed"
+        case .statsLineChartTapped:
+            return "stats_line_chart_tapped"
 
         // Stats - Insights
         case .statsCustomizeInsightsShown:
