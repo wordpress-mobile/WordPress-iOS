@@ -69,7 +69,8 @@ extension Xcodeproj {
 
         switch object.sourceTree {
         case .absolute:
-            return URL(fileURLWithPath: object.path!)
+            guard let path = object.path else { fatalError("Object \(objectUUID) has a `sourceTree` = \(object.sourceTree) but no `path`!") }
+            return URL(fileURLWithPath: path)
         case .group:
             guard let parentUUID = referrers[objectUUID] else { fatalError("Unable to find parent of \(object) (\(objectUUID))") }
             let parentGroup = try! self.pbxproj.object(id: parentUUID) as PBXGroup
@@ -106,12 +107,13 @@ extension Xcodeproj {
     enum DecodingError: Swift.Error, CustomStringConvertible {
         case objectNotFound(id: ObjectUUID)
         case unexpectedObjectType(id: ObjectUUID, expectedType: Any.Type, found: PBXObject)
+
         var description: String {
             switch self {
                 case .objectNotFound(id: let id):
                     return "Unable to find object with UUID \(id)"
-                case .unexpectedObjectType(let id, let expectedType, let found):
-                    return  "Object with UUID \(id) was expected to be of type \(expectedType) but found \(found) instead."
+                case .unexpectedObjectType(id: let id, expectedType: let expectedType, found: let found):
+                    return  "Object with UUID \(id) was expected to be of type \(expectedType) but found \(found) instead"
             }
         }
     }
