@@ -39,7 +39,7 @@ class Xcodeproj {
 
 // Convenience methods and properties
 extension Xcodeproj {
-    /// Builds an `Xcodeproj` instance by parsing the an `.xcodeproj` or `pbxproj` file at the provided path
+    /// Builds an `Xcodeproj` instance by parsing the `.xcodeproj` or `pbxproj` file at the provided path
     convenience init(path: String) throws {
         try self.init(url: URL(fileURLWithPath: path))
     }
@@ -95,7 +95,7 @@ protocol PBXReference: PBXObject {
     var sourceTree: Xcodeproj.SourceTree { get }
 }
 
-/// Types used to parse and decode the internals of an `.xcodeproj/project.pbxproj` file
+/// Types used to parse and decode the internals of a `*.xcodeproj/project.pbxproj` file
 extension Xcodeproj {
     /// An error `thrown` when an inconsistency is found while parsing the `.pbxproj` file.
     enum DecodingError: Swift.Error, CustomStringConvertible {
