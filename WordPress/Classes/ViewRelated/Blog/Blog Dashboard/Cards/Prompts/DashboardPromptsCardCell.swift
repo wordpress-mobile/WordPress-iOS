@@ -285,7 +285,6 @@ extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presenterViewController = viewController
-        self.blog = blog
         refreshStackView()
     }
 }
