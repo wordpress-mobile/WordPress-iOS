@@ -10,6 +10,7 @@ class AccountServiceTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 

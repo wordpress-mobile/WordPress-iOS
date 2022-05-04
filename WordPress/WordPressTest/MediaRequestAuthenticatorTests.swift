@@ -10,6 +10,7 @@ class MediaRequestAuthenticatorTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = contextManager.mainContext
     }
 

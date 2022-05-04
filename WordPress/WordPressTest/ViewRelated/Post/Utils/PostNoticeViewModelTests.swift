@@ -54,6 +54,7 @@ class PostNoticeViewModelTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = contextManager.newDerivedContext()
     }
 

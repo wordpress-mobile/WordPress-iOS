@@ -18,6 +18,7 @@ final class CommentServiceTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()

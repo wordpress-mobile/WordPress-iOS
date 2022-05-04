@@ -82,6 +82,12 @@
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
 }
 
+- (void)setUpAsSharedInstance
+{
+    [ContextManager internalSharedInstance];
+    [ContextManager overrideSharedInstance:self];
+}
+
 - (void)tearDown
 {
     [self.mainContext reset];

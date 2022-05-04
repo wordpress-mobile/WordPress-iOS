@@ -15,6 +15,7 @@ class PostCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         TestAnalyticsTracker.setup()
     }
 

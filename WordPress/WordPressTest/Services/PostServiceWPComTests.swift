@@ -24,6 +24,7 @@ class PostServiceWPComTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
 
         remoteMock = PostServiceRESTMock()
 

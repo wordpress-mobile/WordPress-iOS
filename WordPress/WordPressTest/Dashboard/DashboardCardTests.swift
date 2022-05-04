@@ -19,6 +19,7 @@ class ZDashboardCardTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = contextManager.newDerivedContext()
         blog = BlogBuilder(context).build()
     }

@@ -13,6 +13,7 @@ class DashboardPostsSyncManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         blog = BlogBuilder(contextManager.mainContext).build()
         blog.dashboardState.syncingStatuses = []
         postService = PostServiceMock()

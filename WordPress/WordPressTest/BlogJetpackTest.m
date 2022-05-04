@@ -24,7 +24,8 @@
 - (void)setUp {
     [super setUp];
     self.testContextManager = [[ContextManagerMock alloc] init];
-    
+    [self.testContextManager setUpAsSharedInstance];
+
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
@@ -47,7 +48,7 @@
 
 - (void)tearDown {
     [super tearDown];
-    
+
     _account = nil;
     _blog = nil;
     [HTTPStubs removeAllStubs];
