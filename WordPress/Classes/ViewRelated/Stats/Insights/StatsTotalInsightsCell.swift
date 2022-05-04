@@ -69,7 +69,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private func configureConstraints() {
-        topConstraint = outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: StatsBaseCell.Metrics.padding)
+        topConstraint = outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor)
 
         NSLayoutConstraint.activate([
             topConstraint,
