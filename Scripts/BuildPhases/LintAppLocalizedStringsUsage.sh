@@ -14,4 +14,8 @@ if [ ! -x "${LINTER_EXEC}" ] || ! (shasum -c "${LINTER_EXEC}.shasum" >/dev/null 
   echo "Pre-compiled linter script ready"
 fi
 
-"$LINTER_EXEC" "${PROJECT_FILE_PATH:-$1}" # "${TARGET_NAME:-$2}"
+if [ -z "${PROJECT_FILE_PATH:=${1:-}}" ]; then
+  echo "Please provide the path to the xcodeproj to scan"
+  exit 1
+fi
+"$LINTER_EXEC" "${PROJECT_FILE_PATH}" "${@:2}"

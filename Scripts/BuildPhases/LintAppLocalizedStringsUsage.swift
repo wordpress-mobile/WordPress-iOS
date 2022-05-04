@@ -305,8 +305,10 @@ let project = try Xcodeproj(path: projectPath)
 // 2nd arg (optional) = name of target to lint
 let targetsToLint: [Xcodeproj.PBXNativeTarget]
 if let targetName = args.dropFirst().first, !targetName.isEmpty {
+    print("Selected target: \(targetName)")
     targetsToLint = project.nativeTargets.filter { $0.name == targetName }
 } else {
+    print("Linting all app extension targets")
     targetsToLint = project.nativeTargets.filter { $0.productType == .appExtension }
 }
 
