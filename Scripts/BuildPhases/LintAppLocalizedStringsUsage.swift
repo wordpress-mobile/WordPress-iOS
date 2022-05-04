@@ -52,7 +52,7 @@ extension Xcodeproj {
     func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] { pbxproj.buildFiles(for: target) }
 
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
-    func resolveURL(to buildFile: PBXBuildFile) throws -> URL? {
+    func resolveURL(to buildFile: PBXBuildFile) -> URL? {
         if let fileRef = try? self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference {
             return resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
         } else {
@@ -64,22 +64,23 @@ extension Xcodeproj {
     }
 
     /// Finds the full path / URL of a PBXReference (`PBXFileReference` of `PBXGroup`) based on the groups it belongs to and their `sourceTree` attribute
-    private func resolveURL<T: PBXReference>(objectUUID: ObjectUUID, object: T) -> URL {
+    private func resolveURL<T: PBXReference>(objectUUID: ObjectUUID, object: T) -> URL? {
         if objectUUID == self.pbxproj.rootProject.mainGroup { return URL(fileURLWithPath: ".", relativeTo: projectDirectory) }
 
         switch object.sourceTree {
         case .absolute:
-            guard let path = object.path else { fatalError("Object \(objectUUID) has a `sourceTree` = \(object.sourceTree) but no `path`!") }
+            guard let path = object.path else { fatalError("Object \(objectUUID) has a `sourceTree` = \(object.sourceTree) but no `path`") }
             return URL(fileURLWithPath: path)
         case .group:
             guard let parentUUID = referrers[objectUUID] else { fatalError("Unable to find parent of \(object) (\(objectUUID))") }
             let parentGroup = try! self.pbxproj.object(id: parentUUID) as PBXGroup
-            let groupURL = resolveURL(objectUUID: parentUUID, object: parentGroup)
+            guard let groupURL = resolveURL(objectUUID: parentUUID, object: parentGroup) else { return nil }
             return object.path.map { groupURL.appendingPathComponent($0) } ?? groupURL
         case .projectRoot:
             return object.path.map { URL(fileURLWithPath: $0, relativeTo: projectDirectory) } ?? projectDirectory
         case .buildProductsDir, .devDir, .sdkDir:
-            fatalError("Unsupported relative reference (relative to: \(object.sourceTree)")
+            print("\(self.projectURL.path): warning: Reference \(objectUUID) is relative to \(object.sourceTree.rawValue), which is not supported by the linter")
+            return nil
         }
     }
 }
@@ -300,11 +301,10 @@ for target in targetsToLint {
     let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
     print("Linting the Build Files for \(target.name):")
     for buildFile in buildFiles {
-        if let fileURL = try project.resolveURL(to: buildFile) {
-            let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
-            print("  - \(fileURL.relativePath) [\(result)]")
-            if case .violationsFound(let list) = result { violationsFound += list.count }
-        }
+        guard let fileURL = project.resolveURL(to: buildFile) else { continue }
+        let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
+        print("  - \(fileURL.relativePath) [\(result)]")
+        if case .violationsFound(let list) = result { violationsFound += list.count }
     }
 }
 print("Done! \(violationsFound) violation(s) found.")
