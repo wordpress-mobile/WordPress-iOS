@@ -15,6 +15,6 @@ final class ActivityContentFactoryTests: XCTestCase {
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+        return JSONObject.loadFile(named: fileName)
     }
 }

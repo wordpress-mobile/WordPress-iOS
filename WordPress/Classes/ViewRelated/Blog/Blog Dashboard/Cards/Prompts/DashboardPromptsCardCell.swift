@@ -47,16 +47,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private var forExampleDisplay: Bool = false {
         didSet {
             isUserInteractionEnabled = false
+            cardFrameView.isUserInteractionEnabled = false
             isAnswered = false
         }
     }
+
+    private var blog: Blog?
 
     // Used to present:
     // - The menu sheet for contextual menu in iOS13.
     // - The Blogging Prompts list when selected from the contextual menu.
     private weak var presenterViewController: BlogDashboardViewController? = nil
-
-    private var blog: Blog?
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
@@ -174,8 +175,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-
-        // TODO: Implement button tap action
+        button.addTarget(self, action: #selector(answerButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -283,6 +283,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.blog = blog
         self.presenterViewController = viewController
         self.blog = blog
         refreshStackView()
@@ -313,6 +314,19 @@ private extension DashboardPromptsCardCell {
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
+    }
+
+    // MARK: Button actions
+
+    @objc func answerButtonTapped() {
+        guard let blog = blog else {
+            return
+        }
+
+        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .dashboard
+        presenterViewController?.present(editor, animated: true)
     }
 
     // MARK: Context menu actions

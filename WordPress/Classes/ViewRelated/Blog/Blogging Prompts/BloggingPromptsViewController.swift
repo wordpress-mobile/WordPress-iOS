@@ -88,7 +88,7 @@ private extension BloggingPromptsViewController {
         // TODO:
         // - track selected filter changed
         // - refresh view for selected filter
-        }
+    }
 
 }
 

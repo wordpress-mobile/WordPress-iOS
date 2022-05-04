@@ -21,31 +21,31 @@ class NotificationUtility {
     }
 
     func loadBadgeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-badge.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-badge.json", insertInto: contextManager.mainContext)
     }
 
     func loadLikeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
     func loadFollowerNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-new-follower.json", insertInto: contextManager.mainContext)
     }
 
     func loadCommentNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-replied-comment.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-replied-comment.json", insertInto: contextManager.mainContext)
     }
 
     func loadUnapprovedCommentNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-unapproved-comment.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: contextManager.mainContext)
     }
 
     func loadPingbackNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-pingback.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-pingback.json", insertInto: contextManager.mainContext)
     }
 
     func mockCommentContent() -> FormattableCommentContent {
-        let dictionary = contextManager.object(withContentOfFile: "notifications-replied-comment.json") as! [String: AnyObject]
+        let dictionary = JSONObject.loadFile(named: "notifications-replied-comment.json")
         let body = dictionary["body"]
         let blocks = NotificationContentFactory.content(from: body as! [[String: AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: contextManager.mainContext))
         return blocks.filter { $0.kind == .comment }.first! as! FormattableCommentContent
