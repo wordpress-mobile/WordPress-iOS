@@ -200,6 +200,13 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func openMediaCacheSettings() -> ImmuTableAction {
+        return { [weak self] _ in
+            let controller = MediaCacheSettingsViewController(style: .insetGrouped)
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     @objc func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
@@ -428,23 +435,17 @@ private extension AppSettingsViewController {
             detail: MediaSettings().maxVideoSizeSetting.description,
             action: pushVideoResolutionSettings())
 
-        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
-                                    value: mediaCacheRowDescription)
-
-        let mediaClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
-            action: { [weak self] row in
-                self?.clearMediaCache()
-            },
-            accessibilityIdentifier: "mediaClearCacheButton")
+        let mediaCacheRow = NavigationItemRow(
+            title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+            detail: mediaCacheRowDescription,
+            action: openMediaCacheSettings())
 
         return ImmuTableSection(
             headerText: mediaHeader,
             rows: [
                 imageSizingRow,
                 videoSizingRow,
-                mediaCacheRow,
-                mediaClearCacheRow
+                mediaCacheRow
             ],
             footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
