@@ -247,6 +247,8 @@
 		1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
 		175507B427A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
+		1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
+		1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
 		175721162754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		175721172754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
@@ -5075,6 +5077,7 @@
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		17523380246C4F9200870B4A /* HomepageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageSettingsViewController.swift; sourceTree = "<group>"; };
 		175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicizeConnectionURLMatcher.swift; sourceTree = "<group>"; };
+		1756F1DE2822BB6F00CD0915 /* SparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparklineView.swift; sourceTree = "<group>"; };
 		175721152754D31F00DE38BC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
@@ -12190,6 +12193,7 @@
 				17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */,
 				17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */,
 				17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */,
+				1756F1DE2822BB6F00CD0915 /* SparklineView.swift */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -18397,6 +18401,7 @@
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
 				098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */,
 				7E7BEF7022E1AED8009A880D /* Blog+Editor.swift in Sources */,
+				1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */,
 				8BB185C624B5FB8500A4CCE8 /* ReaderCardService.swift in Sources */,
 				98487E3A21EE8FB500352B4E /* UITableViewCell+Stats.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
@@ -21497,6 +21502,7 @@
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
 				FABB259D2602FC2C00C8785C /* Blog+Capabilities.swift in Sources */,
 				FABB259E2602FC2C00C8785C /* RestorePostTableViewCell.swift in Sources */,
+				1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */,
 				FABB259F2602FC2C00C8785C /* MenuItemCategoriesViewController.m in Sources */,
 				FABB25A02602FC2C00C8785C /* UINavigationBar+Appearance.swift in Sources */,
 				FABB25A12602FC2C00C8785C /* QuickStartChecklistViewController.swift in Sources */,

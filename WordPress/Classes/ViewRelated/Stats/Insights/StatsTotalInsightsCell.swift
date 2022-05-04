@@ -15,7 +15,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private let topInnerStackView = UIStackView()
     private let countLabel = UILabel()
     private let comparisonLabel = UILabel()
-    private let graphView = UIView()
+    private let graphView = SparklineView()
 
     // MARK: - Initialization
 
@@ -39,7 +39,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private func configureStackViews() {
         outerStackView.translatesAutoresizingMaskIntoConstraints = false
         outerStackView.axis = .vertical
-        outerStackView.spacing = Metrics.stackViewSpacing
+        outerStackView.spacing = Metrics.outerStackViewSpacing
         contentView.addSubview(outerStackView)
 
         topInnerStackView.axis = .horizontal
@@ -51,7 +51,6 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private func configureGraphView() {
         graphView.translatesAutoresizingMaskIntoConstraints = false
-        graphView.backgroundColor = .secondarySystemBackground
         graphView.setContentHuggingPriority(.required, for: .horizontal)
         graphView.setContentHuggingPriority(.required, for: .vertical)
     }
@@ -64,7 +63,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)
 
-        comparisonLabel.font = .preferredFont(forTextStyle: .body)
+        comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
         comparisonLabel.textColor = .textSubtle
         comparisonLabel.text = "+87 (40%) compared to last week"
     }
@@ -77,7 +76,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
             outerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -StatsBaseCell.Metrics.padding),
             outerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: StatsBaseCell.Metrics.padding),
             outerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -StatsBaseCell.Metrics.padding),
-            graphView.widthAnchor.constraint(equalTo: graphView.heightAnchor, multiplier: 2.55),
+            graphView.widthAnchor.constraint(equalTo: graphView.heightAnchor, multiplier: Metrics.graphViewAspectRatio),
             graphView.heightAnchor.constraint(equalTo: countLabel.heightAnchor)
         ])
     }
@@ -92,6 +91,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private enum Metrics {
+        static let outerStackViewSpacing: CGFloat = 16.0
         static let stackViewSpacing: CGFloat = 8.0
+        static let graphViewAspectRatio: CGFloat = 3.27
     }
 }
