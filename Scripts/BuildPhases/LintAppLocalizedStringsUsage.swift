@@ -52,14 +52,18 @@ extension Xcodeproj {
     func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] { pbxproj.buildFiles(for: target) }
 
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
-    func resolveURL(to buildFile: PBXBuildFile) -> URL {
-        do {
-            let fileRef = try self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference
-            return resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
-        } catch {
+    func resolveURLs(to buildFile: PBXBuildFile) throws -> (urls: [URL], groupName: String?) {
+        if let fileRef = try? self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference {
+            let url = resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
+            return (urls: [url], groupName: nil)
+        } else {
             // Cover `XCVersionGroup` (like `*.xcdatamodel`) and `PBXVariantGroup` (like `*.strings`)
-            let fileRef = try! self.pbxproj.object(id: buildFile.fileRef) as PBXGroup
-            return resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
+            let group = try self.pbxproj.object(id: buildFile.fileRef) as PBXGroup
+            let urls: [URL] = try group.children.map { childUUID in
+                let fileRef = try self.pbxproj.object(id: childUUID) as PBXFileReference
+                return resolveURL(objectUUID: childUUID, object: fileRef)
+            }
+            return (urls: urls, groupName: group.name)
         }
     }
 
@@ -301,12 +305,20 @@ if let targetName = args.dropFirst().first, !targetName.isEmpty {
 // Lint each requested target
 var violationsFound = 0
 for target in targetsToLint {
-    let files: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
+    let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
     print("Linting the Build Files for \(target.name):")
-    for file in files {
-        let result = try lint(fileAt: project.resolveURL(to: file).absoluteURL, target: target.name)
-        print("  - \(project.resolveURL(to: file).relativePath) [\(result)]")
-        if case .violationsFound(let list) = result { violationsFound += list.count }
+    for buildFile in buildFiles {
+        let urlList = try project.resolveURLs(to: buildFile)
+        var indent = "  - "
+        if let name = urlList.groupName {
+            print("\(indent)\(name)")
+            indent = "     '- "
+        }
+        for fileURL in urlList.urls {
+            let result = try lint(fileAt: fileURL.absoluteURL, target: target.name)
+            print("\(indent)\(fileURL.relativePath) [\(result)]")
+            if case .violationsFound(let list) = result { violationsFound += list.count }
+        }
     }
 }
 print("Done! \(violationsFound) violation(s) found.")
