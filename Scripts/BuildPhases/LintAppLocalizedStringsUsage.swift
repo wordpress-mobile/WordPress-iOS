@@ -87,12 +87,10 @@ extension Xcodeproj {
 
 /// "Parent" type for all the PBX... types of objects encountered in a pbxproj 
 protocol PBXObject: Decodable {
-    static func match(isa: String) -> Bool
+    static var isa: String { get}
 }
 extension PBXObject {
-    static func match(isa: String) -> Bool {
-        isa == String(describing: self)
-    }
+    static var isa: String { String(describing: self) }
 }
 
 /// "Parent" type for PBXObjects referencing relative path information (`PBXFileReference`, `PBXGroup`)
@@ -212,8 +210,6 @@ extension Xcodeproj {
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a group (aka "folder") contained in the project tree.
     struct PBXGroup: PBXReference {
-        static func match(isa: String) -> Bool { ["PBXGroup", "XCVersionGroup", "PBXVariantGroup"].contains(isa) }
-
         let name: String?
         let path: String?
         let sourceTree: SourceTree
@@ -222,8 +218,6 @@ extension Xcodeproj {
 
     /// Fallback type for any unknown `PBXObject` type.
     struct UnknownPBXObject: PBXObject {
-        static func match(isa: String) -> Bool { true }
-
         let isa: String
     }
 
@@ -243,7 +237,7 @@ extension Xcodeproj {
 
         init(from decoder: Decoder) throws {
             let untypedObject = try UnknownPBXObject(from: decoder)
-            if let objectType = Self.knownTypes.first(where: { $0.match(isa: untypedObject.isa) }), let typedObject = try? objectType.init(from: decoder) {
+            if let objectType = Self.knownTypes.first(where: { $0.isa == untypedObject.isa }), let typedObject = try? objectType.init(from: decoder) {
                 self.wrappedValue = typedObject
              } else {
                 self.wrappedValue = untypedObject
