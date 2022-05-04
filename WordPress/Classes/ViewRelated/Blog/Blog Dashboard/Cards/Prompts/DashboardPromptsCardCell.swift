@@ -54,8 +54,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private var blog: Blog?
 
-    // Used to present the menu sheet for contextual menu.
-    // NOTE: Remove this once we drop support for iOS 13.
+    // Used to present:
+    // - The menu sheet for contextual menu in iOS13.
+    // - The Blogging Prompts list when selected from the contextual menu.
     private weak var presenterViewController: BlogDashboardViewController? = nil
 
     private lazy var containerStackView: UIStackView = {
@@ -330,7 +331,13 @@ private extension DashboardPromptsCardCell {
     // MARK: Context menu actions
 
     func viewMoreMenuTapped() {
-        // TODO.
+        guard let blog = blog,
+              let presenterViewController = presenterViewController else {
+            DDLogError("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
+            return
+        }
+
+        BloggingPromptsViewController.show(for: blog, from: presenterViewController)
     }
 
     func skipMenuTapped() {
