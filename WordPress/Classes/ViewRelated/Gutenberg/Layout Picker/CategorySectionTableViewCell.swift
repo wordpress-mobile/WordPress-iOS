@@ -51,8 +51,7 @@ class CategorySectionTableViewCell: UITableViewCell {
     }
 
     var isGhostCell: Bool = false
-    /// Set to `true` to disable showing visual decorations like a checkmark or border when a cell is selected.
-    var selectionDecorationsHidden = false
+    var showsCheckMarkWhenSelected = true
 
     override func prepareForReuse() {
         section?.scrollOffset = collectionView.contentOffset
@@ -92,6 +91,7 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
             deselectItem(indexPath)
             return false
         }
+
         return true
     }
 
@@ -128,7 +128,7 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
 
         let thumbnail = thumbnails[indexPath.row]
         cell.previewURL = thumbnailUrl(forThumbnail: thumbnail)
-        cell.selectionDecorationsHidden = selectionDecorationsHidden
+        cell.showsCheckMarkWhenSelected = showsCheckMarkWhenSelected
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = thumbnail.slug
         return cell
