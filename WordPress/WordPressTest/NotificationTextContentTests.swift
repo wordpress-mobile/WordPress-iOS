@@ -96,11 +96,11 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+        return JSONObject.loadFile(named: fileName)
     }
 
     private func loadLikeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+        return .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
     private func mockedActions() -> [FormattableContentAction] {

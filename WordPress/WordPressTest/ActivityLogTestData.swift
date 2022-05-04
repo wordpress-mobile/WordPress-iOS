@@ -28,7 +28,7 @@ class ActivityLogTestData {
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+        return JSONObject.loadFile(named: fileName)
     }
 
     func getCommentEventDictionary() -> [String: AnyObject] {
