@@ -103,9 +103,9 @@ private extension BloggingPromptsIntroductionPresenter {
             return
         }
 
-        // TODO: pre-populate post content with prompt content.
-        // Do something similar to `ReaderReblogPresenter:prepareForReblog`?
-        let editor = EditPostViewController(blog: blog)
+        // TODO: pre-populate post content with prompt from backend instead
+        // of example prompt
+        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .bloggingPromptsFeatureIntroduction
 
