@@ -62,6 +62,7 @@ final class Tooltip: UIView {
                 with: title,
                 shouldPrefixLeadingIcon: shouldPrefixLeadingIcon
             )
+            accessibilityLabel = title
         }
     }
 
@@ -69,6 +70,7 @@ final class Tooltip: UIView {
     var message: String? {
         didSet {
             messageLabel.text = message
+            accessibilityValue = message
         }
     }
 
@@ -202,6 +204,7 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
+        isAccessibilityElement = true
     }
 
     private func setUpContainerView() {
