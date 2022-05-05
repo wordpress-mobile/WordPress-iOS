@@ -162,6 +162,7 @@ platform :ios do
   desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
+    custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
@@ -169,17 +170,17 @@ platform :ios do
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
       app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'standard-whats-new-1' => File.join(source_metadata_folder, 'standard_whats_new_1.txt'),
-      'standard-whats-new-2' => File.join(source_metadata_folder, 'standard_whats_new_2.txt'),
-      'standard-whats-new-3' => File.join(source_metadata_folder, 'standard_whats_new_3.txt'),
-      'standard-whats-new-4' => File.join(source_metadata_folder, 'standard_whats_new_4.txt'),
-      'app_store_screenshot-1' => File.join(source_metadata_folder, 'promo_screenshot_1.txt'),
-      'app_store_screenshot-2' => File.join(source_metadata_folder, 'promo_screenshot_2.txt'),
-      'app_store_screenshot-3' => File.join(source_metadata_folder, 'promo_screenshot_3.txt'),
-      'app_store_screenshot-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
-      'app_store_screenshot-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
-      'app_store_screenshot-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt'),
-      'app_store_screenshot-7' => File.join(source_metadata_folder, 'promo_screenshot_7.txt')
+      'standard-whats-new-1' => File.join(custom_metadata_folder, 'standard_whats_new_1.txt'),
+      'standard-whats-new-2' => File.join(custom_metadata_folder, 'standard_whats_new_2.txt'),
+      'standard-whats-new-3' => File.join(custom_metadata_folder, 'standard_whats_new_3.txt'),
+      'standard-whats-new-4' => File.join(custom_metadata_folder, 'standard_whats_new_4.txt'),
+      'app_store_screenshot-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
+      'app_store_screenshot-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
+      'app_store_screenshot-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
+      'app_store_screenshot-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
+      'app_store_screenshot-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
+      'app_store_screenshot-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt'),
+      'app_store_screenshot-7' => File.join(custom_metadata_folder, 'promo_screenshot_7.txt')
     }
 
     ios_update_metadata_source(
@@ -196,6 +197,7 @@ platform :ios do
   desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
   lane :update_jetpack_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
+    custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
@@ -203,12 +205,12 @@ platform :ios do
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
       app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'screenshot-text-1' => File.join(source_metadata_folder, 'promo_screenshot_1.txt'),
-      'screenshot-text-2' => File.join(source_metadata_folder, 'promo_screenshot_2.txt'),
-      'screenshot-text-3' => File.join(source_metadata_folder, 'promo_screenshot_3.txt'),
-      'screenshot-text-4' => File.join(source_metadata_folder, 'promo_screenshot_4.txt'),
-      'screenshot-text-5' => File.join(source_metadata_folder, 'promo_screenshot_5.txt'),
-      'screenshot-text-6' => File.join(source_metadata_folder, 'promo_screenshot_6.txt')
+      'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
+      'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
+      'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
+      'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
+      'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
+      'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
     }
 
     ios_update_metadata_source(

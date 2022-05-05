@@ -46,8 +46,8 @@ final class ReplyToCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, ReplyToComment.title)
     }
 
-    func testExecuteCallsReply() {
-        action?.execute(context: utility.mockCommentContext())
+    func testExecuteCallsReply() throws {
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()

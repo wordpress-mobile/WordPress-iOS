@@ -1,12 +1,12 @@
-* [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
-* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
-* [*] Quick Start: Updated the Reader tour. The tour now highlights the Discover tab and guides users to follow topics via the Settings screen. [#18450]
-* [*] [internal] Quick Start: Deleted the Edit your homepage tour. [#18469]
-* [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
-* [**] Follow Conversation flow now enables in-app notifications by default. They were updated to be opt-out rather than opt-in. [#18449]
-* [*] Block Editor: Latest Posts block: Add featured image settings [https://github.com/WordPress/gutenberg/pull/39257]
-* [*] Block Editor: Prevent incorrect notices displaying when switching between HTML-Visual mode quickly [https://github.com/WordPress/gutenberg/pull/40415]
-* [*] Block Editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/WordPress/gutenberg/pull/35326]
-* [*] Block Editor: Prevent gaps shown around floating toolbar when using external keyboard [https://github.com/WordPress/gutenberg/pull/40266]
-* [**] We'll now ask users logging in which area of the app they'd like to focus on to build towards a more personalized experience. [#18385]
+When you Follow Conversation in Reader post cards and post details, in-app notifications are now opt-out rather than opt-in.
 
+We replaced the quick-start prompt when you log in as an existing user. Now you can tell us what you’d like to focus on and enable notifications for things like site traffic, new followers, and other milestones. Cue confetti.
+
+Ready for the grand tour? We made some tweaks to the Stats and Reader tours in the Quick Start section. Now you can move through the tours more smoothly and get more pointers and messages as you go.
+
+We also made some sweet, sweet changes to the Block Editor.
+
+- You can now adjust Featured Image settings for any posts in a Latest Post block.
+- You’ll see the correct notices when you’re fast-switching between HTML and Visual mode.
+- Media previews are no longer cut off when you edit a URL in an Embed block.
+- If you’re using an iPad with an external keyboard, you’ll no longer see extra space between the toolbar and the bottom of the screen. Mind the gap.

@@ -30,6 +30,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         false
     }
 
+    // If set to true, all header titles will always be shown.
+    // If set to false, largeTitleView and promptView labels are hidden in compact height (default behavior).
+    //
+    var alwaysShowHeaderTitles: Bool {
+        false
+    }
+
     private let hasDefaultAction: Bool
     private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
@@ -55,6 +62,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var accessoryBar: UIView!
     @IBOutlet weak var accessoryBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var accessoryBarTopCompactConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
@@ -118,7 +126,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private var shouldUseCompactLayout: Bool {
-        return traitCollection.verticalSizeClass == .compact
+        return !alwaysShowHeaderTitles && traitCollection.verticalSizeClass == .compact
     }
 
     private var topInset: CGFloat = 0
@@ -241,6 +249,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             layoutHeader()
         }
 
+        configureHeaderTitleVisibility()
         startObservingKeyboardChanges()
         super.viewWillAppear(animated)
     }
@@ -257,9 +266,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        guard isShowingNoResults || alwaysResetHeaderOnRotation else { return }
+        guard isShowingNoResults || alwaysResetHeaderOnRotation else {
+            return
+        }
 
         coordinator.animate(alongsideTransition: nil) { (_) in
+            self.accessoryBarTopCompactConstraint.isActive = self.shouldUseCompactLayout
             self.updateHeaderDisplay()
             // we're keeping this only for no results,
             // as originally intended before introducing the flag alwaysResetHeaderOnRotation
@@ -279,6 +291,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             isUserInitiatedScroll = false
+            configureHeaderTitleVisibility()
             layoutHeaderInsets()
 
             // This helps reset the header changes after a rotation.
@@ -371,6 +384,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func configureHeaderImageView() {
         headerImageView.isHidden = (headerImage == nil)
         headerImageView.image = headerImage
+    }
+
+    func configureHeaderTitleVisibility() {
+        largeTitleView.isHidden = shouldUseCompactLayout
+        promptView.isHidden = shouldUseCompactLayout
     }
 
     private func styleButtons() {
