@@ -199,13 +199,14 @@ extension Xcodeproj {
     }
 
     /// This type is used to indicate what a file reference in the project is actually relative to
-    enum SourceTree: String, Decodable {
+    enum SourceTree: String, Decodable, CustomStringConvertible {
         case absolute = "<absolute>"
         case group = "<group>"
         case projectRoot = "SOURCE_ROOT"
         case buildProductsDir = "BUILT_PRODUCTS_DIR"
         case devDir = "DEVELOPER_DIR"
         case sdkDir = "SDKROOT"
+        var description: String { rawValue }
     }
 
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
@@ -289,29 +290,34 @@ func lint(fileAt url: URL, targetName: String) throws -> LintResult {
 // 1st arg = project path
 let args = CommandLine.arguments.dropFirst()
 guard let projectPath = args.first, !projectPath.isEmpty else { print("You must provide the path to the xcodeproj as first argument."); exit(1) }
-let project = try Xcodeproj(path: projectPath)
+do {
+    let project = try Xcodeproj(path: projectPath)
 
-// 2nd arg (optional) = name of target to lint
-let targetsToLint: [Xcodeproj.PBXNativeTarget]
-if let targetName = args.dropFirst().first, !targetName.isEmpty {
-    print("Selected target: \(targetName)")
-    targetsToLint = project.nativeTargets.filter { $0.name == targetName }
-} else {
-    print("Linting all app extension targets")
-    targetsToLint = project.nativeTargets.filter { $0.productType == .appExtension }
-}
-
-// Lint each requested target
-var violationsFound = 0
-for target in targetsToLint {
-    let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
-    print("Linting the Build Files for \(target.name):")
-    for buildFile in buildFiles {
-        guard let fileURL = try project.resolveURL(to: buildFile) else { continue }
-        let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
-        print("  - \(fileURL.relativePath) [\(result)]")
-        if case .violationsFound(let list) = result { violationsFound += list.count }
+    // 2nd arg (optional) = name of target to lint
+    let targetsToLint: [Xcodeproj.PBXNativeTarget]
+    if let targetName = args.dropFirst().first, !targetName.isEmpty {
+        print("Selected target: \(targetName)")
+        targetsToLint = project.nativeTargets.filter { $0.name == targetName }
+    } else {
+        print("Linting all app extension targets")
+        targetsToLint = project.nativeTargets.filter { $0.productType == .appExtension }
     }
+
+    // Lint each requested target
+    var violationsFound = 0
+    for target in targetsToLint {
+        let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
+        print("Linting the Build Files for \(target.name):")
+        for buildFile in buildFiles {
+            guard let fileURL = try project.resolveURL(to: buildFile) else { continue }
+            let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
+            print("  - \(fileURL.relativePath) [\(result)]")
+            if case .violationsFound(let list) = result { violationsFound += list.count }
+        }
+    }
+    print("Done! \(violationsFound) violation(s) found.")
+    exit(violationsFound > 0 ? 1 : 0)
+} catch let error {
+    print("\n\nError while parsing `\(projectPath)`: \(error)")
+    exit(2)
 }
-print("Done! \(violationsFound) violation(s) found.")
-exit(violationsFound > 0 ? 1 : 0)
