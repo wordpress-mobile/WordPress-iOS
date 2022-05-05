@@ -53,8 +53,8 @@ extension Xcodeproj {
 
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
     func resolveURL(to buildFile: PBXBuildFile) throws -> URL? {
-        if let fileRef = try? self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference {
-            return try resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
+        if let fileRefID = buildFile.fileRef, let fileRefObject = try? self.pbxproj.object(id: fileRefID) as PBXFileReference {
+            return try resolveURL(objectUUID: fileRefID, object: fileRefObject)
         } else {
             // If the `PBXBuildFile` is pointing to `XCVersionGroup` (like `*.xcdatamodel`) and `PBXVariantGroup` (like `*.strings`)
             // (instead of a `PBXFileReference`), then in practice each file in the group's `children` will be built by the Build Phase.
@@ -195,7 +195,7 @@ extension Xcodeproj {
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a single build file in a `PBXSourcesBuildPhase` build phase.
     struct PBXBuildFile: PBXObject {
-        let fileRef: ObjectUUID
+        let fileRef: ObjectUUID?
     }
 
     /// This type is used to indicate what a file reference in the project is actually relative to
