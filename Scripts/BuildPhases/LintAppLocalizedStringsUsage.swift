@@ -52,9 +52,9 @@ extension Xcodeproj {
     func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] { pbxproj.buildFiles(for: target) }
 
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
-    func resolveURL(to buildFile: PBXBuildFile) -> URL? {
+    func resolveURL(to buildFile: PBXBuildFile) throws -> URL? {
         if let fileRef = try? self.pbxproj.object(id: buildFile.fileRef) as PBXFileReference {
-            return resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
+            return try resolveURL(objectUUID: buildFile.fileRef, object: fileRef)
         } else {
             // If the `PBXBuildFile` is pointing to `XCVersionGroup` (like `*.xcdatamodel`) and `PBXVariantGroup` (like `*.strings`)
             // (instead of a `PBXFileReference`), then in practice each file in the group's `children` will be built by the Build Phase.
@@ -64,17 +64,17 @@ extension Xcodeproj {
     }
 
     /// Finds the full path / URL of a PBXReference (`PBXFileReference` of `PBXGroup`) based on the groups it belongs to and their `sourceTree` attribute
-    private func resolveURL<T: PBXReference>(objectUUID: ObjectUUID, object: T) -> URL? {
+    private func resolveURL<T: PBXReference>(objectUUID: ObjectUUID, object: T) throws -> URL? {
         if objectUUID == self.pbxproj.rootProject.mainGroup { return URL(fileURLWithPath: ".", relativeTo: projectDirectory) }
 
         switch object.sourceTree {
         case .absolute:
-            guard let path = object.path else { fatalError("Object \(objectUUID) has a `sourceTree` = \(object.sourceTree) but no `path`") }
+            guard let path = object.path else { throw ProjectInconsistencyError.incorrectAbsolutePath(id: objectUUID) }
             return URL(fileURLWithPath: path)
         case .group:
-            guard let parentUUID = referrers[objectUUID] else { fatalError("Unable to find parent of \(object) (\(objectUUID))") }
-            let parentGroup = try! self.pbxproj.object(id: parentUUID) as PBXGroup
-            guard let groupURL = resolveURL(objectUUID: parentUUID, object: parentGroup) else { return nil }
+            guard let parentUUID = referrers[objectUUID] else { throw ProjectInconsistencyError.orphanObject(id: objectUUID, object: object) }
+            let parentGroup = try self.pbxproj.object(id: parentUUID) as PBXGroup
+            guard let groupURL = try resolveURL(objectUUID: parentUUID, object: parentGroup) else { return nil }
             return object.path.map { groupURL.appendingPathComponent($0) } ?? groupURL
         case .projectRoot:
             return object.path.map { URL(fileURLWithPath: $0, relativeTo: projectDirectory) } ?? projectDirectory
@@ -105,16 +105,22 @@ protocol PBXReference: PBXObject {
 /// Types used to parse and decode the internals of a `*.xcodeproj/project.pbxproj` file
 extension Xcodeproj {
     /// An error `thrown` when an inconsistency is found while parsing the `.pbxproj` file.
-    enum DecodingError: Swift.Error, CustomStringConvertible {
+    enum ProjectInconsistencyError: Swift.Error, CustomStringConvertible {
         case objectNotFound(id: ObjectUUID)
         case unexpectedObjectType(id: ObjectUUID, expectedType: Any.Type, found: PBXObject)
+        case incorrectAbsolutePath(id: ObjectUUID)
+        case orphanObject(id: ObjectUUID, object: PBXObject)
 
         var description: String {
             switch self {
-                case .objectNotFound(id: let id):
-                    return "Unable to find object with UUID \(id)"
-                case .unexpectedObjectType(id: let id, expectedType: let expectedType, found: let found):
-                    return  "Object with UUID \(id) was expected to be of type \(expectedType) but found \(found) instead"
+            case .objectNotFound(id: let id):
+                return "Unable to find object with UUID \(id)"
+            case .unexpectedObjectType(id: let id, expectedType: let expectedType, found: let found):
+                return  "Object with UUID \(id) was expected to be of type \(expectedType) but found \(found) instead"
+            case .incorrectAbsolutePath(id: let id):
+                return "Object \(id) has `sourceTree = \(Xcodeproj.SourceTree.absolute)` but no `path`"
+            case .orphanObject(id: let id, object: let object):
+                return "Unable to find parent group of \(object) (\(id)) during file path resolution"
             }
         }
     }
@@ -128,9 +134,9 @@ extension Xcodeproj {
 
         /// Returns the `PBXObject` instance with the given `ObjectUUID`, by looking it up in the list of `objects` registered in the project.
         func object<T: PBXObject>(id: ObjectUUID) throws -> T {
-            guard let wrapped = objects[id] else { throw DecodingError.objectNotFound(id: id) }
+            guard let wrapped = objects[id] else { throw ProjectInconsistencyError.objectNotFound(id: id) }
             guard let obj = wrapped.wrappedValue as? T else {
-                throw DecodingError.unexpectedObjectType(id: id, expectedType: T.self, found: wrapped.wrappedValue)
+                throw ProjectInconsistencyError.unexpectedObjectType(id: id, expectedType: T.self, found: wrapped.wrappedValue)
             }
             return obj
         }
@@ -301,7 +307,7 @@ for target in targetsToLint {
     let buildFiles: [Xcodeproj.PBXBuildFile] = project.buildFiles(for: target)
     print("Linting the Build Files for \(target.name):")
     for buildFile in buildFiles {
-        guard let fileURL = project.resolveURL(to: buildFile) else { continue }
+        guard let fileURL = try project.resolveURL(to: buildFile) else { continue }
         let result = try lint(fileAt: fileURL.absoluteURL, targetName: target.name)
         print("  - \(fileURL.relativePath) [\(result)]")
         if case .violationsFound(let list) = result { violationsFound += list.count }
