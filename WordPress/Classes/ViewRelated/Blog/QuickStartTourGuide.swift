@@ -246,6 +246,8 @@ open class QuickStartTourGuide: NSObject {
                             tag: noticeTag)
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        WPAnalytics.track(.quickStartCongratulationsViewed)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
