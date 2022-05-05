@@ -36,6 +36,7 @@ private extension BloggingPromptsHeaderView {
         configureStrings()
         configureStyles()
         configureConstraints()
+        configureInsets()
     }
 
     func configureSpacing() {
@@ -55,11 +56,14 @@ private extension BloggingPromptsHeaderView {
 
     func configureStyles() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         promptLabel.font = WPStyleGuide.BloggingPrompts.promptContentFont
+        promptLabel.adjustsFontForContentSizeCategory = true
         answerPromptButton.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         answerPromptButton.titleLabel?.adjustsFontForContentSizeCategory = true
         answerPromptButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
         answeredLabel.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
+        answeredLabel.adjustsFontForContentSizeCategory = true
         answeredLabel.textColor = WPStyleGuide.BloggingPrompts.answeredLabelColor
         shareButton.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -73,12 +77,26 @@ private extension BloggingPromptsHeaderView {
         ])
     }
 
+    func configureInsets() {
+        if #available(iOS 15.0, *) {
+            var config: UIButton.Configuration = .plain()
+            config.contentInsets = Constants.buttonContentInsets
+            answerPromptButton.configuration = config
+            shareButton.configuration = config
+        } else {
+            answerPromptButton.contentEdgeInsets = Constants.buttonContentEdgeInsets
+            shareButton.contentEdgeInsets = Constants.buttonContentEdgeInsets
+        }
+    }
+
     // MARK: - Constants
 
     struct Constants {
         static let titleSpacing: CGFloat = 8.0
         static let answeredViewSpacing: CGFloat = 9.0
         static let answerPromptButtonSpacing: CGFloat = 9.0
+        static let buttonContentEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
+        static let buttonContentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
     }
 
     struct Strings {
