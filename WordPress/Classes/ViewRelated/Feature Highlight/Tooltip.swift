@@ -4,6 +4,9 @@ final class Tooltip: UIView {
     private enum Constants {
         static let leadingIconUnicode = "✨"
         static let cornerRadius: CGFloat = 4
+        static let arrowTipYLength: CGFloat = 11
+        static let arrowTipYControlLength: CGFloat = 12
+        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin
 
         enum Spacing {
             static let contentStackViewInterItemSpacing: CGFloat = 4
@@ -13,6 +16,12 @@ final class Tooltip: UIView {
             static let contentStackViewHorizontal: CGFloat = 16
             static let superHorizontalMargin: CGFloat = 16
             static let buttonStackViewHeight: CGFloat = 40
+        }
+
+        enum Font {
+            static let title = WPStyleGuide.fontForTextStyle(.body)
+            static let message = WPStyleGuide.fontForTextStyle(.body)
+            static let button = WPStyleGuide.fontForTextStyle(.subheadline)
         }
     }
 
@@ -76,29 +85,27 @@ final class Tooltip: UIView {
         }
     }
 
-    var arrowPosition: ArrowPosition = .bottom
-
     private lazy var titleLabel: UILabel = {
-        $0.font = WPStyleGuide.fontForTextStyle(.body)
+        $0.font = Constants.Font.title
         $0.textColor = .invertedLabel
         return $0
     }(UILabel())
 
     private lazy var messageLabel: UILabel = {
-        $0.font = WPStyleGuide.fontForTextStyle(.body)
+        $0.font = Constants.Font.message
         $0.textColor = .invertedSecondaryLabel
         $0.numberOfLines = 3
         return $0
     }(UILabel())
 
     private(set) lazy var primaryButton: UIButton = {
-        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        $0.titleLabel?.font = Constants.Font.button
         $0.setTitleColor(.primaryLight, for: .normal)
         return $0
     }(UIButton())
 
     private(set) lazy var secondaryButton: UIButton = {
-        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        $0.titleLabel?.font = Constants.Font.button
         $0.setTitleColor(.primaryLight, for: .normal)
         return $0
     }(UIButton())
@@ -129,6 +136,8 @@ final class Tooltip: UIView {
     }
 
     private let containerView = UIView()
+    private var containerTopConstraint: NSLayoutConstraint?
+    private var containerBottomConstraint: NSLayoutConstraint?
 
     init() {
         super.init(frame: .zero)
@@ -140,12 +149,59 @@ final class Tooltip: UIView {
         commonInit()
     }
 
+    /// Adds a tooltip  Arrow Head at the given X Offset and either to the top or the bottom.
+    /// - Parameters:
+    ///   - offsetX: The offset on which the arrow will be placed. The value must be above 0 and below maxX of the view.
+    ///   - arrowPosition: Arrow will be placed either on `.top`, pointed up, or `.bottom`, pointed down.
+    func addArrowHead(toXPosition offsetX: CGFloat, arrowPosition: ArrowPosition) {
+        let arrowTipY: CGFloat
+        let arrowTipYControl: CGFloat
+        let offsetY: CGFloat
+
+        switch arrowPosition {
+        case .top:
+            offsetY = 0
+            arrowTipY = Constants.arrowTipYLength * -1
+            arrowTipYControl = Constants.arrowTipYControlLength * -1
+            containerTopConstraint?.constant = Constants.arrowTipYControlLength
+            containerBottomConstraint?.constant = 0
+        case .bottom:
+            offsetY = Self.height(withTitle: titleLabel.text, message: message)
+            arrowTipY = Constants.arrowTipYLength
+            arrowTipYControl = Constants.arrowTipYControlLength
+            containerTopConstraint?.constant = 0
+            containerBottomConstraint?.constant = Constants.arrowTipYControlLength
+        }
+
+        let arrowPath = UIBezierPath()
+        arrowPath.move(to: CGPoint(x: 0, y: 0))
+        // In order to have a full width of 20, first draw the left side of the triangle until 9.
+        arrowPath.addLine(to: CGPoint(x: 9, y: arrowTipY))
+        // Add curve until 11 (2 points of curve for a rounded arrow tip).
+        arrowPath.addQuadCurve(
+            to: CGPoint(x: 11, y: arrowTipY),
+            controlPoint: CGPoint(x: 10, y: arrowTipYControl)
+        )
+        // Draw down to 20.
+        arrowPath.addLine(to: CGPoint(x: 20, y: 0))
+        arrowPath.close()
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = arrowPath.cgPath
+        shapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
+        shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
+        shapeLayer.lineWidth = 1.0
+
+        shapeLayer.position = CGPoint(x: offsetX, y: offsetY)
+
+        containerView.layer.addSublayer(shapeLayer)
+    }
+
     private func commonInit() {
         backgroundColor = .clear
 
         setUpContainerView()
         setUpConstraints()
-        addArrowHead()
     }
 
     private func setUpContainerView() {
@@ -154,11 +210,14 @@ final class Tooltip: UIView {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(containerView)
 
+        containerTopConstraint = containerView.topAnchor.constraint(equalTo: topAnchor)
+        containerBottomConstraint = bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            containerTopConstraint!,
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            containerBottomConstraint!
         ])
     }
 
@@ -168,38 +227,61 @@ final class Tooltip: UIView {
         containerView.addSubview(contentStackView)
 
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.Spacing.contentStackViewTop),
-            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
-            containerView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: Constants.Spacing.contentStackViewHorizontal),
-            containerView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: Constants.Spacing.contentStackViewBottom),
-            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin),
+            contentStackView.topAnchor.constraint(
+                equalTo: containerView.topAnchor,
+                constant: Constants.Spacing.contentStackViewTop
+            ),
+            contentStackView.leadingAnchor.constraint(
+                equalTo: containerView.leadingAnchor,
+                constant: Constants.Spacing.contentStackViewHorizontal
+            ),
+            containerView.trailingAnchor.constraint(
+                equalTo: contentStackView.trailingAnchor,
+                constant: Constants.Spacing.contentStackViewHorizontal
+            ),
+            containerView.bottomAnchor.constraint(
+                equalTo: contentStackView.bottomAnchor,
+                constant: Constants.Spacing.contentStackViewBottom
+            ),
+            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.maxWidth),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.Spacing.buttonStackViewHeight)
         ])
     }
 
-    private func addArrowHead() {
-        let arrowPath = UIBezierPath()
-        arrowPath.move(to: CGPoint(x: 0, y: 0))
-        arrowPath.addLine(to: CGPoint(x: 9, y: -11))
-        arrowPath.addQuadCurve(to: CGPoint(x: 11, y: -11), controlPoint: CGPoint(x: 10, y: -12))
-        arrowPath.addLine(to: CGPoint(x: 19, y: 0))
-        arrowPath.close()
+    private static func height(
+        withTitle title: String?,
+        message: String?) -> CGFloat {
+            var totalHeight: CGFloat = 0
 
-        // Create a CAShapeLayer
-        let shapeLayer = CAShapeLayer()
+            totalHeight += Constants.Spacing.contentStackViewTop
 
-        // The Bezier path that we made needs to be converted to
-        // a CGPath before it can be used on a layer.
-        shapeLayer.path = arrowPath.cgPath
+            if let title = title {
+                totalHeight += title.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.title)
+            }
 
-        // apply other properties related to the path
-        shapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.lineWidth = 1.0
+            totalHeight += Constants.Spacing.contentStackViewInterItemSpacing
 
-        shapeLayer.position = CGPoint(x: 20, y: 0)
+            if let message = message {
+                totalHeight += message.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.message)
+            }
 
-        // add the new layer to our custom view
-        containerView.layer.addSublayer(shapeLayer)
+            totalHeight += Constants.Spacing.buttonStackViewHeight
+            totalHeight += Constants.Spacing.contentStackViewBottom
+
+            return totalHeight
+        }
+}
+
+private extension String {
+    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(
+            with: constraintRect,
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font],
+            context: nil
+        )
+
+        return ceil(boundingBox.height)
     }
 }
