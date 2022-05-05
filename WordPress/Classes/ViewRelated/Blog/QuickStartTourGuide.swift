@@ -363,11 +363,6 @@ private extension QuickStartTourGuide {
             recentlyTouredBlog = nil
         }
 
-        guard !(tour is QuickStartCongratulationsTour) else {
-            WPAnalytics.track(.quickStartCongratulationsViewed)
-            return
-        }
-
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)

@@ -371,24 +371,6 @@ struct QuickStartNotificationsTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of checking your notifications.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
-private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
-private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
-struct QuickStartCongratulationsTour: QuickStartTour {
-    let key = "quick-start-congratulations-tour"
-    let analyticsKey = "congratulations"
-    let title = congratsTitle
-    let titleMarkedCompleted = ""  // Not applicable for this tour type
-    let description = congratsDescription
-    let icon = UIImage.gridicon(.plus)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
-
-    var waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
-
-    let accessibilityHintText = ""  // Not applicable for this tour type
-}
-
 private extension String {
     func highlighting(phrase: String, icon: UIImage?) -> NSAttributedString {
         let normalParts = components(separatedBy: "%@")
