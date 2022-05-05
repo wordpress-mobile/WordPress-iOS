@@ -247,8 +247,8 @@ extension Xcodeproj {
 
         init(from decoder: Decoder) throws {
             let untypedObject = try UnknownPBXObject(from: decoder)
-            if let objectType = Self.knownTypes.first(where: { $0.isa == untypedObject.isa }), let typedObject = try? objectType.init(from: decoder) {
-                self.wrappedValue = typedObject
+            if let objectType = Self.knownTypes.first(where: { $0.isa == untypedObject.isa }) {
+                self.wrappedValue = try objectType.init(from: decoder)
              } else {
                 self.wrappedValue = untypedObject
              }
