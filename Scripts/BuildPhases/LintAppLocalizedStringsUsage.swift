@@ -6,10 +6,10 @@ import Foundation
 class Xcodeproj {
     let projectURL: URL // points to the "<projectDirectory>/<projectName>.xcodeproj/project.pbxproj" file
     private let pbxproj: PBXProjFile
-
+    
     /// Semantic type for strings that correspond to an object' UUID in the `pbxproj` file
     typealias ObjectUUID = String
-
+    
     /// Builds an `Xcodeproj` instance by parsing the `.xcodeproj` or `.pbxproj` file at the provided URL.
     init(url: URL) throws {
         projectURL = url.pathExtension == "xcodeproj" ? URL(fileURLWithPath: "project.pbxproj", relativeTo: url) : url
@@ -17,7 +17,7 @@ class Xcodeproj {
         let decoder = PropertyListDecoder()
         pbxproj = try decoder.decode(PBXProjFile.self, from: data)
     }
-
+    
     /// An internal mapping listing the parent ObjectUUID for each ObjectUUID.
     /// - Built by recursing top-to-bottom in the various `PBXGroup` objects of the project to visit all the children objects,
     ///   and storing which parent object they belong to.
@@ -43,14 +43,14 @@ extension Xcodeproj {
     convenience init(path: String) throws {
         try self.init(url: URL(fileURLWithPath: path))
     }
-
-    /// The directory where the `.xcodeproj` resides. 
+    
+    /// The directory where the `.xcodeproj` resides.
     var projectDirectory: URL { projectURL.deletingLastPathComponent().deletingLastPathComponent() }
     /// The list of `PBXNativeTarget` targets in the project. Convenience getter for `PBXProjFile.nativeTargets`
     var nativeTargets: [PBXNativeTarget] { pbxproj.nativeTargets }
     /// The list of `PBXBuildFile` files a given `PBXNativeTarget` will build. Convenience getter for `PBXProjFile.buildFiles(for:)`
     func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] { pbxproj.buildFiles(for: target) }
-
+    
     /// Finds the full path / URL of a `PBXBuildFile` based on the groups it belongs to and their `sourceTree` attribute
     func resolveURL(to buildFile: PBXBuildFile) throws -> URL? {
         if let fileRefID = buildFile.fileRef, let fileRefObject = try? self.pbxproj.object(id: fileRefID) as PBXFileReference {
@@ -62,11 +62,11 @@ extension Xcodeproj {
             return nil // just skip those (but don't throw — those are valid use cases in any pbxproj, just ones we don't care about)
         }
     }
-
+    
     /// Finds the full path / URL of a PBXReference (`PBXFileReference` of `PBXGroup`) based on the groups it belongs to and their `sourceTree` attribute
     private func resolveURL<T: PBXReference>(objectUUID: ObjectUUID, object: T) throws -> URL? {
         if objectUUID == self.pbxproj.rootProject.mainGroup { return URL(fileURLWithPath: ".", relativeTo: projectDirectory) }
-
+        
         switch object.sourceTree {
         case .absolute:
             guard let path = object.path else { throw ProjectInconsistencyError.incorrectAbsolutePath(id: objectUUID) }
@@ -89,7 +89,7 @@ extension Xcodeproj {
 
 /// "Parent" type for all the PBX... types of objects encountered in a pbxproj 
 protocol PBXObject: Decodable {
-    static var isa: String { get}
+    static var isa: String { get }
 }
 extension PBXObject {
     static var isa: String { String(describing: self) }
@@ -110,7 +110,7 @@ extension Xcodeproj {
         case unexpectedObjectType(id: ObjectUUID, expectedType: Any.Type, found: PBXObject)
         case incorrectAbsolutePath(id: ObjectUUID)
         case orphanObject(id: ObjectUUID, object: PBXObject)
-
+        
         var description: String {
             switch self {
             case .objectNotFound(id: let id):
@@ -129,9 +129,9 @@ extension Xcodeproj {
     struct PBXProjFile: Decodable {
         let rootObject: ObjectUUID
         let objects: [String: PBXObjectWrapper]
-
+        
         // Convenience methods
-
+        
         /// Returns the `PBXObject` instance with the given `ObjectUUID`, by looking it up in the list of `objects` registered in the project.
         func object<T: PBXObject>(id: ObjectUUID) throws -> T {
             guard let wrapped = objects[id] else { throw ProjectInconsistencyError.objectNotFound(id: id) }
@@ -140,35 +140,35 @@ extension Xcodeproj {
             }
             return obj
         }
-
+        
         /// Returns the `PBXObject` instance with the given `ObjectUUID`, by looking it up in the list of `objects` registered in the project.
         func object<T: PBXObject>(id: ObjectUUID) -> T? {
             try? object(id: id) as T
         }
-
+        
         /// The `PBXProject` corresponding to the `rootObject` of the project file.
         var rootProject: PBXProject { try! object(id: rootObject) }
-
+        
         /// The `PBXGroup` corresponding to the main groop serving as root for the whole hierarchy of files and groups in the project.
         var mainGroup: PBXGroup { try! object(id: rootProject.mainGroup) }
-
+        
         /// The list of `PBXNativeTarget` targets found in the project.
         var nativeTargets: [PBXNativeTarget] { rootProject.targets.compactMap(object(id:)) }
-
+        
         /// The list of `PBXBuildFile` build file references included in a given target.
         func buildFiles(for target: PBXNativeTarget) -> [PBXBuildFile] {
             guard let sourceBuildPhase: PBXSourcesBuildPhase = target.buildPhases.lazy.compactMap(object(id:)).first else { return [] }
             return sourceBuildPhase.files.compactMap(object(id:)) as [PBXBuildFile]
         }
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents the root project object.
     struct PBXProject: PBXObject {
         let mainGroup: ObjectUUID
         let targets: [ObjectUUID]
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a native target (i.e. a target building an app, app extension, bundle...).
     /// - note: Does not represent other types of targets like `PBXAggregateTarget`, only native ones.
@@ -186,20 +186,20 @@ extension Xcodeproj {
             case framework = "com.apple.product-type.framework"
         }
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a "Compile Sources" build phase containing a list of files to compile.
     /// - note: Does not represent other types of Build Phases that could exist in the project, only "Compile Sources" one
     struct PBXSourcesBuildPhase: PBXObject {
         let files: [ObjectUUID]
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a single build file in a `PBXSourcesBuildPhase` build phase.
     struct PBXBuildFile: PBXObject {
         let fileRef: ObjectUUID?
     }
-
+    
     /// This type is used to indicate what a file reference in the project is actually relative to
     enum SourceTree: String, Decodable, CustomStringConvertible {
         case absolute = "<absolute>"
@@ -210,7 +210,7 @@ extension Xcodeproj {
         case sdkDir = "SDKROOT"
         var description: String { rawValue }
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a reference to a file contained in the project tree.
     struct PBXFileReference: PBXReference {
@@ -218,7 +218,7 @@ extension Xcodeproj {
         let path: String?
         let sourceTree: SourceTree
     }
-
+    
     /// One of the many `PBXObject` types encountered in the `.pbxproj` file format.
     /// Represents a group (aka "folder") contained in the project tree.
     struct PBXGroup: PBXReference {
@@ -227,17 +227,17 @@ extension Xcodeproj {
         let sourceTree: SourceTree
         let children: [ObjectUUID]
     }
-
+    
     /// Fallback type for any unknown `PBXObject` type.
     struct UnknownPBXObject: PBXObject {
         let isa: String
     }
-
+    
     /// Wrapper helper to decode any `PBXObject` based on the value of their `isa` field
     @propertyWrapper
     struct PBXObjectWrapper: Decodable, CustomDebugStringConvertible {
         let wrappedValue: PBXObject
-
+        
         static let knownTypes: [PBXObject.Type] = [
             PBXProject.self,
             PBXGroup.self,
@@ -246,14 +246,14 @@ extension Xcodeproj {
             PBXSourcesBuildPhase.self,
             PBXBuildFile.self
         ]
-
+        
         init(from decoder: Decoder) throws {
             let untypedObject = try UnknownPBXObject(from: decoder)
             if let objectType = Self.knownTypes.first(where: { $0.isa == untypedObject.isa }) {
                 self.wrappedValue = try objectType.init(from: decoder)
-             } else {
+            } else {
                 self.wrappedValue = untypedObject
-             }
+            }
         }
         var debugDescription: String { String(describing: wrappedValue) }
     }
@@ -276,7 +276,7 @@ func lint(fileAt url: URL, targetName: String) throws -> LintResult {
         lineNo += 1
         guard line.range(of: "\\s*//", options: .regularExpression) == nil else { return } // Skip commented lines
         guard let range = line.range(of: "NSLocalizedString") else { return }
-
+        
         let colNo = line.distance(from: line.startIndex, to: range.lowerBound)
         let message = "Use `AppLocalizedString` instead of `NSLocalizedString` in source files that are used in the `\(targetName)` extension target. See paNNhX-nP-p2 for more info."
         print("\(url.path):\(lineNo):\(colNo): error: \(message)")
@@ -294,7 +294,7 @@ let args = CommandLine.arguments.dropFirst()
 guard let projectPath = args.first, !projectPath.isEmpty else { print("You must provide the path to the xcodeproj as first argument."); exit(1) }
 do {
     let project = try Xcodeproj(path: projectPath)
-
+    
     // 2nd arg (optional) = name of target to lint
     let targetsToLint: [Xcodeproj.PBXNativeTarget]
     if let targetName = args.dropFirst().first, !targetName.isEmpty {
@@ -304,7 +304,7 @@ do {
         print("Linting all app extension targets")
         targetsToLint = project.nativeTargets.filter { $0.knownProductType == .appExtension }
     }
-
+    
     // Lint each requested target
     var violationsFound = 0
     for target in targetsToLint {
