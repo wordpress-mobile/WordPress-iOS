@@ -310,7 +310,10 @@ open class QuickStartTourGuide: NSObject {
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
         let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
     }
 
     private func showNextStep(_ nextStep: TourState) {
