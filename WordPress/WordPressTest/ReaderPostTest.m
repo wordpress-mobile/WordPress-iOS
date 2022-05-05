@@ -15,13 +15,11 @@
 
 - (void)setUp
 {
-    [super setUp];
     self.coreDataStack = [[TestContextManager alloc] init];
 }
 
 - (void)tearDown
 {
-    [super tearDown];
     self.coreDataStack = nil;
 }
 

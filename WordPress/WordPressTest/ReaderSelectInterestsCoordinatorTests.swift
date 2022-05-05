@@ -5,12 +5,10 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
     private var contextManager: TestContextManager!
 
     override func setUp() {
-        super.setUp()
         contextManager = TestContextManager()
     }
 
     override func tearDown() {
-        super.tearDown()
         ContextManager.overrideSharedInstance(nil)
     }
 
