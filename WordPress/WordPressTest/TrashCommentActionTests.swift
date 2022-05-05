@@ -44,11 +44,11 @@ final class TrashCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, TrashComment.title)
     }
 
-    func testExecuteCallsTrash() {
+    func testExecuteCallsTrash() throws {
         action?.on = false
 
         var executionCompleted = false
-        let context = ActionContext(block: utils.mockCommentContent(), content: "content") { (request, success) in
+        let context = ActionContext(block: try utils.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 

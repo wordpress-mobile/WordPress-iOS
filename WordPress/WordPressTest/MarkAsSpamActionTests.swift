@@ -44,12 +44,12 @@ final class MarkAsSpamActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, MarkAsSpam.title)
     }
 
-    func testExecuteCallsSpam() {
+    func testExecuteCallsSpam() throws {
         action?.on = false
 
         var executionCompleted = false
 
-        let context = ActionContext(block: utility.mockCommentContent(), content: "content") { (request, success) in
+        let context = ActionContext(block: try utility.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 

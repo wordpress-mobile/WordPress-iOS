@@ -17,10 +17,10 @@ final class FormattableCommentContentTests: XCTestCase {
         static let metaSiteId = NSNumber(integerLiteral: 142010142)
     }
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         utility.setUp()
-        subject = FormattableCommentContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+        subject = try FormattableCommentContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -54,13 +54,13 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertEqual(value?.count, mockActionsCount)
     }
 
-    func testMetaReturnsExpectation() {
+    func testMetaReturnsExpectation() throws {
         let value = subject!.meta!
         let ids = value["ids"] as? [String: AnyObject]
         let commentId = ids?["comment"] as? String
         let postId = ids?["post"] as? String
 
-        let mockMeta = loadMeta()
+        let mockMeta = try loadMeta()
         let mockIds = mockMeta["ids"] as? [String: AnyObject]
         let mockMetaCommentId = mockIds?["comment"] as? String
         let mockMetaPostId = mockIds?["post"] as? String
@@ -69,8 +69,8 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertEqual(postId, mockMetaPostId)
     }
 
-    func testParentReturnsValuePassedAsParameter() {
-        let injectedParent = loadLikeNotification()
+    func testParentReturnsValuePassedAsParameter() throws {
+        let injectedParent = try loadLikeNotification()
 
         let parent = subject?.parent
 
@@ -115,8 +115,8 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
-    func testCommentNotificationHasActions() {
-        let commentNotification = utility.loadCommentNotification()
+    func testCommentNotificationHasActions() throws {
+        let commentNotification = try utility.loadCommentNotification()
         let commentContent: FormattableCommentContent? = commentNotification.contentGroup(ofKind: .comment)?.blockOfKind(.comment)
         XCTAssertNotNil(commentContent)
 
@@ -133,20 +133,16 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertNotNil(markAsSpam)
     }
 
-    private func mockDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-comment-content.json")
+    private func mockDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
+    private func loadLikeNotification() throws -> WordPress.Notification {
+        return try utility.loadLikeNotification()
     }
 
-    private func loadLikeNotification() -> WordPress.Notification {
-        return utility.loadLikeNotification()
-    }
-
-    private func loadMeta() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-comment-meta.json")
+    private func loadMeta() throws -> JSONObject {
+        return try .loadFile(named: "notifications-comment-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {
