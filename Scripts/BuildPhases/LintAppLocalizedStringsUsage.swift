@@ -124,34 +124,6 @@ extension Xcodeproj {
             }
         }
     }
-
-    @propertyWrapper
-    enum AllowUnknownRawValue<T: RawRepresentable>: Decodable where T.RawValue == String {
-        case known(T)
-        case other(String)
-
-        var wrappedValue: T? {
-            switch self {
-            case .known(let v): return v
-            case .other: return nil
-            }
-        }
-        var projectedValue: String {
-            switch self {
-            case .known(let v): return v.rawValue
-            case .other(let s): return s
-            }
-        }
-        init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            let string = try container.decode(String.self)
-            if let known = T(rawValue: string) {
-                self = .known(known)
-            } else {
-                self = .other(string)
-            }
-        }
-    }
     
     /// Type used to represent and decode the root object of a `.pbxproj` file.
     struct PBXProjFile: Decodable {
@@ -203,8 +175,9 @@ extension Xcodeproj {
     struct PBXNativeTarget: PBXObject {
         let name: String
         let buildPhases: [ObjectUUID]
-        @AllowUnknownRawValue var productType: ProductType?
-
+        let productType: String
+        var knownProductType: ProductType? { ProductType(rawValue: productType) }
+        
         enum ProductType: String, Decodable {
             case app = "com.apple.product-type.application"
             case appExtension = "com.apple.product-type.app-extension"
@@ -329,7 +302,7 @@ do {
         targetsToLint = project.nativeTargets.filter { $0.name == targetName }
     } else {
         print("Linting all app extension targets")
-        targetsToLint = project.nativeTargets.filter { $0.productType == .appExtension }
+        targetsToLint = project.nativeTargets.filter { $0.knownProductType == .appExtension }
     }
 
     // Lint each requested target
