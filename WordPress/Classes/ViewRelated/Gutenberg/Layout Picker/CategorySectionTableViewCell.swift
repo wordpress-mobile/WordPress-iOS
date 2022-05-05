@@ -51,6 +51,7 @@ class CategorySectionTableViewCell: UITableViewCell {
     }
 
     var isGhostCell: Bool = false
+    var showsCheckMarkWhenSelected = true
 
     override func prepareForReuse() {
         section?.scrollOffset = collectionView.contentOffset
@@ -90,6 +91,7 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
             deselectItem(indexPath)
             return false
         }
+
         return true
     }
 
@@ -126,6 +128,7 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
 
         let thumbnail = thumbnails[indexPath.row]
         cell.previewURL = thumbnailUrl(forThumbnail: thumbnail)
+        cell.showsCheckMarkWhenSelected = showsCheckMarkWhenSelected
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = thumbnail.slug
         return cell

@@ -1,49 +1,32 @@
 import UIKit
 import WordPressKit
 
-extension RemoteSiteDesign: Thumbnail {
-    var urlDesktop: String? { screenshot }
-    var urlTablet: String? { tabletScreenshot }
-    var urlMobile: String? { mobileScreenshot}
-}
-
-class SiteDesignSection: CategorySection {
-    var category: RemoteSiteDesignCategory
-    var designs: [RemoteSiteDesign]
-
-    var categorySlug: String { category.slug }
-    var title: String { category.title }
-    var emoji: String? { category.emoji }
-    var description: String? { category.description }
-    var thumbnails: [Thumbnail] { designs }
-    var scrollOffset: CGPoint
-
-    init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign]) {
-        self.category = category
-        self.designs = designs
-        self.scrollOffset = .zero
-    }
-}
-
-class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
+class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
+    typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
+
     private let createsSite: Bool
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
-
-    let completion: SiteDesignStep.SiteDesignSelection
-    let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
-    var selectedIndexPath: IndexPath? = nil
+    private let tableView: UITableView
+    private let completion: SiteDesignStep.SiteDesignSelection
+    private let restAPI = WordPressComRestApi.anonymousApi(
+        userAgent: WPUserAgent.wordPress(),
+        localeKey: WordPressComRestApi.LocaleKeyV2
+    )
     private var sections: [SiteDesignSection] = []
-    internal override var categorySections: [CategorySection] { get { sections }}
+    private var isLoading: Bool = true {
+        didSet {
+            if isLoading {
+                tableView.startGhostAnimation(style: GhostCellStyle.muriel)
+            } else {
+                tableView.stopGhostAnimation()
+            }
 
-    override var selectedPreviewDevice: PreviewDevice {
-        get { .mobile }
-        set { /* no op */ }
+            tableView.reloadData()
+        }
     }
-
-    private lazy var previewViewSelectedPreviewDevice = PreviewDevice.default
-
-    var siteDesigns = RemoteSiteDesigns() {
+    private var previewViewSelectedPreviewDevice = PreviewDevice.default
+    private var siteDesigns = RemoteSiteDesigns() {
         didSet {
             if oldValue.categories.count == 0 {
                 scrollableView.setContentOffset(.zero, animated: false)
@@ -52,26 +35,25 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
                 SiteDesignSection(category: category, designs: siteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug)
                 })
             }
-            NSLog("sections: %@", String(describing: sections))
             contentSizeWillChange()
             tableView.reloadData()
         }
     }
-
-    var selectedDesign: RemoteSiteDesign? {
-        guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return nil }
-        return sections[sectionIndex].designs[position]
-    }
+    let selectedPreviewDevice = PreviewDevice.mobile
 
     init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.createsSite = createsSite
+        tableView = UITableView(frame: .zero, style: .plain)
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = .zero
+        tableView.showsVerticalScrollIndicator = false
 
         super.init(
-            analyticsLocation: "site_creation",
+            scrollableView: tableView,
             mainTitle: TextContent.mainTitle,
-            primaryActionTitle: createsSite ? TextContent.createSiteButton : TextContent.chooseButton,
-            secondaryActionTitle: TextContent.previewButton
+            // the primary action button is never shown
+            primaryActionTitle: ""
         )
     }
 
@@ -81,6 +63,8 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
+        tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
         fetchSiteDesigns()
         configureCloseButton()
@@ -119,37 +103,16 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: TextContent.cancelButtonTitle, style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
-    @objc func skipButtonTapped(_ sender: Any) {
+    @objc
+    private func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
+    @objc
+    private func skipButtonTapped(_ sender: Any) {
         presentedViewController?.dismiss(animated: true)
         SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
-    }
-
-    override func primaryActionSelected(_ sender: Any) {
-        guard let design = selectedDesign else {
-            completion(nil)
-            return
-        }
-        SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
-        completion(design)
-    }
-
-    override func secondaryActionSelected(_ sender: Any) {
-        guard let design = selectedDesign else { return }
-
-        let previewVC = SiteDesignPreviewViewController(
-            siteDesign: design,
-            selectedPreviewDevice: previewViewSelectedPreviewDevice,
-            createsSite: createsSite,
-            onDismissWithDeviceSelected: { [weak self] device in
-                self?.previewViewSelectedPreviewDevice = device
-            },
-            completion: completion
-        )
-
-        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
-        navController.modalPresentationStyle = .pageSheet
-        navigationController?.present(navController, animated: true)
     }
 
     private func handleError(_ error: Error) {
@@ -161,9 +124,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private enum TextContent {
         static let mainTitle = NSLocalizedString("Choose a theme", comment: "Title for the screen to pick a theme and homepage for a site.")
-        static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
-        static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
-        static let previewButton = NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design.")
         static let backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation.")
         static let skipButtonTitle = NSLocalizedString("Skip", comment: "Continue without making a selection.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel site creation.")
@@ -173,8 +133,69 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 }
 
 // MARK: - NoResultsViewControllerDelegate
+
 extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         fetchSiteDesigns()
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension SiteDesignContentCollectionViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CategorySectionTableViewCell.estimatedCellHeight
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return isLoading ? 1 : (sections.count)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellReuseIdentifier = CategorySectionTableViewCell.cellReuseIdentifier
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CategorySectionTableViewCell else {
+            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CategorySectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data")
+        }
+        cell.delegate = self
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        cell.section = isLoading ? nil : sections[indexPath.row]
+        cell.isGhostCell = isLoading
+        cell.showsCheckMarkWhenSelected = false
+        cell.layer.masksToBounds = false
+        cell.clipsToBounds = false
+        cell.collectionView.allowsSelection = !isLoading
+        return cell
+    }
+}
+
+// MARK: - CategorySectionTableViewCellDelegate
+
+extension SiteDesignContentCollectionViewController: CategorySectionTableViewCellDelegate {
+    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
+        guard let sectionIndex = sections.firstIndex(where: { $0.categorySlug == slug }) else { return }
+        let design = sections[sectionIndex].designs[position]
+
+        let previewVC = SiteDesignPreviewViewController(
+            siteDesign: design,
+            selectedPreviewDevice: previewViewSelectedPreviewDevice,
+            createsSite: createsSite,
+            onDismissWithDeviceSelected: { [weak self] device in
+                self?.previewViewSelectedPreviewDevice = device
+                cell.deselectItems()
+            },
+            completion: completion
+        )
+
+        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        navController.modalPresentationStyle = .pageSheet
+        navigationController?.present(navController, animated: true)
+    }
+
+    func didDeselectItem(forCell cell: CategorySectionTableViewCell) {}
+
+    func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
+        guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
+        tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
 }
