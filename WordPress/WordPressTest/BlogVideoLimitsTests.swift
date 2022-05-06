@@ -7,7 +7,6 @@ class BlogVideoLimitsTests: XCTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        try super.setUpWithError()
         contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
@@ -16,7 +15,6 @@ class BlogVideoLimitsTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        try super.tearDownWithError()
         blog = nil
     }
 
