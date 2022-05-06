@@ -7,11 +7,8 @@ group :screenshots, optional: true do
 end
 
 # This comment avoids typing to switch to a development version for testing.
-#
-# Temporarily switch to the library's `trunk` to play nice with a stricter GlotPress.
-# This will be revereted before merging into `trunk`.
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'trunk'
-# gem 'fastlane-plugin-wpmreleasetoolkit', '~> 4.1'
+# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: ''
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 4.1'
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
