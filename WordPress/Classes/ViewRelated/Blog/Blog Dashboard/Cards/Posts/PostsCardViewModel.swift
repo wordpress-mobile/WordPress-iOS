@@ -370,7 +370,13 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     }
 
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
-        let shouldAnimate = view?.tableView.numberOfSections != 0 && view?.tableView.numberOfRows(inSection: 0) != 0
+        var shouldAnimate: Bool
+        if #available(iOS 15.0, *) {
+            shouldAnimate = view?.tableView.numberOfSections != 0 && view?.tableView.numberOfRows(inSection: 0) != 0
+        } else {
+            shouldAnimate = false
+        }
+
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: shouldAnimate, completion: nil)
         view?.tableView.allowsSelection = currentState == .posts
