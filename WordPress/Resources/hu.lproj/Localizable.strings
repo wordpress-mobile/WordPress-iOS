@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:34:26+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -49,7 +49,6 @@
 "Blog" = "Blog";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -77,6 +76,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -497,6 +497,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Értesítések";
 
@@ -609,9 +610,9 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Előnézet";
 
@@ -750,7 +751,6 @@
 "Scheduled for" = "Ütemezve";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Keresőmotorok";
 
@@ -759,6 +759,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Beállítások";
@@ -782,7 +783,8 @@
    Title for screen that show site title editor */
 "Site Title" = "Honlap neve";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Webhely címe";
 
 /* No comment provided by engineer. */
@@ -792,9 +794,10 @@
    Title of a Reader tab showing Sites matching a user's search query */
 "Sites" = "Webhelyek";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Kihagyás";
 
@@ -994,8 +997,7 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Megtekintés";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Honlap megtekintése";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
@@ -1061,6 +1063,12 @@
 
 /* Label displayed on image media items. */
 "image" = "kép";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Bejegyzések";

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-04-25 13:47:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1197,7 +1197,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Can't publish an empty post";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1225,6 +1224,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1334,9 +1334,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Change username";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
 
 /* No comment provided by engineer. */
@@ -1386,7 +1383,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Checking purchases…";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Choose";
 
 /* Title for selecting a new homepage */
@@ -1671,13 +1669,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Create your site" = "Completed: create your site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: edit your homepage";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Completed: explore plans";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Completed: follow other sites";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Completed: publish a post";
@@ -1994,7 +1986,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Create Post";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Create Site";
 
 /* Stories intro continue button title */
@@ -2119,8 +2112,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Customise Gradient";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customize Your Site";
 
 /* No comment provided by engineer. */
@@ -2260,7 +2252,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Description";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2316,6 +2308,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Disconnecting this account means published posts will no longer be automatically shared to %@";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "Discover";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Discover Sites";
@@ -2631,9 +2626,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
 
@@ -2727,17 +2719,11 @@ translators: Block name. %s: The localized block name */
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Enable Publicise";
 
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Enable Quick Start for Site";
-
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Enable Site Stats";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Enable in-app notifications";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Enable in-app notifications?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Enable post sharing";
@@ -3098,9 +3084,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Find out more";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Find sites that speak to you, and follow them to get updates when they publish.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
@@ -3134,12 +3117,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Follow Conversation";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Follow other sites";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Follow site";
@@ -3358,8 +3335,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Grow Your Audience";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -3495,8 +3471,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Home";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -4862,6 +4837,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
 
@@ -5533,9 +5509,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Preview";
 
@@ -5556,9 +5532,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Preview post" = "Preview post";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Preview your new site to see what your visitors will see.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Previous month";
@@ -6205,7 +6178,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Search";
 
@@ -6293,15 +6265,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Select %@ to discover new themes";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Select %@ to look for sites with similar interests";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Select %@ to preview";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Select %@ to see how your site is performing.";
@@ -6490,6 +6453,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -6687,7 +6651,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6737,17 +6702,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Size";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Skip All";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Skip Quick Start";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter results";
@@ -7287,9 +7247,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "The quick start tour will guide you through building a basic site. Are you sure you want to skip? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "The serialization of the request failed.";
@@ -7997,6 +7954,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8009,11 +7967,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Unfollow %@";
 
-/* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Unfollow conversation";
-
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation" = "Unfollow conversation";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Unfollow site";
@@ -8294,8 +8249,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "View Post";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -9201,14 +9155,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
-
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";

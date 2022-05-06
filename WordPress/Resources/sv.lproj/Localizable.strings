@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-23 13:27:35+0000 */
+/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Knapp %@";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ Återgå till skärmen Min webbplats när du är redo för nästa uppgift.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ etikett";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ etiketter";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ Tips: få uppdateringar snabbare genom att aktivera push-notiser.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miljard";
@@ -273,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen rubrik)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* följer nu din webbplats!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* svarade på din kommentar";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Erik S* svarade på ditt inlägg";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* lade till ett nytt inlägg på sin webbplats";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Anna S* gillade ditt inlägg";
@@ -356,6 +371,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Ett nytt sätt att skapa och publicera engagerande innehåll på din webbplats.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "En serie steg som hjälper dig att utforska appen.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "En serie steg som visar hur du lägger till ett tema, en webbplatsikon och mycket mer.";
@@ -489,9 +507,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Lägg till block före";
-
-/* No comment provided by engineer. */
-"Add Blocks" = "Lägg till block";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Lägg till innehållet i inlägget";
@@ -793,7 +808,8 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonym";
 
-/* Title for a call-to-action button on the prompts card. */
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Svara på förslaget";
 
 /* Navigates to picker screen to change the app's icon
@@ -1230,7 +1246,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Det går inte att publicera ett tomt inlägg";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1258,6 +1273,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1315,7 +1331,8 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Var försiktig!";
 
-/* Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
 
 /* Label for Categories
@@ -1370,9 +1387,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Byt användarnamn";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Ändra, lägg till eller ta bort innehåll på startsidan för din webbplats.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Ändra, lägg till eller ta bort sidor på din webbplats.";
 
 /* No comment provided by engineer. */
@@ -1417,6 +1431,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Kontrollera nätverksanslutningen och försök igen. Eller skriv ett inläggsutkast.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Kolla dina notiser";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Kolla statistiken för webbplatsen";
 
 /* Title of a Quick Start Tour */
@@ -1425,10 +1442,14 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrollerar inköp...";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Kolla statistik";
+
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Child of %@";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Välj";
 
 /* Title for selecting a new homepage */
@@ -1701,6 +1722,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Färdig";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Slutfört: Kolla dina notiser";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Slutförd: Kontrollera statistik för din webbplats";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1713,19 +1737,16 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "Klart: Välj en unik webbplats-ikon";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Slutfört: Anslut till andra webbplatser";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Slutförd: Fortsätt med webbplatskonfigurationen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Slutförd: Skapa din webbplats";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Klart: Redigera din startsida";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Slutförd: Utforska planer";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Slutförd: Följ andra webbplatser";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Slutförd: Publicera ett inlägg";
@@ -1769,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Grattis till ditt köp!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Grattis! Din webbplats har nu över *1000* visningar.";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Anslut";
@@ -1784,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Skapa förbindelser med andra bloggare genom att följa bloggar och gilla och kommentera deras inlägg.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Anslut med andra webbplatser";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Anslut till sociala mediatjänster om du vill dela nya inlägg med dina vänner automatiskt.";
@@ -2045,7 +2072,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Skapa inlägg";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Skapa webbplats";
 
 /* Stories intro continue button title */
@@ -2170,8 +2198,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Anpassa gradient";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Anpassa din webbplats";
 
 /* No comment provided by engineer. */
@@ -2314,7 +2341,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Beskrivning";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2371,11 +2398,17 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Frånkoppling av detta konto innebär att publicerade inlägg inte längre automatiskt kommer att delas till %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Upptäck";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Upptäck webbplatser";
 
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Upptäck och följ bloggar du gillar";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Hitta och följ webbplatser som inspirerar dig.";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Hitta bloggar du vill följa";
@@ -2691,9 +2724,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Redigera video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Redigera din startsida";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Redigering av återanvändbara block stöds ännu inte i WordPress för Android";
 
@@ -2791,16 +2821,16 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "Aktivera offentliggör";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Aktivera snabbstart för webbplatsen";
+"Enable Quick Start for Existing Site" = "Aktivera snabbstart för befintlig webbplats";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Aktivera snabbstart för ny webbplats";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktivera webbplatsstatistik";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Aktivera aviseringar i appen";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Aktivera aviseringar i appen?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Aktivera delning av inlägg";
@@ -3173,9 +3203,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Ta reda på mer";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Hitta webbplatser som tilltalar dig och följ dem för att få uppdateringar när de publicerar.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Hitta adressen till din webbplats";
 
@@ -3214,10 +3241,7 @@ translators: Block name. %s: The localized block name */
 "Follow Conversation" = "Följer denna konversation";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Följ konversationen via e-post";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Följ andra webbplatser";
+"Follow conversation" = "Följ konversation";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Följ webbplats";
@@ -3375,6 +3399,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli uppmärksammad: kommentera inlägg du har läst.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Få uppdateringar i realtid direkt i fickan.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Kom igång genom att välja någon av alla förberedda sidlayouter. Eller börja helt enkelt med en tom sida.";
 
@@ -3383,6 +3410,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Sätt bollen i rullning och få fler läsare av ditt inlägg genom att dela ditt inlägg.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Lär känna WordPress-appen";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Skaffa din domän";
@@ -3405,15 +3435,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Prova nu direkt genom att lägga till några block i ditt inlägg eller din sida!";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Ge din %@-webbplats ett namn";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Ge din webbplats ett namn som återspeglar dess personlighet och ämnesområde. Första intrycket är viktigt!";
 
 /* Default title of the Site Name screen.
    Title for Site Name screen in iPhone landscape. */
 "Give your website a name" = "Ge din webbplats ett namn";
-
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your%@website a name" = "Ge din%@webbplats ett namn";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3453,9 +3483,11 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Utmärkt!\nVi är lika glada varje gång en nöjd användare hör av sig \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Få fler läsare";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Guidar dig genom processen för att kolla dina notiser.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Guidar dig genom processen för att välja ett tema för din webbplats.";
@@ -3593,8 +3625,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Hem";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Startsida";
@@ -3719,6 +3750,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inaktiv, automatiska uppdateringar på";
+
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Inkludera förslag";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Ingår i webbplatsen";
@@ -3975,6 +4009,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Håll koll på hur det går för webbplatsen.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Få reda på när dina favoritförfattare publicerar nytt innehåll.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Få reda på när din webbplats får mer trafik, nya följare eller när den passerar en ny milstolpe!";
+
 /* Autoapprove only from known users */
 "Known Users" = "Kända användare";
 
@@ -4019,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Läs mer om formatering av datum och tid.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Lär dig mer om förslag";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Lär dig mer om roller";
@@ -4956,6 +4999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Hittar du inte meddelandet? Kolla i mappen för skräppost eller reklam.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Jag är inte säker, visa mig runt";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Observera:";
 
@@ -4988,9 +5034,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Aviseringstid";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Aviseringen kommer att innehålla ett ord eller en kort fras för inspiration";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notiser";
 
@@ -5671,9 +5721,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Visa";
 
@@ -5696,7 +5746,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "Förhandsgranska";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Förhandsgranska din nya webbplats för att se vad dina besökare kommer att se.";
+"Preview your site to see what your visitors will see." = "Förhandsgranska din webbplats för att se vad dina besökare kommer att se.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Föregående månad";
@@ -5763,7 +5813,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Projekt";
 
-/* Title label for the Prompts card in My Sites tab. */
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
 "Prompts" = "Förslag";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -5882,6 +5933,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "CSS-URL för läsaren";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Läsa inlägg från andra webbplatser";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Fastigheter";
@@ -6355,7 +6409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Den rullningsbara blockmenyn har öppnats. Välj ett block.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Sök";
 
@@ -6445,13 +6498,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Välj %@ för att upptäcka nya teman";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Välj %@ för att redigera din startsida.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Välj %@ för att söka efter webbplatser med liknande ämnen";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Välj %@ för att förhandsgranska";
+"Select %@ to find other sites." = "Välj %@ för att hitta andra webbplatser.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Välj %@ för att se hur det går för webbplatsen.";
@@ -6470,6 +6517,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Välj %@ för att ladda upp en ny.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Välj %@ för att visa din webbplats";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Välj land";
@@ -6503,6 +6553,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Välj styckeformatering";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Välj fliken %@ för att få uppdateringar i farten.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Välj %@ för att lägga till dina konton i sociala medier";
@@ -6643,6 +6696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Inställningar";
@@ -6843,7 +6897,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Webbplatsämnen";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Adress till webbplats";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6893,17 +6948,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Storlek";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Hoppa över";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Hoppa över allt";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Hoppa över snabbstarten";
 
 /* Menu title to skip today's prompt. */
 "Skip this prompt" = "Hoppa över detta förslag";
@@ -7078,6 +7128,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Håll dig informerad";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Håll kontakten med hjälp av notiser för gilla-markeringar och kommentarer.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Håll kontakten med din publik med hjälp av notiser för gilla-markeringar och kommentarer.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Håll dig uppdaterad med hjälp av notiser";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Klistra inlägget på startsidan";
@@ -7312,6 +7371,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tryck för att visa din webbplats";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "Uppgift slutförd.";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomi";
 
@@ -7458,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Inlägget du försöker kopiera har två versioner som står i konflikt med varandra, eller så har du nyligen gjort ändringar som inte är sparade.\nRedigera inlägget först för att lösa eventuella konflikter och kopiera därefter versionen från denna app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Snabbstartsdemon visar dig stegen för att bygga en grundläggande webbplats. Är du säker på att du vill hoppa över detta?";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serialiseringen av begäran misslyckades.";
@@ -7957,6 +8016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Prova nu";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Prova att välja %@ för att lägga till ämnen som du gillar.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Prova den nya blockredigeraren";
 
@@ -8180,6 +8242,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8193,10 +8256,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "Sluta att följa %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Sluta följ konversation";
+"Unfollow Conversation" = "Sluta följ konversation";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Sluta följa konversationen via e-post";
+"Unfollow conversation" = "Sluta följ konversation";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Sluta följa webbplats";
@@ -8378,6 +8441,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Använd";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Använd %@ för att hitta webbplatser och etiketter.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Använd sandlåde-lagring";
 
@@ -8477,8 +8543,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Se inlägget";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Besök sida";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8538,6 +8603,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Besök %@ för mer";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Besök adminpanelen";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Besök webbplats";
@@ -9082,6 +9150,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Skrivande och poesi";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Skriva blogginlägg";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Läge på X-axeln";
 
@@ -9238,6 +9309,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Du behöver verifiera ditt konto innan du kan publicera ett inlägg.\nMen du behöver inte oroa dig. Inlägget är i säkert förvar och kommer att sparas som utkast.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Du har fått *50 gillamarkeringar* på din kommentar";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Du har fått *50 gillamarkeringar* på din webbplats i dag";
 
@@ -9263,6 +9337,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Du kommer att få en påminnelse om att blogga <strong>en gång<\/strong> i veckan på %1$@ kl. %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Du får aviseringar i appen";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Du kommer att få bloggningspåminnelser %1$@ gånger per vecka på %2$@.";
@@ -9345,6 +9423,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Din webbplatsadress visas i listen längst upp på skärmen när du besöker din webbplats i Safari.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Din webbplats är redan skyddad av VaultPress. Du kan hitta en länk till din adminpanel för VaultPress nedan.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Din webbplats verkar få *mer trafik* än vanligt!";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Din webbplats har VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Din webbplats är klar!";
 
@@ -9402,17 +9489,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMMENTAR]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d bloggare_ gillar detta.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d bloggare_ gillar detta.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_Du och %1$d bloggare_ gillar detta.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_En bloggare_ gillar detta.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Du och %1$d bloggare_ gillar detta.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_Du och en annan bloggare_ gillar detta.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Du_ gillar detta.";
@@ -9541,6 +9628,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Kommentarer";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Gillamarkeringar";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Publicerades %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Visningar";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 Populäraste tidpunkten";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% av visningarna";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Dessa saker kommer att raderas:";
