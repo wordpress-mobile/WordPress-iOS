@@ -60,7 +60,7 @@ final class FormattableContentGroupTests: XCTestCase {
     }
 
     private func mockActivity() throws -> JSONObject {
-        return try .loadFile(named: "activity-log-activity-content.json")
+        return try .loadJSONFile(named: "activity-log-activity-content.json")
     }
 
 }

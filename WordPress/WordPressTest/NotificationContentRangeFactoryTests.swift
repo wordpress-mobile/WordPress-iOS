@@ -41,27 +41,27 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
     }
 
     private func mockCommentRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-comment-range.json")
+        return try .loadJSONFile(named: "notifications-comment-range.json")
     }
 
     private func mockIconRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-icon-range.json")
+        return try .loadJSONFile(named: "notifications-icon-range.json")
     }
 
     private func mockPostRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-post-range.json")
+        return try .loadJSONFile(named: "notifications-post-range.json")
     }
 
     private func mockSiteRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-site-range.json")
+        return try .loadJSONFile(named: "notifications-site-range.json")
     }
 
     private func mockUserRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-user-range.json")
+        return try .loadJSONFile(named: "notifications-user-range.json")
     }
 
     private func mockBlockQuoteRange() throws -> JSONObject {
-        return try .loadFile(named: "notifications-blockquote-range.json")
+        return try .loadJSONFile(named: "notifications-blockquote-range.json")
     }
 
 }
