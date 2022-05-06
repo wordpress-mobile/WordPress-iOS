@@ -5,7 +5,7 @@
 #import "ContextManagerMock.h"
 
 @interface BlogTimeZoneTests : XCTestCase
-@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 @property (nonatomic, strong) Blog *blog;
 @end
 

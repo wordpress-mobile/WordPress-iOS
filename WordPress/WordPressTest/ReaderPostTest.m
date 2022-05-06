@@ -5,7 +5,7 @@
 
 @interface ReaderPostTest : XCTestCase
 
-@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 
 @end
 

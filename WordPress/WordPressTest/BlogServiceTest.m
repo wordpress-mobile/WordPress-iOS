@@ -12,7 +12,7 @@
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) id blogServiceMock;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 
 @end
 

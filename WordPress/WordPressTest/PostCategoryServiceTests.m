@@ -27,7 +27,7 @@
 
 @interface PostCategoryServiceTests : XCTestCase
 
-@property (nonatomic, strong) id<CoreDataStack> manager;
+@property (nonatomic, strong) ContextManagerMock *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostCategoryServiceForStubbing *service;
 

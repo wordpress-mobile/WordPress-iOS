@@ -9,7 +9,7 @@
 @end
 
 @interface BlogSiteVisibilityHelperTest ()
-@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 @end
 
 @implementation BlogSiteVisibilityHelperTest

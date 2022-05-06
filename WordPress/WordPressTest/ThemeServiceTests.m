@@ -16,7 +16,7 @@
 #pragma mark - Tests
 
 @interface ThemeServiceTests : XCTestCase
-@property (nonatomic, strong) id<CoreDataStack> manager;
+@property (nonatomic, strong) ContextManagerMock *manager;
 @end
 
 @implementation ThemeServiceTests
