@@ -6,7 +6,6 @@ import Nimble
 
 class PostListViewControllerTests: XCTestCase {
 
-    // TODO: Can be removed
     private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext {
         contextManager.mainContext
