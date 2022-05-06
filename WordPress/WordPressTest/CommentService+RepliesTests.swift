@@ -16,7 +16,10 @@ final class CommentService_RepliesTests: XCTestCase {
         "sites/\(siteID)/comments"
     }
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
     private var commentService: CommentService!
     private var accountService: AccountService!
 
@@ -24,17 +27,16 @@ final class CommentService_RepliesTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         commentService = CommentService(managedObjectContext: context)
         accountService = makeAccountService()
     }
 
     override func tearDown() {
-        context.reset()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         HTTPStubs.removeAllStubs()
 
-        context = nil
+        contextManager = nil
         commentService = nil
         accountService = nil
         super.tearDown()

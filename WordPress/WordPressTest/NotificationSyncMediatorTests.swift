@@ -44,6 +44,7 @@ class NotificationSyncMediatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
+        manager.tearDown()
         manager = nil
         HTTPStubs.removeAllStubs()
     }

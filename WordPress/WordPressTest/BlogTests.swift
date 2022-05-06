@@ -4,16 +4,20 @@ import XCTest
 
 final class BlogTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
     }
 
     override func tearDown() {
         super.tearDown()
+        contextManager.tearDown()
     }
 
     // MARK: - Atomic Tests

@@ -6,16 +6,19 @@ import Nimble
 
 class PostListViewControllerTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
+    // TODO: Can be removed
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         super.setUp()
     }
 
     override func tearDown() {
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         super.tearDown()
     }
 

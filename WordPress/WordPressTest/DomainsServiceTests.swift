@@ -8,8 +8,11 @@ class DomainsServiceTests: XCTestCase {
     let testSiteID = 12345
 
     var remote: DomainsServiceRemote!
-    var context: NSManagedObjectContext!
     var testBlog: Blog!
+    var contextManager: TestContextManager!
+    var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     var domainsEndpoint: String { return "sites/\(testSiteID)/domains" }
     let contentTypeJson = "application/json"
@@ -19,15 +22,14 @@ class DomainsServiceTests: XCTestCase {
 
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         testBlog = makeTestBlog()
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        context.reset()
+        contextManager.tearDown()
         HTTPStubs.removeAllStubs()
     }
 

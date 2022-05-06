@@ -45,7 +45,7 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         super.tearDown()
     }
 

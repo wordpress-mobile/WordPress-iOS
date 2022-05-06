@@ -2,24 +2,24 @@
 #import "TestContextManager.h"
 
 @interface Blog_ObjcTests : XCTestCase
-@property (strong, nonatomic) NSManagedObjectContext *context;
+@property (strong, nonatomic) TestContextManager *contextManager;
 @end
 
 @implementation Blog_ObjcTests
 
 - (void)setUp {
-    self.context = [[TestContextManager new] mainContext];
+    self.contextManager = [TestContextManager new];
     [super setUp];
 }
 
 - (void)tearDown {
-    self.context = nil;
+    [self.contextManager tearDown];
     [super tearDown];
 }
 
 - (void)testThatNilBlogIDDoesNotCrashWhenCreatingPredicate {
     NSNumber *number = nil;
-    Blog *blog = [Blog lookupWithID:number in:self.context];
+    Blog *blog = [Blog lookupWithID:number in:self.contextManager.mainContext];
     XCTAssertNil(blog);
 }
 

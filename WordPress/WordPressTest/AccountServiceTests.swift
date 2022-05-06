@@ -18,8 +18,7 @@ class AccountServiceTests: XCTestCase {
 
         deleteTestAccounts()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
+        contextManager.tearDown()
         contextManager = nil
         accountService = nil
     }

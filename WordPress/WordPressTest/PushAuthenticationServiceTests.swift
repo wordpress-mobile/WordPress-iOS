@@ -32,12 +32,15 @@ class PushAuthenticationServiceTests: XCTestCase {
         pushAuthenticationService.authenticationServiceRemote = mockPushAuthenticationServiceRemote
     }
 
+    override func tearDown() {
+        testContextManager.tearDown()
+    }
+
     func testAuthorizeLoginDoesntCallServiceRemoteIfItsNull() {
         pushAuthenticationService.authenticationServiceRemote = nil
         pushAuthenticationService.authorizeLogin(token, completion: { (completed: Bool) -> () in
         })
         XCTAssertFalse(mockPushAuthenticationServiceRemote!.authorizeLoginCalled, "Authorize login should not have been called")
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testAuthorizeLoginCallsServiceRemoteAuthorizeLoginWhenItsNotNull() {

@@ -14,7 +14,8 @@ class MediaRequestAuthenticatorTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager  =  nil
+        contextManager.tearDown()
+        contextManager = nil
         context = nil
 
         super.tearDown()

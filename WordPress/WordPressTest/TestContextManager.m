@@ -91,4 +91,10 @@
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
 }
 
+- (void)tearDown
+{
+    [self.mainContext reset];
+    self.stack = nil;
+}
+
 @end

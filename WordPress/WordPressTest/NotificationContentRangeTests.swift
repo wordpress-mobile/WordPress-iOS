@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 final class NotificationContentRangeTests: XCTestCase {
-    private let contextManager = TestContextManager()
+    private var contextManager: TestContextManager!
 
     private var subject: NotificationContentRange?
 
@@ -16,10 +16,12 @@ final class NotificationContentRangeTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        contextManager = TestContextManager()
         subject = NotificationContentRange(kind: Constants.kind, properties: mockProperties())
     }
 
     override func tearDown() {
+        contextManager.tearDown()
         subject = nil
         super.tearDown()
     }

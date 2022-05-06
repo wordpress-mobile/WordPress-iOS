@@ -36,7 +36,7 @@ class PostTests: XCTestCase {
 
     override func tearDown() {
         context.rollback()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         super.tearDown()
     }
 

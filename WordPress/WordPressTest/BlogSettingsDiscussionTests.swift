@@ -10,9 +10,7 @@ class BlogSettingsDiscussionTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
-        manager.mainContext.reset()
-        manager = nil
+        manager.tearDown()
     }
 
     func testCommentsAutoapprovalDisabledEnablesManualModerationFlag() {

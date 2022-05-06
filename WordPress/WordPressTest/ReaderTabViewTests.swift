@@ -6,17 +6,18 @@ import CoreData
 class ReaderTabViewTests: XCTestCase {
 
     var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
+    var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
-        context = contextManager.mainContext
     }
 
     override func tearDown() {
+        contextManager.tearDown()
         contextManager = nil
-        context = nil
         super.tearDown()
     }
 

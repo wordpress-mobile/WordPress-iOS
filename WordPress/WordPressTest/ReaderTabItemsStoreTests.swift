@@ -29,7 +29,9 @@ class MockTopicService: ReaderTopicService {
 class ReaderTabItemsStoreTests: XCTestCase {
 
     var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
+    var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
     private var subscription: Receipt?
     private var store: ReaderTabItemsStore!
     private var service: MockTopicService!
@@ -38,14 +40,13 @@ class ReaderTabItemsStoreTests: XCTestCase {
 
     override func setUp() {
         contextManager = TestContextManager()
-        context = contextManager.mainContext
         service = MockTopicService(managedObjectContext: context)
         store = ReaderTabItemsStore(context: context, service: service)
     }
 
     override func tearDown() {
+        contextManager.tearDown()
         contextManager = nil
-        context = nil
         service = nil
         subscription = nil
         store = nil

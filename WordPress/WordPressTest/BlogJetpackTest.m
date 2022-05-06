@@ -51,8 +51,8 @@
     _account = nil;
     _blog = nil;
     [HTTPStubs removeAllStubs];
-    [ContextManager overrideSharedInstance:nil];
 
+    [self.testContextManager tearDown];
     self.testContextManager = nil;
 }
 

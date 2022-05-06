@@ -26,7 +26,6 @@
 
 - (void)tearDown
 {
-    [ContextManager overrideSharedInstance:nil];
 
     self.blog = nil;
     self.testContextManager = nil;

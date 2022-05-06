@@ -20,8 +20,7 @@ class AtomicAuthenticationServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
+        contextManager.tearDown()
         contextManager = nil
         atomicService = nil
     }

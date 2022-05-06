@@ -7,17 +7,19 @@ import Nimble
 /// Test cases for PostService.markAsFailedAndDraftIfNeeded()
 class PostServiceUploadingListTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
     }
 
     override func tearDown() {
         super.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     /// Returns true if a single post is added to the list

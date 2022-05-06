@@ -49,7 +49,9 @@ class ReaderTabViewModelTests: XCTestCase {
     var settingsPresenter: MockSettingsPresenter!
 
     var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
+    var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         store = MockItemsStore()
@@ -60,7 +62,6 @@ class ReaderTabViewModelTests: XCTestCase {
                                        settingsPresenter: settingsPresenter)
 
         contextManager = TestContextManager()
-        context = contextManager.mainContext
     }
 
     override func tearDown() {
@@ -69,8 +70,8 @@ class ReaderTabViewModelTests: XCTestCase {
         settingsPresenter = nil
         makeContentControllerExpectation = nil
 
+        contextManager.tearDown()
         contextManager = nil
-        context = nil
     }
 
     func testRefreshTabBar() {

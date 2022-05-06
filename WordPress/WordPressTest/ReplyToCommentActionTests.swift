@@ -42,6 +42,7 @@ final class ReplyToCommentActionTests: XCTestCase {
         action = nil
         makeNetworkUnavailable()
         utility.tearDown()
+        testContextManager.tearDown()
         super.tearDown()
     }
 

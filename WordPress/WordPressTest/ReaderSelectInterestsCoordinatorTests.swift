@@ -9,7 +9,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testisFollowingInterestsReturnsFalse() {

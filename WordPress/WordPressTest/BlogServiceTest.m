@@ -52,7 +52,6 @@
 
 - (void)tearDown
 {
-    [ContextManager overrideSharedInstance:nil];
 
     self.blogService = nil;
     self.blogServiceMock = nil;

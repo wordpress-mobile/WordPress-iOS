@@ -16,7 +16,7 @@ class PostListFilterTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
+        contextManager.tearDown()
     }
 
     func testSortDescriptorForPublished() {

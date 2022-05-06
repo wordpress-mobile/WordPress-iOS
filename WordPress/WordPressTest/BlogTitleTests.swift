@@ -7,7 +7,7 @@ class BlogTitleTests: XCTestCase {
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
-    override func setUpWithError() throws {
+    override func setUp() {
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
@@ -15,7 +15,8 @@ class BlogTitleTests: XCTestCase {
         blog.xmlrpc = Constants.blogURL
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
+        contextManager.tearDown()
         blog = nil
     }
 

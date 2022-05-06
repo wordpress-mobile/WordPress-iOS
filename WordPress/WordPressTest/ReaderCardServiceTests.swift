@@ -6,7 +6,7 @@ import Nimble
 
 class ReaderCardServiceTests: XCTestCase {
 
-    private var coreDataStack: CoreDataStack!
+    private var coreDataStack: TestContextManager!
     private var remoteService: ReaderPostServiceRemote!
     private var followedInterestsService: ReaderFollowedInterestsServiceMock!
     private var apiMock: WordPressComMockRestApi!
@@ -21,7 +21,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        coreDataStack.tearDown()
     }
 
     /// Call the cards API with the saved slugs

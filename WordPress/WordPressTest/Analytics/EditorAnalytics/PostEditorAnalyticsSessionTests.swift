@@ -26,6 +26,7 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     }
 
     override func tearDown() {
+        contextManager.tearDown()
         TestAnalyticsTracker.tearDown()
     }
 

@@ -22,7 +22,7 @@ class ActivityStoreTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         dispatcher = nil
         store = nil
 

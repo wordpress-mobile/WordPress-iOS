@@ -19,8 +19,7 @@ class BlogServiceAuthorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
+        contextManager.tearDown()
         contextManager = nil
         blogService = nil
     }

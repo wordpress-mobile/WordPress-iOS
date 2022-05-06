@@ -12,6 +12,10 @@ class DomainCreditEligibilityTests: XCTestCase {
         manager = TestContextManager()
     }
 
+    override func tearDown() {
+        manager.tearDown()
+    }
+
     func testDomainCreditEligibilityOnBlogWithCustomDomain() {
         let blog = ModelTestHelper.insertSelfHostedBlog(context: mainContext)
         blog.hasDomainCredit = true

@@ -10,6 +10,10 @@ final class WPAccountLookupTests: XCTestCase {
         contextManager = TestContextManager()
     }
 
+    override func tearDown() {
+        contextManager.tearDown()
+    }
+
     func testIsDefaultWordPressComAccountIsFalseWhenNoAccountIsSet() {
         UserSettings.defaultDotComUUID = nil
         let account = AccountBuilder(contextManager).build()

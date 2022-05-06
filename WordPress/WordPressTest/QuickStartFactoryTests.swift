@@ -16,8 +16,7 @@ class QuickStartFactoryTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        context.reset()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testCollectionsForExistingSite() {

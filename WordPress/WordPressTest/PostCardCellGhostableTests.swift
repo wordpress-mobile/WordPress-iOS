@@ -16,8 +16,8 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     override func tearDown() {
-        coreDataStack = nil
         super.tearDown()
+        coreDataStack.tearDown()
     }
 
     func testHideFeaturedImage() {

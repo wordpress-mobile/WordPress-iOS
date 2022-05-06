@@ -20,7 +20,7 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
         super.tearDown()
         fetcher = nil
         context = nil
-        contextManager = nil
+        contextManager.tearDown()
     }
 
     func testItReturnsPostsThatCanBeAutoUploadedOrAutoSaved() {

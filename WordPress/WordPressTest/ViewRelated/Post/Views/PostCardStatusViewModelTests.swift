@@ -17,7 +17,7 @@ class PostCardStatusViewModelTests: XCTestCase {
 
     override func tearDown() {
         context = nil
-        contextManager = nil
+        contextManager.tearDown()
         super.tearDown()
     }
 

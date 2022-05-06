@@ -40,7 +40,7 @@ class GravatarServiceTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testServiceSanitizesEmailAddressCapitals() {

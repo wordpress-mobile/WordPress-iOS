@@ -40,7 +40,7 @@ final class TrashCommentActionTests: XCTestCase {
         action = nil
         makeNetworkUnavailable()
         utils.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        testContextManager.tearDown()
         super.tearDown()
     }
 

@@ -2,6 +2,7 @@ import XCTest
 @testable import WordPress
 
 final class FormattableContentGroupTests: XCTestCase {
+    // TODO: Don't need `TestContextManager` here, it's only used for decoding JSON files.
     private let contextManager = TestContextManager()
     private var subject: FormattableContentGroup?
     private let utility = NotificationUtility()

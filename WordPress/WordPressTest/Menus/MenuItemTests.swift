@@ -13,8 +13,7 @@ class MenuItemTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
-        context.reset()
+        contextManager.tearDown()
     }
 
     /// Tests detection of descendants.

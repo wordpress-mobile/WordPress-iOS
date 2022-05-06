@@ -4,21 +4,23 @@ import Nimble
 @testable import WordPress
 
 class MediaCoordinatorTests: XCTestCase {
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     private var coordinator: MediaCoordinator!
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         coordinator = MediaCoordinator(MediaServiceFactoryMock())
     }
 
     override func tearDown() {
         super.tearDown()
         coordinator = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testUploadMediaReturnsTrueIfAllPendingMediaAreQueuedForUpload() {

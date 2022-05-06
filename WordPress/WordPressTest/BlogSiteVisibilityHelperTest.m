@@ -25,7 +25,6 @@
 {
     [super tearDown];
 
-    [ContextManager overrideSharedInstance:nil];
     self.testContextManager = nil;
 }
 

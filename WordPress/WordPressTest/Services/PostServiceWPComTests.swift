@@ -11,7 +11,10 @@ class PostServiceWPComTests: XCTestCase {
 
     private var remoteMock: PostServiceRESTMock!
     private var service: PostService!
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     private let impossibleFailureBlock: (Error?) -> Void = { _ in
         assertionFailure("This shouldn't happen.")
@@ -20,7 +23,7 @@ class PostServiceWPComTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
 
         remoteMock = PostServiceRESTMock()
 
@@ -34,8 +37,7 @@ class PostServiceWPComTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testGettingANewPostFromTheAPIWillSetTheStatusAfterSyncProperty() {

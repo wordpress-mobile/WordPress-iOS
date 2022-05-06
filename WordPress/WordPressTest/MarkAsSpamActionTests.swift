@@ -41,6 +41,7 @@ final class MarkAsSpamActionTests: XCTestCase {
         action = nil
         makeNetworkUnavailable()
         utility.tearDown()
+        testContextManager.tearDown()
         super.tearDown()
     }
 

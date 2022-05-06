@@ -2,10 +2,12 @@ import XCTest
 @testable import WordPress
 
 class BlogDetailsSubsectionToSectionCategoryTests: XCTestCase {
+    private var contextManager: TestContextManager!
     var blog: Blog!
 
     override func setUp() {
-        blog = BlogBuilder(TestContextManager().mainContext).build()
+        contextManager = TestContextManager()
+        blog = BlogBuilder(contextManager.mainContext).build()
     }
 
     func testEachSubsectionToSectionCategory() {
@@ -27,7 +29,7 @@ class BlogDetailsSubsectionToSectionCategoryTests: XCTestCase {
 
     func testEachSubsectionToSectionCategoryForJetpack() {
         let blogDetailsViewController = BlogDetailsViewController()
-        let blog = BlogBuilder(TestContextManager().mainContext)
+        let blog = BlogBuilder(contextManager.mainContext)
             .set(blogOption: "is_wpforteams_site", value: false)
             .withAnAccount()
             .with(isAdmin: true)

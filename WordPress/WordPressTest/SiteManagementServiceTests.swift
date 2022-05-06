@@ -64,7 +64,7 @@ class SiteManagementServiceTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func insertBlog(_ context: NSManagedObjectContext) -> Blog {

@@ -13,6 +13,10 @@ class SharingServiceTests: XCTestCase {
         contextManager = TestContextManager()
     }
 
+    override func tearDown() {
+        contextManager.tearDown()
+    }
+
     func testSyncingPublicizeConnectionsForNonDotComBlogCallsACompletionBlock() throws {
         let blogService = BlogService(managedObjectContext: context)
         let blog = blogService.createBlog()

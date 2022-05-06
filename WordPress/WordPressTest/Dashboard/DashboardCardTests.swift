@@ -26,9 +26,9 @@ class ZDashboardCardTests: XCTestCase {
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
         context = nil
+        contextManager.tearDown()
         contextManager = nil
         blog = nil
-        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 

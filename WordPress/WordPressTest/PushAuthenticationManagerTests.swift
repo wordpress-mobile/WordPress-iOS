@@ -40,19 +40,28 @@ class PushAuthenticationManagerTests: XCTestCase {
         }
     }
 
-    var mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: TestContextManager().mainContext)
+    var contextManager: TestContextManager!
+    var mockPushAuthenticationService: MockPushAuthenticationService!
     var mockAlertControllerProxy = MockUIAlertControllerProxy()
     var pushAuthenticationManager: PushAuthenticationManager?
     var approvalAlertController: UIAlertController!
 
     override func setUp() {
         super.setUp()
+        contextManager = TestContextManager()
+
+        mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: contextManager.mainContext)
+
         pushAuthenticationManager = PushAuthenticationManager(pushAuthenticationService: mockPushAuthenticationService)
         pushAuthenticationManager?.alertControllerProxy = mockAlertControllerProxy
 
         approvalAlertController = UIAlertController()
         approvalAlertController.addCancelActionWithTitle("Ignore", handler: nil)
         approvalAlertController.addDefaultActionWithTitle("Approve", handler: nil)
+    }
+
+    override func tearDown() {
+        contextManager.tearDown()
     }
 
     func testIsPushAuthenticationNotificationReturnsTrueWhenPassedTheCorrectPushAuthenticationNoteType() {

@@ -16,7 +16,7 @@ class StatsTestCase: XCTestCase {
     }
 
     override func tearDown() {
-        mainContext.reset()
+        manager.tearDown()
     }
 
     @discardableResult func createStatsRecord(in context: NSManagedObjectContext,

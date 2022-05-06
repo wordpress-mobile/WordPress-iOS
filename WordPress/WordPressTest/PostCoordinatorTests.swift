@@ -7,19 +7,21 @@ import WordPressFlux
 
 class PostCoordinatorTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         TestAnalyticsTracker.setup()
     }
 
     override func tearDown() {
         super.tearDown()
         TestAnalyticsTracker.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testDoNotUploadAPostWithFailedMedia() {

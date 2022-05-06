@@ -2,8 +2,6 @@
 #import "ContextManagerMock.h"
 #import <XCTest/XCTest.h>
 
-@class MockContext;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -20,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly,  strong) NSPersistentStoreCoordinator   *standardPSC;
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
 @property (nonatomic, strong, nullable) id<ManagerMock, CoreDataStack>  stack;
+
+- (void)tearDown;
 
 @end
 

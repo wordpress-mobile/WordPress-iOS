@@ -23,6 +23,7 @@ class QuickStartSettingsTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        contextManager.tearDown()
     }
 
     func testPromptWasDismissedReturnsFalseIfNotPreviouslyDismissed() {

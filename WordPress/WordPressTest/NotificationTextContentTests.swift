@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 final class NotificationTextContentTests: XCTestCase {
-    private let contextManager = TestContextManager()
+    private var contextManager: TestContextManager!
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: NotificationTextContent?
@@ -15,10 +15,12 @@ final class NotificationTextContentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        contextManager = TestContextManager()
         subject = try NotificationTextContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
+        contextManager.tearDown()
         subject = nil
         super.tearDown()
     }

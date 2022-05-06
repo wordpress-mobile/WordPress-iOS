@@ -10,7 +10,7 @@ class ReaderStreamViewControllerTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     // Tests that a ReaderStreamViewController is returned
@@ -21,8 +21,6 @@ class ReaderStreamViewControllerTests: XCTestCase {
 
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
         XCTAssertNotNil(controller, "Controller should not be nil")
-
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testControllerWithSiteID() {

@@ -11,20 +11,25 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     private var service: BlockEditorSettingsService!
     private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
     var mockRemoteApi: MockWordPressComRestApi!
     var gssOriginalValue: Bool!
     private var blog: Blog!
 
     override func setUp() {
         contextManager = TestContextManager()
-        context = contextManager.mainContext
         mockRemoteApi = MockWordPressComRestApi()
         blog = BlogBuilder(context)
             .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+    }
+
+    override func tearDown() {
+        contextManager.tearDown()
     }
 
     // MARK: Editor `theme_supports` support

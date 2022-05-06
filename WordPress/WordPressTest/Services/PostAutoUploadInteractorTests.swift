@@ -3,20 +3,22 @@
 import Nimble
 
 class PostAutoUploadInteractorTests: XCTestCase {
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     private var interactor: PostAutoUploadInteractor!
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         interactor = PostAutoUploadInteractor()
     }
 
     override func tearDown() {
         interactor = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         super.tearDown()
     }
 

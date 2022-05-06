@@ -20,8 +20,7 @@ class DashboardPostsSyncManagerTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.mainContext.reset()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         blog = nil
         super.tearDown()
     }
