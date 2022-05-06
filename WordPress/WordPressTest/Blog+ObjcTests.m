@@ -12,11 +12,6 @@
     [super setUp];
 }
 
-- (void)tearDown {
-    [self.contextManager tearDown];
-    [super tearDown];
-}
-
 - (void)testThatNilBlogIDDoesNotCrashWhenCreatingPredicate {
     NSNumber *number = nil;
     Blog *blog = [Blog lookupWithID:number in:self.contextManager.mainContext];
