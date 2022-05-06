@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-04-25 13:15:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -490,9 +490,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add Block Before" = "הוספת בלוק לפני";
 
-/* No comment provided by engineer. */
-"Add Blocks" = "להוסיף בלוקים";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "הוספת תוכן לפוסט";
 
@@ -793,7 +790,8 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "אנונימי";
 
-/* Title for a call-to-action button on the prompts card. */
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "לענות להצעה";
 
 /* Navigates to picker screen to change the app's icon
@@ -1230,7 +1228,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "לא ניתן לפרסם פוסט ריק";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1258,6 +1255,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1315,7 +1313,8 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "בזהירות!";
 
-/* Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "לשדר את הסרט של חייך.";
 
 /* Label for Categories
@@ -1368,9 +1367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Change button. */
 "Change username" = "החלפת שם משתמש";
-
-/* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "לשנות, להוסיף או להסיר תוכן בעמוד הבית של האתר.";
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "לשנות, להוסיף או להסיר עמודים באתר.";
@@ -1428,7 +1424,8 @@ translators: Block name. %s: The localized block name */
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "פריט בן של %@";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "לבחור";
 
 /* Title for selecting a new homepage */
@@ -1719,13 +1716,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Create your site" = "הושלם: ליצירת האתר שלך";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "הושלם: לערוך את עמוד הבית";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "הושלם: לעיון בתוכניות";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "הושלם: למעקב אחר אתרים אחרים";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "הושלם: לפרסום פוסט";
@@ -2045,7 +2036,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "צור פוסט";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "יצירת אתר";
 
 /* Stories intro continue button title */
@@ -2170,8 +2162,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "להתאים אישית את מעבר הצבע";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "התאמה אישית של האתר שלך";
 
 /* No comment provided by engineer. */
@@ -2314,7 +2305,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "תיאור";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "עיצוב";
 
 /* Title for the desktop web preview */
@@ -2370,6 +2361,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "ניתוק חשבון זה פירושו שפוסטים שפורסמו לא ישותפו עוד אוטומטית עם %@";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "לגלות";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "עיון באתרים";
@@ -2691,9 +2685,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "לערוך וידאו";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "לערוך את עמוד הבית";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-WordPress למערכת Android";
 
@@ -2790,17 +2781,11 @@ translators: Block name. %s: The localized block name */
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "להפעיל את השיתוף האוטומטי";
 
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "להפעיל התחלה מהירה לאתר";
-
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "הפעלת הנתונים הסטטיסטיים של האתר";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "להפעיל הודעות בתוך האפליקציה";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "האם להפעיל הודעות בתוך האפליקציה?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "הפעלת השיתוף של הפוסטים";
@@ -3173,9 +3158,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "למידע נוסף";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "באפשרותך לחפש אתרים שמעניינים אותך ולעקוב אחריהם כדי לקבל עדכונים כשהם יפרסמו תוכן חדש.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "למצוא את הכותרת של האתר שלך";
 
@@ -3212,12 +3194,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "מעקב אחר השיחה";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "לעקוב אחר השיחה באמצעות האימייל";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "מעקב אחר אתרים אחרים";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "לעקוב אחרי האתר";
@@ -3412,9 +3388,6 @@ translators: Block name. %s: The localized block name */
    Title for Site Name screen in iPhone landscape. */
 "Give your website a name" = "כדי להעניק לאתר שם";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your%@website a name" = "כדאי להעניק שם לאתר your%@website";
-
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3453,8 +3426,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "נהדר!\n אנחנו שמחים כשהמשתמשים שלנו מרוצים \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "הגדלת הקהל שלך";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -3593,8 +3565,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "עמוד הבית";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "עמוד הבית";
@@ -4991,6 +4962,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "התראות";
 
@@ -5671,9 +5643,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "תצוגה מקדימה";
 
@@ -5694,9 +5666,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Preview post" = "תצוגה מקדימה";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "באפשרותך להציג תצוגה מקדימה של האתר החדש כדי לבחון מה יראו המבקרים בו.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "החודש הקודם";
@@ -5763,7 +5732,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "פרויקטים";
 
-/* Title label for the Prompts card in My Sites tab. */
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
 "Prompts" = "הצעות";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -6355,7 +6325,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "תפריט בלוק לגלילה פתוח. יש לבחור בלוק.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "חיפוש";
 
@@ -6443,15 +6412,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "יש לבחור %@ כדי למצוא ערכות עיצוב חדשות";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "יש לבחור באפשרות %@ כדי לערוך את עמוד הבית.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "יש לבחור %@ כדי למצוא אתרים בתחומי עניין דומים";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "יש לבחור %@ לתצוגה מקדימה";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "יש לבחור %@ כדי להציג את הביצועים של האתר שלך.";
@@ -6643,6 +6603,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "הגדרות";
@@ -6843,7 +6804,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "נושא האתר";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "כתובת אתר";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6893,17 +6855,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "גודל";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "דלג";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "דילוג על הכול";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "דילוג על ההתחלה המהירה";
 
 /* Menu title to skip today's prompt. */
 "Skip this prompt" = "לדלג על הצעה זו";
@@ -7458,9 +7415,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "לפוסט שברצונך להעתיק קיימות שתי גרסאות שונות זו מזו, או שערכת את הפוסט אבל לא שמרת את השינויים.\n עליך קודם לערוך את הפוסט כדי לפתור התנגשויות בין הגרסאות ואז להמשיך בפעולת ההעתקה של הגרסה מהאפליקציה.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "הסיור להתחלה מהירה ידריך אותך כיצד לבנות אתר בסיסי. בחרת להמשיך - האם ההחלטה סופית? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "הסריאליזציה של הבקשה נכשלה.";
@@ -8180,6 +8134,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8192,11 +8147,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "להפסיק את המעקב אחר %@";
 
-/* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "לבטל את המעקב אחר השיחה";
-
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "ביטול מעקב אחר השיחה באמצעות האימייל";
+"Unfollow conversation" = "לבטל את המעקב אחר השיחה";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "לבטל את המעקב אחר האתר";
@@ -8477,8 +8429,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "הצג פוסט";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "הצג אתר";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -9402,14 +9353,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[תגובה]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_⁦%1$d⁩ בלוגר_ סימן לייק על זה.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_⁦%1$d⁩ בלוגרים_ סימנו לייק על זה.";
-
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "הפוסט קיבל לייק _ממך ומבלוגר ⁦%1$d⁩_.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "הפוסט קיבל לייק _ממך ומ-⁦%1$d⁩ בלוגרים_.";

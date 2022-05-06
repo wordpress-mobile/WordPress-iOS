@@ -1,7 +1,7 @@
 import UIKit
 
 
-class BloggingPromptsViewController: UIViewController {
+class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
@@ -9,6 +9,11 @@ class BloggingPromptsViewController: UIViewController {
     @IBOutlet private weak var filterTabBar: FilterTabBar!
 
     private var blog: Blog?
+
+    // TODO: remove when prompts are fetched, use fetched prompts count.
+    private var promptCount: Int = 10
+    // TODO: set when prompt fetching is added.
+    private var isLoading: Bool = false
 
     // MARK: - Init
 
@@ -29,17 +34,71 @@ class BloggingPromptsViewController: UIViewController {
         super.viewDidLoad()
         title = Strings.viewTitle
         configureFilterTabBar()
+        configureTableView()
+        showNoResultsViewIfNeeded()
     }
 
 }
 
-// MARK: - Private Helpers
+// MARK: - Private Methods
 
 private extension BloggingPromptsViewController {
 
+    func configureTableView() {
+        tableView.register(BloggingPromptTableViewCell.defaultNib,
+                           forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
+
+        tableView.accessibilityIdentifier = "Blogging Prompts List"
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
+    }
+
+    func showNoResultsViewIfNeeded() {
+        hideNoResults()
+
+        guard !isLoading else {
+            showLoadingView()
+            return
+        }
+
+        // TODO: use fetched prompts count.
+        guard promptCount == 0 else {
+            return
+        }
+
+        showNoResultsView()
+    }
+
+    func showNoResultsView() {
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResults.emptyTitle,
+                                     image: NoResults.imageName)
+    }
+
+    func showLoadingView() {
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResults.loadingTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView())
+    }
+
+    func showErrorView() {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResults.errorTitle,
+                                     subtitle: NoResults.errorSubtitle,
+                                     image: NoResults.imageName)
+    }
+
     enum Strings {
         static let viewTitle = NSLocalizedString("Prompts", comment: "View title for Blogging Prompts list.")
+    }
 
+    enum NoResults {
+        static let loadingTitle = NSLocalizedString("Loading prompts...", comment: "Displayed while blogging prompts are being loaded.")
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading blogging prompts.")
+        static let errorSubtitle = NSLocalizedString("There was an error loading prompts.", comment: "Text displayed when there is a failure loading blogging prompts.")
+        static let emptyTitle = NSLocalizedString("No prompts yet", comment: "Title displayed when there are no blogging prompts to display.")
+        static let imageName = "wp-illustration-empty-results"
     }
 
 }
@@ -50,12 +109,17 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // TODO: use fetched prompts count.
-        return 10
+        return promptCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: use custom prompt cell.
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID) as? BloggingPromptTableViewCell else {
+            return UITableViewCell()
+        }
+
+        // TODO: replace answered with BloggingPrompt.
+        cell.configure(answered: indexPath.row > 4)
+        return cell
     }
 
 }
@@ -88,6 +152,7 @@ private extension BloggingPromptsViewController {
         // TODO:
         // - track selected filter changed
         // - refresh view for selected filter
+        showNoResultsViewIfNeeded()
     }
 
 }

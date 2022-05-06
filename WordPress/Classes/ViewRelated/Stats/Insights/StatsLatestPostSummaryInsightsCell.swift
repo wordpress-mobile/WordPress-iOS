@@ -147,7 +147,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         topLabel.textColor = .text
         topLabel.text = title
 
-        countLabel.font = UIFont.preferredFont(forTextStyle: .title1).bold()
+        countLabel.font = Style.insightsCountFont
         countLabel.textColor = .text
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.text = "0"
