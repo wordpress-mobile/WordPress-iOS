@@ -29,7 +29,7 @@ class MockTopicService: ReaderTopicService {
 class ReaderTabItemsStoreTests: XCTestCase {
 
     var contextManager: ContextManagerMock!
-    var context: NSManagedObjectContext! {
+    var context: NSManagedObjectContext {
         contextManager.mainContext
     }
     private var subscription: Receipt?

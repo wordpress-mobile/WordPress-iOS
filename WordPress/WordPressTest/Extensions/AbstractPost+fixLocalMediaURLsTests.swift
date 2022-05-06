@@ -8,7 +8,7 @@ class AbstractPostFixLocalMediaURLsTests: XCTestCase {
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

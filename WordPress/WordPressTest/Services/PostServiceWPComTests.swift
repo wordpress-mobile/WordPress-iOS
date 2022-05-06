@@ -12,7 +12,7 @@ class PostServiceWPComTests: XCTestCase {
     private var remoteMock: PostServiceRESTMock!
     private var service: PostService!
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

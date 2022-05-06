@@ -11,7 +11,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     private var service: BlockEditorSettingsService!
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
     var mockRemoteApi: MockWordPressComRestApi!

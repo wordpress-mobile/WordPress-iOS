@@ -7,7 +7,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
     private var navController = UINavigationController()
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

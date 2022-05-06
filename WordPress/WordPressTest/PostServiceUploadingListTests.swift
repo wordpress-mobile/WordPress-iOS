@@ -8,7 +8,7 @@ import Nimble
 class PostServiceUploadingListTests: XCTestCase {
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

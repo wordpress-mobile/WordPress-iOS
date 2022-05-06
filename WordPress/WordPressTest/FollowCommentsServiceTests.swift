@@ -6,7 +6,7 @@ import WordPressKit
 class FollowCommentsServiceTests: XCTestCase {
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
     private let siteID = NSNumber(value: 1)

@@ -10,7 +10,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
     }
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
     private var remote: BloggingPromptsServiceRemoteMock!

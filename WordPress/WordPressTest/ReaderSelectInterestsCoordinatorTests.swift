@@ -92,9 +92,9 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
 
     private let failureError = NSError(domain: "org.wordpress.reader-tests", code: 1, userInfo: nil)
 
-    private var coreDataStack: CoreDataStack?
-    private var context: NSManagedObjectContext! {
-        coreDataStack?.mainContext
+    private var coreDataStack: CoreDataStack
+    private var context: NSManagedObjectContext {
+        coreDataStack.mainContext
     }
 
     init(populateItems: Bool, coreDataStack: CoreDataStack) {
@@ -127,11 +127,6 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
             fetchFailureExpectation?.fulfill()
 
             failure(failureError)
-            return
-        }
-
-        guard let context = context else {
-            XCTFail("Context is nil")
             return
         }
 

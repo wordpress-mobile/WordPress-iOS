@@ -49,7 +49,7 @@ class ReaderTabViewModelTests: XCTestCase {
     var settingsPresenter: MockSettingsPresenter!
 
     var contextManager: ContextManagerMock!
-    var context: NSManagedObjectContext! {
+    var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

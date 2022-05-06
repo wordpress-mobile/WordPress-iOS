@@ -4,7 +4,7 @@ import Nimble
 
 class PostAutoUploadInteractorTests: XCTestCase {
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

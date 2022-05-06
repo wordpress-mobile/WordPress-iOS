@@ -6,7 +6,7 @@ import CoreData
 class ReaderTabViewTests: XCTestCase {
 
     var contextManager: ContextManagerMock!
-    var context: NSManagedObjectContext! {
+    var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 

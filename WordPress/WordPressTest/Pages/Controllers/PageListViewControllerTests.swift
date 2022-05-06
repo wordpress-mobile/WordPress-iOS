@@ -7,7 +7,7 @@ import Nimble
 class PageListViewControllerTests: XCTestCase {
 
     private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext! {
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 
