@@ -19,7 +19,7 @@ class ZDashboardCardTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         context = contextManager.newDerivedContext()
         blog = BlogBuilder(context).build()
     }
@@ -27,7 +27,6 @@ class ZDashboardCardTests: XCTestCase {
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
         context = nil
-        contextManager.tearDown()
         contextManager = nil
         blog = nil
         super.tearDown()

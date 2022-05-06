@@ -54,13 +54,12 @@ class PostNoticeViewModelTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         context = nil
-        contextManager.tearDown()
 
         super.tearDown()
     }

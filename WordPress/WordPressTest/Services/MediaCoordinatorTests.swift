@@ -14,13 +14,12 @@ class MediaCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         coordinator = MediaCoordinator(MediaServiceFactoryMock())
     }
 
     override func tearDown() {
         super.tearDown()
-        contextManager.tearDown()
         coordinator = nil
     }
 

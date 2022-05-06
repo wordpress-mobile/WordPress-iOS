@@ -10,14 +10,9 @@ class QuickStartFactoryTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
     }
 
     func testCollectionsForExistingSite() {

@@ -10,12 +10,11 @@ class MediaRequestAuthenticatorTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         context = contextManager.mainContext
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         context = nil
 

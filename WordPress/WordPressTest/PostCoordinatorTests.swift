@@ -15,14 +15,13 @@ class PostCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstanceUntilTestFinished(self)
         TestAnalyticsTracker.setup()
     }
 
     override func tearDown() {
         super.tearDown()
         TestAnalyticsTracker.tearDown()
-        contextManager.tearDown()
     }
 
     func testDoNotUploadAPostWithFailedMedia() {
