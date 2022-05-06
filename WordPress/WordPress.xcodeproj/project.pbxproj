@@ -249,6 +249,8 @@
 		1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
 		175507B427A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
+		1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
+		1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
 		175721162754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		175721172754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
@@ -313,6 +315,8 @@
 		1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782BE831E70063100A91E7D /* MediaItemViewController.swift */; };
 		17870A702816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */; };
 		17870A712816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */; };
+		17870A74281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */; };
+		17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */; };
 		1788106F260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1788106E260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift */; };
 		178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810B42611D25600A98BD8 /* Text+BoldSubString.swift */; };
 		178810D92612037900A98BD8 /* UnifiedPrologueReaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810D82612037800A98BD8 /* UnifiedPrologueReaderContentView.swift */; };
@@ -5091,6 +5095,7 @@
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		17523380246C4F9200870B4A /* HomepageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageSettingsViewController.swift; sourceTree = "<group>"; };
 		175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicizeConnectionURLMatcher.swift; sourceTree = "<group>"; };
+		1756F1DE2822BB6F00CD0915 /* SparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparklineView.swift; sourceTree = "<group>"; };
 		175721152754D31F00DE38BC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
@@ -5147,6 +5152,7 @@
 		1782BE831E70063100A91E7D /* MediaItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemViewController.swift; sourceTree = "<group>"; };
 		17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsLatestPostSummaryInsightsCell.swift; sourceTree = "<group>"; };
 		17870A72281847D500D1C627 /* WordPress 139.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 139.xcdatamodel"; sourceTree = "<group>"; };
+		17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCell.swift; sourceTree = "<group>"; };
 		1788106E260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueNotificationsContentView.swift; sourceTree = "<group>"; };
 		178810B42611D25600A98BD8 /* Text+BoldSubString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+BoldSubString.swift"; sourceTree = "<group>"; };
 		178810D82612037800A98BD8 /* UnifiedPrologueReaderContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueReaderContentView.swift; sourceTree = "<group>"; };
@@ -12222,6 +12228,8 @@
 				176CE91527FB44C100F1E32B /* StatsBaseCell.swift */,
 				17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */,
 				17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */,
+				17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */,
+				1756F1DE2822BB6F00CD0915 /* SparklineView.swift */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -18305,6 +18313,7 @@
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
 				098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */,
 				7E7BEF7022E1AED8009A880D /* Blog+Editor.swift in Sources */,
+				1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */,
 				8BB185C624B5FB8500A4CCE8 /* ReaderCardService.swift in Sources */,
 				98487E3A21EE8FB500352B4E /* UITableViewCell+Stats.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
@@ -18511,6 +18520,7 @@
 				9A38DC6A218899FB006A409B /* DiffTitleValue.swift in Sources */,
 				B0AC50DD251E96270039E022 /* ReaderCommentsViewController.swift in Sources */,
 				73856E5B21E1602400773CD9 /* SiteCreationRequest+Validation.swift in Sources */,
+				17870A74281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
 				7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				74558369201A1FD3007809BB /* WPReusableTableViewCells.swift in Sources */,
@@ -20303,6 +20313,7 @@
 				FABB21E52602FC2C00C8785C /* MediaQuotaCell.swift in Sources */,
 				FABB21E62602FC2C00C8785C /* PartScreenPresentationController.swift in Sources */,
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
+				17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
 				FABB21E82602FC2C00C8785C /* FormattableContentRange.swift in Sources */,
 				FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */,
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
@@ -21412,6 +21423,7 @@
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
 				FABB259D2602FC2C00C8785C /* Blog+Capabilities.swift in Sources */,
 				FABB259E2602FC2C00C8785C /* RestorePostTableViewCell.swift in Sources */,
+				1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */,
 				FABB259F2602FC2C00C8785C /* MenuItemCategoriesViewController.m in Sources */,
 				FABB25A02602FC2C00C8785C /* UINavigationBar+Appearance.swift in Sources */,
 				FABB25A12602FC2C00C8785C /* QuickStartChecklistViewController.swift in Sources */,
