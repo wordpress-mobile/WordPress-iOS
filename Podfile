@@ -174,7 +174,7 @@ abstract_target 'Apps' do
     ## Third party libraries
     ## =====================
     ##
-    pod 'Charts', '~> 3.2.2'
+    pod 'Charts', '~> 3.6'
     pod 'Gifu', '3.2.0'
 
     app_center_version = '~> 4.1'
