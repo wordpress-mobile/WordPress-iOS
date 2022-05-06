@@ -40,7 +40,7 @@ class PostsCardViewModel: NSObject {
         didSet {
             if oldValue != currentState {
                 forceReloadSnapshot()
-                trackCardDisaplyedIfNeeded()
+                trackCardDisplayedIfNeeded()
             }
         }
     }
@@ -259,7 +259,7 @@ private extension PostsCardViewModel {
         return false
     }
 
-    func trackCardDisaplyedIfNeeded() {
+    func trackCardDisplayedIfNeeded() {
         switch currentState {
         case .posts:
             BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
