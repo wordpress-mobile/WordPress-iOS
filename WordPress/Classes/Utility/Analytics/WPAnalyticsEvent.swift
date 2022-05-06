@@ -48,6 +48,7 @@ import Foundation
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
     case gutenbergEditorBlockInserted
+    case gutenbergEditorBlockMoved
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -426,6 +427,8 @@ import Foundation
             return "editor_help_shown"
         case .gutenbergEditorBlockInserted:
             return "editor_block_inserted"
+        case .gutenbergEditorBlockMoved:
+            return "editor_block_moved"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -1095,6 +1098,7 @@ extension WPAnalytics {
         var event: WPAnalyticsEvent?
         switch eventName {
         case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        case "editor_block_moved": event = .gutenbergEditorBlockMoved
         default: event = nil
         }
 
