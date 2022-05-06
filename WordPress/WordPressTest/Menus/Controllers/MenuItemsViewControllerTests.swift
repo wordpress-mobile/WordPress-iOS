@@ -11,7 +11,7 @@ class MenuItemsViewControllerTests: XCTestCase {
 
     override func tearDownWithError() throws {
         context = nil
-        TestContextManager.overrideSharedInstance(nil)
+        ContextManager.overrideSharedInstance(nil)
         try super.tearDownWithError()
     }
 

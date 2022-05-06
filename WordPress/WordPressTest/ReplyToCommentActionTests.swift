@@ -3,9 +3,14 @@ import XCTest
 
 final class ReplyToCommentActionTests: XCTestCase {
     private class TestableReplyToComment: ReplyToComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -19,6 +24,7 @@ final class ReplyToCommentActionTests: XCTestCase {
 
     private var action: ReplyToComment?
     let utility = NotificationUtility()
+    private var testContextManager: TestContextManager!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -27,7 +33,8 @@ final class ReplyToCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        action = TestableReplyToComment(on: Constants.initialStatus)
+        testContextManager = TestContextManager()
+        action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }
 

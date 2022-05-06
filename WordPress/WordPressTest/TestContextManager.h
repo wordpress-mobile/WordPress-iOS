@@ -21,9 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
 @property (nonatomic, strong, nullable) id<ManagerMock, CoreDataStack>  stack;
 
-+ (instancetype)sharedInstance;
-+ (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager;
-
 @end
 
 NS_ASSUME_NONNULL_END

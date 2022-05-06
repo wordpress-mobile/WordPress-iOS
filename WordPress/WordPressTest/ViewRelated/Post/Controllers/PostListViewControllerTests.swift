@@ -15,7 +15,7 @@ class PostListViewControllerTests: XCTestCase {
 
     override func tearDown() {
         context = nil
-        TestContextManager.overrideSharedInstance(nil)
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
