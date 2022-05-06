@@ -35,6 +35,18 @@ class BloggingPromptsService {
         }
     }
 
+    /// Convenience method to fetch the blogging prompt for the current day.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func fetchTodaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
+                           failure: @escaping (Error?) -> Void) {
+        fetchPrompts(from: Date(), number: 1, success: { (prompts) in
+            success(prompts.first)
+        }, failure: failure)
+    }
+
     required init?(context: NSManagedObjectContext = ContextManager.shared.mainContext,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
