@@ -20,12 +20,6 @@ class MediaCoordinatorTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        // Make sure the DispatchQueue.async calls made in
-        // `MediaCoordinator.notifyObserversForMedia` are executed before tests
-        // finish. The async calls may cause crash if they are executed outside
-        // of this test case, since they use the Core Data stack created in
-        // `setUp` function above.
-        wait(for: 0.3)
         contextManager.tearDown()
         coordinator = nil
     }
