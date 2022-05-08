@@ -152,6 +152,6 @@ class MediaRequestAuthenticatorTests: XCTestCase {
             XCTFail("This should not be called")
         }
 
-        waitForExpectations(timeout: 0.05)
+        waitForExpectations(timeout: 0.5)
     }
 }
