@@ -12,9 +12,9 @@ public enum NotificationDeletionKind {
     public var legendText: String {
         switch self {
         case .deletion:
-            return NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is deleted")
+            return AppLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is deleted")
         case .spamming:
-            return NSLocalizedString("Comment has been marked as Spam", comment: "Displayed when a Comment is spammed")
+            return AppLocalizedString("Comment has been marked as Spam", comment: "Displayed when a Comment is spammed")
         }
     }
 }

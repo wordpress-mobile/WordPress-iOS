@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2021-11-26 17:28:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -712,7 +712,6 @@
 "Can Not Request Link" = "Can Not Request Link";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -740,6 +739,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1093,7 +1093,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continue";
 
 /* Menus alert button title to continue making changes. */
@@ -1197,7 +1198,8 @@
 "Create Post" = "Create post";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Create Site";
 
 /* Create WordPress.com site button */
@@ -1243,8 +1245,7 @@
    Theme Customize action title */
 "Customize" = "Customise";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customise Your Site";
 
 /* Title for the edition of the share message. */
@@ -1815,9 +1816,6 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "File type";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Find sites that speak to you, and follow them to get updates when they publish.";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -1827,9 +1825,6 @@
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Follow";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Follow other sites";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -1934,8 +1929,7 @@
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Grow Your Audience";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -2583,7 +2577,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -2682,7 +2678,8 @@
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -2951,6 +2948,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
 
@@ -3446,9 +3444,9 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Preview";
 
@@ -3460,9 +3458,6 @@
 
 /* No comment provided by engineer. */
 "Preview post" = "Preview post";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Preview your new site to see what your visitors will see.";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Previous notification";
@@ -3922,7 +3917,6 @@
 "Scheduling..." = "Scheduling...";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Search";
 
@@ -4050,6 +4044,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -4072,6 +4067,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
 
@@ -4199,7 +4195,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
@@ -4229,16 +4224,12 @@
 /* Image size option title. */
 "Size" = "Size";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Skip All";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Skip Quick Start";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -4631,9 +4622,6 @@
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "The number of posts to show per page.";
 
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "The quick start tour will guide you through building a basic site. Are you sure you want to skip? ";
-
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "The server returned an empty response. This usually means you need to increase the memory limit for your site.";
 
@@ -4911,7 +4899,8 @@
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Toggles the unordered list style";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Top level";
 
 /* Shortened version of the main title to be used in back navigation
@@ -4983,8 +4972,8 @@
    Share extension error dialog retry button label. */
 "Try again" = "Try again";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Try it now";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -5109,6 +5098,7 @@
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -5339,8 +5329,7 @@
 /* Button label for viewing a post */
 "View Post" = "View Post";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
 
 /* Displays More Rows */

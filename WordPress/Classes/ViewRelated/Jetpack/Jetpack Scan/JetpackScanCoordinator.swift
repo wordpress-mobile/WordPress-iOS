@@ -8,6 +8,7 @@ protocol JetpackScanView {
     func showGenericError()
     func showScanStartError()
     func showMultisiteNotSupportedError()
+    func vaultPressActiveOnSite()
 
     func toggleHistoryButton(_ isEnabled: Bool)
 
@@ -257,6 +258,8 @@ class JetpackScanCoordinator {
         switch (scanObj.state, scanObj.reason) {
         case (.unavailable, JetpackScan.Reason.multiSiteNotSupported):
             view.showMultisiteNotSupportedError()
+        case (.unavailable, JetpackScan.Reason.vaultPressActiveOnSite):
+            view.vaultPressActiveOnSite()
         default:
             view.render()
         }
@@ -393,6 +396,7 @@ extension JetpackScan {
 extension JetpackScan {
     struct Reason {
         static let multiSiteNotSupported = "multisite_not_supported"
+        static let vaultPressActiveOnSite = "vp_active_on_site"
     }
 }
 

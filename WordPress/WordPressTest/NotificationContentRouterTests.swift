@@ -19,8 +19,8 @@ class NotificationContentRouterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFollowNotificationSourceRoutesToStream() {
-        let notification = utility.loadFollowerNotification()
+    func testFollowNotificationSourceRoutesToStream() throws {
+        let notification = try utility.loadFollowerNotification()
         sut = NotificationContentRouter(activity: notification, coordinator: coordinator)
         try! sut.routeToNotificationSource()
 

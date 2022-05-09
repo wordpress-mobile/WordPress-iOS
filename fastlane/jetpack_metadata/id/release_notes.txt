@@ -1,7 +1,0 @@
-Kabar gembira, penggemar situs! Layar Situs Saya sekarang makin cemerlang. Anda sekarang dapat berpindah-pindah antara dua tab: Menu Situs dan Beranda.
-
-Tab Beranda juga berisi kartu praktis dengan lebih banyak informasi tentang situs Anda, termasuk konsep, pos terjadwal, dan statistik hari ini. Atau, jika sedang terburu-buru, Anda dapat dengan mudah menuju bagian lain aplikasi.
-
-Kami sangat mengedepankan komunikasi yang jelas. Itulah sebabnya kami menambahkan teks error baru pada proses pengunggahan foto, untuk berjaga-jaga saat Anda mencoba mengunggah foto dari perangkat tanpa terlebih dahulu memberikan izin akses foto kepada aplikasi.
-
-Terakhir, notifikasi dalam aplikasi mulai sekarang akan menghilang secara perlahan dan lebih halus jika Anda tidak membutuhkannya lagi. Sekian, kami mohon undur diri.

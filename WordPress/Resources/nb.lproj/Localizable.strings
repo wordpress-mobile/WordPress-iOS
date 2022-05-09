@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:27:59+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -610,6 +610,9 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Godkjenn";
 
+/* Approves a Comment */
+"Approve Comment" = "Godkjenn kommentar";
+
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
 "Approved" = "Godkjent";
@@ -923,7 +926,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Kan ikke publisere et tomt innlegg";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -951,6 +953,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1082,7 +1085,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Sjekker kjøp...";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Velg";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
@@ -1361,7 +1365,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Fortsett";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -1502,7 +1507,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Lag innlegg";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Lag side";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
@@ -1570,8 +1576,7 @@ translators: Block name. %s: The localized block name */
    Theme Customize action title */
 "Customize" = "Tilpass";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Tilpass ditt nettsted";
 
 /* Title for the edition of the share message. */
@@ -1690,7 +1695,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Beskrivelse";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Utforming";
 
 /* Title for the desktop web preview */
@@ -1743,6 +1748,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Å koble fra denne kontoen vil si at publiserte innlegg ikke lenger vil deles automatisk til %@";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "Oppdag";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Oppdag nettsteder";
@@ -2214,12 +2222,6 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "Mislyktes";
 
-/* No comment provided by engineer. */
-"Failed to insert audio file." = "Kunne ikke sette inn lydfil.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Kunne ikke sette inn media.";
-
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Kunne ikke sette inn medie.\nTrykk for flere valg.";
 
@@ -2283,9 +2285,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Finn ut mer";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Finn nettsteder som snakker til deg og følg dem for å få oppdateringer når de publiserer.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Finn nettstedsadressen";
 
@@ -2301,9 +2300,6 @@ translators: Block name. %s: The localized block name */
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Følg";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Følg andre nettsteder";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Følg nettsted";
@@ -2444,8 +2440,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Supert!\nVi elsker å høre fra glade brukere\n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Utvid ditt publikum";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -2561,8 +2556,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Hold til moderering";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Hjemmeside";
@@ -3154,7 +3148,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Nevne";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Meny";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -3284,7 +3280,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Navn";
 
 /* Error to be displayed when a tag is empty */
@@ -3583,6 +3580,7 @@ translators: Block name. %s: The localized block name */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Varslinger";
 
@@ -4140,9 +4138,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Forhåndsvisning";
 
@@ -4160,9 +4158,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Preview post" = "Forhåndsvis innlegg";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Forhåndsvis ditt nye nettsted for å se hva dine besøkende vil se.";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Forrige varsel";
@@ -4671,7 +4666,6 @@ translators: Block name. %s: The localized block name */
 "Scheduling..." = "Planlegger...";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Søk";
 
@@ -4735,12 +4729,6 @@ translators: Block name. %s: The localized block name */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Trykk %@ for å oppdage nye temaer";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Trykk %@ for å se etter nettsteder med liknende interesser";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Velg %@ for å forhåndsvise";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Trykk %@ for å se hvordan nettstedet opptrer.";
@@ -4880,6 +4868,7 @@ translators: Block name. %s: The localized block name */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Innstillinger";
@@ -4902,6 +4891,7 @@ translators: Block name. %s: The localized block name */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Del";
 
@@ -5051,12 +5041,12 @@ translators: Block name. %s: The localized block name */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Nettstedstittel";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Nettsteds-URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -5096,16 +5086,12 @@ translators: Block name. %s: The localized block name */
 /* Image size option title. */
 "Size" = "Størrelse";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Hopp over";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Hopp over alle";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Hopp over Hurtigstartguide";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalenke";
@@ -5535,9 +5521,6 @@ translators: Block name. %s: The localized block name */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Antall innlegg som skal vises på hver side.";
 
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Hurtigstartguiden vil guide deg gjennom byggingen av en grunnleggende nettside. Er du sikker på at du vil hoppe over?";
-
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Serveren ga et tomt svar. Dette betyr vanligvis at du må øke mine-grensen («memory limit») på ditt nettsted.";
 
@@ -5766,9 +5749,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "På tide å fullføre oppsettet av nettsiden din! Vår sjekkliste forklarer de neste trinnene.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tips";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for å få mest mulig ut av WordPress.com";
 
@@ -5830,7 +5810,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Verktøy";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Toppnivå";
 
 /* Shortened version of the main title to be used in back navigation
@@ -5917,8 +5898,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -6037,6 +6018,9 @@ translators: Block name. %s: The localized block name */
    Unapproves a comment */
 "Unapprove" = "Merk som ikke godkjent";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Merk kommentar som ikke godkjent";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Gjør kommentaren ikke godkjent.";
 
@@ -6054,6 +6038,7 @@ translators: Block name. %s: The localized block name */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -6318,8 +6303,7 @@ translators: Block name. %s: The localized block name */
 /* Button label for viewing a post */
 "View Post" = "Vis innlegg";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis nettsted";
 
 /* Displays More Rows */
@@ -6992,6 +6976,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "i \"Oppgrader\"";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Later today */
 "later today" = "senere i dag";

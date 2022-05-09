@@ -97,7 +97,7 @@ extension WPTabBarController {
     // TODO: remove when final launching source determine.
     func showBloggingPromptsFeatureIntroduction() {
         if FeatureFlag.bloggingPrompts.enabled {
-            present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .actionable), animated: true)
+            BloggingPromptsIntroductionPresenter().present(from: selectedViewController ?? self)
         }
     }
 

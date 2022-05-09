@@ -3,9 +3,15 @@ import XCTest
 
 final class MarkAsSpamActionTests: XCTestCase {
     private class TestableMarkAsSpam: MarkAsSpam {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -17,6 +23,7 @@ final class MarkAsSpamActionTests: XCTestCase {
 
     private var action: MarkAsSpam?
     let utility = NotificationUtility()
+    private var testContextManager: TestContextManager!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -25,7 +32,8 @@ final class MarkAsSpamActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        action = TestableMarkAsSpam(on: Constants.initialStatus)
+        testContextManager = TestContextManager()
+        action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }
 
@@ -44,12 +52,12 @@ final class MarkAsSpamActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, MarkAsSpam.title)
     }
 
-    func testExecuteCallsSpam() {
+    func testExecuteCallsSpam() throws {
         action?.on = false
 
         var executionCompleted = false
 
-        let context = ActionContext(block: utility.mockCommentContent(), content: "content") { (request, success) in
+        let context = ActionContext(block: try utility.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 

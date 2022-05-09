@@ -4,7 +4,7 @@ SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
-APPCENTER_OWNER_TYPE = 'organization'      
+APPCENTER_OWNER_TYPE = 'organization'
 
 # Lanes related to Building and Testing the code
 #
@@ -271,7 +271,7 @@ platform :ios do
     post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
-  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to AppCenter
+  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
@@ -350,30 +350,28 @@ platform :ios do
   end
 
   # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
-  # 
-  # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
+  #
+  # Use this only after `upload_to_app_center` as been called, as it announces how said App Center build can be installed.
   #
   # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
   # @param [String] build_number The App Center's build number for this build
-  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in AppCenter (e.g. `WPiOS-One-Offs`)
+  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in App Center (e.g. `WPiOS-One-Offs`)
   #
   # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
   #
-  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build `#{build_number}` here: #{download_url}")
+  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)
+    UI.message("Successfully built and uploaded installable build `#{build_number}` to App Center.")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
-    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
+    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{CGI.escape(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
       You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
-        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
-        <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
+        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below to access App Center</li>
+        <li>Then installing the build number <code>#{build_number}</code> on your iPhone</li>
       </ul>
-      <img src='#{qr_code_url}' width='150' height='150' /> 
-      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.<br />
+      <img src='#{qr_code_url}' width='150' height='150' />
       If you need access to App Center, please ask a maintainer to add you.
     COMMENT_BODY
 

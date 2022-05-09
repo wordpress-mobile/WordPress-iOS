@@ -16,7 +16,7 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true)
+    ios_bump_version_release(skip_deliver: true, skip_glotpress: true)
     new_version = ios_get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
@@ -72,7 +72,6 @@ platform :ios do
     else
       UI.message('Aborting code freeze completion. See you later.')
     end
-
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -85,9 +84,7 @@ platform :ios do
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
     version = ios_get_app_version
     trigger_beta_build(branch_to_build: "release/#{version}")
@@ -140,9 +137,7 @@ platform :ios do
     check_all_translations(interactive: true)
 
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
 
     # Wrap up

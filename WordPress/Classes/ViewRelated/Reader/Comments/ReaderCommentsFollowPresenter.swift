@@ -32,7 +32,7 @@ class ReaderCommentsFollowPresenter: NSObject {
     // MARK: - Subscriptions
 
     /// Toggles the state of conversation subscription.
-    /// When enabled, the user will receive emails for new comments.
+    /// When enabled, the user will receive emails and in-app notifications for new comments.
     ///
     @objc func handleFollowConversationButtonTapped() {
         trackFollowToggled()
@@ -65,13 +65,8 @@ class ReaderCommentsFollowPresenter: NSObject {
                     return
                 }
 
-                // Show notice with Enable option.
-                self?.presentingViewController.displayActionableNotice(title: Messages.promptTitle,
-                                                                       message: Messages.promptMessage,
-                                                                       actionTitle: Messages.enableActionTitle,
-                                                                       actionHandler: { (accepted: Bool) in
-                    self?.handleNotificationsButtonTapped(canUndo: true)
-                })
+                // Show notice with Undo option. Push Notifications are opt-out.
+                self?.updateNotificationSettings(shouldEnableNotifications: true, canUndo: true)
             }
         }
 
@@ -98,39 +93,11 @@ class ReaderCommentsFollowPresenter: NSObject {
     /// - Parameter completion: Block called as soon the view controller has been removed.
     ///
     @objc func handleNotificationsButtonTapped(canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
-        trackNotificationsToggled()
+        trackNotificationsToggled(isNotificationEnabled: !post.receivesCommentNotifications)
 
-        let desiredState = !self.post.receivesCommentNotifications
-        let action: PostSubscriptionAction = desiredState ? .enableNotification : .disableNotification
+        let shouldEnableNotifications = !self.post.receivesCommentNotifications
 
-        followCommentsService?.toggleNotificationSettings(desiredState, success: { [weak self] in
-            completion?(true)
-            self?.informDelegateNotificationComplete(success: true)
-
-            guard let self = self else {
-                return
-            }
-
-            guard canUndo else {
-                let title = self.noticeTitle(forAction: action, success: true)
-                self.presentingViewController.displayNotice(title: title)
-                return
-            }
-
-            let title = self.noticeTitle(forAction: action, success: true)
-
-            self.presentingViewController.displayActionableNotice(title: title,
-                                                                  actionTitle: Messages.undoActionTitle,
-                                                                  actionHandler: { (accepted: Bool) in
-                self.handleNotificationsButtonTapped(canUndo: false)
-            })
-        }, failure: { [weak self] error in
-            DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
-            let title = self?.noticeTitle(forAction: action, success: false) ?? ""
-            self?.presentingViewController.displayNotice(title: title)
-            completion?(false)
-            self?.informDelegateNotificationComplete(success: false)
-        })
+        updateNotificationSettings(shouldEnableNotifications: shouldEnableNotifications, canUndo: canUndo, completion: completion)
     }
 
     // MARK: - Notification Sheet
@@ -148,6 +115,39 @@ class ReaderCommentsFollowPresenter: NSObject {
 // MARK: - Private Extension
 
 private extension ReaderCommentsFollowPresenter {
+
+    private func updateNotificationSettings(shouldEnableNotifications: Bool, canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
+        let action: ReaderHelpers.PostSubscriptionAction = shouldEnableNotifications ? .enableNotification : .disableNotification
+
+        followCommentsService?.toggleNotificationSettings(shouldEnableNotifications, success: { [weak self] in
+            completion?(true)
+            self?.informDelegateNotificationComplete(success: true)
+
+            guard let self = self else {
+                return
+            }
+
+            guard canUndo else {
+                let title = ReaderHelpers.noticeTitle(forAction: action, success: true)
+                self.presentingViewController.displayNotice(title: title)
+                return
+            }
+
+            self.presentingViewController.displayActionableNotice(
+                title: Messages.promptTitle,
+                message: Messages.promptMessage,
+                actionTitle: Messages.undoActionTitle,
+                actionHandler: { (accepted: Bool) in
+                self.handleNotificationsButtonTapped(canUndo: false)
+            })
+        }, failure: { [weak self] error in
+            DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
+            let title = ReaderHelpers.noticeTitle(forAction: action, success: false)
+            self?.presentingViewController.displayNotice(title: title)
+            completion?(false)
+            self?.informDelegateNotificationComplete(success: false)
+        })
+    }
 
     func showBottomSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
         let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
@@ -176,29 +176,9 @@ private extension ReaderCommentsFollowPresenter {
 
         // In-app notifications prompt
         static let promptTitle = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
-        static let promptMessage = NSLocalizedString("Enable in-app notifications?", comment: "Hint for the action button that enables notification for new comments")
+        static let promptMessage = NSLocalizedString("You'll get notifications in the app", comment: "Message for the action with opt-out revert action.")
         static let enableActionTitle = NSLocalizedString("Enable", comment: "Button title to enable notifications for new comments")
         static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts the previous notification operation")
-    }
-
-    /// Enumerates the kind of actions available in relation to post subscriptions.
-    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
-    enum PostSubscriptionAction: Int {
-        case enableNotification
-        case disableNotification
-    }
-
-    func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
-        switch (action, success) {
-        case (.enableNotification, true):
-            return NSLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
-        case (.enableNotification, false):
-            return NSLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
-        case (.disableNotification, true):
-            return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
-        case (.disableNotification, false):
-            return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
-        }
     }
 
     // MARK: - Tracks
@@ -212,9 +192,9 @@ private extension ReaderCommentsFollowPresenter {
         WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
     }
 
-    func trackNotificationsToggled() {
+    func trackNotificationsToggled(isNotificationEnabled: Bool) {
         var properties = [String: Any]()
-        properties[AnalyticsKeys.notificationsEnabled] = !post.receivesCommentNotifications
+        properties[AnalyticsKeys.notificationsEnabled] = isNotificationEnabled
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeySource] = sourceForTracks()
         WPAnalytics.trackReader(.readerToggleCommentNotifications, properties: properties)

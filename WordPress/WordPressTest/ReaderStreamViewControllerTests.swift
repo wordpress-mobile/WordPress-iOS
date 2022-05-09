@@ -3,10 +3,19 @@ import XCTest
 @testable import WordPress
 
 class ReaderStreamViewControllerTests: XCTestCase {
+    private var contextManager: TestContextManager!
+
+    override func setUp() {
+        contextManager = TestContextManager()
+    }
+
+    override func tearDown() {
+        ContextManager.overrideSharedInstance(nil)
+    }
 
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
-        let context = TestContextManager.sharedInstance().mainContext
+        let context = contextManager.mainContext
         let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
         topic.path = "foo"
 

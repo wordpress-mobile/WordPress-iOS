@@ -136,11 +136,61 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var timeSelectionToConfirmationButtonSpacer: UIView = {
-        makeSpacer()
+    private lazy var bloggingPromptsTitle: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = TextContent.bloggingPromptsTitle
+        return label
     }()
 
-    private lazy var confirmationButtonBottomSpacer: UIView = {
+    private lazy var bloggingPromptsInfoButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(.gridicon(.helpOutline), for: .normal)
+        button.tintColor = .listSmallIcon
+        button.accessibilityLabel = TextContent.bloggingPromptsInfoButton
+        button.addTarget(self, action: #selector(bloggingPromptsInfoButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
+    private lazy var bloggingPromptsTitleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsTitle, bloggingPromptsInfoButton, makeSpacer()])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = Metrics.BloggingPrompts.titleSpacing
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    private lazy var bloggingPromptsDescription: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.text = TextContent.bloggingPromptsDescription
+        label.textColor = .textSubtle
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private lazy var bloggingPromptsSwitch: UISwitch = {
+        let bloggingPromptsSwitch = UISwitch()
+        bloggingPromptsSwitch.translatesAutoresizingMaskIntoConstraints = false
+        bloggingPromptsSwitch.isOn = true
+        bloggingPromptsSwitch.addTarget(self, action: #selector(bloggingPromptsSwitchChanged), for: .valueChanged)
+        return bloggingPromptsSwitch
+    }()
+
+    private lazy var bloggingPromptsView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews([bloggingPromptsTitleStackView, bloggingPromptsDescription, bloggingPromptsSwitch])
+        view.isHidden = !FeatureFlag.bloggingPrompts.enabled
+        return view
+    }()
+
+    private lazy var bloggingPromptsToConfirmationButtonSpacer: UIView = {
         makeSpacer()
     }()
 
@@ -261,6 +311,18 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
         scheduleReminders()
+    }
+
+    @objc private func bloggingPromptsInfoButtonTapped() {
+        tracker.buttonPressed(button: .bloggingPromptsInfo, screen: .dayPicker)
+
+        present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
+    }
+
+    @objc private func bloggingPromptsSwitchChanged(_ sender: UISwitch) {
+        tracker.switchPressed(control: .bloggingPrompts,
+                              state: sender.isOn ? .enabled : .disabled,
+                              screen: .dayPicker)
     }
 
     /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
@@ -419,13 +481,17 @@ private extension BloggingRemindersFlowSettingsViewController {
             daysOuterStackView,
             frequencyView,
             timeSelectionView,
-            timeSelectionToConfirmationButtonSpacer,
+            bloggingPromptsView,
+            bloggingPromptsToConfirmationButtonSpacer,
             button,
-            confirmationButtonBottomSpacer
         ])
 
         stackView.setCustomSpacing(Metrics.afterTitleLabelSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
+        stackView.setCustomSpacing(Metrics.afterTimeSelectionViewSpacing, after: timeSelectionView)
+        stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
+        stackView.setCustomSpacing(WPDeviceIdentification.isiPad() ? Metrics.stackSpacing : .zero,
+                                   after: bloggingPromptsToConfirmationButtonSpacer)
     }
 
     func configureConstraints() {
@@ -437,11 +503,16 @@ private extension BloggingRemindersFlowSettingsViewController {
         timeSelectionView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
+        bloggingPromptsTitle.setContentCompressionResistancePriority(.required, for: .vertical)
+        bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
+        bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: WPDeviceIdentification.isiPad() ? .zero : -Metrics.edgeMargins.bottom),
+            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor,
+                                              constant: WPDeviceIdentification.isiPad() ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom),
 
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
@@ -453,8 +524,35 @@ private extension BloggingRemindersFlowSettingsViewController {
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
-            timeSelectionToConfirmationButtonSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
-            timeSelectionToConfirmationButtonSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
+
+        configureBloggingPromptsConstraints()
+    }
+
+    func configureBloggingPromptsConstraints() {
+        guard FeatureFlag.bloggingPrompts.enabled else {
+            NSLayoutConstraint.activate([
+                bloggingPromptsView.widthAnchor.constraint(equalToConstant: .zero),
+                bloggingPromptsView.heightAnchor.constraint(equalToConstant: .zero),
+            ])
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            bloggingPromptsTitleStackView.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsTitleStackView.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsTitleStackView.topAnchor.constraint(equalTo: bloggingPromptsView.topAnchor),
+            bloggingPromptsDescription.topAnchor.constraint(equalTo: bloggingPromptsTitleStackView.bottomAnchor,
+                                                            constant: Metrics.BloggingPrompts.labelsSpacing),
+            bloggingPromptsDescription.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsDescription.bottomAnchor.constraint(equalTo: bloggingPromptsView.bottomAnchor),
+            bloggingPromptsSwitch.leadingAnchor.constraint(greaterThanOrEqualTo: bloggingPromptsDescription.trailingAnchor,
+                                                           constant: Metrics.BloggingPrompts.switchLeading),
+            bloggingPromptsSwitch.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsSwitch.centerYAnchor.constraint(equalTo: bloggingPromptsView.centerYAnchor),
+            bloggingPromptsInfoButton.heightAnchor.constraint(equalToConstant: Metrics.BloggingPrompts.infoButtonHeight),
+            bloggingPromptsInfoButton.widthAnchor.constraint(equalTo: bloggingPromptsInfoButton.heightAnchor),
+            bloggingPromptsView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
 
@@ -545,6 +643,9 @@ private enum TextContent {
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
+    static let bloggingPromptsTitle = NSLocalizedString("Include prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
+    static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
+    static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
@@ -553,11 +654,13 @@ private enum Images {
 
 private enum Metrics {
     static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 56, right: 20)
+    static let ipadBottomMargin: CGFloat = -20.0
 
     static let stackSpacing: CGFloat = 24.0
     static let innerStackSpacing: CGFloat = 8.0
     static let afterTitleLabelSpacing: CGFloat = 16.0
     static let afterPromptLabelSpacing: CGFloat = 40.0
+    static let afterTimeSelectionViewSpacing: CGFloat = 10.0
 
     static let buttonHeight: CGFloat = 44.0
     static let frequencyLabelHeight: CGFloat = 30
@@ -566,4 +669,11 @@ private enum Metrics {
 
     // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon.
     static let minimumHeightForFullUI: CGFloat = 812
+
+    enum BloggingPrompts {
+        static let titleSpacing: CGFloat = 5.0
+        static let labelsSpacing: CGFloat = 2.0
+        static let infoButtonHeight: CGFloat = 16.0
+        static let switchLeading: CGFloat = 16.0
+    }
 }

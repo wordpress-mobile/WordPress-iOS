@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -57,7 +57,7 @@
                             <constraint firstItem="T5g-sS-mGT" firstAttribute="centerY" secondItem="A6f-g5-v7s" secondAttribute="centerY" id="jy0-ih-OB7"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhD-aG-GxJ" userLabel="View More Button">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhD-aG-GxJ" userLabel="View More Button">
                         <rect key="frame" x="0.0" y="195" width="342" height="44"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
@@ -99,6 +99,7 @@
                     <constraint firstItem="MNM-OS-iwT" firstAttribute="top" secondItem="BVC-pc-qhM" secondAttribute="bottom" constant="8" id="zfF-S9-Fqj"/>
                 </constraints>
             </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <constraints>
                 <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="K5q-Qa-Pnh" secondAttribute="trailing" id="4rc-fc-qPf"/>
                 <constraint firstItem="K5q-Qa-Pnh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8dI-CU-gI8"/>
@@ -106,11 +107,11 @@
                 <constraint firstItem="SrM-6z-hC1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bIn-37-Etp"/>
                 <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="SrM-6z-hC1" secondAttribute="trailing" id="yDa-SC-Kwi"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="K5q-Qa-Pnh" id="y35-PR-cqI"/>
                 <outlet property="legendView" destination="MNM-OS-iwT" id="3sj-wa-JnR"/>
                 <outlet property="monthsStackView" destination="BVC-pc-qhM" id="IlC-oK-tm8"/>
+                <outlet property="topConstraint" destination="OWn-0r-61f" id="P96-ck-qph"/>
                 <outlet property="topSeparatorLine" destination="SrM-6z-hC1" id="AGS-zl-lmo"/>
                 <outlet property="viewMoreButton" destination="XhD-aG-GxJ" id="zDw-mj-d6m"/>
                 <outlet property="viewMoreLabel" destination="D7G-gg-9QM" id="6DH-YF-5A5"/>

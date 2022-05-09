@@ -1,7 +1,0 @@
-Grandes noticias, fans de los sitios – la pantalla de «Mi sitio» ahora es simplemente mejor. Ahora verás dos nuevas pestañas entre las que puedes alternar: menú del sitio e inicio.
-
-La pestaña de inicio también contiene útiles tarjetas con más información sobre tu sitio, incluidos los borradores, entradas. programadas, y las estadísticas de hoy. O, si tienes prisa, puedes fácilmente cambiar a otra sección de la aplicación.
-
-Estamos comprometidos con la comunicación clara. Es por ello por lo que hemos añadido un nuevo texto de error al proceso de subida de fotos, solo en el caso de que trates de subir una foto desde tu dispositivo sin dar primero los permisos a la aplicación de fotos.
-
-Para finalizar, cuando la aplicación muestra avisos emergentes, ahora se desvanecen más suavemente cuando ya no los necesites. La última puerta a la izquierda.

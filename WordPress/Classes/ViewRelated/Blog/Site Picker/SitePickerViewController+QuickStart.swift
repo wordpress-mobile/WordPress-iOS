@@ -16,6 +16,7 @@ extension SitePickerViewController {
             }
 
             self?.blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+            self?.blogDetailHeaderView.toggleSpotlightOnSiteUrl()
             self?.blogDetailHeaderView.refreshIconImage()
         }
     }
@@ -37,6 +38,7 @@ extension SitePickerViewController {
 
     func toggleSpotlightOnHeaderView() {
         blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+        blogDetailHeaderView.toggleSpotlightOnSiteUrl()
         blogDetailHeaderView.toggleSpotlightOnSiteIcon()
     }
 
@@ -44,9 +46,5 @@ extension SitePickerViewController {
         if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
-    }
-
-    private enum Constants {
-        static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
     }
 }

@@ -248,7 +248,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 guard let self = self else {
                     return
                 }
-                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour()] : []
+                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
                 self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
             }
         }
@@ -266,7 +266,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog, withCompletedSteps: completedSteps)
+                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newSite, withCompletedSteps: completedSteps)
             }
         }
         tabBar.present(quickstartPrompt, animated: true)

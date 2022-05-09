@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-05 08:48:49+0000 */
+/* Translation-Revision-Date: 2022-05-04 03:40:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -50,11 +50,17 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "O apreciere";
+"%1$d Like" = "%1$d apreciere";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d aprecieri";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d răspuns";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d răspunsuri";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d din %2$d finalizate";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un fișier conține un model de cod care poate crea vulnerabilități";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Un nume bun este scurt și memorabil.\nÎl poți modifica mai târziu.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Un mod nou de a crea și publica conținut captivant pe site-ul tău.";
 
@@ -621,6 +630,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avansat";
 
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "După %@";
+
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
 
@@ -778,6 +790,10 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonim";
 
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Răspunde la îndemn";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "Icon aplicație";
@@ -804,6 +820,9 @@ translators: Block name. %s: The localized block name */
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprobă";
+
+/* Approves a Comment */
+"Approve Comment" = "Aprobă comentariul";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1036,6 +1055,9 @@ translators: Block name. %s: The localized block name */
 /* Beauty site intent topic */
 "Beauty" = "Frumusețe";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Înainte de %@";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Ziua cu cele mai multe vizualizări";
 
@@ -1206,7 +1228,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Nu pot publica un articol gol";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1234,6 +1255,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1291,6 +1313,10 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Atenție!";
 
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "Distribuie filmul vieții tale.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorii";
@@ -1341,9 +1367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Change button. */
 "Change username" = "Schimbă numele de utilizator";
-
-/* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Modifică conținutul, adaugă sau înlătură conținut, pe prima pagină a site-ului tău.";
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Modifică paginile, adaugă sau înlătură pagini pe site.";
@@ -1398,7 +1421,11 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Se verifică cumpărăturile...";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Copil al %@";
+
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Alege";
 
 /* Title for selecting a new homepage */
@@ -1438,7 +1465,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Alege o oră";
 
 /* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own" = "Alege un subiect din lista de mai jos sau creează tu unul";
+"Choose a topic from the list below or type your own." = "Alege un subiect din lista de mai jos sau creează tu unul.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Alege un icon unic pentru site";
@@ -1689,13 +1716,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Create your site" = "Finalizat: creează-ți site-ul";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Pas finalizat: Editează prima pagină";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Finalizat: explorează planurile";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Finalizat: urmărește alte site-uri";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Finalizat: publică un articol";
@@ -1822,7 +1843,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continuă";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -2014,7 +2036,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Creează un articol";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creează un site";
 
 /* Stories intro continue button title */
@@ -2139,8 +2162,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Personalizează gradientul";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Personalizează-ți site-ul";
 
 /* No comment provided by engineer. */
@@ -2283,7 +2305,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Descriere";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2339,6 +2361,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Deconectarea acestui cont înseamnă că articolele publicate nu vor mai fi partajate automat pe %@";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "Descoperă";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Descoperă site-uri";
@@ -2450,7 +2475,7 @@ translators: Block name. %s: The localized block name */
 "Double tap and hold to edit" = "Atinge de două ori și ține apăsat pentru a edita";
 
 /* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Atinge de două ori și ține apăsat pentru a muta acest element de meniu în sus sau în jos";
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Dă dublu tap și menține apăsat pentru a muta acest element de meniu mai sus sau mai jos. Deplasează orizontal pentru a modifica ierarhia.";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Atinge de două ori pentru a adăuga un bloc";
@@ -2584,6 +2609,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Fă un duplicat al blocului";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "De exemplu, modă, poezie, politică";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, atinge un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
 
@@ -2648,9 +2676,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editare butoane de partajare";
 
-/* Title for the edit sharing buttons section */
-"Edit sharing buttons" = "Editare butoane de partajare";
-
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Mai întâi, editează articolul";
 
@@ -2659,9 +2684,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Editează videoul";
-
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Editează prima pagină";
 
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "WordPress pentru Android nu suportă încă editarea blocurilor reutilizabile";
@@ -2686,9 +2708,6 @@ translators: Block name. %s: The localized block name */
 
 /* Education site intent topic */
 "Education" = "Educație";
-
-/* Placeholder text for the search field int the Site Intent screen. */
-"Eg. Fashion, Poetry, Politics" = "De exemplu, modă, poezie, politică";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -2762,17 +2781,11 @@ translators: Block name. %s: The localized block name */
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Activează Publicitate";
 
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Activează Inițiere rapidă pentru site";
-
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Activează statistici site";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Activează notificările în aplicație";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Activezi notificările în aplicație?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Activează partajarea articolelor";
@@ -3050,13 +3063,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Marcarea notificărilor ca citite a eșuat";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Inserarea fișierului audio a eșuat.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Inserarea fișierului audio a eșuat. Te rog atinge pentru opțiuni.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Inserarea elementului media a eșuat.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Inserarea media a eșuat.\n Te rog atinge pentru opțiuni.";
@@ -3151,9 +3158,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Află mai mult";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Găsește site-uri care te inspiră și urmărește-le pentru a primi notificări când publică articole noi.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Găsește adresa site-ului";
 
@@ -3190,12 +3194,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Urmărește conversația";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Urmărește conversația prin email";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Urmărește alte site-uri";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Urmărește site-ul";
@@ -3383,8 +3381,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Încearcă-le, adaugă câteva blocuri în articolele sau paginile tale!";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Dă un nume site-ului web %@";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Dă-i site-ului un nume care să-i reflecte personalitatea și subiectul (tema). Prima impresie este foarte importantă!";
+
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Dă un nume site-ului web";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3408,7 +3413,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Înregistrarea pe Google a eșuat.";
 
-/* Title for the continue button in the dashboard's custom What's New page. */
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Am înțeles";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
@@ -3423,8 +3429,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Excelent!\n Ne place să primim vești de la utilizatori mulțumiți \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Crește-ți audiența";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -3563,8 +3568,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Prima pagină";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Prima pagină";
@@ -3626,9 +3630,6 @@ translators: Block name. %s: The localized block name */
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
 "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Dacă vrei un site, unul fără niciunul dintre articolele și niciuna dintre paginile pe care le ai acum, echipa noastră de suport îți poate șterge articolele, paginile, elementele media și comentariile.";
-
-/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
-"If you want to try get more views and traffic check out our top tips" = "Dacă vrei să ai mai multe vizualizări și mai mult trafic, vezi sfaturile noastre importante";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Dacă nu știi sigur ce va fi șters sau ai nevoie de ajutor, nu-ți face griji, echipa noastră de suport este aici pentru a-ți răspunde la orice fel de întrebări.";
@@ -3784,6 +3785,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Instalarea primului modul pe site poate dura până la 1 minut. În această perioadă de timp nu vei putea face modificări pe site.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Te interesează să construiești o audiență? Consultă sfaturile noastre cele mai bune.";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Design interior";
@@ -4350,7 +4354,7 @@ translators: Block name. %s: The localized block name */
 "Media" = "Media";
 
 /* Label for size of media cache in the app. */
-"Media Cache Size" = " Dimensiune cache media";
+"Media Cache Size" = "Dimensiune cache media";
 
 /* Title for alert when access to media capture is not granted */
 "Media Capture" = "Captură media";
@@ -4396,7 +4400,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Mențiune";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Meniu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4469,6 +4475,9 @@ translators: Block name. %s: The localized block name */
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Cea mai populară oră";
+
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Mută %@";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "Mută imaginea înapoi";
@@ -4565,7 +4574,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Nume";
 
 /* Error to be displayed when a tag is empty */
@@ -4955,6 +4965,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notificări";
 
@@ -5581,9 +5592,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Dacă publici regulat contribui la construirea unui public. Reamintirile te ajută să rămâi pe drumul cel bun.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dacă publici în mod regulat, cititorii tăi rămân angrenați pe site și atragi vizitatori noi.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Publicările dese te ajută să-ți construiești audiența!";
 
@@ -5638,9 +5646,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Previzualizează";
 
@@ -5661,9 +5669,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Preview post" = "Previzualizează articolul";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Previzualizează-ți noul site pentru a înțelege ceea ce vor vedea vizitatorii tăi.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Luna trecută";
@@ -5729,6 +5734,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Proiecte";
+
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Îndemnuri";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -5921,7 +5930,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale";
 
-/* Secondary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Amintește-mi";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -5972,6 +5981,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Înlătură blocul";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Înlătură din panoul de control";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Înlătură din perspective";
@@ -6316,7 +6328,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Meniul de blocuri care poate fi derulat este deschis. Selectează un bloc.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Caută";
 
@@ -6404,15 +6415,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Selectează %@ pentru a descoperi teme noi";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Selectează %@ pentru a edita Prima pagină.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Selectează %@ pentru a căuta site-uri cu preocupări similare";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Selectează %@ pentru previzualizare";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Selectează %@ pentru a vedea cum funcționează site-ul tău.";
@@ -6604,6 +6606,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Setări";
@@ -6626,6 +6629,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Partajează";
 
@@ -6788,10 +6792,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Limbă site";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Meniu site";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirecționare site";
 
@@ -6800,7 +6800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Titlu site";
@@ -6808,7 +6807,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Subiect site";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "URL site";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6858,16 +6858,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Mărime";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Sărit";
 
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Sari tot";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Sari peste Inițierea rapidă";
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Sari peste acest îndemn";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Rezultatele dispozitivului de inserare „\/”";
@@ -7420,9 +7419,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Articolul pe care încerci să-l copiezi are două versiuni care sunt în conflict sau ai făcut recent modificări pe care nu le-ai salvat.\nMai întâi, editează articolul pentru a elimina orice conflict sau continuă cu copierea versiunii din această aplicație.";
 
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Inițierea rapidă te va conduce la construirea unui site de bază. Sigur vrei să sari peste ea?";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serializarea cererii a eșuat.";
 
@@ -7716,7 +7712,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Thumbnail" = "Miniatură";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
-"Thumbnail unavailable." = "Miniatură indisponibilă";
+"Thumbnail unavailable." = "Miniatură indisponibilă.";
 
 /* No comment provided by engineer. */
 "Tiled gallery settings" = "Setări galerii placate";
@@ -7731,9 +7727,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Este timpul să termini inițializarea site-ului! Lista noastră de verificări te ghidează prin pașii următori.";
-
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Sfat";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Sfaturi pentru a folosi la maxim WordPress.com.";
@@ -7814,7 +7807,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Unelte";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Nivel superior";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7916,8 +7910,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Încearcă un alt termen de căutare";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Customize Insights button title */
 "Try it now" = "Încearcă-l acum";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8123,6 +8117,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Unapproves a comment */
 "Unapprove" = "Neaprobat";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Dezaprobă comentariul";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Anulează aprobarea comentariului.";
 
@@ -8140,6 +8137,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8153,10 +8151,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "Anulează urmărirea %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Anulează urmărirea conversației";
+"Unfollow Conversation" = "Anulează urmărirea conversației";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Anulează urmărirea conversației prin email";
+"Unfollow conversation" = "Anulează urmărirea conversației";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Anulează urmărirea site-ului";
@@ -8347,9 +8345,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Folosește butonul icon";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Folosește acest site";
 
@@ -8440,8 +8435,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Vezi articolul";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vezi site-ul";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8460,6 +8454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Vezi mai mult";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Vezi mai multe îndemnuri";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Vizualizarea pe site de până acum";
@@ -8498,6 +8495,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Vizitează %@ pentru mai mult";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Vezi panoul de control";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitează site-ul";
@@ -9305,6 +9305,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Când îți vizitezi site-ul în Safari, adresa site-ului tău apare în bara din partea de sus a ecranului.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Site-ul este deja protejat de VaultPress. Mai jos găsești o legătură la panoul de control VaultPress.";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Site-ul folosește VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Site-ul tău a fost creat!";
 
@@ -9362,17 +9368,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMENTARIU]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d bloger_ apreciază asta.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d blogeri_ apreciază asta.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_Tu și un alt bloger_ ați apreciat asta.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_Un bloger_ apreciază asta.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Tu și alți %1$d blogeri_ ați apreciat asta.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_Tu și un alt bloger_ ați apreciat asta.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Ai_ apreciat asta.";
@@ -9454,6 +9460,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Să adaugi poze sau videouri în articolele tale.";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Salvează ca ciornă";
 
@@ -9498,6 +9507,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Comentarii";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Aprecieri";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Vizualizări";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 Cea mai populară oră";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";
@@ -9624,4 +9645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Utilizatori și autori";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Am răspuns";
 

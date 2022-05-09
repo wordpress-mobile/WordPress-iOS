@@ -1,7 +1,0 @@
-Grande nouvelle pour les fans de sites Web : votre écran Mon Site vient tout juste d’être amélioré ! Vous pouvez désormais basculer entre deux onglets : Menu du site et Accueil.
-
-Sous l’onglet Accueil, vous trouverez également des cartes pratiques qui fournissent des informations supplémentaires sur votre site, notamment les brouillons, les articles programmés et les statistiques du jour. Vous n’avez pas le temps ? Vous pouvez aussi facilement passer à une autre section de l’application.
-
-Une communication claire nous tient à cœur. C’est pourquoi nous avons ajouté un nouveau texte d’erreur au processus de chargement des photos, au cas où vous essayeriez d’importer une photo depuis votre appareil sans avoir préalablement autorisé l’application à accéder à votre galerie.
-
-Enfin, lorsque des notifications s’affichent dans l’application, elles disparaissent désormais plus progressivement lorsqu’elles ne vous sont plus d’utilité. Clap de fin !

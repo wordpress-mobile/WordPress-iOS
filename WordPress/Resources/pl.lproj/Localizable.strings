@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-04 06:09:00+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:58:45+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: pl */
 
 /* Plan yearly price */
@@ -38,6 +38,9 @@
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Zatwierdź";
 
+/* Approves a Comment */
+"Approve Comment" = "Zatwierdź komentarz";
+
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -50,7 +53,6 @@
 "Blog" = "Blog";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -78,6 +80,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -341,7 +344,7 @@
 "OK" = "OK";
 
 /* Disabled */
-"Off" = "Wyłączone";
+"Off" = "Wyłączono";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
@@ -419,9 +422,9 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Podgląd";
 
@@ -527,6 +530,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Ustawienia";
@@ -594,6 +598,9 @@
    Unapproves a comment */
 "Unapprove" = "Odrzuć";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Cofnij akceptację komentarza";
+
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";
 
@@ -639,8 +646,7 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobacz stronę";
 
 /* Label for Visibility
@@ -691,6 +697,12 @@
 
 /* Hint for users when hidden privacy setting is set */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Wszyscy mogą odwiedzić Twoją stronę, ale nie jest ona dostępna dla wyszukiwarek internetowych.";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Wpisy";

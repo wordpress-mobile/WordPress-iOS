@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementSharing = 8,
     QuickStartTourElementConnections = 9,
     QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderSearch = 12,
+    QuickStartTourElementReaderDiscoverSettings = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
     QuickStartTourElementSiteIcon = 15,
@@ -69,8 +69,10 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementStats = 18,
     QuickStartTourElementPlans = 19,
     QuickStartTourElementSiteTitle = 20,
-    QuickStartTourElementEditHomepage = 21,
-    QuickStartTourElementSiteMenu = 22,
+    QuickStartTourElementSiteMenu = 21,
+    QuickStartTourElementNotifications = 22,
+    QuickStartTourElementSetupQuickStart = 23,
+    QuickStartTourElementRemoveQuickStart = 24,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
@@ -158,5 +160,5 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)updateTableView:(nullable void(^)(void))completion;
 - (void)preloadMetadata;
-- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl  onCompletion:(nullable void(^)(void))completion;
+- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
 @end

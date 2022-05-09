@@ -1,7 +1,0 @@
-Grandi novità per i fan del sito: la schermata Il mio sito è appena migliorata. Ora vedrai due nuove schede e potrai passare da una all'altra: Menu del sito e Home.
-
-La scheda Home ne contiene anche altre utili con ulteriori informazioni sul tuo sito, incluse bozze, articoli pianificati e statistiche odierne. In alternativa, se hai fretta, puoi facilmente passare a un'altra sezione dell'app.
-
-Tutti desideriamo una comunicazione chiara. Ecco perché abbiamo aggiunto un nuovo testo dell'errore al processo di caricamento delle foto, nel caso in cui tenti di caricare una foto dal tuo dispositivo senza prima concedere l'autorizzazione alla foto dell'app.
-
-Infine, quando appaiono gli avvisi in-app, ora svaniscono in modo più fluido una volta che non sono più necessari. Sono chiusi.

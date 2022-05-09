@@ -7,6 +7,7 @@ class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
     @IBOutlet private weak var promptCardView: UIView!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var noteTextView: UITextView!
+    @IBOutlet private weak var noteAccessibilityLabel: UILabel!
 
     // MARK: - Init
 
@@ -28,18 +29,18 @@ private extension BloggingPromptsFeatureDescriptionView {
     func configurePromptCard() {
         let promptCard = DashboardPromptsCardCell()
         promptCard.configureForExampleDisplay()
-        promptCard.translatesAutoresizingMaskIntoConstraints = false
 
-        promptCard.layer.borderWidth = Style.borderWidth
-        promptCard.layer.cornerRadius = Style.cardCornerRadius
-        promptCard.layer.borderColor = Style.cardBorderColor
+        // The DashboardPromptsCardCell doesn't resize dynamically when used in this context.
+        // So use its cardFrameView instead.
+        promptCard.cardFrameView.translatesAutoresizingMaskIntoConstraints = false
+        promptCard.cardFrameView.layer.cornerRadius = Style.cardCornerRadius
+        promptCard.cardFrameView.layer.shadowOffset = Style.cardShadowOffset
+        promptCard.cardFrameView.layer.shadowOpacity = Style.cardShadowOpacity
+        promptCard.cardFrameView.layer.shadowRadius = Style.cardShadowRadius
 
-        promptCard.layer.shadowOffset = Style.cardShadowOffset
-        promptCard.layer.shadowOpacity = Style.cardShadowOpacity
-        promptCard.layer.shadowRadius = Style.cardShadowRadius
-
-        promptCardView.addSubview(promptCard)
-        promptCardView.pinSubviewToSafeArea(promptCard)
+        promptCardView.accessibilityElementsHidden = true
+        promptCardView.addSubview(promptCard.cardFrameView)
+        promptCardView.pinSubviewToAllEdges(promptCard.cardFrameView)
     }
 
     func configureDescription() {
@@ -49,7 +50,7 @@ private extension BloggingPromptsFeatureDescriptionView {
     }
 
     func configureNote() {
-        noteTextView.layer.borderWidth = Style.borderWidth
+        noteTextView.layer.borderWidth = Style.noteBorderWidth
         noteTextView.layer.cornerRadius = Style.noteCornerRadius
         noteTextView.layer.borderColor = Style.noteBorderColor
         noteTextView.textContainerInset = Style.noteInsets
@@ -71,12 +72,16 @@ private extension BloggingPromptsFeatureDescriptionView {
                                                    .font: UIFont.preferredFont(forTextStyle: .caption1)]))
 
         noteTextView.attributedText = attributedString
+
+        noteTextView.accessibilityElementsHidden = true
+        noteAccessibilityLabel.accessibilityLabel = Strings.noteTextAccessibilityLabel
     }
 
     enum Strings {
         static let featureDescription: String = NSLocalizedString("We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!", comment: "Description of Blogging Prompts displayed in the Feature Introduction view.")
         static let noteLabel: String = NSLocalizedString("Note:", comment: "Label for the note displayed in the Feature Introduction view.")
         static let noteText: String = NSLocalizedString("You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders.", comment: "Note displayed in the Feature Introduction view.")
+        static let noteTextAccessibilityLabel: String = NSLocalizedString("You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders.", comment: "Accessibility hint for Note displayed in the Feature Introduction view.")
     }
 
     enum Style {
@@ -84,12 +89,11 @@ private extension BloggingPromptsFeatureDescriptionView {
         static let textColor: UIColor = .textSubtle
         static let noteInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         static let noteCornerRadius: CGFloat = 6
+        static let noteBorderWidth: CGFloat = 1
+        static let noteBorderColor = UIColor.textQuaternary.cgColor
         static let cardCornerRadius: CGFloat = 10
         static let cardShadowRadius: CGFloat = 14
         static let cardShadowOpacity: Float = 0.1
         static let cardShadowOffset = CGSize(width: 0, height: 10.0)
-        static let cardBorderColor = UIColor(red: 0.882, green: 0.886, blue: 0.886, alpha: 1).cgColor
-        static let borderWidth: CGFloat = 1
-        static let noteBorderColor = UIColor.textQuaternary.cgColor
     }
 }

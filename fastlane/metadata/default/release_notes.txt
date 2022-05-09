@@ -1,7 +1,14 @@
-Big news, site fans—your My Site screen just got better. You’ll now see two new tabs you can switch between: Site Menu and Home.
+You can now upload videos of any length to self-hosted sites—the only limit is your own imagination. (Oh, and the 2 GB file size limit, we guess.)
 
-The Home tab also contains handy cards with more information about your site, including drafts, scheduled posts, and today’s stats. Or, if you’re in a hurry, you can easily head over to another section of the app.
+When you Follow Conversation in Reader post cards and post details, in-app notifications are now opt-out rather than opt-in.
 
-We’re all about clear communication. That’s why we’ve added new error text to the photo upload process, just in case you try to upload a photo from your device without giving the app photo permission first.
+We replaced the quick-start prompt when you log in as an existing user. Now you can tell us what you’d like to focus on and enable notifications for things like site traffic, new followers, and other milestones. Cue confetti.
 
-Finally, when in-app notices pop up, they now fade out more smoothly when you don’t need them anymore. Exit stage left.
+Ready for the grand tour? We made some tweaks to the Stats and Reader tours in the Quick Start section. Now you can move through the tours more smoothly and get more pointers and messages as you go.
+
+We also made some sweet, sweet changes to the Block Editor.
+
+- You can now adjust Featured Image settings for any posts in a Latest Post block.
+- You’ll see the correct notices when you’re fast-switching between HTML and Visual mode.
+- Media previews are no longer cut off when you edit a URL in an Embed block.
+- If you’re using an iPad with an external keyboard, you’ll no longer see extra space between the toolbar and the bottom of the screen. Mind the gap.

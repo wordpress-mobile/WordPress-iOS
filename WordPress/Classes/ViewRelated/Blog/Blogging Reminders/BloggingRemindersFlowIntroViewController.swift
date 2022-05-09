@@ -63,7 +63,8 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             return TextContent.postPublishingintroDescription
         case .blogSettings,
              .notificationSettings,
-             .statsInsights:
+             .statsInsights,
+             .bloggingPromptsFeatureIntroduction:
             return TextContent.siteSettingsIntroDescription
         }
     }

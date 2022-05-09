@@ -3,9 +3,15 @@ import XCTest
 
 final class ApproveCommentActionTests: XCTestCase {
     private class TestableApproveComment: ApproveComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -26,6 +32,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
     private var action: ApproveComment?
     private let utility = NotificationUtility()
+    private var contextManager: TestContextManager!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -34,7 +41,8 @@ final class ApproveCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        action = TestableApproveComment(on: Constants.initialStatus)
+        contextManager = TestContextManager()
+        action = TestableApproveComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 
@@ -65,10 +73,10 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
-    func testExecuteCallsUnapproveWhenActionIsOn() {
+    func testExecuteCallsUnapproveWhenActionIsOn() throws {
         action?.on = true
 
-        action?.execute(context: utility.mockCommentContext())
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -78,17 +86,17 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.unapproveWasCalled)
     }
 
-    func testExecuteUpdatesActionTitleWhenActionIsOn() {
+    func testExecuteUpdatesActionTitleWhenActionIsOn() throws {
         action?.on = true
 
-        action?.execute(context: utility.mockCommentContext())
+        action?.execute(context: try utility.mockCommentContext())
         XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
-    func testExecuteCallsApproveWhenActionIsOff() {
+    func testExecuteCallsApproveWhenActionIsOff() throws {
         action?.on = false
 
-        action?.execute(context: utility.mockCommentContext())
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -98,10 +106,10 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.approveWasCalled)
     }
 
-    func testExecuteUpdatesActionTitleWhenActionIsOff() {
+    func testExecuteUpdatesActionTitleWhenActionIsOff() throws {
         action?.on = false
 
-        action?.execute(context: utility.mockCommentContext())
+        action?.execute(context: try utility.mockCommentContext())
         XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.unapprove)
     }
 }
