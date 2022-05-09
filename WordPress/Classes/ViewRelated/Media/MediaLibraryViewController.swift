@@ -129,7 +129,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaAdd)
+        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
     }
 
     // MARK: - Update view state
@@ -271,8 +271,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
-        QuickStartTourGuide.shared.visited(.mediaAdd)
-        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaAdd)
+        QuickStartTourGuide.shared.visited(.mediaUpload)
+        addButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
         showOptionsMenu()
     }
 
