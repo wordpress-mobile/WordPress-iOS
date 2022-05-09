@@ -1,6 +1,6 @@
 19.9
 -----
-
+[*] Site Settings: we fixed an issue that prevented the site title to be updated when it changed in Site Settings [#18543]
 
 19.8
 -----
