@@ -84,6 +84,9 @@ import Foundation
 
         service.removeDefaultWordPressComAccount()
 
+        // Delete saved dashboard states
+        BlogDashboardState.resetAllStates()
+
         // Delete local notification on logout
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
