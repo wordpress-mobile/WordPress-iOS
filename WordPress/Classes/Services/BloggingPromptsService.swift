@@ -73,6 +73,7 @@ struct BloggingPrompt {
     let answered: Bool
     let answerCount: Int
     let displayAvatarURLs: [URL]
+    let attribution: String
 
     init(with remotePrompt: RemoteBloggingPrompt) {
         promptID = remotePrompt.promptID
@@ -83,5 +84,6 @@ struct BloggingPrompt {
         answered = remotePrompt.answered
         answerCount = remotePrompt.answeredUsersCount
         displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+        attribution = remotePrompt.attribution
     }
 }
