@@ -595,7 +595,7 @@ DEPENDENCIES:
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.3)
+  - WPMediaPicker (~> 1.8.3-beta.1)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.75.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -869,6 +869,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: a9583cec2bc246d23cf0045230cd179dc03c5adb
+PODFILE CHECKSUM: 5a95da7aea712ea40c414022082be3d6dbe39b4b
 
 COCOAPODS: 1.11.2
