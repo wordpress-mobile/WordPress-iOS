@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: 329effd14e4176817d28ff5b97f35ea84a19c69e
-  branch: trunk
+  revision: f804caf7ba067a57c3e1304a65d424b8403abbd7
+  branch: app-size-metrics
   specs:
     fastlane-plugin-wpmreleasetoolkit (4.1.0)
       activesupport (~> 5)
@@ -14,6 +14,7 @@ GIT
       nokogiri (~> 1.11)
       octokit (~> 4.18)
       parallel (~> 1.14)
+      plist (~> 3.1)
       progress_bar (~> 1.3)
       rake (>= 12.3, < 14.0)
       rake-compiler (~> 1.0)
@@ -23,7 +24,7 @@ GEM
   specs:
     CFPropertyList (3.0.5)
       rexml
-    activesupport (5.2.7)
+    activesupport (5.2.8)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)

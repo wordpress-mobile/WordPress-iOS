@@ -7,7 +7,7 @@ group :screenshots, optional: true do
 end
 
 # This comment avoids typing to switch to a development version for testing.
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'trunk'
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'app-size-metrics'
 # gem 'fastlane-plugin-wpmreleasetoolkit', '~> 4.1'
 
 gem 'fastlane-plugin-sentry'
