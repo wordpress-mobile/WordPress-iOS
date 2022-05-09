@@ -22,9 +22,9 @@ final class FormattableUserContentTests: XCTestCase {
         static let mappedMediaRanges = [NSValue(range: imageRange): testImage]
     }
 
-    override func setUp() {
-        super.setUp()
-        subject = FormattableUserContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        subject = try FormattableUserContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -68,13 +68,13 @@ final class FormattableUserContentTests: XCTestCase {
         XCTAssertEqual(subject?.imageUrls, [Expectations.imageURL])
     }
 
-    func testMetaReturnsExpectation() {
+    func testMetaReturnsExpectation() throws {
         let value = subject!.meta!
         let ids = value["ids"] as? [String: AnyObject]
         let userId = ids?["user"] as? String
         let siteId = ids?["site"] as? String
 
-        let mockMeta = loadMeta()
+        let mockMeta = try loadMeta()
         let mockIds = mockMeta["ids"] as? [String: AnyObject]
         let mockMetaUserId = mockIds?["user"] as? String
         let mockMetaSiteId = mockIds?["site"] as? String
@@ -83,8 +83,8 @@ final class FormattableUserContentTests: XCTestCase {
         XCTAssertEqual(siteId, mockMetaSiteId)
     }
 
-    func testParentReturnsValuePassedAsParameter() {
-        let injectedParent = loadLikeNotification()
+    func testParentReturnsValuePassedAsParameter() throws {
+        let injectedParent = try loadLikeNotification()
 
         let parent = subject?.parent
 
@@ -129,20 +129,16 @@ final class FormattableUserContentTests: XCTestCase {
         XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
-    private func mockDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-user-content.json")
+    private func mockDictionary() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+    private func loadLikeNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 
-    private func loadLikeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
-    }
-
-    private func loadMeta() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-user-content-meta.json")
+    private func loadMeta() throws -> JSONObject {
+        return try .loadFile(named: "notifications-user-content-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {

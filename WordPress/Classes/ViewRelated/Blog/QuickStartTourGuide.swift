@@ -15,7 +15,6 @@ open class QuickStartTourGuide: NSObject {
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
-    private var taskCompleteWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
@@ -23,6 +22,9 @@ open class QuickStartTourGuide: NSObject {
 
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
+
+    /// A flag indidcating whether we should show the congrats notice or not.
+    private var shouldShowCongratsNotice = false
 
     /// Represents the current entry point.
     @objc var currentEntryPoint: QuickStartTourEntryPoint = .unknown
@@ -230,6 +232,24 @@ open class QuickStartTourGuide: NSObject {
         completed(tour: tour, for: blog, postNotification: postNotification)
     }
 
+    func showCongratsNoticeIfNeeded(for blog: Blog) {
+        guard allToursCompleted(for: blog), shouldShowCongratsNotice else {
+            return
+        }
+
+        shouldShowCongratsNotice = false
+
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil, isDismissable: true)
+        let notice = Notice(title: Strings.congratulationsTitle,
+                            message: Strings.congratulationsMessage,
+                            style: noticeStyle,
+                            tag: noticeTag)
+
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        WPAnalytics.track(.quickStartCongratulationsViewed)
+    }
+
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
     @objc func currentElementInt() -> Int {
         return currentWaypoint()?.element.rawValue ?? NSNotFound
@@ -253,7 +273,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing, .siteMenu]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerDiscoverSettings]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -290,7 +310,10 @@ open class QuickStartTourGuide: NSObject {
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
         let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
     }
 
     private func showNextStep(_ nextStep: TourState) {
@@ -345,15 +368,11 @@ private extension QuickStartTourGuide {
             recentlyTouredBlog = nil
         }
 
-        guard !(tour is QuickStartCongratulationsTour) else {
-            WPAnalytics.track(.quickStartCongratulationsViewed)
-            return
-        }
-
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
             tourInProgress = false
+            shouldShowCongratsNotice = true
         } else {
             if let nextTour = tourToSuggest(for: blog) {
                 PushNotificationsManager.shared.postNotification(for: nextTour)
@@ -448,6 +467,11 @@ private extension QuickStartTourGuide {
         static let suggestionTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
         static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
+    }
+
+    private enum Strings {
+        static let congratulationsTitle = NSLocalizedString("Congrats! You know your way around", comment: "Title shown when all tours have been completed.")
+        static let congratulationsMessage = NSLocalizedString("Doesn't it feel good to cross things off a list?", comment: "Message shown when all tours have been completed")
     }
 }
 

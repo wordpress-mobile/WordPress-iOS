@@ -53,6 +53,7 @@ class ReaderManageScenePresenter: ScenePresenter {
         presentedViewController = navigationController
         viewController.present(navigationController, animated: true, completion: nil)
 
+        QuickStartTourGuide.shared.visited(.readerDiscoverSettings)
         WPAnalytics.track(.readerManageViewDisplayed)
     }
 }

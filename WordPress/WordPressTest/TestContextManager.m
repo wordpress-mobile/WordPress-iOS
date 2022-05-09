@@ -6,18 +6,26 @@
 // Based on the Feature Flag value
 @implementation TestContextManager
 
-static TestContextManager *_instance;
-
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        // Override the shared ContextManager
-        _stack = [[ContextManagerMock alloc] init];
-        _requiresTestExpectation = YES;
+        self.stack = [[ContextManagerMock alloc] init];
     }
 
     return self;
+}
+
+- (void)setStack:(id<ManagerMock, CoreDataStack>)stack
+{
+    if (stack == _stack) {
+        return;
+    }
+
+    _stack = stack;
+    // Override the shared ContextManager
+    [ContextManager internalSharedInstance];
+    [ContextManager overrideSharedInstance:_stack];
 }
 
 - (NSManagedObjectModel *)managedObjectModel
@@ -55,45 +63,19 @@ static TestContextManager *_instance;
     [_stack setMainContext:mainContext];
 }
 
--(void)setTestExpectation:(XCTestExpectation *)testExpectation
-{
-    [_stack setTestExpectation:testExpectation];
-}
-
 - (void)saveContext:(NSManagedObjectContext *)context
 {
-    [self saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-    }];
+    [_stack saveContext:context];
 }
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
     [_stack saveContextAndWait:context];
-    if (self.stack.testExpectation) {
-        [self.stack.testExpectation fulfill];
-        self.stack.testExpectation = nil;
-    } else if (self.stack.requiresTestExpectation) {
-        NSLog(@"No test expectation present for context save");
-    }
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
-    [_stack saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
-            NSLog(@"No test expectation present for context save");
-        }
-        completionBlock();
-    }];
+    [_stack saveContext:context withCompletionBlock:completionBlock];
 }
 
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
@@ -107,56 +89,6 @@ static TestContextManager *_instance;
                                                                         YES) lastObject];
 
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-- (NSManagedObject *)loadEntityNamed:(NSString *)entityName withContentsOfFile:(NSString *)filename
-{
-    NSParameterAssert(entityName);
-
-    NSDictionary *dict = [self objectWithContentOfFile:filename];
-
-    // Insert + Set Values
-    NSManagedObject *object= [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.mainContext];
-
-    for (NSString *key in dict.allKeys) {
-        [object setValue:dict[key] forKey:key];
-    }
-
-    return object;
-}
-
-- (NSDictionary *)objectWithContentOfFile:(NSString *)filename
-{
-    NSParameterAssert(filename);
-
-    // Load the Raw JSON
-    NSString *name      = filename.stringByDeletingPathExtension;
-    NSString *extension = filename.pathExtension;
-    NSString *path      = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:extension];
-    NSData *contents    = [NSData dataWithContentsOfFile:path];
-    NSAssert(contents, @"Mockup data could not be loaded");
-
-    // Parse
-    NSDictionary *dict  = [NSJSONSerialization JSONObjectWithData:contents
-                                                          options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves
-                                                            error:nil];
-    NSAssert(dict, @"Mockup data could not be parsed");
-    return dict;
-}
-
-+ (instancetype)sharedInstance
-{
-    if (_instance) {
-        return _instance;
-    }
-
-    _instance = [[TestContextManager alloc] init];
-    return _instance;
-}
-
-+ (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager
-{
-    [ContextManager overrideSharedInstance: contextManager];
 }
 
 @end

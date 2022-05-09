@@ -9,17 +9,20 @@ class ActivityStoreTests: XCTestCase {
     private var store: ActivityStore!
     private var activityServiceMock: ActivityServiceRemoteMock!
     private var backupServiceMock: JetpackBackupServiceMock!
+    private var contextManager: TestContextManager!
 
     override func setUp() {
         super.setUp()
 
+        contextManager = TestContextManager()
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
-        backupServiceMock = JetpackBackupServiceMock()
+        backupServiceMock = JetpackBackupServiceMock(managedObjectContext: contextManager.mainContext)
         store = ActivityStore(dispatcher: dispatcher, activityServiceRemote: activityServiceMock, backupService: backupServiceMock)
     }
 
     override func tearDown() {
+        ContextManager.overrideSharedInstance(nil)
         dispatcher = nil
         store = nil
 
@@ -247,10 +250,6 @@ extension ActivityGroup {
 
 class JetpackBackupServiceMock: JetpackBackupService {
     var didCallGetAllBackupStatusWithSite: JetpackSiteRef?
-
-    init() {
-        super.init(managedObjectContext: TestContextManager.sharedInstance().mainContext)
-    }
 
     override func getAllBackupStatus(for site: JetpackSiteRef, success: @escaping ([JetpackBackup]) -> Void, failure: @escaping (Error) -> Void) {
         didCallGetAllBackupStatusWithSite = site

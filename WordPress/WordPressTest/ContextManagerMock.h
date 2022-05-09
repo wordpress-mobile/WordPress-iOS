@@ -9,9 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite, strong) NSManagedObjectModel           *managedObjectModel;
 @property (nonatomic, readwrite, strong) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
 @property (nonatomic, readonly,  strong) NSPersistentStoreCoordinator   *standardPSC;
-@property (nonatomic, readwrite, assign) BOOL                           requiresTestExpectation;
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
-@property (nonatomic, nullable,  readwrite, strong) XCTestExpectation   *testExpectation;
 @end
 
 /**
@@ -21,17 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
  *              the contents of the database, without even hitting the filesystem.
  */
 @interface ContextManagerMock : ContextManager <ManagerMock, CoreDataStack>
-
-
-/**
- *  @brief      Loads the contents of any given JSON file into a new NSManagedObject instance
- *  @details    This helper method is useful for Unit Testing scenarios.
- *
- *  @param      entityName  The name of the entity to be inserted.
- *  @param      filename    The name of the JSON file to be loaded.
- */
-- (NSManagedObject *)loadEntityNamed:(NSString *)entityName withContentsOfFile:(NSString *)filename;
-- (NSDictionary *)objectWithContentOfFile:(NSString *)filename;
 
 @end
 

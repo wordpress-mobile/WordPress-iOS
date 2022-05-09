@@ -191,22 +191,32 @@ struct QuickStartPublishTour: QuickStartTour {
 struct QuickStartFollowTour: QuickStartTour {
     let key = "quick-start-follow-tour"
     let analyticsKey = "follow_site"
-    let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Follow other sites", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
+    let title = NSLocalizedString("Connect with other sites", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Connect with other sites", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Discover and follow sites that inspire you.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to find other sites.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
-        let step2DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
+        let step2DiscoverDescriptionBase = NSLocalizedString("Use %@ to find sites and tags.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DiscoverDescriptionTarget = NSLocalizedString("Discover", comment: "The menu item to select during a guided tour.")
+        let step2DiscoverDescription = step2DiscoverDescriptionBase.highlighting(phrase: step2DiscoverDescriptionTarget, icon: nil)
+
+        let step2SettingsDescriptionBase = NSLocalizedString("Try selecting %@ to add topics you like.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2SettingsDescriptionTarget = NSLocalizedString("Settings", comment: "The menu item to select during a guided tour.")
+        let step2SettingsDescription = step2SettingsDescriptionBase.highlighting(phrase: step2SettingsDescriptionTarget, icon: .gridicon(.cog))
+
+        /// Combined description for step 2
+        let step2Format = NSAttributedString(string: "%@ %@")
+        let step2Description = NSAttributedString(format: step2Format, args: step2DiscoverDescription, step2SettingsDescription)
+
+        let step2: WayPoint = (element: .readerDiscoverSettings, description: step2Description)
 
         return [step1, step2]
     }()
@@ -284,31 +294,6 @@ struct QuickStartReviewPagesTour: QuickStartTour {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
         return [(element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages)))]
-    }()
-
-    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
-}
-
-struct QuickStartEditHomepageTour: QuickStartTour {
-    let key = "quick-start-edit-homepage-tour"
-    let analyticsKey = "edit_homepage"
-    let title = NSLocalizedString("Edit your homepage", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Edit your homepage", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Change, add, or remove content from your site's homepage.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.house)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
-
-    var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
-        let descriptionHomepage = NSLocalizedString("Select %@ to edit your Homepage.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let homepageTarget = NSLocalizedString("Homepage", comment: "The item to select during a guided tour.")
-        return [
-            (element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages))),
-            (element: .editHomepage, description: descriptionHomepage.highlighting(phrase: homepageTarget, icon: .gridicon(.house)))
-        ]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
@@ -412,24 +397,6 @@ struct QuickStartMediaUploadTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading new media.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
-private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
-private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
-struct QuickStartCongratulationsTour: QuickStartTour {
-    let key = "quick-start-congratulations-tour"
-    let analyticsKey = "congratulations"
-    let title = congratsTitle
-    let titleMarkedCompleted = ""  // Not applicable for this tour type
-    let description = congratsDescription
-    let icon = UIImage.gridicon(.plus)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
-
-    var waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
-
-    let accessibilityHintText = ""  // Not applicable for this tour type
-}
-
 private extension String {
     func highlighting(phrase: String, icon: UIImage?) -> NSAttributedString {
         let normalParts = components(separatedBy: "%@")
@@ -480,5 +447,17 @@ private extension String {
         static var highlightColor: UIColor {
             .invertedLabel
         }
+    }
+}
+
+private extension NSAttributedString {
+    convenience init(format: NSAttributedString, args: NSAttributedString...) {
+        let mutableNSAttributedString = NSMutableAttributedString(attributedString: format)
+
+        args.forEach { (attributedString) in
+            let range = NSString(string: mutableNSAttributedString.string).range(of: "%@")
+            mutableNSAttributedString.replaceCharacters(in: range, with: attributedString)
+        }
+        self.init(attributedString: mutableNSAttributedString)
     }
 }

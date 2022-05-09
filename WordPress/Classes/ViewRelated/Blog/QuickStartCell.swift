@@ -14,7 +14,11 @@ import UIKit
 
         selectionStyle = .none
 
-        tourStateView.configure(blog: blog, sourceController: viewController)
+        let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .quickStartTapped, properties: [:])
+
+        tourStateView.configure(blog: blog,
+                                sourceController: viewController,
+                                checklistTappedTracker: checklistTappedTracker)
     }
 
     private enum Metrics {

@@ -170,7 +170,6 @@ final class BlogDashboardViewController: UIViewController {
                     } else {
                         self.collectionView.scrollToTop(animated: true)
                     }
-                    self.mySiteViewController?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPaddingForQuickStartNotices, right: 0)
                 default:
                     break
                 }
@@ -257,15 +256,16 @@ extension BlogDashboardViewController {
 
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
+
         guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
             return
         }
 
         if quickStartGuide.tourInProgress {
             // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
             quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-        else {
+        } else {
             guard shouldShowQuickStartChecklist() else {
                 return
             }
@@ -294,7 +294,6 @@ extension BlogDashboardViewController {
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
         static let cellSpacing: CGFloat = 20
-        static let bottomPaddingForQuickStartNotices: CGFloat = 80
     }
 }
 

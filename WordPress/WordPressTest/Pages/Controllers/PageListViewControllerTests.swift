@@ -6,16 +6,18 @@ import Nimble
 
 class PageListViewControllerTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext! {
+        contextManager.mainContext
+    }
 
     override func setUp() {
-        context = TestContextManager().mainContext
+        contextManager = TestContextManager()
         super.setUp()
     }
 
     override func tearDown() {
-        context = nil
-        TestContextManager.overrideSharedInstance(nil)
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
