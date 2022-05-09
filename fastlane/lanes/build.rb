@@ -5,6 +5,7 @@ SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
+APP_THINNING_EXPORT_OPTIONS = { thinning: '<thin-for-all-variants>' }
 
 # Lanes related to Building and Testing the code
 #
@@ -198,7 +199,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { method: 'enterprise', **APP_THINNING_EXPORT_OPTIONS }
     )
 
     appcenter_upload(
@@ -216,6 +217,16 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    ios_send_app_size_metrics(
+      api_url: File.join('file://localhost/', BUILD_PRODUCTS_PATH, 'wordpress-app-size-metrics.json'),
+      api_token: ENV['APPMETRICS_API_TOKEN'],
+      use_gzip_content_encoding: false,
+      app_name: 'WordPress',
+      app_version: ios_get_build_version,
+      build_type: 'Release',
+      source: 'Beta'
     )
   end
 
@@ -247,7 +258,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV['INT_EXPORT_TEAM_ID'],
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { method: 'enterprise', **APP_THINNING_EXPORT_OPTIONS }
     )
 
     appcenter_upload(
@@ -266,6 +277,16 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    ios_send_app_size_metrics(
+      api_url: File.join('file://localhost/', BUILD_PRODUCTS_PATH, 'wordpress-app-size-metrics.json'),
+      api_token: ENV['APPMETRICS_API_TOKEN'],
+      use_gzip_content_encoding: false,
+      app_name: 'WordPress',
+      app_version: build_number,
+      build_type: 'Release-Alpha',
+      source: 'PR Installable Build'
     )
 
     post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
@@ -300,7 +321,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV['INT_EXPORT_TEAM_ID'],
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { method: 'enterprise', **APP_THINNING_EXPORT_OPTIONS }
     )
 
     appcenter_upload(
@@ -319,6 +340,16 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    ios_send_app_size_metrics(
+      api_url: File.join('file://localhost/', BUILD_PRODUCTS_PATH, 'jetpack-app-size-metrics.json'),
+      api_token: ENV['APPMETRICS_API_TOKEN'],
+      use_gzip_content_encoding: false,
+      app_name: 'Jetpack',
+      app_version: build_number,
+      build_type: 'Release-Alpha',
+      source: 'PR Installable Build'
     )
 
     post_installable_build_pr_comment(app_name: 'Jetpack', build_number: build_number, url_slug: 'jetpack-installable-builds')
