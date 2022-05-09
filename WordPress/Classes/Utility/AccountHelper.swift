@@ -97,8 +97,6 @@ import Foundation
         StatsDataHelper.clearWidgetsData()
 
         // Delete donated user activities (e.g., for Siri Shortcuts)
-        if #available(iOS 12.0, *) {
-            NSUserActivity.deleteAllSavedUserActivities {}
-        }
+        NSUserActivity.deleteAllSavedUserActivities {}
     }
 }
