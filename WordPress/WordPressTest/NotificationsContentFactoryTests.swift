@@ -24,15 +24,15 @@ final class NotificationsContentFactoryTests: XCTestCase {
     }
 
     private func mockTextContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-text-content.json")
+        return try JSONObject(fromFileNamed: "notifications-text-content.json")
     }
 
     private func mockCommentContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-comment-content.json")
+        return try JSONObject(fromFileNamed: "notifications-comment-content.json")
     }
 
     private func mockUserContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-user-content.json")
+        return try JSONObject(fromFileNamed: "notifications-user-content.json")
     }
 
     func loadLikeNotification() throws -> WordPress.Notification {

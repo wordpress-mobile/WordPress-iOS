@@ -134,7 +134,7 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     private func mockDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-comment-content.json")
+        return try JSONObject(fromFileNamed: "notifications-comment-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {
@@ -142,7 +142,7 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     private func loadMeta() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-comment-meta.json")
+        return try JSONObject(fromFileNamed: "notifications-comment-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {

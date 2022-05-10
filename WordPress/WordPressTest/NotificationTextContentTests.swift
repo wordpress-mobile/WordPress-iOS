@@ -88,11 +88,11 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func mockDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-text-content.json")
+        return try JSONObject(fromFileNamed: "notifications-text-content.json")
     }
 
     private func mockButtonContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "notifications-button-text-content.json")
+        return try JSONObject(fromFileNamed: "notifications-button-text-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {

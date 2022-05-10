@@ -28,39 +28,39 @@ class ActivityLogTestData {
     }
 
     func getCommentEventDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-comment.json")
+        return try JSONObject(fromFileNamed: "activity-log-comment.json")
     }
 
     func getPostEventDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-post.json")
+        return try JSONObject(fromFileNamed: "activity-log-post.json")
     }
 
     func getPingbackDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-pingback-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-pingback-content.json")
     }
 
     func getPostContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-post-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-post-content.json")
     }
 
     func getCommentContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-comment-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-comment-content.json")
     }
 
     func getThemeContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-theme-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-theme-content.json")
     }
 
     func getSettingsContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-settings-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-settings-content.json")
     }
 
     func getSiteContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-site-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-site-content.json")
     }
 
     func getPluginContentDictionary() throws -> JSONObject {
-        return try .loadJSONFile(named: "activity-log-plugin-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-plugin-content.json")
     }
 
     func getCommentRangeDictionary() throws -> JSONObject {

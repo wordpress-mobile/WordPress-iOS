@@ -5,11 +5,10 @@ typealias JSONObject = Dictionary<String, AnyObject>
 
 extension JSONObject {
 
-    /// Loads the specified json file and returns a dictionary representing it.
+    /// Creat a dictionary represented by the specified json file.
     ///
     /// - Parameter fileName: The name of the json file to load. The "json" file extension can be omitted.
-    /// - Returns: A dictionary representing the contents of the json file.
-    static func loadJSONFile(named fileName: String) throws -> JSONObject {
+    init(fromFileNamed fileName: String) throws {
         let type = (fileName as NSString).pathExtension
         if type != "" && type != "json" {
             throw NSError(
@@ -37,7 +36,7 @@ extension JSONObject {
         }
         let data = try Data(contentsOf: url)
         let parseResult = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers, .mutableLeaves])
-        return try XCTUnwrap(parseResult as? JSONObject)
+        self = try XCTUnwrap(parseResult as? JSONObject)
     }
 
 }
