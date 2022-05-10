@@ -11,13 +11,15 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var shareButton: UIButton!
     @IBOutlet private weak var dividerView: UIView!
 
+    var answerPromptHandler: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }
 
     @IBAction private func answerPromptTapped(_ sender: Any) {
-        // TODO
+        answerPromptHandler?()
     }
 
     @IBAction private func shareTapped(_ sender: Any) {
@@ -31,7 +33,7 @@ private extension BloggingPromptsHeaderView {
 
     func configureView() {
         // TODO: Hide correct UI based on if prompt is answered
-        answerPromptButton.isHidden = true
+        answeredStackView.isHidden = true
         configureSpacing()
         configureStrings()
         configureStyles()

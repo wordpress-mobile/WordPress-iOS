@@ -83,11 +83,12 @@ class QuickStartFactoryTests: XCTestCase {
         let tours = QuickStartFactory.allTours(for: blog)
 
         // Then
-        XCTAssertEqual(tours.count, 4)
+        XCTAssertEqual(tours.count, 5)
         XCTAssertTrue(tours[0] is QuickStartCheckStatsTour)
         XCTAssertTrue(tours[1] is QuickStartNotificationsTour)
         XCTAssertTrue(tours[2] is QuickStartViewTour)
-        XCTAssertTrue(tours[3] is QuickStartFollowTour)
+        XCTAssertTrue(tours[3] is QuickStartMediaUploadTour)
+        XCTAssertTrue(tours[4] is QuickStartFollowTour)
     }
 
     func testToursForNewSite() {
