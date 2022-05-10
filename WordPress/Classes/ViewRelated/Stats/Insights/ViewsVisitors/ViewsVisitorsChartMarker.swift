@@ -248,7 +248,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
             return
         }
 
-        let entryPrevWeek = lineChartDataSetPrevWeek.values[Int(entry.x)]
+        let entryPrevWeek = lineChartDataSetPrevWeek.entries[Int(entry.x)]
         let difference = entry.y - entryPrevWeek.y
 
         var roundedPercentage = 0

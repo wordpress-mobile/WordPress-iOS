@@ -88,9 +88,9 @@ class InsightsLineChart {
 
         var chartData = [LineChartData]()
 
-        let thisWeekDataSet = LineChartDataSet(values: thisWeekEntries,
+        let thisWeekDataSet = LineChartDataSet(entries: thisWeekEntries,
                 label: NSLocalizedString("This Week", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart."))
-        let prevWeekDataSet = LineChartDataSet(values: prevWeekEntries,
+        let prevWeekDataSet = LineChartDataSet(entries: prevWeekEntries,
                 label: NSLocalizedString("Previous Week", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart."))
         let viewsDataSets = [ thisWeekDataSet, prevWeekDataSet ]
         let viewsChartData = LineChartData(dataSets: viewsDataSets)
