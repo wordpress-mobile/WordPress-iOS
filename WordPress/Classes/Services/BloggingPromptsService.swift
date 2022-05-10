@@ -73,6 +73,7 @@ struct BloggingPrompt {
     let answered: Bool
     let answerCount: Int
     let displayAvatarURLs: [URL]
+    let attribution: String
 
     static let examplePrompt = BloggingPrompt(
             promptID: 239,
@@ -82,7 +83,8 @@ struct BloggingPrompt {
             date: Date(),
             answered: false,
             answerCount: 5,
-            displayAvatarURLs: []
+            displayAvatarURLs: [],
+            attribution: ""
     )
 }
 
@@ -96,5 +98,6 @@ extension BloggingPrompt {
         answered = remotePrompt.answered
         answerCount = remotePrompt.answeredUsersCount
         displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+        attribution = remotePrompt.attribution
     }
 }
