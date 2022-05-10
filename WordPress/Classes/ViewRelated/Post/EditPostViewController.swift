@@ -23,7 +23,7 @@ class EditPostViewController: UIViewController {
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
-    private let prompt: Prompt?
+    private let prompt: BloggingPrompt?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
@@ -65,7 +65,7 @@ class EditPostViewController: UIViewController {
     ///
     /// - Parameter blog: blog to create a new post for
     /// - Parameter prompt: blogging prompt to configure the new post for
-    convenience init(blog: Blog, prompt: Prompt) {
+    convenience init(blog: Blog, prompt: BloggingPrompt) {
         self.init(post: nil, blog: blog, prompt: prompt)
     }
 
@@ -75,7 +75,7 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: Prompt? = nil) {
+    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
