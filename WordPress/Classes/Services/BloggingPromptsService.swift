@@ -83,7 +83,8 @@ struct BloggingPrompt {
             date: Date(),
             answered: false,
             answerCount: 5,
-            displayAvatarURLs: []
+            displayAvatarURLs: [],
+            attribution: ""
     )
 }
 
