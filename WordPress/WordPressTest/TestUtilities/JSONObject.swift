@@ -28,7 +28,7 @@ extension JSONObject {
         guard let url = candidates.compactMap({ $0 }).first else {
             throw NSError(
                 domain: "JSONObject",
-                code: 1,
+                code: 2,
                 userInfo: [
                     NSLocalizedDescriptionKey: "Can't find JSON file named \(fileName) or \(fileName).json"
                 ]
