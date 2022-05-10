@@ -357,6 +357,7 @@ private extension DashboardPromptsCardCell {
 
         bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
             self?.prompt = prompt
+            self?.didFailLoadingPrompt = false
         }, failure: { [weak self] (error) in
             self?.didFailLoadingPrompt = true
             DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
