@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-28 14:56:45+0000 */
+/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ кнопка";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ Вернитесь к экрану \"Мой сайт\", когда будете готовы к следующему заданию.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ метка";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ меток";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ Совет: включите push-уведомления, чтобы быстро получать последние новости.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ млрд.";
@@ -273,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(без заголовка)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Александр Петров* подписался на ваш сайт!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Александр Петров* ответил на ваш комментарий";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Александр Петров* ответил на вашу запись";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Юлия Петрова* опубликовала на сайте новую запись";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Юля Петрова* отмечает вашу запись как понравившуюся";
@@ -356,6 +371,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Новый способ создавать и публиковать захватывающее содержимое на вашем сайте.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "Несколько действий, которые помогут познакомиться с приложением.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Последовательность шагов демонстрирующая добавление темы, значка сайта и немного больше.";
@@ -489,9 +507,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Добавить блок перед";
-
-/* No comment provided by engineer. */
-"Add Blocks" = "Добавить блоки";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Добавить содержимое к записи";
@@ -793,7 +808,8 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Аноним";
 
-/* Title for a call-to-action button on the prompts card. */
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Подсказка по ответам";
 
 /* Navigates to picker screen to change the app's icon
@@ -1230,7 +1246,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Нельзя опубликовать пустую запись";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1258,6 +1273,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1315,7 +1331,8 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Осторожно!";
 
-/* Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Создайте историю своей жизни.";
 
 /* Label for Categories
@@ -1370,9 +1387,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Изменить имя пользователя";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Изменить, добавить или удалить содержимое главной страницы сайта.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Изменить, добавить или удалить страницы вашего сайта.";
 
 /* No comment provided by engineer. */
@@ -1417,6 +1431,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Проверьте ваше подключение к сети и попробуйте снова, или сохраните запись как черновик.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Проверка уведомлений";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Проверить статистику сайта";
 
 /* Title of a Quick Start Tour */
@@ -1425,10 +1442,14 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Проверка покупок…";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Проверка статистики";
+
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Дочерний объект элемента %@";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Выбрать";
 
 /* Title for selecting a new homepage */
@@ -1701,6 +1722,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Завершено";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Завершено: проверка уведомлений";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Готово: просмотр статистики сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1713,19 +1737,16 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "Готово: Уникальный значок сайта выбран";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Завершено: подключение к другим сайтам";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Готово: продолжение настроек сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Готово: создание сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Готово: редактирование главной страницы";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Готово: ознакомление с тарифами";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Готово: подписка на другие сайты";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Готово: публикация записи";
@@ -1769,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Поздравляем с приобретением!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Поздравляем! Ваш сайт преодолел отметку в *1000 просмотров за всё время*!";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Подключиться";
@@ -1784,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Общайтесь с другими блоггерами подписываясь на их записи, отмечая их как понравившиеся и оставляя комментарии.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Подключение к другим сайтам";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Подключите свои любимые службы социальных сетей, чтобы автоматически делиться новыми записями с друзьями.";
@@ -2045,7 +2072,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Создать запись";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Создать сайт";
 
 /* Stories intro continue button title */
@@ -2170,8 +2198,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Настройка градиента";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Настроить ваш сайт";
 
 /* No comment provided by engineer. */
@@ -2314,7 +2341,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Описание";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Оформление";
 
 /* Title for the desktop web preview */
@@ -2371,11 +2398,17 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Если отключить учетную запись, то ваши материалы не будут автоматически становиться доступными учетной записи %@.";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Найти";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Найти сайты";
 
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Откройте для себя и подпишитесь на блоги, которые полюбите";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Подписывайтесь на вдохновляющие вас сайты.";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Откройте для себя новые блоги для подписки";
@@ -2691,9 +2724,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Изменить видео";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Редактировать главную страницу";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Редактирование \"моих блоков\" пока не доступно в WordPress для Android";
 
@@ -2791,16 +2821,16 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "Включить Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Включить быстрый старт для сайта";
+"Enable Quick Start for Existing Site" = "Включить быстрый старт для существующего сайта";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Включить быстрый старт для сайта";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Включить статистику сайта";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Включить уведомления в приложении";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Включить уведомления в приложении?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Включить возможность делиться записями";
@@ -3173,9 +3203,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Узнать больше";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Найдите сайты общающиеся с вами и подпишитесь на них, чтобы получать уведомления о новых публикациях.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Найдите адрес вашего сайта";
 
@@ -3214,10 +3241,7 @@ translators: Block name. %s: The localized block name */
 "Follow Conversation" = "Подписаться на беседу";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Подписаться на эту беседу по email";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Подпишитесь на другие сайты";
+"Follow conversation" = "Подписаться на беседу";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Подписаться на сайт";
@@ -3375,6 +3399,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Оставайтесь в гуще событий: комментируйте прочитанные записи.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Получайте обновления в реальном времени прямо на мобильное устройство.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Начните с выбора заранее подготовленных вариантов макета, или начните с пустой страницы.";
 
@@ -3383,6 +3410,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Поехали! Увеличьте число просмотров вашей записи поделившись ей.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Познакомьтесь с приложением WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Получите собственный домен";
@@ -3405,15 +3435,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Попробуйте, добавив несколько блоков в запись или страницу!";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Дайте имя своему сайту %@";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Первое впечатление важно! Назовите свой сайт так, как это отразит его индивидуальность и содержание.";
 
 /* Default title of the Site Name screen.
    Title for Site Name screen in iPhone landscape. */
 "Give your website a name" = "Дайте имя своему сайту";
-
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your%@website a name" = "Дайте имя своему сайту %@";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3453,9 +3483,11 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Отлично!\nОбожаем отзывы счастливых пользователей\n 😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Увеличьте аудиторию";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Руководство по проверке уведомлений.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Гид по процессу выбора темы для вашего сайта.";
@@ -3593,8 +3625,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Главная";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Главная страница";
@@ -3719,6 +3750,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Неактивен, автообновление включено";
+
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Включить подсказку";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Предоставляется вместе с сайтом";
@@ -3975,6 +4009,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Будьте в курсе жизни вашего сайта.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Получайте уведомления о том, что любимые авторы опубликовали новое содержимое.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Узнавайте о росте посещаемости, новых подписчиках и важных событиях на сайте!";
+
 /* Autoapprove only from known users */
 "Known Users" = "Известные пользователи";
 
@@ -4019,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Узнайте больше о форматировании даты и времени.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Узнать больше о подсказках";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Подробнее о ролях";
@@ -4956,6 +4999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Не нашли письмо? Загляните в папку со спамом.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Не знаю, расскажите больше";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Примечание:";
 
@@ -4988,9 +5034,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Время уведомления";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Напоминание будет содержать слово или короткую вдохновляющую фразу";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Уведомления";
 
@@ -5671,9 +5721,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Просмотр";
 
@@ -5696,7 +5746,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "Просмотреть запись";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Посмотрите ваш сайт перед тем, как его увидят посетители.";
+"Preview your site to see what your visitors will see." = "Посмотрите ваш сайт перед тем, как его увидят посетители.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Предыдущий месяц";
@@ -5763,7 +5813,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Проекты";
 
-/* Title label for the Prompts card in My Sites tab. */
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
 "Prompts" = "Подсказки";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -5882,6 +5933,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL CSS Чтива";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Чтение записей с других сайтов";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Недвижимость";
@@ -6355,7 +6409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Прокручиваемое меню блоков открыто. Выберите блок.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Поиск";
 
@@ -6445,13 +6498,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Выберите %@ для поиска новых тем";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Выберите %@ для редактирования главной страницы.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Выберите %@ для поиска сайтов с общими интересами";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Выберите %@ для просмотра";
+"Select %@ to find other sites." = "Нажмите %@, чтобы найти другие сайты.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Выберите %@ для просмотра статистики сайта.";
@@ -6470,6 +6517,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Выберите %@ для загрузки нового.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Нажмите %@, чтобы перейти на свой сайт.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Выберите страну";
@@ -6503,6 +6553,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Выбрать стиль абзацев";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Перейдите на вкладку %@, чтобы вносить изменения на ходу.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Выберите %@ , чтобы добавить учетные записи социальных сетей";
@@ -6643,6 +6696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Настройки";
@@ -6843,7 +6897,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Тема сайта";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "URL сайта";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6893,17 +6948,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Размер";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Пропустить";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Пропустить все";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Пропустить быстрый старт";
 
 /* Menu title to skip today's prompt. */
 "Skip this prompt" = "Пропустить эту подсказку";
@@ -7078,6 +7128,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Оставайтесь на связи";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Оставайтесь на связи с уведомлениями о комментариях и отметках нравится.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Оставайтесь на связи с вашей аудиторией с уведомлениями о комментариях и отметках нравится.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Оставайтесь в курсе событий с помощью уведомлений";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Прикрепить запись на главную страницу";
@@ -7312,6 +7371,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Нажмите для просмотра сайта";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "Задача выполнена.";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Таксономия";
 
@@ -7458,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Запись, которую вы пытаетесь скопировать имеет две конфликтующие версии или вы недавно внесли, но не сохранили изменения.\nОтредактируйте запись и решите конфликты или скопируйте версию из этого приложения.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Быстрый старт поможет вам быстро создать базовый сайт. Вы точно хотите пропустить его?";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Сериализация запроса не удалась.";
@@ -7957,6 +8016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Попробуйте прямо сейчас!";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Выберите %@, чтобы добавить интересные темы.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Попробуйте редактор блоков";
 
@@ -8180,6 +8242,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8193,10 +8256,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "Отписаться от %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Отписаться от беседы";
+"Unfollow Conversation" = "Отписаться от беседы";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Отписаться от этой беседы по email";
+"Unfollow conversation" = "Отписаться от беседы";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Отписаться от сайта";
@@ -8378,6 +8441,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Использовать";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Используйте %@ для поиска сайтов и меток.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Использовать магазин-песочницу";
 
@@ -8477,8 +8543,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Просмотреть запись";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Посмотреть сайт";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8538,6 +8603,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Перейдите на сайт «%@», чтобы читать далее";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Перейти в консоль";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Перейти на сайт";
@@ -9082,6 +9150,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Поэзия и проза";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Ведение блога";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Позиция по оси X";
 
@@ -9238,6 +9309,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Вы должны подтверить вашу учетную запись перед публикацией записи.\nНе волнуйтесь, ваша запись в безопасности и сохранена как черновик.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Вы сегодня получили *50 отметок \"нравится\"* для вашего комментария";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Вы сегодня получили *50 отметок \"нравится\"* на сайте";
 
@@ -9263,6 +9337,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Вы получите уведомление о том, что нужно написать в блог <strong>однократно<\/strong> в неделю по %1$@ в %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Вы получите уведомления в приложении";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Вы получите напоминания о необходимости написать в блог %1$@ в неделю, по  %2$@.";
@@ -9345,6 +9423,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "При открытии сайта в браузере Safari его адрес отображается в строке в верхней части экрана.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Ваш сайт уже защищён VaultPress. Ниже вы можете найти ссылку на консоль VaultPress.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Похоже на вашем сайте *гораздо больше трафика* чем обычно!";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "На вашем сайте включён VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Ваш сайт создан!";
 
@@ -9402,17 +9489,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "Это нравится блогерам: %1$d.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "Это нравится блогерам: %1$d.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_Вам и %1$d другому блоггеру_ нравится это.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_Одному блоггеру_ это нравится.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Вам и %1$d другим блоггерам_ нравится это.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_Вам и другому блоггеру_ нравится это.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Вам_ нравится это.";
@@ -9541,6 +9628,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Комментарии";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Отметки «нравится»";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Опубликовано %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Просмотры";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 Самое популярное время";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% просмотров";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";

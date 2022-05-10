@@ -313,6 +313,27 @@ struct MostPopularTimeInsightStatsRow: ImmuTableRow {
     }
 }
 
+struct TotalInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsTotalInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let dataRow: StatsTotalInsightsData
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(count: dataRow.count, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
 
 // MARK: - Insights Management
 

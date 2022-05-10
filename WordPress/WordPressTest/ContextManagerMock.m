@@ -14,18 +14,6 @@
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        // Override the shared ContextManager
-        [ContextManager internalSharedInstance];
-        [ContextManager overrideSharedInstance:self];
-    }
-
-    return self;
-}
-
 - (NSManagedObjectModel *)managedObjectModel
 {
     return _managedObjectModel ?: [super managedObjectModel];

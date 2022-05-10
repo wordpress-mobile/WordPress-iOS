@@ -126,7 +126,7 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
 
         let middleLabel = UILabel()
         middleLabel.textColor = .text
-        middleLabel.font = .preferredFont(forTextStyle: .title1).bold()
+        middleLabel.font = WPStyleGuide.Stats.insightsCountFont
         middleLabel.adjustsFontSizeToFitWidth = true
 
         let bottomLabel = UILabel()

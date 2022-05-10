@@ -187,9 +187,13 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.followersTotalsStatus,
                                         block: {
+                    if FeatureFlag.statsNewInsights.enabled {
+                        return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                    } else {
                                             return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
                                                                      statSection: .insightsFollowerTotals,
                                                                      siteStatsInsightsDelegate: nil)
+                    }
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
@@ -597,12 +601,12 @@ private extension SiteStatsInsightsViewModel {
         let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
 
         var totalPublicize = 0
-        if let publicize = insightsStore.getPublicize(), !publicize.publicizeServices.isEmpty {
+        if let publicize = insightsStore.getPublicize(),
+           !publicize.publicizeServices.isEmpty {
             totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
         }
 
-        let totalFollowers = totalDotComFollowers + totalEmailFollowers + totalPublicize
-
+        let totalFollowers = insightsStore.getTotalFollowerCount()
         guard totalFollowers > 0 else {
             return []
         }
@@ -620,6 +624,10 @@ private extension SiteStatsInsightsViewModel {
                                                    rightColumnData: totalPublicize.abbreviatedString()))
 
         return dataRows
+    }
+
+    func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount().abbreviatedString())
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {

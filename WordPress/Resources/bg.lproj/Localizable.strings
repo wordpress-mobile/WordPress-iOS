@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:31:27+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -359,7 +359,6 @@
 "Can Not Request Link" = "Неуспешно изискване на връзка";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -387,6 +386,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -669,7 +669,8 @@
 "Create Account" = "Създаване на профил";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Създаване на сайт";
 
 /* Create WordPress.com site button */
@@ -1659,6 +1660,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Известия";
 
@@ -1941,9 +1943,9 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Преглед";
 
@@ -2248,7 +2250,6 @@
 "Scheduling..." = "Насрочване...";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Търсене";
 
@@ -2293,6 +2294,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Настройки";
@@ -2391,9 +2393,10 @@
 /* Image size option title. */
 "Size" = "Размер";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Пропускане";
 
@@ -2845,6 +2848,7 @@
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -2978,8 +2982,7 @@
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Покажи всички";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Към сайта";
 
 /* Displays More Rows */
@@ -3211,6 +3214,12 @@
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "в \"Обновяване\"";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Later today */
 "later today" = "по-късно днес";

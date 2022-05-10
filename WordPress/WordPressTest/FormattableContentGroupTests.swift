@@ -10,11 +10,11 @@ final class FormattableContentGroupTests: XCTestCase {
         static let kind: FormattableContentGroup.Kind = .activity
     }
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         utility.setUp()
         ContextManager.overrideSharedInstance(nil)
-        subject = FormattableContentGroup(blocks: [mockContent()], kind: Constants.kind)
+        subject = FormattableContentGroup(blocks: [try mockContent()], kind: Constants.kind)
     }
 
     override func tearDown() {
@@ -28,9 +28,9 @@ final class FormattableContentGroupTests: XCTestCase {
         XCTAssertEqual(subject?.kind, Constants.kind)
     }
 
-    func testBlocksRemainAsInitialised() {
+    func testBlocksRemainAsInitialised() throws {
         let groupBlocks = subject?.blocks as? [FormattableTextContent]
-        let mockBlocks = [mockContent()]
+        let mockBlocks = [try mockContent()]
 
         /// Compare by the blocks' text
         let groupBlocksText = groupBlocks!.map { $0.text }
@@ -39,11 +39,11 @@ final class FormattableContentGroupTests: XCTestCase {
         XCTAssertEqual(groupBlocksText, mockBlocksText)
     }
 
-    func testBlockOfKindReturnsExpectation() {
+    func testBlockOfKindReturnsExpectation() throws {
         let obtainedBlock: FormattableTextContent? = subject?.blockOfKind(.text)
         let obtainedBlockText = obtainedBlock?.text
 
-        let mockText = mockContent().text
+        let mockText = try mockContent().text
 
         XCTAssertEqual(obtainedBlockText, mockText)
     }
@@ -54,16 +54,13 @@ final class FormattableContentGroupTests: XCTestCase {
         XCTAssertNil(obtainedBlock)
     }
 
-    private func mockContent() -> FormattableTextContent {
-        let text = mockActivity()["text"] as? String ?? ""
+    private func mockContent() throws -> FormattableTextContent {
+        let text = try mockActivity()["text"] as? String ?? ""
         return FormattableTextContent(text: text, ranges: [], actions: [])
     }
 
-    private func mockActivity() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-activity-content.json")
+    private func mockActivity() throws -> JSONObject {
+        return try .loadFile(named: "activity-log-activity-content.json")
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
-        return JSONObject.loadFile(named: fileName)
-    }
 }

@@ -1,11 +1,12 @@
-We made a small but mighty change to the block editor: the “Add Block” button is more visible when you first open the editor with no blocks selected. We also removed one of three error notifications when a media or audio block fails to upload—it felt like overkill.
+When you Follow Conversation in Reader post cards and post details, in-app notifications are now opt-out rather than opt-in.
 
-You’ll hear some accessibility tweaks in the VoiceOver experience when you’re rearranging menu items. Instructions and notices are clearer, and the menu hierarchy makes more sense out loud.
+We replaced the quick-start prompt when you log in as an existing user. Now you can tell us what you’d like to focus on and enable notifications for things like site traffic, new followers, and other milestones. Cue confetti.
 
-We added a new screen to the site creation process where you can enter your site’s intent. We tested this screen with a small group of users, and we think you’ll like it, too.
+Ready for the grand tour? We made some tweaks to the Stats and Reader tours in the Quick Start section. Now you can move through the tours more smoothly and get more pointers and messages as you go.
 
-Web previews won’t cut off bottom-of-the-screen notifications when your browser toolbar is visible.
+We also made some sweet, sweet changes to the Block Editor.
 
-What’s in a name? Well, if your site has one, you’ll see it in the My Site navigation title.
-
-When you swipe left on a comment in your Notifications, you won’t see the “Trash” option anymore. Instead you’ll see “Unapprove Comment” and “Approve Comment.” We approve.
+- You can now adjust Featured Image settings for any posts in a Latest Post block.
+- You’ll see the correct notices when you’re fast-switching between HTML and Visual mode.
+- Media previews are no longer cut off when you edit a URL in an Embed block.
+- If you’re using an iPad with an external keyboard, you’ll no longer see extra space between the toolbar and the bottom of the screen. Mind the gap.

@@ -12,7 +12,7 @@ extension BarChartData {
 
 extension BarChartDataSet {
     convenience init(values: [BarChartDataEntry], label: String?, valueFormatter: IValueFormatter?) {
-        self.init(values: values, label: label)
+        self.init(entries: values, label: label)
         self.valueFormatter = valueFormatter
     }
 }

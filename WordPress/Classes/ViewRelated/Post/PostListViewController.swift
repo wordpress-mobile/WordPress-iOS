@@ -193,7 +193,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
             }, source: Constants.source), at: 0)
         }
-        return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
+        return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
 
     override func viewDidAppear(_ animated: Bool) {

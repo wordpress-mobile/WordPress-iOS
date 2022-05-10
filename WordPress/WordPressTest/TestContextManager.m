@@ -6,17 +6,26 @@
 // Based on the Feature Flag value
 @implementation TestContextManager
 
-static TestContextManager *_instance;
-
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        // Override the shared ContextManager
-        _stack = [[ContextManagerMock alloc] init];
+        self.stack = [[ContextManagerMock alloc] init];
     }
 
     return self;
+}
+
+- (void)setStack:(id<ManagerMock, CoreDataStack>)stack
+{
+    if (stack == _stack) {
+        return;
+    }
+
+    _stack = stack;
+    // Override the shared ContextManager
+    [ContextManager internalSharedInstance];
+    [ContextManager overrideSharedInstance:_stack];
 }
 
 - (NSManagedObjectModel *)managedObjectModel
@@ -80,21 +89,6 @@ static TestContextManager *_instance;
                                                                         YES) lastObject];
 
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
-}
-
-+ (instancetype)sharedInstance
-{
-    if (_instance) {
-        return _instance;
-    }
-
-    _instance = [[TestContextManager alloc] init];
-    return _instance;
-}
-
-+ (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager
-{
-    [ContextManager overrideSharedInstance: contextManager];
 }
 
 @end
