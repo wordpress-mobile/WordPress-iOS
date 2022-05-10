@@ -24,6 +24,11 @@ steps:
     notify:
       - github_commit_status:
           context: "WordPress Installable Build"
+    # TODO: Remove this once we're done debugging app-size-metrics
+    artifact_paths:
+      - "Artifacts/app-thinning.plist"
+      - "Artifacts/wordpress-app-size-metrics.json"
+      - "Artifacts/jetpack-app-size-metrics.json"
 
   - label: "🛠 Jetpack Installable Build"
     command: ".buildkite/commands/installable-build-jetpack.sh"
