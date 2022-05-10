@@ -15,7 +15,7 @@ extension BlogDetailsViewController {
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
-                case .stats:
+                case .stats, .mediaScreen:
                     guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDetails else {
                         return
                     }

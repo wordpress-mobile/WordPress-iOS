@@ -77,6 +77,7 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
             QuickStartCheckStatsTour(),
             QuickStartNotificationsTour(),
             QuickStartViewTour(blog: blog),
+            QuickStartMediaUploadTour(),
             QuickStartFollowTour()
         ]
     }
