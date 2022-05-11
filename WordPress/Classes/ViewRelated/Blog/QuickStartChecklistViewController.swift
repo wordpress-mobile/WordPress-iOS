@@ -57,11 +57,13 @@ class QuickStartChecklistViewController: UITableViewController {
                                                  tours: collection.tours,
                                                  didSelectTour: { [weak self] tour in
             DispatchQueue.main.async { [weak self] in
-                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
-
                 guard let self = self else {
                     return
                 }
+
+                WPAnalytics.trackQuickStartStat(.quickStartChecklistItemTapped,
+                                                properties: ["task_name": tour.analyticsKey],
+                                                blog: self.blog)
 
                 QuickStartTourGuide.shared.prepare(tour: tour, for: self.blog)
 
@@ -83,8 +85,9 @@ class QuickStartChecklistViewController: UITableViewController {
 
         // should display bg and trigger qs notification
 
-        WPAnalytics.track(.quickStartChecklistViewed,
-                          withProperties: [Constants.analyticsTypeKey: collection.analyticsKey])
+        WPAnalytics.trackQuickStartStat(.quickStartChecklistViewed,
+                                        properties: [Constants.analyticsTypeKey: collection.analyticsKey],
+                                        blog: blog)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -146,8 +149,9 @@ private extension QuickStartChecklistViewController {
     }
 
     @objc private func closeWasPressed(sender: UIButton) {
-        WPAnalytics.track(.quickStartTypeDismissed,
-                          withProperties: [Constants.analyticsTypeKey: collection.analyticsKey])
+        WPAnalytics.trackQuickStartStat(.quickStartTypeDismissed,
+                                        properties: [Constants.analyticsTypeKey: collection.analyticsKey],
+                                        blog: blog)
         dismiss(animated: true, completion: nil)
     }
 }
