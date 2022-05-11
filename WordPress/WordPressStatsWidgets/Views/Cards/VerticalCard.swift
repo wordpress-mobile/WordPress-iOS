@@ -30,7 +30,6 @@ struct VerticalCard: View {
                 .accessibility(label: accessibilityLabel)
 
         }
-        .flipsForRightToLeftLayoutDirection(true)
     }
 }
 
