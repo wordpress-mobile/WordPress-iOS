@@ -73,7 +73,9 @@ class QuickStartChecklistViewController: UITableViewController {
             }
         }, didTapHeader: { [unowned self] expand in
             let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed
-            WPAnalytics.track(event, withProperties: [Constants.analyticsTypeKey: self.collection.analyticsKey])
+            WPAnalytics.trackQuickStartStat(event,
+                                            properties: [Constants.analyticsTypeKey: self.collection.analyticsKey],
+                                            blog: blog)
             self.checkForSuccessScreen(expand)
         })
 
