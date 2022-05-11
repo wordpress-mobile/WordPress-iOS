@@ -431,7 +431,7 @@ extension PushNotificationsManager {
             let quickStartType = userInfo.string(forKey: QuickStartTracking.quickStartTypeKey) {
             WPAnalytics.track(.quickStartNotificationTapped,
                               withProperties: [QuickStartTracking.taskNameKey: taskName,
-                                               QuickStartTracking.quickStartTypeKey: quickStartType])
+                                               WPAnalytics.WPAppAnalyticsKeyQuickStartSiteType: quickStartType])
         }
 
         completionHandler?(.newData)
@@ -462,7 +462,7 @@ extension PushNotificationsManager {
 
         WPAnalytics.track(.quickStartNotificationStarted,
                           withProperties: [QuickStartTracking.taskNameKey: tour.analyticsKey,
-                                           QuickStartTracking.quickStartTypeKey: quickStartType.key])
+                                           WPAnalytics.WPAppAnalyticsKeyQuickStartSiteType: quickStartType.key])
     }
 
     @objc func deletePendingLocalNotifications() {

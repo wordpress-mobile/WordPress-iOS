@@ -2,7 +2,7 @@ import Foundation
 
 extension WPAnalytics {
 
-    private static let WPAppAnalyticsKeyQuickStartSiteType: String = "site_type"
+    static let WPAppAnalyticsKeyQuickStartSiteType: String = "site_type"
 
     /// Track a Quick Start event
     ///
