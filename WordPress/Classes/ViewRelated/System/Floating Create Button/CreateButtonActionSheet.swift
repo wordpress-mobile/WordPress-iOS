@@ -10,8 +10,7 @@ class CreateButtonActionSheet: ActionSheetViewController {
         static let title = NSLocalizedString("Create New", comment: "Create New header text")
     }
 
-    init(actions: [ActionSheetItem]) {
-        let headerView = FeatureFlag.bloggingPrompts.enabled ? BloggingPromptsHeaderView.loadFromNib() : nil
+    init(headerView: UIView?, actions: [ActionSheetItem]) {
         let buttons = actions.map { $0.makeButton() }
         super.init(headerView: headerView, headerTitle: Constants.title, buttons: buttons)
     }

@@ -27,12 +27,12 @@ class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
         configureView()
     }
 
-    // TODO: remove answered param. Add BloggingPrompt, configure with its properties.
-    func configure(answered: Bool) {
-        titleLabel.text = "Cast the movie of your life."
-        dateLabel.text = dateFormatter.string(from: Date())
+    func configure(_ prompt: BloggingPrompt) {
+        self.prompt = prompt
+        titleLabel.text = prompt.text.stringByDecodingXMLCharacters().trim()
+        dateLabel.text = dateFormatter.string(from: prompt.date)
         answerCountLabel.text = answerInfoText
-        answeredStateView.isHidden = !answered
+        answeredStateView.isHidden = !prompt.answered
     }
 }
 
@@ -52,11 +52,7 @@ private extension BloggingPromptTableViewCell {
     }
 
     var answerInfoText: String {
-        // TODO: remove when we have a prompt.
-        guard let answerCount = prompt?.answerCount else {
-            return "99 answers"
-        }
-
+        let answerCount = prompt?.answerCount ?? 0
         let stringFormat = (answerCount == 1 ? Strings.answerInfoSingularFormat : Strings.answerInfoPluralFormat)
         return String(format: stringFormat, answerCount)
     }

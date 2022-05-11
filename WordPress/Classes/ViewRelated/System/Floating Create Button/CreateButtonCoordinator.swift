@@ -56,20 +56,38 @@ import WordPressFlux
         }
     }
 
+    private lazy var promptsHeaderView: BloggingPromptsHeaderView? = {
+        let headerView = FeatureFlag.bloggingPrompts.enabled ? BloggingPromptsHeaderView.loadFromNib() : nil
+        headerView?.answerPromptHandler = { [weak self] in
+            self?.viewController?.dismiss(animated: true) {
+                guard let blog = self?.blog else {
+                    return
+                }
+                let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+                editor.modalPresentationStyle = .fullScreen
+                editor.entryPoint = .bloggingPromptsActionSheetHeader
+                self?.viewController?.present(editor, animated: true)
+            }
+        }
+        return headerView
+    }()
+
     private weak var noticeContainerView: NoticeContainerView?
     private let actions: [ActionSheetItem]
     private let source: String
+    private let blog: Blog?
 
     /// Returns a newly initialized CreateButtonCoordinator
     /// - Parameters:
     ///   - viewController: The UIViewController from which the menu should be shown.
-    ///   - newPost: A closure to call when the New Post button is tapped.
-    ///   - newPage: A closure to call when the New Page button is tapped.
-    ///   - newStory: A closure to call when the New Story button is tapped. The New Story button is hidden when value is `nil`.
-    init(_ viewController: UIViewController, actions: [ActionSheetItem], source: String) {
+    ///   - actions: A list of actions to display in the menu
+    ///   - source: The source where the create button is being presented from
+    ///   - blog: The current blog in context
+    init(_ viewController: UIViewController, actions: [ActionSheetItem], source: String, blog: Blog? = nil) {
         self.viewController = viewController
         self.actions = actions
         self.source = source
+        self.blog = blog
 
         super.init()
 
@@ -143,7 +161,7 @@ import WordPressFlux
     }
 
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
-        let actionSheetVC = CreateButtonActionSheet(actions: actions)
+        let actionSheetVC = CreateButtonActionSheet(headerView: promptsHeaderView, actions: actions)
         setupPresentation(on: actionSheetVC, for: traitCollection)
         return actionSheetVC
     }

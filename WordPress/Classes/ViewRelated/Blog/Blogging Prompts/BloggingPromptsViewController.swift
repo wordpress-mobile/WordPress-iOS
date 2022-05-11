@@ -9,11 +9,24 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
     @IBOutlet private weak var filterTabBar: FilterTabBar!
 
     private var blog: Blog?
+    private var prompts: [BloggingPrompt] = [] {
+        didSet {
+            tableView.reloadData()
+            showNoResultsViewIfNeeded()
+        }
+    }
 
-    // TODO: remove when prompts are fetched, use fetched prompts count.
-    private var promptCount: Int = 10
-    // TODO: set when prompt fetching is added.
-    private var isLoading: Bool = false
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        return BloggingPromptsService(blog: blog)
+    }()
+
+    private var isLoading: Bool = false {
+        didSet {
+            if isLoading != oldValue {
+                showNoResultsViewIfNeeded()
+            }
+        }
+    }
 
     // MARK: - Init
 
@@ -35,9 +48,12 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
         title = Strings.viewTitle
         configureFilterTabBar()
         configureTableView()
-        showNoResultsViewIfNeeded()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPrompts()
+    }
 }
 
 // MARK: - Private Methods
@@ -54,15 +70,13 @@ private extension BloggingPromptsViewController {
     }
 
     func showNoResultsViewIfNeeded() {
-        hideNoResults()
-
         guard !isLoading else {
             showLoadingView()
             return
         }
 
-        // TODO: use fetched prompts count.
-        guard promptCount == 0 else {
+        guard prompts.isEmpty else {
+            hideNoResults()
             return
         }
 
@@ -70,12 +84,14 @@ private extension BloggingPromptsViewController {
     }
 
     func showNoResultsView() {
+        hideNoResults()
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResults.emptyTitle,
                                      image: NoResults.imageName)
     }
 
     func showLoadingView() {
+        hideNoResults()
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())
@@ -87,6 +103,27 @@ private extension BloggingPromptsViewController {
                                      title: NoResults.errorTitle,
                                      subtitle: NoResults.errorSubtitle,
                                      image: NoResults.imageName)
+    }
+
+    func fetchPrompts() {
+        // TODO: show cached prompts first.
+
+        guard let bloggingPromptsService = bloggingPromptsService else {
+            DDLogError("Failed creating BloggingPromptsService instance.")
+            showErrorView()
+            return
+        }
+
+        isLoading = true
+
+        bloggingPromptsService.fetchPrompts(success: { [weak self] (prompts) in
+            self?.isLoading = false
+            self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+        }, failure: { [weak self] (error) in
+            DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
+            self?.isLoading = false
+            self?.showErrorView()
+        })
     }
 
     enum Strings {
@@ -108,17 +145,16 @@ private extension BloggingPromptsViewController {
 extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: use fetched prompts count.
-        return promptCount
+        return prompts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID) as? BloggingPromptTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BloggingPromptTableViewCell.defaultReuseID) as? BloggingPromptTableViewCell,
+              let prompt = prompts[safe: indexPath.row] else {
             return UITableViewCell()
         }
 
-        // TODO: replace answered with BloggingPrompt.
-        cell.configure(answered: indexPath.row > 4)
+        cell.configure(prompt)
         return cell
     }
 
@@ -152,7 +188,6 @@ private extension BloggingPromptsViewController {
         // TODO:
         // - track selected filter changed
         // - refresh view for selected filter
-        showNoResultsViewIfNeeded()
     }
 
 }

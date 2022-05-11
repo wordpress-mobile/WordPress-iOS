@@ -155,4 +155,5 @@ enum PostEditorEntryPoint: String {
     case postsList
     case dashboard
     case bloggingPromptsFeatureIntroduction
+    case bloggingPromptsActionSheetHeader
 }

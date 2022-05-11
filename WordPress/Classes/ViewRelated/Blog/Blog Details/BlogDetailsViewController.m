@@ -900,6 +900,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             callback:^{
                    [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
                                                             }];
+    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
     [rows addObject:mediaRow];
 
     BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
@@ -1437,7 +1438,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
 
 - (void)showPeople

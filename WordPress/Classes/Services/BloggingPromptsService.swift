@@ -35,6 +35,18 @@ class BloggingPromptsService {
         }
     }
 
+    /// Convenience method to fetch the blogging prompt for the current day.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func fetchTodaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
+                           failure: @escaping (Error?) -> Void) {
+        fetchPrompts(from: Date(), number: 1, success: { (prompts) in
+            success(prompts.first)
+        }, failure: failure)
+    }
+
     required init?(context: NSManagedObjectContext = ContextManager.shared.mainContext,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
@@ -61,7 +73,22 @@ struct BloggingPrompt {
     let answered: Bool
     let answerCount: Int
     let displayAvatarURLs: [URL]
+    let attribution: String
 
+    static let examplePrompt = BloggingPrompt(
+            promptID: 239,
+            text: "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.",
+            title: "Prompt number 1",
+            content: "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->",
+            date: Date(),
+            answered: false,
+            answerCount: 5,
+            displayAvatarURLs: [],
+            attribution: ""
+    )
+}
+
+extension BloggingPrompt {
     init(with remotePrompt: RemoteBloggingPrompt) {
         promptID = remotePrompt.promptID
         text = remotePrompt.text
@@ -71,5 +98,6 @@ struct BloggingPrompt {
         answered = remotePrompt.answered
         answerCount = remotePrompt.answeredUsersCount
         displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
+        attribution = remotePrompt.attribution
     }
 }
