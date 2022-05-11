@@ -4,14 +4,7 @@ import CoreData
 
 @testable import WordPress
 
-class ContextManagerTests: XCTestCase {
-    var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        super.setUp()
-
-        contextManager = ContextManagerMock()
-    }
+class ContextManagerTests: CoreDataTestCase {
 
     func testIterativeMigration() {
         let model19Name = "WordPress 19"

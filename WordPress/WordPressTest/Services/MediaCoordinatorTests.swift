@@ -3,17 +3,11 @@ import Foundation
 import Nimble
 @testable import WordPress
 
-class MediaCoordinatorTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
-
+class MediaCoordinatorTests: CoreDataTestCase {
     private var coordinator: MediaCoordinator!
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         contextManager.setUpAsSharedInstance()
         coordinator = MediaCoordinator(MediaServiceFactoryMock())
     }
@@ -25,12 +19,12 @@ class MediaCoordinatorTests: XCTestCase {
     }
 
     func testUploadMediaReturnsTrueIfAllPendingMediaAreQueuedForUpload() {
-        let post = PostBuilder(context)
+        let post = PostBuilder(mainContext)
             .with(image: "test.jpg", status: .failed)
             .with(image: "test-002.jpg", status: .failed)
             .with(image: "test-003.jpg", status: .local)
             .build()
-        try! context.save()
+        try! mainContext.save()
 
         let isPushingAllPendingMedia = coordinator.uploadMedia(for: post, automatedRetry: true)
 
@@ -38,12 +32,12 @@ class MediaCoordinatorTests: XCTestCase {
     }
 
     func testUploadMediaReturnsFalseIfNotAllPendingMediaAreQueuedForUpload() {
-        let post = PostBuilder(context)
+        let post = PostBuilder(mainContext)
             .with(image: "test.jpg", status: .failed)
             // This media has exceeded the maximum failure count and will not be queued
             .with(image: "test-002.jpg", status: .failed, autoUploadFailureCount: 10)
             .build()
-        try! context.save()
+        try! mainContext.save()
 
         let isPushingAllPendingMedia = coordinator.uploadMedia(for: post, automatedRetry: true)
 

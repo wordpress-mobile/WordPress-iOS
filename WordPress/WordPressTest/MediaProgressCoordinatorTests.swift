@@ -1,9 +1,8 @@
 import Foundation
 @testable import WordPress
 
-class MediaProgressCoordinatorTests: XCTestCase {
+class MediaProgressCoordinatorTests: CoreDataTestCase {
 
-    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
     var mediaProgressCoordinator: MediaProgressCoordinator!
 
@@ -17,7 +16,6 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         mediaProgressCoordinator = MediaProgressCoordinator()

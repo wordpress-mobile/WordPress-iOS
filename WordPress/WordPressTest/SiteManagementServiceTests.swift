@@ -2,8 +2,7 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceTests: XCTestCase {
-    var contextManager: ContextManagerMock!
+class SiteManagementServiceTests: CoreDataTestCase {
     var mockRemoteService: MockSiteManagementServiceRemote!
     var siteManagementService: SiteManagementServiceTester!
 
@@ -57,7 +56,6 @@ class SiteManagementServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         siteManagementService = SiteManagementServiceTester(managedObjectContext: contextManager.mainContext)
         mockRemoteService = siteManagementService.mockRemoteService
     }

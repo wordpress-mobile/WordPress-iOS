@@ -1,14 +1,12 @@
 import XCTest
 @testable import WordPress
 
-class BlogTitleTests: XCTestCase {
+class BlogTitleTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL

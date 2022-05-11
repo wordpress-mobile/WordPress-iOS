@@ -10,8 +10,7 @@ import Nimble
 ///
 /// We weren't able to figure out why but it seems a race condition + Core data
 /// For now, renaming the suite to change the execution order solves the issue.
-class ZBlogDashboardServiceTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class ZBlogDashboardServiceTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     private var service: BlogDashboardService!
@@ -26,7 +25,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
@@ -35,7 +33,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testCallServiceWithCorrectIDAndCards() {

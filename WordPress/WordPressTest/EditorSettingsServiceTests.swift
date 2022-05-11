@@ -18,9 +18,7 @@ private class TestableEditorSettingsService: EditorSettingsService {
     }
 }
 
-class EditorSettingsServiceTest: XCTestCase {
-    var contextManager: ContextManagerMock!
-    var context: NSManagedObjectContext!
+class EditorSettingsServiceTest: CoreDataTestCase {
     var remoteApi: MockWordPressComRestApi!
     var service: EditorSettingsService!
     var database: KeyValueDatabase!
@@ -28,20 +26,18 @@ class EditorSettingsServiceTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
-        context = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
-        service = TestableEditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
+        service = TestableEditorSettingsService(managedObjectContext: mainContext, wpcomApi: remoteApi)
         Environment.replaceEnvironment(contextManager: contextManager)
-        setupDefaultAccount(with: context)
+        setupDefaultAccount(with: mainContext)
     }
 
     func setupDefaultAccount(with context: NSManagedObjectContext) {
         account = ModelTestHelper.insertAccount(context: context)
         account.authToken = "auth"
         account.uuid = "uuid"
-        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
+        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
     }
 
     func testLocalSettingsMigrationPostAztec() {
@@ -137,7 +133,7 @@ extension EditorSettingsServiceTest {
     }
 
     func makeTestBlog(withID id: Int = 1) -> Blog {
-        let blog = ModelTestHelper.insertDotComBlog(context: context)
+        let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = NSNumber(value: id)
         blog.account?.authToken = "auth"
         return blog

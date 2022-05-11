@@ -4,17 +4,15 @@ import XCTest
 @testable import WordPress
 @testable import WordPressKit
 
-class ActivityStoreTests: XCTestCase {
+class ActivityStoreTests: CoreDataTestCase {
     private var dispatcher: ActionDispatcher!
     private var store: ActivityStore!
     private var activityServiceMock: ActivityServiceRemoteMock!
     private var backupServiceMock: JetpackBackupServiceMock!
-    private var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
         backupServiceMock = JetpackBackupServiceMock(managedObjectContext: contextManager.mainContext)

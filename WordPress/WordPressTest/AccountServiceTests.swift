@@ -2,14 +2,12 @@ import UIKit
 import XCTest
 @testable import WordPress
 
-class AccountServiceTests: XCTestCase {
-    var contextManager: ContextManagerMock!
+class AccountServiceTests: CoreDataTestCase {
     var accountService: AccountService!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         contextManager.setUpAsSharedInstance()
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
@@ -20,7 +18,6 @@ class AccountServiceTests: XCTestCase {
         deleteTestAccounts()
 
         contextManager.tearDown()
-        contextManager = nil
         accountService = nil
     }
 

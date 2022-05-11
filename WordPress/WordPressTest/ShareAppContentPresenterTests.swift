@@ -3,10 +3,9 @@ import OHHTTPStubs
 
 @testable import WordPress
 
-final class ShareAppContentPresenterTests: XCTestCase {
+final class ShareAppContentPresenterTests: CoreDataTestCase {
 
     private let timeout: TimeInterval = 0.1
-    private var contextManager: ContextManagerMock!
     private var account: WPAccount!
     private var presenter: ShareAppContentPresenter!
     private var viewController: MockViewController!
@@ -15,7 +14,6 @@ final class ShareAppContentPresenterTests: XCTestCase {
         super.setUp()
 
         TestAnalyticsTracker.setup()
-        contextManager = ContextManagerMock()
         account = AccountBuilder(contextManager).build()
         presenter = ShareAppContentPresenter(account: account)
         viewController = MockViewController()
@@ -27,7 +25,6 @@ final class ShareAppContentPresenterTests: XCTestCase {
         HTTPStubs.removeAllStubs()
         TestAnalyticsTracker.tearDown()
 
-        contextManager = nil
         account = nil
         presenter = nil
         viewController = nil

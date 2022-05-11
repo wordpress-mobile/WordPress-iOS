@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class ApproveCommentActionTests: XCTestCase {
+final class ApproveCommentActionTests: CoreDataTestCase {
     private class TestableApproveComment: ApproveComment {
         let service: MockNotificationActionsService
 
@@ -32,7 +32,6 @@ final class ApproveCommentActionTests: XCTestCase {
 
     private var action: ApproveComment?
     private let utility = NotificationUtility()
-    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -41,7 +40,6 @@ final class ApproveCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        contextManager = ContextManagerMock()
         action = TestableApproveComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
