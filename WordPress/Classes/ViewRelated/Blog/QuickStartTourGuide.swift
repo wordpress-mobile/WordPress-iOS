@@ -359,15 +359,15 @@ private extension QuickStartTourGuide {
 
         blog.completeTour(tour.key)
 
+        // Create a site is completed automatically, we don't want to track
+        if tour.analyticsKey != "create_site" {
+            WPAnalytics.trackQuickStartStat(.quickStartTourCompleted,
+                                            properties: ["task_name": tour.analyticsKey],
+                                            blog: blog)
+        }
+
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-
-            // Create a site is completed automatically, we don't want to track
-            if tour.analyticsKey != "create_site" {
-                WPAnalytics.trackQuickStartStat(.quickStartTourCompleted,
-                                                properties: ["task_name": tour.analyticsKey],
-                                                blog: blog)
-            }
 
             recentlyTouredBlog = blog
         } else {
