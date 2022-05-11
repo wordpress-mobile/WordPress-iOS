@@ -83,7 +83,11 @@ import WordPressFlux
         super.init()
 
         listenForQuickStart()
-        fetchBloggingPrompt()
+
+        // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
+        if actions.count > 1 {
+            fetchBloggingPrompt()
+        }
     }
 
     deinit {
