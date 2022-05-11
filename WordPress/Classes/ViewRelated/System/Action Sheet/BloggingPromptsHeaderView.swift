@@ -18,22 +18,21 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
         configureView()
     }
 
-    @IBAction private func answerPromptTapped(_ sender: Any) {
-        answerPromptHandler?()
+    static func view(for prompt: BloggingPrompt?) -> BloggingPromptsHeaderView {
+        let promptsHeaderView = BloggingPromptsHeaderView.loadFromNib()
+        promptsHeaderView.configure(prompt)
+        return promptsHeaderView
     }
 
-    @IBAction private func shareTapped(_ sender: Any) {
-        // TODO
-    }
 }
 
 // MARK: - Private methods
 
 private extension BloggingPromptsHeaderView {
 
+    // MARK: - Configure View
+
     func configureView() {
-        // TODO: Hide correct UI based on if prompt is answered
-        answeredStackView.isHidden = true
         configureSpacing()
         configureStrings()
         configureStyles()
@@ -49,8 +48,6 @@ private extension BloggingPromptsHeaderView {
 
     func configureStrings() {
         titleLabel.text = Strings.title
-        // TODO: Use prompt from backend
-        promptLabel.text = Strings.examplePrompt
         answerPromptButton.titleLabel?.text = Strings.answerButtonTitle
         answeredLabel.text = Strings.answeredLabelTitle
         shareButton.titleLabel?.text = Strings.shareButtonTitle
@@ -91,6 +88,24 @@ private extension BloggingPromptsHeaderView {
         }
     }
 
+    func configure(_ prompt: BloggingPrompt?) {
+        promptLabel.text = prompt?.text ?? nil
+
+        let answered = prompt?.answered ?? false
+        answerPromptButton.isHidden = answered
+        answeredStackView.isHidden = !answered
+    }
+
+    // MARK: - Button Actions
+
+    @IBAction func answerPromptTapped(_ sender: Any) {
+        answerPromptHandler?()
+    }
+
+    @IBAction func shareTapped(_ sender: Any) {
+        // TODO
+    }
+
     // MARK: - Constants
 
     struct Constants {
@@ -102,7 +117,6 @@ private extension BloggingPromptsHeaderView {
     }
 
     struct Strings {
-        static let examplePrompt = NSLocalizedString("Cast the movie of your life.", comment: "Example prompt for blogging prompts in the create new bottom action sheet.")
         static let title = NSLocalizedString("Prompts", comment: "Title label for blogging prompts in the create new bottom action sheet.")
         static let answerButtonTitle = NSLocalizedString("Answer Prompt", comment: "Title for a call-to-action button in the create new bottom action sheet.")
         static let answeredLabelTitle = NSLocalizedString("✓ Answered", comment: "Title label that indicates the prompt has been answered.")
