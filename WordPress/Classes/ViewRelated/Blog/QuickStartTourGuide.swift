@@ -381,7 +381,7 @@ private extension QuickStartTourGuide {
             shouldShowCongratsNotice = true
         } else {
             if let nextTour = tourToSuggest(for: blog) {
-                PushNotificationsManager.shared.postNotification(for: nextTour)
+                PushNotificationsManager.shared.postNotification(for: nextTour, quickStartType: blog.quickStartType)
             }
         }
     }
