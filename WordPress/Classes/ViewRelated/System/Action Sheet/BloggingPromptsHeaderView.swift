@@ -89,7 +89,7 @@ private extension BloggingPromptsHeaderView {
     }
 
     func configure(_ prompt: BloggingPrompt?) {
-        promptLabel.text = prompt?.text ?? nil
+        promptLabel.text = prompt?.text
 
         let answered = prompt?.answered ?? false
         answerPromptButton.isHidden = answered
