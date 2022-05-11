@@ -88,7 +88,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteName:
             return true
         case .quickStartForExistingUsers:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 
