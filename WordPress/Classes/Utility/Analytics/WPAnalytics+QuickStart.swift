@@ -29,4 +29,15 @@ extension WPAnalytics {
         props[WPAppAnalyticsKeyQuickStartSiteType] = blog.quickStartType.key
         WPAnalytics.track(stat, withProperties: props)
     }
+
+    /// Track a Quick Start stat in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given stat
+    /// - Parameter stat: a `WPAnalyticsStat` that represents the Quick Start stat to track
+    /// - Parameter blog: a `Blog` to which the Quick Start stat relates to. Used to determine the Quick Start Type
+    ///
+    @objc static func trackQuickStartStat(_ stat: WPAnalyticsStat, blog: Blog) {
+        let props = [WPAppAnalyticsKeyQuickStartSiteType: blog.quickStartType.key]
+        WPAnalytics.track(stat, withProperties: props)
+    }
 }
