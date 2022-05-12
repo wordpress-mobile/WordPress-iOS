@@ -127,6 +127,7 @@
 		08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3454F1CD7F50900358E8C /* MenusSelectionView.m */; };
 		08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */; };
 		08D499671CDD20450004809A /* Menus.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08D499661CDD20450004809A /* Menus.storyboard */; };
+		08D553662821286300AA1E8D /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D553652821286300AA1E8D /* Tooltip.swift */; };
 		08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */; };
 		08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D9784E1CD2AF7D0054F19A /* MenuItem+ViewDesign.m */; };
 		08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978501CD2AF7D0054F19A /* MenuItemCheckButtonView.m */; };
@@ -4946,6 +4947,7 @@
 		08D345551CD7FBA900358E8C /* MenuHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuHeaderViewController.m; sourceTree = "<group>"; };
 		08D499661CDD20450004809A /* Menus.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menus.storyboard; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
+		08D553652821286300AA1E8D /* Tooltip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tooltip.swift; sourceTree = "<group>"; };
 		08D9784B1CD2AF7D0054F19A /* Menu+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Menu+ViewDesign.h"; sourceTree = "<group>"; };
 		08D9784C1CD2AF7D0054F19A /* Menu+ViewDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Menu+ViewDesign.m"; sourceTree = "<group>"; };
 		08D9784D1CD2AF7D0054F19A /* MenuItem+ViewDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MenuItem+ViewDesign.h"; sourceTree = "<group>"; };
@@ -8255,6 +8257,7 @@
 			isa = PBXGroup;
 			children = (
 				081E4B4B281C019A0085E89C /* TooltipAnchor.swift */,
+				08D553652821286300AA1E8D /* Tooltip.swift */,
 			);
 			path = "Feature Highlight";
 			sourceTree = "<group>";
@@ -18769,6 +18772,7 @@
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
 				46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
+				08D553662821286300AA1E8D /* Tooltip.swift in Sources */,
 				FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
