@@ -32,7 +32,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
     private var action: ApproveComment?
     private let utility = NotificationUtility()
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -41,7 +41,7 @@ final class ApproveCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         action = TestableApproveComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }

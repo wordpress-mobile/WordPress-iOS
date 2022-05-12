@@ -3,16 +3,10 @@ import Foundation
 
 
 class BlogSettingsDiscussionTests: XCTestCase {
-    fileprivate var manager: TestContextManager!
+    fileprivate var manager: ContextManagerMock!
 
     override func setUp() {
-        manager = TestContextManager()
-    }
-
-    override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
-        manager.mainContext.reset()
-        manager = nil
+        manager = ContextManagerMock()
     }
 
     func testCommentsAutoapprovalDisabledEnablesManualModerationFlag() {

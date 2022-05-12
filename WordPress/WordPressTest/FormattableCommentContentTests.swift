@@ -2,7 +2,6 @@ import XCTest
 @testable import WordPress
 
 final class FormattableCommentContentTests: XCTestCase {
-    private let contextManager = TestContextManager()
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: FormattableCommentContent?

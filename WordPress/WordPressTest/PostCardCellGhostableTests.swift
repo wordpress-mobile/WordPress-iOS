@@ -6,18 +6,18 @@ import XCTest
 class PostCardCellGhostableTests: XCTestCase {
 
     var postCell: PostCardCell!
-    private var coreDataStack: TestContextManager!
+    private var coreDataStack: ContextManagerMock!
 
     override func setUp() {
         postCell = postCellFromNib()
         postCell.ghostAnimationWillStart()
-        coreDataStack = TestContextManager()
+        coreDataStack = ContextManagerMock()
         super.setUp()
     }
 
     override func tearDown() {
-        coreDataStack = nil
         super.tearDown()
+        coreDataStack.tearDown()
     }
 
     func testHideFeaturedImage() {

@@ -3,7 +3,7 @@ import Foundation
 
 class MediaProgressCoordinatorTests: XCTestCase {
 
-    fileprivate var contextManager: TestContextManager!
+    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
     var mediaProgressCoordinator: MediaProgressCoordinator!
 
@@ -17,7 +17,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         mediaProgressCoordinator = MediaProgressCoordinator()
@@ -25,7 +25,6 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
     override func tearDown() {
         context.rollback()
-        ContextManager.overrideSharedInstance(nil)
         mediaProgressCoordinator = nil
         super.tearDown()
     }

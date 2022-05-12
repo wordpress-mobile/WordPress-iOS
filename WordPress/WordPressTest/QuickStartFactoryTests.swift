@@ -3,21 +3,21 @@ import XCTest
 
 class QuickStartFactoryTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
     }
 
     override func tearDown() {
         super.tearDown()
-        context.reset()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     func testCollectionsForExistingSite() {

@@ -10,7 +10,7 @@ class NotificationSettingsServiceTests: XCTestCase {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var remoteApi: WordPressComRestApi!
     var service: NotificationSettingsService!
 
@@ -26,7 +26,7 @@ class NotificationSettingsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager      = TestContextManager()
+        contextManager      = ContextManagerMock()
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
         service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
                                                            wordPressComRestApi: remoteApi)
@@ -43,7 +43,6 @@ class NotificationSettingsServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         HTTPStubs.removeAllStubs()
-        ContextManager.overrideSharedInstance(nil)
     }
 
 

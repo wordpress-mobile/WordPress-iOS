@@ -7,7 +7,10 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     private var keyValueDatabase: StubKeyValueDatabase!
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     private var currentBuildVersion: String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -15,7 +18,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = ContextManagerMock()
         keyValueDatabase = StubKeyValueDatabase()
         nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueDatabase, context: context)
     }
@@ -24,8 +27,6 @@ class NullBlogPropertySanitizerTests: XCTestCase {
         super.tearDown()
         nullBlogPropertySanitizer = nil
         keyValueDatabase = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {

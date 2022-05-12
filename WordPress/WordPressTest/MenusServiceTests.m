@@ -5,7 +5,6 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
-#import "TestContextManager.h"
 #import "WordPressTest-Swift.h"
 
 @interface WPAccount ()
@@ -13,7 +12,7 @@
 @end
 
 @interface MenusServiceTests : XCTestCase
-@property (nonatomic, strong) TestContextManager *manager;
+@property (nonatomic, strong) ContextManagerMock *manager;
 @end
 
 @implementation MenusServiceTests
@@ -21,7 +20,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.manager = [TestContextManager new];
+    self.manager = [ContextManagerMock new];
 }
 
 - (void)tearDown
