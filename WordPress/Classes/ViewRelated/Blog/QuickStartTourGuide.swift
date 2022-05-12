@@ -181,6 +181,11 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
+    /// Posts an empty notification to trigger updates to Quick Start Cards if needed.
+    func refreshQuickStart() {
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
+    }
+
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
 
         if currentEntryPoint == .blogDashboard &&
