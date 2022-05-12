@@ -2,7 +2,6 @@ import XCTest
 @testable import WordPress
 
 final class NotificationContentRangeFactoryTests: XCTestCase {
-    private let contextManager = TestContextManager()
 
     func testCommentRangeReturnsExpectedImplementationOfFormattableContentRange() throws {
         let subject = NotificationContentRangeFactory.contentRange(from: try mockCommentRange()) as? NotificationCommentRange

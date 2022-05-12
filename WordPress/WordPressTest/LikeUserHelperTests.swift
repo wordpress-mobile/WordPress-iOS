@@ -3,6 +3,12 @@ import XCTest
 
 class LikeUserHelperTests: XCTestCase {
 
+    private var contextManager: ContextManagerMock!
+
+    override func setUp() {
+        contextManager = ContextManagerMock()
+    }
+
     func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
         var remoteUserDictionary: [String: Any] = [
             "ID": 15,
@@ -30,7 +36,6 @@ class LikeUserHelperTests: XCTestCase {
 
     func testNewLikeUserWithPreferredBlog() {
         let completionExpectation = expectation(description: "We expect the context to save successfully")
-        let contextManager = TestContextManager()
         let context = contextManager.mainContext
 
         let remoteUserDictionary = createTestRemoteUserDictionary(withPreferredBlog: true)
@@ -48,7 +53,6 @@ class LikeUserHelperTests: XCTestCase {
 
     func testUpdatingExistingUserToRemovePreferredBlog() {
         let completionExpectation = expectation(description: "We expect the context to save successfully")
-        let contextManager = TestContextManager()
         let context = contextManager.mainContext
 
         // First we create the pre-existing user, so we can later modify it to remove the preferred blog

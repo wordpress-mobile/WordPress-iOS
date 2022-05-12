@@ -14,18 +14,6 @@
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        // Override the shared ContextManager
-        [ContextManager internalSharedInstance];
-        [ContextManager overrideSharedInstance:self];
-    }
-
-    return self;
-}
-
 - (NSManagedObjectModel *)managedObjectModel
 {
     return _managedObjectModel ?: [super managedObjectModel];
@@ -92,6 +80,21 @@
                                                                         YES) lastObject];
 
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
+}
+
+- (void)setUpAsSharedInstance
+{
+    [ContextManager internalSharedInstance];
+    [ContextManager overrideSharedInstance:self];
+}
+
+- (void)tearDown
+{
+    [self.mainContext reset];
+
+    if ([ContextManager sharedInstance] == self) {
+        [ContextManager overrideSharedInstance:nil];
+    }
 }
 
 @end

@@ -5,7 +5,7 @@ import XCTest
 
 class PostTests: XCTestCase {
 
-    fileprivate var contextManager: TestContextManager!
+    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
 
     fileprivate func newTestBlog() -> Blog {
@@ -29,14 +29,13 @@ class PostTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
     }
 
     override func tearDown() {
         context.rollback()
-        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-25 13:20:14+0000 */
+/* Translation-Revision-Date: 2022-05-05 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Pulsante %@";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "Ritorna alla schermata Il mio sito di %@ quando sei pronto per l'attività successiva.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ tag";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ tag";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "Suggerimento di %@: ottieni aggiornamenti in modo più veloce attivando le notifiche push.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliardi";
@@ -273,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(senza titolo)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* sta ora seguendo il tuo sito.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* ha risposto al tuo commento";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* ha risposto al tuo articolo";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* ha aggiunto un nuovo articolo al sito ";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "A *Madison Ruiz* è piaciuto il tuo articolo";
@@ -356,6 +371,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Un nuovo modo di creare e pubblicare contenuti coinvolgenti sul tuo sito.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "Una serie di passaggi che ti aiutano a esplorare l'app.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Una serie di passaggi per mostrare come aggiungere un tema, un'icona del sito e molto altro.";
@@ -489,9 +507,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Aggiungi blocco prima";
-
-/* No comment provided by engineer. */
-"Add Blocks" = "Aggiungi blocchi";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Aggiungi contenuti all'articolo";
@@ -793,7 +808,8 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonimo";
 
-/* Title for a call-to-action button on the prompts card. */
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Rispondi alla richiesta";
 
 /* Navigates to picker screen to change the app's icon
@@ -1230,7 +1246,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Non è possibile pubblicare un articolo vuoto";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1258,6 +1273,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1315,7 +1331,8 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Stai attento!";
 
-/* Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Trasmetti il film della tua vita.";
 
 /* Label for Categories
@@ -1370,9 +1387,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Modifica nome utente";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Modifica, aggiungi o rimuovi contenuti dalla homepage del tuo sito.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Modifica, aggiungi o rimuovi le pagine del tuo sito.";
 
 /* No comment provided by engineer. */
@@ -1417,6 +1431,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Controlla la connessione di rete e riprova. Altrimenti, prepara la bozza di un articolo.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Verifica le notifiche";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Controlla le statistiche del sito";
 
 /* Title of a Quick Start Tour */
@@ -1425,10 +1442,14 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Ricerca di elementi acqistati in corso ...";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Verifica delle statistiche";
+
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Secondario di %@";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Scegli";
 
 /* Title for selecting a new homepage */
@@ -1701,6 +1722,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Operazione completata";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Completato: Verifica le notifiche";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Completato: controlla le statistiche del sito";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1713,19 +1737,16 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "Completato: Scegli un'icona del sito univoca";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Completato: Connettiti con altri siti";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Completato: continua con la configurazione del sito";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Completato: crea il tuo sito";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completato: Modifica la tua homepage";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Completato: esplora i piani";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Completato: segui altri siti";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Completato: pubblica un articolo";
@@ -1769,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Complimenti per l'acquisto.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Complimenti! Il tuo sito ha superato il numero più alto di visualizzazioni *di tutti i tempi: 1.000*.";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Connetti";
@@ -1784,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Connettiti con altri blogger seguendo, mettendo Mi piace e commentando i loro articoli.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Connettiti con altri siti";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Connetti i tuoi servizi di social media preferiti per condividere automaticamente i nuovi articoli con gli amici.";
@@ -2045,7 +2072,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Crea un articolo";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Crea sito";
 
 /* Stories intro continue button title */
@@ -2170,8 +2198,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Personalizza gradiente";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Personalizza il tuo sito";
 
 /* No comment provided by engineer. */
@@ -2314,7 +2341,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Descrizione";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2371,11 +2398,17 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Disconnettendo questo account gli articoli pubblicati non saranno più condivisi con %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Scopri";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Scopri i siti";
 
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Scopri e segui i blog che ami";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Scopri e segui i siti che ti ispirano.";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Scopri i blog da seguire";
@@ -2691,9 +2724,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Modifica video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Modifica la tua homepage";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "La modifica dei blocchi riutilizzabili non è ancora supportata su WordPress per Android";
 
@@ -2791,16 +2821,16 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "Attiva Pubblicizza";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Abilita avvio rapido per il sito";
+"Enable Quick Start for Existing Site" = "Attiva l'orientamento per il sito esistente";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Attiva l'orientamento per il nuovo sito";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Attiva le statistiche del sito";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Attiva le notifiche in-app";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Vuoi attivare le notifiche in-app?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Abilita la condivisione dell'articolo";
@@ -3173,9 +3203,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Scopri di più";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Trova i siti che ti dicono qualcosa e seguili per ottenere aggiornamenti sui contenuti che pubblicano.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Trova l'indirizzo per il tuo sito";
 
@@ -3214,10 +3241,7 @@ translators: Block name. %s: The localized block name */
 "Follow Conversation" = "Segui la conversazione";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Segui la conversazione tramite e-mail";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Segui altri siti";
+"Follow conversation" = "Segui la conversazione";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Segui sito";
@@ -3375,6 +3399,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Fatti notare: commenta gli articoli che hai letto.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Ottieni aggiornamenti in tempo reale dalla tua tasca.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Inizia scegliendo tra un'ampia varietà di layout di pagina già pronti. Altrimenti, inizia semplicemente con una pagina bianca.";
 
@@ -3383,6 +3410,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Inizia subito e aumenta le visualizzazioni sui tuoi articoli tramite la condivisione.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Fai conoscenza con l'app WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Ottieni il tuo dominio";
@@ -3405,15 +3435,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Prova aggiungendo alcuni blocchi al post o alla pagina.";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Dai al tuo sito web %@ un nome";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Dai al tuo sito un nome che rifletta la tua personalità e l'argomento. La prima impressione conta.";
 
 /* Default title of the Site Name screen.
    Title for Site Name screen in iPhone landscape. */
 "Give your website a name" = "Dai al tuo sito web un nome";
-
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your%@website a name" = "Dai al tuo%@sito web un nome";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3453,9 +3483,11 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Grandioso!\nCi piace farti felice \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Aumenta il tuo pubblico";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Ti guida nel processo di verifica delle notifiche.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Ti guida nel processo di scelta di un tema per il tuo sito.";
@@ -3593,8 +3625,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Homepage";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -3719,6 +3750,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inattivo, Aggiornamenti automatici attivi";
+
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Includi la richiesta";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluso con Sito";
@@ -3975,6 +4009,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mantieni aggiornate le prestazioni del sito.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Scopri quando i tuoi autori preferiti pubblicano nuovi contenuti.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Scopri quando il tuo sito riceve più traffico, nuovi follower o quando raggiunge un nuovo traguardo.";
+
 /* Autoapprove only from known users */
 "Known Users" = "Utenti conosciuti";
 
@@ -4019,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Scopri di più sulla formattazione di data e ora.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Leggi di più sulle richieste";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Scopri di più sui ruoli";
@@ -4956,6 +4999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Non trovi l'e-mail? Controlla la cartella dello spam o della posta indesiderata.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Non sono sicuro, fammi dare un'occhiata in giro";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Nota:";
 
@@ -4988,9 +5034,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Orario di notifica";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "La notifica includerà una parola o una breve frase da cui trarre ispirazione";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifiche";
 
@@ -5671,9 +5721,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Anteprima";
 
@@ -5696,7 +5746,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "Anteprima articolo";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Visualizza un’anteprima del to nuovo sito per scoprire cosa vedono i tuoi visitatori.";
+"Preview your site to see what your visitors will see." = "Visualizza in anteprima il tuo sito per scoprire cosa vedranno i tuoi visitatori.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Mese precedente";
@@ -5763,7 +5813,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Progetti";
 
-/* Title label for the Prompts card in My Sites tab. */
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
 "Prompts" = "Richieste";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -5882,6 +5933,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL del CSS del Reader";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Lettura degli articoli da altri siti";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Settore immobiliare";
@@ -6355,7 +6409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Menu del blocco a scorrimento aperto. Seleziona un blocco.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Cerca";
 
@@ -6445,13 +6498,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Seleziona %@ per scoprire nuovi temi";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Seleziona %@ per modificare la tua homepage.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Seleziona %@ per cercare siti con interessi simili";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Seleziona %@ per la visualizzazione in anteprima";
+"Select %@ to find other sites." = "Seleziona %@ per cercare altri siti.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Seleziona %@ per vedere il rendimento del tuo sito.";
@@ -6470,6 +6517,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Seleziona %@ per caricarne un nuovo elemento.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Seleziona %@ per visualizzare il tuo sito";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Seleziona il paese";
@@ -6503,6 +6553,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Seleziona lo stile del paragrafo";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Seleziona la scheda %@ per ottenere gli aggiornamenti mentre sei in movimento.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Seleziona %@ per aggiungere account dei social media";
@@ -6643,6 +6696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Impostazioni";
@@ -6843,7 +6897,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Tema del sito";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "URL del sito";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6893,17 +6948,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Dimensione";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Salta";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Salta tutto";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Salta il tour iniziale";
 
 /* Menu title to skip today's prompt. */
 "Skip this prompt" = "Salta questa richiesta";
@@ -7078,6 +7128,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Resta nel circolo";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Rimani in contatto con le notifiche per Mi piace e commenti.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Rimani in contatto con il tuo pubblico con le notifiche per Mi piace e commenti.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Rimanere aggiornati con le notifiche";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Metti in evidenza l'articolo in prima pagina";
@@ -7312,6 +7371,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tocca per visualizzare il tuo sito";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "Attività completata.";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Tassonomia";
 
@@ -7458,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "L'articolo che stai cercando di copiare ha due versioni che sono in conflitto o hai apportato modifiche di recente senza salvarle.\nPer prima cosa, modifica l'articolo per risolvere eventuali conflitti o copia la versione da questa app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Il nostro tour iniziale ti guiderà attraverso la costruzione del sito. Desideri saltarlo? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "La serializzazione della richiesta non è riuscita.";
@@ -7957,6 +8016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Prova ora";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Prova selezionando %@ per aggiungere gli argomenti che ti piacciono.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Prova il nuovo editor a blocchi";
 
@@ -8180,6 +8242,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8193,10 +8256,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "Smetti di seguire %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Smetti di seguire la conversazione";
+"Unfollow Conversation" = "Smetti di seguire la conversazione";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Smetti di seguire la conversazione tramite e-mail";
+"Unfollow conversation" = "Smetti di seguire la conversazione";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Smetti di seguire il sito";
@@ -8378,6 +8441,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Usa";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Usa %@ per trovare siti e tag. ";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Usa il negozio sandbox";
 
@@ -8477,8 +8543,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Visualizza articolo";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Visualizza sito";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8538,6 +8603,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Visita %@ per saperne di più";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Visita la bacheca";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Visita il sito";
@@ -9082,6 +9150,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Poesia e scrivere";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Scrittura di articoli del blog";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Posizione asse X";
 
@@ -9238,6 +9309,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Devi verificare il tuo account prima che tu possa pubblicare un articolo.\nNon preoccuparti, il tuo articolo è al sicuro e sarà salvato come una bozza.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Hai ricevuto *50 Mi piace* al tuo commento";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Hai ricevuto *50 likes* on your site today";
 
@@ -9263,6 +9337,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Riceverai promemoria relativi al blog <strong>una volta<\/strong> alla settimana su %1$@ alle %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Riceverai le notifiche nell'app";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Riceverai promemoria relativi al blog %1$@ volte alla settimana di %2$@.";
@@ -9345,6 +9423,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "L'indirizzo del tuo sito viene visualizzato sulla barra nella parte superiore dello schermo quando visiti il tuo sito su Safari.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Il tuo sito è già protetto da VaultPress. Di seguito trovi un link alla tua bacheca VaultPress.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Il tuo sito sembra avere *più traffico* del solito.";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Il tuo sito ha VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Il tuo sito è stato creato!";
 
@@ -9402,17 +9489,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "Piace a _%1$d blogger_.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "Piace a _%1$d blogger_.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "Piace a _te e a %1$d blogger_.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_A un blogger_ piace questo elemento.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "Piace a _te e a %1$d blogger_.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_A te e un altro blogger_ piace questo elemento.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Ti_ piace.";
@@ -9541,6 +9628,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numero di telefono";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Commenti";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Mi piace";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Pubblicato %@ fa";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Visualizzazioni";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 Ora più popolare";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% di visualizzazioni";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "questi elementi verranno eliminati:";

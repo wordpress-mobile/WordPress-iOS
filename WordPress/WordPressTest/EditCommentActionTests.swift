@@ -3,9 +3,15 @@ import XCTest
 
 final class EditCommentActionTests: XCTestCase {
     private class TestableEditComment: EditComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -20,6 +26,7 @@ final class EditCommentActionTests: XCTestCase {
 
     private var action: EditComment?
     private let utility = NotificationUtility()
+    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -28,7 +35,8 @@ final class EditCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        action = TestableEditComment(on: Constants.initialStatus)
+        contextManager = ContextManagerMock()
+        action = TestableEditComment(on: Constants.initialStatus, coreDataStack: contextManager)
     }
 
     override func tearDown() {

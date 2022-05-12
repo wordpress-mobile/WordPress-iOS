@@ -3,9 +3,14 @@ import XCTest
 
 final class TrashCommentActionTests: XCTestCase {
     private class TestableTrashComment: TrashComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -17,6 +22,7 @@ final class TrashCommentActionTests: XCTestCase {
 
     private var action: TrashComment?
     let utils = NotificationUtility()
+    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -25,7 +31,8 @@ final class TrashCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utils.setUp()
-        action = TestableTrashComment(on: Constants.initialStatus)
+        testContextManager = ContextManagerMock()
+        action = TestableTrashComment(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }
 
