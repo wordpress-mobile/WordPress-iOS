@@ -25,7 +25,7 @@ enum BloggingPromptsAttribution: String {
     }
 
     private struct Strings {
-        static let fromTextFormat = NSLocalizedString("From %@", comment: "From string format for blogging prompts attribution")
+        static let fromTextFormat = NSLocalizedString("From %1$@", comment: "Format for blogging prompts attribution. %1$@ is the attribution source.")
         static let dayOne = "Day One"
     }
 
