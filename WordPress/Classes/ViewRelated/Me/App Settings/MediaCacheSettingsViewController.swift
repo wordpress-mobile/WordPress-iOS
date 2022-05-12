@@ -58,9 +58,11 @@ class MediaCacheSettingsViewController: UITableViewController {
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
-                mediaCacheRow,
+                mediaCacheRow
+            ]),
+            ImmuTableSection(rows: [
                 mediaClearCacheRow
-                ]),
+            ]),
         ])
     }
 
