@@ -31,16 +31,11 @@ class GravatarServiceTests: XCTestCase {
         }
     }
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager = ContextManagerMock()
     }
 
     func testServiceSanitizesEmailAddressCapitals() {

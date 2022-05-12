@@ -65,6 +65,14 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
+    private var didFailLoadingPrompt: Bool = false {
+        didSet {
+            if didFailLoadingPrompt != oldValue {
+                refreshStackView()
+            }
+        }
+    }
+
     // Used to present:
     // - The menu sheet for contextual menu in iOS13.
     // - The Blogging Prompts list when selected from the contextual menu.
@@ -320,6 +328,12 @@ private extension DashboardPromptsCardCell {
         // clear existing views.
         containerStackView.removeAllSubviews()
 
+        guard !didFailLoadingPrompt else {
+            promptLabel.text = Strings.errorTitle
+            containerStackView.addArrangedSubview(promptTitleView)
+            return
+        }
+
         promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
 
@@ -336,13 +350,17 @@ private extension DashboardPromptsCardCell {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService = bloggingPromptsService else {
+            didFailLoadingPrompt = true
             DDLogError("Failed creating BloggingPromptsService instance.")
             return
         }
 
         bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
             self?.prompt = prompt
-        }, failure: { (error) in
+            self?.didFailLoadingPrompt = false
+        }, failure: { [weak self] (error) in
+            self?.prompt = nil
+            self?.didFailLoadingPrompt = true
             DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
         })
     }
@@ -412,6 +430,7 @@ private extension DashboardPromptsCardCell {
                                                                 + "that answered the blogging prompt.")
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
+        static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
     }
 
     struct Style {

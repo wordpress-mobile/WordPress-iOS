@@ -591,7 +591,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 2.0.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/18389-update-mark-qs-checklist-as-complete`)
+  - WordPressKit (~> 4.52.0-beta)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.1)
   - WordPressUI (~> 1.12.5)
@@ -603,6 +603,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -752,9 +753,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.75.0
-  WordPressKit:
-    :branch: task/18389-update-mark-qs-checklist-as-complete
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.75.0/third-party-podspecs/Yoga.podspec.json
 
@@ -770,9 +768,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.75.0
-  WordPressKit:
-    :commit: 674859ccaba6d1d3aadec10f2ad7d2cae45f02f4
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -858,7 +853,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
-  WordPressKit: 1af05d9ab2a434290be54b091094e54af081fc58
+  WordPressKit: cc1e5b12e92232d977664682ac69110852fc4ce7
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
@@ -874,6 +869,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 6ebe3ea0034d278b43717825cacc0467c045b5c6
+PODFILE CHECKSUM: d7bc9c0d041c5f2d6e109c77b2bf02d28f5f81c0
 
 COCOAPODS: 1.11.2

@@ -6,7 +6,7 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "TestContextManager.h"
+#import "ContextManagerMock.h"
 @import WordPressKit;
 
 @interface BlogJetpackTest : XCTestCase
@@ -16,15 +16,16 @@
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) TestContextManager *testContextManager;
+@property (nonatomic, strong) ContextManagerMock *testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
-    self.testContextManager = [[TestContextManager alloc] init];
-    
+    self.testContextManager = [[ContextManagerMock alloc] init];
+    [self.testContextManager setUpAsSharedInstance];
+
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
@@ -47,11 +48,10 @@
 
 - (void)tearDown {
     [super tearDown];
-    
+
     _account = nil;
     _blog = nil;
     [HTTPStubs removeAllStubs];
-    [ContextManager overrideSharedInstance:nil];
 
     self.testContextManager = nil;
 }

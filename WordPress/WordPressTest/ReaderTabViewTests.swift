@@ -5,19 +5,14 @@ import CoreData
 
 class ReaderTabViewTests: XCTestCase {
 
-    var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
+    var contextManager: ContextManagerMock!
+    var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        contextManager = nil
-        context = nil
-        super.tearDown()
+        contextManager = ContextManagerMock()
     }
 
     func testRefreshTabBarWithHiddenButtons() {

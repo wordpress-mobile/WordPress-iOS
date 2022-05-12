@@ -1,7 +1,5 @@
 class ActivityLogTestData {
 
-    let contextManager = TestContextManager()
-
     let testPostID = 441
     let testSiteID = 137726971
 

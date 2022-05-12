@@ -4,7 +4,7 @@ import XCTest
 
 class BlogDashboardPostsParserTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     private var parser: BlogDashboardPostsParser!
@@ -12,7 +12,7 @@ class BlogDashboardPostsParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         parser = BlogDashboardPostsParser(managedObjectContext: context)
     }

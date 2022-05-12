@@ -6,19 +6,14 @@ import Nimble
 
 class PageListViewControllerTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext! {
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 
     override func setUp() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         super.setUp()
-    }
-
-    override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
     }
 
     func testDoesNotShowGhostableTableView() {

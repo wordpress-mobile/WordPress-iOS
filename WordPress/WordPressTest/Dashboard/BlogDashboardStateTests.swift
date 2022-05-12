@@ -5,11 +5,13 @@ import XCTest
 class BlogDashboardStateTests: XCTestCase {
     private var dashboardState: BlogDashboardState!
     private var blog: Blog!
+    private var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
 
-        blog = BlogBuilder(TestContextManager().mainContext).build()
+        contextManager = ContextManagerMock()
+        blog = BlogBuilder(contextManager.mainContext).build()
         dashboardState = BlogDashboardState.shared(for: blog)
     }
 

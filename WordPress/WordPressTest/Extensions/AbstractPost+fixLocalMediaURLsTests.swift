@@ -7,17 +7,14 @@ class AbstractPostFixLocalMediaURLsTests: XCTestCase {
     private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
 
-    private var context: NSManagedObjectContext!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager = ContextManagerMock()
     }
 
     func testUpdateLocalMediaPathsInCachesDirectory() {
