@@ -17,6 +17,15 @@ extension StatsInsightsFilterDimension {
             return NSLocalizedString("Line Chart depicting Visitors for insights.", comment: "This description is used to set the accessibility label for the Insights chart, with Visitors selected.")
         }
     }
+
+    var analyticsProperty: String {
+        switch self {
+        case .views:
+            return "views"
+        case .visitors:
+            return "visitors"
+        }
+    }
 }
 
 // MARK: - InsightsLineChart
@@ -28,10 +37,6 @@ class InsightsLineChart {
 
     private(set) var lineChartData: [LineChartDataConvertible] = []
     private(set) var lineChartStyling: [LineChartStyling] = []
-
-    private(set) var thisWeekTotal: Int = 0
-    private(set) var prevWeekTotal: Int = 0
-
 
     init(data: [StatsSummaryTimeIntervalDataAsAWeek], filterDimension: StatsInsightsFilterDimension = .views) {
         rawChartData = data
@@ -45,47 +50,36 @@ class InsightsLineChart {
 
     private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
 
+    /// Transforms the raw data into the line chart data and styling.
+    /// similar to PeriodChart transform
+    /// - Returns: A tuple containing the line chart data and styling.
     func transform() -> (lineChartData: [LineChartDataConvertible], lineChartStyling: [LineChartStyling]) {
         var thisWeekEntries = [ChartDataEntry]()
         var prevWeekEntries = [ChartDataEntry]()
 
         switch filterDimension {
         case .views:
-            rawChartData.forEach { statsSummaryTimeIntervalDataAsAWeek in
-                switch statsSummaryTimeIntervalDataAsAWeek {
-                case .thisWeek(let data):
-                    thisWeekTotal = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-
-                    for (index, statsSummaryData) in data.summaryData.enumerated() {
-                        thisWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData.viewsCount)))
-                    }
-                case .prevWeek(let data):
-                    prevWeekTotal = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-
-                    for (index, statsSummaryData) in data.summaryData.enumerated() {
-                        prevWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData.viewsCount)))
-                    }
-                }
-            }
+            (thisWeekEntries, prevWeekEntries) = filterData(path: \StatsSummaryData.viewsCount)
         case .visitors:
-            rawChartData.forEach { statsSummaryTimeIntervalDataAsAWeek in
-                switch statsSummaryTimeIntervalDataAsAWeek {
-                case .thisWeek(let data):
-                    thisWeekTotal = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-
-                    for (index, statsSummaryData) in data.summaryData.enumerated() {
-                        thisWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData.visitorsCount)))
-                    }
-                case .prevWeek(let data):
-                    prevWeekTotal = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-
-                    for (index, statsSummaryData) in data.summaryData.enumerated() {
-                        prevWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData.visitorsCount)))
-                    }
-                }
-            }
+            (thisWeekEntries, prevWeekEntries) = filterData(path: \StatsSummaryData.visitorsCount)
         }
 
+        var chartData = createLineChartData(thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
+        let lineChartDataConvertibles = createLineChartDataConvertibles(chartData: chartData)
+
+        let chartStyling: [LineChartStyling] = [
+            ViewsInsightsLineChartStyling(primaryLineColor: Constants.primaryLineColorViews,
+                    secondaryLineColor: Constants.secondaryLineColor,
+                    primaryHighlightColor: Constants.primaryHighlightColor),
+            VisitorsInsightsLineChartStyling(primaryLineColor: Constants.primaryLineColorVisitors,
+                    secondaryLineColor: Constants.secondaryLineColor,
+                    primaryHighlightColor: Constants.primaryHighlightColor),
+        ]
+
+        return (lineChartDataConvertibles, chartStyling)
+    }
+
+    func createLineChartData(thisWeekEntries: [ChartDataEntry], prevWeekEntries: [ChartDataEntry]) -> [LineChartData] {
         var chartData = [LineChartData]()
 
         let thisWeekDataSet = LineChartDataSet(entries: thisWeekEntries,
@@ -96,7 +90,12 @@ class InsightsLineChart {
         let viewsChartData = LineChartData(dataSets: viewsDataSets)
         chartData.append(viewsChartData)
 
+        return chartData
+    }
+
+    func createLineChartDataConvertibles(chartData: [LineChartData]) -> [LineChartDataConvertible] {
         var lineChartDataConvertibles = [LineChartDataConvertible]()
+
         for filterDimension in StatsInsightsFilterDimension.allCases {
             let filterIndex = filterDimension.rawValue
 
@@ -108,17 +107,27 @@ class InsightsLineChart {
             break
         }
 
-        let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: 1.0, period: .day)
-        let chartStyling: [LineChartStyling] = [
-            ViewsInsightsLineChartStyling(primaryLineColor: primaryLineColor(forFilterDimension: .views),
-                    secondaryLineColor: secondaryLineColor(),
-                    primaryHighlightColor: primaryHighlightColor()),
-            VisitorsInsightsLineChartStyling(primaryLineColor: primaryLineColor(forFilterDimension: .visitors),
-                    secondaryLineColor: secondaryLineColor(),
-                    primaryHighlightColor: primaryHighlightColor()),
-        ]
+        return lineChartDataConvertibles
+    }
 
-        return (lineChartDataConvertibles, chartStyling)
+    func filterData(path: KeyPath<StatsSummaryData, Int>) -> (thisWeekEntries: [ChartDataEntry], prevWeekEntries: [ChartDataEntry]) {
+        var thisWeekEntries = [ChartDataEntry]()
+        var prevWeekEntries = [ChartDataEntry]()
+
+        rawChartData.forEach { statsSummaryTimeIntervalDataAsAWeek in
+            switch statsSummaryTimeIntervalDataAsAWeek {
+            case .thisWeek(let data):
+                for (index, statsSummaryData) in data.summaryData.enumerated() {
+                    thisWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData[keyPath: path])))
+                }
+            case .prevWeek(let data):
+                for (index, statsSummaryData) in data.summaryData.enumerated() {
+                    prevWeekEntries.append(ChartDataEntry(x: Double(index), y: Double(statsSummaryData[keyPath: path])))
+                }
+            }
+        }
+
+        return (thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
     }
 
     func primaryLineColor(forFilterDimension filterDimension: StatsInsightsFilterDimension) -> UIColor {
@@ -129,21 +138,14 @@ class InsightsLineChart {
             return UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
         }
     }
-
-    func secondaryLineColor() -> UIColor {
-        return  UIColor(light: .textQuaternary, dark: .textTertiary)
-    }
-
-    func primaryHighlightColor() -> UIColor? {
-        return Constants.primaryHighlightColor
-    }
 }
 
 private extension InsightsLineChart {
     enum Constants {
-        static var primaryHighlightColor: UIColor {
-            return UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
-        }
+        static let primaryHighlightColor: UIColor = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
+        static let secondaryLineColor: UIColor = UIColor(light: .textQuaternary, dark: .textTertiary)
+        static let primaryLineColorViews: UIColor = UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
+        static let primaryLineColorVisitors: UIColor = UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
     }
 }
 
@@ -162,7 +164,7 @@ private struct ViewsInsightsLineChartStyling: LineChartStyling {
     let primaryHighlightColor: UIColor?
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
     let legendColor: UIColor?                       = .primary(.shade60)
-    let legendTitle: String?                        = NSLocalizedString("Views", comment: "This appears in the legend of the insights line chart")
+    let legendTitle: String?                        = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
     let lineColor: UIColor                          = .neutral(.shade5)
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }
@@ -175,7 +177,7 @@ private struct VisitorsInsightsLineChartStyling: LineChartStyling {
     let primaryHighlightColor: UIColor?
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
     let legendColor: UIColor?                       = .primary(.shade60)
-    let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the insights line chart")
+    let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "Title for Visitors count in the legend of the Stats Insights views and visitors line chart")
     let lineColor: UIColor                          = .neutral(.shade5)
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }
