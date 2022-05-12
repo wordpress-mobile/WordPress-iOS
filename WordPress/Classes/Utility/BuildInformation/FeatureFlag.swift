@@ -62,7 +62,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupBGProcessingTask:
             return true
         case .domains:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            // Note: when used to control access to the domains feature, you should also check whether
+            // the current AppConfiguration and blog support domains.
+            // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
+            return true
         case .timeZoneSuggester:
             return true
         case .aboutScreen:
