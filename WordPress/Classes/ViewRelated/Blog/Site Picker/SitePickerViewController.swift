@@ -243,7 +243,8 @@ extension SitePickerViewController {
             url: url,
             blog: blog,
             source: Constants.viewSiteSource,
-            withDeviceModes: true
+            withDeviceModes: true,
+            onClose: self.startAlertTimer
         )
 
         let navigationController = LightNavigationController(rootViewController: webViewController)
