@@ -6,17 +6,14 @@ import Nimble
 
 class PostListViewControllerTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        context = TestContextManager().mainContext
-        super.setUp()
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
     }
 
-    override func tearDown() {
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
+    override func setUp() {
+        contextManager = ContextManagerMock()
+        super.setUp()
     }
 
     func testShowsGhostableTableView() {

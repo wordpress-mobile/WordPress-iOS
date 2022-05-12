@@ -2,17 +2,14 @@ import XCTest
 
 class MenuItemsViewControllerTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
-
-    override func setUpWithError() throws {
-        context = TestContextManager().mainContext
-        try super.setUpWithError()
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
     }
 
-    override func tearDownWithError() throws {
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
-        try super.tearDownWithError()
+    override func setUp() {
+        contextManager = ContextManagerMock()
+        super.setUp()
     }
 
     /// Tests that no string is provided when there is nothing to announce.

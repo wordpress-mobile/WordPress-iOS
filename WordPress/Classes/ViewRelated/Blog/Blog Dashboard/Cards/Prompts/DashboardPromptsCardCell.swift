@@ -359,6 +359,7 @@ private extension DashboardPromptsCardCell {
             self?.prompt = prompt
             self?.didFailLoadingPrompt = false
         }, failure: { [weak self] (error) in
+            self?.prompt = nil
             self?.didFailLoadingPrompt = true
             DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
         })

@@ -4,7 +4,7 @@ import XCTest
 class DashboardPostsSyncManagerTests: XCTestCase {
 
     private var blog: Blog!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private let draftStatuses: [BasePost.Status] = [.draft, .pending]
     private let scheduledStatuses: [BasePost.Status] = [.scheduled]
     private var postService: PostServiceMock!
@@ -12,7 +12,8 @@ class DashboardPostsSyncManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         blog = BlogBuilder(contextManager.mainContext).build()
         blog.dashboardState.syncingStatuses = []
         postService = PostServiceMock()
@@ -20,8 +21,7 @@ class DashboardPostsSyncManagerTests: XCTestCase {
     }
 
     override func tearDown() {
-        contextManager.mainContext.reset()
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
         blog = nil
         super.tearDown()
     }

@@ -2,7 +2,6 @@ import XCTest
 @testable import WordPress
 
 final class FormattableContentGroupTests: XCTestCase {
-    private let contextManager = TestContextManager()
     private var subject: FormattableContentGroup?
     private let utility = NotificationUtility()
 

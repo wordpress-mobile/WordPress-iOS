@@ -3,18 +3,13 @@ import XCTest
 
 class PublishSettingsViewControllerTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
     }
 
-    override func tearDown() {
-        contextManager.mainContext.reset()
-        contextManager = nil
-        context = nil
+    override func setUp() {
+        contextManager = ContextManagerMock()
     }
 
     func testViewModelDateScheduled() {
