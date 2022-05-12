@@ -4,7 +4,7 @@ class MediaCacheSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler?
 
     override init(style: UITableView.Style) {
-        super.init(style: .plain)
+        super.init(style: .insetGrouped)
         handler = ImmuTableViewHandler(takeOver: self)
         navigationItem.title = NSLocalizedString("Media Cache", comment: "Media Cache title")
     }
