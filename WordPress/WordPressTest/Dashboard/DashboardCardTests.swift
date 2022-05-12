@@ -11,14 +11,15 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 
 class ZDashboardCardTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var blog: Blog!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = contextManager.newDerivedContext()
         blog = BlogBuilder(context).build()
     }
@@ -26,9 +27,9 @@ class ZDashboardCardTests: XCTestCase {
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
         context = nil
+        contextManager.tearDown()
         contextManager = nil
         blog = nil
-        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
@@ -37,7 +38,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldShowQuickStartIfEnabledAndDefaultSectionIsDashboard() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
 
         // When
         let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
@@ -49,7 +50,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .siteMenu)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
 
         // When
         let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
@@ -61,7 +62,7 @@ class ZDashboardCardTests: XCTestCase {
     func testShouldNotShowQuickStartIfDisabled() {
         // Given
         let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
-        QuickStartTourGuide.shared.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
         QuickStartTourGuide.shared.remove(from: blog)
 
         // When

@@ -40,13 +40,18 @@ class PushAuthenticationManagerTests: XCTestCase {
         }
     }
 
-    var mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: TestContextManager().mainContext)
+    var contextManager: ContextManagerMock!
+    var mockPushAuthenticationService: MockPushAuthenticationService!
     var mockAlertControllerProxy = MockUIAlertControllerProxy()
     var pushAuthenticationManager: PushAuthenticationManager?
     var approvalAlertController: UIAlertController!
 
     override func setUp() {
         super.setUp()
+        contextManager = ContextManagerMock()
+
+        mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: contextManager.mainContext)
+
         pushAuthenticationManager = PushAuthenticationManager(pushAuthenticationService: mockPushAuthenticationService)
         pushAuthenticationManager?.alertControllerProxy = mockAlertControllerProxy
 

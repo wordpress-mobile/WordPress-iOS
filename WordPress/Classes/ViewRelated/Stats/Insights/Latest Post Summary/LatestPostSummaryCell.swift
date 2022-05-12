@@ -1,7 +1,11 @@
 import UIKit
 import Gridicons
 
-class LatestPostSummaryCell: StatsBaseCell, NibLoadable, Accessible {
+protocol LatestPostSummaryConfigurable {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?)
+}
+
+class LatestPostSummaryCell: StatsBaseCell, LatestPostSummaryConfigurable, NibLoadable, Accessible {
 
     // MARK: - Properties
 

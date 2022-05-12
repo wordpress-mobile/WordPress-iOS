@@ -33,6 +33,7 @@ class BloggingRemindersTracker {
         case blogSettings = "blog_settings"
         case notificationSettings = "notification_settings"
         case statsInsights = "stats_insights"
+        case bloggingPromptsFeatureIntroduction = "blogging_prompts_feature_introduction"
     }
 
     enum FlowDismissSource: String {

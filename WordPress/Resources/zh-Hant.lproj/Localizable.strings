@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-07 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -53,6 +53,12 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 按讚數";
 
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d 個答案";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d 個答案";
+
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
 
@@ -77,11 +83,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ 按鈕";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ 準備好完成下一步時返回「我的網站」畫面。";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ 個標籤";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ 個標籤";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ 秘訣：啟用推播通知可更快收到更新。";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ 十億";
@@ -264,8 +276,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(無標題)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* 開始追蹤你的網站了！";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johan Brandt* 已回應你的留言";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* 已回應你的文章";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* 已在網站新增一篇新文章";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* 已對你的文章按讚";
@@ -342,8 +363,14 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "好名稱必須簡短易記。\n日後你可隨時變更。";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "使用全新方式在網站上建立及發佈吸睛內容。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "取得可協助你探索應用程式的一系列步驟。";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "提供一系列步驟，說明如何新增佈景主題、網站圖示等其他項目。";
@@ -615,6 +642,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the advanced section in site settings screen */
 "Advanced" = "進階";
 
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "%@之後";
+
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
 
@@ -771,6 +801,10 @@ translators: Block name. %s: The localized block name */
 
 /* the comment has an anonymous author. */
 "Anonymous" = "匿名";
+
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "回答提示";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1033,6 +1067,9 @@ translators: Block name. %s: The localized block name */
 /* Beauty site intent topic */
 "Beauty" = "美妝";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "%@之前";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "造訪尖峰日";
 
@@ -1199,7 +1236,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "無法發表空白的文章";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1227,6 +1263,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1284,6 +1321,10 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "請小心！";
 
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "投放你的人生電影。";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "分類";
@@ -1336,9 +1377,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "變更使用者名稱";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "變更、新增或移除網站首頁的內容。";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "變更、新增或移除網站的頁面。";
 
 /* No comment provided by engineer. */
@@ -1383,6 +1421,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "請檢查你的網路連線並再試一次。Or draft a post.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "查看你的通知設定";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "檢視網站統計資料";
 
 /* Title of a Quick Start Tour */
@@ -1391,7 +1432,14 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在確認購買項目…";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "查看統計資料";
+
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "%@的子項";
+
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "選擇";
 
 /* Title for selecting a new homepage */
@@ -1429,6 +1477,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "選擇時間";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "請從下方清單選擇一個主題，或輸入你自己的主題。";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "選擇專屬網站圖示";
@@ -1661,6 +1712,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "已完成";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "已完成：查看你的通知設定";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "已完成：查看網站統計資料";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1673,19 +1727,16 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "完成：選擇專屬網站圖示";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "已完成：連結其他網站";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "已完成：繼續設定網站";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "已完成：建立網站";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "已完成：編輯首頁";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "已完成：探索方案";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "已完成：關注其他網站";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "已完成：發表文章";
@@ -1729,6 +1780,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "謝謝你的選購！";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "恭喜！ 你的網站已達到 *1000 個*總瀏覽次數！";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "連結";
@@ -1744,6 +1798,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "在其他部落客的文章追蹤、按讚和留言，與他們交流。";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "連結其他網站";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "連結你最愛的社交媒體服務，自動與朋友分享新文章。";
@@ -1992,7 +2049,8 @@ translators: Block name. %s: The localized block name */
 "Create New Site" = "建立新網站";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "建立網站";
 
 /* Stories intro continue button title */
@@ -2117,8 +2175,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "自訂漸層色彩";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "自訂你的網站";
 
 /* No comment provided by engineer. */
@@ -2258,7 +2315,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "敘述";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "設計";
 
 /* Title for the desktop web preview */
@@ -2315,11 +2372,17 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "一旦取消此帳號的連結，發表的文章將不再自動分享至 %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "探索";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "發掘網站";
 
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "探索並關注你喜愛的網誌";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "探索並追蹤帶給你啟發的網站。";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "探索要追蹤的網誌";
@@ -2423,6 +2486,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "點兩下並按住不放即可編輯";
+
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "點兩下並按住，即可上下移動此選單項目 水平移動即可變更階層。";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "按兩下以新增區塊";
@@ -2626,9 +2692,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "編輯視訊";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "編輯首頁";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Android 版 WordPress 尚不支援編輯可重複使用區塊";
 
@@ -2726,16 +2789,16 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "啟用 Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "啟用網站的快速入門";
+"Enable Quick Start for Existing Site" = "啟用現有網站的快速入門";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "啟用新網站的快速入門";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "啟用網站統計資料";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "啟用應用程式內通知";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "是否啟用應用程式內通知？";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "啟用文章分享功能";
@@ -3105,9 +3168,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "瞭解更多";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "尋找並關注你感興趣的網站，在這些網站發表文章時獲得最新資訊。";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "尋找你的網站位址";
 
@@ -3146,10 +3206,7 @@ translators: Block name. %s: The localized block name */
 "Follow Conversation" = "關注討論";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "透過電子郵件追蹤對話";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "關注其他網站";
+"Follow conversation" = "追蹤討論";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "追蹤網站";
@@ -3307,6 +3364,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "接收通知：在已閱讀的文章上留言。";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "隨時查看即時更新資訊。";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "首先請從各種預先製作的頁面版面配置挑選。 或從空白頁面開始也可以。";
 
@@ -3315,6 +3375,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "分享你的文章，讓這些文章廣為人知，並增加文章檢視次數。";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "認識 WordPress 應用程式";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "取得你的網域名稱";
@@ -3337,8 +3400,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "馬上嘗試為你的文章或頁面新增幾個區塊！";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "為你的 %@ 網站取個名字";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
+
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "為你的網站取個名字";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3378,9 +3448,11 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "太棒了！\n我們樂於聆聽使用者的開心反饋\n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "拓展你的讀者群";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "引導你完成查看通知設定的流程。";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "引導你完成選擇網站佈景主題的流程。";
@@ -3518,8 +3590,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "首頁";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "首頁";
@@ -3645,6 +3716,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "未啟用，開啟自動更新";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "包含提示";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "已隨附於網站中";
 
@@ -3736,6 +3810,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "在你的網站上安裝第一個外掛程式，可能需要 1 分鐘的時間。在此期間，你無法對你的網站進行任何變更。";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "有興趣培養你的讀者群嗎？ 查看我們的頂尖秘訣。";
 
 /* Interior Design site intent topic */
 "Interior Design" = "室內設計";
@@ -3897,6 +3974,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "隨時掌握你的網站效能。";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "掌握你最喜愛的作者何時發表最新內容。";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "掌握你的網站何時獲得更多流量、新的追蹤者，或達成新的里程碑！";
+
 /* Autoapprove only from known users */
 "Known Users" = "已知使用者";
 
@@ -3941,6 +4024,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "深入瞭解日期與時間格式。";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "深入瞭解提示";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "瞭解更多有關角色的資訊";
@@ -4875,6 +4961,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "沒看到電子郵件？ 請檢查你的「垃圾郵件」資料夾。";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "不確定，都可以";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "注意：";
 
@@ -4907,9 +4996,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "通知時間";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "通知會包含可啟發靈感的字詞或短語";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "通知";
 
@@ -5590,9 +5683,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "預覽";
 
@@ -5615,7 +5708,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "預覽文章";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "預覽你的新網站即可查看訪客將會看到的內容。";
+"Preview your site to see what your visitors will see." = "預覽你的網站即可查看訪客將會看到的內容。";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "上個月";
@@ -5681,6 +5774,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "專案";
+
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
+"Prompts" = "提示";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -5798,6 +5895,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "讀取器 CSS URL";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "閱讀其他網站的文章";
 
 /* Real Estate site intent topic */
 "Real Estate" = "房地產";
@@ -5924,6 +6024,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "移除區塊";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "從儀表板移除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "從洞察報告中移除";
@@ -6268,7 +6371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "已開啟可捲動的區塊選單。 請選取一個區塊。";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "搜尋";
 
@@ -6355,13 +6457,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "選取 %@ 以探索新佈景主題";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "選取 %@ 以編輯首頁。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "選取 %@ 以尋找具有相似興趣的網站";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "選取 %@ 以預覽";
+"Select %@ to find other sites." = "選取「%@」以尋找其他網站。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "選取 %@ 以查看網站成效。";
@@ -6380,6 +6476,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "選取 %@ 以上傳新項目。";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "選取「%@」以檢視你的網站";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "選取國家\/地區";
@@ -6413,6 +6512,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "選取段落風格";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "選取「%@」分頁以隨時取得更新資訊。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "選取 %@ 以新增社交媒體帳號";
@@ -6553,6 +6655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "設定";
@@ -6753,7 +6856,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "網站主題";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "網站網址";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6803,17 +6907,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "大小";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "跳過";
 
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "全部略過";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "略過快速入門";
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "略過此提示";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜線插入工具結果";
@@ -6985,6 +7087,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "隨時掌握最新動態";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "按讚和留言通知有助於保持互動。";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "按讚和留言通知有助於和讀者保持互動。";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "透過通知掌握最新資訊";
 
 /* This is the cell title. */
 "Stick post to the front page" = "將文章置於首頁";
@@ -7219,6 +7330,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "點選即可檢視你的網站";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "工作完成。";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分類法";
 
@@ -7365,9 +7479,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "你嘗試複製的文章有兩個互相不一致的版本，或者你最近進行變更但沒有儲存。\n首先編輯文章，解決任何不一致，或繼續複製此應用程式的版本。";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "快速入門導覽將引導你建立基本網站。確定要略過？";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "要求序列化失敗。";
@@ -7861,6 +7972,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "立即試試";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "嘗試選取「%@」來新增你喜愛的主題。";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "試用全新的區塊編輯器";
 
@@ -8084,6 +8198,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8097,10 +8212,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "取消關注 %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "取消追蹤討論";
+"Unfollow Conversation" = "取消追蹤討論";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "取消透過電子郵件追蹤討論";
+"Unfollow conversation" = "取消追蹤討論";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "停止關注網站";
@@ -8282,6 +8397,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "使用";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "使用「%@」來尋找網站和標籤。";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "使用沙盒商店";
 
@@ -8290,9 +8408,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Use icon button" = "使用圖示按鈕";
-
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "你可以使用此連結一次加入所有團隊成員，無須逐一邀請。 凡是造訪這個 URL 的人，不論以何種方式取得連結，都可以註冊加入貴機構，因此分享網址前，請確認對方值得信任。";
 
 /* No comment provided by engineer. */
 "Use this site" = "使用此網站";
@@ -8384,8 +8499,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "查看文章";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "造訪網站";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8404,6 +8518,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "檢視更多";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "檢視更多提示";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "你的網站目前為止的瀏覽次數";
@@ -8442,6 +8559,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "造訪 %@ 以深入了解";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "造訪儀表板";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "造訪網站";
@@ -8983,6 +9103,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "寫作和詩歌";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "撰寫網誌文章";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X 軸位置";
 
@@ -9133,6 +9256,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "你必須登入 WordPress.com 帳號才能執行此動作。";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "你的留言已收到 *50 個讚*";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "你已收到 *50 likes* on your site today";
 
@@ -9154,6 +9280,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "你會每週收到<strong>一次<\/strong>通知，時間為 %1$@ 的 %2$@。";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "你會在應用程式中收到通知";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "你每週會收到 %1$@ 次網誌提醒，分別在%2$@。";
@@ -9236,6 +9366,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "當你使用 Safari 造訪自己的網站時，網站位址會顯示在畫面上方的網址列中。";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "你的網站已受 VaultPress 保護 按下方連結即可前往你的 VaultPress 儀表板。";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "你的網站似乎比平常獲得*更多流量*！";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "你的網站擁有 VaultPress 功能";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "你的網站已建立！";
 
@@ -9293,17 +9432,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[留言]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d 位部落客_說這個讚。";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d 位部落客_說這個讚。";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "一位部落客說這個讚。";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "你和另一位部落客都說這個讚。";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_你_說這個讚。";
@@ -9385,6 +9524,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在你的文章中新增相片或影片。";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "用這個連結直接加入成員，就不需要一個一個邀請。 造訪此 URL 的人都可以註冊你的組織，即使他們是從其他人那裡收到連結，因此請務必與值得信任的人分享。";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "儲存為草稿";
 
@@ -9429,6 +9571,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "留言";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "按讚";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "發表時間：%@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "瀏覽次數";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 最熱門的時間";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% 的瀏覽次數";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
@@ -9555,4 +9715,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•使用者和作者";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ 已回答";
 

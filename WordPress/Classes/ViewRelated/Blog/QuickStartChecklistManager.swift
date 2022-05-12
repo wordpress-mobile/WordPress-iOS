@@ -196,8 +196,9 @@ private extension QuickStartChecklistManager {
         completedTours.append(tour)
         completedToursKeys.insert(tour.key)
 
-        WPAnalytics.track(.quickStartListItemSkipped,
-                          withProperties: ["task_name": tour.analyticsKey])
+        WPAnalytics.trackQuickStartStat(.quickStartListItemSkipped,
+                                        properties: ["task_name": tour.analyticsKey],
+                                        blog: blog)
 
         tableView.perform(update: { tableView in
             tableView.deleteRows(at: [indexPath], with: .automatic)

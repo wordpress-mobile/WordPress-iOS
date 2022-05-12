@@ -1,8 +1,10 @@
 import UIKit
 
-// TODO: add description
+/// This displays a Feature Introduction specifically for Blogging Prompts.
 
 class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
+
+   var presenter: BloggingPromptsIntroductionPresenter?
 
     private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType
 
@@ -80,7 +82,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
             return
         }
 
-        // TODO: show site selector/draft post
+        presenter?.primaryButtonSelected()
     }
 
     func secondaryActionSelected() {
@@ -88,7 +90,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
             return
         }
 
-        // TODO: show site selector/Blogging Reminders
+        presenter?.secondaryButtonSelected()
     }
 
 }

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-04 20:35:21+0000 */
+/* Translation-Revision-Date: 2022-05-04 05:27:44+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -55,6 +55,12 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d to se mi líbí";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d odpověď";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d odpovědí";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d z %2$d dokončeno";
@@ -345,6 +351,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Soubor obsahuje vzor škodlivého kódu";
 
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Dobré jméno je krátké a zapamatovatelné.\nPozději to můžete změnit.";
+
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Nový způsob vytváření a publikování poutavého obsahu na vašem webu.";
 
@@ -621,6 +630,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Pokročilé";
 
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "Po %@";
+
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Letecká pošta";
 
@@ -778,6 +790,10 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonym";
 
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Výzva k odpovědi";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "Ikona aplikace";
@@ -804,6 +820,9 @@ translators: Block name. %s: The localized block name */
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Schválit";
+
+/* Approves a Comment */
+"Approve Comment" = "Schválit komentář";
 
 /* Button title for Approved comment state.
    Title of approved Comments filter. */
@@ -1036,6 +1055,9 @@ translators: Block name. %s: The localized block name */
 /* Beauty site intent topic */
 "Beauty" = "Krása";
 
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Před %@";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Nejlepší den";
 
@@ -1206,7 +1228,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Prázdný příspěvek nelze zveřejnit";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1234,6 +1255,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1291,6 +1313,10 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Opatrně!";
 
+/* Example prompt for blogging prompts in the create new bottom action sheet.
+   Example prompt for the Prompts card in Feature Introduction. */
+"Cast the movie of your life." = "Obsaďte film svého života.";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Rubriky";
@@ -1341,9 +1367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Change button. */
 "Change username" = "Změnit uživatelské jméno";
-
-/* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Změňte, přidejte nebo odeberte obsah z domovské stránky svého webu.";
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Změňte, přidejte nebo odeberte stránky svého webu.";
@@ -1398,7 +1421,11 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupů...";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
+"Child of %@" = "Dítě %@";
+
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Vybrat";
 
 /* Title for selecting a new homepage */
@@ -1436,6 +1463,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Vyberte čas";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Zvolit téma ze seznamu níže nebo napište své vlastní";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Nahrát ikonu webu";
@@ -1686,13 +1716,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Create your site" = "Dokončeno: Vytvořte si svůj web";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Dokončeno: Upravte svou domovskou stránku";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Dokončeno: Prozkoumejte plány";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Dokončeno: Sledujte další weby";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Dokončeno: Publikujte příspěvek";
@@ -2012,7 +2036,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Vytvořit příspěvek";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Vytvořit web";
 
 /* Stories intro continue button title */
@@ -2137,8 +2162,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Přizpůsobte přechod";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Přizpůsobte si svůj web";
 
 /* No comment provided by engineer. */
@@ -2281,7 +2305,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Popis";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Vzhled";
 
 /* Title for the desktop web preview */
@@ -2337,6 +2361,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojení tohoto účtu již nebudou publikované příspěvky automaticky sdíleny %@";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "Objevujte";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Objevte weby";
@@ -2446,6 +2473,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Upravte dvojitým klepnutím a podržením";
+
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Dvojitým klepnutím a podržením přesunete tuto položku nabídky nahoru nebo dolů. Chcete-li změnit hierarchii, posuňte vodorovně.";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Dvojitým klepnutím přidáte blok";
@@ -2579,6 +2609,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicitní blok";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "Např.: móda, poezie, politika";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Každý blok má své vlastní nastavení. Chcete-li je najít, klepněte na blok. Jeho nastavení se zobrazí na panelu nástrojů ve spodní části obrazovky.";
 
@@ -2651,9 +2684,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Upravit video";
-
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Upravte svou domovskou stránku";
 
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Úpravy opakovaně použitelných bloků zatím nejsou na WordPressu pro Android podporovány";
@@ -2752,16 +2782,13 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "Povolit publikovat";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Povolit rychlý start pro web";
+"Enable Quick Start for New Site" = "Povolit rychlý start pro web";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Povolit statistiky webu";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Povolit oznámení v aplikaci";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Povolit oznámení v aplikaci?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Povolit sdílení příspěvků";
@@ -3134,9 +3161,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Zjistit více";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Najděte weby, které s vámi mluví, a sledujte je a získejte aktualizace, jakmile budou publikovány.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Najděte adresu svého webu";
 
@@ -3173,12 +3197,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Sledovat konverzaci";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Sledovat konverzaci na e-mailu";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Sledovat jiné weby";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Sledovat web";
@@ -3366,8 +3384,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Vyzkoušejte to přidáním několika bloků do svého příspěvku nebo stránky!";
 
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Pojmenujte svůj web %@";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Pojmenujte svůj web podle jeho osobnosti a tématu. Počítají se první dojmy!";
+
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Pojmenujte svůj web";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3407,8 +3432,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Skvělý!\n  Rádi slyšíme od šťastných uživatelů\n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Rozšiřte své publikum";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -3547,8 +3571,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Úvodní stránka";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Domovská stránka";
@@ -3765,6 +3788,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Instalace prvního pluginu na vaše stránky může trvat až 1 minutu. Během této doby nebudete moci na svém webu provádět žádné změny.";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Interested in building your audience? Check out our top tips" = "Máte zájem o budování publika? Podívejte se na naše nejlepší tipy";
 
 /* Interior Design site intent topic */
 "Interior Design" = "Vzhled interiéru";
@@ -4453,6 +4479,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Nejoblíbenější čas";
 
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Přesunuto %@";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Přesunout obrázek dozadu";
 
@@ -4939,6 +4968,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikace";
 
@@ -5619,9 +5649,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Náhled";
 
@@ -5644,7 +5674,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "Zobrazit příspěvek";
 
 /* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Zobrazte náhled svého nového webu, abyste viděli, co uvidí vaši návštěvníci.";
+"Preview your site to see what your visitors will see." = "Zobrazte náhled pro kontrolu, jak uvidí stránku ostatní";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Předcházející měsíc";
@@ -5710,6 +5740,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
+
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Výzvy";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -5953,6 +5987,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Odstranit blok";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Odebrat z nástěnky";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Odebrat z přehledů";
@@ -6297,7 +6334,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Bylo otevřeno rolovací blok menu. Vyberte blok.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Hledat";
 
@@ -6385,15 +6421,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Vyberte %@ a objevte nové šablony";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Vyberte %@ a upravte svou domovskou stránku.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Vyberte %@ a vyhledejte stránky s podobnými zájmy";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Chcete-li zobrazit náhled, vyberte %@ ";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Vyberte %@ a podívejte se, jak si váš web vede.";
@@ -6585,6 +6612,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavení";
@@ -6785,7 +6813,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Téma webu";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "URL adresa webu";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6835,17 +6864,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Velikost";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Přeskočit";
 
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Přeskočit vše";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Přeskočit rychlý start";
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Přeskočte tuto výzvu";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Výsledky lomítka";
@@ -7397,9 +7424,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Příspěvek, který se pokoušíte zkopírovat, má dvě verze, které jsou v konfliktu, nebo jste nedávno provedli změny, ale neuložili jste je.\nNejprve upravte příspěvek, abyste vyřešili jakýkoli konflikt, nebo pokračujte v kopírování verze z této aplikace.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Prohlídka rychlého startu vás provede sestavením základního webu. Opravdu chcete přeskočit?";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Série požadavků se nezdařila.";
@@ -8099,6 +8123,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Unapproves a comment */
 "Unapprove" = "Zrušit schválení";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Neschválit komentář";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Zruší schválení komentáře.";
 
@@ -8116,6 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8128,11 +8156,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Zrušit sledování %@";
 
-/* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Sledujte konverzaci";
-
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Přestat sledovat konverzaci e-mailem";
+"Unfollow conversation" = "Sledujte konverzaci";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Zrušení sledování tohoto webu";
@@ -8323,9 +8348,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Použijte ikonu tlačítka";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Vybrat tuto stránku";
 
@@ -8416,8 +8438,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Zobrazit příspěvek";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobrazit web";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8436,6 +8457,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Zobrazit více";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Zobrazit další výzvy";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Zobrazit zatím svůj web";
@@ -9338,17 +9362,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTÁŘ]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogerovi se to líbí.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d blogerům se to líbí.";
 
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_To se vám a %1$d bloggerovi_ líbí.";
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_1 blogerovi se to líbí.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_To se vám a %1$d bloggerům_ líbí.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_To se vám a bloggerovi_ líbí.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Se ti to líbí.";
@@ -9429,6 +9453,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Chcete přidat fotky a videa do vašeho příspěvku.";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Uložit jako koncept";
@@ -9600,4 +9627,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Uživatelé a autoři";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Odpovězeno";
 

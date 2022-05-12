@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-25 13:54:07+0000 */
+/* Translation-Revision-Date: 2022-05-05 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -56,6 +56,12 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d vind-ik-leuks";
 
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d antwoord";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d antwoorden";
+
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d van %2$d afgerond";
 
@@ -80,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ knop";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ ga terug naar het scherm Mijn Sitescreen wanneer je klaar bent voor de volgende taak.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ tag";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ tags";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ Tip: ontvang sneller updates door pushmeldingen in te schakelen.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miljard";
@@ -267,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(Geen titel)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* volgt je site nu!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* heeft op je reactie gereageerd";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* antwoordde op je bericht";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* heeft een nieuw bericht aan haar site toegevoegd";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* liked je bericht";
@@ -325,13 +346,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>Een keer<\/strong> per week";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Een<\/strong> keer per week";
+"<strong>Once<\/strong> a week at %@" = "<strong>Een<\/strong> keer per week om %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Twee keer<\/strong> per week";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twee<\/strong> keer per week";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Twee<\/strong> keer per week om %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -347,6 +368,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Een nieuwe manier om boeiende inhoud op je site te maken en te publiceren.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "Een aantal stappen die je helpen de app te verkennen.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Een aantal stappen die je toont hoe je een thema, site pictogram en meer toevoegt.";
@@ -621,6 +645,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Geavanceerd";
 
+/* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
+"After %@" = "Na %@";
+
 /* Option to select the Airmail app when logging in with magic links */
 "Airmail" = "Airmail";
 
@@ -777,6 +804,10 @@ translators: Block name. %s: The localized block name */
 
 /* the comment has an anonymous author. */
 "Anonymous" = "Anoniem";
+
+/* Title for a call-to-action button in the create new bottom action sheet.
+   Title for a call-to-action button on the prompts card. */
+"Answer Prompt" = "Antwoord prompt";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1033,6 +1064,12 @@ translators: Block name. %s: The localized block name */
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Laat als eerste een reactie achter.";
 
+/* Beauty site intent topic */
+"Beauty" = "Schoonheid";
+
+/* Screen reader text expressing the menu item is before another menu item. Argument is a name for another menu item. */
+"Before %@" = "Voor %@";
+
 /* 'Best Day' label for Most Popular stat. */
 "Best Day" = "Beste dag";
 
@@ -1119,6 +1156,9 @@ translators: Block name. %s: The localized block name */
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Vet";
 
+/* Books site intent topic */
+"Books" = "Boeken";
+
 /* No comment provided by engineer. */
 "Border Radius" = "Radius rand";
 
@@ -1200,7 +1240,6 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Kan een leeg bericht niet publiceren";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1228,6 +1267,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1337,9 +1377,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Wijzig gebruikersnaam";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Verander, voeg toe, of verwijder inhoud van de homepage van je site.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Verander, voeg toe, of verwijder pagina's van je site.";
 
 /* No comment provided by engineer. */
@@ -1381,6 +1418,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Controleer je netwerkverbinding en probeer opnieuw. Of sla bericht als concept op.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Controleer je meldingen";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Controleer je site-statistieken";
 
 /* Title of a Quick Start Tour */
@@ -1389,7 +1429,11 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Aankopen worden gecontroleerd...";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Statistieken controleren...";
+
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Kies";
 
 /* Title for selecting a new homepage */
@@ -1427,6 +1471,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Kies een onderwerp van de lijst hieronder of typ je eigen";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Kies een unieke site pictogram";
@@ -1656,6 +1703,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Afgerond";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Afgerond: Controleer je meldingen";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Afgerond: Kies je site statistieken";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1668,19 +1718,16 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "Afgerond: kies een unieke site pictogram";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Afgerond: Maak verbinding met andere sites";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Afgerond: Ga verder met de site setup";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Afgerond: Maak je site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Afgerond: Bewerk je homepage";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Afgerond: Verken abonnementen";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Afgerond: Volg andere sites";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Afgerond: Publiceer een bericht";
@@ -1724,6 +1771,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Gefeliciteerd met je aankoop!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Gefeliciteerd! Je site heeft meer dan *1000 totale weergaven* gehad!";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Verbinden";
@@ -1739,6 +1789,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Verbind met andere bloggers door volgen, liken en reacties op hun berichten.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Maak verbinding met andere sites";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Verbind je favoriete social media om automatisch nieuwe berichten met vrienden te delen.";
@@ -1997,7 +2050,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Maak bericht";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Site aanmaken";
 
 /* Stories intro continue button title */
@@ -2122,8 +2176,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Pas verloop aan";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Je site aanpassen";
 
 /* No comment provided by engineer. */
@@ -2146,6 +2199,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Cut block" = "Blok knippen";
+
+/* DIY site intent topic */
+"DIY" = "DIY";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Donker";
@@ -2263,7 +2319,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Beschrijving";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Ontwerp";
 
 /* Title for the desktop web preview */
@@ -2320,11 +2376,17 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Door dit account los te koppelen worden gepubliceerde berichten niet meer automatisch gedeeld met %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Ontdek";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Ontdek sites";
 
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Ontdek en volg blogs waar je van houdt";
+
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Ontdek en volg sites die je inspireren.";
 
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Ontdek blogs om te volgen";
@@ -2561,6 +2623,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliceer blok";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "Bijv. mode, poëzie, politiek";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tik op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
 
@@ -2634,9 +2699,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Bewerk video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Bewerk je homepage";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door WordPress voor Android";
 
@@ -2657,6 +2719,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Bewerkt dit menu-item";
+
+/* Education site intent topic */
+"Education" = "Onderwijs";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -2731,16 +2796,13 @@ translators: Block name. %s: The localized block name */
 "Enable Publicize" = "Schakel publicatie in";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Snelstart voor site inschakelen";
+"Enable Quick Start for Existing Site" = "Snelstart voor bestaande site inschakelen";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Sitestatistieken inschakelen";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "In-app meldingen inschakelen";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "In-app meldingen inschakelen?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Berichten delen inschakelen";
@@ -3035,6 +3097,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Uploaden van bestanden mislukt.\nTik voor opties.";
 
+/* Fashion site intent topic */
+"Fashion" = "Mode";
+
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
@@ -3092,17 +3157,20 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Bestandstype";
 
+/* Film & Television site intent topic */
+"Film & Television" = "Film & televisie";
+
 /* Title of the filter button in the Reader */
 "Filter" = "Filteren";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filter op type activiteit";
 
+/* Finance site intent topic */
+"Finance" = "Financiën";
+
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Meer te weten komen";
-
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Ontdek sites die je aanspreken en volg ze om updates te ontvangen wanneer nieuwe content wordt gepubliceerd.";
 
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Vind je site adres";
@@ -3114,6 +3182,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Voornaam";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "Fitness & lichaamsbeweging";
 
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Alles oplossen";
@@ -3139,10 +3210,7 @@ translators: Block name. %s: The localized block name */
 "Follow Conversation" = "Volg conversatie";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Volg gesprek per e-mail";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Volg andere sites";
+"Follow conversation" = "Conversatie volgen";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Volg site";
@@ -3209,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Font Size" = "Lettertype grootte";
 
+/* Food site intent topic */
+"Food" = "Eten";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
 
@@ -3266,6 +3337,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Gallery style" = "Galerij stijl";
 
+/* Gaming site intent topic */
+"Gaming" = "Games";
+
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Tuinieren";
 
@@ -3294,6 +3368,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Trek de aandacht: reageer op berichten die je hebt gelezen.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Ontvang realtime updates in je broekzak.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Ga aan de slag door te kiezen uit een breed scala aan vooraf gemaakte pagina lay-outs. Of begin gewoon met een lege pagina.";
 
@@ -3302,6 +3379,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Leer de WordPress-app gebruiken";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Krijg je domein";
@@ -3327,6 +3407,10 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
 
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Geef je site een naam";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
@@ -3349,6 +3433,10 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Aanmelden met Google mislukt.";
 
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "Ik snap het";
+
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Begrepen!";
 
@@ -3361,9 +3449,11 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Geweldig!\n We houden van blije gebruikers \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Verhoog je bezoekersaantallen";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Begeleidt je bij het proces voor het bekijken van je meldingen.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Begeleidt je bij het proces voor het kiezen van een thema voor je site.";
@@ -3441,6 +3531,9 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
 
+/* Health site intent topic */
+"Health" = "Gezondheid";
+
 /* Help button */
 "Help" = "Help";
 
@@ -3498,8 +3591,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Home";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -3624,6 +3716,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactief, auto-updates aan";
+
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Opdracht bijvoegen";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inbegrepen bij site";
@@ -3871,6 +3966,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Houd de prestaties van je site bij.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Weet wanneer je favoriete schrijvers nieuwe content plaatsen.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Weet wanneer je site meer bezoekers of nieuwe volgers krijgt, of wanneer deze een nieuwe mijlpaal bereikt!";
+
 /* Autoapprove only from known users */
 "Known Users" = "Bekende gebruikers";
 
@@ -3916,6 +4017,9 @@ translators: Block name. %s: The localized block name */
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Ontdek meer over datum- en tijdnotaties.";
 
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Meer informatie over opdrachten";
+
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Leer meer over rollen";
 
@@ -3939,6 +4043,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Laat het mij weten als het klaar is!";
+
+/* Lifestyle site intent topic */
+"Lifestyle" = "Lifestyle";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Licht";
@@ -4392,6 +4499,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populairste tijd";
 
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Verplaats %@";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Verplaats afbeelding naar achteren";
 
@@ -4482,6 +4592,9 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mijn toptien cafés";
 
+/* Title for disclaimer in the dashboard's custom What's New page. */
+"NEW!" = "NIEUW!";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -4563,6 +4676,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Sort Order */
 "Newest first" = "Nieuwste eerst";
+
+/* News site intent topic */
+"News" = "Nieuws";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
@@ -4837,6 +4953,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Kan je de e-mail niet vinden? Controleer je spam-map of ongewenste e-mail.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Weet ik niet, laat maar zien";
+
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Opmerking: Kolom lay-out kan verschillen tussen thema's en schermafmetingen";
 
@@ -4866,9 +4985,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Meldingtijd";
 
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Meldingen bevatten een woord of korte zin ter inspiratie";
+
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Meldingen";
 
@@ -5163,6 +5286,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message informing the user that their pages parent has been set successfully */
 "Parent page successfully updated." = "Hoofdpagina met succes geüpdatet.";
 
+/* Parenting site intent topic */
+"Parenting" = "Ouderschap";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5213,11 +5339,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Verwijder site permanent";
 
+/* Personal site intent topic */
+"Personal" = "Persoonlijk";
+
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personaliseer";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fotobibliotheek";
+
+/* Photography site intent topic */
+"Photography" = "Fotografie";
 
 /* Tab bar title for the Photos tab in Media Picker */
 "Photos" = "Foto's";
@@ -5540,9 +5672,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
+   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Voorbeeld";
 
@@ -5563,9 +5695,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Preview post" = "Bekijk voorbeeld";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Bekijk een voorbeeld van je nieuwe site om te zien wat je bezoekers zien..";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Vorige maand";
@@ -5631,6 +5760,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projecten";
+
+/* Title label for blogging prompts in the create new bottom action sheet.
+   Title label for the Prompts card in My Sites tab. */
+"Prompts" = "Prompts";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -5748,6 +5881,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Berichten van andere sites lezen";
+
+/* Real Estate site intent topic */
+"Real Estate" = "Onroerend goed";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Herblog";
@@ -5868,6 +6007,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Verwijder blok";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Remove from dashboard" = "Verwijder van dashboard";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
@@ -6212,7 +6354,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Scrolbaar blokmenu geopend. Selecteer een blok.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
    Title of the Reader's search feature */
 "Search" = "Zoeken";
 
@@ -6302,13 +6443,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Selecteer %@ om nieuwe thema's te ontdekken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Selecteer %@ om je homepage te bewerken.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Selecteer %@ om te zoeken naar sites met dezelfde interesses";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Selecteer %@ om voorbeeld te bekijken";
+"Select %@ to find other sites." = "Selecteer %@ om andere sites te zoeken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Selecteer %@ om te zien hoe je site presteert.";
@@ -6327,6 +6462,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Selecteer %@ om een nieuwe te uploaden.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Selecteer %@ om je site te bekijken";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selecteer land";
@@ -6360,6 +6498,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Alineastijl selecteren";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Selecteer het tabblad %@ om onderweg updates te ontvangen.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Selecteer %@ om je social media accounts toe te voegen";
@@ -6497,6 +6638,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Instellingen";
@@ -6694,7 +6836,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for screen that show site title editor */
 "Site Title" = "Site titel";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6744,17 +6887,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Grootte";
 
-/* Button label when skipping all quick start items
+/* Button that allows the user to skip the prompt and be brought to the app
    Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
+   Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Overslaan";
 
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Sla alles over";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Snelstart overslaan";
+/* Menu title to skip today's prompt. */
+"Skip this prompt" = "Sla deze prompt over";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter resultaten";
@@ -6879,6 +7020,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Versnel je site";
 
+/* Sports site intent topic */
+"Sports" = "Sport";
+
 /* Standard post format label */
 "Standard" = "Standaard";
 
@@ -6920,6 +7064,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Blijf op de hoogte";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Blijf in contact met meldingen van likes en reacties.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Blijf in contact met je publiek met meldingen van likes en reacties.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Op de hoogte blijven met meldingen";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Bericht vastmaken op voorpagina";
@@ -7154,8 +7307,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tik om je site te bekijken";
 
+/* A hint about the completed guided tour. */
+"Task complete." = "Taak voltooid.";
+
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
+
+/* Technology site intent topic */
+"Technology" = "Technologie";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Vertel ons iets over jezelf.";
@@ -7294,9 +7453,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Het bericht dat je probeert te kopiëren heeft twee versies die verschillend zijn of je hebt recentelijk wijzigingen aangebracht maar niet opgeslagen.\nBewerk het bericht eerst om een eventueel conflict op te lossen of ga verder met het kopiëren van de versie van deze app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "In de snelle rondleiding wordt getoond hoe je een basissite bouwt. Weet je zeker dat je wilt overslaan? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "De serialisatie van het verzoek is mislukt.";
@@ -7784,6 +7940,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Probeer het nu";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Probeer %@ te selecteren om onderwerpen toe te voegen die je leuk vindt.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Probeer de nieuwe blok-editor";
 
@@ -8007,6 +8166,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8020,10 +8180,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unfollow %@" = "Ontvolg %@";
 
 /* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Ontvolg conversatie";
+"Unfollow Conversation" = "Conversatie ontvolgen";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Ontvolgen gesprek per e-mail";
+"Unfollow conversation" = "Ontvolg conversatie";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Ontvolg site";
@@ -8205,6 +8365,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Gebruik";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Gebruik %@ om sites en tags te zoeken.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Gebruik Sandbox Store";
 
@@ -8213,9 +8376,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Use icon button" = "Gebruik pictogram knop";
-
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Gebruik deze site";
@@ -8307,8 +8467,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "Bekijk bericht";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Site bekijken";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8327,6 +8486,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Meer weergeven";
+
+/* Menu title to show more prompts. */
+"View more prompts" = "Bekijk meer prompts";
 
 /* Description for view count. Singular. */
 "View to your site so far" = "Bekijk je site tot zover";
@@ -8365,6 +8527,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Bezoek %@ voor meer";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Naar het dashboard gaan";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Bezoek de site";
@@ -8900,6 +9065,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the writing section in site settings screen */
 "Writing" = "Schrijven";
 
+/* Writing & Poetry site intent topic */
+"Writing & Poetry" = "Schrijven & poëzie";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Blogberichten schrijven";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X-as positie";
 
@@ -9053,6 +9224,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Je moet je account verifiëren alvorens je een bericht kan publiceren.\nGeen zorgen, je bericht is veilig en wordt als concept opgeslagen.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Je hebt *50 likes* ontvangen op je reactie";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Je ontving *50 vind-ik-leukss* op je site vandaag";
 
@@ -9078,6 +9252,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Je krijgt een herinnering om <strong>één keer per<\/strong> week te bloggen op %1$@ op %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Je krijgt meldingen in de app";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Je krijgt herinneringen om %1$@ keer per week te bloggen op %2$@.";
@@ -9157,6 +9335,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Je site-adres verschijnt in de balk boven aan het scherm wanneer je je site bezoekt in Safari.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Je site wordt al beschermd door VaultPress. Hieronder staat een link naar je VaultPress-dashboard.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Je site lijkt *meer bezoekers* dan gewoonlijk te krijgen!";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Je site heeft VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Je site is gemaakt!";
 
@@ -9214,14 +9401,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[REACTIE]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ vindt dit leuk.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d bloggers_ vinden dit leuk.";
-
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_Jij en %1$d blogger_ vinden dit leuk.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Jij en %1$d bloggers_ vinden dit leuk.";
@@ -9291,6 +9472,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "in \"Upgrade\"";
 
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Selecteer site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Selecteer site doel";
+
 /* Later today */
 "later today" = "later vandaag";
 
@@ -9311,6 +9501,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Reacties";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Likes";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "%@ gepubliceerd";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Weergaven";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "Populairste tijd";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% of views";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
@@ -9434,4 +9642,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Gebruikers en auteurs";
+
+/* Title label that indicates the prompt has been answered. */
+"✓ Answered" = "✓ Beantwoord";
 

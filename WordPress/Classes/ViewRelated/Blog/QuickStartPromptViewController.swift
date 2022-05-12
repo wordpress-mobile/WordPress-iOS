@@ -139,7 +139,9 @@ final class QuickStartPromptViewController: UIViewController {
         onDismiss?(blog, true)
         dismiss(animated: true)
 
-        WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
+        WPAnalytics.trackQuickStartStat(.quickStartRequestAlertButtonTapped,
+                                        properties: ["type": "positive"],
+                                        blog: blog)
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
@@ -147,7 +149,9 @@ final class QuickStartPromptViewController: UIViewController {
         onDismiss?(blog, false)
         dismiss(animated: true)
 
-        WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])
+        WPAnalytics.trackQuickStartStat(.quickStartRequestAlertButtonTapped,
+                                        properties: ["type": "neutral"],
+                                        blog: blog)
     }
 }
 

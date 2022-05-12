@@ -379,14 +379,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
     
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-
-    if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
-    } else {
-        parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
-    }
-
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
@@ -403,7 +395,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self cancelCompletedToursIfNeeded];
     [self createUserActivity];
     [self startAlertTimer];
     
@@ -416,8 +407,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide visited: QuickStartTourElementSiteMenu];
     }
     
-    tourGuide.currentTourOrigin = QuickStartTourOriginBlogDetails;
-
+    tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 }
 
@@ -910,6 +900,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             callback:^{
                    [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
                                                             }];
+    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
     [rows addObject:mediaRow];
 
     BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
@@ -1178,7 +1169,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [WPStyleGuide configureTableViewCell:cell];
     }
-    if ([[QuickStartTourGuide shared] isCurrentElement:row.quickStartIdentifier]) {
+    
+    QuickStartTourGuide *tourGuide = [QuickStartTourGuide shared];
+    
+    
+    BOOL shouldShowSpotlight =
+        tourGuide.entryPointForCurrentTour == QuickStartTourEntryPointBlogDetails ||
+        tourGuide.currentTourMustBeShownFromBlogDetails;
+    
+    if ([tourGuide isCurrentElement:row.quickStartIdentifier] && shouldShowSpotlight) {
         row.accessoryView = [QuickStartSpotlightView new];
     } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
         row.accessoryView = nil;
@@ -1400,9 +1399,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                parentVC.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                [parentVC.scrollView scrollToView:cell animated:true];
+                [parentVC.scrollView scrollVerticallyToView:cell animated:true];
             }
             rowCount++;
         }
@@ -1447,7 +1445,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
 
 - (void)showPeople
@@ -1638,7 +1636,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
     }
 
-    parentVC.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
@@ -1710,7 +1707,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         
         // quick start was just enabled
         if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
-            [self showQuickStartCustomize];
+            [self showQuickStart];
         }
         [self reloadTableViewPreservingSelection];
     }
@@ -1760,9 +1757,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 #pragma mark - Pull To Refresh
-- (void)pulledToRefresh {
-    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
-}
 
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
@@ -1772,7 +1766,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // down to refresh the site.
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [refreshControl endRefreshing];
-            
+
             completion();
         });
     }];

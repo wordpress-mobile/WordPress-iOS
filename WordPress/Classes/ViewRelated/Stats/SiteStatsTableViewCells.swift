@@ -140,10 +140,12 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 struct LatestPostSummaryRow: ImmuTableRow {
 
-    typealias CellType = LatestPostSummaryCell
-
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+        if FeatureFlag.statsNewInsights.enabled {
+            return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
+        } else {
+            return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
+        }
     }()
 
     let summaryData: StatsLastPostInsight?
@@ -153,7 +155,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? LatestPostSummaryConfigurable else {
             return
         }
 
@@ -261,6 +263,49 @@ struct TwoColumnStatsRow: ImmuTableRow {
         }
 
         cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
+struct MostPopularTimeInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsMostPopularTimeInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let data: StatsMostPopularTimeData?
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
+struct TotalInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsTotalInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let dataRow: StatsTotalInsightsData
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(count: dataRow.count, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

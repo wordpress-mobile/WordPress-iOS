@@ -33,6 +33,11 @@ final class BlogDashboardViewController: UIViewController {
         return refreshControl
     }()
 
+    /// The "My Site" parent view controller
+    var mySiteViewController: MySiteViewController? {
+        return parent as? MySiteViewController
+    }
+
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
         return view.superview?.superview as? UIScrollView
@@ -69,7 +74,7 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
-        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
+        QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
@@ -147,7 +152,29 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            guard let self = self else {
+                return
+            }
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .setupQuickStart, .removeQuickStart:
+                    self.loadCardsFromCache()
+                case .stats, .mediaScreen:
+                    if self.embeddedInScrollView {
+                        self.mySiteScrollView?.scrollToTop(animated: true)
+                    } else {
+                        self.collectionView.scrollToTop(animated: true)
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -229,15 +256,16 @@ extension BlogDashboardViewController {
 
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
+
         guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
             return
         }
 
         if quickStartGuide.tourInProgress {
             // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
             quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-        else {
+        } else {
             guard shouldShowQuickStartChecklist() else {
                 return
             }

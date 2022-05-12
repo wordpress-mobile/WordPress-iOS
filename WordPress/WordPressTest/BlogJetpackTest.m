@@ -6,7 +6,7 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "TestContextManager.h"
+#import "ContextManagerMock.h"
 @import WordPressKit;
 
 @interface BlogJetpackTest : XCTestCase
@@ -16,15 +16,16 @@
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) TestContextManager *testContextManager;
+@property (nonatomic, strong) ContextManagerMock *testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
-    self.testContextManager = [[TestContextManager alloc] init];
-    
+    self.testContextManager = [[ContextManagerMock alloc] init];
+    [self.testContextManager setUpAsSharedInstance];
+
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
@@ -47,11 +48,10 @@
 
 - (void)tearDown {
     [super tearDown];
-    
+
     _account = nil;
     _blog = nil;
     [HTTPStubs removeAllStubs];
-    [ContextManager overrideSharedInstance:nil];
 
     self.testContextManager = nil;
 }
@@ -75,19 +75,17 @@
 }
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
+    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
     WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
-    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
+    saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
     defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
@@ -101,8 +99,7 @@
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
+    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
@@ -130,7 +127,7 @@
                                   };
 
     // Wait on the merge to be completed
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
 
     // test.blog + wp.com + jetpack
     XCTAssertEqual(1, [accountService numberOfAccounts]);
@@ -174,8 +171,7 @@
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
+    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
@@ -192,7 +188,7 @@
     jetpackBlog.url = @"https://jetpack.example.com/";
 
     // Wait on the merge to be completed
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
 
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)

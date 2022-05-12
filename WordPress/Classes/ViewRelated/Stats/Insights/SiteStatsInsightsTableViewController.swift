@@ -176,6 +176,8 @@ private extension SiteStatsInsightsTableViewController {
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
+                MostPopularTimeInsightStatsRow.self,
+                TotalInsightStatsRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostGrowAudienceImmutableRow.self,

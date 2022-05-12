@@ -100,6 +100,8 @@ class ReaderDetailCoordinator {
         return URL(string: postURLString)
     }
 
+    private var followCommentsService: FollowCommentsService?
+
     /// The total number of Likes for the post.
     /// Passed to ReaderDetailLikesListController to display in the view title.
     private var totalLikes = 0
@@ -408,17 +410,23 @@ class ReaderDetailCoordinator {
     ///
     private func showMenu(_ anchorView: UIView) {
         guard let post = post,
-            let context = post.managedObjectContext,
-            let viewController = viewController else {
+              let context = post.managedObjectContext,
+              let viewController = viewController,
+              let followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
-                                                                     context: context,
-                                                                     readerTopic: readerTopic,
-                                                                     anchor: anchorView,
-                                                                     vc: viewController,
-                                                                     source: ReaderPostMenuSource.details)
+        self.followCommentsService = followCommentsService
+
+        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(
+            post: post,
+            context: context,
+            readerTopic: readerTopic,
+            anchor: anchorView,
+            vc: viewController,
+            source: ReaderPostMenuSource.details,
+            followCommentsService: followCommentsService
+        )
 
         WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }

@@ -4,42 +4,10 @@ import WordPressUI
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
+    // MARK: - Public Properties
 
-    /// Controls available actions on the bottom row.
-    /// TODO: Might need to review this once we have a better picture of what the Prompt model looks like.
-    var isAnswered: Bool = true {
-        didSet {
-            refreshStackView()
-        }
-    }
-
-    /// When set to true, a "default" version of the card is displayed. That is:
-    /// - `maxAvatarCount` number of avatars.
-    /// - `maxAvatarCount` answer count.
-    /// - `examplePrompt` prompt label.
-    /// - disabled user interaction.
-    private var forExampleDisplay: Bool = false {
-        didSet {
-            isUserInteractionEnabled = false
-            isAnswered = false
-        }
-    }
-
-    // MARK: - Private Properties
-
-    // Used to present the menu sheet for contextual menu.
-    // NOTE: Remove this once we drop support for iOS 13.
-    private weak var presenterViewController: BlogDashboardViewController? = nil
-
-    private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Constants.spacing
-        return stackView
-    }()
-
-    private lazy var cardFrameView: BlogDashboardCardFrameView = {
+    // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
+    private(set) lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.title = Strings.cardFrameTitle
@@ -62,12 +30,68 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return frameView
     }()
 
+    // MARK: - Private Properties
+
+    private var blog: Blog?
+
+    private var prompt: BloggingPrompt? {
+        didSet {
+            refreshStackView()
+        }
+    }
+
+    private lazy var isAnswered: Bool = {
+        if forExampleDisplay {
+            return false
+        }
+
+        return prompt?.answered ?? false
+    }()
+
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        return BloggingPromptsService(blog: blog)
+    }()
+
+    /// When set to true, a "default" version of the card is displayed. That is:
+    /// - `maxAvatarCount` number of avatars.
+    /// - `exampleAnswerCount` answer count.
+    /// - `examplePrompt` prompt label.
+    /// - disabled user interaction.
+    private var forExampleDisplay: Bool = false {
+        didSet {
+            isUserInteractionEnabled = false
+            cardFrameView.isUserInteractionEnabled = false
+            refreshStackView()
+        }
+    }
+
+    private var didFailLoadingPrompt: Bool = false {
+        didSet {
+            if didFailLoadingPrompt != oldValue {
+                refreshStackView()
+            }
+        }
+    }
+
+    // Used to present:
+    // - The menu sheet for contextual menu in iOS13.
+    // - The Blogging Prompts list when selected from the contextual menu.
+    private weak var presenterViewController: BlogDashboardViewController? = nil
+
+    private lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = Constants.spacing
+        return stackView
+    }()
+
     // MARK: Top row views
 
     private lazy var promptLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Style.promptContentFont
+        label.font = WPStyleGuide.BloggingPrompts.promptContentFont
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -88,10 +112,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var answerCount: Int = {
         if forExampleDisplay {
-            return Constants.maxAvatarCount
+            return Constants.exampleAnswerCount
         }
-        // TODO: For testing purposes. Remove once we actually have real avatar URLs.
-        return 3
+
+        return prompt?.answerCount ?? 0
     }()
 
     private var answerInfoText: String {
@@ -104,8 +128,12 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             if forExampleDisplay {
                 return (0..<Constants.maxAvatarCount).map { _ in nil }
             }
-            // TODO: Refactor this once we have real avatar URLs.
-            return (0..<min(answerCount, Constants.maxAvatarCount)).map { _ in nil }
+
+            guard let displayAvatarURLs = prompt?.displayAvatarURLs else {
+                return []
+            }
+
+            return Array(displayAvatarURLs.prefix(min(answerCount, Constants.maxAvatarCount)))
         }()
 
         let avatarTrainView = AvatarTrainView(avatarURLs: avatarURLs, placeholderImage: Style.avatarPlaceholderImage)
@@ -129,8 +157,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = answerInfoText
-        label.font = Style.answerInfoLabelFont
-        label.textColor = Style.answerInfoLabelColor
+        label.font = WPStyleGuide.BloggingPrompts.answerInfoLabelFont
+        label.textColor = WPStyleGuide.BloggingPrompts.answerInfoLabelColor
         label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -166,20 +194,19 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.answerButtonTitle, for: .normal)
-        button.setTitleColor(Style.buttonTitleColor, for: .normal)
-        button.titleLabel?.font = Style.buttonTitleFont
+        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-
-        // TODO: Implement button tap action
+        button.addTarget(self, action: #selector(answerButtonTapped), for: .touchUpInside)
 
         return button
     }()
 
     private lazy var answeredLabel: UILabel = {
         let label = UILabel()
-        label.font = Style.buttonTitleFont
-        label.textColor = Style.answeredLabelColor
+        label.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
+        label.textColor = WPStyleGuide.BloggingPrompts.answeredLabelColor
         label.text = Strings.answeredLabelTitle
 
         // The 'answered' label needs to be close to the Share button.
@@ -195,8 +222,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.shareButtonTitle, for: .normal)
-        button.setTitleColor(Style.buttonTitleColor, for: .normal)
-        button.titleLabel?.font = Style.buttonTitleFont
+        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.contentHorizontalAlignment = .leading
@@ -259,6 +286,14 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         super.init(coder: coder)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        //  refresh when the appearance style changed so the placeholder images are correctly recolored.
+        if let previousTraitCollection = previousTraitCollection,
+            previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            refreshStackView()
+        }
+    }
+
     // MARK: - Public Methods
 
     func configureForExampleDisplay() {
@@ -271,14 +306,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.blog = blog
         self.presenterViewController = viewController
-        refreshStackView()
+        fetchPrompt()
     }
 }
 
 // MARK: - Private Helpers
 
 private extension DashboardPromptsCardCell {
+
+    // MARK: Configure View
 
     func setupViews() {
         contentView.addSubview(cardFrameView)
@@ -290,9 +328,13 @@ private extension DashboardPromptsCardCell {
         // clear existing views.
         containerStackView.removeAllSubviews()
 
-        // TODO: Remove the hard coded string once we can pull content from remote.
-        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : "Cast the movie of your life."
+        guard !didFailLoadingPrompt else {
+            promptLabel.text = Strings.errorTitle
+            containerStackView.addArrangedSubview(promptTitleView)
+            return
+        }
 
+        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
 
         if answerCount > 0 {
@@ -302,10 +344,50 @@ private extension DashboardPromptsCardCell {
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
     }
 
+    // MARK: Prompt Fetching
+
+    func fetchPrompt() {
+        // TODO: check for cached prompt first.
+
+        guard let bloggingPromptsService = bloggingPromptsService else {
+            didFailLoadingPrompt = true
+            DDLogError("Failed creating BloggingPromptsService instance.")
+            return
+        }
+
+        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+            self?.prompt = prompt
+            self?.didFailLoadingPrompt = false
+        }, failure: { [weak self] (error) in
+            self?.prompt = nil
+            self?.didFailLoadingPrompt = true
+            DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
+        })
+    }
+
+    // MARK: Button actions
+
+    @objc func answerButtonTapped() {
+        guard let blog = blog else {
+            return
+        }
+
+        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .dashboard
+        presenterViewController?.present(editor, animated: true)
+    }
+
     // MARK: Context menu actions
 
     func viewMoreMenuTapped() {
-        // TODO.
+        guard let blog = blog,
+              let presenterViewController = presenterViewController else {
+            DDLogError("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
+            return
+        }
+
+        BloggingPromptsViewController.show(for: blog, from: presenterViewController)
     }
 
     func skipMenuTapped() {
@@ -348,17 +430,15 @@ private extension DashboardPromptsCardCell {
                                                                 + "that answered the blogging prompt.")
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
+        static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
     }
 
     struct Style {
         static let frameIconImage = UIImage(named: "icon-lightbulb-outline")?.resizedImage(Constants.cardIconSize, interpolationQuality: .default)
-        static let avatarPlaceholderImage = UIImage(color: .quaternarySystemFill)
-        static let promptContentFont = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
-        static let answerInfoLabelFont = WPStyleGuide.fontForTextStyle(.caption1)
-        static let answerInfoLabelColor = UIColor.primary
-        static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)
-        static let buttonTitleColor = UIColor.primary
-        static let answeredLabelColor = UIColor.muriel(name: .green, .shade50)
+        static var avatarPlaceholderImage: UIImage {
+            // this needs to be computed so the color is correct depending on the user interface style.
+            return UIImage(color: .init(light: .quaternarySystemFill, dark: .systemGray4))
+        }
     }
 
     struct Constants {
@@ -366,6 +446,7 @@ private extension DashboardPromptsCardCell {
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
         static let maxAvatarCount = 3
+        static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
     }
