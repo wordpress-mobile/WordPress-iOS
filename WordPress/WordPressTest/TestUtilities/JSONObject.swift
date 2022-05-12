@@ -5,7 +5,7 @@ typealias JSONObject = Dictionary<String, AnyObject>
 
 extension JSONObject {
 
-    /// Creat a dictionary represented by the specified json file.
+    /// Create a dictionary represented by the specified json file.
     ///
     /// - Parameter fileName: The name of the json file to load. The "json" file extension can be omitted.
     init(fromFileNamed fileName: String) throws {
