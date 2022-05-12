@@ -425,7 +425,7 @@ private extension AppSettingsViewController {
             action: pushVideoResolutionSettings())
 
         let mediaCacheRow = NavigationItemRow(
-            title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+            title: NSLocalizedString("Media Cache", comment: "Label for the media cache navigation row in the app."),
             detail: mediaCacheRowDescription,
             action: openMediaCacheSettings())
 
