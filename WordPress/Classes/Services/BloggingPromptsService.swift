@@ -96,7 +96,7 @@ struct BloggingPrompt {
             answered: false,
             answerCount: 5,
             displayAvatarURLs: [],
-            attribution: ""
+            attribution: "dayone"
     )
 }
 
