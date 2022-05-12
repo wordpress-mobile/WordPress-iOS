@@ -6,6 +6,7 @@ struct StatsSegmentedControlData {
     var segmentPrevData: Int
     var segmentDataStub: String?
     var difference: Int
+    var differenceText: String
     var differencePercent: Int
     var date: Date?
     var period: StatsPeriodUnit?
@@ -13,12 +14,13 @@ struct StatsSegmentedControlData {
 
     private(set) var accessibilityHint: String?
 
-    init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, segmentDataStub: String? = nil, date: Date? = nil, period: StatsPeriodUnit? = nil, analyticsStat: WPAnalyticsStat? = nil, accessibilityHint: String? = nil, differencePercent: Int) {
+    init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, date: Date? = nil, period: StatsPeriodUnit? = nil, analyticsStat: WPAnalyticsStat? = nil, accessibilityHint: String? = nil, differencePercent: Int) {
         self.segmentTitle = segmentTitle
         self.segmentData = segmentData
         self.segmentPrevData = segmentPrevData
         self.segmentDataStub = segmentDataStub
         self.difference = difference
+        self.differenceText = differenceText
         self.differencePercent = differencePercent
         self.date = date
         self.period = period
@@ -27,7 +29,7 @@ struct StatsSegmentedControlData {
     }
 
     var attributedDifference: NSAttributedString? {
-        let differenceText = String(format: NSLocalizedString("Your last week's %@ are %@ %@ than the previous week.", comment: "Your last week's stats compared to previous week"), segmentTitle.localizedLowercase, differenceLabel, difference < 0 ? NSLocalizedString("lower", comment: "Stats difference is lower") : NSLocalizedString("higher", comment: "Stats difference is higher"))
+        let differenceText = String(format: differenceText, differenceLabel)
         let attributedString = NSMutableAttributedString(string: differenceText)
 
         let str = attributedString.string as NSString
@@ -121,8 +123,8 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         self.period = period
         self.xAxisDates = xAxisDates
 
-        configureChartView()
         setupSegmentedControl()
+        configureChartView()
         updateLabels()
     }
 
@@ -201,8 +203,10 @@ private extension ViewsVisitorsLineChartCell {
                                                        analyticsGranularity: period?.analyticsGranularityLine,
                                                        indexToHighlight: 0,
                                                        xAxisDates: xAxisDates)
-        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate)
 
+        let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
+
+        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate, statsInsightsFilterDimension: statsInsightsFilterDimension)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
