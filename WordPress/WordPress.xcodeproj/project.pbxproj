@@ -1373,6 +1373,8 @@
 		80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
 		80EF929128105CFA0064A971 /* QuickStartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF928F28105CFA0064A971 /* QuickStartFactory.swift */; };
 		80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */; };
+		80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
+		80F8DAC2282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
 		821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
@@ -6143,6 +6145,7 @@
 		80EF928C280E83110064A971 /* QuickStartToursCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartToursCollection.swift; sourceTree = "<group>"; };
 		80EF928F28105CFA0064A971 /* QuickStartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactory.swift; sourceTree = "<group>"; };
 		80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartFactoryTests.swift; sourceTree = "<group>"; };
+		80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAnalytics+QuickStart.swift"; sourceTree = "<group>"; };
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -11569,6 +11572,7 @@
 				8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */,
 				0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */,
 				175CC17B2723103000622FB4 /* WPAnalytics+Domains.swift */,
+				80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -18408,6 +18412,7 @@
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
 				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
+				80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */,
@@ -21170,6 +21175,7 @@
 				FABB24CC2602FC2C00C8785C /* CollapsableHeaderViewController.swift in Sources */,
 				FABB24CD2602FC2C00C8785C /* Blog+Lookup.swift in Sources */,
 				FABB24CE2602FC2C00C8785C /* ReaderTopicService.m in Sources */,
+				80F8DAC2282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */,
 				FABB24CF2602FC2C00C8785C /* HeaderDetailsContentStyles.swift in Sources */,
 				FABB24D02602FC2C00C8785C /* RewindStatusRow.swift in Sources */,
 				8BD34F0C27D14B3C005E931C /* Blog+DashboardState.swift in Sources */,

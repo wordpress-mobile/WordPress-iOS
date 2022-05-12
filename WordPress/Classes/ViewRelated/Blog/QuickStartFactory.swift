@@ -4,6 +4,17 @@ enum QuickStartType: Int {
     case undefined
     case newSite
     case existingSite
+
+    var key: String {
+        switch self {
+        case .undefined:
+            return "undefined"
+        case .newSite:
+            return "new_site"
+        case .existingSite:
+            return "existing_site"
+        }
+    }
 }
 
 class QuickStartFactory {
