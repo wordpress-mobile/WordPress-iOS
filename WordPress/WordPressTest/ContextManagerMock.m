@@ -52,16 +52,10 @@
     return [super persistentStoreCoordinator];
 }
 
-- (NSManagedObjectContext *)mainContext
+- (void)createMainContext
 {
-    if (_mainContext) {
-        return _mainContext;
-    }
-
-    _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-
-    return _mainContext;
+    self.mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    self.mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
 }
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
