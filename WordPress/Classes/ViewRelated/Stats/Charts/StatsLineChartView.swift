@@ -9,6 +9,7 @@ protocol StatsLineChartViewDelegate: AnyObject {
 
 // MARK: - StatsLineChartView
 
+private let LineChartAnalyticsPropertyKey = "property"
 private let LineChartAnalyticsPropertyGranularityKey = "granularity"
 
 class StatsLineChartView: LineChartView {
@@ -31,6 +32,7 @@ class StatsLineChartView: LineChartView {
         static let xAxisWidth               = 4.0
         static let xAxisTickWidth           = 2.0
         static let lineWidth                = 2.0
+        static let numberDaysInWeek         = 7
     }
 
     /// This adapts the data set for presentation by the Charts framework.
@@ -52,6 +54,8 @@ class StatsLineChartView: LineChartView {
     /// When set, the delegate is advised of user-initiated line selections
     ///
     private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
+
+    private var statsInsightsFilterDimension: StatsInsightsFilterDimension
 
     private var isHighlightNeeded: Bool {
         guard let primaryDataSet = primaryDataSet, primaryDataSet.isHighlightEnabled else {
@@ -79,12 +83,13 @@ class StatsLineChartView: LineChartView {
         updateXAxisTicks()
     }
 
-    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
+    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil, statsInsightsFilterDimension: StatsInsightsFilterDimension = .views) {
         self.lineChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
         self.statsLineChartViewDelegate = delegate
         self.xAxisDates = configuration.xAxisDates
+        self.statsInsightsFilterDimension = statsInsightsFilterDimension
 
         super.init(frame: .zero)
 
@@ -118,6 +123,8 @@ private extension StatsLineChartView {
         if let specifiedAnalyticsGranularity = analyticsGranularity {
             properties[LineChartAnalyticsPropertyGranularityKey] = specifiedAnalyticsGranularity.rawValue
         }
+
+        properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
 
         WPAnalytics.track(.statsLineChartTapped, properties: properties)
     }
@@ -164,8 +171,6 @@ private extension StatsLineChartView {
         primaryDataSet.drawValuesEnabled = false
         primaryDataSet.drawCirclesEnabled = false
         primaryDataSet.lineWidth = Constants.lineWidth
-        // TODO having issue with horizontalBezier (smoothing) - issue seems to be with this old version of lib
-        // https://github.com/danielgindi/Charts/issues/3960
         primaryDataSet.mode = .horizontalBezier
 
         let gradientColors = [styling.primaryLineColor.withAlphaComponent(1).cgColor,
@@ -228,8 +233,10 @@ private extension StatsLineChartView {
     func updateXAxisTicks() {
         if contentRect.width > 0 {
             xAxis.axisLineWidth = Constants.xAxisWidth
-            let contentWidthMinusTicks = contentRect.width - (Constants.xAxisTickWidth * CGFloat(xAxisDates.count))
-            xAxis.axisLineDashLengths = [Constants.xAxisTickWidth, (contentWidthMinusTicks / CGFloat(xAxisDates.count - 1))]
+
+            let count = max(xAxisDates.count, Constants.numberDaysInWeek)
+            let contentWidthMinusTicks = contentRect.width - (Constants.xAxisTickWidth * CGFloat(count))
+            xAxis.axisLineDashLengths = [Constants.xAxisTickWidth, (contentWidthMinusTicks / CGFloat(count - 1))]
         }
     }
 
