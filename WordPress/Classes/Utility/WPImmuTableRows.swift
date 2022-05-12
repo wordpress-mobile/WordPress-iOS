@@ -255,7 +255,9 @@ struct BrandedNavigationRow: ImmuTableRow {
     }
 
     func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! WPTableViewCellIndicator
+        guard let cell = cell as? WPTableViewCellIndicator else {
+            return
+        }
         cell.textLabel?.text = title
         WPStyleGuide.configureTableViewCell(cell)
         cell.textLabel?.textColor = .primary
