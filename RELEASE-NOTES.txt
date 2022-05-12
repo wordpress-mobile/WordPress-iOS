@@ -3,6 +3,8 @@
 * [*] Site Settings: we fixed an issue that prevented the site title to be updated when it changed in Site Settings [#18543]
 * [*] Media Picker: Fixed an issue where the empty state view was being displayed incorrectly. [#18471]
 * [*] Quick Start: We are now showing a different set of Quick Start tasks for existing sites and new sites. The existing sites checklist includes new tours such as: "Check your notifications" and "Upload photos or videos".  [#18395, #18412, #18443, #18471]
+* [*] Site Creation: we fixed an issue where the navigation buttons were not scaling when large fonts were selected on the device [#18559]
+* [*] Widgets: we fixed an issue where text appeared flipped in rtl languages [#18567]
 
 19.8
 -----

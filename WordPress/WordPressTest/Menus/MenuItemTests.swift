@@ -3,18 +3,13 @@ import Foundation
 
 class MenuItemTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext! {
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
         contextManager.mainContext
     }
 
     override func setUp() {
-        contextManager = TestContextManager()
-    }
-
-    override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
-        context.reset()
+        contextManager = ContextManagerMock()
     }
 
     /// Tests detection of descendants.

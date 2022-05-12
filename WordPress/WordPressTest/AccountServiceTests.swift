@@ -3,13 +3,14 @@ import XCTest
 @testable import WordPress
 
 class AccountServiceTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var accountService: AccountService!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 
@@ -18,8 +19,7 @@ class AccountServiceTests: XCTestCase {
 
         deleteTestAccounts()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
+        contextManager.tearDown()
         contextManager = nil
         accountService = nil
     }

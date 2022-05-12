@@ -3,7 +3,7 @@ import XCTest
 @testable import WordPress
 
 class BlogServiceDeduplicationTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var blogService: BlogService!
     var context: NSManagedObjectContext {
         return contextManager.mainContext
@@ -12,15 +12,13 @@ class BlogServiceDeduplicationTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         blogService = BlogService(managedObjectContext: contextManager.mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
         contextManager = nil
         blogService = nil
     }

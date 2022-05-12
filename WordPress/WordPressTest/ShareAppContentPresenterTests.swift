@@ -6,7 +6,7 @@ import OHHTTPStubs
 final class ShareAppContentPresenterTests: XCTestCase {
 
     private let timeout: TimeInterval = 0.1
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var account: WPAccount!
     private var presenter: ShareAppContentPresenter!
     private var viewController: MockViewController!
@@ -15,7 +15,7 @@ final class ShareAppContentPresenterTests: XCTestCase {
         super.setUp()
 
         TestAnalyticsTracker.setup()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         account = AccountBuilder(contextManager).build()
         presenter = ShareAppContentPresenter(account: account)
         viewController = MockViewController()
