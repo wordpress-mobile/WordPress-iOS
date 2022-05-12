@@ -1,12 +1,16 @@
 import UIKit
 
 final class Tooltip: UIView {
+    static let arrowWidth: CGFloat = 17
+
     private enum Constants {
         static let leadingIconUnicode = "✨"
         static let cornerRadius: CGFloat = 4
-        static let arrowTipYLength: CGFloat = 11
-        static let arrowTipYControlLength: CGFloat = 12
-        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin
+        static let arrowTipYLength: CGFloat = 8
+        static let arrowTipYControlLength: CGFloat = 9
+        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Spacing.superHorizontalMargin
+        static let maxContentWidth = maxWidth - (Constants.Spacing.contentStackViewHorizontal * 2)
+
 
         enum Spacing {
             static let contentStackViewInterItemSpacing: CGFloat = 4
@@ -177,15 +181,16 @@ final class Tooltip: UIView {
 
         let arrowPath = UIBezierPath()
         arrowPath.move(to: CGPoint(x: 0, y: 0))
-        // In order to have a full width of 20, first draw the left side of the triangle until 9.
-        arrowPath.addLine(to: CGPoint(x: 9, y: arrowTipY))
-        // Add curve until 11 (2 points of curve for a rounded arrow tip).
+        let arrowOriginX = (Self.arrowWidth/2 - 1)
+        // In order to have a full width of `arrowWidth`, first draw the left side of the triangle until arrowOriginX.
+        arrowPath.addLine(to: CGPoint(x: arrowOriginX, y: arrowTipY))
+        // Add curve until `arrowWidth/2 + 1` (2 points of curve for a rounded arrow tip).
         arrowPath.addQuadCurve(
-            to: CGPoint(x: 11, y: arrowTipY),
-            controlPoint: CGPoint(x: 10, y: arrowTipYControl)
+            to: CGPoint(x: arrowOriginX + 2, y: arrowTipY),
+            controlPoint: CGPoint(x: Self.arrowWidth/2, y: arrowTipYControl)
         )
         // Draw down to 20.
-        arrowPath.addLine(to: CGPoint(x: 20, y: 0))
+        arrowPath.addLine(to: CGPoint(x: Self.arrowWidth, y: 0))
         arrowPath.close()
 
         let shapeLayer = CAShapeLayer()
@@ -194,9 +199,24 @@ final class Tooltip: UIView {
         shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
         shapeLayer.lineWidth = 1.0
 
-        shapeLayer.position = CGPoint(x: offsetX, y: offsetY)
+        shapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
 
         containerView.layer.addSublayer(shapeLayer)
+    }
+
+    func size() -> CGSize {
+        CGSize(
+            width: Self.width(
+                title: titleLabel.text,
+                message: message,
+                primaryButtonTitle: primaryButton.titleLabel?.text,
+                secondaryButtonTitle: secondaryButton.titleLabel?.text
+            ),
+            height: Self.height(
+                withTitle: title,
+                message: message
+            )
+        )
     }
 
     private func commonInit() {
@@ -253,30 +273,64 @@ final class Tooltip: UIView {
 
     private static func height(
         withTitle title: String?,
-        message: String?) -> CGFloat {
-            var totalHeight: CGFloat = 0
+        message: String?
+    ) -> CGFloat {
+        var totalHeight: CGFloat = 0
 
-            totalHeight += Constants.Spacing.contentStackViewTop
+        totalHeight += Constants.Spacing.contentStackViewTop
 
-            if let title = title {
-                totalHeight += title.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.title)
-            }
-
-            totalHeight += Constants.Spacing.contentStackViewInterItemSpacing
-
-            if let message = message {
-                totalHeight += message.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.message)
-            }
-
-            totalHeight += Constants.Spacing.buttonStackViewHeight
-            totalHeight += Constants.Spacing.contentStackViewBottom
-
-            return totalHeight
+        if let title = title {
+            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
         }
+
+        totalHeight += Constants.Spacing.contentStackViewInterItemSpacing
+
+        if let message = message {
+            totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message)
+        }
+
+        totalHeight += Constants.Spacing.buttonStackViewHeight
+        totalHeight += Constants.Spacing.contentStackViewBottom
+
+        return totalHeight
+    }
+
+    private static func width(
+        title: String?,
+        message: String?,
+        primaryButtonTitle: String?,
+        secondaryButtonTitle: String?
+    ) -> CGFloat {
+
+        let titleWidth: CGFloat
+        if let title = title {
+            titleWidth = title.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
+        } else {
+            titleWidth = 0
+        }
+
+        let messageWidth: CGFloat
+        if let message = message {
+            messageWidth = message.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message)
+        } else {
+            messageWidth = 0
+        }
+
+        var buttonsWidth: CGFloat = 0
+        if let primaryButtonTitle = primaryButtonTitle {
+            buttonsWidth += primaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.button)
+        }
+
+        if let secondaryButtonTitle = secondaryButtonTitle {
+            buttonsWidth += secondaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.button) + Constants.Spacing.buttonsStackViewInterItemSpacing
+        }
+
+        return max(max(titleWidth, messageWidth), buttonsWidth) + Constants.Spacing.contentStackViewHorizontal * 2
+    }
 }
 
 private extension String {
-    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+    private func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(
             with: constraintRect,
@@ -285,6 +339,14 @@ private extension String {
             context: nil
         )
 
-        return ceil(boundingBox.height)
+        return boundingBox
+    }
+
+    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).height)
+    }
+
+    func width(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).width)
     }
 }
