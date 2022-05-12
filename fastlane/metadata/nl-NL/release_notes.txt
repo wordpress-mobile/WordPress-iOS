@@ -1,0 +1,14 @@
+Je kunt nu video's uploaden, ongeacht de lengte ervan, op zelf-gehoste sites. Je kunt nu alleen nog maar beperkt worden door je eigen verbeelding. (En mogelijk ook de bestandlimiet van 2 GB.)
+
+Als je conversatie volgt in Reader-berichten en berichtdetails, kun je je nu uitschrijven voor appmeldingen, in plaats van inschrijven.
+
+We hebben de snelstart-prompt bij inloggen als een bestaande gebruiker vervangen. Nu kun je ons vertellen waar je je op wilt richten en meldingen inschakelen voor zaken als siteverkeer, nieuwe volgers en andere mijlpalen. Laat de confetti maar komen.
+
+Ben je klaar voor de rondleiding? We hebben wat kleine aanpassingen gedaan aan de rondleidingen voor Statistieken en Reader in het gedeelte Snelstart. Nu kun je soepeler door de rondleidingen gaan en onderweg meer pointers en berichten krijgen.
+
+We hebben ook enkele fijne wijzigingen aangebracht aan de blokeditor.
+
+- Je kunt nu de instellingen van uitgelichte afbeelding aanpassen voor berichten in een blok met nieuwste berichten.
+- Je ziet de juiste berichten als je snel schakelt tussen HTML en visuele modus.
+- Mediavoorbeelden worden niet langer afgebroken als je een URL bewerkt in een insluiten-blok.
+- Als je een iPad met een extern toetsenbord gebruikt, zie je niet langer extra ruimte tussen de werkbalk en de onderkant van het scherm. Mind the gap.
