@@ -17,7 +17,7 @@ extension BloggingPrompt {
     /// Template content for the draft post.
     @NSManaged public var content: String
 
-    /// The source of the prompt. See `BloggingPrompt.AttributionSource`.
+    /// The attribution source for the prompt.
     @NSManaged public var attribution: String
 
     /// The prompt date. Time information should be ignored.
