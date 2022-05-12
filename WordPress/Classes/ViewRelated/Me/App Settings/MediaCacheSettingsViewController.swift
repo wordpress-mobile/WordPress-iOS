@@ -1,10 +1,11 @@
 import Foundation
 
 class MediaCacheSettingsViewController: UITableViewController {
-    fileprivate var handler: ImmuTableViewHandler!
+    fileprivate var handler: ImmuTableViewHandler?
 
     override init(style: UITableView.Style) {
         super.init(style: .plain)
+        handler = ImmuTableViewHandler(takeOver: self)
         navigationItem.title = NSLocalizedString("Media Cache", comment: "Media Cache title")
     }
 
@@ -24,7 +25,6 @@ class MediaCacheSettingsViewController: UITableViewController {
             BrandedNavigationRow.self
             ], tableView: self.tableView)
 
-        handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -39,7 +39,7 @@ class MediaCacheSettingsViewController: UITableViewController {
     // MARK: - Model mapping
 
     fileprivate func reloadViewModel() {
-        handler.viewModel = tableViewModel()
+        handler?.viewModel = tableViewModel()
     }
 
     func tableViewModel() -> ImmuTable {
