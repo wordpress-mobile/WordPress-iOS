@@ -26,7 +26,7 @@ final class EditCommentActionTests: XCTestCase {
 
     private var action: EditComment?
     private let utility = NotificationUtility()
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -35,14 +35,13 @@ final class EditCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         action = TestableEditComment(on: Constants.initialStatus, coreDataStack: contextManager)
     }
 
     override func tearDown() {
         action = nil
         utility.tearDown()
-        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 

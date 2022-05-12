@@ -9,12 +9,12 @@ class ActivityStoreTests: XCTestCase {
     private var store: ActivityStore!
     private var activityServiceMock: ActivityServiceRemoteMock!
     private var backupServiceMock: JetpackBackupServiceMock!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
         backupServiceMock = JetpackBackupServiceMock(managedObjectContext: contextManager.mainContext)
@@ -22,7 +22,6 @@ class ActivityStoreTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
         dispatcher = nil
         store = nil
 

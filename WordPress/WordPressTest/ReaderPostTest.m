@@ -1,11 +1,11 @@
 #import <XCTest/XCTest.h>
 #import "ReaderPost.h"
-#import "TestContextManager.h"
+#import "ContextManagerMock.h"
 @import WordPressShared;
 
 @interface ReaderPostTest : XCTestCase
 
-@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 
 @end
 
@@ -15,7 +15,7 @@
 
 - (void)setUp
 {
-    self.coreDataStack = [[TestContextManager alloc] init];
+    self.coreDataStack = [[ContextManagerMock alloc] init];
 }
 
 - (void)tearDown

@@ -3,7 +3,13 @@
 * [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors.
 * [*] Site Settings: we fixed an issue that prevented the site title to be updated when it changed in Site Settings [#18543]
 * [*] Media Picker: Fixed an issue where the empty state view was being displayed incorrectly. [#18471]
+* [*] Quick Start: We are now showing a different set of Quick Start tasks for existing sites and new sites. The existing sites checklist includes new tours such as: "Check your notifications" and "Upload photos or videos".  [#18395, #18412, #18443, #18471]
 * [*] Site Creation: we fixed an issue where the navigation buttons were not scaling when large fonts were selected on the device [#18559]
+* [**] Block Editor: Cover Block: Improve color contrast between background and text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4808]
+* [***] Block Editor: Add drag & drop blocks feature [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4832]
+* [*] Block Editor: Gallery block: Fix broken "Link To" settings and add "Image Size" settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4841]
+* [*] Block Editor: Unsupported Block Editor: Prevent WordPress.com tour banner from displaying. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4820]
+* [*] Widgets: we fixed an issue where text appeared flipped in rtl languages [#18567]
 
 19.8
 -----
