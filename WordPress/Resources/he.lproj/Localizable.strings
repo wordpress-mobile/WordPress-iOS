@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-25 13:15:04+0000 */
+/* Translation-Revision-Date: 2022-05-08 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: he_IL */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "כפתור %@";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ יש לחזור למסך 'האתר שלי' כאשר הכול מוכן למשימה הבאה.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "תגית %@";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ תגיות";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ עצה: אפשר לקבל עדכונים מהר יותר באמצעות הפעלה של הודעות בדחיפה.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ מיליארד";
@@ -273,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(חסרה כותרת)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*אמירה חסן* עוקבת אחרי האתר שלך!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*אמירה חסן* הגיבה לתגובה שלך";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*ישראל ישראלי* הגיב לפוסט שלך";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*אמיר שחר* הוסיף פוסט חדש באתר שלו";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*ישראלה ישראלה* סימנה לייק בפוסט שלך";
@@ -356,6 +371,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "דרך חדשה ליצור ולפרסם תוכן מעניין באתר שלך.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "סדרה של שלבים שיעזרו לך ללמוד את האפשרויות באפליקציה.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "סדרת צעדים שתראה לך כיצד להוסיף ערכת עיצוב, סמל לאתר ועוד.";
@@ -1413,6 +1431,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "יש לבדוק את החיבור לרשת ולנסות שוב. או לכתוב טיוטה של פוסט.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "לבדוק את ההודעות שלך";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "בדיקת הנתונים הסטטיסטיים של האתר שלך";
 
 /* Title of a Quick Start Tour */
@@ -1420,6 +1441,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "בודק רכישות…";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "בודק נתונים סטטיסטיים";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "פריט בן של %@";
@@ -1698,6 +1722,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "הושלמה";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "הושלם: לבדוק את הודעות שלך";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "הושלם: לבדיקת הנתונים הסטטיסטיים של האתר שלך";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1708,6 +1735,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "הושלם: לבחור סמל ייחודי לאתר";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "הושלם: להתחבר עם אתרים אחרים";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "הושלם: להמשך הגדרת האתר";
@@ -1760,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "ברכותינו על הרכישה החדשה שלך!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "ברכותינו! האתר שלך שבר שיא של *1000 צפיות מכל הזמנים*!";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "להתחבר";
@@ -1775,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "כדאי להתחבר עם בלוגרים אחרים באמצעות מעקב אחר הפוסטים שלהם, סימון לייקים והוספת תגובות בפוסטים.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "להתחבר עם אתרים אחרים";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "חיבור שירותי הרשתות החברתיות המועדפים שלך כדי לשתף פוסטים חדשים עם חברים באופן אוטומטי.";
@@ -2371,6 +2407,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
 
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "לגלות אתרים שמספקים לך השראה ולעקוב אחריהם.";
+
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "לגלות בלוגים למעקב";
 
@@ -2780,6 +2819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "להפעיל את השיתוף האוטומטי";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for Existing Site" = "להפעיל התחלה מהירה לאתר קיים";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "להפעיל התחלה מהירה לאתר חדש";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "הפעלת הנתונים הסטטיסטיים של האתר";
@@ -3195,6 +3240,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "מעקב אחר השיחה";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "לעקוב אחר השיחה";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "לעקוב אחרי האתר";
 
@@ -3351,6 +3399,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "לבלוט בשטח: הוספת תגובה על פוסטים שקראת.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "לקבל עדכונים בזמן אמת למכשיר הנייד.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "ניתן להתחיל באמצעות בחירה ממגוון רחב של פריסות עמוד שהוכנו מראש. או פשוט להתחיל מעמוד ריק.";
 
@@ -3359,6 +3410,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "אפשר חשיפה רבה יותר לפוסט שלך על ידי שיתוף.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "היכרות עם האפליקציה של WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "לקבל בעלות על דומיין משלך";
@@ -3380,6 +3434,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "אפשר לנסות את האפשרויות על ידי הוספה של כמה בלוקים לפוסט או לעמוד שלך!";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "כדאי להעניק לאתר %@ שם";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "כדאי לתת לאתר שלך שם שמשקף את האישיות שלו והנושאים שמוצגים בו. הרושם הראשוני חשוב!";
@@ -3428,6 +3485,9 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "הגדלת הקהל שלך";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "הפעולה תדריך אותך איך לבדוק את ההודעות שלך.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "הפעולה תדריך אותך בביצוע התהליך של בחירה בערכת עיצוב לאתר שלך.";
@@ -3691,6 +3751,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "לא פעיל, עדכונים אוטומטיים מופעלים";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "כולל הצעה";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "כלול באתר";
 
@@ -3946,6 +4009,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "קבלת עדכונים על הביצועים של האתר שלך.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "אנחנו נשלח לך הודעה כאשר המחברים המועדפים עליך מפרסמים תוכן חדש.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "אנחנו נשלח לך הודעה כאשר האתר שלך מקבל תעבורה נוספת, עוקבים חדשים או כאשר הוא שובר שיא חדש!";
+
 /* Autoapprove only from known users */
 "Known Users" = "משתמשים מוכרים";
 
@@ -3990,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "מידע נוסף לגבי תבניות זמן ותאריך.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "מידע נוסף על הצעות";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "למידע נוסף על תפקידים";
@@ -4927,6 +4999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "לא קיבלת את האימייל? בדוק את הספאם או תיקיית הזבל במייל.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "עדיין לא החלטתי, הראו לי את האפשרויות הקיימות";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "הערה:";
 
@@ -4958,6 +5033,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "מועד ההודעות";
+
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "ההודעה תכלול מילה או ביטוי קצר להשראה";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5667,6 +5745,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "תצוגה מקדימה";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "באפשרותך להציג תצוגה מקדימה של האתר כדי לבחון מה יראו המבקרים.";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "החודש הקודם";
 
@@ -5852,6 +5933,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "כתובת URL ל-CSS של Reader";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "קריאת פוסטים מאתרים אחרים";
 
 /* Real Estate site intent topic */
 "Real Estate" = "נדל\"ן";
@@ -6414,6 +6498,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "יש לבחור %@ כדי למצוא ערכות עיצוב חדשות";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to find other sites." = "יש לבחור את %@ כדי למצוא אתרים אחרים.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "יש לבחור %@ כדי להציג את הביצועים של האתר שלך.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6430,6 +6517,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "יש לבחור %@ כדי להעלות פריט חדש.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "יש לבחור את %@ כדי להציג את האתר";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "בחירת מדינה";
@@ -6463,6 +6553,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "בחירת סגנון פסקה";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "יש לבחור את הלשונית %@ לקבלת עדכונים מכל מקום.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "יש לבחור %@ כדי להוסיף חשבונות של רשתות חברתיות";
@@ -7036,6 +7129,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "להישאר בעניינים";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "לשמור על קשר באמצעות הודעות על לייקים ותגובות.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "לשמור על קשר עם הקהל באמצעות הודעות על לייקים ותגובות.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "להתעדכן בכל מה שחדש בעזרת הודעות";
+
 /* This is the cell title. */
 "Stick post to the front page" = "הדבקת פוסט לעמוד הראשי";
 
@@ -7268,6 +7370,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "יש להקיש כדי להציג את האתר שלך";
+
+/* A hint about the completed guided tour. */
+"Task complete." = "המשימה הושלמה.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "טקסונומיה";
@@ -7911,6 +8016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "כדאי לנסות עכשיו";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "כדאי לבחור את %@ כדי להוסיף נושאים שמעניינים אותך.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "כדאי לנסות את עורך הבלוקים החדש";
 
@@ -8147,6 +8255,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "להפסיק את המעקב אחר %@";
 
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow Conversation" = "לבטל את המעקב אחר השיחה";
+
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "לבטל את המעקב אחר השיחה";
 
@@ -8330,6 +8441,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "שימוש";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "להשתמש בפריט %@ למציאת אתרים ותגיות.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "להשתמש בחנות של Sandbox";
 
@@ -8489,6 +8603,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "בקר ב%@ למידע נוסף";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "מעבר ללוח בקרה";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "לבקר באתר";
@@ -9033,6 +9150,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "כתיבה ושירה";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "כתיבת פוסטים בבלוג";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "מיקום של ציר Y";
 
@@ -9189,6 +9309,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "עליך לאמת את החשבון שלך לפני שיהיה באפשרותך לפרסם פוסט.\nאל דאגה, הפוסט שלך בטוח ויישמר כטיוטה.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "קיבלת *50 לייקים* לתגובות שלך";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "קיבלת ⁦*50 likes* on your site today⁩";
 
@@ -9214,6 +9337,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "אנחנו נשלח לך תזכורות לכתוב בלוג <strong>פעם<\/strong> בשבוע ביום %1$@ בשעה %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "יישלחו אליך הודעות באפליקציה";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "אנחנו נשלח לך תזכורות לכתוב בלוג %1$@ פעמים בשבוע ביום %2$@.";
@@ -9296,6 +9423,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "עם הכניסה לאתר בדפדפן Safari, כתובת האתר שלך תופיע בסרגל העליון של המסך.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "האתר שלך כבר מוגן באמצעות VaultPress. אפשר למצוא את הקישור ללוח הבקרה של VaultPress למטה.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "נראה שהאתר שלך מקבל *יותר תעבורה* מבדרך כלל!";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "השירות של VaultPress מותקן באתר שלך";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "האתר שלך נוצר!";
 
@@ -9356,8 +9492,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_⁦%1$d⁩ בלוגרים_ סימנו לייק על זה.";
 
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "הפוסט הזה קיבל לייק _מבלוגר אחד_.";
+
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "הפוסט קיבל לייק _ממך ומ-⁦%1$d⁩ בלוגרים_.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "הפוסט הזה קיבל לייק _ממך ומבלוגר נוסף_.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "הפוסט קיבל לייק _ממך_.";
@@ -9486,6 +9628,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "תגובות";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "לייקים";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "פורסם %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "צפיות";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 המועד הפופולרי ביותר";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% מהצפיות";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "פריטים אלה יימחקו:";
