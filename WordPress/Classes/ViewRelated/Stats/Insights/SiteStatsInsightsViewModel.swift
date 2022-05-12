@@ -46,14 +46,9 @@ class SiteStatsInsightsViewModel: Observable {
                 guard let mostRecentChartData = mostRecentChartData else {
                     return
                 }
-
-                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate <= self.lastRequestedDate })
-                        ?? max(mostRecentChartData.summaryData.count - 1, 0)
             }
         }
     }
-
-    private var currentEntryIndex: Int = 0
 
     // MARK: - Constructor
 
@@ -437,6 +432,7 @@ private extension SiteStatsInsightsViewModel {
                                                          segmentData: viewsData.count,
                                                          segmentPrevData: viewsData.prevCount,
                                                          difference: viewsData.difference,
+                                                         differenceText: viewsData.difference < 0 ? Constants.viewsLower : Constants.viewsHigher,
                                                          date: periodDate,
                                                          period: period,
                                                          analyticsStat: .statsOverviewTypeTappedViews,
@@ -448,6 +444,7 @@ private extension SiteStatsInsightsViewModel {
                                                             segmentData: visitorsData.count,
                                                             segmentPrevData: visitorsData.prevCount,
                                                             difference: visitorsData.difference,
+                                                            differenceText: visitorsData.difference < 0 ? Constants.visitorsLower : Constants.visitorsHigher,
                                                             date: periodDate,
                                                             period: period,
                                                             analyticsStat: .statsOverviewTypeTappedViews,
@@ -845,15 +842,15 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
     public static func splitStatsSummaryTimeIntervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData) ->
             [StatsSummaryTimeIntervalDataAsAWeek] {
         switch statsSummaryTimeIntervalData.summaryData.count {
-        case let count where count == 14:
+        case let count where count == Constants.fourteenDays:
             // normal case api returns 14 rows
-            let summaryData = statsSummaryTimeIntervalData.summaryData[0..<14]
+            let summaryData = statsSummaryTimeIntervalData.summaryData[0..<Constants.fourteenDays]
             return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData))
-        case let count where count > 14:
+        case let count where count > Constants.fourteenDays:
             // when more than 14 rows we take the last 14 rows for most recent data
-            let summaryData = statsSummaryTimeIntervalData.summaryData[count-14..<count]
+            let summaryData = statsSummaryTimeIntervalData.summaryData[count-Constants.fourteenDays..<count]
             return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData))
-        case let count where count < 14:
+        case let count where count < Constants.fourteenDays:
             // when 0 to 14 rows presume the user could be new / doesn't have enough data.  Pad 0's to prev week
             var summaryData = statsSummaryTimeIntervalData.summaryData
             summaryData.reverse()
@@ -862,7 +859,7 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
                 return []
             }
 
-            while summaryData.count < 14 {
+            while summaryData.count < Constants.fourteenDays {
                 if let newPeriodStartDate = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: date) {
                     date = newPeriodStartDate
                     summaryData.append(StatsSummaryData(period: .day,
@@ -889,12 +886,20 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
                 summaryData: Array(prevWeekData))
 
 
-        let thisWeekData = summaryData[half ..< 14]
+        let thisWeekData = summaryData[half ..< Constants.fourteenDays]
         let thisWeekTimeIntervalData = StatsSummaryTimeIntervalData(period: .day,
                 periodEndDate: thisWeekData.last!.periodStartDate,
                 summaryData: Array(thisWeekData))
 
         return [StatsSummaryTimeIntervalDataAsAWeek.thisWeek(data: thisWeekTimeIntervalData),
                 StatsSummaryTimeIntervalDataAsAWeek.prevWeek(data: prevWeekTimeIntervalData)]
+    }
+
+    enum Constants {
+        static let fourteenDays = 14
+        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
+        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
+        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
+        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
     }
 }
