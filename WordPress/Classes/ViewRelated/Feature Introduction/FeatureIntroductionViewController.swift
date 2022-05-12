@@ -5,7 +5,11 @@ import UIKit
     @objc optional func secondaryActionSelected()
 }
 
-// TODO: add description
+/// This is used to display a modal with information about a new feature.
+/// The feature description is displayed via the provided featureDescriptionView,
+/// which is presented in the scrollable area of the view.
+/// A primary action button is always displayed.
+/// A secondary action button is displayed if a secondaryButtonTitle is provided.
 
 class FeatureIntroductionViewController: CollapsableHeaderViewController {
 
@@ -24,6 +28,20 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     }()
 
     weak var featureIntroductionDelegate: FeatureIntroductionDelegate?
+
+    // MARK: - Header View Configuration
+
+    override var separatorStyle: SeparatorStyle {
+        return .hidden
+    }
+
+    override var alwaysResetHeaderOnRotation: Bool {
+        WPDeviceIdentification.isiPhone()
+    }
+
+    override var alwaysShowHeaderTitles: Bool {
+        true
+    }
 
     // MARK: - Init
 

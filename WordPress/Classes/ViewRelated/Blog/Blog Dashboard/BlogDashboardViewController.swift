@@ -164,7 +164,7 @@ final class BlogDashboardViewController: UIViewController {
                 switch element {
                 case .setupQuickStart, .removeQuickStart:
                     self.loadCardsFromCache()
-                case .stats:
+                case .stats, .mediaScreen:
                     if self.embeddedInScrollView {
                         self.mySiteScrollView?.scrollToTop(animated: true)
                     } else {
@@ -256,15 +256,16 @@ extension BlogDashboardViewController {
 
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
+
         guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
             return
         }
 
         if quickStartGuide.tourInProgress {
             // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
             quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-        else {
+        } else {
             guard shouldShowQuickStartChecklist() else {
                 return
             }

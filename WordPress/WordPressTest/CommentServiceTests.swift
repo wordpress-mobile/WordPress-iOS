@@ -7,14 +7,18 @@ final class CommentServiceTests: XCTestCase {
 
     private var remoteMock: CommentServiceRemoteRESTMock!
     private var service: CommentService!
-    private var context: NSManagedObjectContext!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     // MARK: Lifecycle
 
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()
@@ -27,8 +31,7 @@ final class CommentServiceTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
+        contextManager.tearDown()
     }
 
     // MARK: Helpers

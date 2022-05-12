@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - WizardNavigation
-final class WizardNavigation: GutenbergLightNavigationController {
+final class WizardNavigation: UINavigationController {
     private let steps: [WizardStep]
     private let pointer: WizardNavigationPointer
 

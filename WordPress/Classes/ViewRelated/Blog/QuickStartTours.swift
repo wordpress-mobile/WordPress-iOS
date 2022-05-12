@@ -371,22 +371,30 @@ struct QuickStartNotificationsTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of checking your notifications.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
-private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
-private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
-struct QuickStartCongratulationsTour: QuickStartTour {
-    let key = "quick-start-congratulations-tour"
-    let analyticsKey = "congratulations"
-    let title = congratsTitle
-    let titleMarkedCompleted = ""  // Not applicable for this tour type
-    let description = congratsDescription
-    let icon = UIImage.gridicon(.plus)
+struct QuickStartMediaUploadTour: QuickStartTour {
+    let key = "quick-start-media-upload-tour"
+    let analyticsKey = "media"
+    let title = NSLocalizedString("Upload photos or videos", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Upload photos or videos", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Bring media straight from your device or camera to your site.", comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.addImage)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
-    var waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
+    var waypoints: [WayPoint] = {
+        let step1DescriptionBase = NSLocalizedString("Select %@ to see your current library.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionTarget = NSLocalizedString("Media", comment: "The menu item to select during a guided tour.")
+        let step1: WayPoint = (element: .mediaScreen, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.image)))
 
-    let accessibilityHintText = ""  // Not applicable for this tour type
+        let step2DescriptionBase = NSLocalizedString("Select %@to upload media. You can add it to your posts / pages from any device.", comment: "A step in a guided tour for quick start. %@ will be a plus icon.")
+        let step2DescriptionTarget = ""
+        let step2: WayPoint = (element: .mediaUpload, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.plus)))
+
+        return [step1, step2]
+    }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading new media.", comment: "This value is used to set the accessibility hint text for viewing the user's notifications.")
 }
 
 private extension String {

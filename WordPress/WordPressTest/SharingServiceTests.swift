@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 class SharingServiceTests: XCTestCase {
-    var contextManager: TestContextManager!
+    var contextManager: ContextManagerMock!
     var context: NSManagedObjectContext {
         return contextManager.mainContext
     }
@@ -10,7 +10,7 @@ class SharingServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
     }
 
     func testSyncingPublicizeConnectionsForNonDotComBlogCallsACompletionBlock() throws {

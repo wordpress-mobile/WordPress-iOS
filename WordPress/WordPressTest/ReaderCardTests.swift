@@ -4,12 +4,14 @@ import Nimble
 @testable import WordPress
 
 class ReaderCardTests: XCTestCase {
+    private var contextManager: ContextManagerMock!
     private var testContext: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        testContext = TestContextManager().newDerivedContext()
+        contextManager = ContextManagerMock()
+        testContext = contextManager.newDerivedContext()
     }
 
     /// Create a Card of the type post from a RemoteReaderCard

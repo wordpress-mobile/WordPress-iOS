@@ -3,18 +3,20 @@ import OHHTTPStubs
 @testable import WordPress
 
 class MediaRequestAuthenticatorTests: XCTestCase {
-    fileprivate var contextManager: TestContextManager!
+    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
+        contextManager.setUpAsSharedInstance()
         context = contextManager.mainContext
     }
 
     override func tearDown() {
-        contextManager  =  nil
+        contextManager.tearDown()
+        contextManager = nil
         context = nil
 
         super.tearDown()
