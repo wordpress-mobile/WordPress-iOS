@@ -28,7 +28,7 @@ class BloggingPromptsService {
             switch result {
             case .success(let remotePrompts):
                 // TODO: Upsert into CoreData once the CoreData model is available.
-                success(remotePrompts.map { BloggingPrompt(with: $0) })
+                success([])
             case .failure(let error):
                 failure(error)
             }
@@ -64,7 +64,7 @@ class BloggingPromptsService {
 // MARK: - Temporary model object
 
 /// TODO: This is a temporary model to be replaced with Core Data model once the fields have all been finalized.
-struct BloggingPrompt {
+struct BloggingPromptDAO {
     let promptID: Int
     let text: String
     let title: String // for post title
@@ -75,7 +75,7 @@ struct BloggingPrompt {
     let displayAvatarURLs: [URL]
     let attribution: String
 
-    static let examplePrompt = BloggingPrompt(
+    static let examplePrompt = BloggingPromptDAO(
             promptID: 239,
             text: "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.",
             title: "Prompt number 1",
@@ -88,7 +88,7 @@ struct BloggingPrompt {
     )
 }
 
-extension BloggingPrompt {
+extension BloggingPromptDAO {
     init(with remotePrompt: RemoteBloggingPrompt) {
         promptID = remotePrompt.promptID
         text = remotePrompt.text
