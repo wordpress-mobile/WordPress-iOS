@@ -21,7 +21,7 @@ class MediaCacheSettingsViewController: UITableViewController {
 
         ImmuTable.registerRows([
             TextRow.self,
-            BrandedButtonRow.self
+            BrandedNavigationRow.self
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -48,7 +48,7 @@ class MediaCacheSettingsViewController: UITableViewController {
                                      comment: "Label for size of media cache in the app."),
             value: mediaCacheRowDescription)
 
-        let mediaClearCacheRow = BrandedButtonRow(
+        let mediaClearCacheRow = BrandedNavigationRow(
             title: NSLocalizedString("Clear Device Media Cache",
                                      comment: "Label for button that clears all media cache."),
             action: { [weak self] row in

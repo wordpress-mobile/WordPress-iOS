@@ -32,7 +32,7 @@ class AppSettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
-            BrandedButtonRow.self,
+            BrandedNavigationRow.self,
             DestructiveButtonRow.self,
             TextRow.self,
             ImageSizingRow.self,
@@ -455,7 +455,7 @@ private extension AppSettingsViewController {
             action: openPrivacySettings()
         )
 
-        let spotlightClearCacheRow = BrandedButtonRow(
+        let spotlightClearCacheRow = BrandedNavigationRow(
             title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
@@ -466,7 +466,7 @@ private extension AppSettingsViewController {
         ]
 
         if #available(iOS 12.0, *) {
-            let siriClearCacheRow = BrandedButtonRow(
+            let siriClearCacheRow = BrandedNavigationRow(
                 title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")

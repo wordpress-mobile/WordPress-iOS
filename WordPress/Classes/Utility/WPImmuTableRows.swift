@@ -236,9 +236,10 @@ struct LinkWithValueRow: ImmuTableRow {
     }
 }
 
-/// Create a row button: uses the WordPress branded blue and is left aligned
+/// Create a row that navigates to a new ViewController.
+/// Uses the WordPress branded blue and is left aligned.
 ///
-struct BrandedButtonRow: ImmuTableRow {
+struct BrandedNavigationRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellIndicator.self)
 
     let title: String
