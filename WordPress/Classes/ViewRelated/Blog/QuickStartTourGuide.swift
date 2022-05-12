@@ -58,7 +58,7 @@ open class QuickStartTourGuide: NSObject {
         blog.quickStartType = type
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
-        WPAnalytics.track(.quickStartStarted)
+        WPAnalytics.trackQuickStartEvent(.quickStartStarted, blog: blog)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
                                         object: self,
@@ -143,17 +143,21 @@ open class QuickStartTourGuide: NSObject {
                                     self?.prepare(tour: tour, for: blog)
                                     self?.begin()
                                     cancelTimer(false)
-                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "positive"])
+                                    WPAnalytics.trackQuickStartStat(.quickStartSuggestionButtonTapped,
+                                                                    properties: ["type": "positive"],
+                                                                    blog: blog)
                                 } else {
                                     self?.skipped(tour, for: blog)
                                     cancelTimer(true)
-                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "negative"])
+                                    WPAnalytics.trackQuickStartStat(.quickStartSuggestionButtonTapped,
+                                                                    properties: ["type": "negative"],
+                                                                    blog: blog)
                                 }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
 
-        WPAnalytics.track(.quickStartSuggestionViewed)
+        WPAnalytics.trackQuickStartStat(.quickStartSuggestionViewed, blog: blog)
     }
 
     /// Prepares to begin the specified tour.
@@ -247,7 +251,7 @@ open class QuickStartTourGuide: NSObject {
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
 
-        WPAnalytics.track(.quickStartCongratulationsViewed)
+        WPAnalytics.trackQuickStartStat(.quickStartCongratulationsViewed, blog: blog)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
@@ -355,13 +359,15 @@ private extension QuickStartTourGuide {
 
         blog.completeTour(tour.key)
 
+        // Create a site is completed automatically, we don't want to track
+        if tour.analyticsKey != "create_site" {
+            WPAnalytics.trackQuickStartStat(.quickStartTourCompleted,
+                                            properties: ["task_name": tour.analyticsKey],
+                                            blog: blog)
+        }
+
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-
-            // Create a site is completed automatically, we don't want to track
-            if tour.analyticsKey != "create_site" {
-                WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
-            }
 
             recentlyTouredBlog = blog
         } else {
@@ -369,13 +375,13 @@ private extension QuickStartTourGuide {
         }
 
         if allToursCompleted(for: blog) {
-            WPAnalytics.track(.quickStartAllToursCompleted)
+            WPAnalytics.trackQuickStartStat(.quickStartAllToursCompleted, blog: blog)
             grantCongratulationsAward(for: blog)
             tourInProgress = false
             shouldShowCongratsNotice = true
         } else {
             if let nextTour = tourToSuggest(for: blog) {
-                PushNotificationsManager.shared.postNotification(for: nextTour)
+                PushNotificationsManager.shared.postNotification(for: nextTour, quickStartType: blog.quickStartType)
             }
         }
     }
