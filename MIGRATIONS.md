@@ -3,6 +3,22 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 140
+
+@dvdchr 2022-05-13
+
+- Created a new entity `BloggingPrompt` with:
+    - `promptID` (required, default `0`, `Int 32`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `text` (required, default empty string, `String`)
+    - `title` (required, default empty string, `String`)
+    - `content` (required, default empty string, `String`)
+    - `attribution` (required, default empty string, `String`)
+    - `date` (optional, no default, `Date`)
+    - `answered` (required, default `NO`, `Boolean`)
+    - `answerCount` (required, default `0`, `Int 32`)
+    - `displayAvatarURLs` (optional, no default, `Transformable` with type `[URL]`)
+
 ## WordPress 138
 
 @dvdchr 2022-03-07
