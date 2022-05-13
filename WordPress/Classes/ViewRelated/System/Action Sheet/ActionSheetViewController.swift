@@ -24,6 +24,7 @@ class ActionSheetViewController: UIViewController {
         static let buttonSpacing: CGFloat = 8
         static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
+        static let maximumWidth: CGFloat = 600
 
         enum Header {
             static let spacing: CGFloat = 16
@@ -206,6 +207,8 @@ class ActionSheetViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
+        let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let width = min(max(Constants.minimumWidth, compressedSize.width), Constants.maximumWidth)
+        preferredContentSize = CGSize(width: width, height: compressedSize.height)
     }
 }
