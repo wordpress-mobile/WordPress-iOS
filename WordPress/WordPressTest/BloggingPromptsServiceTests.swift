@@ -7,11 +7,12 @@ final class BloggingPromptsServiceTests: XCTestCase {
     private let siteID = 1
     private let timeout: TimeInterval = 2
 
+    private static let utcTimeZone = TimeZone(secondsFromGMT: 0)!
     private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = .init(identifier: "en_US_POSIX")
-        formatter.timeZone = .init(secondsFromGMT: 0)
+        formatter.timeZone = utcTimeZone
 
         return formatter
     }()
@@ -66,7 +67,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
             XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertEqual(firstPrompt.attribution, "dayone")
 
-            let firstDateComponents = firstPrompt.date.dateAndTimeComponents()
+            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
             XCTAssertEqual(firstDateComponents.year!, 2022)
             XCTAssertEqual(firstDateComponents.month!, 5)
             XCTAssertEqual(firstDateComponents.day!, 3)
@@ -83,7 +84,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
             XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
             XCTAssertTrue(secondPrompt.attribution.isEmpty)
 
-            let secondDateComponents = secondPrompt.date.dateAndTimeComponents()
+            let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
             XCTAssertEqual(secondDateComponents.year!, 2021)
             XCTAssertEqual(secondDateComponents.month!, 9)
             XCTAssertEqual(secondDateComponents.day!, 12)
@@ -116,7 +117,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
             // Ensure that the date returned is more recent than the supplied date parameter.
             let firstPrompt = prompts.first!
-            let firstDateComponents = firstPrompt.date.dateAndTimeComponents()
+            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
             XCTAssertEqual(firstDateComponents.year!, 2022)
             XCTAssertEqual(firstDateComponents.month!, 5)
             XCTAssertEqual(firstDateComponents.day!, 3)
@@ -155,7 +156,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
         XCTAssertNotNil(remote.passedDateParameter)
         let passedDate = remote.passedDateParameter!
-        let differenceInHours = Calendar.autoupdatingCurrent.dateComponents([.hour], from: passedDate, to: Date()).hour!
+        let differenceInHours = Calendar.current.dateComponents([.hour], from: passedDate, to: Date()).hour!
         XCTAssertEqual(differenceInHours, expectedDifferenceInHours)
 
         XCTAssertNotNil(remote.passedNumberParameter)
