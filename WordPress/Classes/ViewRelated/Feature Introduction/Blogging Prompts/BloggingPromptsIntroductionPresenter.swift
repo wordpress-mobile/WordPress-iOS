@@ -102,8 +102,7 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showPostCreation() {
         guard let blog = blogToUse(),
-              let presentingViewController = presentingViewController,
-              let service = bloggingPromptsService else {
+              let presentingViewController = presentingViewController else {
             navigationController.dismiss(animated: true)
             return
         }
