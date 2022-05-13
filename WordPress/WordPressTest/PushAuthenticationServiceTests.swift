@@ -4,7 +4,7 @@ import XCTest
 
 class PushAuthenticationServiceTests: XCTestCase {
 
-    var testContextManager: TestContextManager!
+    var testContextManager: ContextManagerMock!
     var pushAuthenticationService: PushAuthenticationService!
     var mockPushAuthenticationServiceRemote: MockPushAuthenticationServiceRemote!
     var mockRemoteApi: MockWordPressComRestApi!
@@ -26,7 +26,7 @@ class PushAuthenticationServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockRemoteApi = MockWordPressComRestApi()
-        testContextManager = TestContextManager()
+        testContextManager = ContextManagerMock()
         mockPushAuthenticationServiceRemote = MockPushAuthenticationServiceRemote(wordPressComRestApi: mockRemoteApi)
         pushAuthenticationService = PushAuthenticationService(managedObjectContext: testContextManager.mainContext)
         pushAuthenticationService.authenticationServiceRemote = mockPushAuthenticationServiceRemote
@@ -37,7 +37,6 @@ class PushAuthenticationServiceTests: XCTestCase {
         pushAuthenticationService.authorizeLogin(token, completion: { (completed: Bool) -> () in
         })
         XCTAssertFalse(mockPushAuthenticationServiceRemote!.authorizeLoginCalled, "Authorize login should not have been called")
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testAuthorizeLoginCallsServiceRemoteAuthorizeLoginWhenItsNotNull() {

@@ -4,22 +4,20 @@ import XCTest
 class PreviewWebKitViewControllerTests: XCTestCase {
 
     private var rootWindow: UIWindow!
-    private var context: NSManagedObjectContext!
     private var navController = UINavigationController()
+
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
+        contextManager = ContextManagerMock()
 
         rootWindow = UIWindow(frame: UIScreen.main.bounds)
         rootWindow.isHidden = false
         rootWindow.rootViewController = navController
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testMissingPermalink() {

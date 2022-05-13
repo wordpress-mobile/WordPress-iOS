@@ -3,14 +3,10 @@ import XCTest
 @testable import WordPress
 
 class ReaderStreamViewControllerTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
 
     override func setUp() {
-        contextManager = TestContextManager()
-    }
-
-    override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
+        contextManager = ContextManagerMock()
     }
 
     // Tests that a ReaderStreamViewController is returned
@@ -21,8 +17,6 @@ class ReaderStreamViewControllerTests: XCTestCase {
 
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
         XCTAssertNotNil(controller, "Controller should not be nil")
-
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testControllerWithSiteID() {

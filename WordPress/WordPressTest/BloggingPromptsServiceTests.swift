@@ -16,7 +16,10 @@ final class BloggingPromptsServiceTests: XCTestCase {
         return formatter
     }()
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
     private var remote: BloggingPromptsServiceRemoteMock!
     private var service: BloggingPromptsService!
     private var blog: Blog!
@@ -25,7 +28,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()

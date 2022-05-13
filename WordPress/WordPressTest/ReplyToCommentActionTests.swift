@@ -24,7 +24,7 @@ final class ReplyToCommentActionTests: XCTestCase {
 
     private var action: ReplyToComment?
     let utility = NotificationUtility()
-    private var testContextManager: TestContextManager!
+    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -33,7 +33,7 @@ final class ReplyToCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = ContextManagerMock()
         action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: testContextManager)
         makeNetworkAvailable()
     }

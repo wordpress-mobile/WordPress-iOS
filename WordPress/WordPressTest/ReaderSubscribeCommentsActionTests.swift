@@ -3,11 +3,11 @@ import XCTest
 
 final class ReaderSubscribeCommentsActionTests: XCTestCase {
     let sut = ReaderSubscribeCommentsAction()
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     func testExecuteSuccessInvokesCompletion() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.mainContext
         let readerPost = ReaderPost(context: self.context!)
 
@@ -31,7 +31,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
     }
 
     func testExecuteSubscribeFailureDoesNotInvokeToggleNotification() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.mainContext
         let readerPost = ReaderPost(context: self.context!)
 
@@ -57,7 +57,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
     }
 
     func testExecuteNotificationFailureInvokesFailureHandler() {
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.mainContext
         let readerPost = ReaderPost(context: self.context!)
 

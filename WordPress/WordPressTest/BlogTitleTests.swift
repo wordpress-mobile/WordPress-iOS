@@ -4,19 +4,15 @@ import XCTest
 class BlogTitleTests: XCTestCase {
 
     private var blog: Blog!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
-    override func setUpWithError() throws {
-        contextManager = TestContextManager()
+    override func setUp() {
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL
         blog.xmlrpc = Constants.blogURL
-    }
-
-    override func tearDownWithError() throws {
-        blog = nil
     }
 
     func testBlogTitleIsName() throws {

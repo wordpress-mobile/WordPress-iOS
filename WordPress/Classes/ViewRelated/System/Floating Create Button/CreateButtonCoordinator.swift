@@ -56,23 +56,11 @@ import WordPressFlux
         }
     }
 
-    private lazy var promptsHeaderView: BloggingPromptsHeaderView? = {
-        let headerView = FeatureFlag.bloggingPrompts.enabled ? BloggingPromptsHeaderView.loadFromNib() : nil
-        headerView?.answerPromptHandler = { [weak self] in
-            self?.viewController?.dismiss(animated: true) {
-                guard let blog = self?.blog,
-                      let service = BloggingPromptsService(blog: blog),
-                      let prompt = service.localTodaysPrompt else {
-                    return
-                }
+    // TODO: when prompt is used, get prompt from cache so it's using the latest.
+    private var prompt: BloggingPrompt?
 
-                let editor = EditPostViewController(blog: blog, prompt: prompt)
-                editor.modalPresentationStyle = .fullScreen
-                editor.entryPoint = .bloggingPromptsActionSheetHeader
-                self?.viewController?.present(editor, animated: true)
-            }
-        }
-        return headerView
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        return BloggingPromptsService(blog: blog)
     }()
 
     private weak var noticeContainerView: NoticeContainerView?
@@ -95,6 +83,11 @@ import WordPressFlux
         super.init()
 
         listenForQuickStart()
+
+        // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
+        if actions.count > 1 {
+            fetchBloggingPrompt()
+        }
     }
 
     deinit {
@@ -164,7 +157,7 @@ import WordPressFlux
     }
 
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
-        let actionSheetVC = CreateButtonActionSheet(headerView: promptsHeaderView, actions: actions)
+        let actionSheetVC = CreateButtonActionSheet(headerView: createPromptHeaderView(), actions: actions)
         setupPresentation(on: actionSheetVC, for: traitCollection)
         return actionSheetVC
     }
@@ -304,4 +297,51 @@ extension UserDefaults {
             set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
         }
     }
+}
+
+
+// MARK: - Blogging Prompts Methods
+
+private extension CreateButtonCoordinator {
+
+    private func fetchBloggingPrompt() {
+
+        // TODO: check for cached prompt first.
+
+        guard let bloggingPromptsService = bloggingPromptsService else {
+            DDLogError("FAB > failed creating BloggingPromptsService instance.")
+            prompt = nil
+            return
+        }
+
+        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+            self?.prompt = prompt
+        }, failure: { [weak self] (error) in
+            self?.prompt = nil
+            DDLogError("FAB > failed fetching blogging prompt: \(String(describing: error))")
+        })
+    }
+
+    private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let blog = blog,
+              let prompt = prompt else {
+            return nil
+        }
+
+        let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
+
+        promptsHeaderView.answerPromptHandler = { [weak self] in
+            self?.viewController?.dismiss(animated: true) {
+                // TODO: pass prompt to post editor
+                let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+                editor.modalPresentationStyle = .fullScreen
+                editor.entryPoint = .bloggingPromptsActionSheetHeader
+                self?.viewController?.present(editor, animated: true)
+            }
+        }
+
+        return promptsHeaderView
+    }
+
 }

@@ -5,25 +5,27 @@ import XCTest
 
 class TimeZoneSelectorViewModelTests: XCTestCase {
 
-    private let contextManager = TestContextManager()
+    private var contextManager: ContextManagerMock!
 
     private var viewModel: TimeZoneSelectorViewModel!
 
     private var timeZoneGroups: [TimeZoneGroup]!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() {
+        super.setUp()
+
+        contextManager = ContextManagerMock()
 
         // Given TimeZoneGroups
         // When new ViewModel created with TimeZoneStore with state=loaded
         loadTimeZoneGroupsIntoViewModel()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
         viewModel = nil
         timeZoneGroups = nil
 
-        try super.tearDownWithError()
+        super.tearDown()
     }
 
     func loadTimeZoneGroupsIntoViewModel(selectedValue: String = "", filter: String? = nil) {

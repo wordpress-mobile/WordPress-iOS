@@ -18,18 +18,17 @@ class AztecPostViewController_MenuTests: XCTestCase {
     }
 
     private var aztecPostViewController: Mock!
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        contextManager = nil
         context = nil
     }
 

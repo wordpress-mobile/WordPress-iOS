@@ -58,7 +58,7 @@ class Animator: NSObject {
             preamble?()
         }
 
-        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut, animations: animations) { [unowned self] _ in
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut, animations: animations) { _ in
             self.animationsInProgress -= 1
 
             if self.animationsInProgress == 0 {

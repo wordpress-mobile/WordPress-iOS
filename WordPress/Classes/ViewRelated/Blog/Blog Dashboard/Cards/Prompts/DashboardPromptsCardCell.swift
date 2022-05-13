@@ -81,6 +81,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
         return stackView
@@ -187,6 +188,20 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
         return containerView
     }
+
+    private lazy var attributionIcon = UIImageView()
+
+    private lazy var attributionSourceLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+
+    private lazy var attributionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel])
+        stackView.alignment = .center
+        return stackView
+    }()
 
     // MARK: Bottom row views
 
@@ -337,6 +352,13 @@ private extension DashboardPromptsCardCell {
         promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
 
+        if let promptAttribution = prompt?.attribution.lowercased(),
+           let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {
+            attributionIcon.image = attribution.iconImage
+            attributionSourceLabel.attributedText = attribution.attributedText
+            containerStackView.addArrangedSubview(attributionStackView)
+        }
+
         if answerCount > 0 {
             containerStackView.addArrangedSubview(answerInfoView)
         }
@@ -359,6 +381,7 @@ private extension DashboardPromptsCardCell {
             self?.prompt = prompt
             self?.didFailLoadingPrompt = false
         }, failure: { [weak self] (error) in
+            self?.prompt = nil
             self?.didFailLoadingPrompt = true
             DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
         })

@@ -3,20 +3,19 @@ import XCTest
 import Nimble
 
 class PostListFilterTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testSortDescriptorForPublished() {

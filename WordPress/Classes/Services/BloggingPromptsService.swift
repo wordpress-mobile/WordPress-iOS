@@ -65,6 +65,18 @@ class BloggingPromptsService {
         }, failure: failure)
     }
 
+    /// Convenience method to fetch the blogging prompts for the Prompts List.
+    /// Fetches 11 prompts - the current day and 10 previous.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func fetchListPrompts(success: @escaping ([BloggingPrompt]) -> Void,
+                          failure: @escaping (Error?) -> Void) {
+        let fromDate = calendar.date(byAdding: .day, value: -9, to: Date()) ?? Date()
+        fetchPrompts(from: fromDate, number: 11, success: success, failure: failure)
+    }
+
     required init?(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
