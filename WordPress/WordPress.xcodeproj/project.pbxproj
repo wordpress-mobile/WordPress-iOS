@@ -4568,6 +4568,7 @@
 		FE003F5E282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */; };
 		FE003F5F282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
 		FE003F60282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
+		FE003F62282E73E6006F8D1D /* blogging-prompts-fetch-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */; };
 		FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE02F95E269DC14A00752A44 /* Comment+Interface.swift */; };
 		FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
@@ -7848,6 +7849,7 @@
 		FE003F54282D48E4006F8D1D /* WordPress 140.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 140.xcdatamodel"; sourceTree = "<group>"; };
 		FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "BloggingPrompt+CoreDataClass.swift"; path = "/Users/dvdchr/code/wp-ios/WordPress/Classes/Models/BloggingPrompt+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "BloggingPrompt+CoreDataProperties.swift"; path = "/Users/dvdchr/code/wp-ios/WordPress/Classes/Models/BloggingPrompt+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-fetch-success.json"; sourceTree = "<group>"; };
 		FE02F95E269DC14A00752A44 /* Comment+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Interface.swift"; sourceTree = "<group>"; };
 		FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenter.swift; sourceTree = "<group>"; };
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
@@ -14374,6 +14376,7 @@
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
 				F127FFD724213B5600B9D41A /* atomic-get-authentication-cookie-success.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
+				FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */,
 				FEFC0F8D27313DCF001F7F1D /* comments-v2-success.json */,
 				FEFC0F8F27315634001F7F1D /* empty-array.json */,
 				74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */,
@@ -16444,6 +16447,7 @@
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				8B2D4F5327ECE089009B085C /* dashboard-200-without-posts.json in Resources */,
 				FEFC0F8E27313DD0001F7F1D /* comments-v2-success.json in Resources */,
+				FE003F62282E73E6006F8D1D /* blogging-prompts-fetch-success.json in Resources */,
 				46CFA7BF262745F70077BAD9 /* get_wp_v2_themes_twentytwentyone.json in Resources */,
 				465F89F7263B690C00F4C950 /* wp-block-editor-v1-settings-success-NotThemeJSON.json in Resources */,
 				3211055C250C027D0048446F /* valid-gif-header.gif in Resources */,
