@@ -73,8 +73,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
             XCTAssertFalse(firstPrompt.answered)
             XCTAssertEqual(firstPrompt.answerCount, 0)
-            XCTAssertNotNil(firstPrompt.displayAvatarURLs)
-            XCTAssertTrue(firstPrompt.displayAvatarURLs!.isEmpty)
+            XCTAssertTrue(firstPrompt.displayAvatarURLs.isEmpty)
 
             // Verify mappings for the second prompt
             let secondPrompt = prompts.last!
@@ -91,8 +90,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
             XCTAssertTrue(secondPrompt.answered)
             XCTAssertEqual(secondPrompt.answerCount, 1)
-            XCTAssertNotNil(secondPrompt.displayAvatarURLs)
-            XCTAssertEqual(secondPrompt.displayAvatarURLs!.count, 1)
+            XCTAssertEqual(secondPrompt.displayAvatarURLs.count, 1)
 
             expectation.fulfill()
 
