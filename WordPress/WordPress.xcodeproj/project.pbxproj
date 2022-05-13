@@ -154,6 +154,9 @@
 		09DBEA55281336E10019724E /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
+		17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC772B0728201F5300664C02 /* ViewsVisitorsLineChartCell.swift */; };
+		17039226282E6D2F00F602E9 /* ViewsVisitorsLineChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC772B0528201F5200664C02 /* ViewsVisitorsLineChartCell.xib */; };
+		17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC772B0628201F5200664C02 /* ViewsVisitorsChartMarker.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
 		1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */; };
 		170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -16633,6 +16636,7 @@
 				FABB20392602FC2C00C8785C /* ActivityListSectionHeaderView.xib in Resources */,
 				FABB203B2602FC2C00C8785C /* AboutViewController.xib in Resources */,
 				FABB203D2602FC2C00C8785C /* Localizable.strings in Resources */,
+				17039226282E6D2F00F602E9 /* ViewsVisitorsLineChartCell.xib in Resources */,
 				FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */,
 				FEC3B81A26C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				FABB203F2602FC2C00C8785C /* ReaderRecommendedSiteCardCell.xib in Resources */,
@@ -20387,6 +20391,7 @@
 				FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */,
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */,
+				17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */,
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */,
 				FABB21ED2602FC2C00C8785C /* WPTabBarController+ReaderTabNavigation.swift in Sources */,
@@ -21295,6 +21300,7 @@
 				FABB24F52602FC2C00C8785C /* ReaderTagTopic.swift in Sources */,
 				FABB24F62602FC2C00C8785C /* Media.swift in Sources */,
 				9839CEBC26FAA0530097406E /* CommentModerationBar.swift in Sources */,
+				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
 				FABB24F72602FC2C00C8785C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				FABB24F82602FC2C00C8785C /* GravatarPickerViewController.swift in Sources */,
 				FABB24F92602FC2C00C8785C /* ReaderTableConfiguration.swift in Sources */,
