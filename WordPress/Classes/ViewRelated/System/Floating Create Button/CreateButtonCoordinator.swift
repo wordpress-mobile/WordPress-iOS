@@ -333,7 +333,6 @@ private extension CreateButtonCoordinator {
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
             self?.viewController?.dismiss(animated: true) {
-                // TODO: pass prompt to post editor
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
                 editor.entryPoint = .bloggingPromptsActionSheetHeader
