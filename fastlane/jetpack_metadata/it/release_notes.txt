@@ -1,8 +1,8 @@
-Quando Selezioni Segui conversazione nelle schede degli articoli del Reade e i dettagli dell'articolo, le notifiche in-app ora vengono disattivate anziché attivate.
+Quando selezioni Segui conversazione nelle schede degli articoli del Reader e i dettagli dell'articolo, l'iscrizione alle notifiche in-app ora viene annullata anziché avvenire.
 
-Abbiamo sostituito la richiesta della sessione di orientamento quando accedi come utente esistente.  Ora puoi dirci cosa ti piace per focalizzarci e attivare delle notifiche per cose come il traffico del sito, i nuovi follower e altri traguardi. Allestire i confetti.
+Abbiamo sostituito la richiesta della sessione di orientamento quando accedi come utente esistente.  Ora puoi dirci cosa ti piace per spostare l'attenzione e attivare le notifiche per cose come il traffico del sito, i nuovi follower e altre tappe importanti. Preparati a festeggiare.
 
-Pronto per il grand tour? Abbiamo effettuato alcuni aggiustamenti al tour delle Statistiche e del Reader nella sezione Sessione di orientamento. Ora puoi spostarti attraverso i tour in modo più fluido e ottenere più puntatori e messaggi man mano che procedi.
+Pronto per il grand tour? Abbiamo apportato alcuni aggiustamenti ai tour di Statistiche e del Reader nella sezione Sessione di orientamento. Ora puoi spostarti attraverso i tour in modo più fluido e ottenere più puntatori e messaggi man mano che procedi.
 
 Abbiamo anche apportato alcune dolci, dolci modifiche all'editor a blocchi.
 
