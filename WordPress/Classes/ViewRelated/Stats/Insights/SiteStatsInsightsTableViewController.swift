@@ -195,6 +195,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         return [InsightCellHeaderRow.self,
+                ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
