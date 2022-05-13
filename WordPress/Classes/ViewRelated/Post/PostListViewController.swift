@@ -174,6 +174,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureNavigationButtons()
 
         configureInitialFilterIfNeeded()
+        listenForAppComingToForeground()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
@@ -212,6 +213,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        toggleCreateButton()
+    }
+
+    /// Shows/hides the create button based on the trait collection horizontal size class
+    private func toggleCreateButton() {
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
@@ -377,6 +383,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         filterSettings.setFilterWithPostStatus(initialFilterWithPostStatus)
+    }
+
+    /// Listens for the app coming to foreground in order to properly set the create button
+    private func listenForAppComingToForeground() {
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.toggleCreateButton()
+        }
     }
 
     // Mark - Layout Methods
