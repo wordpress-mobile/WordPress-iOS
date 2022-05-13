@@ -249,7 +249,8 @@ final class ViewsVisitorsChartMarker: MarkerView {
         }
 
         let entryPrevWeek = lineChartDataSetPrevWeek.entries[Int(entry.x)]
-        let difference = entry.y - entryPrevWeek.y
+        let difference = Int(entry.y - entryPrevWeek.y)
+        let differenceStr = difference < 0 ? "\(difference)" : "+\(difference)"
 
         var roundedPercentage = 0
         if entryPrevWeek.y > 0 {
@@ -264,7 +265,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
                                                                   .paragraphStyle: paragraphStyle,
                                                                   .foregroundColor: UIColor.white]
 
-        let topRowStr = NSMutableAttributedString(string: "\(Int(difference)) (\(roundedPercentage)%)\n", attributes: topRowAttributes)
+        let topRowStr = NSMutableAttributedString(string: "\(differenceStr) (\(roundedPercentage)%)\n", attributes: topRowAttributes)
         let bottomRowStr = NSAttributedString(string: "\(yValue) \(name)", attributes: bottomRowAttributes)
 
         topRowStr.append(bottomRowStr)
