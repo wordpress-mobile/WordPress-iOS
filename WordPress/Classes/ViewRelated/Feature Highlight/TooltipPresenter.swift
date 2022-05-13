@@ -55,8 +55,14 @@ final class TooltipPresenter {
 
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width
-        let extraPushOffset = max((targetView.frame.midX + Constants.horizontalBufferMargin) - (containerView.frame.midX + tooltipWidth / 2), 0)
-        let extraRetractOffset = min((targetView.frame.midX - Constants.horizontalBufferMargin) - (containerView.frame.midX - tooltipWidth / 2), 0)
+        let extraPushOffset = max(
+            (targetView.frame.midX + Constants.horizontalBufferMargin) - (containerView.frame.midX + tooltipWidth / 2),
+            0
+        )
+        let extraRetractOffset = min(
+            (targetView.frame.midX - Constants.horizontalBufferMargin) - (containerView.frame.midX - tooltipWidth / 2),
+            0
+        )
 
         if extraPushOffset > 0 {
             return extraPushOffset

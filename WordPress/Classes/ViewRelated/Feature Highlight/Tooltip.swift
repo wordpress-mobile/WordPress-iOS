@@ -224,6 +224,7 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
+        addShadow()
         isAccessibilityElement = true
     }
 
@@ -269,6 +270,12 @@ final class Tooltip: UIView {
             containerView.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.maxWidth),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.Spacing.buttonStackViewHeight)
         ])
+    }
+
+    private func addShadow() {
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        containerView.layer.shadowOpacity = 0.5
     }
 
     private static func height(
