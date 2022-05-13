@@ -12,6 +12,11 @@ public class BloggingPrompt: NSManagedObject {
         return NSEntityDescription.insertNewObject(forEntityName: Self.classNameWithoutNamespaces(), into: context) as? BloggingPrompt
     }
 
+    public override func awakeFromInsert() {
+        self.date = .init(timeIntervalSince1970: 0)
+        self.displayAvatarURLs = []
+    }
+
     /// Convenience method to map properties from `RemoteBloggingPrompt`.
     ///
     /// - Parameters:

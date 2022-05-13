@@ -30,5 +30,5 @@ extension BloggingPrompt {
     @NSManaged public var answerCount: Int32
 
     /// Contains avatar URLs of some users that have answered the prompt.
-    @NSManaged public var displayAvatarURLs: [URL]?
+    @NSManaged public var displayAvatarURLs: [URL]
 }
