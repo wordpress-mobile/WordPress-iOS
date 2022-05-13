@@ -60,10 +60,13 @@ import WordPressFlux
         let headerView = FeatureFlag.bloggingPrompts.enabled ? BloggingPromptsHeaderView.loadFromNib() : nil
         headerView?.answerPromptHandler = { [weak self] in
             self?.viewController?.dismiss(animated: true) {
-                guard let blog = self?.blog else {
+                guard let blog = self?.blog,
+                      let service = BloggingPromptsService(blog: blog),
+                      let prompt = service.localTodaysPrompt else {
                     return
                 }
-                let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+
+                let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
                 editor.entryPoint = .bloggingPromptsActionSheetHeader
                 self?.viewController?.present(editor, animated: true)

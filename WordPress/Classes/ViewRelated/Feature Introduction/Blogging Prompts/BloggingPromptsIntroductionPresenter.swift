@@ -35,6 +35,10 @@ class BloggingPromptsIntroductionPresenter: NSObject {
         (accountSites?.count ?? 0) == 0
     }()
 
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        .init(blog: selectedBlog)
+    }()
+
     // MARK: - Present Feature Introduction
 
     func present(from presentingViewController: UIViewController) {
@@ -98,21 +102,30 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showPostCreation() {
         guard let blog = blogToUse(),
-              let presentingViewController = presentingViewController else {
+              let presentingViewController = presentingViewController,
+              let service = bloggingPromptsService else {
             navigationController.dismiss(animated: true)
             return
         }
 
-        // TODO: pre-populate post content with prompt from backend instead
-        // of example prompt
-        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .bloggingPromptsFeatureIntroduction
+        service.fetchTodaysPrompt { [weak self] prompt in
+            guard let prompt = prompt else {
+                // TODO: Show error message?
+                return
+            }
 
-        navigationController.dismiss(animated: true, completion: { [weak self] in
-            presentingViewController.present(editor, animated: false)
-            self?.trackPostEditorShown(blog)
-        })
+            let editor = EditPostViewController(blog: blog, prompt: prompt)
+            editor.modalPresentationStyle = .fullScreen
+            editor.entryPoint = .bloggingPromptsFeatureIntroduction
+
+            self?.navigationController.dismiss(animated: true, completion: {
+                presentingViewController.present(editor, animated: false)
+                self?.trackPostEditorShown(blog)
+            })
+
+        } failure: { _ in
+            // TODO: Show error message?
+        }
     }
 
     func showRemindersScheduling() {

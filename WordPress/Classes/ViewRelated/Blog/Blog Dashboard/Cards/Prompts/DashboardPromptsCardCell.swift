@@ -115,7 +115,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             return Constants.exampleAnswerCount
         }
 
-        return prompt?.answerCount ?? 0
+        return Int(prompt?.answerCount ?? 0)
     }()
 
     private var answerInfoText: String {
@@ -367,11 +367,12 @@ private extension DashboardPromptsCardCell {
     // MARK: Button actions
 
     @objc func answerButtonTapped() {
-        guard let blog = blog else {
+        guard let blog = blog,
+              let prompt = prompt else {
             return
         }
 
-        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+        let editor = EditPostViewController(blog: blog, prompt: prompt)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .dashboard
         presenterViewController?.present(editor, animated: true)

@@ -3,6 +3,15 @@ import CoreData
 import WordPressKit
 
 public class BloggingPrompt: NSManagedObject {
+
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<BloggingPrompt> {
+        return NSFetchRequest<BloggingPrompt>(entityName: Self.classNameWithoutNamespaces())
+    }
+
+    @nonobjc public class func newObject(in context: NSManagedObjectContext) -> BloggingPrompt? {
+        return NSEntityDescription.insertNewObject(forEntityName: Self.classNameWithoutNamespaces(), into: context) as? BloggingPrompt
+    }
+
     /// Convenience method to map properties from `RemoteBloggingPrompt`.
     ///
     /// - Parameters:
