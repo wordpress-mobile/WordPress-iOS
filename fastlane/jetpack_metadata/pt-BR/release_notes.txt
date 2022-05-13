@@ -1,0 +1,12 @@
+Quando você segue uma conversa nos cartões de posts do leitor e nos detalhes do post, as notificações no aplicativo agora são recusadas.
+
+Nós substituímos o aviso de início rápido quando você faz login como usuário existente. Agora você pode escolher o que receber e ativar as notificações para o tráfego do site, novos seguidores, outros marcos e muito mais. Vamos comemorar!
+
+Tudo pronto para fazer um tour? Fizemos alguns ajustes nos tours de Estatísticas e Leitor na seção Início rápido. Incluímos novos ponteiros e mensagens, então agora ficou mais fácil ir de um tour para outro.
+
+Também fizemos algumas mudanças legais no Editor de blocos.
+
+– Agora é possível ajustar as configurações de imagem destacada para qualquer post no bloco Posts mais recentes.
+– Você verá os avisos corretos ao mudar rapidamente entre os modos HTML e Visual.
+– As pré-visualizações de mídia não são mais cortadas ao editar uma URL no bloco Mídia incorporada.
+– Se você estiver usando um iPad com teclado externo, não verá mais um espaço extra entre a barra de ferramentas e a parte inferior da tela. Não se esqueça.

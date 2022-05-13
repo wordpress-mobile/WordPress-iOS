@@ -56,6 +56,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        tableView.dataSource = nil
         viewModel?.stopObserving()
     }
 

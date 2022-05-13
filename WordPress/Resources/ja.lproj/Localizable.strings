@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-25 13:16:59+0000 */
+/* Translation-Revision-Date: 2022-05-06 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ja_JP */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ ボタン";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ 次のタスクへの準備ができたら、参加サイトの画面に戻ります。";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@個のタグ";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@個のタグ";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ のヒント: プッシュ通知を有効にすると、より速くアップデートを取得できます。";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ (単位 : 十億)";
@@ -273,8 +279,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(タイトルなし)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johan Brandt* さんは現在あなたのサイトをフォローしています。";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johan Brandt* さんがコメント投稿に返信しました";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* さんが投稿に返信しました";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* さんがサイトに新しい投稿を追加しました";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* さんが投稿に「いいね」しました";
@@ -356,6 +371,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "心をつかむコンテンツを作り、サイトで公開する新しい方法。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+"A series of steps helping you to explore the app." = "アプリの詳細を知る一連のステップです。";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "テーマやサイトアイコンなどを追加する方法の手順。";
@@ -1413,6 +1431,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "ネットワーク接続を確認して、もう一度お試しください。または投稿の下書きを作成してください。";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "通知を確認";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "サイト統計情報を確認";
 
 /* Title of a Quick Start Tour */
@@ -1420,6 +1441,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "購入を確認中…";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "統計情報を確認";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "%@の子";
@@ -1698,6 +1722,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "完了";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "完了: 通知を確認";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "完了 : サイトの統計情報を確認";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1708,6 +1735,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "完了: 独自のサイトアイコンを選択する";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "完了: 別のサイトを接続";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "完了 : サイトの設定を続ける";
@@ -1760,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "ご購入いただきありがとうございます。";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "おめでとうございます !  ご自身のサイトが*全期間の表示数1000回*を達成しました。";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "連携";
@@ -1775,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "投稿をフォロー、「いいね」、コメントして、他のブロガーとつながりましょう。";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "別のサイトを接続";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "お気に入りの SNS に連携し、新しい投稿を友人と自動的に共有しましょう。";
@@ -2371,6 +2407,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "お気に入りのブログを探してフォロー";
 
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "参考になるサイトを探してフォローしましょう。";
+
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "フォローするブログを検索";
 
@@ -2780,6 +2819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "パブリサイズを有効化";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for Existing Site" = "既存サイトのクイックスタートを有効にする";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "新しいサイトのクイックスタートを有効にする";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "サイト統計情報を有効化";
@@ -3195,6 +3240,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "会話をフォロー";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "会話をフォローする";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "サイトをフォロー";
 
@@ -3351,6 +3399,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "読んだ投稿についてのコメントを書いてみましょう。";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "ポケットからリアルタイムで最新情報を入手できます。";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "幅広く用意されたページレイアウトの中から選択して始めてみましょう。または、空白ページから始めることもできます。";
 
@@ -3359,6 +3410,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "WordPress アプリを知る";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "ドメインを取得";
@@ -3428,6 +3482,9 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "訪問者を増やす";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "通知を確認するプロセスを紹介します。";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "サイトのテーマを選択するプロセスを紹介します。";
@@ -3691,6 +3748,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "プラグイン無効化中。自動更新オン";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "プロンプトが含まれます";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "サイトに含まれています";
 
@@ -3946,6 +4006,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "サイトのパフォーマンスを把握しましょう。";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "お気に入りの投稿者が新しいコンテンツを投稿したときに通知します。";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "サイトへのトラフィックが増えたとき、新しいフォロワーが増えたとき、新しいマイルストーンを達成したときに通知します。";
+
 /* Autoapprove only from known users */
 "Known Users" = "既知のユーザー";
 
@@ -3990,6 +4056,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "日時形式の詳細を参照してください。";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "プロンプトについて詳しく読む";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "権限グループの詳細";
@@ -4927,6 +4996,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "メールが表示されない場合は、 スパムメールや迷惑メールのフォルダーを確認してください。";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "よくわからないので説明を見る";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "注:";
 
@@ -4958,6 +5030,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "通知時間";
+
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "通知にはヒントになる言葉や短いフレーズが記載されます";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5667,6 +5742,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "投稿をプレビュー";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "サイトをプレビューして訪問者に表示される内容を確認できます。";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "前の月";
 
@@ -5852,6 +5930,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "別のサイトの投稿を読む";
 
 /* Real Estate site intent topic */
 "Real Estate" = "不動産";
@@ -6414,6 +6495,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "%@ を選択して新しいテーマを発見する";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to find other sites." = "別のサイトを検索するには %@ を選択します。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "%@ を選択してサイトのパフォーマンスを確認する。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6430,6 +6514,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "%@ を選択して新しくアップロードする。";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "サイトを表示するには %@ を選択します。";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "国名を選択";
@@ -6463,6 +6550,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "段落スタイルを選択";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "%@ タブを選択すると、外出先で最新情報を確認できます。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "%@ を選択してソーシャルメディアアカウントを追加する";
@@ -7036,6 +7126,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "常に最新情報を入手";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "いいねやコメントの通知で状況をリアルタイムで把握できます。";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "いいねやコメントの通知で読者の反応をリアルタイムで把握できます。";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "常に最新の情報を通知";
+
 /* This is the cell title. */
 "Stick post to the front page" = "フロントページに投稿を固定表示";
 
@@ -7268,6 +7367,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "タップしてサイトを表示";
+
+/* A hint about the completed guided tour. */
+"Task complete." = "タスクが完了しました";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "投稿カテゴリー・タグ";
@@ -7911,6 +8013,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "今すぐ試す";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "好きなトピックを追加するには、%@ を選択してみてください。";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "新しいブロックエディターを試す";
 
@@ -8147,6 +8252,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@ のフォロー解除";
 
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow Conversation" = "会話をフォロー解除";
+
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "会話をフォロー解除";
 
@@ -8330,6 +8438,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "使用";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "サイトやタグを探すには %@ を使います。";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "サンドボックスストアを使用";
 
@@ -8489,6 +8600,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "詳細は %@ を参照";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "ダッシュボードを表示";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "サイトを表示";
@@ -9033,6 +9147,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "文章と詩";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "ブログへの投稿";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X軸位置";
 
@@ -9189,6 +9306,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "投稿をするにはアカウントを認証してください。\n現在の投稿は下書きとして保存されますので、消える事はありません。";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "コメントに*50回「いいね」*が付きました";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "今日サイトで50回「いいね」されました";
 
@@ -9214,6 +9334,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "週に<strong>1回<\/strong>、%1$@曜日の%2$@時にブログ投稿のリマインダーを受け取ります。";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "アプリに通知が届きます";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "週に%1$@回、%2$@にブログ投稿のリマインダーを受け取ります。";
@@ -9296,6 +9420,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Safari でサイトにアクセスすると、画面の上部にあるバーにサイトアドレスが表示されます。";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "サイトはすでに VaultPress で保護されています。 VaultPress ダッシュボードへのリンクは以下にあります。";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "サイトへの*トラフィックが急増*しています";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "サイトに VaultPress を搭載済み";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "サイトが巻き戻されました !";
 
@@ -9356,8 +9489,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "%1$d人のブロガーが「いいね」をつけています。";
 
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_ 1人のブロガー_ が「いいね」をつけました。";
+
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "あなたと%1$d人のブロガーが「いいね」をつけています。";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_あなたと1人のブロガー_ が「いいね」をつけました。";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "あなたが「いいね」をつけています。";
@@ -9486,6 +9625,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "コメント";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "いいね";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "%@に公開";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "表示数";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 最も人気のある時間";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%%回の閲覧";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "次の項目が削除されます:";
