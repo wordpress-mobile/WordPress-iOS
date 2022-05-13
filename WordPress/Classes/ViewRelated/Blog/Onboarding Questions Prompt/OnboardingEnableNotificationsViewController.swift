@@ -87,6 +87,8 @@ private extension OnboardingEnableNotificationsViewController {
     }
 
     func updateContent() {
+        titleLabel.text = Strings.title
+
         let text: String
         let notificationContent: UnifiedPrologueNotificationsContent?
 
@@ -125,6 +127,10 @@ private extension OnboardingEnableNotificationsViewController {
 }
 
 // MARK: - Constants / Strings
+private struct Strings {
+    static let title = NSLocalizedString("Enable Notifications?", comment: "Title of the view, asking the user if they want to enable notifications.")
+}
+
 private struct StatsStrings {
     static let subTitle = NSLocalizedString("Know when your site is getting more traffic, new followers, or when it passes a new milestone!", comment: "Subtitle giving the user more context about why to enable notifications.")
 
