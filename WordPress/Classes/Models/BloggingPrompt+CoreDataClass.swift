@@ -17,6 +17,10 @@ public class BloggingPrompt: NSManagedObject {
         self.displayAvatarURLs = []
     }
 
+    var promptAttribution: BloggingPromptsAttribution? {
+        BloggingPromptsAttribution(rawValue: attribution.lowercased())
+    }
+
     /// Convenience method to map properties from `RemoteBloggingPrompt`.
     ///
     /// - Parameters:

@@ -352,8 +352,7 @@ private extension DashboardPromptsCardCell {
         promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
 
-        if let promptAttribution = prompt?.attribution.lowercased(),
-           let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {
+        if let attribution = prompt?.promptAttribution {
             attributionIcon.image = attribution.iconImage
             attributionSourceLabel.attributedText = attribution.attributedText
             containerStackView.addArrangedSubview(attributionStackView)
