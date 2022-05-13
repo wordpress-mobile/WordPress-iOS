@@ -5,9 +5,6 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var promptLabel: UILabel!
-    @IBOutlet private weak var attributionStackView: UIStackView!
-    @IBOutlet private weak var attributionImage: UIImageView!
-    @IBOutlet private weak var attributionLabel: UILabel!
     @IBOutlet private weak var answerPromptButton: UIButton!
     @IBOutlet private weak var answeredStackView: UIStackView!
     @IBOutlet private weak var answeredLabel: UILabel!
@@ -97,17 +94,6 @@ private extension BloggingPromptsHeaderView {
         let answered = prompt?.answered ?? false
         answerPromptButton.isHidden = answered
         answeredStackView.isHidden = !answered
-
-        if let promptAttribution = prompt?.attribution.lowercased(),
-           let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {
-            attributionStackView.isHidden = false
-            attributionImage.image = attribution.iconImage
-            attributionLabel.attributedText = attribution.attributedText
-            containerStackView.setCustomSpacing(Constants.promptSpacing, after: promptLabel)
-        } else {
-            attributionStackView.isHidden = true
-            containerStackView.setCustomSpacing(.zero, after: promptLabel)
-        }
     }
 
     // MARK: - Button Actions
@@ -124,7 +110,6 @@ private extension BloggingPromptsHeaderView {
 
     struct Constants {
         static let titleSpacing: CGFloat = 8.0
-        static let promptSpacing: CGFloat = 8.0
         static let answeredViewSpacing: CGFloat = 9.0
         static let answerPromptButtonSpacing: CGFloat = 9.0
         static let buttonContentEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)

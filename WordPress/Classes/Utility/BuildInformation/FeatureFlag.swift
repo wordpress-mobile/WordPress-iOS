@@ -64,10 +64,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupBGProcessingTask:
             return true
         case .domains:
-            // Note: when used to control access to the domains feature, you should also check whether
-            // the current AppConfiguration and blog support domains.
-            // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
-            return true
+            return false
         case .timeZoneSuggester:
             return true
         case .aboutScreen:

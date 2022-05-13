@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-10 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-04-22 12:27:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: id */
@@ -86,17 +86,11 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Tombol %@";
 
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Return to My Site screen when you're ready for the next task." = "%@ Kembali ke layar Situs Saya saat Anda siap untuk tugas berikutnya.";
-
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ Tag";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ Tag";
-
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Tip: get updates faster by enabling push notifications." = "%@ Tips: dapatkan pembaruan lebih cepat dengan mengaktifkan pemberitahuan push.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliar";
@@ -279,17 +273,8 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(tanpa judul)";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* is now following your site!" = "*Johann Brandt* kini mengikuti situs Anda!";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* responded to your comment" = "*Johann Brandt* menanggapi komentar Anda";
-
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* menanggapi pos Anda";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* menambahkan pos baru ke situsnya";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* menyukai pos Anda";
@@ -371,9 +356,6 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Cara baru untuk membuat dan memposkan konten menarik di situs Anda.";
-
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
-"A series of steps helping you to explore the app." = "Beberapa langkah yang membantu Anda menjelajahi aplikasi.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Serangkaian langkah yang menunjukkan cara menambahkan tema, ikon situs, dan masih banyak lagi.";
@@ -1431,9 +1413,6 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Periksa koneksi jaringan Anda dan coba lagi. Atau buat konsep pos.";
 
 /* Title of a Quick Start Tour */
-"Check your notifications" = "Periksa pemberitahuan Anda";
-
-/* Title of a Quick Start Tour */
 "Check your site stats" = "Periksa statistik situs Anda";
 
 /* Title of a Quick Start Tour */
@@ -1441,9 +1420,6 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Memeriksa pembelian...";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Checking stats" = "Memeriksa statistik";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Submenu dari %@";
@@ -1722,9 +1698,6 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Selesai";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your notifications" = "Selesai: Periksa pemberitahuan Anda";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Selesai: Periksa statistik situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1735,9 +1708,6 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Selesai: Memilih ikon unik untuk situs Anda";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Connect with other sites" = "Selesai: Hubungkan dengan situs lainnya";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Selesai: Lanjutkan penyiapan situs";
@@ -1790,9 +1760,6 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Selamat atas pembelian Anda!";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Congratulations! Your site passed *1000 all-time* views!" = "Selamat! Situs Anda mencapai *1000 kunjungan sepanjang waktu*!";
-
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Hubungkan";
@@ -1808,9 +1775,6 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Jalin relasi dengan blogger lain dengan mengikuti, memberikan suka, dan berkomentar di pos mereka. ";
-
-/* Title of a Quick Start Tour */
-"Connect with other sites" = "Hubungkan dengan situs lainnya";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Sambungkan layanan media sosial favorit Anda untuk berbagi pos Anda secara otomatis dengan teman Anda.";
@@ -2407,9 +2371,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Temukan dan ikuti blog yang Anda suka";
 
-/* Description of a Quick Start Tour */
-"Discover and follow sites that inspire you." = "Temukan dan ikuti situs yang menginspirasi Anda.";
-
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Temukan blog yang ingin diikuti";
 
@@ -2819,12 +2780,6 @@ translators: Block name. %s: The localized block name */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Aktifkan Publikasikan";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Existing Site" = "Aktifkan Mulai Cepat untuk Situs yang Sudah Ada";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for New Site" = "Aktifkan Mulai Cepat untuk Situs Baru";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktifkan Statistik Situs";
@@ -3240,9 +3195,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Ikuti Percakapan";
 
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Ikuti Percakapan";
-
 /* Verb. An option to follow a site. */
 "Follow site" = "Ikuti situs";
 
@@ -3399,9 +3351,6 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dapatkan perhatian: komentari pos yang sudah Anda baca.";
 
-/* Description of a Quick Start Tour */
-"Get real time updates from your pocket." = "Dapatkan pembaruan real-time di genggaman Anda.";
-
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Mulai dengan memilih satu tata letak halaman yang siap digunakan. Atau mulai dengan halaman kosong.";
 
@@ -3410,9 +3359,6 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Mulai pos dan tingkatkan tampilan pos Anda dengan membagikannya.";
-
-/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
-"Get to know the WordPress app" = "Ketahui tentang aplikasi WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Dapatkan domain Anda";
@@ -3434,9 +3380,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Cobalah dengan menambahkan beberapa blok ke artikel atau halaman Anda!";
-
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Beri nama untuk situs web %@ Anda";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Berikan nama situs yang mencerminkan karakteristik dan topik situs Anda. Kesan pertama sangat berarti!";
@@ -3485,9 +3428,6 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Tumbuhkan Audiens Anda";
-
-/* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of checking your notifications." = "Memandu Anda dalam proses pemeriksaan pemberitahuan. ";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Memandu Anda melalui proses pemilihan tema untuk situs Anda.";
@@ -3751,9 +3691,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Tidak aktif, Pembaruan Otomatis aktif";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Sertakan saran";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Disertakan dengan Situs";
 
@@ -4009,12 +3946,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Ketahui info terbaru mengenai performa situs Anda.";
 
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your favorite authors post new content." = "Ketahui saat penulis favorit Anda mengeposkan konten baru.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Ketahui saat situs Anda mendapatkan lebih banyak kunjungan, pengikut baru, atau saat memperoleh pencapaian baru!";
-
 /* Autoapprove only from known users */
 "Known Users" = "Pengguna Dikenali";
 
@@ -4059,9 +3990,6 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Pelajari lebih lanjut tentang format tanggal dan waktu.";
-
-/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
-"Learn more about prompts" = "Pelajari lebih lanjut tentang saran";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Pelajari lebih lanjut tentang peran";
@@ -4999,9 +4927,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Tidak melihat e-mailnya? Periksa folder Spam atau Sampah.";
 
-/* Button that allows users unsure of what selection they'd like */
-"Not sure, show me around" = "Belum yakin, ajak saya berkeliling";
-
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Catatan:";
 
@@ -5033,9 +4958,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Waktu pemberitahuan";
-
-/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
-"Notification will include a word or short phrase for inspiration" = "Pemberitahuan akan menyertakan kata atau frasa pendek untuk memberi ide";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5745,9 +5667,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Pratinjau postingan";
 
-/* Description of a Quick Start Tour */
-"Preview your site to see what your visitors will see." = "Pratinjau situs Anda untuk mengetahui tampilan situs yang akan dilihat oleh pengunjung.";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Bulan sebelumnya ";
 
@@ -5933,9 +5852,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL CSS Pembaca";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Reading posts from other sites" = "Membaca pos dari situs lainnya";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Real Estat";
@@ -6498,9 +6414,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Pilih %@ untuk menemukan tema baru";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to find other sites." = "Pilih %@ untuk menemukan situs lainnya.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Pilih %@ untuk melihat kinerja situs Anda.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6517,9 +6430,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Pilih %@ untuk mengunggah yang baru.";
-
-/* A step in a guided tour for quick start. %@ will be the site url. */
-"Select %@ to view your site" = "Pilih %@ untuk melihat situs Anda";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Pilih Negara";
@@ -6553,9 +6463,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Pilih gaya paragraf";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ tab to get updates on the go." = "Pilih tab %@ untuk mendapatkan pembaruan di mana saja.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Pilih %@ untuk menambahkan akun media sosial Anda";
@@ -7129,15 +7036,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Tetap dalam pengawasan";
 
-/* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with like and comment notifications." = "Selalu dapatkan pemberitahuan suka dan komentar.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with your audience with like and comment notifications." = "Selalu terhubung dengan audiens Anda dengan pemberitahuan suka dan komentar.";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Staying up to date with notifications" = "Ketahui informasi terbaru dengan pemberitahuan";
-
 /* This is the cell title. */
 "Stick post to the front page" = "Lekatkan pos ke halaman depan";
 
@@ -7370,9 +7268,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Ketuk untuk melihat situs Anda";
-
-/* A hint about the completed guided tour. */
-"Task complete." = "Tugas selesai.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
@@ -8016,9 +7911,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Coba sekarang";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Coba pilih %@ untuk menambahkan topik yang Anda sukai.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Coba Editor Blok yang baru";
 
@@ -8255,9 +8147,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Batal Mengikuti %@";
 
-/* Title for a button that unsubscribes the user from the post. */
-"Unfollow Conversation" = "Berhenti Mengikuti Percakapan";
-
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Berhenti ikuti percakapan";
 
@@ -8441,9 +8330,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Gunakan";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Use %@ to find sites and tags." = "Gunakan %@ untuk menemukan situs dan tag.";
-
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Gunakan Toko Sandbox";
 
@@ -8603,9 +8489,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Kunjungi %@ untuk informasi selengkapnya";
-
-/* Text of a button that links to the VaultPress dashboard. */
-"Visit Dashboard" = "Kunjungi Dasbor";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Kunjungi situs";
@@ -9150,9 +9033,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Penulisan & Puisi";
 
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Writing blog posts" = "Menulis pos blog";
-
 /* No comment provided by engineer. */
 "X-Axis Position" = "Posisi Sumbu X";
 
@@ -9309,9 +9189,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Anda perlu melakukan verifikasi akun Anda sebelum dapat mempublikasikan pos.\nJangan khawatir, pos Anda aman dan akan disimpan sebagai draft.";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"You received *50 likes* on your comment" = "Anda menerima *50 suka* di komentar Anda";
-
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Anda menerima *50 likes* on your site today";
 
@@ -9337,10 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Anda akan mendapat pengingat blogging <strong>satu kali<\/strong> seminggu pada %1$@ pada %2$@.";
-
-/* Message for the action with opt-out revert action.
-   The app successfully subscribed to the comments for the post */
-"You'll get notifications in the app" = "Anda akan menerima pemberitahuan di aplikasi";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Anda akan mendapat pengingat blogging %1$@ kali seminggu pada %2$@.";
@@ -9423,15 +9296,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Alamat situs Anda ditampilkan di bar bagian atas layar ketika Anda mengunjungi situs dengan Safari.";
 
-/* Description for label when the user has a site with VaultPress. */
-"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Situs Anda sudah dilindungi oleh VaultPress. Anda dapat menemukan tautan ke dasbor VaultPress di bawah ini.";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Your site appears to be getting *more traffic* than usual!" = "Situs Anda tampaknya mendapatkan *lebih banyak kunjungan* daripada biasanya!";
-
-/* Title for label when the user has VaultPress enabled. */
-"Your site has VaultPress" = "Situs Anda memiliki VaultPress";
-
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Situs Anda telah dibuat!";
 
@@ -9492,14 +9356,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d blogger_ menyukai ini.";
 
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Satu blogger_ menyukai ini.";
-
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Anda dan seorang blogger lainnya_ menyukai ini.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Anda_ menyukai ini.";
@@ -9628,24 +9486,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
-
-/* Title for Comments count in Latest Post Summary stats card. */
-"stats.insights.latestPostSummary.comments" = "Komentar";
-
-/* Title for Likes count in Latest Post Summary stats card. */
-"stats.insights.latestPostSummary.likes" = "Suka";
-
-/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
-"stats.insights.latestPostSummary.publishDate" = "Diterbitkan %@";
-
-/* Title for Views count in Latest Post Summary stats card. */
-"stats.insights.latestPostSummary.views" = " Kunjungan";
-
-/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
-"stats.insights.mostPopularCard.title" = "🔥 Waktu Paling Populer";
-
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% kunjungan";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";
