@@ -21,7 +21,7 @@ extension BloggingPrompt {
     @NSManaged public var attribution: String
 
     /// The prompt date. Time information should be ignored.
-    @NSManaged public var date: Date?
+    @NSManaged public var date: Date
 
     /// Whether the current user has answered the prompt in `siteID`.
     @NSManaged public var answered: Bool
