@@ -30,6 +30,13 @@ class ContextManagerTests: XCTestCase {
         let objectID = objectOriginal.objectID
         XCTAssertFalse(objectID.isTemporaryID, "Should be a permanent object")
 
+        try XCTAssertThrowsError(
+            WPException.objcTry({
+                objectOriginal.value(forKey: "author")
+            }),
+            "Theme.author doesn't exist in \(model19Name)"
+        )
+
         // Migrate to the latest
         let persistentStore = psc.persistentStores.first!
         try! psc.remove(persistentStore)
@@ -43,6 +50,7 @@ class ContextManagerTests: XCTestCase {
         let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
         mocSecond.persistentStoreCoordinator = standardPSC
         let object = try! mocSecond.existingObject(with: objectID)
+        XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author exists in current version")
 
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
