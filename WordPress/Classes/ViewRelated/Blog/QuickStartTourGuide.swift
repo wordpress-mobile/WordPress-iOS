@@ -60,9 +60,7 @@ open class QuickStartTourGuide: NSObject {
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
         WPAnalytics.trackQuickStartEvent(.quickStartStarted, blog: blog)
 
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
-                                        object: self,
-                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.setupQuickStart])
+        refreshQuickStart()
     }
 
     func setupWithDelay(for blog: Blog, type: QuickStartType, withCompletedSteps steps: [QuickStartTour] = []) {
@@ -181,9 +179,11 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
-    /// Posts an empty notification to trigger updates to Quick Start Cards if needed.
+    /// Posts a notification to trigger updates to Quick Start Cards if needed.
     func refreshQuickStart() {
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.setupQuickStart])
     }
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
