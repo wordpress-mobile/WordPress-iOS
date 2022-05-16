@@ -98,8 +98,18 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Rye-vB-0gG" secondAttribute="trailing" priority="750" constant="16" id="7hG-vk-yAU"/>
+                        <constraint firstItem="fqk-gy-gv5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="8hu-N3-Rjy"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="stO-XN-YJp" secondAttribute="trailing" priority="750" constant="16" id="JWf-1J-w5c"/>
+                        <constraint firstItem="Gef-vX-Eh7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="LeV-jp-Rqn"/>
+                        <constraint firstItem="74j-gh-nmq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="Wrb-3D-Kq6"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Gef-vX-Eh7" secondAttribute="trailing" priority="750" constant="16" id="XNR-nY-tnp"/>
+                        <constraint firstItem="Rye-vB-0gG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="ecE-Ow-fJb"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="74j-gh-nmq" secondAttribute="trailing" priority="750" constant="16" id="gvu-DP-wnp"/>
                         <constraint firstItem="9KN-UC-IRC" firstAttribute="leading" secondItem="HBh-15-Hby" secondAttribute="leading" id="i3E-vF-ouk"/>
-                        <constraint firstAttribute="trailing" secondItem="9KN-UC-IRC" secondAttribute="trailing" id="j2W-Lj-CP5"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fqk-gy-gv5" secondAttribute="trailing" priority="750" constant="16" id="itk-Uy-mwF"/>
+                        <constraint firstAttribute="trailing" secondItem="9KN-UC-IRC" secondAttribute="trailing" priority="750" id="j2W-Lj-CP5"/>
+                        <constraint firstItem="stO-XN-YJp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="qRg-sD-Bvk"/>
                     </constraints>
                 </stackView>
             </subviews>
