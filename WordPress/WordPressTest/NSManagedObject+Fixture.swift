@@ -9,7 +9,7 @@ extension NSManagedObject {
     ///   - context: The managed object context to use
     /// - Returns: A new instance with property values of the given JSON file.
     static func fixture(fromFile fileName: String, insertInto context: NSManagedObjectContext) throws -> Self {
-        let jsonObject = try JSONObject.loadFile(named: fileName)
+        let jsonObject = try JSONObject(fromFileNamed: fileName)
         let model = Self.init(context: context)
         for (key, value) in jsonObject {
             model.setValue(value, forKey: key)

@@ -5,28 +5,38 @@ typealias JSONObject = Dictionary<String, AnyObject>
 
 extension JSONObject {
 
-    /// Loads the specified json file and returns a dictionary representing it.
+    /// Create a dictionary represented by the specified json file.
     ///
-    /// - Parameter fileName: The full name of the json file to load.
-    /// - Returns: A dictionary representing the contents of the json file.
-    static func loadFile(named fileName: String) throws -> JSONObject {
-        return try loadFile(
-            (fileName as NSString).deletingPathExtension,
-            type: (fileName as NSString).pathExtension
-        )
-    }
+    /// - Parameter fileName: The name of the json file to load. The "json" file extension can be omitted.
+    init(fromFileNamed fileName: String) throws {
+        let type = (fileName as NSString).pathExtension
+        if type != "" && type != "json" {
+            throw NSError(
+                domain: "JSONObject",
+                code: 1,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "File extension should be 'json': \(fileName)"
+                ]
+            )
+        }
 
-    /// Loads the specified JSON file and returns a dictionary representing it.
-    ///
-    /// - Parameters:
-    ///   - name: The name of the file
-    ///   - type: The extension of the file
-    /// - Returns: A dictionary representing the contents of the JSON file.
-    static func loadFile(_ name: String, type: String) throws -> JSONObject {
-        let url = try XCTUnwrap(Bundle(for: BundlerFinder.self).url(forResource: name, withExtension: type))
+        let testBundle = Bundle(for: BundlerFinder.self)
+        let candidates = [
+            testBundle.url(forResource: fileName, withExtension: nil),
+            testBundle.url(forResource: fileName, withExtension: "json"),
+        ]
+        guard let url = candidates.compactMap({ $0 }).first else {
+            throw NSError(
+                domain: "JSONObject",
+                code: 2,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Can't find JSON file named \(fileName) or \(fileName).json"
+                ]
+            )
+        }
         let data = try Data(contentsOf: url)
         let parseResult = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers, .mutableLeaves])
-        return try XCTUnwrap(parseResult as? JSONObject)
+        self = try XCTUnwrap(parseResult as? JSONObject)
     }
 
 }

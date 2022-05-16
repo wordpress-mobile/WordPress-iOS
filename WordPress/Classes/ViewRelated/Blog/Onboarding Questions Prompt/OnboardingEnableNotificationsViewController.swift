@@ -4,6 +4,8 @@ class OnboardingEnableNotificationsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var detailView: UIView!
+    @IBOutlet weak var enableButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
 
     let option: OnboardingOption
     let coordinator: OnboardingQuestionsCoordinator
@@ -26,6 +28,7 @@ class OnboardingEnableNotificationsViewController: UIViewController {
         navigationController?.delegate = self
 
         applyStyles()
+        applyLocalization()
         updateContent()
 
         coordinator.notificationsDisplayed(option: option)
@@ -86,6 +89,12 @@ private extension OnboardingEnableNotificationsViewController {
         subTitleLabel.textColor = .secondaryLabel
     }
 
+    func applyLocalization() {
+        titleLabel.text = Strings.title
+        enableButton.setTitle(Strings.enableButton, for: .normal)
+        cancelButton.setTitle(Strings.cancelButton, for: .normal)
+    }
+
     func updateContent() {
         let text: String
         let notificationContent: UnifiedPrologueNotificationsContent?
@@ -125,6 +134,12 @@ private extension OnboardingEnableNotificationsViewController {
 }
 
 // MARK: - Constants / Strings
+private struct Strings {
+    static let title = NSLocalizedString("Enable Notifications?", comment: "Title of the view, asking the user if they want to enable notifications.")
+    static let enableButton = NSLocalizedString("Enable Notifications", comment: "Title of button that enables push notifications when tapped")
+    static let cancelButton = NSLocalizedString("Not Now", comment: "Title of a button that cancels enabling notifications when tapped")
+}
+
 private struct StatsStrings {
     static let subTitle = NSLocalizedString("Know when your site is getting more traffic, new followers, or when it passes a new milestone!", comment: "Subtitle giving the user more context about why to enable notifications.")
 
