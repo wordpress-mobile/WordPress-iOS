@@ -172,28 +172,6 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        if FeatureFlag.statsNewInsights.enabled {
-            return [InsightCellHeaderRow.self,
-                    ViewsVisitorsRow.self,
-                    GrowAudienceRow.self,
-                    CustomizeInsightsRow.self,
-                    LatestPostSummaryRow.self,
-                    TwoColumnStatsRow.self,
-                    PostingActivityRow.self,
-                    TabbedTotalsStatsRow.self,
-                    TopTotalsInsightStatsRow.self,
-                    MostPopularTimeInsightStatsRow.self,
-                    TotalInsightStatsRow.self,
-                    TableFooterRow.self,
-                    StatsErrorRow.self,
-                    StatsGhostGrowAudienceImmutableRow.self,
-                    StatsGhostChartImmutableRow.self,
-                    StatsGhostTwoColumnImmutableRow.self,
-                    StatsGhostTopImmutableRow.self,
-                    StatsGhostTabbedImmutableRow.self,
-                    StatsGhostPostingActivitiesImmutableRow.self]
-        }
-
         return [InsightCellHeaderRow.self,
                 ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
