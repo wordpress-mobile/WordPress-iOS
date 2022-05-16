@@ -1,6 +1,6 @@
 20.0
 -----
-* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. 
+* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors.
 
 19.9
 -----
