@@ -253,6 +253,8 @@
 		1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
 		175507B427A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
+		1756DBDF28328B76006E6DB9 /* DonutChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756DBDE28328B76006E6DB9 /* DonutChartView.swift */; };
+		1756DBE028328B76006E6DB9 /* DonutChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756DBDE28328B76006E6DB9 /* DonutChartView.swift */; };
 		1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
 		1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1756F1DE2822BB6F00CD0915 /* SparklineView.swift */; };
 		175721162754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
@@ -5122,6 +5124,7 @@
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		17523380246C4F9200870B4A /* HomepageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageSettingsViewController.swift; sourceTree = "<group>"; };
 		175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicizeConnectionURLMatcher.swift; sourceTree = "<group>"; };
+		1756DBDE28328B76006E6DB9 /* DonutChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonutChartView.swift; sourceTree = "<group>"; };
 		1756F1DE2822BB6F00CD0915 /* SparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparklineView.swift; sourceTree = "<group>"; };
 		175721152754D31F00DE38BC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
@@ -10892,6 +10895,8 @@
 				DC772AEF282009BA00664C02 /* StatsLineChartConfiguration.swift */,
 				DC772AF0282009BA00664C02 /* StatsLineChartView.swift */,
 				73D86968223AF4040064920F /* StatsChartLegendView.swift */,
+				1756F1DE2822BB6F00CD0915 /* SparklineView.swift */,
+				1756DBDE28328B76006E6DB9 /* DonutChartView.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -12280,7 +12285,6 @@
 				17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */,
 				17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */,
 				17870A73281FBEC000D1C627 /* StatsTotalInsightsCell.swift */,
-				1756F1DE2822BB6F00CD0915 /* SparklineView.swift */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -18597,6 +18601,7 @@
 				173DF291274522A1007C64B5 /* AppAboutScreenConfiguration.swift in Sources */,
 				3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */,
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
+				1756DBDF28328B76006E6DB9 /* DonutChartView.swift in Sources */,
 				C700F9EE257FD64E0090938E /* JetpackScanViewController.swift in Sources */,
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
@@ -21496,6 +21501,7 @@
 				FABB25802602FC2C00C8785C /* WPStyleGuide+Loader.swift in Sources */,
 				FABB25812602FC2C00C8785C /* MediaThumbnailService.swift in Sources */,
 				FABB25822602FC2C00C8785C /* MediaExporter.swift in Sources */,
+				1756DBE028328B76006E6DB9 /* DonutChartView.swift in Sources */,
 				8B15CDAC27EB89AD00A75749 /* BlogDashboardPostsParser.swift in Sources */,
 				8BF9E03427B1A8A800915B27 /* DashboardCard.swift in Sources */,
 				FABB25832602FC2C00C8785C /* ReaderRelatedPostsCell.swift in Sources */,
