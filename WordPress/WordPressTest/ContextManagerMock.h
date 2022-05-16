@@ -20,9 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface ContextManagerMock : ContextManager <ManagerMock, CoreDataStack>
 
-- (void)setUpAsSharedInstance;
-- (void)tearDown;
-
 @end
 
 NS_ASSUME_NONNULL_END

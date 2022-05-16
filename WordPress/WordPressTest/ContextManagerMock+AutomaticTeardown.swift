@@ -14,7 +14,9 @@ extension ContextManagerMock {
         // Create the test observer singleton to add it to `XCTestObservationCenter`.
         _ = AutomaticTeardownTestObserver.instance
 
-        setUpAsSharedInstance()
+        let original = ContextManager.overrideInstance
+        ContextManager.internalSharedInstance()
+        ContextManager.overrideSharedInstance(self)
 
         // This closure is going to be called by the test observer below when
         // the test case finishes. The reason a combination of storing a closure in
@@ -29,7 +31,13 @@ extension ContextManagerMock {
         // objects during test execution: the mock instance before `tearDown`, or the
         // real singleton during `tearDown`, which isn't ideal.
         testCase.additionalTeardown = { [weak self] in
-            self?.tearDown()
+            guard let self = self else {
+                return
+            }
+            self.mainContext.reset()
+            if ContextManager.overrideInstance === self {
+                ContextManager.overrideSharedInstance(original)
+            }
         }
     }
 }
