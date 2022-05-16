@@ -217,6 +217,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     /// Shows/hides the create button based on the trait collection horizontal size class
+    @objc
     private func toggleCreateButton() {
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
@@ -387,13 +388,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     /// Listens for the app coming to foreground in order to properly set the create button
     private func listenForAppComingToForeground() {
-        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.toggleCreateButton()
-        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(toggleCreateButton),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
     }
-
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
