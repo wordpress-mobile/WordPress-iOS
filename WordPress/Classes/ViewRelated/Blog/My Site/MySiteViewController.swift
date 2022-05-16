@@ -739,6 +739,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         embedChildInStackView(blogDetailsViewController)
 
+        // This ensures that the spotlight views embedded in the site picker don't get clipped.
+        stackView.sendSubviewToBack(blogDetailsViewController.view)
+
         blogDetailsViewController.showInitialDetailsForBlog()
     }
 
