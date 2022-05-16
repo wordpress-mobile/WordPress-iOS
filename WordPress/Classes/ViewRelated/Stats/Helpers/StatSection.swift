@@ -304,6 +304,41 @@
         }
     }
 
+    // MARK: - analyticsEvent on ViewMore tapped
+
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsViewMoreTappedAuthors
+        case .periodClicks:
+            return .statsViewMoreTappedClicks
+        case .periodOverviewComments:
+            return .statsViewMoreTappedComments
+        case .periodCountries:
+            return .statsViewMoreTappedCountries
+        case .insightsFollowerTotals, .insightsFollowersEmail, .insightsFollowersWordPress:
+            return .statsViewMoreTappedFollowers
+        case .periodPostsAndPages:
+            return .statsViewMoreTappedPostsAndPages
+        case .insightsPublicize:
+            return .statsViewMoreTappedPublicize
+        case .periodReferrers:
+            return .statsViewMoreTappedReferrers
+        case .periodSearchTerms:
+            return .statsViewMoreTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsViewMoreTappedTagsAndCategories
+        case .periodVideos:
+            return .statsViewMoreTappedVideoPlays
+        case .periodFileDownloads:
+            return .statsViewMoreTappedFileDownloads
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
