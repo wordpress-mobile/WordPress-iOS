@@ -282,9 +282,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     /// - Scroll view
     ///   - Stack view
+    ///     - Site picker view controller
     ///     - Segmented control container view
     ///       - Segmented control
-    ///     - Child view controller
+    ///     - Blog dashboard view controller OR blog details view controller
     /// 
     private func setupConstraints() {
         view.addSubview(scrollView)
