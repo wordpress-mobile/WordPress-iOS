@@ -1,0 +1,12 @@
+Okuyucu posta kartlarında ve gönderi ayrıntılarında Sohbeti Takip Et'i kullandığınızda, uygulama içi bildirimler artık kaydolmak yerine devre dışı seçeneğini sunuyor.
+
+Mevcut bir kullanıcı olarak oturum açtığınızda görünen hızlı başlatma istemini değiştirdik. Artık nelere odaklanmak istediğinizi bize söyleyebilir ve site trafiği, yeni takipçiler, diğer dönüm noktaları gibi şeyler için bildirimleri etkinleştirebilirsiniz. Konfetiler yağıyor.
+
+Büyük tur için hazır mısınız? Hızlı Başlangıç bölümünde, İstatistikler ve Okuyucu turlarında bazı düzenlemeler yaptık. Artık turlar arasında daha sorunsuz hareket edebilir ve ilerledikçe daha fazla işaretçi ve mesaj alabilirsiniz.
+
+Ayrıca Blok Düzenleyicide bazı küçük ve hoş değişiklikler yaptık.
+
+- Artık Son Yazılar blokundaki herhangi bir gönderinin için Öne Çıkan Görsel ayarlarını düzenleyebilirsiniz.
+- HTML ve Görsel mod arasında hızlı geçiş yaptığınızda doğru bildirimleri görürsünüz.
+- Gömülü bloktaki bir URL'yi düzenlediğinizde medya önizlemeleri artık kesilmez.
+- Harici klavyeli bir iPad kullanıyorsanız, artık araç çubuğu ile ekranın altı arasında fazladan boşluk görmezsiniz. Boşluğa dikkat edin.
