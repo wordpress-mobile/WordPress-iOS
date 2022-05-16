@@ -7,6 +7,8 @@ extension XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: duration)
+        // We wait for the duration + 1 second to allow some buffer in case the dispatched block gets
+        // delayed by GCD for any reason for even 1 microsecond.
+        waitForExpectations(timeout: duration + 1)
     }
 }
