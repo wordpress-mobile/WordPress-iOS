@@ -116,7 +116,7 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.fetchPrompts(success: { [weak self] (prompts) in
+        bloggingPromptsService.fetchListPrompts(success: { [weak self] (prompts) in
             self?.isLoading = false
             self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
         }, failure: { [weak self] (error) in
@@ -163,6 +163,13 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
 // MARK: - Filter Tab Bar Support
 
 private extension BloggingPromptsViewController {
+
+    // For Blogging Prompts V1, there is a single unfiltered prompts list.
+    // The expectation is it will be filtered at some point. So the FilterTabBar is hidden instead of removed.
+    // To show it, in the storyboard:
+    // - Unhide the FilterTabBar.
+    // - Remove the tableView top constraint to superview.
+    // - Enable the tableView top constraint to the FilterTabBar bottom.
 
     enum PromptFilter: Int, FilterTabBarItem, CaseIterable {
         case all

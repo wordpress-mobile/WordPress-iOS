@@ -81,6 +81,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
         return stackView
@@ -115,7 +116,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             return Constants.exampleAnswerCount
         }
 
-        return prompt?.answerCount ?? 0
+        return Int(prompt?.answerCount ?? 0)
     }()
 
     private var answerInfoText: String {
@@ -187,6 +188,20 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
         return containerView
     }
+
+    private lazy var attributionIcon = UIImageView()
+
+    private lazy var attributionSourceLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+
+    private lazy var attributionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel])
+        stackView.alignment = .center
+        return stackView
+    }()
 
     // MARK: Bottom row views
 
@@ -337,6 +352,12 @@ private extension DashboardPromptsCardCell {
         promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
 
+        if let attribution = prompt?.promptAttribution {
+            attributionIcon.image = attribution.iconImage
+            attributionSourceLabel.attributedText = attribution.attributedText
+            containerStackView.addArrangedSubview(attributionStackView)
+        }
+
         if answerCount > 0 {
             containerStackView.addArrangedSubview(answerInfoView)
         }
@@ -368,11 +389,12 @@ private extension DashboardPromptsCardCell {
     // MARK: Button actions
 
     @objc func answerButtonTapped() {
-        guard let blog = blog else {
+        guard let blog = blog,
+              let prompt = prompt else {
             return
         }
 
-        let editor = EditPostViewController(blog: blog, prompt: .examplePrompt)
+        let editor = EditPostViewController(blog: blog, prompt: prompt)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .dashboard
         presenterViewController?.present(editor, animated: true)

@@ -54,6 +54,30 @@ protocol BarChartStyling {
     var yAxisValueFormatter: IAxisValueFormatter { get }
 }
 
+protocol LineChartStyling {
+
+    /// This corresponds to the primary bar color.
+    var primaryLineColor: UIColor { get }
+
+    /// This bar color is used if bars are overlayed.
+    var secondaryLineColor: UIColor? { get }
+
+    /// This corresponds to the color of a single selected point
+    var primaryHighlightColor: UIColor? { get }
+
+    /// This corresponds to the color of axis labels on the chart
+    var labelColor: UIColor { get }
+
+    /// If specified, a legend will be presented with this value. It maps to the secondary bar color above.
+    var legendTitle: String? { get }
+
+    /// This corresponds to the color of axis and grid lines on the chart
+    var lineColor: UIColor { get }
+
+    /// Formatter for y-axis values
+    var yAxisValueFormatter: IAxisValueFormatter { get }
+}
+
 /// Transforms a given data set for consumption by BarChartView in the Charts framework.
 ///
 protocol BarChartDataConvertible {
@@ -65,6 +89,17 @@ protocol BarChartDataConvertible {
     var barChartData: BarChartData { get }
 }
 
+/// Transforms a given data set for consumption by LineChartView in the Charts framework.
+///
+protocol LineChartDataConvertible {
+
+    /// Describe the chart for VoiceOver usage
+    var accessibilityDescription: String { get }
+
+    /// Adapts the original data format for consumption by the Charts framework.
+    var lineChartData: LineChartData { get }
+}
+
 // MARK: - Charts & analytics
 
 /// Vends property values for analytics events that use granularity.
@@ -73,8 +108,25 @@ enum BarChartAnalyticsPropertyGranularityValue: String, CaseIterable {
     case days, weeks, months, years
 }
 
+enum LineChartAnalyticsPropertyGranularityValue: String, CaseIterable {
+    case days, weeks, months, years
+}
+
 extension StatsPeriodUnit {
     var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue {
+        switch self {
+        case .day:
+            return .days
+        case .week:
+            return .weeks
+        case .month:
+            return .months
+        case .year:
+            return .years
+        }
+    }
+
+    var analyticsGranularityLine: LineChartAnalyticsPropertyGranularityValue {
         switch self {
         case .day:
             return .days

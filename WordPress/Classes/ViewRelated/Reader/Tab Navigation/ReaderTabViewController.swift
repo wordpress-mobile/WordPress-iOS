@@ -38,6 +38,7 @@ class ReaderTabViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        startObservingQuickStart()
 
         viewModel.fetchReaderMenu()
     }
@@ -123,12 +124,23 @@ class ReaderTabViewController: UIViewController {
 // MARK: - Navigation Buttons
 extension ReaderTabViewController {
     @objc private func didTapSettingsButton() {
-        settingsButton.shouldShowSpotlight = false
         viewModel.presentManage(from: self)
     }
 
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
+    }
+}
+
+// MARK: Observing Quick Start
+extension ReaderTabViewController {
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+                self?.settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
+            }
+        }
     }
 }
 
