@@ -10,7 +10,7 @@ class QuickStartFactoryTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.useAsSharedInstanceUntilTestFinished(self)
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
     }

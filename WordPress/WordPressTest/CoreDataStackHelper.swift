@@ -10,7 +10,7 @@ extension ContextManagerMock {
     /// `setUp` method or test methods.
     ///
     /// - Parameter testCase: The test case to wait for.
-    @objc func useAsSharedInstanceUntilTestFinished(_ testCase: XCTestCase) {
+    @objc func useAsSharedInstance(untilTestFinished testCase: XCTestCase) {
         // Create the test observer singleton to add it to `XCTestObservationCenter`.
         _ = AutomaticTeardownTestObserver.instance
 
