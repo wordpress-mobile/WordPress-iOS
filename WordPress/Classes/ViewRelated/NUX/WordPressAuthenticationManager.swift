@@ -521,7 +521,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     // This should be removed once the experiment is done
     //
     private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
-        if event == .signedIn {
+        if event == .signedIn || event == .createdAccount {
             if FeatureFlag.mySiteDashboard.enabled {
                 let isTreatment = BlogDashboardAB.shared.variant == .treatment
                 MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
