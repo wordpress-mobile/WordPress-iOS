@@ -3,22 +3,21 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
 
     private enum Constants {
         static let maxWidthPercentage: CGFloat = 0.66 /// Used to constrain the width to a smaller size (instead of full width) when sheet is too wide
+        static let topSpacing: CGFloat = 16.0
     }
 
     private weak var tapGestureRecognizer: UITapGestureRecognizer?
     private weak var panGestureRecognizer: UIPanGestureRecognizer?
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-    }
 
     override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { /// If we don't have a container view we're out of luck
             return .zero
         }
 
-        /// Height calculated by autolayout, Width equal to the container view minus insets
-        let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        let topSpacing = traitCollection.verticalSizeClass == .regular ? Constants.topSpacing : .zero
+        let maxHeight = containerView.bounds.height - containerView.safeAreaInsets.top - topSpacing
+        /// Height calculated by autolayout or a set maximum, Width equal to the container view minus insets
+        let height: CGFloat = min(presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height, maxHeight)
         var width: CGFloat = containerView.bounds.width - (containerView.safeAreaInsets.left + containerView.safeAreaInsets.right)
 
         /// If we're in a compact vertical size class, constrain the width a bit more so it doesn't get overly wide.
