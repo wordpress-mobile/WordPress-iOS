@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bno-oB-pDf" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bno-oB-pDf" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -28,7 +28,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7aR-Vp-g6a">
-                                <rect key="frame" x="0.0" y="46" width="375" height="621"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
@@ -41,12 +41,18 @@
                         <constraints>
                             <constraint firstItem="bno-oB-pDf" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="7Jf-su-8WM"/>
                             <constraint firstAttribute="trailing" secondItem="bno-oB-pDf" secondAttribute="trailing" id="AgG-aE-VG8"/>
+                            <constraint firstItem="7aR-Vp-g6a" firstAttribute="top" secondItem="gDw-cc-yIW" secondAttribute="top" id="Ndp-h3-R7q"/>
                             <constraint firstItem="7aR-Vp-g6a" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="Nt5-JK-DbB"/>
-                            <constraint firstItem="uCp-uQ-tOJ" firstAttribute="top" secondItem="7aR-Vp-g6a" secondAttribute="bottom" id="Oly-V9-tho"/>
+                            <constraint firstAttribute="bottom" secondItem="7aR-Vp-g6a" secondAttribute="bottom" id="Oly-V9-tho"/>
                             <constraint firstItem="7aR-Vp-g6a" firstAttribute="top" secondItem="bno-oB-pDf" secondAttribute="bottom" id="Rmm-F3-kCp"/>
                             <constraint firstAttribute="trailing" secondItem="7aR-Vp-g6a" secondAttribute="trailing" id="htA-bQ-QaF"/>
-                            <constraint firstItem="bno-oB-pDf" firstAttribute="top" secondItem="MpO-o7-pbX" secondAttribute="bottom" id="tfA-U7-Sc2"/>
+                            <constraint firstItem="bno-oB-pDf" firstAttribute="top" secondItem="gDw-cc-yIW" secondAttribute="top" id="tfA-U7-Sc2"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Rmm-F3-kCp"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="filterTabBar" destination="bno-oB-pDf" id="fxk-Bw-WWL"/>

@@ -1,6 +1,7 @@
 import Foundation
 
 enum InsightType: Int, SiteStatsPinnable {
+    case viewsVisitors
     case growAudience
     case customize
     case latestPostSummary
@@ -47,6 +48,8 @@ enum InsightType: Int, SiteStatsPinnable {
 
     var statSection: StatSection? {
         switch self {
+        case .viewsVisitors:
+            return .insightsViewsVisitors
         case .latestPostSummary:
             return .insightsLatestPostSummary
         case .allTimeStats:
