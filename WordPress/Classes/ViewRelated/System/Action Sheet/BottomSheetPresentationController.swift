@@ -76,14 +76,15 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
         let translate = gesture.translation(in: gestureView)
         let percent   = translate.y / gestureView.bounds.size.height
 
-        if gesture.state == .began {
+        switch gesture.state {
+        case .began:
             /// Begin the dismissal transition
             interactionController = UIPercentDrivenInteractiveTransition()
             dismiss()
-        } else if gesture.state == .changed {
+        case .changed:
             /// Update the transition based on our calculated percent of completion
             interactionController?.update(percent)
-        } else if gesture.state == .ended {
+        case .ended:
             /// Calculate the velocity of the ended gesture.
             /// - If the gesture has no downward velocity but is greater than half way down, complete the dismissal
             /// - If there is downward velocity, dismiss
@@ -95,6 +96,11 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
                 interactionController?.cancel()
             }
             interactionController = nil
+        case .cancelled:
+            interactionController?.cancel()
+            interactionController = nil
+        default:
+            break
         }
     }
 
