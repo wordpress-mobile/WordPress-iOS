@@ -65,6 +65,22 @@ class BloggingPromptsService {
         }, failure: failure)
     }
 
+    /// Convenience method to obtain the blogging prompt for the current day,
+    /// either from local cache or remote.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func todaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
+                      failure: @escaping (Error?) -> Void) {
+        guard localTodaysPrompt == nil else {
+            success(localTodaysPrompt)
+            return
+        }
+
+        fetchTodaysPrompt(success: success, failure: failure)
+    }
+
     /// Convenience method to fetch the blogging prompts for the Prompts List.
     /// Fetches 11 prompts - the current day and 10 previous.
     ///
@@ -113,7 +129,7 @@ private extension BloggingPromptsService {
     ///
     /// - Parameters:
     ///   - date: When specified, only prompts from the specified date will be returned.
-    ///   - number: The amount of prompts to return. Defaults to 24 when unspecified.
+    ///   - number: The amount of prompts to return.
     /// - Returns: An array of `BloggingPrompt` objects sorted descending by date.
     func loadPrompts(from date: Date, number: Int) -> [BloggingPrompt] {
         guard let utcDate = utcDateIgnoringTime(from: date) else {
