@@ -13,6 +13,7 @@
 * [*] Block Editor: Gallery block: Fix broken "Link To" settings and add "Image Size" settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4841]
 * [*] Block Editor: Unsupported Block Editor: Prevent WordPress.com tour banner from displaying. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4820]
 * [*] Widgets: we fixed an issue where text appeared flipped in rtl languages [#18567]
+* [*] Stats: we fixed a crash that occurred sometimes in Stats [#18613]
 * [*] Posts list: we fixed an issue where the create button was not shown on iPad in split screen [#18609]
 
 19.8

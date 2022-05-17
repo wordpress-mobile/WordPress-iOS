@@ -1,7 +1,6 @@
 import Foundation
 
 enum InsightType: Int, SiteStatsPinnable {
-    case viewsVisitors
     case growAudience
     case customize
     case latestPostSummary
@@ -20,6 +19,7 @@ enum InsightType: Int, SiteStatsPinnable {
     case allComments
     case allTagsAndCategories
     case allAnnual
+    case viewsVisitors
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static let defaultInsights: [InsightType] = [.mostPopularTime,
