@@ -1,7 +1,7 @@
 import Foundation
 @testable import WordPress
 
-class PostEditorAnalyticsSessionTests: XCTestCase {
+class PostEditorAnalyticsSessionTests: CoreDataTestCase {
     enum PostContent {
         static let classic = """
         Text <strong>bold</strong> <em>italic</em>
@@ -14,14 +14,11 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         """
     }
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
-
     override func setUp() {
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
+        context.parent = mainContext
         TestAnalyticsTracker.setup()
     }
 

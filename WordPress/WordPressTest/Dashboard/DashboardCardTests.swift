@@ -9,16 +9,14 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
     }
 }
 
-class ZDashboardCardTests: XCTestCase {
+class ZDashboardCardTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var blog: Blog!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         contextManager.setUpAsSharedInstance()
         context = contextManager.newDerivedContext()
         blog = BlogBuilder(context).build()
@@ -28,7 +26,6 @@ class ZDashboardCardTests: XCTestCase {
         QuickStartTourGuide.shared.remove(from: blog)
         context = nil
         contextManager.tearDown()
-        contextManager = nil
         blog = nil
         super.tearDown()
     }

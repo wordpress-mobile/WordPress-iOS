@@ -4,22 +4,19 @@ import Aztec
 import WordPressEditor
 import Nimble
 
-class AztecPostViewControllerAttachmentTests: XCTestCase {
+class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testMediaUploadErrorsWillShowAnErrorMessageAndOverlay() {
