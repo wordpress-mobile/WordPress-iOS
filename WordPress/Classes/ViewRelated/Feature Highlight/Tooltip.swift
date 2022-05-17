@@ -243,18 +243,8 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
-
+        addShadow()
         isAccessibilityElement = true
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(contentSizeCategoryChanged(_:)),
-            name: UIContentSizeCategory.didChangeNotification, object: nil
-        )
-    }
-
-    @objc private func contentSizeCategoryChanged(_ notification: Notification) {
-        arrowShapeLayer?.layoutIfNeeded()
-        arrowShapeLayer?.layoutSublayers()
     }
 
     private func setUpContainerView() {

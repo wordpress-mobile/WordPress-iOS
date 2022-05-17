@@ -1,5 +1,7 @@
 import UIKit
 
+/// A helper class for presentation of the Tooltip in respect to a `targetView`.
+/// Must be retained to respond to device orientation and size category changes.
 final class TooltipPresenter {
     private enum Constants {
         static let verticalTooltipDistanceToFocus: CGFloat = 8
@@ -14,6 +16,18 @@ final class TooltipPresenter {
         self.containerView = containerView
         self.tooltip = tooltip
         self.targetView = targetView
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(recalculatePosition),
+            name: UIContentSizeCategory.didChangeNotification, object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(recalculatePosition),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     func show() {
@@ -47,6 +61,11 @@ final class TooltipPresenter {
         }
 
         NSLayoutConstraint.activate(tooltipConstraints)
+    }
+
+    @objc private func recalculatePosition() {
+        tooltip.removeFromSuperview()
+        show()
     }
 
     /// Calculates where the arrow needs to place in the borders of the tooltia.
