@@ -13,7 +13,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingEnableNotificationsViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="TsX-gV-qHT" id="LwJ-1J-eDF"/>
                 <outlet property="detailView" destination="E9E-nc-B5q" id="H5P-Fa-E6T"/>
+                <outlet property="enableButton" destination="0z0-r0-F4b" id="MYg-CR-0wL"/>
                 <outlet property="subTitleLabel" destination="50P-8O-Ctu" id="4dY-dn-nT7"/>
                 <outlet property="titleLabel" destination="cpw-1P-GER" id="tqX-v7-b8v"/>
                 <outlet property="view" destination="Mlb-pH-BGO" id="zZL-y0-ws4"/>
