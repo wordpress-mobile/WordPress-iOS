@@ -104,7 +104,7 @@ class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable
         }
 
         let controller = AddInsightTableViewController(insightsDelegate: self,
-                insightsShown: insightsToShow.compactMap { $0.statSection })
+                insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
         present(navigationController, animated: true, completion: nil)
     }
@@ -633,7 +633,27 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
+}
 
+// MARK: - StatsInsightsManagementDelegate
+
+extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate {
+    func userUpdatedActiveInsights(_ insights: [StatSection]) {
+        let insightTypes = insights.compactMap({ $0.insightType })
+
+        guard insightTypes.count == insights.count else {
+            return
+        }
+
+        // TODO: Tracks events
+        insightsToShow = insightTypes
+        refreshInsights(forceRefresh: true)
+        updateView()
+    }
+
+    func insightsManagementDismissed() {
+        
+    }
 }
 
 // MARK: - SharingViewControllerDelegate
