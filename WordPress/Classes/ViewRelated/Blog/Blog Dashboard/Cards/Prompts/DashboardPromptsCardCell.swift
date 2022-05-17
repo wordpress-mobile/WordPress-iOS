@@ -373,15 +373,13 @@ private extension DashboardPromptsCardCell {
     // MARK: Prompt Fetching
 
     func fetchPrompt() {
-        // TODO: check for cached prompt first.
-
         guard let bloggingPromptsService = bloggingPromptsService else {
             didFailLoadingPrompt = true
             DDLogError("Failed creating BloggingPromptsService instance.")
             return
         }
 
-        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
             self?.prompt = prompt
             self?.didFailLoadingPrompt = false
         }, failure: { [weak self] (error) in
@@ -418,7 +416,8 @@ private extension DashboardPromptsCardCell {
     }
 
     func skipMenuTapped() {
-        // TODO.
+        saveSkippedPrompt()
+        presenterViewController?.reloadCardsLocally()
     }
 
     func removeMenuTapped() {
@@ -536,4 +535,44 @@ private extension DashboardPromptsCardCell {
             }
         }
     }
+}
+
+// MARK: - User Defaults
+
+private extension DashboardPromptsCardCell {
+
+    func saveSkippedPrompt() {
+        guard let prompt = prompt else {
+            return
+        }
+
+        clearSkippedPrompt()
+
+        var skippedPrompt = [String: Int32]()
+        skippedPrompt[UserDefaultsKeys.promptID] = prompt.promptID
+        skippedPrompt[UserDefaultsKeys.siteID] = prompt.siteID
+        UserDefaults.standard.set(skippedPrompt, forKey: UserDefaultsKeys.skippedPrompt)
+    }
+
+    static func userSkippedPrompt(_ todaysPrompt: BloggingPrompt?) -> Bool {
+        guard let todaysPrompt = todaysPrompt,
+              let skippedPrompt = UserDefaults.standard.dictionary(forKey: UserDefaultsKeys.skippedPrompt),
+              let skippedPromptID = skippedPrompt[UserDefaultsKeys.promptID] as? Int32,
+              let skippedSiteID = skippedPrompt[UserDefaultsKeys.siteID] as? Int32 else {
+            return false
+        }
+
+        return (skippedPromptID == todaysPrompt.promptID) && (skippedSiteID == todaysPrompt.siteID)
+    }
+
+    func clearSkippedPrompt() {
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.skippedPrompt)
+    }
+
+    struct UserDefaultsKeys {
+        static let skippedPrompt = "wp_skipped_blogging_prompt"
+        static let promptID = "prompt_id"
+        static let siteID = "site_id"
+    }
+
 }
