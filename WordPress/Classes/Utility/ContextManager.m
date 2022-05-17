@@ -1,6 +1,7 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
+@import Foundation;
 
 #define SentryStartupEventAddError(event, error) [event addError:error file:__FILE__ function:__FUNCTION__ line:__LINE__]
 
@@ -34,6 +35,10 @@ static ContextManager *_override;
     self = [super init];
     if (self) {
         [NSValueTransformer registerCustomTransformers];
+        // Create `mainContext` and `writerContext` during initialisation to
+        // ensure they are only created once.
+        [self createWriterContext];
+        [self createMainContext];
         [self startListeningToMainContextNotifications];
     }
 
@@ -57,29 +62,23 @@ static ContextManager *_override;
     return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
 }
 
-- (NSManagedObjectContext *const)writerContext
+- (void)createWriterContext
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        context.persistentStoreCoordinator = self.persistentStoreCoordinator;
-        self.writerContext = context;
-    });
+    NSAssert(self.writerContext == nil, @"%s should only be called once", __PRETTY_FUNCTION__);
 
-    return _writerContext;
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    context.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    self.writerContext = context;
 }
 
-- (NSManagedObjectContext *const)mainContext
+- (void)createMainContext
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        context.parentContext = self.writerContext;
-        self.mainContext = context;
-        [[[NullBlogPropertySanitizer alloc] initWithContext:context] sanitize];
-    });
+    NSAssert(self.mainContext == nil, @"%s should only be called once", __PRETTY_FUNCTION__);
 
-    return _mainContext;
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.parentContext = self.writerContext;
+    self.mainContext = context;
+    [[[NullBlogPropertySanitizer alloc] initWithContext:context] sanitize];
 }
 
 - (NSManagedObjectContext *const)newChildContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType
