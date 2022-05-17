@@ -94,25 +94,29 @@ final class Tooltip: UIView {
     private lazy var titleLabel: UILabel = {
         $0.font = Constants.Font.title
         $0.textColor = .invertedLabel
+        $0.adjustsFontForContentSizeCategory = true
         return $0
     }(UILabel())
 
     private lazy var messageLabel: UILabel = {
         $0.font = Constants.Font.message
         $0.textColor = .invertedSecondaryLabel
-        $0.numberOfLines = 3
+        $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
 
     private(set) lazy var primaryButton: UIButton = {
         $0.titleLabel?.font = Constants.Font.button
-        $0.setTitleColor(.primaryLight, for: .normal)
+        $0.setTitleColor(.invertedLink, for: .normal)
+        $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
 
     private(set) lazy var secondaryButton: UIButton = {
         $0.titleLabel?.font = Constants.Font.button
-        $0.setTitleColor(.primaryLight, for: .normal)
+        $0.setTitleColor(.invertedLink, for: .normal)
+        $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
 
@@ -144,6 +148,7 @@ final class Tooltip: UIView {
     private let containerView = UIView()
     private var containerTopConstraint: NSLayoutConstraint?
     private var containerBottomConstraint: NSLayoutConstraint?
+    private var arrowShapeLayer: CAShapeLayer?
 
     init() {
         super.init(frame: .zero)
@@ -155,11 +160,21 @@ final class Tooltip: UIView {
         commonInit()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        arrowShapeLayer?.strokeColor = UIColor.invertedSystem5.cgColor
+        arrowShapeLayer?.fillColor = UIColor.invertedSystem5.cgColor
+
+        containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
+    }
+
     /// Adds a tooltip  Arrow Head at the given X Offset and either to the top or the bottom.
     /// - Parameters:
     ///   - offsetX: The offset on which the arrow will be placed. The value must be above 0 and below maxX of the view.
     ///   - arrowPosition: Arrow will be placed either on `.top`, pointed up, or `.bottom`, pointed down.
     func addArrowHead(toXPosition offsetX: CGFloat, arrowPosition: ArrowPosition) {
+        arrowShapeLayer?.removeFromSuperlayer()
+
         let arrowTipY: CGFloat
         let arrowTipYControl: CGFloat
         let offsetY: CGFloat
@@ -193,15 +208,19 @@ final class Tooltip: UIView {
         arrowPath.addLine(to: CGPoint(x: Self.arrowWidth, y: 0))
         arrowPath.close()
 
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = arrowPath.cgPath
-        shapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.lineWidth = 1.0
+        arrowShapeLayer = CAShapeLayer()
+        guard let arrowShapeLayer = arrowShapeLayer else {
+            return
+        }
 
-        shapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
+        arrowShapeLayer.path = arrowPath.cgPath
+        arrowShapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
+        arrowShapeLayer.fillColor = UIColor.invertedSystem5.cgColor
+        arrowShapeLayer.lineWidth = 2.0
 
-        containerView.layer.addSublayer(shapeLayer)
+        arrowShapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
+
+        containerView.layer.addSublayer(arrowShapeLayer)
     }
 
     func size() -> CGSize {
@@ -224,8 +243,18 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
-        addShadow()
+
         isAccessibilityElement = true
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(contentSizeCategoryChanged(_:)),
+            name: UIContentSizeCategory.didChangeNotification, object: nil
+        )
+    }
+
+    @objc private func contentSizeCategoryChanged(_ notification: Notification) {
+        arrowShapeLayer?.layoutIfNeeded()
+        arrowShapeLayer?.layoutSublayers()
     }
 
     private func setUpContainerView() {
@@ -275,7 +304,7 @@ final class Tooltip: UIView {
     private func addShadow() {
         containerView.layer.shadowColor = UIColor.black.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        containerView.layer.shadowOpacity = 0.5
+        containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
     }
 
     private static func height(
@@ -287,10 +316,14 @@ final class Tooltip: UIView {
         totalHeight += Constants.Spacing.contentStackViewTop
 
         if let title = title {
-            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
+            totalHeight += title.height(
+                withMaxWidth: Constants.maxContentWidth,
+                font: Constants.Font.title,
+                options: []
+            )
         }
 
-        totalHeight += Constants.Spacing.contentStackViewInterItemSpacing
+        totalHeight += Constants.Spacing.contentStackViewInterItemSpacing * 2
 
         if let message = message {
             totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message)
@@ -309,19 +342,12 @@ final class Tooltip: UIView {
         secondaryButtonTitle: String?
     ) -> CGFloat {
 
-        let titleWidth: CGFloat
-        if let title = title {
-            titleWidth = title.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
-        } else {
-            titleWidth = 0
-        }
-
-        let messageWidth: CGFloat
-        if let message = message {
-            messageWidth = message.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message)
-        } else {
-            messageWidth = 0
-        }
+        let titleWidth = title?.width(
+            withMaxWidth: Constants.maxContentWidth,
+            font: Constants.Font.title,
+            options: []
+        ) ?? 0
+        let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message) ?? 0
 
         var buttonsWidth: CGFloat = 0
         if let primaryButtonTitle = primaryButtonTitle {
@@ -337,11 +363,15 @@ final class Tooltip: UIView {
 }
 
 private extension String {
-    private func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
+    private func size(
+        withMaxWidth maxWidth: CGFloat,
+        font: UIFont,
+        options: NSStringDrawingOptions = .usesLineFragmentOrigin
+    ) -> CGRect {
         let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(
             with: constraintRect,
-            options: .usesLineFragmentOrigin,
+            options: options,
             attributes: [.font: font],
             context: nil
         )
@@ -349,11 +379,19 @@ private extension String {
         return boundingBox
     }
 
-    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
-        ceil(size(withMaxWidth: maxWidth, font: font).height)
+    func height(
+        withMaxWidth maxWidth: CGFloat,
+        font: UIFont,
+        options: NSStringDrawingOptions = .usesLineFragmentOrigin
+    ) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font, options: options).height)
     }
 
-    func width(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
-        ceil(size(withMaxWidth: maxWidth, font: font).width)
+    func width(
+        withMaxWidth maxWidth: CGFloat,
+        font: UIFont,
+        options: NSStringDrawingOptions = .usesLineFragmentOrigin
+    ) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font, options: options).width)
     }
 }

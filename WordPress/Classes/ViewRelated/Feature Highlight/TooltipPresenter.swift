@@ -25,20 +25,20 @@ final class TooltipPresenter {
     private func setUpConstraints() {
         tooltip.translatesAutoresizingMaskIntoConstraints = false
 
-        var tooltipConstriants: [NSLayoutConstraint] = [
+        var tooltipConstraints: [NSLayoutConstraint] = [
             tooltip.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: extraArrowOffsetX())
         ]
 
         switch tooltipOrientation() {
         case .bottom:
-            tooltipConstriants.append(
+            tooltipConstraints.append(
                 targetView.topAnchor.constraint(
                     equalTo: tooltip.bottomAnchor,
                     constant: Constants.verticalTooltipDistanceToFocus
                 )
             )
         case .top:
-            tooltipConstriants.append(
+            tooltipConstraints.append(
                 tooltip.topAnchor.constraint(
                     equalTo: targetView.bottomAnchor,
                     constant: Constants.verticalTooltipDistanceToFocus
@@ -46,13 +46,27 @@ final class TooltipPresenter {
             )
         }
 
-        NSLayoutConstraint.activate(tooltipConstriants)
+        NSLayoutConstraint.activate(tooltipConstraints)
     }
 
+    /// Calculates where the arrow needs to place in the borders of the tooltia.
+    /// This depends on the position of the `targetView` relative to `tooltip`.
     private func arrowOffsetX() -> CGFloat {
         return targetView.frame.midX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
     }
 
+    /// If the tooltip is alwyas vertically centered, tooltip's width may not be big enough to reach to the `targetView`
+    /// If `xxxxxxxx` is the Tooltip and `oo` is the `targetView`:
+    /// |                                               |
+    /// |                xxxxxxxx                 |
+    /// |                                    oo       |
+    /// The tooltip needs an extra X offset to be aligned with target so that tooltip arrow points to the correct position.
+    /// Here the tooltip is pushed to the right so the arrow
+    /// |                                               |
+    /// |                           xxxxxxxx     |
+    /// |                                    oo       |
+    /// It would be retracted instead of the `targetView` was at the left of the screen.
+    ///
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width
         let extraPushOffset = max(
