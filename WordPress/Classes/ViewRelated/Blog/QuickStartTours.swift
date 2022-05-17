@@ -387,7 +387,7 @@ struct QuickStartMediaUploadTour: QuickStartTour {
         let step1DescriptionTarget = NSLocalizedString("Media", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .mediaScreen, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.image)))
 
-        let step2DescriptionBase = NSLocalizedString("Select %@to upload media. You can add it to your posts / pages from any device.", comment: "A step in a guided tour for quick start. %@ will be a plus icon.")
+        let step2DescriptionBase = NSLocalizedString("Select %@ to upload media. You can add it to your posts / pages from any device.", comment: "A step in a guided tour for quick start. %@ will be a plus icon.")
         let step2DescriptionTarget = ""
         let step2: WayPoint = (element: .mediaUpload, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.plus)))
 
