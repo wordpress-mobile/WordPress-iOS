@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-04 03:40:55+0000 */
+/* Translation-Revision-Date: 2022-05-06 14:42:54+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Buton %@";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ - Întoarce-te la ecranul Site-ul meu când ești pregătit pentru următoarea sarcină.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ etichetă";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ etichete";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ - Sfat: primești mai repede actualizările dacă activezi notificările imediate.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliarde";
@@ -274,8 +280,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(fără titlu)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "Johann Brandt îți urmărește site-ul!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "Johan Brandt a răspuns la comentariul tău";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* a răspuns la articolul tău";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "Madison Ruiz a adăugat un articol nou pe site";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* ți-a apreciat articolul";
@@ -1417,6 +1432,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Verifică conexiunea la rețea și încearcă din nou. Sau creează o ciornă a articolului.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Vezi notificările";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Vezi statisticile site-ului";
 
 /* Title of a Quick Start Tour */
@@ -1424,6 +1442,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Se verifică cumpărăturile...";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Verificarea statisticilor";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Copil al %@";
@@ -1702,6 +1723,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Terminat";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Ai finalizat: vezi notificările";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Finalizat: vezi statistici site";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1712,6 +1736,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Finalizat: alege un icon unic pentru site";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Ai finalizat: conectează-te cu alte site-uri";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Finalizat: continuă cu inițializarea site-ului";
@@ -1761,6 +1788,9 @@ translators: Block name. %s: The localized block name */
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Felicitări, ai cumpărat!";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Felicitări! Site-ul tău a depășit recordul de 1.000 de vizualizări.";
+
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Conectare";
@@ -1776,6 +1806,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Conectează-te cu alți bloggeri urmărind, apreciind și comentând articolele lor.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Conectează-te cu alte site-uri";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Conectează serviciile tale sociale media pentru a partaja automat noile articole cu prietenii.";
@@ -2372,6 +2405,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descoperă și urmărește blogurile care îți plac";
 
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Descoperă și urmărește site-urile care te inspiră.";
+
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Descoperă bloguri pe care să le urmărești";
 
@@ -2781,6 +2817,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Activează Publicitate";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for Existing Site" = "Activează inițierea rapidă pentru acest site";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Activează inițierea rapidă pentru site-ul nou";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Activează statistici site";
@@ -3196,6 +3238,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Urmărește conversația";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Urmărește conversația";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "Urmărește site-ul";
 
@@ -3352,6 +3397,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Remarcă-te: comentează la articole pe care le-ai citit.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Primești actualizări în timp real, chiar în buzunar.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Începe și alege dintr-o mare varietate de aranjamente gata pregătite. Sau începe cu o pagină goală.";
 
@@ -3360,6 +3408,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Dă-i drumul la treabă și asigură-te că mărești numărul de vizualizări ale articolului tău prin partajarea lui.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Fă cunoștință cu aplicația WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Ia-ți domeniul";
@@ -3432,6 +3483,9 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Crește-ți audiența";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Te îndrumă în procesul de verificare a notificărilor.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Te îndrumă în procesul de alegere a unei teme pentru site-ul tău.";
@@ -3695,6 +3749,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactiv, actualizările automate activate";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "Include îndemnuri";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inclus cu site-ul";
 
@@ -3950,6 +4007,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Fii la curent cu performanța site-ului tău.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Știi când autorii tăi preferați publică un conținut nou.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Știi când site-ul tău are mai mult trafic, urmăritori noi sau când trece la un alt nivel.";
+
 /* Autoapprove only from known users */
 "Known Users" = "Utilizatori știuți";
 
@@ -3994,6 +4057,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Află mai mult despre formatarea datei și orei.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "Află mai mult despre îndemnuri";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Află mai multe despre roluri";
@@ -4933,6 +4999,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Nu ai găsit emailul? Uită-te și în dosarele Spam sau Junk.";
 
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Nu sunt sigur, arată-mi și altceva";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Notă:";
 
@@ -4964,6 +5033,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Ora notificării";
+
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Notificarea va include un cuvânt sau o frază scurtă pentru inspirație";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5674,6 +5746,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Previzualizează articolul";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "Previzualizează site-ul pentru a vedea cum apare pentru vizitatori.";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Luna trecută";
 
@@ -5860,6 +5935,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL CSS pentru Cititor";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Citirea articolelor de pe alte site-uri";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Imobiliare";
@@ -6422,6 +6500,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Selectează %@ pentru a descoperi teme noi";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to find other sites." = "Selectează %@ ca să găsești alte site-uri.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Selectează %@ pentru a vedea cum funcționează site-ul tău.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6438,6 +6519,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Selectează %@ pentru a încărca unul nou.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Selectează %@ ca să-ți vizualizezi site-ul";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selectează țara";
@@ -6471,6 +6555,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Selectează stil paragraf";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Selectează fila %@ pentru a beneficia de actualizări din mers.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Selectează %@ pentru a-ți adăuga conturile din media socială";
@@ -7044,6 +7131,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Rămâi în buclă";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Cu notificările pentru aprecieri și comentarii, ești mereu la curent.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Cu notificările pentru aprecieri și comentarii, ții legătura cu publicul tău.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Prin notificări, ești mereu la curent";
+
 /* This is the cell title. */
 "Stick post to the front page" = "Evidențiază articolul pe pagina din față";
 
@@ -7276,6 +7372,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Atinge pentru a-ți vedea site-ul";
+
+/* A hint about the completed guided tour. */
+"Task complete." = "Ai finalizat sarcina.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
@@ -7919,6 +8018,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Încearcă-l acum";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Încearcă să selectezi %@ ca să adaugi subiectele care îți plac.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Încearcă noul Editor de blocuri";
 
@@ -8341,6 +8443,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Folosește";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Folosește %@ ca să găsești site-uri și etichete.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Folosește Sandbox Store";
 
@@ -8503,7 +8608,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Visit %@ for more" = "Vizitează %@ pentru mai mult";
 
 /* Text of a button that links to the VaultPress dashboard. */
-"Visit Dashboard" = "Vezi panoul de control";
+"Visit Dashboard" = "Du-te la Panou control";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitează site-ul";
@@ -9049,6 +9154,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Literatură și poezie";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Redactarea articolelor de blog";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Poziție pe axa X";
 
@@ -9205,6 +9313,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Trebuie să-ți confirmi contul înainte de a putea publica un articol.\nNu face griji, articolul tău este în siguranță și va fi salvat ca o ciornă.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Ai „50 de aprecieri” la comentariul tău";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Azi ai primit *50 de aprecieri* pe site";
 
@@ -9230,6 +9341,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Vei primi o reamintire pentru publicare <strong>o dată<\/strong> pe săptămână, %1$@ la %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Vei primi notificări în aplicație";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Vei primi reamintiri pentru publicare %1$@ pe săptămână, %2$@.";
@@ -9314,6 +9429,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for label when the user has a site with VaultPress. */
 "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Site-ul este deja protejat de VaultPress. Mai jos găsești o legătură la panoul de control VaultPress.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Se pare că site-ul tău are „mai mult trafic” decât în mod normal!";
 
 /* Title for label when the user has VaultPress enabled. */
 "Your site has VaultPress" = "Site-ul folosește VaultPress";
@@ -9518,11 +9636,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Aprecieri";
 
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Publicat %@";
+
 /* Title for Views count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.views" = "Vizualizări";
 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 Cea mai populară oră";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% din vizualizări";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";

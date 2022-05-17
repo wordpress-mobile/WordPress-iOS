@@ -1,0 +1,12 @@
+Wenn du einer Unterhaltung in Reader-Beitragskarten und -Beitragsdetails folgst, sind In-App-Benachrichtigungen jetzt Opt-Out statt Opt-In.
+
+Wir haben die Schnellstart-Aufforderung bei der Anmeldung für bestehende Benutzer ersetzt. Jetzt kannst du uns mitteilen, worauf du dich konzentrieren möchtest, und Benachrichtigungen für Aspekte wie Website-Traffic, neue Follower und andere Meilensteine aktivieren. Konfetti bitte.
+
+Bereit für die große Tour? Wir haben ein paar Änderungen an den Statistik- und Reader-Touren im Schnellstart-Bereich vorgenommen. Ab sofort kannst du dich einfacher durch die Touren klicken und bekommst mehr Hinweise und Mitteilungen.
+
+Außerdem haben wir ein paar erstklassige Änderungen am Block-Editor durchgeführt.
+
+- Du kannst jetzt die Einstellungen für Beitragsbilder bei allen Beiträgen im Block für die neuesten Beiträge anpassen.
+- Wenn du schnell zwischen dem HTML- und visuellen Modus wechselst, werden dir die korrekten Hinweise angezeigt.
+- Die Medienvorschau wird nicht mehr abgeschnitten, wenn du eine URL in einem Embed-Block bearbeitest.
+- Bei Verwendung eines iPad mit einer externen Tastatur siehst du keinen Abstand mehr zwischen der Toolbar und dem unteren Ende des Bildschirms. Achte mal darauf.
