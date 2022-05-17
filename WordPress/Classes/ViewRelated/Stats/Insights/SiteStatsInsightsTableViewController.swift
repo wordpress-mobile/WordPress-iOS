@@ -411,7 +411,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

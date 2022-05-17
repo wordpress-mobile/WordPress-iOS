@@ -7,9 +7,11 @@ class SiteStatsBaseTableViewController: UIViewController {
 
     let refreshControl = UIRefreshControl()
 
+    var tableStyle: UITableView.Style = .grouped
+
     // MARK: - Properties
     lazy var tableView: UITableView = {
-        UITableView(frame: .zero, style: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .plain)
+        UITableView(frame: .zero, style: tableStyle)
     }()
 
     override func viewDidLoad() {

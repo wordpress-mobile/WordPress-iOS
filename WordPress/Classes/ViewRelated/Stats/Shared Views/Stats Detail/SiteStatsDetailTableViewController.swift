@@ -56,11 +56,13 @@ class SiteStatsDetailTableViewController: SiteStatsBaseTableViewController, Stor
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        updateHeader()
         clearExpandedRows()
         Style.configureTable(tableView)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         addWillEnterForegroundObserver()
     }
 
@@ -72,14 +74,21 @@ class SiteStatsDetailTableViewController: SiteStatsBaseTableViewController, Stor
     func configure(statSection: StatSection,
                    selectedDate: Date? = nil,
                    selectedPeriod: StatsPeriodUnit? = nil,
-                   postID: Int? = nil) {
+                   postID: Int? = nil,
+                   tableStyle: UITableView.Style = .grouped
+    ) {
         self.statSection = statSection
         self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
+        self.tableStyle = tableStyle
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
+
+        if FeatureFlag.statsNewInsights.enabled && tableStyle == .insetGrouped {
+            updateHeader()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -120,7 +129,7 @@ class SiteStatsDetailTableViewController: SiteStatsBaseTableViewController, Stor
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if FeatureFlag.statsNewInsights.enabled {
+        if FeatureFlag.statsNewInsights.enabled && tableStyle == .insetGrouped {
             guard section == 0 else {
                 return 0
             }

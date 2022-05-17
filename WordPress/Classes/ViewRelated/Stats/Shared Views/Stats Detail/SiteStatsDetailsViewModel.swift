@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import WordPressFlux
 
 /// The view model used by SiteStatsDetailTableViewController to show
@@ -65,7 +66,14 @@ class SiteStatsDetailsViewModel: Observable {
                         self?.emitChange()
                     }
                 default:
-                    return
+                    guard let storeQuery = queryForInsightStatSection(statSection) else {
+                        return
+                    }
+
+                    insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                        self?.emitChange()
+                    }
+                    insightsReceipt = insightsStore.query(storeQuery)
                 }
             } else { //TODO - REMOVE AFTER FEATURE FLAG IS REMOVED
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
@@ -105,37 +113,45 @@ class SiteStatsDetailsViewModel: Observable {
             return true
         }
 
-        if FeatureFlag.statsNewInsights.enabled {
-            guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection) else {
-                return true
-            }
-            guard let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers) else {
-                return true
-            }
-            guard let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
-                return true
-            }
-            return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
-                    periodStore.fetchingFailed(for: storeQueryReferrers) &&
-                    periodStore.fetchingFailed(for: storeQueryCountries)
-        } else { //TODO - REMOVE AFTER FEATURE FLAG IS REMOVED
-            switch statSection {
-            case let statSection where StatSection.allInsights.contains(statSection):
+        switch statSection {
+        case let statSection where StatSection.allInsights.contains(statSection):
+            if FeatureFlag.statsNewInsights.enabled {
+                switch statSection {
+                case .insightsViewsVisitors:
+                    guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection) else {
+                        return true
+                    }
+                    guard let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers) else {
+                        return true
+                    }
+                    guard let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
+                        return true
+                    }
+                    return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
+                            periodStore.fetchingFailed(for: storeQueryReferrers) &&
+                            periodStore.fetchingFailed(for: storeQueryCountries)
+                default:
+                    guard let storeQuery = queryForInsightStatSection(statSection) else {
+                        return true
+                    }
+                    return insightsStore.fetchingFailed(for: storeQuery)
+                }
+            } else { //TODO - REMOVE AFTER FEATURE FLAG IS REMOVED
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
                 }
                 return insightsStore.fetchingFailed(for: storeQuery)
-            case let statSection where StatSection.allPeriods.contains(statSection):
-                guard let storeQuery = queryForPeriodStatSection(statSection) else {
-                    return true
-                }
-                return periodStore.fetchingFailed(for: storeQuery)
-            default:
-                guard let postID = postID else {
-                    return true
-                }
-                return periodStore.fetchingFailed(for: .postStats(postID: postID))
             }
+        case let statSection where StatSection.allPeriods.contains(statSection):
+            guard let storeQuery = queryForPeriodStatSection(statSection) else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: storeQuery)
+        default:
+            guard let postID = postID else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: .postStats(postID: postID))
         }
     }
 
@@ -194,7 +210,7 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: periodStore.topReferrersStatus) { status in
+            return periodImmuTable(for: periodStore.topReferrersStatus, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped) { status in
                 var rows = [ImmuTableRow]()
 
                 if let periodSummary = periodStore.getSummary() {
@@ -1077,7 +1093,10 @@ private extension SiteStatsDetailsViewModel {
         ])
     }
 
-    func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]) -> ImmuTable {
+    func periodImmuTable(for status: StoreFetchingStatus,
+                         tableStyle: UITableView.Style = .grouped,
+                         rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]
+                         ) -> ImmuTable {
         var rows = [ImmuTableRow]()
 
         switch status {
@@ -1099,7 +1118,7 @@ private extension SiteStatsDetailsViewModel {
             break
         }
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if tableStyle == .insetGrouped {
             var countriesRows: [ImmuTableRow] = []
             var otherRows: [ImmuTableRow] = []
             var sections: [ImmuTableSection] = []
