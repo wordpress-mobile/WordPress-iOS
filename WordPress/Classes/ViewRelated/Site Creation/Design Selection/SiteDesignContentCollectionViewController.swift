@@ -32,22 +32,27 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 scrollableView.setContentOffset(.zero, animated: false)
             }
             sections = siteDesigns.categories.map { category in
-                SiteDesignSection(category: category, designs: siteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug)
-                })
+                SiteDesignSection(
+                    category: category,
+                    designs: siteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug) },
+                    thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
+                )
             }
             contentSizeWillChange()
             tableView.reloadData()
         }
     }
+
+    private var ghostThumbnailSize: CGSize {
+        return SiteDesignCategoryThumbnailSize.category.value
+    }
+
     let selectedPreviewDevice = PreviewDevice.mobile
 
     init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.createsSite = createsSite
         tableView = UITableView(frame: .zero, style: .plain)
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = .zero
-        tableView.showsVerticalScrollIndicator = false
 
         super.init(
             scrollableView: tableView,
@@ -55,6 +60,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             // the primary action button is never shown
             primaryActionTitle: ""
         )
+
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = .zero
+        tableView.showsVerticalScrollIndicator = false
     }
 
     required init?(coder: NSCoder) {
@@ -74,8 +83,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         isLoading = true
-        let thumbnailSize = CategorySectionTableViewCell.expectedThumbnailSize
-        let request = SiteDesignRequest(withThumbnailSize: thumbnailSize, withGroups: templateGroups)
+        let request = SiteDesignRequest(
+            withThumbnailSize: SiteDesignCategoryThumbnailSize.category.value,
+            withGroups: templateGroups
+        )
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
                 switch response {
@@ -135,6 +146,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 // MARK: - NoResultsViewControllerDelegate
 
 extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
+
     func actionButtonPressed() {
         fetchSiteDesigns()
     }
@@ -143,10 +155,6 @@ extension SiteDesignContentCollectionViewController: NoResultsViewControllerDele
 // MARK: - UITableViewDataSource
 
 extension SiteDesignContentCollectionViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CategorySectionTableViewCell.estimatedCellHeight
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isLoading ? 1 : (sections.count)
@@ -161,6 +169,9 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.section = isLoading ? nil : sections[indexPath.row]
         cell.isGhostCell = isLoading
+        if isLoading {
+            cell.ghostThumbnailSize = ghostThumbnailSize
+        }
         cell.showsCheckMarkWhenSelected = false
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
@@ -172,6 +183,7 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
 // MARK: - CategorySectionTableViewCellDelegate
 
 extension SiteDesignContentCollectionViewController: CategorySectionTableViewCellDelegate {
+
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
         guard let sectionIndex = sections.firstIndex(where: { $0.categorySlug == slug }) else { return }
         let design = sections[sectionIndex].designs[position]

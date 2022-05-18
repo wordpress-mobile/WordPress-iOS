@@ -22,17 +22,19 @@ protocol CategorySection {
     var description: String? { get }
     var thumbnails: [Thumbnail] { get }
     var scrollOffset: CGPoint { get set }
+    var thumbnailSize: CGSize { get }
 }
 
 class CategorySectionTableViewCell: UITableViewCell {
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
     static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
-    static let expectedThumbnailSize = CGSize(width: 160.0, height: 240)
-    static let estimatedCellHeight: CGFloat = 310.0
+    static let defaultThumbnailSize = CGSize(width: 160, height: 240)
+    static let cellVerticalPadding: CGFloat = 70
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
 
     weak var delegate: CategorySectionTableViewCellDelegate?
 
@@ -47,10 +49,21 @@ class CategorySectionTableViewCell: UITableViewCell {
             thumbnails = section?.thumbnails ?? []
             categoryTitle.text = section?.title
             collectionView.contentOffset = section?.scrollOffset ?? .zero
+
+            if let section = section {
+                collectionViewHeight.constant = section.thumbnailSize.height
+                setNeedsUpdateConstraints()
+            }
         }
     }
 
     var isGhostCell: Bool = false
+    var ghostThumbnailSize: CGSize = defaultThumbnailSize {
+        didSet {
+            collectionViewHeight.constant = ghostThumbnailSize.height
+            setNeedsUpdateConstraints()
+        }
+    }
     var showsCheckMarkWhenSelected = true
 
     override func prepareForReuse() {
@@ -107,7 +120,7 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
 
 extension CategorySectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CategorySectionTableViewCell.expectedThumbnailSize
+        return section?.thumbnailSize ?? ghostThumbnailSize
      }
 }
 
