@@ -118,15 +118,12 @@ class SiteStatsDetailsViewModel: Observable {
             if FeatureFlag.statsNewInsights.enabled {
                 switch statSection {
                 case .insightsViewsVisitors:
-                    guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection) else {
+                    guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection),
+                          let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers),
+                          let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
                         return true
                     }
-                    guard let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers) else {
-                        return true
-                    }
-                    guard let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
-                        return true
-                    }
+
                     return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
                             periodStore.fetchingFailed(for: storeQueryReferrers) &&
                             periodStore.fetchingFailed(for: storeQueryCountries)
