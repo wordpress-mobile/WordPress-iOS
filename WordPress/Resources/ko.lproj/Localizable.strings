@@ -148,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@에 다시 연결되었습니다.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@(%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -372,7 +373,7 @@ translators: Block name. %s: The localized block name */
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "사이트에서 매력적인 콘텐츠를 만들고 공개하는 새로운 방법입니다.";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
 "A series of steps helping you to explore the app." = "앱 둘러보기에 도움이 되는 일련의 단계입니다.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
@@ -662,6 +663,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "모든";
 
@@ -1325,8 +1327,7 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "조심하세요!";
 
-/* Example prompt for blogging prompts in the create new bottom action sheet.
-   Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "자신의 인생을 영화로 만들어 보세요.";
 
 /* Label for Categories
@@ -1771,9 +1772,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "이메일 먼저 확인";
-
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "퀵 스타트 완료를 축하합니다 🎉";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "목록이 완성되었습니다. 잘하셨습니다.";
@@ -4402,6 +4400,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4958,7 +4957,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "연결되지 않음";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "나중에";
 
 /* Display value for Support email field if there is no user email address. */
@@ -5127,6 +5127,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5796,7 +5797,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "프로젝트";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
-   Title label for the Prompts card in My Sites tab. */
+   Title label for the Prompts card in My Sites tab.
+   View title for Blogging Prompts list. */
 "Prompts" = "프롬프트";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -8566,6 +8568,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "뷰";
 
@@ -8600,6 +8603,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "방문자";
 
@@ -9513,9 +9517,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "연결";
 
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "목록에서 끝난 일을 지우는 건 항상 기분 좋은 일이죠.";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
@@ -9755,6 +9756,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• 사용자 및 글쓴이";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ 답변됨";
 
