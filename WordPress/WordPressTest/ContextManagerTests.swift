@@ -29,7 +29,7 @@ class ContextManagerTests: XCTestCase {
                 WPException.objcTry({
                     objectOriginal.value(forKey: "author")
                 }),
-                "Theme.author doesn't exist in WordPress 19"
+                "Theme.author doesn't exist in WordPress 19 but we were able to fetch it"
             )
         }
 
