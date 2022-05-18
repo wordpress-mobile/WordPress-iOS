@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class WPAccountLookupTests: CoreDataTestCase {
+class WPAccountLookupTests: CoreDataTestCase {
 
     func testIsDefaultWordPressComAccountIsFalseWhenNoAccountIsSet() {
         UserSettings.defaultDotComUUID = nil
