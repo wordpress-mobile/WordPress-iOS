@@ -6,6 +6,8 @@ final class TooltipPresenter {
     private enum Constants {
         static let verticalTooltipDistanceToFocus: CGFloat = 8
         static let horizontalBufferMargin: CGFloat = 20
+        static let tooltipTopConstraintAnimationOffset: CGFloat = 8
+        static let tooltipAnimationDuration: TimeInterval = 0.2
     }
 
     private let containerView: UIView
@@ -45,21 +47,35 @@ final class TooltipPresenter {
 
     func show() {
         containerView.addSubview(tooltip)
+        self.tooltip.alpha = 0
         tooltip.addArrowHead(toXPosition: arrowOffsetX(), arrowPosition: tooltipOrientation())
         setUpConstraints()
+        containerView.layoutIfNeeded()
+
+        UIView.animate(
+            withDuration: Constants.tooltipAnimationDuration,
+            delay: 0,
+            options: .curveEaseOut
+        ) {
+            guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+
+            self.tooltip.alpha = 1
+            tooltipTopConstraint.constant -= Constants.tooltipTopConstraintAnimationOffset
+            self.containerView.layoutIfNeeded()
+        }
     }
 
     private func configureDismissal() {
         tooltip.primaryButtonAction = {
             UIView.animate(
-                withDuration: 0.2,
+                withDuration: Constants.tooltipAnimationDuration,
                 delay: 0,
-                options: .curveEaseIn
+                options: .curveEaseOut
             ) {
                 guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
 
                 self.tooltip.alpha = 0
-                tooltipTopConstraint.constant += 8
+                tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
                 self.containerView.layoutIfNeeded()
             } completion: { isSuccess in
                 self.primaryTooltipAction?()
@@ -79,12 +95,12 @@ final class TooltipPresenter {
         case .bottom:
             tooltipTopConstraint = targetView.topAnchor.constraint(
                 equalTo: tooltip.bottomAnchor,
-                constant: Constants.verticalTooltipDistanceToFocus
+                constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
             )
         case .top:
             tooltipTopConstraint = tooltip.topAnchor.constraint(
                 equalTo: targetView.bottomAnchor,
-                constant: Constants.verticalTooltipDistanceToFocus
+                constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
             )
         }
 
