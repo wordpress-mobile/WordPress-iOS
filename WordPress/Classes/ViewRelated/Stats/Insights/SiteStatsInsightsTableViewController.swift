@@ -645,14 +645,9 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
             return
         }
 
-        // TODO: Tracks events
         insightsToShow = insightTypes
         refreshInsights(forceRefresh: true)
         updateView()
-    }
-
-    func insightsManagementDismissed() {
-        
     }
 }
 

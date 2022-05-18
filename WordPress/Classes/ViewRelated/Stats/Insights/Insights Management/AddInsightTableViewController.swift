@@ -5,7 +5,6 @@ import Gridicons
 // can't be represented in an Obj-C protocol.
 protocol StatsInsightsManagementDelegate: AnyObject {
     func userUpdatedActiveInsights(_ insights: [StatSection])
-    func insightsManagementDismissed()
 }
 
 class AddInsightTableViewController: UITableViewController {
@@ -22,9 +21,14 @@ class AddInsightTableViewController: UITableViewController {
         }
     }
 
+    private var hasChanges: Bool {
+        return insightsShown != originalInsightsShown
+    }
+
     private var selectedStat: StatSection?
 
-    private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveInsights))
+    private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped))
+    private var dismissedViaButton = false
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -72,12 +76,18 @@ class AddInsightTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // Catches user swiping down to dismiss
         if FeatureFlag.statsNewAppearance.enabled {
-            // TODO: Check for any changes, prompt user
-        } else {
-            if selectedStat == nil {
-                insightsDelegate?.addInsightDismissed?()
+            if !dismissedViaButton {
+                if hasChanges {
+                    promptToSave(from: presentingViewController)
+                } else {
+                    WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
+                    insightsDelegate?.addInsightDismissed?()
+                }
             }
+        } else if selectedStat == nil {
+            insightsDelegate?.addInsightDismissed?()
         }
     }
 
@@ -142,30 +152,68 @@ class AddInsightTableViewController: UITableViewController {
             return
         }
 
-        if insightsShown != originalInsightsShown {
+        if hasChanges {
             navigationItem.rightBarButtonItem = saveButton
         } else {
             navigationItem.rightBarButtonItem = nil
         }
     }
 
-    @objc func saveInsights() {
-        insightsManagementDelegate?.userUpdatedActiveInsights(insightsShown)
+    @objc private func doneTapped() {
+        dismissedViaButton = true
+
+        if FeatureFlag.statsNewAppearance.enabled && hasChanges {
+            promptToSave(from: self)
+        } else {
+            dismiss()
+        }
+    }
+
+    @objc func saveTapped() {
+        dismissedViaButton = true
+        
+        saveChanges()
 
         dismiss(animated: true, completion: nil)
     }
 
-    @objc private func doneTapped() {
+    private func dismiss() {
         WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
-        dismiss(animated: true, completion: nil)
+        insightsDelegate?.addInsightDismissed?()
 
-        // TODO: Prompt user if they have unsaved changes
+        dismiss(animated: true, completion: nil)
+    }
+
+    private func saveChanges() {
+        insightsManagementDelegate?.userUpdatedActiveInsights(insightsShown)
+
+        WPAnalytics.track(.statsInsightsManagementSaved, properties: ["types": [insightsShown.map({$0.title})]])
+
+        // Update original to stop us detecting changes on dismiss
+        originalInsightsShown = insightsShown
+    }
+
+    private func promptToSave(from viewController: UIViewController?) {
+        let alert = UIAlertController(title: nil, message: TextContent.savePromptMessage, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: TextContent.savePromptSaveButton, style: .default, handler: { _ in
+            self.saveTapped()
+        }))
+        alert.addAction(UIAlertAction(title: TextContent.savePromptDiscardButton, style: .destructive, handler: { _ in
+            self.dismiss()
+        }))
+        alert.addCancelActionWithTitle(TextContent.savePromptCancelButton, handler: nil)
+        viewController?.present(alert, animated: true, completion: nil)
     }
 
     fileprivate enum TextContent {
         static let title = NSLocalizedString("stats.insights.management.title", value: "Manage Stats Cards", comment: "Title of the Stats Insights Management screen")
         static let activeCardsHeader = NSLocalizedString("stats.insights.management.activeCards", value: "Active Cards", comment: "Header title indicating which Stats Insights cards the user currently has set to active.")
         static let placeholderRowTitle = NSLocalizedString("stats.insights.management.selectCardsPrompt", value: "Select cards from the list below", comment: "Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards.")
+
+        static let savePromptMessage = NSLocalizedString("stats.insights.management.savePrompt.message", value: "You've made changes to your active Insights cards.", comment: "Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards.")
+        static let savePromptSaveButton = NSLocalizedString("stats.insights.management.savePrompt.saveButton", value: "Save Changes", comment: "Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards.")
+        static let savePromptDiscardButton = NSLocalizedString("stats.insights.management.savePrompt.discardButton", value: "Discard Changes", comment: "Title of button in Stats Insights management, prompting the user to discard changes to their list of active Stats cards.")
+        static let savePromptCancelButton = NSLocalizedString("stats.insights.management.savePrompt.cancelButton", value: "Cancel", comment: "Title of button to cancel an alert and take no action.")
     }
 }
 
