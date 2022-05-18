@@ -1,5 +1,6 @@
 import Foundation
 import Nimble
+import XCTest
 
 @testable import WordPress
 

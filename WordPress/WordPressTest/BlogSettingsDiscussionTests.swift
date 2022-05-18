@@ -1,6 +1,7 @@
 import Foundation
-@testable import WordPress
+import XCTest
 
+@testable import WordPress
 
 class BlogSettingsDiscussionTests: XCTestCase {
     fileprivate var manager: ContextManagerMock!

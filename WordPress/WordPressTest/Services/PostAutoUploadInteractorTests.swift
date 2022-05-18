@@ -1,6 +1,7 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-import Nimble
 
 class PostAutoUploadInteractorTests: XCTestCase {
     private var contextManager: ContextManagerMock!
