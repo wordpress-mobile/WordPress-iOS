@@ -6,8 +6,8 @@ extension ContextManagerMock {
     /// Override `ContextManager.shared` with the mock instance, and un-override it when
     /// given `testCase` finishes.
     ///
-    /// This method should be called during test run, typically from `XCTestCase` subclass's
-    /// `setUp` method or test methods.
+    /// This method should be called during test set up, typically from `XCTestCase` subclass's
+    /// `setUp` method.
     ///
     /// - Parameter testCase: The test case to wait for.
     @objc func useAsSharedInstance(untilTestFinished testCase: XCTestCase) {
