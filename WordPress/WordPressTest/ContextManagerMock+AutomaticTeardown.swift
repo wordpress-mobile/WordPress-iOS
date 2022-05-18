@@ -27,9 +27,9 @@ extension ContextManagerMock {
         // XCTest does have an API allowing us to add our own teardown block:
         // `XCTestCase.addTeardownBlock`, but the added block is called _before_
         // the test case's `tearDown` override method. Which means if this official
-        // API is used here instead, `ContextManager.shared` references two different
-        // objects during test execution: the mock instance before `tearDown`, or the
-        // real singleton during `tearDown`, which isn't ideal.
+        // API is used here instead, then calling `ContextManager.shared` (explicitly
+        // or indirectly) during the test's `tearDown` would call the real singleton
+        // instead of the mock, which isn't ideal and could have unintended side effect.
         testCase.additionalTeardown = { [weak self] in
             guard let self = self else {
                 return
