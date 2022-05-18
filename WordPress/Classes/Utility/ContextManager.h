@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A constant representing current version of data model.
+ A constant representing the current version of the data model.
 
  @see -[ContextManager initWithModelName:storeURL:]
  */
