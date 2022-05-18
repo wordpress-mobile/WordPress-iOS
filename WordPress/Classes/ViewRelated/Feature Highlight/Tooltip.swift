@@ -10,6 +10,10 @@ final class Tooltip: UIView {
         static let arrowTipYControlLength: CGFloat = 9
         static let maxWidth: CGFloat = UIScreen.main.bounds.width - Spacing.superHorizontalMargin
         static let maxContentWidth = maxWidth - (Constants.Spacing.contentStackViewHorizontal * 2)
+        static let invertedTooltipBackgroundColor = UIColor(
+            light: UIColor.systemGray5.color(for: UITraitCollection(userInterfaceStyle: .dark)),
+            dark: .white
+        )
 
 
         enum Spacing {
@@ -179,8 +183,8 @@ final class Tooltip: UIView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        arrowShapeLayer?.strokeColor = UIColor.invertedSystem5.cgColor
-        arrowShapeLayer?.fillColor = UIColor.invertedSystem5.cgColor
+        arrowShapeLayer?.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
+        arrowShapeLayer?.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
 
         containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
     }
@@ -231,8 +235,8 @@ final class Tooltip: UIView {
         }
 
         arrowShapeLayer.path = arrowPath.cgPath
-        arrowShapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
-        arrowShapeLayer.fillColor = UIColor.invertedSystem5.cgColor
+        arrowShapeLayer.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
+        arrowShapeLayer.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer.lineWidth = 2.0
 
         arrowShapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
@@ -265,7 +269,7 @@ final class Tooltip: UIView {
     }
 
     private func setUpContainerView() {
-        containerView.backgroundColor = .invertedSystem5
+        containerView.backgroundColor = Constants.invertedTooltipBackgroundColor
         containerView.layer.cornerRadius = Constants.cornerRadius
         containerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(containerView)
