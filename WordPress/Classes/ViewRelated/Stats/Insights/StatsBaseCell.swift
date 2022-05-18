@@ -16,7 +16,7 @@ class StatsBaseCell: UITableViewCell {
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
         button.tintColor = .secondaryLabel
         button.setTitleColor(.secondaryLabel, for: .normal)
-        button.setImage(UIImage(named: "disclosure-chevron")?.withTintColor(UIColor(color: WPStyleGuide.greyLighten20())), for: .normal)
+        button.setImage(UIImage.gridicon(.chevronRight).withTintColor(UIColor(color: WPStyleGuide.greyLighten20())), for: .normal)
 
         if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
             button.semanticContentAttribute = .forceLeftToRight
