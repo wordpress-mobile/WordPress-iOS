@@ -60,11 +60,6 @@ class QuickStartChecklistViewController: UITableViewController {
                     QuickStartTourGuide.shared.begin()
                 }
             }
-        }, didTapHeader: { [unowned self] expand in
-            let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed
-            WPAnalytics.trackQuickStartStat(event,
-                                            properties: [Constants.analyticsTypeKey: self.collection.analyticsKey],
-                                            blog: blog)
         })
     }
 
