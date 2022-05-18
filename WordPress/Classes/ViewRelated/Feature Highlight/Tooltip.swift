@@ -114,6 +114,7 @@ final class Tooltip: UIView {
         $0.font = Constants.Font.title
         $0.textColor = .invertedLabel
         $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
 
@@ -335,11 +336,7 @@ final class Tooltip: UIView {
         totalHeight += Constants.Spacing.contentStackViewTop
 
         if let title = title {
-            totalHeight += title.height(
-                withMaxWidth: Constants.maxContentWidth,
-                font: Constants.Font.title,
-                options: []
-            )
+            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
         }
 
         totalHeight += Constants.Spacing.contentStackViewInterItemSpacing * 2
@@ -361,11 +358,7 @@ final class Tooltip: UIView {
         secondaryButtonTitle: String?
     ) -> CGFloat {
 
-        let titleWidth = title?.width(
-            withMaxWidth: Constants.maxContentWidth,
-            font: Constants.Font.title,
-            options: []
-        ) ?? 0
+        let titleWidth = title?.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title) ?? 0
         let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message) ?? 0
 
         var buttonsWidth: CGFloat = 0
@@ -374,7 +367,10 @@ final class Tooltip: UIView {
         }
 
         if let secondaryButtonTitle = secondaryButtonTitle {
-            buttonsWidth += secondaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.button) + Constants.Spacing.buttonsStackViewInterItemSpacing
+            buttonsWidth += secondaryButtonTitle.width(
+                withMaxWidth: Constants.maxContentWidth,
+                font: Constants.Font.button
+            ) + Constants.Spacing.buttonsStackViewInterItemSpacing
         }
 
         return max(max(titleWidth, messageWidth), buttonsWidth) + Constants.Spacing.contentStackViewHorizontal * 2
@@ -382,15 +378,11 @@ final class Tooltip: UIView {
 }
 
 private extension String {
-    private func size(
-        withMaxWidth maxWidth: CGFloat,
-        font: UIFont,
-        options: NSStringDrawingOptions = .usesLineFragmentOrigin
-    ) -> CGRect {
+    private func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(
             with: constraintRect,
-            options: options,
+            options: .usesLineFragmentOrigin,
             attributes: [.font: font],
             context: nil
         )
@@ -398,19 +390,11 @@ private extension String {
         return boundingBox
     }
 
-    func height(
-        withMaxWidth maxWidth: CGFloat,
-        font: UIFont,
-        options: NSStringDrawingOptions = .usesLineFragmentOrigin
-    ) -> CGFloat {
-        ceil(size(withMaxWidth: maxWidth, font: font, options: options).height)
+    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).height)
     }
 
-    func width(
-        withMaxWidth maxWidth: CGFloat,
-        font: UIFont,
-        options: NSStringDrawingOptions = .usesLineFragmentOrigin
-    ) -> CGFloat {
-        ceil(size(withMaxWidth: maxWidth, font: font, options: options).width)
+    func width(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).width)
     }
 }
