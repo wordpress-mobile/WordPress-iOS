@@ -150,6 +150,10 @@ extension SitePickerViewController {
     private func switchToBlog(_ blog: Blog) {
         self.blog = blog
         blogDetailHeaderView.blog = blog
+
+        QuickStartTourGuide.shared.endCurrentTour()
+        toggleSpotlightOnHeaderView()
+
         onBlogSwitched?(blog)
     }
 
