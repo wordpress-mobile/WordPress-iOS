@@ -53,6 +53,7 @@ private class AutomaticTeardownTestObserver: NSObject, XCTestObservation {
 
     func testCaseDidFinish(_ testCase: XCTestCase) {
         testCase.additionalTeardown?()
+        testCase.additionalTeardown = nil
     }
 
 }
