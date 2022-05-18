@@ -19,7 +19,7 @@ class PostServiceWPComTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
 
         remoteMock = PostServiceRESTMock()
 
@@ -33,7 +33,6 @@ class PostServiceWPComTests: CoreDataTestCase {
 
         service = nil
         remoteMock = nil
-        contextManager.tearDown()
     }
 
     func testGettingANewPostFromTheAPIWillSetTheStatusAfterSyncProperty() {

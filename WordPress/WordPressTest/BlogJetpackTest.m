@@ -7,6 +7,8 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManagerMock.h"
+#import "WordPressTest-Swift.h"
+
 @import WordPressKit;
 
 @interface BlogJetpackTest : XCTestCase
@@ -24,7 +26,7 @@
 - (void)setUp {
     [super setUp];
     self.testContextManager = [[ContextManagerMock alloc] init];
-    [self.testContextManager setUpAsSharedInstance];
+    [self.testContextManager useAsSharedInstanceUntilTestFinished:self];
 
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];

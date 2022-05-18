@@ -38,4 +38,8 @@ public class BloggingPrompt: NSManagedObject {
         self.answerCount = Int32(remotePrompt.answeredUsersCount)
         self.displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
     }
+
+    func textForDisplay() -> String {
+        return text.stringByDecodingXMLCharacters().trim()
+    }
 }

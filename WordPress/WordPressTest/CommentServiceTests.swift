@@ -13,7 +13,7 @@ final class CommentServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()
@@ -26,7 +26,6 @@ final class CommentServiceTests: CoreDataTestCase {
 
         service = nil
         remoteMock = nil
-        contextManager.tearDown()
     }
 
     // MARK: Helpers

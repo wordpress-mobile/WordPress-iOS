@@ -8,14 +8,9 @@ class QuickStartFactoryTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
     }
 
     func testCollectionsForExistingSite() {

@@ -52,13 +52,12 @@ class PostNoticeViewModelTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         context = nil
-        contextManager.tearDown()
 
         super.tearDown()
     }

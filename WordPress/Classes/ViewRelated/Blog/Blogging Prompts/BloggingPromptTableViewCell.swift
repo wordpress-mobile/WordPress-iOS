@@ -29,7 +29,7 @@ class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
 
     func configure(_ prompt: BloggingPrompt) {
         self.prompt = prompt
-        titleLabel.text = prompt.text.stringByDecodingXMLCharacters().trim()
+        titleLabel.text = prompt.textForDisplay()
         dateLabel.text = dateFormatter.string(from: prompt.date)
         answerCountLabel.text = answerInfoText
         answeredStateView.isHidden = !prompt.answered

@@ -8,7 +8,7 @@ class AccountServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 
@@ -16,8 +16,6 @@ class AccountServiceTests: CoreDataTestCase {
         super.tearDown()
 
         deleteTestAccounts()
-
-        contextManager.tearDown()
         accountService = nil
     }
 

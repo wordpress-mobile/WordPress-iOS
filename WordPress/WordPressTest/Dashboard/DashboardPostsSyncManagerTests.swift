@@ -11,7 +11,7 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(contextManager.mainContext).build()
         blog.dashboardState.syncingStatuses = []
         postService = PostServiceMock()
@@ -19,7 +19,6 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         blog = nil
         super.tearDown()
     }

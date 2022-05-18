@@ -6,13 +6,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager.setUpAsSharedInstance()
-    }
-
-    override func tearDown() {
-        contextManager.tearDown()
-
-        super.tearDown()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
     }
 
     // MARK: - Utility
@@ -146,6 +140,6 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
             XCTFail("This should not be called")
         }
 
-        waitForExpectations(timeout: 0.05)
+        waitForExpectations(timeout: 0.5)
     }
 }

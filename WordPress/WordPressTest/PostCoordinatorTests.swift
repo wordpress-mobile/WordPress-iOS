@@ -9,14 +9,13 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         TestAnalyticsTracker.setup()
     }
 
     override func tearDown() {
         super.tearDown()
         TestAnalyticsTracker.tearDown()
-        contextManager.tearDown()
     }
 
     func testDoNotUploadAPostWithFailedMedia() {
