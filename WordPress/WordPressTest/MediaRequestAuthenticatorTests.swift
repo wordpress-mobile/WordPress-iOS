@@ -10,12 +10,11 @@ class MediaRequestAuthenticatorTests: XCTestCase {
         super.setUp()
 
         contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = contextManager.mainContext
     }
 
     override func tearDown() {
-        contextManager.tearDown()
         contextManager = nil
         context = nil
 
@@ -153,6 +152,6 @@ class MediaRequestAuthenticatorTests: XCTestCase {
             XCTFail("This should not be called")
         }
 
-        waitForExpectations(timeout: 0.05)
+        waitForExpectations(timeout: 0.5)
     }
 }

@@ -10,7 +10,6 @@ NSString * const ContextManagerModelNameCurrent = @"$CURRENT";
 // MARK: - Static Variables
 //
 static ContextManager *_instance;
-static ContextManager *_override;
 
 
 // MARK: - Private Properties
@@ -72,7 +71,7 @@ static ContextManager *_override;
         _instance = [[ContextManager alloc] init];
     });
 
-    return _override ?: _instance;
+    return _instance;
 }
 
 #pragma mark - Contexts
