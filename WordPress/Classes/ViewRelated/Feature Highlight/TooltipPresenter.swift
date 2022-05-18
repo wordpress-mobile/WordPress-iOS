@@ -11,12 +11,25 @@ final class TooltipPresenter {
     private let containerView: UIView
     private let tooltip: Tooltip
     private let targetView: UIView
+    private var primaryTooltipAction: (() -> Void)?
+    private var secondaryTooltipAction: (() -> Void)?
 
-    init(containerView: UIView, tooltip: Tooltip, targetView: UIView) {
+    private var tooltipTopConstraint: NSLayoutConstraint?
+
+    init(containerView: UIView,
+         tooltip: Tooltip,
+         targetView: UIView,
+         primaryTooltipAction: (() -> Void)? = nil,
+         secondaryTooltipAction: (() -> Void)? = nil
+    ) {
         self.containerView = containerView
         self.tooltip = tooltip
         self.targetView = targetView
-        
+        self.primaryTooltipAction = primaryTooltipAction
+        self.secondaryTooltipAction = secondaryTooltipAction
+
+        configureDismissal()
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(recalculatePosition),
@@ -36,6 +49,25 @@ final class TooltipPresenter {
         setUpConstraints()
     }
 
+    private func configureDismissal() {
+        tooltip.primaryButtonAction = {
+            UIView.animate(
+                withDuration: 0.2,
+                delay: 0,
+                options: .curveEaseIn
+            ) {
+                guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+
+                self.tooltip.alpha = 0
+                tooltipTopConstraint.constant += 8
+                self.containerView.layoutIfNeeded()
+            } completion: { isSuccess in
+                self.primaryTooltipAction?()
+                self.tooltip.removeFromSuperview()
+            }
+        }
+    }
+
     private func setUpConstraints() {
         tooltip.translatesAutoresizingMaskIntoConstraints = false
 
@@ -45,21 +77,18 @@ final class TooltipPresenter {
 
         switch tooltipOrientation() {
         case .bottom:
-            tooltipConstraints.append(
-                targetView.topAnchor.constraint(
-                    equalTo: tooltip.bottomAnchor,
-                    constant: Constants.verticalTooltipDistanceToFocus
-                )
+            tooltipTopConstraint = targetView.topAnchor.constraint(
+                equalTo: tooltip.bottomAnchor,
+                constant: Constants.verticalTooltipDistanceToFocus
             )
         case .top:
-            tooltipConstraints.append(
-                tooltip.topAnchor.constraint(
-                    equalTo: targetView.bottomAnchor,
-                    constant: Constants.verticalTooltipDistanceToFocus
-                )
+            tooltipTopConstraint = tooltip.topAnchor.constraint(
+                equalTo: targetView.bottomAnchor,
+                constant: Constants.verticalTooltipDistanceToFocus
             )
         }
 
+        tooltipConstraints.append(tooltipTopConstraint!)
         NSLayoutConstraint.activate(tooltipConstraints)
     }
 

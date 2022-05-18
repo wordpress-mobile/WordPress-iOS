@@ -91,6 +91,21 @@ final class Tooltip: UIView {
         }
     }
 
+    var primaryButtonTitle: String? {
+        didSet {
+            primaryButton.setTitle(primaryButtonTitle, for: .normal)
+        }
+    }
+
+    var secondaryButtonTitle: String? {
+        didSet {
+            secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
+        }
+    }
+
+    var primaryButtonAction: (() -> Void)?
+    var secondaryButtonAction: (() -> Void)?
+
     private lazy var titleLabel: UILabel = {
         $0.font = Constants.Font.title
         $0.textColor = .invertedLabel
@@ -106,16 +121,18 @@ final class Tooltip: UIView {
         return $0
     }(UILabel())
 
-    private(set) lazy var primaryButton: UIButton = {
+    private lazy var primaryButton: UIButton = {
         $0.titleLabel?.font = Constants.Font.button
         $0.setTitleColor(.invertedLink, for: .normal)
+        $0.addTarget(self, action: #selector(didTapPrimaryButton), for: .touchUpInside)
         $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
 
-    private(set) lazy var secondaryButton: UIButton = {
+    private lazy var secondaryButton: UIButton = {
         $0.titleLabel?.font = Constants.Font.button
         $0.setTitleColor(.invertedLink, for: .normal)
+        $0.addTarget(self, action: #selector(didTapSecondaryButton), for: .touchUpInside)
         $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
@@ -295,6 +312,14 @@ final class Tooltip: UIView {
         containerView.layer.shadowColor = UIColor.black.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
         containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
+    }
+
+    @objc private func didTapPrimaryButton() {
+        primaryButtonAction?()
+    }
+
+    @objc private func didTapSecondaryButton() {
+        secondaryButtonAction?()
     }
 
     private static func height(
