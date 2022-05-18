@@ -7,6 +7,8 @@ class SiteStatsBaseTableViewController: UIViewController {
 
     let refreshControl = UIRefreshControl()
 
+    /// This property must be set before viewDidLoad is called - currently the classes that inherit are created from storyboards
+    /// When storyboard is removed it can be passed in as a parameter in an initializer
     var tableStyle: UITableView.Style = .grouped
 
     // MARK: - Properties
