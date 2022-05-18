@@ -5,6 +5,8 @@
 
 #define SentryStartupEventAddError(event, error) [event addError:error file:__FILE__ function:__FUNCTION__ line:__LINE__]
 
+NSString * const ContextManagerModelNameCurrent = @"$CURRENT";
+
 // MARK: - Static Variables
 //
 static ContextManager *_instance;
@@ -22,6 +24,8 @@ static ContextManager *_override;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
+@property (nonatomic, strong) NSString *modelName;
+@property (nonatomic, strong) NSURL *storeURL;
 
 @end
 
@@ -32,8 +36,24 @@ static ContextManager *_override;
 
 - (instancetype)init
 {
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+
+    return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL];
+}
+
+- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL
+{
     self = [super init];
     if (self) {
+        NSParameterAssert([modelName isEqualToString:ContextManagerModelNameCurrent] || [modelName hasPrefix:@"WordPress "]);
+        NSParameterAssert([storeURL isFileURL]);
+
+        self.modelName = modelName;
+        self.storeURL = storeURL;
+
         [NSValueTransformer registerCustomTransformers];
         // Create `mainContext` and `writerContext` during initialisation to
         // ensure they are only created once.
@@ -236,7 +256,16 @@ static ContextManager *_override;
     }
     NSString *modelPath = [self modelPath];
     NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    if ([self.modelName isEqualToString:ContextManagerModelNameCurrent]) {
+        // Use the current version defined in data model.
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    } else {
+        // Find the specific version defined in data model.
+        NSURL *versionedModelURL = [[modelURL URLByAppendingPathComponent:self.modelName] URLByAppendingPathExtension:@"mom"];
+        NSAssert([NSFileManager.defaultManager fileExistsAtPath:versionedModelURL.path],
+                 @"Can't find model '%@' at %@", self.modelName, modelPath);
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:versionedModelURL];
+    }
     return _managedObjectModel;
 }
 
@@ -322,15 +351,6 @@ static ContextManager *_override;
     }];
     
     return modelNames;
-}
-
-- (NSURL *)storeURL
-{
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                        NSUserDomainMask,
-                                                                        YES) lastObject];
-    
-    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 }
 
 - (NSString *)modelPath

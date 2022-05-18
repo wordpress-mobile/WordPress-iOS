@@ -65,7 +65,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ was reconnected.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular). */
@@ -341,6 +342,7 @@
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "All";
 
@@ -1012,9 +1014,6 @@
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Confirm your email first";
-
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Congrats on finishing Quick Start  🎉";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Congratulations on completing your list. A job well done.";
@@ -2534,6 +2533,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -2911,7 +2911,8 @@
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Not Connected";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Not Now";
 
 /* Display value for Support email field if there is no user email address. */
@@ -3017,6 +3018,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5361,6 +5363,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Views";
 
@@ -5386,6 +5389,7 @@
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Visitors";
 
@@ -5853,9 +5857,6 @@
 
 /* The menu item to select during a guided tour. */
 "connections" = "connections";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "doesn’t it feel good to cross things off a list?";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
