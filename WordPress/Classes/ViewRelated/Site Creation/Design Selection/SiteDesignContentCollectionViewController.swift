@@ -64,8 +64,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
     }
 
     required init?(coder: NSCoder) {

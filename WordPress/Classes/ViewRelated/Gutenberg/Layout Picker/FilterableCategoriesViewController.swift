@@ -69,8 +69,6 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
 
         filterBar = CollapsableHeaderFilterBar()
         super.init(scrollableView: tableView,
