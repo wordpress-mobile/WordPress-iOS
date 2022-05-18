@@ -169,7 +169,9 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.section = isLoading ? nil : sections[indexPath.row]
         cell.isGhostCell = isLoading
-        cell.ghostThumbnailSize = ghostThumbnailSize
+        if isLoading {
+            cell.ghostThumbnailSize = ghostThumbnailSize
+        }
         cell.showsCheckMarkWhenSelected = false
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
