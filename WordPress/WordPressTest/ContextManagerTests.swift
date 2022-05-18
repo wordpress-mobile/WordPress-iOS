@@ -37,7 +37,7 @@ class ContextManagerTests: XCTestCase {
         let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
-        XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author exists in current version")
+        XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
     }
 
     func testMigrate24to25AvatarURLtoBasePost() throws {
