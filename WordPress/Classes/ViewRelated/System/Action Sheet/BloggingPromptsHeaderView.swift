@@ -71,6 +71,7 @@ private extension BloggingPromptsHeaderView {
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        attributionLabel.adjustsFontForContentSizeCategory = true
     }
 
     func configureConstraints() {
@@ -92,7 +93,7 @@ private extension BloggingPromptsHeaderView {
     }
 
     func configure(_ prompt: BloggingPrompt?) {
-        promptLabel.text = prompt?.text
+        promptLabel.text = prompt?.textForDisplay()
 
         let answered = prompt?.answered ?? false
         answerPromptButton.isHidden = answered

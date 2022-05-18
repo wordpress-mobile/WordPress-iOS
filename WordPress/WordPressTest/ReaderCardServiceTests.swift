@@ -19,11 +19,6 @@ class ReaderCardServiceTests: XCTestCase {
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
     }
 
-    override func tearDown() {
-        super.tearDown()
-        coreDataStack.tearDown()
-    }
-
     /// Call the cards API with the saved slugs
     ///
     func testCallApiWithTheSavedSlugs() {

@@ -15,11 +15,6 @@ class PostCardCellGhostableTests: XCTestCase {
         super.setUp()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        coreDataStack.tearDown()
-    }
-
     func testHideFeaturedImage() {
         XCTAssertTrue(postCell.featuredImageStackView.isHidden)
     }
