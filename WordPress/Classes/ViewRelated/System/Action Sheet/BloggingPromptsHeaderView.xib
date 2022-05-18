@@ -48,17 +48,17 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Gef-vX-Eh7">
-                            <rect key="frame" x="111" y="48" width="127" height="18"/>
+                            <rect key="frame" x="111" y="48" width="127" height="20.5"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tPu-fo-0nQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                    <rect key="frame" x="0.0" y="1.5" width="18" height="18"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="18" id="PGa-fz-qU1"/>
                                         <constraint firstAttribute="height" constant="18" id="ReF-to-kfP"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From Day One" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q82-Ru-Asj">
-                                    <rect key="frame" x="18" y="0.0" width="109" height="18"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="From Day One" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q82-Ru-Asj">
+                                    <rect key="frame" x="18" y="0.0" width="109" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -66,7 +66,7 @@
                             </subviews>
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqk-gy-gv5">
-                            <rect key="frame" x="113" y="66" width="123" height="23.5"/>
+                            <rect key="frame" x="113" y="68.5" width="123" height="21"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Answer Prompt"/>
                             <connections>
@@ -98,8 +98,18 @@
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Rye-vB-0gG" secondAttribute="trailing" priority="750" constant="16" id="7hG-vk-yAU"/>
+                        <constraint firstItem="fqk-gy-gv5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="8hu-N3-Rjy"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="stO-XN-YJp" secondAttribute="trailing" priority="750" constant="16" id="JWf-1J-w5c"/>
+                        <constraint firstItem="Gef-vX-Eh7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="LeV-jp-Rqn"/>
+                        <constraint firstItem="74j-gh-nmq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="Wrb-3D-Kq6"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Gef-vX-Eh7" secondAttribute="trailing" priority="750" constant="16" id="XNR-nY-tnp"/>
+                        <constraint firstItem="Rye-vB-0gG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="ecE-Ow-fJb"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="74j-gh-nmq" secondAttribute="trailing" priority="750" constant="16" id="gvu-DP-wnp"/>
                         <constraint firstItem="9KN-UC-IRC" firstAttribute="leading" secondItem="HBh-15-Hby" secondAttribute="leading" id="i3E-vF-ouk"/>
-                        <constraint firstAttribute="trailing" secondItem="9KN-UC-IRC" secondAttribute="trailing" id="j2W-Lj-CP5"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fqk-gy-gv5" secondAttribute="trailing" priority="750" constant="16" id="itk-Uy-mwF"/>
+                        <constraint firstAttribute="trailing" secondItem="9KN-UC-IRC" secondAttribute="trailing" priority="750" id="j2W-Lj-CP5"/>
+                        <constraint firstItem="stO-XN-YJp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HBh-15-Hby" secondAttribute="leading" priority="750" constant="16" id="qRg-sD-Bvk"/>
                     </constraints>
                 </stackView>
             </subviews>

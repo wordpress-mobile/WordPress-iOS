@@ -73,6 +73,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
+    // This provides a quick way to toggle the `Remove from dashboard` menu item.
+    // Since it (probably) will not be included in Blogging Prompts V1, it is disabled by default.
+    private let removeFromDashboardEnabled = false
+
     // Used to present:
     // - The menu sheet for contextual menu in iOS13.
     // - The Blogging Prompts list when selected from the contextual menu.
@@ -273,15 +277,16 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     // Defines the structure of the contextual menu items.
     private var contextMenuItems: [[MenuItem]] {
-        return [
-            [
-                .viewMore(viewMoreMenuTapped),
-                .skip(skipMenuTapped)
-            ],
-            [
-                .remove(removeMenuTapped)
-            ]
+        let defaultItems: [MenuItem] = [
+            .viewMore(viewMoreMenuTapped),
+            .skip(skipMenuTapped)
         ]
+
+        if removeFromDashboardEnabled {
+            return [defaultItems, [.remove(removeMenuTapped)]]
+        }
+
+        return [defaultItems]
     }
 
     private var contextMenu: UIMenu {
