@@ -2,7 +2,23 @@ import XCTest
 
 @testable import WordPress
 
-extension ContextManagerMock {
+class ContextManagerMock: ContextManager {
+
+    convenience init() {
+        self.init(modelName: ContextManagerModelNameCurrent)
+    }
+
+    init(modelName: String) {
+        super.init(modelName: modelName, store: URL(fileURLWithPath: "/dev/null"))
+    }
+
+    override func saveContextAndWait(_ context: NSManagedObjectContext) {
+        super.saveContextAndWait(context)
+        // This log magically resolves a deadlock in
+        // `ZDashboardCardTests.testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu`
+        NSLog("Context save completed")
+    }
+
     /// Override `ContextManager.shared` with the mock instance, and un-override it when
     /// given `testCase` finishes.
     ///
