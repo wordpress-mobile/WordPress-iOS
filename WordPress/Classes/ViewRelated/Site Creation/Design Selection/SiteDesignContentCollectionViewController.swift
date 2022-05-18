@@ -2,18 +2,23 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
-    typealias TemplateGroup = SiteDesignRequest.TemplateGroup
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
+    private let vertical: SiteIntentVertical?
     private let createsSite: Bool
-    private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
-    private let restAPI = WordPressComRestApi.anonymousApi(
-        userAgent: WPUserAgent.wordPress(),
-        localeKey: WordPressComRestApi.LocaleKeyV2
-    )
-    private var sections: [SiteDesignSection] = []
+
+    private var sections: [SiteDesignSection] = [] {
+        didSet {
+            if oldValue.count == 0 {
+                scrollableView.setContentOffset(.zero, animated: false)
+            }
+            contentSizeWillChange()
+            tableView.reloadData()
+        }
+    }
+
     private var isLoading: Bool = true {
         didSet {
             if isLoading {
@@ -25,23 +30,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             tableView.reloadData()
         }
     }
+
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
-    private var siteDesigns = RemoteSiteDesigns() {
-        didSet {
-            if oldValue.categories.count == 0 {
-                scrollableView.setContentOffset(.zero, animated: false)
-            }
-            sections = siteDesigns.categories.map { category in
-                SiteDesignSection(
-                    category: category,
-                    designs: siteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug) },
-                    thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
-                )
-            }
-            contentSizeWillChange()
-            tableView.reloadData()
-        }
-    }
 
     private var ghostThumbnailSize: CGSize {
         return SiteDesignCategoryThumbnailSize.category.value
@@ -49,8 +39,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     let selectedPreviewDevice = PreviewDevice.mobile
 
-    init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(vertical: SiteIntentVertical?, createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
+        self.vertical = vertical
         self.createsSite = createsSite
         tableView = UITableView(frame: .zero, style: .plain)
 
@@ -83,21 +74,19 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func fetchSiteDesigns() {
         isLoading = true
-        let request = SiteDesignRequest(
-            withThumbnailSize: SiteDesignCategoryThumbnailSize.category.value,
-            withGroups: templateGroups
-        )
-        SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
-            DispatchQueue.main.async {
-                switch response {
-                case .success(let result):
-                    self?.dismissNoResultsController()
-                    self?.siteDesigns = result
-                case .failure(let error):
-                    self?.handleError(error)
+
+        Task {
+            do {
+                let sections = try await SiteDesignSectionLoader.fetchSections(vertical: vertical)
+                DispatchQueue.main.async {
+                    self.dismissNoResultsController()
+                    self.sections = sections
                 }
-                self?.isLoading = false
+            } catch {
+                handleError(error)
             }
+
+            isLoading = false
         }
     }
 

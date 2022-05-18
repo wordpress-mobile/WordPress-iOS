@@ -2224,6 +2224,8 @@
 		C3DA0EE02807062600DA3250 /* SiteCreationNameTracksEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DA0EDF2807062600DA3250 /* SiteCreationNameTracksEventTests.swift */; };
 		C3E2462926277B7700B99EA6 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
 		C3E42AB027F4D30E00546706 /* MenuItemsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E42AAF27F4D30E00546706 /* MenuItemsViewControllerTests.swift */; };
+		C3FF78E828354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FF78E728354A91008FA600 /* SiteDesignSectionLoader.swift */; };
+		C3FF78E928354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FF78E728354A91008FA600 /* SiteDesignSectionLoader.swift */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
@@ -7024,6 +7026,7 @@
 		C3DA0EDF2807062600DA3250 /* SiteCreationNameTracksEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationNameTracksEventTests.swift; sourceTree = "<group>"; };
 		C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAuthorSelectorViewController.swift; sourceTree = "<group>"; };
 		C3E42AAF27F4D30E00546706 /* MenuItemsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemsViewControllerTests.swift; sourceTree = "<group>"; };
+		C3FF78E728354A91008FA600 /* SiteDesignSectionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignSectionLoader.swift; sourceTree = "<group>"; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
@@ -10190,6 +10193,7 @@
 				46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */,
 				C395FB252821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift */,
 				C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */,
+				C3FF78E728354A91008FA600 /* SiteDesignSectionLoader.swift */,
 			);
 			path = "Design Selection";
 			sourceTree = "<group>";
@@ -18551,6 +18555,7 @@
 				B5EFB1C21B31B98E007608A3 /* NotificationSettingsService.swift in Sources */,
 				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
 				1717139F265FE59700F3A022 /* ButtonStyles.swift in Sources */,
+				C3FF78E828354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,
 				989643EC23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */,
 				98906506237CC1DF00218CD2 /* WidgetTwoColumnCell.swift in Sources */,
 				B58C4ECA207C5E1A00E32E4D /* UIImage+Assets.swift in Sources */,
@@ -21536,6 +21541,7 @@
 				FABB25922602FC2C00C8785C /* RevisionPreviewTextViewManager.swift in Sources */,
 				FABB25932602FC2C00C8785C /* StatsChartLegendView.swift in Sources */,
 				C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */,
+				C3FF78E928354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,
 				FABB25942602FC2C00C8785C /* FindOutMoreCell.swift in Sources */,
 				FABB25952602FC2C00C8785C /* NSURL+Exporters.swift in Sources */,
 				FABB25962602FC2C00C8785C /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
