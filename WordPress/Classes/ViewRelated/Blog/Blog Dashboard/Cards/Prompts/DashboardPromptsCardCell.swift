@@ -370,7 +370,7 @@ private extension DashboardPromptsCardCell {
             return
         }
 
-        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
+        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.textForDisplay()
         containerStackView.addArrangedSubview(promptTitleView)
 
         if let attribution = prompt?.promptAttribution {
