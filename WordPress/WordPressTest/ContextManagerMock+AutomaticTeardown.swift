@@ -15,7 +15,6 @@ extension ContextManagerMock {
         _ = AutomaticTeardownTestObserver.instance
 
         let original = ContextManager.overrideInstance
-        ContextManager.internalSharedInstance()
         ContextManager.overrideSharedInstance(self)
 
         // This closure is going to be called by the test observer below when
