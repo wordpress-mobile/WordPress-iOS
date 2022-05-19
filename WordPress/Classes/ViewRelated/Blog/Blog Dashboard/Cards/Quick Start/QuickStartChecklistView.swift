@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-final class QuickStartChecklistView: UIView {
+final class QuickStartChecklistView: UIView, QuickStartChecklistConfigurable {
 
     var tours: [QuickStartTour] = []
     var blog: Blog?
