@@ -45,6 +45,7 @@ final class SitePickerViewController: UIViewController {
         super.viewDidLoad()
         setupHeaderView()
         startObservingQuickStart()
+        startObservingTitleChanges()
     }
 
     deinit {
@@ -56,6 +57,15 @@ final class SitePickerViewController: UIViewController {
         blogDetailHeaderView.delegate = self
         view.addSubview(blogDetailHeaderView)
         view.pinSubviewToAllEdges(blogDetailHeaderView)
+    }
+
+    private func startObservingTitleChanges() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated,
+                                               object: nil,
+                                               queue: .main) { [weak self] _ in
+
+            self?.updateTitles()
+        }
     }
 }
 
@@ -191,7 +201,6 @@ extension SitePickerViewController {
                                             silentlyForBlog: blog)
 
         blogService.updateSettings(for: blog, success: { [weak self] in
-            NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
 
             let notice = Notice(title: title,
                                 message: SiteTitleStrings.titleChangeSuccessfulMessage,
@@ -199,14 +208,7 @@ extension SitePickerViewController {
             ActionDispatcher.global.dispatch(NoticeAction.post(notice))
 
             self?.blogDetailHeaderView.setTitleLoading(false)
-            self?.blogDetailHeaderView.refreshSiteTitle()
-
-            guard let parent = self?.parent as? MySiteViewController else {
-                return
-            }
-
-            parent.updateNavigationTitle(for: blog)
-
+            NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
             self?.blogDetailHeaderView.setTitleLoading(false)
@@ -217,6 +219,16 @@ extension SitePickerViewController {
 
             DDLogError("Error while trying to update blog settings: \(error.localizedDescription)")
         })
+    }
+
+    /// Updates site title and navigation bar title
+    private func updateTitles() {
+        blogDetailHeaderView.refreshSiteTitle()
+
+        guard let parent = parent as? MySiteViewController else {
+            return
+        }
+        parent.updateNavigationTitle(for: blog)
     }
 
     private func showViewSite() {
@@ -231,7 +243,8 @@ extension SitePickerViewController {
             url: url,
             blog: blog,
             source: Constants.viewSiteSource,
-            withDeviceModes: true
+            withDeviceModes: true,
+            onClose: self.startAlertTimer
         )
 
         let navigationController = LightNavigationController(rootViewController: webViewController)

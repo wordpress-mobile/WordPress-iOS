@@ -53,9 +53,9 @@ extension QuickStartTourStateView {
     private func showQuickStart(with collection: QuickStartToursCollection, from sourceController: UIViewController, for blog: Blog, tracker: QuickStartChecklistTappedTracker? = nil) {
 
         if let tracker = tracker {
-            WPAnalytics.track(tracker.event,
-                              properties: tracker.properties,
-                              blog: blog)
+            WPAnalytics.trackQuickStartEvent(tracker.event,
+                                             properties: tracker.properties,
+                                             blog: blog)
         }
 
         let checklist = QuickStartChecklistViewController(blog: blog, collection: collection)

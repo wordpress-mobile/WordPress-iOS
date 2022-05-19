@@ -3,7 +3,7 @@ import XCTest
 
 class QuickStartSettingsTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var userDefaults: UserDefaults!
     private var quickStartSettings: QuickStartSettings!
@@ -11,7 +11,7 @@ class QuickStartSettingsTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
 
@@ -19,10 +19,6 @@ class QuickStartSettingsTests: XCTestCase {
         userDefaults = UserDefaults(suiteName: name)
         userDefaults.removePersistentDomain(forName: name)
         quickStartSettings = QuickStartSettings(userDefaults: userDefaults)
-    }
-
-    override func tearDown() {
-        super.tearDown()
     }
 
     func testPromptWasDismissedReturnsFalseIfNotPreviouslyDismissed() {

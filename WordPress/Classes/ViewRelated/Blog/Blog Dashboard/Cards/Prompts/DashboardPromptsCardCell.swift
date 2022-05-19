@@ -4,14 +4,7 @@ import WordPressUI
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
-
-    /// Controls available actions on the bottom row.
-    /// TODO: Might need to review this once we have a better picture of what the Prompt model looks like.
-    var isAnswered: Bool = true {
-        didSet {
-            refreshStackView()
-        }
-    }
+    // MARK: - Public Properties
 
     // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
     private(set) lazy var cardFrameView: BlogDashboardCardFrameView = {
@@ -39,25 +32,56 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: - Private Properties
 
+    private var blog: Blog?
+
+    private var prompt: BloggingPrompt? {
+        didSet {
+            refreshStackView()
+        }
+    }
+
+    private lazy var isAnswered: Bool = {
+        if forExampleDisplay {
+            return false
+        }
+
+        return prompt?.answered ?? false
+    }()
+
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        return BloggingPromptsService(blog: blog)
+    }()
+
     /// When set to true, a "default" version of the card is displayed. That is:
     /// - `maxAvatarCount` number of avatars.
-    /// - `maxAvatarCount` answer count.
+    /// - `exampleAnswerCount` answer count.
     /// - `examplePrompt` prompt label.
     /// - disabled user interaction.
     private var forExampleDisplay: Bool = false {
         didSet {
             isUserInteractionEnabled = false
-            isAnswered = false
+            cardFrameView.isUserInteractionEnabled = false
+            refreshStackView()
         }
     }
 
-    // Used to present the menu sheet for contextual menu.
-    // NOTE: Remove this once we drop support for iOS 13.
+    private var didFailLoadingPrompt: Bool = false {
+        didSet {
+            if didFailLoadingPrompt != oldValue {
+                refreshStackView()
+            }
+        }
+    }
+
+    // Used to present:
+    // - The menu sheet for contextual menu in iOS13.
+    // - The Blogging Prompts list when selected from the contextual menu.
     private weak var presenterViewController: BlogDashboardViewController? = nil
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
         return stackView
@@ -91,8 +115,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         if forExampleDisplay {
             return Constants.exampleAnswerCount
         }
-        // TODO: For testing purposes. Remove once we actually have real avatar URLs.
-        return 3
+
+        return prompt?.answerCount ?? 0
     }()
 
     private var answerInfoText: String {
@@ -105,8 +129,12 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             if forExampleDisplay {
                 return (0..<Constants.maxAvatarCount).map { _ in nil }
             }
-            // TODO: Refactor this once we have real avatar URLs.
-            return (0..<min(answerCount, Constants.maxAvatarCount)).map { _ in nil }
+
+            guard let displayAvatarURLs = prompt?.displayAvatarURLs else {
+                return []
+            }
+
+            return Array(displayAvatarURLs.prefix(min(answerCount, Constants.maxAvatarCount)))
         }()
 
         let avatarTrainView = AvatarTrainView(avatarURLs: avatarURLs, placeholderImage: Style.avatarPlaceholderImage)
@@ -161,6 +189,20 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return containerView
     }
 
+    private lazy var attributionIcon = UIImageView()
+
+    private lazy var attributionSourceLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+
+    private lazy var attributionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel])
+        stackView.alignment = .center
+        return stackView
+    }()
+
     // MARK: Bottom row views
 
     private lazy var answerButton: UIButton = {
@@ -171,8 +213,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-
-        // TODO: Implement button tap action
+        button.addTarget(self, action: #selector(answerButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -280,14 +321,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardPromptsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.blog = blog
         self.presenterViewController = viewController
-        refreshStackView()
+        fetchPrompt()
     }
 }
 
 // MARK: - Private Helpers
 
 private extension DashboardPromptsCardCell {
+
+    // MARK: Configure View
 
     func setupViews() {
         contentView.addSubview(cardFrameView)
@@ -299,10 +343,21 @@ private extension DashboardPromptsCardCell {
         // clear existing views.
         containerStackView.removeAllSubviews()
 
-        // TODO: Remove the hard coded string once we can pull content from remote.
-        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : "Cast the movie of your life."
+        guard !didFailLoadingPrompt else {
+            promptLabel.text = Strings.errorTitle
+            containerStackView.addArrangedSubview(promptTitleView)
+            return
+        }
 
+        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
         containerStackView.addArrangedSubview(promptTitleView)
+
+        if let promptAttribution = prompt?.attribution.lowercased(),
+           let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {
+            attributionIcon.image = attribution.iconImage
+            attributionSourceLabel.attributedText = attribution.attributedText
+            containerStackView.addArrangedSubview(attributionStackView)
+        }
 
         if answerCount > 0 {
             containerStackView.addArrangedSubview(answerInfoView)
@@ -311,10 +366,51 @@ private extension DashboardPromptsCardCell {
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
     }
 
+    // MARK: Prompt Fetching
+
+    func fetchPrompt() {
+        // TODO: check for cached prompt first.
+
+        guard let bloggingPromptsService = bloggingPromptsService else {
+            didFailLoadingPrompt = true
+            DDLogError("Failed creating BloggingPromptsService instance.")
+            return
+        }
+
+        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+            self?.prompt = prompt
+            self?.didFailLoadingPrompt = false
+        }, failure: { [weak self] (error) in
+            self?.prompt = nil
+            self?.didFailLoadingPrompt = true
+            DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
+        })
+    }
+
+    // MARK: Button actions
+
+    @objc func answerButtonTapped() {
+        guard let blog = blog,
+        let prompt = prompt else {
+            return
+        }
+
+        let editor = EditPostViewController(blog: blog, prompt: prompt)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .dashboard
+        presenterViewController?.present(editor, animated: true)
+    }
+
     // MARK: Context menu actions
 
     func viewMoreMenuTapped() {
-        // TODO.
+        guard let blog = blog,
+              let presenterViewController = presenterViewController else {
+            DDLogError("Failed showing Blogging Prompts from Dashboard card. Missing blog or controller.")
+            return
+        }
+
+        BloggingPromptsViewController.show(for: blog, from: presenterViewController)
     }
 
     func skipMenuTapped() {
@@ -357,6 +453,7 @@ private extension DashboardPromptsCardCell {
                                                                 + "that answered the blogging prompt.")
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
+        static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
     }
 
     struct Style {

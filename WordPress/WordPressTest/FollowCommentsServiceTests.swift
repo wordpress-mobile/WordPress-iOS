@@ -5,8 +5,10 @@ import WordPressKit
 
 class FollowCommentsServiceTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
     private let siteID = NSNumber(value: 1)
     private let postID = NSNumber(value: 1)
 
@@ -14,13 +16,10 @@ class FollowCommentsServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
+        contextManager = ContextManagerMock()
     }
 
     override func tearDown() {
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
         contextManager = nil
         super.tearDown()
     }

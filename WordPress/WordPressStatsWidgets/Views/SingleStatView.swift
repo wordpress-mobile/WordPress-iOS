@@ -15,6 +15,5 @@ struct SingleStatView: View {
             }
             Spacer()
         }
-        .flipsForRightToLeftLayoutDirection(true)
     }
 }

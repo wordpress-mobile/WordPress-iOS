@@ -23,6 +23,9 @@ open class QuickStartTourGuide: NSObject {
     /// A flag indicating if the user is currently going through a tour or not.
     private(set) var tourInProgress = false
 
+    /// A flag indidcating whether we should show the congrats notice or not.
+    private var shouldShowCongratsNotice = false
+
     /// Represents the current entry point.
     @objc var currentEntryPoint: QuickStartTourEntryPoint = .unknown
 
@@ -55,7 +58,7 @@ open class QuickStartTourGuide: NSObject {
         blog.quickStartType = type
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
-        WPAnalytics.track(.quickStartStarted)
+        WPAnalytics.trackQuickStartEvent(.quickStartStarted, blog: blog)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
                                         object: self,
@@ -140,17 +143,21 @@ open class QuickStartTourGuide: NSObject {
                                     self?.prepare(tour: tour, for: blog)
                                     self?.begin()
                                     cancelTimer(false)
-                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "positive"])
+                                    WPAnalytics.trackQuickStartStat(.quickStartSuggestionButtonTapped,
+                                                                    properties: ["type": "positive"],
+                                                                    blog: blog)
                                 } else {
                                     self?.skipped(tour, for: blog)
                                     cancelTimer(true)
-                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "negative"])
+                                    WPAnalytics.trackQuickStartStat(.quickStartSuggestionButtonTapped,
+                                                                    properties: ["type": "negative"],
+                                                                    blog: blog)
                                 }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
 
-        WPAnalytics.track(.quickStartSuggestionViewed)
+        WPAnalytics.trackQuickStartStat(.quickStartSuggestionViewed, blog: blog)
     }
 
     /// Prepares to begin the specified tour.
@@ -229,6 +236,24 @@ open class QuickStartTourGuide: NSObject {
         completed(tour: tour, for: blog, postNotification: postNotification)
     }
 
+    func showCongratsNoticeIfNeeded(for blog: Blog) {
+        guard allToursCompleted(for: blog), shouldShowCongratsNotice else {
+            return
+        }
+
+        shouldShowCongratsNotice = false
+
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil, isDismissable: true)
+        let notice = Notice(title: Strings.congratulationsTitle,
+                            message: Strings.congratulationsMessage,
+                            style: noticeStyle,
+                            tag: noticeTag)
+
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        WPAnalytics.trackQuickStartStat(.quickStartCongratulationsViewed, blog: blog)
+    }
+
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
     @objc func currentElementInt() -> Int {
         return currentWaypoint()?.element.rawValue ?? NSNotFound
@@ -289,7 +314,10 @@ open class QuickStartTourGuide: NSObject {
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
         let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
     }
 
     private func showNextStep(_ nextStep: TourState) {
@@ -331,31 +359,29 @@ private extension QuickStartTourGuide {
 
         blog.completeTour(tour.key)
 
+        // Create a site is completed automatically, we don't want to track
+        if tour.analyticsKey != "create_site" {
+            WPAnalytics.trackQuickStartStat(.quickStartTourCompleted,
+                                            properties: ["task_name": tour.analyticsKey],
+                                            blog: blog)
+        }
+
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-
-            // Create a site is completed automatically, we don't want to track
-            if tour.analyticsKey != "create_site" {
-                WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
-            }
 
             recentlyTouredBlog = blog
         } else {
             recentlyTouredBlog = nil
         }
 
-        guard !(tour is QuickStartCongratulationsTour) else {
-            WPAnalytics.track(.quickStartCongratulationsViewed)
-            return
-        }
-
         if allToursCompleted(for: blog) {
-            WPAnalytics.track(.quickStartAllToursCompleted)
+            WPAnalytics.trackQuickStartStat(.quickStartAllToursCompleted, blog: blog)
             grantCongratulationsAward(for: blog)
             tourInProgress = false
+            shouldShowCongratsNotice = true
         } else {
             if let nextTour = tourToSuggest(for: blog) {
-                PushNotificationsManager.shared.postNotification(for: nextTour)
+                PushNotificationsManager.shared.postNotification(for: nextTour, quickStartType: blog.quickStartType)
             }
         }
     }
@@ -447,6 +473,11 @@ private extension QuickStartTourGuide {
         static let suggestionTimeout = 10.0
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
         static let nextStepDelay: DispatchTimeInterval = .milliseconds(1000)
+    }
+
+    private enum Strings {
+        static let congratulationsTitle = NSLocalizedString("Congrats! You know your way around", comment: "Title shown when all tours have been completed.")
+        static let congratulationsMessage = NSLocalizedString("Doesn't it feel good to cross things off a list?", comment: "Message shown when all tours have been completed")
     }
 }
 

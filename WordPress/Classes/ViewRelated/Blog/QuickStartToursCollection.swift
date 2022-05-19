@@ -67,16 +67,16 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
     let tours: [QuickStartTour]
 
     init(blog: Blog) {
-        self.title = NSLocalizedString("Get to know the WordPress app",
-                                      comment: "Name of the Quick Start list that guides users through a few tasks to explore the WordPress app.")
+        self.title = AppConstants.QuickStart.getToKnowTheAppTourTitle
         self.hint = NSLocalizedString("A series of steps helping you to explore the app.",
-                                     comment: "A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button.")
+                                     comment: "A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button.")
         self.completedImageName = "wp-illustration-tasks-complete-site"
         self.analyticsKey = "get-to-know"
         self.tours = [
             QuickStartCheckStatsTour(),
             QuickStartNotificationsTour(),
             QuickStartViewTour(blog: blog),
+            QuickStartMediaUploadTour(),
             QuickStartFollowTour()
         ]
     }

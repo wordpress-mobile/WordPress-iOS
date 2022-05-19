@@ -14,7 +14,10 @@ class PostServiceSelfHostedTests: XCTestCase {
 
     private var remoteMock: PostServiceXMLRPCMock!
     private var service: PostService!
-    private var context: NSManagedObjectContext!
+    private var contextManager: ContextManagerMock!
+    private var context: NSManagedObjectContext {
+        contextManager.mainContext
+    }
 
     private let impossibleFailureBlock: (Error?) -> Void = { _ in
         assertionFailure("This shouldn't happen.")
@@ -23,7 +26,7 @@ class PostServiceSelfHostedTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager = ContextManagerMock()
 
         remoteMock = PostServiceXMLRPCMock()
 
@@ -37,8 +40,6 @@ class PostServiceSelfHostedTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {

@@ -125,7 +125,11 @@ private extension AddInsightTableViewController {
         var insights: [StatSection] {
             switch self {
             case .general:
+                if FeatureFlag.statsNewInsights.enabled {
+                    return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
+                }
                 return [.insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
+
             case .postsAndPages:
                 return [.insightsLatestPostSummary, .insightsPostingActivity, .insightsTagsAndCategories]
             case .activity:

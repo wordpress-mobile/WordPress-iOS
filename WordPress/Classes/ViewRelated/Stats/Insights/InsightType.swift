@@ -19,6 +19,7 @@ enum InsightType: Int, SiteStatsPinnable {
     case allComments
     case allTagsAndCategories
     case allAnnual
+    case viewsVisitors
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static let defaultInsights: [InsightType] = [.mostPopularTime,
@@ -47,6 +48,8 @@ enum InsightType: Int, SiteStatsPinnable {
 
     var statSection: StatSection? {
         switch self {
+        case .viewsVisitors:
+            return .insightsViewsVisitors
         case .latestPostSummary:
             return .insightsLatestPostSummary
         case .allTimeStats:

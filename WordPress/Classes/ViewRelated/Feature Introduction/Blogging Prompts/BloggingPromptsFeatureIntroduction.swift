@@ -1,6 +1,6 @@
 import UIKit
 
-// TODO: add description
+/// This displays a Feature Introduction specifically for Blogging Prompts.
 
 class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
 

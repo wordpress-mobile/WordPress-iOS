@@ -28,6 +28,32 @@ struct OverviewRow: ImmuTableRow {
     }
 }
 
+struct ViewsVisitorsRow: ImmuTableRow {
+
+    typealias CellType = ViewsVisitorsLineChartCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let segmentsData: [StatsSegmentedControlData]
+    let action: ImmuTableAction? = nil
+    let chartData: [LineChartDataConvertible]
+    let chartStyling: [LineChartStyling]
+    let period: StatsPeriodUnit?
+    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
+    let xAxisDates: [Date]
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
@@ -287,6 +313,27 @@ struct MostPopularTimeInsightStatsRow: ImmuTableRow {
     }
 }
 
+struct TotalInsightStatsRow: ImmuTableRow {
+
+    typealias CellType = StatsTotalInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    let dataRow: StatsTotalInsightsData
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(count: dataRow.count, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
 
 // MARK: - Insights Management
 

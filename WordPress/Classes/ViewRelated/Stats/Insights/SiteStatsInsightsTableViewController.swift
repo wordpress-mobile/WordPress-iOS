@@ -149,6 +149,10 @@ private extension SiteStatsInsightsTableViewController {
                                                pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
+
+        if FeatureFlag.statsNewInsights.enabled {
+            viewModel?.startFetchingPeriodOverview()
+        }
     }
 
     func addViewModelListeners() {
@@ -169,6 +173,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [InsightCellHeaderRow.self,
+                ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
@@ -177,6 +182,7 @@ private extension SiteStatsInsightsTableViewController {
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
                 MostPopularTimeInsightStatsRow.self,
+                TotalInsightStatsRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostGrowAudienceImmutableRow.self,
