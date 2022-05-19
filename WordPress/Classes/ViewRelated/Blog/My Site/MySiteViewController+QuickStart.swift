@@ -8,19 +8,17 @@ extension MySiteViewController {
             if let info = notification.userInfo,
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
+                self?.siteMenuSpotlightIsShown = element == .siteMenu
+
                 switch element {
                 case .noSuchElement, .newpost:
                     self?.additionalSafeAreaInsets = .zero
 
                 case .siteIcon, .siteTitle, .viewSite:
                     self?.scrollView.scrollToTop(animated: true)
-                    self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
-
-                case .siteMenu:
-                    self?.siteMenuSpotlightIsShown = true
                     fallthrough
 
-                case .pages, .sharing, .stats, .readerTab, .notifications:
+                case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications:
                     self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
                 default:
