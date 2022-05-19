@@ -4,7 +4,7 @@ import WordPressKit
 struct SiteDesignSectionLoader {
     static let recommendedTitle = NSLocalizedString("Best for %@", comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
 
-    static func fetchSections(vertical: SiteIntentVertical?) async throws -> [SiteDesignSection] {
+    static func fetchSections(vertical: SiteIntentVertical?, completion: @escaping (Result<[SiteDesignSection], Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
         let templateGroups: [TemplateGroup] = [.stable, .singlePage]
 
@@ -18,15 +18,13 @@ struct SiteDesignSectionLoader {
             withGroups: templateGroups
         )
 
-        return try await withCheckedThrowingContinuation { continuation in
-            SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { result in
-                switch result {
-                case .success(let designs):
-                    let sections = assembleSections(remoteDesigns: designs, vertical: vertical)
-                    continuation.resume(with: .success(sections))
-                case .failure(let error):
-                    continuation.resume(with: .failure(error))
-                }
+        SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { result in
+            switch result {
+            case .success(let designs):
+                let sections = assembleSections(remoteDesigns: designs, vertical: vertical)
+                completion(.success(sections))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

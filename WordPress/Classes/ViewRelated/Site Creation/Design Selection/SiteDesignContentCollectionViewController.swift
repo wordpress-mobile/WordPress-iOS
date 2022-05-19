@@ -77,18 +77,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
-        Task { @MainActor in
-            isLoading = true
+        isLoading = true
 
-            do {
-                let sections = try await SiteDesignSectionLoader.fetchSections(vertical: creator.vertical)
-                self.dismissNoResultsController()
-                self.sections = sections
-            } catch {
-                handleError(error)
+        SiteDesignSectionLoader.fetchSections(vertical: creator.vertical) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let sections):
+                    self.dismissNoResultsController()
+                    self.sections = sections
+                case .failure(let error):
+                    self.handleError(error)
+                }
+
+                self.isLoading = false
             }
-
-            isLoading = false
         }
     }
 
