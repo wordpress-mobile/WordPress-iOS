@@ -2,6 +2,8 @@ import Foundation
 import WordPressKit
 
 struct SiteDesignSectionLoader {
+    static let recommendedTitle = NSLocalizedString("Best for %@", comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
+
     static func fetchSections(vertical: SiteIntentVertical?) async throws -> [SiteDesignSection] {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
         let templateGroups: [TemplateGroup] = [.stable, .singlePage]
@@ -29,6 +31,7 @@ struct SiteDesignSectionLoader {
         }
     }
 
+    // Returns designs whose `group` property contains a vertical's slug
     static func getSectionForVerticalSlug(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
         let designsForVertical = remoteDesigns.designs.filter({
             $0.groups?
@@ -44,10 +47,16 @@ struct SiteDesignSectionLoader {
             designs: designsForVertical,
             thumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
             categorySlug: "recommended_" + vertical.slug,
-            title: "Best for \(vertical.localizedTitle)" // TODO - localization
+            title: String(format: recommendedTitle, vertical.localizedTitle)
         )
     }
 
+    /*
+     Assembles Site Design sections by placing a single larger recommended section above regular sections.
+
+     If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
+     If designs aren't found for the fallback category, the recommended section won't be included.
+    */
     static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
         let categorySections = remoteDesigns.categories.map { category in
             SiteDesignSection(
@@ -64,7 +73,7 @@ struct SiteDesignSectionLoader {
 
         if var recommendedFallback = categorySections.first(where: { $0.categorySlug.lowercased() == "blog" }) {
             // Recommended designs for the vertical weren't found, so we used the fallback category
-            recommendedFallback.title = "Best for Blogging" // TODO - localization
+            recommendedFallback.title = String(format: recommendedTitle, "Blogging")
             recommendedFallback.thumbnailSize = SiteDesignCategoryThumbnailSize.recommended.value
             return [recommendedFallback] + categorySections.filter { $0 != recommendedFallback }
         }
