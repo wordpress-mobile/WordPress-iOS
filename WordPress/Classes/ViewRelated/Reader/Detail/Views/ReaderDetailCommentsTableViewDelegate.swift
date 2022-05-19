@@ -9,7 +9,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var post: ReaderPost?
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
-    private var headerView: ReaderDetailCommentsHeader?
+    private(set) var headerView: ReaderDetailCommentsHeader?
 
     private var totalRows = 0
     private var hideButton = true
@@ -57,6 +57,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
+    func setAnchorVisibility(_ isVisible: Bool) {
+        headerView?.toggleAnchorVisibility(isVisible)
+    }
+
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,7 +103,11 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        header.configure(
+            post: post,
+            totalComments: totalComments,
+            presentingViewController: presentingViewController
+        )
         headerView = header
         return header
     }

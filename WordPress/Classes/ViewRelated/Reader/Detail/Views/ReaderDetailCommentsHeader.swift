@@ -10,6 +10,8 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var followButton: UIButton!
     private var post: ReaderPost?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
+    private var tooltipPresenter: TooltipPresenter?
+    private(set) var tooltip: Tooltip?
 
     private var totalComments = 0 {
         didSet {
@@ -41,9 +43,26 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
         configureButton()
 
-        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(post: post,
-                                                                           delegate: self,
-                                                                           presentingViewController: presentingViewController)
+        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(
+            post: post,
+            delegate: self,
+            presentingViewController: presentingViewController
+        )
+        let tooltip = Tooltip()
+        self.tooltip = tooltip
+
+        tooltip.title = "Follow the conversation"
+        tooltip.message = "Get notified."
+        tooltip.primaryButtonTitle = "Got it"
+        tooltip.secondaryButtonTitle = "Learn more"
+
+        tooltipPresenter = TooltipPresenter(
+            containerView: self,
+            tooltip: tooltip,
+            targetView: followButton
+        )
+        tooltipPresenter?.attachAnchor(withTitle: "New", onView: presentingViewController.view)
+        tooltipPresenter?.showTooltip()
     }
 
     func updateFollowButtonState(post: ReaderPost) {
@@ -51,6 +70,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureButton()
     }
 
+    func toggleAnchorVisibility(_ isVisible: Bool) {
+        tooltipPresenter?.toggleAnchorVisibility(isVisible)
+    }
 }
 
 // MARK: - Private Extension
@@ -61,6 +83,7 @@ private extension ReaderDetailCommentsHeader {
         contentView.backgroundColor = .basicBackground
         addBottomBorder(withColor: .divider)
         configureTitle()
+
     }
 
     func configureTitle() {

@@ -89,6 +89,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    private var shouldShowTooltipAnchor = true
+
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
@@ -161,6 +163,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
         configureCommentsTable()
+        scrollView.delegate = self
 
         coordinator?.start()
 
@@ -227,6 +230,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
+        // Here
         header.configure(for: post)
         fetchLikes()
         fetchComments()
@@ -967,6 +971,17 @@ private extension ReaderDetailViewController {
         let convertedViewFrame = scrollView.convert(view.bounds, from: view)
         return scrollViewFrame.intersects(convertedViewFrame)
     }
+        /// Checks if the view is visible in the viewport.
+    func isFullyVisibleInScrollView(_ view: UIView) -> Bool {
+        guard view.superview != nil, !view.isHidden else {
+            return false
+        }
+
+        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
+        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
+        return scrollViewFrame.contains(convertedViewFrame)
+    }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -1029,5 +1044,18 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
                                       origin: self,
                                       promptToAddComment: commentsTableViewDelegate.totalComments == 0,
                                       source: .postDetailsComments)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension ReaderDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let tooltip = commentsTableViewDelegate.headerView?.tooltip else { return }
+        let isTooltipVisible = isFullyVisibleInScrollView(tooltip)
+
+        guard isTooltipVisible != shouldShowTooltipAnchor else { return }
+
+        shouldShowTooltipAnchor = !shouldShowTooltipAnchor
+        commentsTableViewDelegate.setAnchorVisibility(!isTooltipVisible)
     }
 }

@@ -8,6 +8,13 @@ final class TooltipPresenter {
         static let horizontalBufferMargin: CGFloat = 20
         static let tooltipTopConstraintAnimationOffset: CGFloat = 8
         static let tooltipAnimationDuration: TimeInterval = 0.2
+        static let anchorBottomConstraintConstant: CGFloat = 58
+    }
+
+    enum TooltipVerticalPosition {
+        case auto
+        case above
+        case below
     }
 
     private let containerView: UIView
@@ -15,8 +22,10 @@ final class TooltipPresenter {
     private let targetView: UIView
     private var primaryTooltipAction: (() -> Void)?
     private var secondaryTooltipAction: (() -> Void)?
-
+    private var anchor: TooltipAnchor?
     private var tooltipTopConstraint: NSLayoutConstraint?
+
+    var tooltipVerticalPosition: TooltipVerticalPosition = .auto
 
     init(containerView: UIView,
          tooltip: Tooltip,
@@ -45,7 +54,31 @@ final class TooltipPresenter {
         )
     }
 
-    func show() {
+    func attachAnchor(withTitle title: String, onView view: UIView) {
+        let anchor = TooltipAnchor()
+        self.anchor = anchor
+        anchor.title = title
+        anchor.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(anchor)
+
+        NSLayoutConstraint.activate([
+            anchor.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: anchor.bottomAnchor,
+                constant: Constants.anchorBottomConstraintConstant
+            )
+        ])
+    }
+
+    func toggleAnchorVisibility(_ isVisible: Bool) {
+        guard let anchor = anchor else {
+            return
+        }
+
+        anchor.isHidden = !isVisible
+    }
+
+    func showTooltip() {
         containerView.addSubview(tooltip)
         self.tooltip.alpha = 0
         tooltip.addArrowHead(toXPosition: arrowOffsetX(), arrowPosition: tooltipOrientation())
@@ -110,7 +143,7 @@ final class TooltipPresenter {
 
     @objc private func resetTooltipAndShow() {
         tooltip.removeFromSuperview()
-        show()
+        showTooltip()
     }
 
     /// Calculates where the arrow needs to place in the borders of the tooltip.
@@ -151,9 +184,16 @@ final class TooltipPresenter {
 
 
     private func tooltipOrientation() -> Tooltip.ArrowPosition {
-        if containerView.frame.midY < targetView.frame.minY {
+        switch tooltipVerticalPosition {
+        case .auto:
+            if containerView.frame.midY < targetView.frame.minY {
+                return .bottom
+            }
+            return .top
+        case .above:
             return .bottom
+        case .below:
+            return .top
         }
-        return .top
     }
 }
