@@ -134,6 +134,24 @@ class BloggingPromptsService {
     }
 }
 
+// MARK: - Service Factory
+
+/// Convenience factory to generate `BloggingPromptsService` for different blogs.
+///
+class BloggingPromptsServiceFactory {
+    let contextManager: ContextManager
+    let remote: BloggingPromptsServiceRemote?
+
+    init(contextManager: ContextManager, remote: BloggingPromptsServiceRemote? = nil) {
+        self.contextManager = contextManager
+        self.remote = remote
+    }
+
+    func makeService(for blog: Blog) -> BloggingPromptsService? {
+        return .init(contextManager: contextManager, remote: remote, blog: blog)
+    }
+}
+
 // MARK: - Private Helpers
 
 private extension BloggingPromptsService {

@@ -12,13 +12,16 @@ class PromptRemindersScheduler {
         case unknown
     }
 
+    private let promptsServiceFactory: BloggingPromptsServiceFactory
     private let notificationScheduler: NotificationScheduler
     private let pushAuthorizer: PushNotificationAuthorizer
 
     // MARK: Public Methods
 
-    init(notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
+    init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory,
+         notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
          pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
+        self.promptsServiceFactory = bloggingPromptsServiceFactory
         self.notificationScheduler = notificationScheduler
         self.pushAuthorizer = pushAuthorizer
     }
@@ -41,7 +44,7 @@ class PromptRemindersScheduler {
             return
         }
 
-        guard let promptsService = BloggingPromptsService(blog: blog) else {
+        guard let promptsService = promptsServiceFactory.makeService(for: blog) else {
             completion(.failure(Errors.invalidSite))
             return
         }
@@ -61,9 +64,13 @@ class PromptRemindersScheduler {
                       let weekday = Weekday(rawValue: weekdayComponent - 1) else { // Calendar.Component.weekday starts from 1 (Sunday)
                     return false
                 }
-                // only select prompts that matches the weekdays listed in the schedule.
+
+                // only select prompts in the future that matches the weekdays listed in the schedule.
                 // additionally, if today's prompt is included, only include it if the reminder time has not passed.
-                return weekdays.contains(weekday) && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedAscending)
+                return weekdays.contains(weekday)
+                && promptLocalDate.compare(currentDate) == .orderedAscending
+                && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedAscending)
+
             }.forEach { promptToSchedule in
                 let _ = self.scheduleNotification(for: promptToSchedule, blog: blog, at: reminderTime)
             }
