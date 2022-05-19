@@ -81,11 +81,10 @@ class BloggingPromptsService {
     func todaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
                       failure: @escaping (Error?) -> Void) {
         guard localTodaysPrompt == nil else {
-            print("🔴 todaysPrompt > returning local.")
             success(localTodaysPrompt)
             return
         }
-        print("🔴 todaysPrompt > fetching.")
+
         fetchTodaysPrompt(success: success, failure: failure)
     }
 
@@ -111,12 +110,10 @@ class BloggingPromptsService {
 
         // If there aren't maxListPrompts cached, need to fetch more.
         guard localListPrompts.count < maxListPrompts else {
-            print("🔴 listPrompts > returning local.")
             success(localListPrompts)
             return
         }
 
-        print("🔴 listPrompts > fetching.")
         fetchListPrompts(success: success, failure: failure)
     }
 
