@@ -6,11 +6,10 @@ import OHHTTPStubs
 
 // MARK: - NotificationSettingsServiceTests
 //
-class NotificationSettingsServiceTests: XCTestCase {
+class NotificationSettingsServiceTests: CoreDataTestCase {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
-    var contextManager: ContextManagerMock!
     var remoteApi: WordPressComRestApi!
     var service: NotificationSettingsService!
 
@@ -26,7 +25,6 @@ class NotificationSettingsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager      = ContextManagerMock()
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
         service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
                                                            wordPressComRestApi: remoteApi)

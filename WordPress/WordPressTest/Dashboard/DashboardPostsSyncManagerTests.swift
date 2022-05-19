@@ -1,10 +1,9 @@
 import XCTest
 @testable import WordPress
 
-class DashboardPostsSyncManagerTests: XCTestCase {
+class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var contextManager: ContextManagerMock!
     private let draftStatuses: [BasePost.Status] = [.draft, .pending]
     private let scheduledStatuses: [BasePost.Status] = [.scheduled]
     private var postService: PostServiceMock!
@@ -12,7 +11,6 @@ class DashboardPostsSyncManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(contextManager.mainContext).build()
         blog.dashboardState.syncingStatuses = []

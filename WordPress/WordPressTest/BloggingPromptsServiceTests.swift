@@ -3,7 +3,7 @@ import OHHTTPStubs
 
 @testable import WordPress
 
-final class BloggingPromptsServiceTests: XCTestCase {
+final class BloggingPromptsServiceTests: CoreDataTestCase {
     private let siteID = 1
     private let timeout: TimeInterval = 2
 
@@ -17,10 +17,6 @@ final class BloggingPromptsServiceTests: XCTestCase {
         return formatter
     }()
 
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
     private var remote: BloggingPromptsServiceRemoteMock!
     private var service: BloggingPromptsService!
     private var blog: Blog!
@@ -29,7 +25,6 @@ final class BloggingPromptsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()
@@ -37,10 +32,8 @@ final class BloggingPromptsServiceTests: XCTestCase {
     }
 
     override func tearDown() {
-        ContextManager.overrideSharedInstance(nil)
         HTTPStubs.removeAllStubs()
 
-        contextManager = nil
         remote = nil
         blog = nil
         accountService = nil
@@ -184,7 +177,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
 private extension BloggingPromptsServiceTests {
     func makeAccountService() -> AccountService {
-        let service = AccountService(managedObjectContext: contextManager.mainContext)
+        let service = AccountService(managedObjectContext: mainContext)
         let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
         account.userID = NSNumber(value: 1)
         service.setDefaultWordPressComAccount(account)
@@ -193,7 +186,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(contextManager.mainContext).isHostedAtWPcom().build()
+        return BlogBuilder(mainContext).isHostedAtWPcom().build()
     }
 
     func stubFetchPromptsResponse() {

@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class ReplyToCommentActionTests: XCTestCase {
+final class ReplyToCommentActionTests: CoreDataTestCase {
     private class TestableReplyToComment: ReplyToComment {
         let service: MockNotificationActionsService
         override var actionsService: NotificationActionsService? {
@@ -24,7 +24,6 @@ final class ReplyToCommentActionTests: XCTestCase {
 
     private var action: ReplyToComment?
     let utility = NotificationUtility()
-    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -33,8 +32,7 @@ final class ReplyToCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        testContextManager = ContextManagerMock()
-        action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: testContextManager)
+        action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 

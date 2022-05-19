@@ -2,9 +2,8 @@ import XCTest
 
 @testable import WordPress
 
-class BlogDashboardPostsParserTests: XCTestCase {
+class BlogDashboardPostsParserTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     private var parser: BlogDashboardPostsParser!
@@ -12,7 +11,6 @@ class BlogDashboardPostsParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         parser = BlogDashboardPostsParser(managedObjectContext: context)
     }
@@ -20,7 +18,6 @@ class BlogDashboardPostsParserTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     /// When the API return no drafts, but there are local drafts

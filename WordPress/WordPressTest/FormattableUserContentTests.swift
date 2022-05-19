@@ -1,8 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableUserContentTests: XCTestCase {
-    private let contextManager = ContextManagerMock()
+final class FormattableUserContentTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: FormattableUserContent?
