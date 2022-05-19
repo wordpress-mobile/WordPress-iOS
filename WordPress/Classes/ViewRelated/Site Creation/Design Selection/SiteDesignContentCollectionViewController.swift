@@ -114,9 +114,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.body)
-        label.numberOfLines = 0
+        label.numberOfLines = Metrics.helperTextNumberOfLines
         label.text = TextContent.helperText
         label.textColor = .secondaryLabel
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.helperTextMinimumScaleFactor
         return label
     }()
 
@@ -131,6 +134,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private func setupHelperView() {
         tableView.tableFooterView = helperView
         activateHelperConstraints()
+
+        helperSeparator.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        helperSeparator.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     let selectedPreviewDevice = PreviewDevice.mobile
@@ -243,6 +254,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         static let helperImageWidth: CGFloat = 24.0
         static let helperPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let helperSpacing: CGFloat = 16
+
+        static let helperTextNumberOfLines = 2
+        static let helperTextMinimumScaleFactor: CGFloat = 0.6
     }
 }
 
