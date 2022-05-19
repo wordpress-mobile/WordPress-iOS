@@ -4,7 +4,7 @@ import WordPressKit
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
-    private let vertical: SiteIntentVertical?
+    private let creator: SiteCreator
     private let createsSite: Bool
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
@@ -39,10 +39,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     let selectedPreviewDevice = PreviewDevice.mobile
 
-    init(vertical: SiteIntentVertical?, createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
-        self.completion = completion
-        self.vertical = vertical
+    init(creator: SiteCreator, createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.creator = creator
         self.createsSite = createsSite
+        self.completion = completion
         tableView = UITableView(frame: .zero, style: .plain)
 
         super.init(
@@ -66,10 +66,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
-        fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchSiteDesigns()
     }
 
     private func fetchSiteDesigns() {
@@ -77,7 +81,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         Task {
             do {
-                let sections = try await SiteDesignSectionLoader.fetchSections(vertical: vertical)
+                let sections = try await SiteDesignSectionLoader.fetchSections(vertical: creator.vertical)
                 DispatchQueue.main.async {
                     self.dismissNoResultsController()
                     self.sections = sections
