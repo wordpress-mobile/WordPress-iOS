@@ -106,6 +106,7 @@ class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable
         let controller = AddInsightTableViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -648,6 +649,19 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
         insightsToShow = insightTypes
         refreshInsights(forceRefresh: true)
         updateView()
+    }
+}
+
+// MARK: - Presentation delegate
+
+extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let navigationController = presentationController.presentedViewController as? UINavigationController,
+        let controller = navigationController.topViewController as? AddInsightTableViewController else {
+            return
+        }
+
+        controller.handleDismissViaGesture(from: self)
     }
 }
 

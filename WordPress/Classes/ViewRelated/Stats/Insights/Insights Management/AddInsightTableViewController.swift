@@ -28,7 +28,6 @@ class AddInsightTableViewController: UITableViewController {
     private var selectedStat: StatSection?
 
     private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped))
-    private var dismissedViaButton = false
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -73,21 +72,11 @@ class AddInsightTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(doneTapped))
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // Catches user swiping down to dismiss
-        if FeatureFlag.statsNewAppearance.enabled {
-            if !dismissedViaButton {
-                if hasChanges {
-                    promptToSave(from: presentingViewController)
-                } else {
-                    WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
-                    insightsDelegate?.addInsightDismissed?()
-                }
-            }
-        } else if selectedStat == nil {
-            insightsDelegate?.addInsightDismissed?()
+    func handleDismissViaGesture(from presenter: UIViewController) {
+        if FeatureFlag.statsNewAppearance.enabled && hasChanges {
+            promptToSave(from: presenter)
+        } else {
+            trackDismiss()
         }
     }
 
@@ -160,8 +149,6 @@ class AddInsightTableViewController: UITableViewController {
     }
 
     @objc private func doneTapped() {
-        dismissedViaButton = true
-
         if FeatureFlag.statsNewAppearance.enabled && hasChanges {
             promptToSave(from: self)
         } else {
@@ -170,18 +157,20 @@ class AddInsightTableViewController: UITableViewController {
     }
 
     @objc func saveTapped() {
-        dismissedViaButton = true
-
         saveChanges()
 
         dismiss(animated: true, completion: nil)
     }
 
     private func dismiss() {
-        WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
-        insightsDelegate?.addInsightDismissed?()
+        trackDismiss()
 
         dismiss(animated: true, completion: nil)
+    }
+
+    private func trackDismiss() {
+        WPAnalytics.trackEvent(.statsInsightsManagementDismissed)
+        insightsDelegate?.addInsightDismissed?()
     }
 
     private func saveChanges() {
