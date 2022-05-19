@@ -56,15 +56,18 @@ struct SiteDesignSectionLoader {
 
      If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
      If designs aren't found for the fallback category, the recommended section won't be included.
+     If there are no designs for a category, it won't be included.
     */
     static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
         let categorySections = remoteDesigns.categories.map { category in
             SiteDesignSection(
                 category: category,
-                designs: remoteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug) },
+                designs: remoteDesigns.designs.filter {
+                    $0.categories.map { $0.slug }.contains(category.slug)
+                },
                 thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
             )
-        }
+        }.filter { !$0.designs.isEmpty }
 
         if let vertical = vertical, let recommendedVertical = getSectionForVerticalSlug(vertical, remoteDesigns: remoteDesigns) {
             // Recommended designs for the vertical were found
