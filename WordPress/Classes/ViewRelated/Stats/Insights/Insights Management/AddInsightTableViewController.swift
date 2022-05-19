@@ -128,7 +128,7 @@ class AddInsightTableViewController: UITableViewController {
 
         return insightsShown.count > 0 && isActiveCardsSection(indexPath.section)
     }
-    
+
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if isActiveCardsSection(proposedDestinationIndexPath.section) {
             return proposedDestinationIndexPath
@@ -171,7 +171,7 @@ class AddInsightTableViewController: UITableViewController {
 
     @objc func saveTapped() {
         dismissedViaButton = true
-        
+
         saveChanges()
 
         dismiss(animated: true, completion: nil)
