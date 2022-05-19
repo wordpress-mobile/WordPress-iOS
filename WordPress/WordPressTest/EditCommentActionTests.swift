@@ -25,22 +25,20 @@ final class EditCommentActionTests: CoreDataTestCase {
     }
 
     private var action: EditComment?
-    private let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
         action = TestableEditComment(on: Constants.initialStatus, coreDataStack: contextManager)
     }
 
     override func tearDown() {
         action = nil
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testActionTitleIsExpected() {

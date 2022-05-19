@@ -31,15 +31,14 @@ final class ApproveCommentActionTests: CoreDataTestCase {
     }
 
     private var action: ApproveComment?
-    private let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
         action = TestableApproveComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
@@ -47,8 +46,7 @@ final class ApproveCommentActionTests: CoreDataTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {
