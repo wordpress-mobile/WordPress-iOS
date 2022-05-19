@@ -106,8 +106,6 @@ private extension BloggingPromptsViewController {
     }
 
     func fetchPrompts() {
-        // TODO: show cached prompts first.
-
         guard let bloggingPromptsService = bloggingPromptsService else {
             DDLogError("Failed creating BloggingPromptsService instance.")
             showErrorView()
