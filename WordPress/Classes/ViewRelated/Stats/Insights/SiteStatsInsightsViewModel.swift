@@ -175,6 +175,17 @@ class SiteStatsInsightsViewModel: Observable {
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
+            case .likesTotals:
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLikesTotals,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(blocks(for: .likesTotals,
+                                           type: .period,
+                                           status: insightsStore.followersTotalsStatus,
+                                           block: {
+                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loading: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }, error: errorBlock))
             case .followersTotals:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsFollowerTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -621,6 +632,11 @@ private extension SiteStatsInsightsViewModel {
                                                    rightColumnData: totalPublicize.abbreviatedString()))
 
         return dataRows
+    }
+
+    func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
+        // TODO: Populate with real data!
+        return StatsTotalInsightsData(count: 12.abbreviatedString())
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {

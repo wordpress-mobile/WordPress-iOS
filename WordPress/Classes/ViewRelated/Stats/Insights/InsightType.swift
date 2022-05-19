@@ -19,22 +19,43 @@ enum InsightType: Int, SiteStatsPinnable {
     case allComments
     case allTagsAndCategories
     case allAnnual
+    // New stats revamp cards – May 2022
     case viewsVisitors
+    case likesTotals
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
-    static let defaultInsights: [InsightType] = [.mostPopularTime,
-                                                 .allTimeStats,
-                                                 .todaysStats,
-                                                 .followers,
-                                                 .comments
-    ]
+    static let defaultInsights: [InsightType] = {
+        if FeatureFlag.statsNewInsights.enabled {
+            return [.viewsVisitors,
+                    .likesTotals,
+                    .followersTotals,
+                    .mostPopularTime,
+                    .latestPostSummary]
+        } else {
+            return [.mostPopularTime,
+                    .allTimeStats,
+                    .todaysStats,
+                    .followers,
+                    .comments]
+        }
+    }()
+
     // This property is here to update the default list on existing installations.
     // If the list saved on UserDefaults matches the old one, it will be updated to the new one above.
-    static let oldDefaultInsights: [InsightType] = [.latestPostSummary,
-                                                    .todaysStats,
-                                                    .allTimeStats,
-                                                    .followersTotals
-    ]
+    static let oldDefaultInsights: [InsightType] = {
+        if FeatureFlag.statsNewInsights.enabled {
+            return [.mostPopularTime,
+                    .allTimeStats,
+                    .todaysStats,
+                    .followers,
+                    .comments]
+        } else {
+            return [.latestPostSummary,
+                    .todaysStats,
+                    .allTimeStats,
+                    .followersTotals]
+        }
+    }()
 
     static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
 
@@ -54,6 +75,8 @@ enum InsightType: Int, SiteStatsPinnable {
             return .insightsLatestPostSummary
         case .allTimeStats:
             return .insightsAllTime
+        case .likesTotals:
+            return .insightsLikesTotals
         case .followersTotals:
             return .insightsFollowerTotals
         case .mostPopularTime:
