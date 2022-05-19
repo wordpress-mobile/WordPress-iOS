@@ -1,15 +1,8 @@
 import UIKit
 import WordPressFlux
 
-class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable {
+class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
-
-    // MARK: - Properties
-    lazy var tableView: UITableView = {
-        UITableView(frame: .zero, style: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
-    }()
-
-    let refreshControl = UIRefreshControl()
 
     var isGrowAudienceShowing: Bool {
         return insightsToShow.contains(.growAudience)
@@ -67,7 +60,6 @@ class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        initTableView()
         SiteStatsInformation.sharedInstance.upgradeInsights()
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
@@ -112,36 +104,9 @@ class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable
 
 }
 
-// MARK: - Tableview Datasource
-
-// These methods aren't actually needed as the tableview is controlled by an instance of ImmuTableViewHandler.
-// However, ImmuTableViewHandler requires that the owner of the tableview is a data source and delegate.
-
-extension SiteStatsInsightsTableViewController: TableViewContainer, UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        0
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-}
-
 // MARK: - Private Extension
 
 private extension SiteStatsInsightsTableViewController {
-
-    func initTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        view.pinSubviewToAllEdges(tableView)
-
-        tableView.refreshControl = refreshControl
-    }
 
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
@@ -447,7 +412,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

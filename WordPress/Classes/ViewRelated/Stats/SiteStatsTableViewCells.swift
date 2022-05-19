@@ -43,6 +43,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     let chartStyling: [LineChartStyling]
     let period: StatsPeriodUnit?
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let xAxisDates: [Date]
 
     func configureCell(_ cell: UITableViewCell) {
@@ -51,7 +52,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates)
+        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
     }
 }
 
@@ -425,6 +426,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     let action: ImmuTableAction? = nil
@@ -438,6 +440,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
+                       statSection: statSection,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsReferrerDelegate: siteStatsReferrerDelegate)
     }
