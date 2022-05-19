@@ -1,3 +1,4 @@
+import Gridicons
 import UIKit
 import WordPressKit
 
@@ -35,6 +36,102 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private var ghostThumbnailSize: CGSize {
         return SiteDesignCategoryThumbnailSize.recommended.value
+    }
+
+    // MARK: Helper Footer View
+    override var allowCustomTableFooterView: Bool {
+        true
+    }
+
+    private lazy var helperView: UIView = {
+        let view = UIView(frame: Metrics.helperFrame)
+        view.addSubview(helperStackView)
+        view.pinSubviewToAllEdges(helperStackView)
+        return view
+    }()
+
+    private lazy var helperStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [helperSeparator, helperContentView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
+    private lazy var helperSeparator: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .separator
+        return view
+    }()
+
+    private lazy var helperContentView: UIView = {
+        let view = UIView()
+        view.addSubview(helperContentStackView)
+        view.pinSubviewToAllEdges(helperContentStackView, insets: Metrics.helperPadding)
+        return view
+    }()
+
+    private lazy var helperContentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [helperImageStackView, helperLabelStackView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = Metrics.helperSpacing
+        return stackView
+    }()
+
+    private lazy var helperImageStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [helperImageView, UIView()])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
+    private lazy var helperImageView: UIImageView = {
+        let imageView = UIImageView(image: .gridicon(.infoOutline))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .secondaryLabel
+        return imageView
+    }()
+
+    private lazy var helperLabelStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [helperLabel, UIView()])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
+    private lazy var helperLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = WPStyleGuide.fontForTextStyle(.body)
+        label.numberOfLines = Metrics.helperTextNumberOfLines
+        label.text = TextContent.helperText
+        label.textColor = .secondaryLabel
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.helperTextMinimumScaleFactor
+        return label
+    }()
+
+    private func activateHelperConstraints() {
+        NSLayoutConstraint.activate([
+            helperImageView.heightAnchor.constraint(equalToConstant: Metrics.helperImageWidth),
+            helperImageView.widthAnchor.constraint(equalToConstant: Metrics.helperImageWidth),
+            helperSeparator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+        ])
+    }
+
+    private func setupHelperView() {
+        tableView.tableFooterView = helperView
+        activateHelperConstraints()
+
+        helperSeparator.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        helperSeparator.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        helperContentView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     let selectedPreviewDevice = PreviewDevice.mobile
@@ -87,6 +184,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 case .success(let sections):
                     self.dismissNoResultsController()
                     self.sections = sections
+                    self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)
                 }
@@ -129,12 +227,31 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private enum TextContent {
-        static let mainTitle = NSLocalizedString("Choose a theme", comment: "Title for the screen to pick a theme and homepage for a site.")
-        static let backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation.")
-        static let skipButtonTitle = NSLocalizedString("Skip", comment: "Continue without making a selection.")
-        static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel site creation.")
-        static let errorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        static let errorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        static let mainTitle = NSLocalizedString("Choose a theme",
+                                                 comment: "Title for the screen to pick a theme and homepage for a site.")
+        static let backButtonTitle = NSLocalizedString("Design",
+                                                       comment: "Shortened version of the main title to be used in back navigation.")
+        static let skipButtonTitle = NSLocalizedString("Skip",
+                                                       comment: "Continue without making a selection.")
+        static let cancelButtonTitle = NSLocalizedString("Cancel",
+                                                         comment: "Cancel site creation.")
+        static let errorTitle = NSLocalizedString("Unable to load this content right now.",
+                                                  comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
+        static let errorSubtitle = NSLocalizedString("Check your network connection and try again.",
+                                                     comment: "Default subtitle for no-results when there is no connection.")
+        static let helperText = NSLocalizedString("Can’t decide? You can change the theme at any time",
+                                                  comment: "Helper text that appears at the bottom of the design screen.")
+    }
+
+    private enum Metrics {
+        // Frame of the bottom helper: width will be automatically calucuated by assigning it to tableview.tableFooterView
+        static let helperFrame = CGRect(x: 0, y: 0, width: 0, height: 90)
+        static let helperImageWidth: CGFloat = 24.0
+        static let helperPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let helperSpacing: CGFloat = 16
+
+        static let helperTextNumberOfLines = 2
+        static let helperTextMinimumScaleFactor: CGFloat = 0.6
     }
 }
 

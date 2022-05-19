@@ -37,6 +37,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         false
     }
 
+    // Set this property to true to add a custom footerView with custom sizing when scrollableView is UITableView.
+    var allowCustomTableFooterView: Bool {
+        false
+    }
+
     private let hasDefaultAction: Bool
     private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
@@ -466,6 +471,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
         let newHeight: CGFloat = max(footerHeight, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
+
+            guard !allowCustomTableFooterView else {
+                return
+            }
+
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
             tableView.tableFooterView?.backgroundColor = .clear
