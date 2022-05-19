@@ -6,7 +6,7 @@ struct StatsMockDataLoader {
         let feb21 = DateComponents(year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
-        let jsonDictionary = try JSONObject.loadFile(named: fileName)
+        let jsonDictionary = try JSONObject.init(fromFileNamed: fileName)
 
         guard let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(date: date,
                 period: .day,
