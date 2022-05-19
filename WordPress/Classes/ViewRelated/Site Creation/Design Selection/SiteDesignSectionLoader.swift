@@ -34,7 +34,7 @@ struct SiteDesignSectionLoader {
     // Returns designs whose `group` property contains a vertical's slug
     static func getSectionForVerticalSlug(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
         let designsForVertical = remoteDesigns.designs.filter({
-            $0.groups?
+            $0.group?
                 .map { $0.lowercased() }
                 .contains(vertical.slug.lowercased()) ?? false
         })

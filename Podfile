@@ -49,8 +49,8 @@ end
 def wordpress_kit
     # pod 'WordPressKit', '~> 4.52.0-beta.4'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'task/remote-design-groups'
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '3a6aa8c914f3253dfbb6fcc65ec6449a62e61b2d'
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
