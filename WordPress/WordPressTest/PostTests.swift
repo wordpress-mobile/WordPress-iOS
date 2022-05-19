@@ -3,9 +3,8 @@ import XCTest
 
 @testable import WordPress
 
-class PostTests: XCTestCase {
+class PostTests: CoreDataTestCase {
 
-    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
 
     fileprivate func newTestBlog() -> Blog {
@@ -29,7 +28,6 @@ class PostTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
     }

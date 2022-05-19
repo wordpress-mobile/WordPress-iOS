@@ -1,9 +1,8 @@
 import XCTest
 @testable import WordPress
 
-class GutenbergSettingsTests: XCTestCase {
+class GutenbergSettingsTests: CoreDataTestCase {
 
-    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
     private let gutenbergContent = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
 
@@ -43,7 +42,6 @@ class GutenbergSettingsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         Environment.replaceEnvironment(contextManager: contextManager)

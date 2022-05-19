@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class TrashCommentActionTests: XCTestCase {
+final class TrashCommentActionTests: CoreDataTestCase {
     private class TestableTrashComment: TrashComment {
         let service: MockNotificationActionsService
         override var actionsService: NotificationActionsService? {
@@ -22,7 +22,6 @@ final class TrashCommentActionTests: XCTestCase {
 
     private var action: TrashComment?
     let utils = NotificationUtility()
-    private var testContextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -31,8 +30,7 @@ final class TrashCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utils.setUp()
-        testContextManager = ContextManagerMock()
-        action = TestableTrashComment(on: Constants.initialStatus, coreDataStack: testContextManager)
+        action = TestableTrashComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 

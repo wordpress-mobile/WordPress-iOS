@@ -11,17 +11,6 @@ class QuickStartChecklistViewController: UITableViewController {
         }
     }
 
-    private lazy var successScreen: NoResultsViewController = {
-        let successScreen = NoResultsViewController.controller()
-        successScreen.view.frame = tableView.bounds
-        successScreen.view.backgroundColor = .listBackground
-        successScreen.configure(title: Constants.tasksCompleteScreenTitle,
-                                subtitle: Constants.tasksCompleteScreenSubtitle,
-                                image: collection.completedImageName)
-        successScreen.updateView()
-        return successScreen
-    }()
-
     private lazy var closeButtonItem: UIBarButtonItem = {
         let cancelButton = WPStyleGuide.buttonForBar(with: Constants.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
@@ -71,15 +60,7 @@ class QuickStartChecklistViewController: UITableViewController {
                     QuickStartTourGuide.shared.begin()
                 }
             }
-        }, didTapHeader: { [unowned self] expand in
-            let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed
-            WPAnalytics.trackQuickStartStat(event,
-                                            properties: [Constants.analyticsTypeKey: self.collection.analyticsKey],
-                                            blog: blog)
-            self.checkForSuccessScreen(expand)
         })
-
-        checkForSuccessScreen()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -90,16 +71,6 @@ class QuickStartChecklistViewController: UITableViewController {
         WPAnalytics.trackQuickStartStat(.quickStartChecklistViewed,
                                         properties: [Constants.analyticsTypeKey: collection.analyticsKey],
                                         blog: blog)
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { [weak self] context in
-            let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
-            self?.successScreen.hideImageView(hideImageView)
-            self?.successScreen.updateAccessoryViewsVisibility()
-            self?.tableView.backgroundView = self?.successScreen.view
-        })
     }
 }
 
@@ -114,10 +85,6 @@ private extension QuickStartChecklistViewController {
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
-        let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
-        successScreen.hideImageView(hideImageView)
-
-        tableView.backgroundView = successScreen.view
         self.tableView = tableView
         WPStyleGuide.configureTableViewColors(view: self.tableView)
     }
@@ -136,18 +103,6 @@ private extension QuickStartChecklistViewController {
     func reload() {
         dataManager?.reloadData()
         tableView.reloadData()
-    }
-
-    func checkForSuccessScreen(_ expand: Bool = false) {
-        if let dataManager = dataManager,
-            !dataManager.shouldShowCompleteTasksScreen() {
-            self.tableView.backgroundView?.alpha = 0
-            return
-        }
-
-        UIView.animate(withDuration: Constants.successScreenFadeAnimationDuration) {
-            self.tableView.backgroundView?.alpha = expand ? 0.0 : 1.0
-        }
     }
 
     @objc private func closeWasPressed(sender: UIButton) {
@@ -174,7 +129,4 @@ private enum Constants {
     static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
     static let closeButtonModalImage = UIImage.gridicon(.cross)
     static let estimatedRowHeight: CGFloat = 90.0
-    static let successScreenFadeAnimationDuration: TimeInterval = 0.3
-    static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
-    static let tasksCompleteScreenSubtitle = NSLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
 }

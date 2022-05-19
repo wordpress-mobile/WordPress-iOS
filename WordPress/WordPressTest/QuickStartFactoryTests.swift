@@ -1,23 +1,16 @@
 import XCTest
 @testable import WordPress
 
-class QuickStartFactoryTests: XCTestCase {
+class QuickStartFactoryTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
     }
 
     func testCollectionsForExistingSite() {

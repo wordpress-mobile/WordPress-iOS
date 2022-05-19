@@ -3,7 +3,7 @@ import XCTest
 @testable import WordPress
 import WordPressShared
 
-class PushAuthenticationManagerTests: XCTestCase {
+class PushAuthenticationManagerTests: CoreDataTestCase {
 
     class MockUIAlertControllerProxy: UIAlertControllerProxy {
 
@@ -40,7 +40,6 @@ class PushAuthenticationManagerTests: XCTestCase {
         }
     }
 
-    var contextManager: ContextManagerMock!
     var mockPushAuthenticationService: MockPushAuthenticationService!
     var mockAlertControllerProxy = MockUIAlertControllerProxy()
     var pushAuthenticationManager: PushAuthenticationManager?
@@ -48,7 +47,6 @@ class PushAuthenticationManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
 
         mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: contextManager.mainContext)
 

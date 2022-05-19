@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class EditCommentActionTests: XCTestCase {
+final class EditCommentActionTests: CoreDataTestCase {
     private class TestableEditComment: EditComment {
         let service: MockNotificationActionsService
 
@@ -26,7 +26,6 @@ final class EditCommentActionTests: XCTestCase {
 
     private var action: EditComment?
     private let utility = NotificationUtility()
-    private var contextManager: ContextManagerMock!
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -35,7 +34,6 @@ final class EditCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         utility.setUp()
-        contextManager = ContextManagerMock()
         action = TestableEditComment(on: Constants.initialStatus, coreDataStack: contextManager)
     }
 

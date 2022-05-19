@@ -5,13 +5,11 @@ import Nimble
 
 private typealias ButtonGroups = PostCardStatusViewModel.ButtonGroups
 
-class PostCardStatusViewModelTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class PostCardStatusViewModelTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 

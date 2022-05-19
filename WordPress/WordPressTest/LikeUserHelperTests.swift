@@ -1,13 +1,7 @@
 @testable import WordPress
 import XCTest
 
-class LikeUserHelperTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        contextManager = ContextManagerMock()
-    }
+class LikeUserHelperTests: CoreDataTestCase {
 
     func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
         var remoteUserDictionary: [String: Any] = [
