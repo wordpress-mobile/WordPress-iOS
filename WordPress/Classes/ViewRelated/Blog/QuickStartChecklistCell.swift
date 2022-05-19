@@ -80,8 +80,7 @@ private extension QuickStartChecklistCell {
             // because users don't need the hint repeated to them after a task is completed.
             accessibilityHint = nil
             accessibilityLabel = tour.titleMarkedCompleted
-        }
-        else {
+        } else {
             let hint = tour.accessibilityHintText
             if !hint.isEmpty {
                 accessibilityHint = hint
