@@ -6,6 +6,7 @@ class BloggingPromptsService {
     private let siteID: NSNumber
     private let remote: BloggingPromptsServiceRemote
     private let calendar: Calendar = .autoupdatingCurrent
+    private let maxListPrompts = 11
 
     /// A UTC date formatter that ignores time information.
     private static var dateFormatter: DateFormatter = {
@@ -21,6 +22,12 @@ class BloggingPromptsService {
     ///
     var localTodaysPrompt: BloggingPrompt? {
         loadPrompts(from: Date(), number: 1).first
+    }
+
+    /// Convenience computed variable that returns prompts for the prompts list from local store.
+    ///
+    var localListPrompts: [BloggingPrompt] {
+        loadPrompts(from: listStartDate, number: maxListPrompts)
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
@@ -89,9 +96,28 @@ class BloggingPromptsService {
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchListPrompts(success: @escaping ([BloggingPrompt]) -> Void,
                           failure: @escaping (Error?) -> Void) {
-        let fromDate = calendar.date(byAdding: .day, value: -9, to: Date()) ?? Date()
-        fetchPrompts(from: fromDate, number: 11, success: success, failure: failure)
+        fetchPrompts(from: listStartDate, number: maxListPrompts, success: success, failure: failure)
     }
+
+    /// Convenience method to obtain the blogging prompts for the prompts list,
+    /// either from local cache or remote.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func listPrompts(success: @escaping ([BloggingPrompt]) -> Void,
+                     failure: @escaping (Error?) -> Void) {
+
+        // If there aren't maxListPrompts cached, need to fetch more.
+        guard localListPrompts.count < maxListPrompts else {
+            success(localListPrompts)
+            return
+        }
+
+        fetchListPrompts(success: success, failure: failure)
+    }
+
+    // MARK: - Init
 
     required init?(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
@@ -113,6 +139,10 @@ private extension BloggingPromptsService {
 
     var defaultStartDate: Date {
         calendar.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+    }
+
+    var listStartDate: Date {
+        calendar.date(byAdding: .day, value: -(maxListPrompts - 2), to: Date()) ?? Date()
     }
 
     /// Converts the given date to UTC and ignores the time information.
