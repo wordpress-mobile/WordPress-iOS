@@ -92,8 +92,7 @@ private extension QuickStartChecklistCell {
         if completed {
             descriptionLabel.textColor = .neutral(.shade30)
             iconView?.tintColor = .neutral(.shade30)
-        }
-        else {
+        } else {
             descriptionLabel.textColor = .textSubtle
             iconView?.tintColor = .listIcon
         }
