@@ -591,7 +591,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 2.0.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `92e47d917005a1277ab4fd2ad8191377cbf1c760`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/site-design-revamp`)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `feature/site-design-revamp`)
   - WordPressUI (~> 1.12.5)
@@ -752,7 +752,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.76.0
   WordPressKit:
-    :commit: 92e47d917005a1277ab4fd2ad8191377cbf1c760
+    :branch: feature/site-design-revamp
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :branch: feature/site-design-revamp
@@ -773,7 +773,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.76.0
   WordPressKit:
-    :commit: 92e47d917005a1277ab4fd2ad8191377cbf1c760
+    :commit: e371ff31712673c6844c7d050187c8a48c320e76
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: cd17c7c81d2ad7005a724b580f99e42a50a06bdb
@@ -879,6 +879,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: c5f00832ae0fbe7d9dd9240544b9f051f747aecd
+PODFILE CHECKSUM: 24f76d328e2c0fd410fca354304c047a4e58f9f5
 
 COCOAPODS: 1.11.2
