@@ -114,13 +114,13 @@ extension Xcodeproj {
         var description: String {
             switch self {
             case .objectNotFound(id: let id):
-                return "Unable to find object with UUID \(id)"
+                return "Unable to find object with UUID `\(id)`"
             case .unexpectedObjectType(id: let id, expectedType: let expectedType, found: let found):
-                return  "Object with UUID \(id) was expected to be of type \(expectedType) but found \(found) instead"
+                return  "Object with UUID `\(id)` was expected to be of type \(expectedType) but found \(found) instead"
             case .incorrectAbsolutePath(id: let id):
-                return "Object \(id) has `sourceTree = \(Xcodeproj.SourceTree.absolute)` but no `path`"
+                return "Object `\(id)` has `sourceTree = \(Xcodeproj.SourceTree.absolute)` but no `path`"
             case .orphanObject(id: let id, object: let object):
-                return "Unable to find parent group of \(object) (\(id)) during file path resolution"
+                return "Unable to find parent group of \(object) (`\(id)`) during file path resolution"
             }
         }
     }
@@ -277,6 +277,7 @@ func lint(fileAt url: URL, targetName: String) throws -> LintResult {
         guard line.range(of: "\\s*//", options: .regularExpression) == nil else { return } // Skip commented lines
         guard let range = line.range(of: "NSLocalizedString") else { return }
         
+        // Violation found, report it
         let colNo = line.distance(from: line.startIndex, to: range.lowerBound)
         let message = "Use `AppLocalizedString` instead of `NSLocalizedString` in source files that are used in the `\(targetName)` extension target. See paNNhX-nP-p2 for more info."
         print("\(url.path):\(lineNo):\(colNo): error: \(message)")
@@ -320,6 +321,6 @@ do {
     print("Done! \(violationsFound) violation(s) found.")
     exit(violationsFound > 0 ? 1 : 0)
 } catch let error {
-    print("\n\nError while parsing `\(projectPath)`: \(error)")
+    print("\(projectPath): error: Error while parsing the project file \(projectPath): \(error.localizedDescription)")
     exit(2)
 }

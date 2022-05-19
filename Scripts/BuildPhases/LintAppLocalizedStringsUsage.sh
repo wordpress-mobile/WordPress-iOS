@@ -15,7 +15,7 @@ if [ ! -x "${LINTER_EXEC}" ] || ! (shasum -c "${LINTER_EXEC}.shasum" >/dev/null 
 fi
 
 if [ -z "${PROJECT_FILE_PATH:=${1:-}}" ]; then
-  echo "Please provide the path to the xcodeproj to scan"
+  echo "error: Please provide the path to the xcodeproj to scan"
   exit 1
 fi
 "$LINTER_EXEC" "${PROJECT_FILE_PATH}" "${@:2}"
