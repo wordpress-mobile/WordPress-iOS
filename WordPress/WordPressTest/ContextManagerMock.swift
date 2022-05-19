@@ -13,7 +13,7 @@ class ContextManagerMock: ContextManager {
     ///
     /// - SeeAlso `ContextManager`
     init(modelName: String) {
-        super.init(modelName: modelName, store: URL(fileURLWithPath: "/dev/null"))
+        super.init(modelName: modelName, store: ContextManager.inMemoryStoreURL)
     }
 
     override func saveContextAndWait(_ context: NSManagedObjectContext) {
