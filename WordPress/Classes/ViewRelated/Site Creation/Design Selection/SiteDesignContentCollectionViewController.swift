@@ -34,7 +34,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
 
     private var ghostThumbnailSize: CGSize {
-        return SiteDesignCategoryThumbnailSize.category.value
+        return SiteDesignCategoryThumbnailSize.recommended.value
     }
 
     let selectedPreviewDevice = PreviewDevice.mobile
