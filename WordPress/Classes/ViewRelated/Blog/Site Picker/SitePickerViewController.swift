@@ -148,6 +148,10 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 extension SitePickerViewController {
 
     private func switchToBlog(_ blog: Blog) {
+        guard self.blog != blog else {
+            return
+        }
+
         self.blog = blog
         blogDetailHeaderView.blog = blog
 
