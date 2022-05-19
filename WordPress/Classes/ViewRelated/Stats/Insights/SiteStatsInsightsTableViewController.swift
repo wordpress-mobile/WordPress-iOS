@@ -104,8 +104,9 @@ class SiteStatsInsightsTableViewController: UIViewController, StoryboardLoadable
         }
 
         let controller = AddInsightTableViewController(insightsDelegate: self,
-                insightsShown: insightsToShow.compactMap { $0.statSection })
+                insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -612,7 +613,35 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
+}
 
+// MARK: - StatsInsightsManagementDelegate
+
+extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate {
+    func userUpdatedActiveInsights(_ insights: [StatSection]) {
+        let insightTypes = insights.compactMap({ $0.insightType })
+
+        guard insightTypes.count == insights.count else {
+            return
+        }
+
+        insightsToShow = insightTypes
+        refreshInsights(forceRefresh: true)
+        updateView()
+    }
+}
+
+// MARK: - Presentation delegate
+
+extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let navigationController = presentationController.presentedViewController as? UINavigationController,
+        let controller = navigationController.topViewController as? AddInsightTableViewController else {
+            return
+        }
+
+        controller.handleDismissViaGesture(from: self)
+    }
 }
 
 // MARK: - SharingViewControllerDelegate

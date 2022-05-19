@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 // MARK: - Shared Rows
 
@@ -380,8 +381,14 @@ struct AddInsightStatRow: ImmuTableRow {
 
         cell.accessibilityLabel = title
         cell.isAccessibilityElement = true
-        cell.accessibilityTraits = enabled ? .button : .notEnabled
-        cell.accessibilityHint = enabled ? enabledHint : disabledHint
+
+        let canTap = FeatureFlag.statsNewAppearance.enabled ? action != nil : enabled
+        cell.accessibilityTraits = canTap ? .button : .notEnabled
+        cell.accessibilityHint = canTap && enabled ? disabledHint : enabledHint
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            cell.accessoryView = canTap ? UIImageView(image: .gridicon(.addOutline)) : nil
+        }
     }
 }
 
