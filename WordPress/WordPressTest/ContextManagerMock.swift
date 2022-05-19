@@ -18,8 +18,12 @@ class ContextManagerMock: ContextManager {
 
     override func saveContextAndWait(_ context: NSManagedObjectContext) {
         super.saveContextAndWait(context)
-        // This log magically resolves a deadlock in
-        // `ZDashboardCardTests.testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu`
+        // FIXME: Remove this method to use superclass one instead
+        //
+        // This log resolves a deadlock in
+        // `DashboardCardTests.testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu`
+        //
+        // Unfortunately, we're not sure why.
         NSLog("Context save completed")
     }
 
