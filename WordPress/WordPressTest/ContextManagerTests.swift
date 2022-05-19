@@ -13,7 +13,52 @@ class ContextManagerTests: XCTestCase {
         }
     }
 
-    func testIterativeMigration() throws {
+    func testIterativeMigration130ToLatest() throws {
+        var objectID: NSManagedObjectID? = .none
+
+        // At the time of writing we are at app version 19.9 and model version 140.
+        // At app version 19.0 we were at model version 137.
+        // Iterating back 10 version is more than plenty to cover a real world scenario.
+        try prepareForMigration(withModelName: "WordPress 130") { context in
+            // Add an object to the DB from a model that looks different between the intial and the
+            // latest scheme version, so that we fully exercise the migration.
+            let originalObject = NSEntityDescription.insertNewObject(
+                forEntityName: "Comment",
+                into: context
+            )
+            try context.obtainPermanentIDs(for: [originalObject])
+            try context.save()
+
+            XCTAssertFalse(originalObject.objectID.isTemporaryID, "Should be a permanent object")
+            objectID = originalObject.objectID
+
+            try XCTAssertThrowsError(
+                WPException.objcTry({
+                    originalObject.value(forKey: "authorID")
+                }),
+                "Blog.organizationID doesn't exist in WordPress 130 but we were able to fetch it"
+            )
+        }
+
+        // Migrate to the latest version
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+
+        let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
+        XCTAssertNotNil(object, "Object should exist in new PSC")
+        XCTAssertNoThrow(
+            object.value(forKey: "authorID"),
+            "Blog.organizationID exists in latest model version, but we were unable to fetch it"
+        )
+    }
+
+    // The `_` at the start of the method makes it so that the XCTest runner will not pick it up as
+    // a test to run.
+    //
+    // It's not practical to run this test every time because it walks through 100+ migrations and
+    // takes 90 seconds (Intel MacBook Pro 2019)!
+    //
+    // We're keeping the code here just in case we'll ever need to test the full migration flow.
+    func _testIterativeMigration19ToLatest() throws {
         var objectID: NSManagedObjectID? = nil
 
         try prepareForMigration(withModelName: "WordPress 19") { context in
