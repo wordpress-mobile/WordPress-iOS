@@ -82,7 +82,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }()
 
     private lazy var helperContentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [helperImageStackView, helperLabeStackView])
+        let stackView = UIStackView(arrangedSubviews: [helperImageStackView, helperLabelStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Metrics.helperSpacing
@@ -103,7 +103,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         return imageView
     }()
 
-    private lazy var helperLabeStackView: UIStackView = {
+    private lazy var helperLabelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [helperLabel, UIView()])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -230,7 +230,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         static let cancelButtonTitle = NSLocalizedString("Cancel",
                                                          comment: "Cancel site creation.")
         static let errorTitle = NSLocalizedString("Unable to load this content right now.",
-                                                  comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+                                                  comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
         static let errorSubtitle = NSLocalizedString("Check your network connection and try again.",
                                                      comment: "Default subtitle for no-results when there is no connection.")
         static let helperText = NSLocalizedString("Can’t decide? You can change the theme at any time",
