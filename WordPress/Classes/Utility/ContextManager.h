@@ -49,7 +49,7 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
  @param modelName Model name in Core Data data model file.
                   Use ContextManagerModelNameCurrent for current version, or
                   "WordPress <version>" for specific version.
- @param storeURL Database location.
+ @param storeURL Database location. Use "/dev/null" to create an in memory database.
  */
 - (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
 

@@ -4,10 +4,14 @@ import XCTest
 
 class ContextManagerMock: ContextManager {
 
+    /// Create an in memory database using the current version of the data model.
     convenience init() {
         self.init(modelName: ContextManagerModelNameCurrent)
     }
 
+    /// Create an in memory database using given `modelName`.
+    ///
+    /// - SeeAlso `ContextManager`
     init(modelName: String) {
         super.init(modelName: modelName, store: URL(fileURLWithPath: "/dev/null"))
     }
