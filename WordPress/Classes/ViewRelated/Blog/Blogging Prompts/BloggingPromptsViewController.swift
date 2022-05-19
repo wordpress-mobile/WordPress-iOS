@@ -85,21 +85,21 @@ private extension BloggingPromptsViewController {
 
     func showNoResultsView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.emptyTitle,
                                      image: NoResults.imageName)
     }
 
     func showLoadingView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showErrorView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.errorTitle,
                                      subtitle: NoResults.errorSubtitle,
                                      image: NoResults.imageName)
