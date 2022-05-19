@@ -9,7 +9,7 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
     }
 }
 
-class ZDashboardCardTests: CoreDataTestCase {
+class DashboardCardTests: CoreDataTestCase {
 
     private var context: NSManagedObjectContext!
     private var blog: Blog!
