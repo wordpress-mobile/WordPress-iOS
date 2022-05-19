@@ -71,6 +71,7 @@ private extension BloggingPromptsHeaderView {
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        attributionLabel.adjustsFontForContentSizeCategory = true
     }
 
     func configureConstraints() {
