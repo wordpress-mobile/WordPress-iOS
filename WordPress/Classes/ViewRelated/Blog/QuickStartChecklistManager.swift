@@ -116,7 +116,7 @@ private extension QuickStartChecklistManager {
 }
 
 private extension QuickStartChecklistManager {
-    struct Constants {
+    enum Constants {
         static let iPadTopInset: CGFloat = 36.0
     }
 }
