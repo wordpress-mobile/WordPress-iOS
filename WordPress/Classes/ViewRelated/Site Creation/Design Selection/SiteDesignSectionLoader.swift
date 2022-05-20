@@ -29,7 +29,11 @@ struct SiteDesignSectionLoader {
         }
     }
 
-    // Returns designs whose `group` property contains a vertical's slug
+    /// Returns designs whose `group` property contains a vertical's slug.
+    /// - Parameters:
+    ///   - vertical: `SiteIntentVertical`
+    ///   - remoteDesigns: `RemoteSiteDesigns`
+    /// - Returns: Optional `SiteDesignSection`
     static func getSectionForVerticalSlug(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
         let designsForVertical = remoteDesigns.designs.filter({
             $0.group?
@@ -49,13 +53,16 @@ struct SiteDesignSectionLoader {
         )
     }
 
-    /*
-     Assembles Site Design sections by placing a single larger recommended section above regular sections.
 
-     If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
-     If designs aren't found for the fallback category, the recommended section won't be included.
-     If there are no designs for a category, it won't be included.
-    */
+    /// Assembles Site Design sections by placing a single larger recommended section above regular sections.
+    ///
+    /// - If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
+    /// - If designs aren't found for the fallback category, the recommended section won't be included.
+    /// - If there are no designs for a category, it won't be included.
+    /// - Parameters:
+    ///   - remoteDesigns: `RemoteSiteDesigns`
+    ///   - vertical: Optional `SiteIntentVertical`
+    /// - Returns: Array of `SiteDesignSection`s
     static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
         let categorySections = remoteDesigns.categories.map { category in
             SiteDesignSection(
