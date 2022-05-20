@@ -84,8 +84,6 @@ final class TooltipPresenter {
         }
     }
 
-    private var cons: [NSLayoutConstraint] = []
-
     private func setUpConstraints() {
         tooltip.translatesAutoresizingMaskIntoConstraints = false
 
@@ -107,7 +105,6 @@ final class TooltipPresenter {
         }
 
         tooltipConstraints.append(tooltipTopConstraint!)
-        cons = tooltipConstraints
         NSLayoutConstraint.activate(tooltipConstraints)
     }
 
