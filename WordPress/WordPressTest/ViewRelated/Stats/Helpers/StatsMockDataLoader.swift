@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 
 struct StatsMockDataLoader {
 
