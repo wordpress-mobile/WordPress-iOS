@@ -25,12 +25,6 @@ final class Tooltip: UIView {
             static let superHorizontalMargin: CGFloat = 16
             static let buttonStackViewHeight: CGFloat = 40
         }
-
-        enum Font {
-            static let title = WPStyleGuide.fontForTextStyle(.body)
-            static let message = WPStyleGuide.fontForTextStyle(.body)
-            static let button = WPStyleGuide.fontForTextStyle(.subheadline)
-        }
     }
 
     enum ButtonAlignment {
@@ -88,9 +82,13 @@ final class Tooltip: UIView {
             buttonsStackView.removeAllSubviews()
             switch buttonAlignment {
             case .left:
+                buttonsStackView.spacing = Constants.Spacing.buttonsStackViewInterItemSpacing
                 buttonsStackView.addArrangedSubviews([primaryButton, secondaryButton, UIView()])
+                buttonsStackView.setCustomSpacing(0, after: secondaryButton)
             case .right:
+                buttonsStackView.spacing = 0
                 buttonsStackView.addArrangedSubviews([UIView(), primaryButton, secondaryButton])
+                buttonsStackView.setCustomSpacing(Constants.Spacing.buttonsStackViewInterItemSpacing, after: primaryButton)
             }
         }
     }
@@ -107,11 +105,11 @@ final class Tooltip: UIView {
         }
     }
 
-    var primaryButtonAction: (() -> Void)?
+    var dismissalAction: (() -> Void)?
     var secondaryButtonAction: (() -> Void)?
 
     private lazy var titleLabel: UILabel = {
-        $0.font = Constants.Font.title
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .invertedLabel
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
@@ -119,7 +117,7 @@ final class Tooltip: UIView {
     }(UILabel())
 
     private lazy var messageLabel: UILabel = {
-        $0.font = Constants.Font.message
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .invertedSecondaryLabel
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
@@ -127,7 +125,7 @@ final class Tooltip: UIView {
     }(UILabel())
 
     private lazy var primaryButton: UIButton = {
-        $0.titleLabel?.font = Constants.Font.button
+        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
         $0.setTitleColor(.invertedLink, for: .normal)
         $0.addTarget(self, action: #selector(didTapPrimaryButton), for: .touchUpInside)
         $0.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -135,7 +133,7 @@ final class Tooltip: UIView {
     }(UIButton())
 
     private lazy var secondaryButton: UIButton = {
-        $0.titleLabel?.font = Constants.Font.button
+        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
         $0.setTitleColor(.invertedLink, for: .normal)
         $0.addTarget(self, action: #selector(didTapSecondaryButton), for: .touchUpInside)
         $0.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -152,6 +150,7 @@ final class Tooltip: UIView {
     private lazy var buttonsStackView: UIStackView = {
         $0.addArrangedSubviews([primaryButton, secondaryButton, UIView()])
         $0.spacing = Constants.Spacing.buttonsStackViewInterItemSpacing
+        $0.setCustomSpacing(0, after: secondaryButton)
         return $0
     }(UIStackView())
 
@@ -320,7 +319,7 @@ final class Tooltip: UIView {
     }
 
     @objc private func didTapPrimaryButton() {
-        primaryButtonAction?()
+        dismissalAction?()
     }
 
     @objc private func didTapSecondaryButton() {
@@ -336,13 +335,13 @@ final class Tooltip: UIView {
         totalHeight += Constants.Spacing.contentStackViewTop
 
         if let title = title {
-            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title)
+            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
         }
 
         totalHeight += Constants.Spacing.contentStackViewInterItemSpacing * 2
 
         if let message = message {
-            totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message)
+            totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
         }
 
         totalHeight += Constants.Spacing.buttonStackViewHeight
@@ -358,18 +357,18 @@ final class Tooltip: UIView {
         secondaryButtonTitle: String?
     ) -> CGFloat {
 
-        let titleWidth = title?.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.title) ?? 0
-        let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.message) ?? 0
+        let titleWidth = title?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
+        let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
 
         var buttonsWidth: CGFloat = 0
         if let primaryButtonTitle = primaryButtonTitle {
-            buttonsWidth += primaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: Constants.Font.button)
+            buttonsWidth += primaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.subheadline))
         }
 
         if let secondaryButtonTitle = secondaryButtonTitle {
             buttonsWidth += secondaryButtonTitle.width(
                 withMaxWidth: Constants.maxContentWidth,
-                font: Constants.Font.button
+                font: WPStyleGuide.fontForTextStyle(.subheadline)
             ) + Constants.Spacing.buttonsStackViewInterItemSpacing
         }
 

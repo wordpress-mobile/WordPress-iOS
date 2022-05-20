@@ -34,12 +34,12 @@ final class TooltipPresenter {
 
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(recalculatePosition),
+            selector: #selector(resetTooltipAndShow),
             name: UIContentSizeCategory.didChangeNotification, object: nil
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(recalculatePosition),
+            selector: #selector(resetTooltipAndShow),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
@@ -66,7 +66,7 @@ final class TooltipPresenter {
     }
 
     private func configureDismissal() {
-        tooltip.primaryButtonAction = {
+        tooltip.dismissalAction = {
             UIView.animate(
                 withDuration: Constants.tooltipAnimationDuration,
                 delay: 0,
@@ -83,6 +83,8 @@ final class TooltipPresenter {
             }
         }
     }
+
+    private var cons: [NSLayoutConstraint] = []
 
     private func setUpConstraints() {
         tooltip.translatesAutoresizingMaskIntoConstraints = false
@@ -105,27 +107,28 @@ final class TooltipPresenter {
         }
 
         tooltipConstraints.append(tooltipTopConstraint!)
+        cons = tooltipConstraints
         NSLayoutConstraint.activate(tooltipConstraints)
     }
 
-    @objc private func recalculatePosition() {
+    @objc private func resetTooltipAndShow() {
         tooltip.removeFromSuperview()
         show()
     }
 
-    /// Calculates where the arrow needs to place in the borders of the tooltia.
+    /// Calculates where the arrow needs to place in the borders of the tooltip.
     /// This depends on the position of the `targetView` relative to `tooltip`.
     private func arrowOffsetX() -> CGFloat {
         return targetView.frame.midX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
     }
 
-    /// If the tooltip is alwyas vertically centered, tooltip's width may not be big enough to reach to the `targetView`
+    /// If the tooltip is always vertically centered, tooltip's width may not be big enough to reach to the `targetView`
     /// If `xxxxxxxx` is the Tooltip and `oo` is the `targetView`:
     /// |                                               |
     /// |                xxxxxxxx                 |
     /// |                                    oo       |
     /// The tooltip needs an extra X offset to be aligned with target so that tooltip arrow points to the correct position.
-    /// Here the tooltip is pushed to the right so the arrow
+    /// Here the tooltip is pushed to the right so the arrow is pointing at the `targetView`
     /// |                                               |
     /// |                           xxxxxxxx     |
     /// |                                    oo       |
