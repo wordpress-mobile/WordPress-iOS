@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-18 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_TW */
@@ -8,6 +8,9 @@
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
 "\nThis user is registered. Their name, web address, and email address cannot be edited." = "\n這位使用者已註冊。 無法編輯他們的姓名、網址和電子郵件地址。";
+
+/* Message of Delete Site confirmation alert; substitution is site's host. */
+"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n請先重新輸入網站的網址再確認刪除。\n\n";
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n為進行確認，請在關閉前重新輸入你的使用者名稱。\n\n";
@@ -1212,6 +1215,10 @@ translators: Block name. %s: The localized block name */
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "註冊此網域，即表示你同意我們的<a>條款與條件<\/a>。";
 
+/* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
+. Also there is a placeholder %@ which is: Terms and Conditions */
+"By setting up Jetpack you agree to our\n%@" = "設定 Jetpack 即代表你同意我們的\n%@";
+
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "註冊即代表你同意我們的「服務條款」。";
 
@@ -1825,6 +1832,10 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "正在連結...";
 
+/* Message to show when Publicize authorization is canceled
+   Message to show when Publicize connection is canceled by the user. */
+"Connection canceled" = "已取消連結";
+
 /* Message to show when Publicize authorization failed
    Message to show when Publicize connect failed */
 "Connection failed" = "連結失敗";
@@ -2181,6 +2192,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the edition of the share message. */
 "Customize the message" = "自訂訊息";
+
+/* Hint displayed when the user is customizing the share message. */
+"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "自訂你希望分享的訊息。\n若你不在此新增文字，我們會使用文章標題做為訊息內容。";
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "自訂新文章和留言的關注網站設定";
@@ -2925,6 +2939,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "將留言移至垃圾桶時發生錯誤。";
+
+/* Text displayed in HUD while a post revision is being loaded. */
+"Error occurred\nduring loading" = "更新時\n載入中";
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "儲存時\n發生錯誤";
@@ -6385,6 +6402,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "搜尋 WordPress";
 
+/* A short message that is a call to action for the Reader's Search feature. */
+"Search WordPress\nfor a site or post" = "搜尋 WordPress\n網站或文章";
+
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "搜尋區塊標籤。 目前的文字是";
 
@@ -8684,6 +8704,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "我們無法還原你的網站。 請稍後再試一次。";
 
+/* Description that appears when a media fails to load in the Media Editor. */
+"We couldn't retrieve this media.\nPlease tap to retry." = "我們無法擷取這個媒體。\n請點選以重試。";
+
 /* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
 "We couldn't schedule this page, but we'll try again later." = "我們無法排程此頁面，但稍後會再試一次。";
 
@@ -9147,6 +9170,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that they are already following a site in their reader. */
 "You are already following this site." = "你已經關注此這個網站。";
 
+/* Alert message. */
+"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "你正將使用者名稱變更為「%@」。 一旦變更使用者名稱，你的 Gravatar 個人檔案和 IntenseDebate 個人檔案網址也會受到影響。 \n請確認你的新使用者名稱以繼續操作。";
+
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "你目前正在上傳媒體。請等待此作業完成。";
 
@@ -9260,11 +9286,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "你必須登入 WordPress.com 帳號才能執行此動作。";
 
+/* Body of alert prompting users to verify their accounts while attempting to publish */
+"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "你需要先驗證帳號才能發表文章。\n不必擔心，系統會將你的文章儲存為草稿，並妥善保存。";
+
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "You received *50 likes* on your comment" = "你的留言已收到 *50 個讚*";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "你已收到 *50 likes* on your site today";
+
+/* Message displayed in popup when user has the option to load unsaved changes. 
+ is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "你最近變更了這篇文章，但沒有儲存這些變更。 選擇要載入的版本：\n\n從此裝置\n已儲存於 %1$@\n\n從其他裝置\n已儲存於 %2$@\n";
 
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail */
