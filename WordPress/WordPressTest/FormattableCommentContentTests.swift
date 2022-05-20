@@ -1,11 +1,11 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableCommentContentTests: XCTestCase {
+final class FormattableCommentContentTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: FormattableCommentContent?
-    private var utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Expectations {
         static let text = "This is an unapproved comment"
@@ -17,15 +17,13 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     override func setUpWithError() throws {
-        try super.setUpWithError()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
         subject = try FormattableCommentContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
         subject = nil
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testKindReturnsExpectation() {
