@@ -4,26 +4,28 @@ import UserNotifications
 /// Encapsulates the local notification scheduling logic for Blogging Prompts.
 ///
 class PromptRemindersScheduler {
-    typealias Schedule = BloggingRemindersScheduler.Schedule
-    typealias Weekday = BloggingRemindersScheduler.Weekday
-
     enum Errors: Error {
         case invalidSite
         case unknown
     }
 
+    private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)!
+
     private let promptsServiceFactory: BloggingPromptsServiceFactory
     private let notificationScheduler: NotificationScheduler
     private let pushAuthorizer: PushNotificationAuthorizer
+    private let currentDateProvider: CurrentDateProvider
 
     // MARK: Public Methods
 
     init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory,
          notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
-         pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
+         pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.promptsServiceFactory = bloggingPromptsServiceFactory
         self.notificationScheduler = notificationScheduler
         self.pushAuthorizer = pushAuthorizer
+        self.currentDateProvider = currentDateProvider
     }
 
     /// Schedule local notifications that will show prompts on selected weekdays based on the given `Schedule`.
@@ -34,7 +36,7 @@ class PromptRemindersScheduler {
     ///   - blog: The blog that will upload the user's post.
     ///   - time: The user's preferred time to be notified.
     ///   - completion: Closure called after the process completes.
-    func schedule(_ schedule: Schedule, for blog: Blog, time: Date? = nil, completion: @escaping(Result<Void, Error>) -> Void) {
+    func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping(Result<Void, Error>) -> Void) {
 
         // TODO: Add push authorization before proceeding with the logic.
 
@@ -50,7 +52,7 @@ class PromptRemindersScheduler {
         }
 
         let reminderTime = Time(from: time) ?? Constants.defaultTime
-        let currentDate = Date()
+        let currentDate = currentDateProvider.date()
         promptsService.fetchPrompts(from: currentDate, number: Constants.promptsToFetch) { [weak self] prompts in
             guard let self = self else {
                 completion(.failure(Errors.unknown))
@@ -58,9 +60,8 @@ class PromptRemindersScheduler {
             }
 
             // Filter prompts based on the Schedule.
-            prompts.filter { prompt in
-                guard let promptLocalDate = prompt.localDate,
-                      let weekdayComponent = promptLocalDate.dateAndTimeComponents().weekday,
+            prompts.sorted { $0.date < $1.date }.filter { prompt in
+                guard let weekdayComponent = Calendar.current.dateComponents([.weekday], from: prompt.date).weekday,
                       let weekday = Weekday(rawValue: weekdayComponent - 1) else { // Calendar.Component.weekday starts from 1 (Sunday)
                     return false
                 }
@@ -68,8 +69,7 @@ class PromptRemindersScheduler {
                 // only select prompts in the future that matches the weekdays listed in the schedule.
                 // additionally, if today's prompt is included, only include it if the reminder time has not passed.
                 return weekdays.contains(weekday)
-                && promptLocalDate.compare(currentDate) == .orderedAscending
-                && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedAscending)
+                && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedDescending)
 
             }.forEach { promptToSchedule in
                 let _ = self.scheduleNotification(for: promptToSchedule, blog: blog, at: reminderTime)
@@ -94,6 +94,8 @@ class PromptRemindersScheduler {
 // MARK: - Private Helpers
 
 private extension PromptRemindersScheduler {
+    typealias Schedule = BloggingRemindersScheduler.Schedule
+    typealias Weekday = BloggingRemindersScheduler.Weekday
 
     /// A simple structure representing hour and minute.
     struct Time {
@@ -128,19 +130,21 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func scheduleNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
+        let utcDateComponents = Calendar.current.dateComponents(in: Self.gmtTimeZone, from: prompt.date)
+        guard let year = utcDateComponents.year,
+              let month = utcDateComponents.month,
+              let day = utcDateComponents.day else {
+            return nil
+        }
+
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.subtitle = blog.title ?? String()
         content.body = prompt.text
 
-        // craft the date component based on the prompt date and preferred time.
-        guard let promptLocalDate = prompt.localDate,
-              let reminderDate = Calendar.current.date(bySettingHour: time.hour, minute: time.minute, second: .zero, of: promptLocalDate) else {
-            return nil
-        }
-
         // craft the notification trigger.
-        let trigger = UNCalendarNotificationTrigger(dateMatching: reminderDate.dateAndTimeComponents(), repeats: false)
+        let reminderDateComponents = DateComponents(year: year, month: month, day: day, hour: time.hour, minute: time.minute)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: reminderDateComponents, repeats: false)
         let identifier = UUID().uuidString
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
@@ -164,5 +168,20 @@ private extension PromptRemindersScheduler.Time {
         }
 
         self.init(hour: hourComponent, minute: minuteComponent)
+    }
+}
+
+// MARK: - Current Date Provider
+
+/// A wrapper protocol to get the current `Date`.
+/// This is created to simplify unit testing.
+///
+protocol CurrentDateProvider {
+    func date() -> Date
+}
+
+struct DefaultCurrentDateProvider: CurrentDateProvider {
+    func date() -> Date {
+        return Date()
     }
 }

@@ -43,42 +43,17 @@ public class BloggingPrompt: NSManagedObject {
         return text.stringByDecodingXMLCharacters().trim()
     }
 
-    var localDate: Date? {
-        let dateString = DateFormatters.utc.string(from: date)
-        return DateFormatters.local.date(from: dateString)
-    }
-
-    /// Convenience method that matches local date to the prompt's UTC date.
+    /// Convenience method that checks if the given date is within the same day of the prompt's date without considering the timezone information.
     ///
-    /// Before checking, the prompt date is "localized" to avoid -1/+1 day issue due to local timezone. This method only checks if the prompt date
-    /// matches the year, month, and day of the given `localDate`. The time information is ignored.
+    /// Example: `2022-05-19 23:00:00 UTC-5` and `2022-05-20 00:00:00 UTC` are both dates within the same day (when the UTC date is converted to UTC-5),
+    /// but this method will return `false`.
     ///
     /// - Parameters:
     ///   - localDate: The date to compare against in local timezone.
     /// - Returns: True if the year, month, and day components of the `localDate` matches the prompt's localized date.
     func inSameDay(as dateToCompare: Date) -> Bool {
-        guard let localDate = localDate else {
-            return false
-        }
-
-        return Calendar.current.isDate(dateToCompare, inSameDayAs: localDate)
-//
-//        guard let utcTimeZone = TimeZone(secondsFromGMT: 0) else {
-//            return false
-//        }
-//
-//        let calendar = Calendar.current
-//        let localizedComponents = calendar.dateComponents(in: utcTimeZone, from: date)
-//        let components: Set<Calendar.Component> = [.year, .month, .day]
-//        let diffs = calendar.dateComponents(components, from: localDate.dateAndTimeComponents(), to: localizedComponents)
-//
-//        return components.reduce(true) { partialResult, component in
-//            let value = diffs.value(for: component) ?? -1
-//            return partialResult && (value == 0)
-//        }
+        return DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
     }
-
-
 }
 
 // MARK: - Private Helpers
