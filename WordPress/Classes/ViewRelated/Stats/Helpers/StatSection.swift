@@ -16,6 +16,7 @@
     case insightsLatestPostSummary
     case insightsAllTime
     case insightsLikesTotals
+    case insightsCommentsTotals
     case insightsFollowerTotals
     case insightsMostPopularTime
     case insightsTagsAndCategories
@@ -38,6 +39,7 @@
                                      .insightsLatestPostSummary,
                                      .insightsAllTime,
                                      .insightsLikesTotals,
+                                     .insightsCommentsTotals,
                                      .insightsFollowerTotals,
                                      .insightsMostPopularTime,
                                      .insightsTagsAndCategories,
@@ -97,6 +99,8 @@
             return InsightsHeaders.allTimeStats
         case .insightsLikesTotals:
             return InsightsHeaders.likesTotals
+        case .insightsCommentsTotals:
+            return InsightsHeaders.commentsTotals
         case .insightsFollowerTotals:
             return InsightsHeaders.followerTotals
         case .insightsMostPopularTime:
@@ -287,6 +291,8 @@
             return .allTimeStats
         case.insightsLikesTotals:
             return .likesTotals
+        case .insightsCommentsTotals:
+            return .commentsTotals
         case .insightsFollowerTotals:
             return .followersTotals
         case .insightsMostPopularTime:
@@ -342,6 +348,7 @@
             }
         }
         static let likesTotals = NSLocalizedString("Likes Total", comment: "Insights 'Likes Total' header")
+        static let commentsTotals = NSLocalizedString("Comments Total", comment: "Insights 'Comments Total' header")
         static let followerTotals = NSLocalizedString("Followers Total", comment: "Insights 'Followers Total' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")

@@ -22,12 +22,14 @@ enum InsightType: Int, SiteStatsPinnable {
     // New stats revamp cards – May 2022
     case viewsVisitors
     case likesTotals
+    case commentsTotals
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static let defaultInsights: [InsightType] = {
         if FeatureFlag.statsNewInsights.enabled {
             return [.viewsVisitors,
                     .likesTotals,
+                    .commentsTotals,
                     .followersTotals,
                     .mostPopularTime,
                     .latestPostSummary]
@@ -77,6 +79,8 @@ enum InsightType: Int, SiteStatsPinnable {
             return .insightsAllTime
         case .likesTotals:
             return .insightsLikesTotals
+        case .commentsTotals:
+            return .insightsCommentsTotals
         case .followersTotals:
             return .insightsFollowerTotals
         case .mostPopularTime:
