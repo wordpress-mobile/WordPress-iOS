@@ -3,6 +3,7 @@ import XCTest
 @testable import WordPress
 
 class NotificationContentRouterTests: CoreDataTestCase {
+
     func testFollowNotificationSourceRoutesToStream() throws {
         let utility = NotificationUtility(coreDataStack: contextManager)
         let coordinator = MockContentCoordinator()
