@@ -3,18 +3,23 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
-    typealias TemplateGroup = SiteDesignRequest.TemplateGroup
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
+    private let creator: SiteCreator
     private let createsSite: Bool
-    private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
-    private let restAPI = WordPressComRestApi.anonymousApi(
-        userAgent: WPUserAgent.wordPress(),
-        localeKey: WordPressComRestApi.LocaleKeyV2
-    )
-    private var sections: [SiteDesignSection] = []
+
+    private var sections: [SiteDesignSection] = [] {
+        didSet {
+            if oldValue.isEmpty {
+                scrollableView.setContentOffset(.zero, animated: false)
+            }
+            contentSizeWillChange()
+            tableView.reloadData()
+        }
+    }
+
     private var isLoading: Bool = true {
         didSet {
             if isLoading {
@@ -26,26 +31,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             tableView.reloadData()
         }
     }
+
     private var previewViewSelectedPreviewDevice = PreviewDevice.default
-    private var siteDesigns = RemoteSiteDesigns() {
-        didSet {
-            if oldValue.categories.count == 0 {
-                scrollableView.setContentOffset(.zero, animated: false)
-            }
-            sections = siteDesigns.categories.map { category in
-                SiteDesignSection(
-                    category: category,
-                    designs: siteDesigns.designs.filter { design in design.categories.map({$0.slug}).contains(category.slug) },
-                    thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
-                )
-            }
-            contentSizeWillChange()
-            tableView.reloadData()
-        }
-    }
 
     private var ghostThumbnailSize: CGSize {
-        return SiteDesignCategoryThumbnailSize.category.value
+        return SiteDesignCategoryThumbnailSize.recommended.value
     }
 
     // MARK: Helper Footer View
@@ -146,9 +136,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     let selectedPreviewDevice = PreviewDevice.mobile
 
-    init(createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
-        self.completion = completion
+    init(creator: SiteCreator, createsSite: Bool, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.creator = creator
         self.createsSite = createsSite
+        self.completion = completion
         tableView = UITableView(frame: .zero, style: .plain)
 
         super.init(
@@ -172,29 +163,33 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
-        fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchSiteDesigns()
+    }
+
     private func fetchSiteDesigns() {
         isLoading = true
-        let request = SiteDesignRequest(
-            withThumbnailSize: SiteDesignCategoryThumbnailSize.category.value,
-            withGroups: templateGroups
-        )
-        SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
+
+        SiteDesignSectionLoader.fetchSections(vertical: creator.vertical) { [weak self] result in
             DispatchQueue.main.async {
-                switch response {
-                case .success(let result):
-                    self?.dismissNoResultsController()
-                    self?.siteDesigns = result
-                    self?.setupHelperView()
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let sections):
+                    self.dismissNoResultsController()
+                    self.sections = sections
+                    self.setupHelperView()
                 case .failure(let error):
-                    self?.handleError(error)
+                    self.handleError(error)
                 }
-                self?.isLoading = false
+
+                self.isLoading = false
             }
         }
     }

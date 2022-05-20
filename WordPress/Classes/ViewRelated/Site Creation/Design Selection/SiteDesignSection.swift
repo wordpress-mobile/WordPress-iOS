@@ -1,21 +1,30 @@
 import Foundation
 
-class SiteDesignSection: CategorySection {
-    var category: RemoteSiteDesignCategory
+struct SiteDesignSection: CategorySection {
     var designs: [RemoteSiteDesign]
     var thumbnailSize: CGSize
 
-    var categorySlug: String { category.slug }
-    var title: String { category.title }
-    var emoji: String? { category.emoji }
-    var description: String? { category.description }
+    var categorySlug: String
+    var title: String
+    var emoji: String?
+    var description: String?
     var thumbnails: [Thumbnail] { designs }
-    var scrollOffset: CGPoint
+    var scrollOffset: CGPoint = .zero
+}
 
+extension SiteDesignSection {
     init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign], thumbnailSize: CGSize) {
-        self.category = category
         self.designs = designs
         self.thumbnailSize = thumbnailSize
-        self.scrollOffset = .zero
+        self.categorySlug = category.slug
+        self.title = category.title
+        self.emoji = category.emoji
+        self.description = category.description
+    }
+}
+
+extension SiteDesignSection: Equatable {
+    static func == (lhs: SiteDesignSection, rhs: SiteDesignSection) -> Bool {
+        lhs.categorySlug == rhs.categorySlug
     }
 }
