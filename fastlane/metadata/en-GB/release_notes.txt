@@ -1,6 +1,6 @@
 Blocks are now drag-and-drop, so you can easily rearrange your content however you like. We like to move it, move it.
 
-That’s not the only change in the block editor. We adjusted color contrast so it’s easier to read text when you’re working in dark mode. We also fixed a problem with the Link To setting in Gallery blocks, and we added Image Size settings while we were at it.
+That’s not the only change in the block editor. We adjusted colour contrast so it’s easier to read text when you’re working in dark mode. We also fixed a problem with the Link To setting in Gallery blocks, and we added Image Size settings while we were at it.
 
 The WordPress.com tour banner no longer pops up in the unsupported block editor. Speaking of tours—you’ll now see a different set of Quick Start tasks, depending on whether you’re building a new site or working with an existing one. Learning new tasks, like checking notifications and uploading media, is a piece of cake.
 
