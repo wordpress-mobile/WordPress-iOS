@@ -73,9 +73,11 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
-    // This provides a quick way to toggle the `Remove from dashboard` menu item.
-    // Since it (probably) will not be included in Blogging Prompts V1, it is disabled by default.
+    // This provides a quick way to toggle in flux features.
+    // Since they probably will not be included in Blogging Prompts V1,
+    // they are disabled by default.
     private let removeFromDashboardEnabled = false
+    private let sharePromptEnabled = false
 
     // Used to present:
     // - The menu sheet for contextual menu in iOS13.
@@ -257,7 +259,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.answeredButtonsSpacing
-        stackView.addArrangedSubviews([answeredLabel, shareButton])
+        stackView.addArrangedSubviews(sharePromptEnabled ? [answeredLabel, shareButton] : [answeredLabel])
 
         // center the stack view's contents based on its total intrinsic width (instead of having it stretched edge to edge).
         let containerView = UIView()
@@ -320,6 +322,22 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         forExampleDisplay = true
     }
 
+    // Class method to determine if the Dashboard should show this card.
+    // Specifically, it checks if today's prompt has been skipped,
+    // and therefore should not be shown.
+    static func shouldShowCard(for blog: Blog) -> Bool {
+        guard FeatureFlag.bloggingPrompts.enabled else {
+            return false
+        }
+
+        guard let todaysPrompt = BloggingPromptsService(blog: blog)?.localTodaysPrompt else {
+            // If there is no cached prompt, it can't have been skipped. So show the card.
+            return true
+        }
+
+        return !userSkippedPrompt(todaysPrompt, for: blog)
+    }
+
 }
 
 // MARK: - BlogDashboardCardConfigurable
@@ -354,7 +372,7 @@ private extension DashboardPromptsCardCell {
             return
         }
 
-        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.text.stringByDecodingXMLCharacters().trim()
+        promptLabel.text = forExampleDisplay ? Strings.examplePrompt : prompt?.textForDisplay()
         containerStackView.addArrangedSubview(promptTitleView)
 
         if let attribution = prompt?.promptAttribution {
@@ -373,15 +391,13 @@ private extension DashboardPromptsCardCell {
     // MARK: Prompt Fetching
 
     func fetchPrompt() {
-        // TODO: check for cached prompt first.
-
         guard let bloggingPromptsService = bloggingPromptsService else {
             didFailLoadingPrompt = true
             DDLogError("Failed creating BloggingPromptsService instance.")
             return
         }
 
-        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
             self?.prompt = prompt
             self?.didFailLoadingPrompt = false
         }, failure: { [weak self] (error) in
@@ -418,7 +434,8 @@ private extension DashboardPromptsCardCell {
     }
 
     func skipMenuTapped() {
-        // TODO.
+        saveSkippedPromptForSite()
+        presenterViewController?.reloadCardsLocally()
     }
 
     func removeMenuTapped() {
@@ -476,6 +493,7 @@ private extension DashboardPromptsCardCell {
         static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
+        static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
     }
 
     // MARK: Contextual Menu
@@ -536,4 +554,49 @@ private extension DashboardPromptsCardCell {
             }
         }
     }
+}
+
+// MARK: - User Defaults
+
+private extension DashboardPromptsCardCell {
+
+    static var allSkippedPrompts: [[String: Int32]] {
+        return UserDefaults.standard.array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] ?? []
+    }
+
+    func saveSkippedPromptForSite() {
+        guard let prompt = prompt,
+        let siteID = blog?.dotComID?.stringValue else {
+            return
+        }
+
+        clearSkippedPromptForSite()
+
+        let skippedPrompt = [siteID: prompt.promptID]
+        var updatedSkippedPrompts = DashboardPromptsCardCell.allSkippedPrompts
+        updatedSkippedPrompts.append(skippedPrompt)
+
+        UserDefaults.standard.set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
+    }
+
+    func clearSkippedPromptForSite() {
+        guard let siteID = blog?.dotComID?.stringValue else {
+            return
+        }
+
+        let updatedSkippedPrompts = DashboardPromptsCardCell.allSkippedPrompts.filter { $0.keys.first != siteID }
+        UserDefaults.standard.set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
+    }
+
+    static func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
+        guard let siteID = blog.dotComID?.stringValue else {
+            return false
+        }
+
+        let siteSkippedPrompts = allSkippedPrompts.filter { $0.keys.first == siteID }
+        let matchingPrompts = siteSkippedPrompts.filter { $0.values.first == prompt.promptID }
+
+        return !matchingPrompts.isEmpty
+    }
+
 }

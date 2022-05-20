@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-19 14:35:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -813,6 +813,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Svara på förslaget";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Besvarat";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -2470,6 +2473,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
 
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "Visst är det skönt att kunna bocka av saker i en lista?";
+
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Kontaktinformation för domän";
 
@@ -2814,6 +2820,9 @@ translators: Block name. %s: The localized block name */
    Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivera";
+
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Aktivera aviseringar";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Aktivera offentliggör";
@@ -5749,6 +5758,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Förhandsgranska din webbplats för att se vad dina besökare kommer att se.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "Föregående vecka";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Föregående månad";
 
@@ -5757,6 +5769,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Föregående period";
+
+/* Previous week legend label */
+"Previous week" = "Föregående vecka";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -7711,6 +7726,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "De publiceras som ett nytt blogginlägg på din webbplats för att dina läsare aldrig ska missa något.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "Denna vecka";
+
 /* Insights 'This Year' header */
 "This Year" = "Innevarande år";
 
@@ -7776,6 +7794,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Detta användarkonto kan inte avslutas eftersom det har aktiva abonnemang.";
+
+/* This week legend label */
+"This week" = "Denna vecka";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8589,6 +8610,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visningar";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "Visningar och besökare";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "Visningar för din webbplats hittills";
@@ -9632,6 +9656,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Kommentarer";
+
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Skapa inlägg";
 
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Gillamarkeringar";

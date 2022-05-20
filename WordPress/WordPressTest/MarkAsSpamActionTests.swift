@@ -22,15 +22,14 @@ final class MarkAsSpamActionTests: CoreDataTestCase {
     }
 
     private var action: MarkAsSpam?
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
         action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
@@ -38,8 +37,7 @@ final class MarkAsSpamActionTests: CoreDataTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {

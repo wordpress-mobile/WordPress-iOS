@@ -277,6 +277,7 @@ fileprivate extension BlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
+            button.spotlightHorizontalPosition = .trailing
             button.contentHorizontalAlignment = .leading
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true

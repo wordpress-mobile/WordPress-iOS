@@ -64,7 +64,7 @@ class SiteStatsInsightsViewModel: Observable {
         self.periodStore = periodStore
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
-        self.lastRequestedDate = Date()
+        self.lastRequestedDate = StatsDataHelper.currentDateForSite()
         self.lastRequestedPeriod = StatsPeriodUnit.day
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
@@ -427,73 +427,16 @@ private extension SiteStatsInsightsViewModel {
         let periodDate = self.lastRequestedDate
         let period = StatsPeriodUnit.week
 
-        let viewsData = intervalData(summaryType: .views)
-        let viewsSegmentData = StatsSegmentedControlData(segmentTitle: StatSection.periodOverviewViews.tabTitle,
-                                                         segmentData: viewsData.count,
-                                                         segmentPrevData: viewsData.prevCount,
-                                                         difference: viewsData.difference,
-                                                         differenceText: viewsData.difference < 0 ? Constants.viewsLower : Constants.viewsHigher,
-                                                         date: periodDate,
-                                                         period: period,
-                                                         analyticsStat: .statsOverviewTypeTappedViews,
-                                                         accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint,
-                                                         differencePercent: viewsData.percentage)
-
-        let visitorsData = intervalData(summaryType: .visitors)
-        let visitorsSegmentData = StatsSegmentedControlData(segmentTitle: StatSection.periodOverviewVisitors.tabTitle,
-                                                            segmentData: visitorsData.count,
-                                                            segmentPrevData: visitorsData.prevCount,
-                                                            difference: visitorsData.difference,
-                                                            differenceText: visitorsData.difference < 0 ? Constants.visitorsLower : Constants.visitorsHigher,
-                                                            date: periodDate,
-                                                            period: period,
-                                                            analyticsStat: .statsOverviewTypeTappedViews,
-                                                            accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint,
-                                                            differencePercent: visitorsData.percentage)
-
-        var lineChartData = [LineChartDataConvertible]()
-        var lineChartStyling = [LineChartStyling]()
-
-        if let chartData = mostRecentChartData {
-            let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData)
-            let viewsChart = InsightsLineChart(data: splitSummaryTimeIntervalData, filterDimension: .views)
-            lineChartData.append(contentsOf: viewsChart.lineChartData)
-            lineChartStyling.append(contentsOf: viewsChart.lineChartStyling)
-
-            let visitorsChart = InsightsLineChart(data: splitSummaryTimeIntervalData, filterDimension: .visitors)
-            lineChartData.append(contentsOf: visitorsChart.lineChartData)
-            lineChartStyling.append(contentsOf: visitorsChart.lineChartStyling)
-
-            var xAxisDates = [Date]()
-            splitSummaryTimeIntervalData.forEach { week in
-                switch week {
-                case .thisWeek(let data):
-                    xAxisDates = data.summaryData.map { $0.periodStartDate }
-                default:
-                    break
-                }
-            }
-
-            let row = ViewsVisitorsRow(
-                    segmentsData: [viewsSegmentData, visitorsSegmentData],
-                    chartData: lineChartData,
-                    chartStyling: lineChartStyling,
-                    period: lastRequestedPeriod,
-                    statsLineChartViewDelegate: statsLineChartViewDelegate,
-                    xAxisDates: xAxisDates
-            )
-            tableRows.append(row)
-        }
-
-        return tableRows
+        return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData, periodDate: periodDate,
+                statsLineChartViewDelegate: statsLineChartViewDelegate, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 
-    func intervalData(summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
-        guard let chartData = mostRecentChartData else {
+    public static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
+        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
             return (0, 0, 0, 0)
         }
 
-        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData)
+        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData)
 
         var currentCount: Int = 0
         var previousCount: Int = 0
@@ -897,9 +840,5 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
 
     enum Constants {
         static let fourteenDays = 14
-        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
-        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
-        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
-        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
     }
 }

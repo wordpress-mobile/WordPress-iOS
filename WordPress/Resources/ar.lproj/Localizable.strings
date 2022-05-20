@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 13:54:22+0000 */
+/* Translation-Revision-Date: 2022-05-19 15:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -814,6 +814,9 @@ translators: Block name. %s: The localized block name */
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "الرد على المطالبة";
 
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "تم الرد";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "أيقونة التطبيق";
@@ -1178,6 +1181,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Briefly describe the link to help screen reader user" = "قدّم وصفاً موجزًا للرابط لمساعدة مستخدم قارئ الشاشة";
+
+/* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "قم بإحضار الوسائط مباشرةً من جهازك أو الكاميرا الخاصة بك إلى موقعك.";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "تصفّح جميع قوالبنا للعثور على ما يناسبك.";
@@ -1759,6 +1765,9 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "مُنجَز: المشاركة عبر شبكات التواصل الاجتماعي";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "اكتمل: رفع الصور أو مقاطع الفيديو";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "مُنجَز: مشاهدة موقعك";
 
 /* Section title for the configure table section in the blog details screen */
@@ -1781,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "قم بالتأكيد على بريدك الإلكتروني أولاً";
+
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "تهانينا! أنت تعلم كيفية التعامل مع هذا الأمر";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "تهانينا لك على إكمال قائمتك. عمل متقن.";
@@ -2815,6 +2827,12 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "تفعيل";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "تمكين التنبيهات";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "هل تريد تمكين التنبيهات؟";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "تمكين النشر";
 
@@ -2951,6 +2969,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "حدث خطأ أثناء تحميل الإضافات";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "خطأ في أثناء تحميل المطالبة";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "خطأ أثناء وضع علامة على التعليق كمزعج.";
@@ -3339,6 +3360,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "الأسئلة الشائعة";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "من %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "من جهاز آخر";
 
@@ -3408,6 +3432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "ابدأ العمل وقم بزيادة مشاهدات مقالتك عن طريق مشاركة مقالتك.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "التعرُّف على تطبيق Jetpack";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "التعرُّف على تطبيق ووردبريس";
@@ -3516,6 +3543,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "يرشدك خلال عملية تحميل أيقونة رمزية لموقعك.";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "يرشدك خلال عملية رفع وسائط جديدة.";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -4122,6 +4152,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "تم الوصول إلى الحد المسموح به. يمكنك المحاولة مرة أخرى في غضون دقيقة واحدة. حاول مرة أخرى لأن ذلك سيؤدي إلى زيادة الوقت الذي ينبغي لك انتظاره قبل رفع الحظر. إذا كنت تعتقد أن ذلك خطأ داخلي، فاتصل بالدعم.";
 
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "مخطط خطي يصور المشاهدات لمعرفة الرؤى.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "مخطط خطي يصور الزائرين لمعرفة الرؤى.";
+
 /* No comment provided by engineer. */
 "Line Height" = "ارتفاع السطر";
 
@@ -4220,6 +4256,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "جاري تحميل الإضافات...";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "جارٍ تحميل المطالبات...";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "جاري تحميل التدفق...";
@@ -4935,6 +4974,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "لم يتم العثور على عنوان رابط الموقع الأساسي";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "لا توجد مطالبات بعد";
+
 /* A message title */
 "No recent posts" = "لا توجد مقالات حديثة";
 
@@ -4968,6 +5010,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "لم يتم تعيين أي شيء";
+
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "لم يتم الرد";
 
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "غير متصل";
@@ -5746,6 +5791,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "قم بمعاينة موقعك لرؤية ما سيراه الزائرون.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "الأسبوع الماضي";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "الشهر السابق";
 
@@ -5754,6 +5802,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "الفترة السابقة";
+
+/* Previous week legend label */
+"Previous week" = "الأسبوع الماضي";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6506,6 +6557,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "حدّد %@ لرؤية قائمة الاختيار الخاصة بك";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "حدِّد %@ للاطلاع على مكتبتك الحالية.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "حدّد %@ لرؤية خطتك الحالية والخطط المتاحة الأخرى.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6519,6 +6573,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the site url. */
 "Select %@ to view your site" = "تحديد %@ لعرض موقعك";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "حدِّد %@ لرفع الوسائط. يمكنك إضافته إلى تدويناتك \/ صفحاتك من أي جهاز.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "تحديد البلد";
@@ -7669,6 +7726,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "حدث خطأ عند تحميل الإضافات";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "حدث خطأ في أثناء تحميل المطالبات.";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "حدث خطأ في أثناء تحميل التعليق.";
 
@@ -7707,6 +7767,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "تُنشر المقالة كمقالة جديدة على موقعك حتى لا يفوِّت جمهورك أي شيء.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "هذا الأسبوع";
 
 /* Insights 'This Year' header */
 "This Year" = "هذا العام";
@@ -7773,6 +7836,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه اشتراكات نشطة.";
+
+/* This week legend label */
+"This week" = "هذا الأسيوع";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8390,6 +8456,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "فشل الرفع. اضغط للوصول إلى الخيارات.";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "رفع الصور أو مقاطع الفيديو";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "تم الرفع";
@@ -8586,6 +8655,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "مشاهدات";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "المشاهدات والزائرون";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "مشاهدات لموقعك حتى الآن";
@@ -8975,6 +9047,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "ما المشكلة؟";
 
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "ما الذي ترغب في التركيز عليه أولاً؟";
+
 /* Title of section that contains plugins' change log */
 "What's New" = "ما الجديد؟";
 
@@ -9217,6 +9292,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "يمكنك معرفة المزيد وإعداد التذكيرات في أي وقت في موقعي > الإعدادات > تذكيرات التدوين.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "يمكنك معرفة المزيد وإعداد التذكيرات في أي وقت في موقعي، ثم الإعدادات، ثم تذكيرات التدوين.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
@@ -9469,6 +9547,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "لن يُرسل موقعك بيانات بعد الآن إلى WordPress.com وستتوقف ميزات Jetpack عن العمل. ستفقد الوصول إلى الموقع على التطبيق وستضطر إلى إضافة بيانات اعتماد الموقع مرة أخرى.";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "تزيد مشاهداتك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "تقل مشاهداتك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "يزيد زائروك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "يقل زائروك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "لن يتم تخزين بيانات اعتمادك وستُستخدم فقط بغرض تنصيب Jetpack.";
 
@@ -9630,8 +9720,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "التعليقات";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "إنشاء تدوينة";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "الإعجابات";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "لم تنشر أية مقالات حتى الآن. تحقَّق من هذا مرة أخرى لاحقًا بمجرد أن تنشر تدوينتك الأولى!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "تم النشر %@";
@@ -9644,6 +9740,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewPercentage" = "%d%% من المشاهدات";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "لا يوجد نشاط كافٍ. تحقَّق من هذا مرة أخرى لاحقًا عندما يكون لدى موقعك مزيد من الزائرين!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";

@@ -4,24 +4,17 @@ import Nimble
 
 @testable import WordPress
 
-class ReaderCardServiceTests: XCTestCase {
+class ReaderCardServiceTests: CoreDataTestCase {
 
-    private var coreDataStack: ContextManagerMock!
     private var remoteService: ReaderPostServiceRemote!
     private var followedInterestsService: ReaderFollowedInterestsServiceMock!
     private var apiMock: WordPressComMockRestApi!
 
     override func setUp() {
         super.setUp()
-        coreDataStack = ContextManagerMock()
         apiMock = WordPressComMockRestApi()
-        followedInterestsService = ReaderFollowedInterestsServiceMock(context: coreDataStack.mainContext)
+        followedInterestsService = ReaderFollowedInterestsServiceMock(context: mainContext)
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        coreDataStack.tearDown()
     }
 
     /// Call the cards API with the saved slugs
@@ -30,7 +23,7 @@ class ReaderCardServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Call the API with pug and cat slugs")
 
         apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         service.fetch(isFirstPage: true, success: { _, _ in
             expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
             expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=cat"))
@@ -46,7 +39,7 @@ class ReaderCardServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Call the API with pug and cat slugs")
 
         apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         service.fetch(isFirstPage: true, success: { _, _ in
             service.fetch(isFirstPage: false, success: { _, _ in
                 expect(self.apiMock.GETCalledWithURL).to(contain("&page_handle=ZnJvbT0xMCZiZWZvcmU9MjAyMC0wNy0yNlQxMyUzQTU1JTNBMDMlMkIwMSUzQTAw"))
@@ -62,7 +55,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testReturnErrorWhenNotFollowingAnyInterest() {
         let expectation = self.expectation(description: "Error when now following interests")
         apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         followedInterestsService.returnInterests = false
 
         service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
@@ -79,11 +72,11 @@ class ReaderCardServiceTests: XCTestCase {
     func testSaveCards() {
         let expectation = self.expectation(description: "10 reader cards should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(isFirstPage: true, success: { _, _ in
-            let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
+            let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
             expect(cards?.count).to(equal(10))
             expectation.fulfill()
         }, failure: { _ in })
@@ -96,11 +89,11 @@ class ReaderCardServiceTests: XCTestCase {
     func testSaveCardsWithPosts() {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(isFirstPage: true, success: { _, _ in
-            let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
+            let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
             expect(cards?.filter { $0.post != nil }.count).to(equal(8))
             expectation.fulfill()
         }, failure: { _ in })
@@ -113,7 +106,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testFailure() {
         let expectation = self.expectation(description: "Failure callback should be called")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         apiMock.succeed = false
 
         service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
@@ -129,13 +122,13 @@ class ReaderCardServiceTests: XCTestCase {
     func testFirstPageClean() {
         let expectation = self.expectation(description: "Only 10 cards should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(isFirstPage: false, success: { _, _ in
             // Fetch again, this time the 1st page
             service.fetch(isFirstPage: true, success: { _, _ in
-                let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
+                let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
                 expect(cards?.count).to(equal(10))
                 expectation.fulfill()
             }, failure: { _ in })

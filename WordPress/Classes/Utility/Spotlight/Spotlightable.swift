@@ -1,3 +1,4 @@
+import UIKit
 
 protocol Spotlightable: UIView {
     var spotlight: QuickStartSpotlightView? { get }
@@ -6,8 +7,32 @@ protocol Spotlightable: UIView {
 
 class SpotlightableButton: UIButton, Spotlightable {
 
+    enum SpotlightHorizontalPosition {
+        case leading
+        case trailing
+
+        var defaultOffset: UIOffset {
+            switch self {
+            case .leading:
+                return Constants.leadingDefaultOffset
+            case .trailing:
+                return Constants.trailingDefaultOffset
+            }
+        }
+    }
+
     var spotlight: QuickStartSpotlightView?
     var originalTitle: String?
+    var spotlightHorizontalPosition: SpotlightHorizontalPosition = .leading
+
+    private var spotlightHorizontalAnchor: NSLayoutXAxisAnchor {
+        switch spotlightHorizontalPosition {
+        case .leading:
+            return leadingAnchor
+        case .trailing:
+            return trailingAnchor
+        }
+    }
 
     /// If this property is set, the default offset will be overridden.
     ///
@@ -61,7 +86,7 @@ class SpotlightableButton: UIButton, Spotlightable {
         addSubview(spotlightView)
         spotlightView.translatesAutoresizingMaskIntoConstraints = false
 
-        let spotlightXConstraint = spotlightView.centerXAnchor.constraint(equalTo: leadingAnchor)
+        let spotlightXConstraint = spotlightView.centerXAnchor.constraint(equalTo: spotlightHorizontalAnchor)
         let spotlightYConstraint = spotlightView.centerYAnchor.constraint(equalTo: centerYAnchor)
 
         self.spotlightXConstraint = spotlightXConstraint
@@ -82,7 +107,7 @@ class SpotlightableButton: UIButton, Spotlightable {
     }
 
     private func updateConstraintConstants() {
-        let offset = spotlightOffset ?? Constants.defaultOffset
+        let offset = spotlightOffset ?? spotlightHorizontalPosition.defaultOffset
 
         spotlightXConstraint?.constant = offset.horizontal
         spotlightYConstraint?.constant = offset.vertical
@@ -90,6 +115,7 @@ class SpotlightableButton: UIButton, Spotlightable {
 
     private enum Constants {
         static let spotlightDiameter: CGFloat = 40
-        static let defaultOffset = UIOffset(horizontal: -10, vertical: 0)
+        static let leadingDefaultOffset = UIOffset(horizontal: -10, vertical: 0)
+        static let trailingDefaultOffset = UIOffset(horizontal: 10, vertical: 0)
     }
 }
