@@ -181,11 +181,9 @@ final class Tooltip: UIView {
         commonInit()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func layoutSubviews() {
         arrowShapeLayer?.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer?.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
-
         containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
     }
 
@@ -235,6 +233,7 @@ final class Tooltip: UIView {
         }
 
         arrowShapeLayer.path = arrowPath.cgPath
+
         arrowShapeLayer.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer.lineWidth = 2.0
