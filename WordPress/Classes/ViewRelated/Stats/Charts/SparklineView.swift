@@ -15,15 +15,21 @@ class SparklineView: UIView {
         }
     }
 
-    var data: [CGFloat] = []
+    var data: [Int] = [] {
+        didSet {
+            let floatData: [CGFloat] = data.map({ CGFloat($0) })
+            chartData = interpolateData(floatData)
+
+            layoutChart()
+        }
+    }
+
+    private var chartData: [CGFloat] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let initialData = [102, 109, 526, 253, 163, 227, 101].map({ CGFloat($0) })
-        data = interpolateData(initialData)
 
         initializeChart()
-        layoutChart()
     }
 
     required init?(coder: NSCoder) {
@@ -86,26 +92,27 @@ class SparklineView: UIView {
         gradientLayer.frame = bounds
 
         // Calculate points to fit along X axis, using existing interpolated Y values
-        let segmentWidth = bounds.width / CGFloat(data.count-1)
-        let points = data.enumerated().map({ CGPoint(x: CGFloat($0.offset) * segmentWidth, y: $0.element) })
+        let segmentWidth = bounds.width / CGFloat(chartData.count-1)
+        let points = chartData.enumerated().map({ CGPoint(x: CGFloat($0.offset) * segmentWidth, y: $0.element) })
 
         // Scale Y values to fit within our bounds
         let maxYValue = points.map(\.y).max() ?? 1.0
         let scaleFactor = bounds.height / maxYValue
-        let scaleTransform = CGAffineTransform(scaleX: 1.0, y: scaleFactor)
+        var transform = CGAffineTransform(scaleX: 1.0, y: scaleFactor)
 
         // Scale the points slightly so that the line remains within bounds, based on the line width.
         let xScaleFactor = (bounds.width - Constants.lineWidth) / bounds.width
         let yScaleFactor = (bounds.height - Constants.lineWidth) / bounds.height
 
+        transform = transform.scaledBy(x: xScaleFactor, y: yScaleFactor)
+
         let halfLineWidth = Constants.lineWidth / 2.0
-        var lineTransform = CGAffineTransform(translationX: halfLineWidth, y: halfLineWidth)
-        lineTransform = lineTransform.scaledBy(x: xScaleFactor, y: yScaleFactor)
-        lineTransform = lineTransform.concatenating(scaleTransform)
+        let lineTransform = CGAffineTransform(translationX: halfLineWidth, y: halfLineWidth)
+        transform = transform.concatenating(lineTransform)
 
         // Finally, create the paths – first the line...
         let lineLayerPath = CGMutablePath()
-        lineLayerPath.addLines(between: points, transform: lineTransform)
+        lineLayerPath.addLines(between: points, transform: transform)
 
         lineLayer.path = lineLayerPath
 
