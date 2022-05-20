@@ -136,7 +136,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     let selectedPreviewDevice = PreviewDevice.mobile
 
-    init(creator: SiteCreator, createsSite: Bool, _ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(creator: SiteCreator, createsSite: Bool, completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.creator = creator
         self.createsSite = createsSite
         self.completion = completion
