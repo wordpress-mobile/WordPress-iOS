@@ -22020,7 +22020,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -22087,7 +22086,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -23417,7 +23415,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -23913,7 +23910,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25020,7 +25016,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25090,7 +25085,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25159,7 +25153,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25228,7 +25221,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
