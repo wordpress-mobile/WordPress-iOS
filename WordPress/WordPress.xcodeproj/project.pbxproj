@@ -1979,8 +1979,6 @@
 		9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */; };
 		9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */; };
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
-		9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
-		9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */; };
 		9A4E271A22EF0C78001F6A6B /* ChangeUsernameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E271922EF0C78001F6A6B /* ChangeUsernameViewModel.swift */; };
 		9A4E271D22EF33F5001F6A6B /* AccountSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E271C22EF33F5001F6A6B /* AccountSettingsStore.swift */; };
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
@@ -2483,6 +2481,12 @@
 		DC8F61F827032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F61F627032B3F0087AC5D /* TimeZoneFormatter.swift */; };
 		DC8F61FC2703321F0087AC5D /* TimeZoneFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F61FB2703321F0087AC5D /* TimeZoneFormatterTests.swift */; };
 		DCC662512810915D00962D0C /* BlogVideoLimitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC662502810915D00962D0C /* BlogVideoLimitsTests.swift */; };
+		DCF892C9282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892C8282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift */; };
+		DCF892CA282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892C8282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift */; };
+		DCF892CC282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */; };
+		DCF892CD282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */; };
+		DCF892D0282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */; };
+		DCF892D2282FA45500BB71E1 /* StatsMockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892D1282FA45500BB71E1 /* StatsMockDataLoader.swift */; };
 		E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */; };
 		E10290741F30615A00DAC588 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10290731F30615A00DAC588 /* Role.swift */; };
 		E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E102B78F1E714F24007928E8 /* RecentSitesService.swift */; };
@@ -3117,7 +3121,6 @@
 		FABB207F2602FC2C00C8785C /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
 		FABB20812602FC2C00C8785C /* PostCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 577C2AB52294401800AD1F03 /* PostCompactCell.xib */; };
 		FABB20832602FC2C00C8785C /* WidgetUnconfiguredCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FC237CC1DE00218CD2 /* WidgetUnconfiguredCell.xib */; };
-		FABB20852602FC2C00C8785C /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */; };
 		FABB20862602FC2C00C8785C /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		FABB20882602FC2C00C8785C /* People.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1B912801BB00EFD003C25B9 /* People.storyboard */; };
 		FABB208A2602FC2C00C8785C /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
@@ -3642,7 +3645,6 @@
 		FABB22AD2602FC2C00C8785C /* GutenbergSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0637542253E7E7A00FD45D2 /* GutenbergSuggestionsViewController.swift */; };
 		FABB22AE2602FC2C00C8785C /* TrashComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F520E0896F00C4D82F /* TrashComment.swift */; };
 		FABB22AF2602FC2C00C8785C /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
-		FABB22B02602FC2C00C8785C /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
 		FABB22B12602FC2C00C8785C /* ReaderDetailFeaturedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223393B24FEC18000BDD4BF /* ReaderDetailFeaturedImageView.swift */; };
 		FABB22B22602FC2C00C8785C /* StatsDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */; };
 		FABB22B32602FC2C00C8785C /* PrepublishingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */; };
@@ -6734,8 +6736,6 @@
 		9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsStore+Cache.swift"; sourceTree = "<group>"; };
 		9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
-		9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
-		9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		9A4E271922EF0C78001F6A6B /* ChangeUsernameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewModel.swift; sourceTree = "<group>"; };
 		9A4E271C22EF33F5001F6A6B /* AccountSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsStore.swift; sourceTree = "<group>"; };
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
@@ -7290,6 +7290,10 @@
 		DC8F61F627032B3F0087AC5D /* TimeZoneFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneFormatter.swift; sourceTree = "<group>"; };
 		DC8F61FB2703321F0087AC5D /* TimeZoneFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneFormatterTests.swift; sourceTree = "<group>"; };
 		DCC662502810915D00962D0C /* BlogVideoLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogVideoLimitsTests.swift; sourceTree = "<group>"; };
+		DCF892C8282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsBaseTableViewController.swift; sourceTree = "<group>"; };
+		DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsImmuTableRows.swift; sourceTree = "<group>"; };
+		DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsImmuTableRowsTests.swift; sourceTree = "<group>"; };
+		DCF892D1282FA45500BB71E1 /* StatsMockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsMockDataLoader.swift; sourceTree = "<group>"; };
 		E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-11-12.xcmappingmodel"; sourceTree = "<group>"; };
 		E10290731F30615A00DAC588 /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		E102B78F1E714F24007928E8 /* RecentSitesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSitesService.swift; sourceTree = "<group>"; };
@@ -12276,6 +12280,7 @@
 				9826AE8421B5C6D500C851FA /* Posting Activity */,
 				98880A4722B2E3FC00464538 /* Two Column Stats */,
 				DC772AF7282009FC00664C02 /* ViewsVisitors */,
+				DCF892C8282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift */,
 				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
 				9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */,
 				93F7214E271831820021A09F /* SiteStatsPinnedItemStore.swift */,
@@ -12299,6 +12304,7 @@
 				98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */,
 				98CAD295221B4ED1003E8F45 /* StatSection.swift */,
 				17D4153B22C2308D006378EF /* StatsPeriodHelper.swift */,
+				DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -12643,8 +12649,6 @@
 				FAE4CA662732C094003BFDFE /* QuickStartPromptViewController.swift */,
 				FAE4CA672732C094003BFDFE /* QuickStartPromptViewController.xib */,
 				43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */,
-				9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */,
-				9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -14201,6 +14205,7 @@
 		DC772AFB28200A3600664C02 /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				DCF892CE282FA40000BB71E1 /* Helpers */,
 				DC772AFC28200A3600664C02 /* Insights */,
 			);
 			name = Stats;
@@ -14234,6 +14239,15 @@
 				DC3B9B2E27739887003F7249 /* TimeZoneSelectorViewModelTests.swift */,
 			);
 			path = "Time Zone";
+			sourceTree = "<group>";
+		};
+		DCF892CE282FA40000BB71E1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DCF892D1282FA45500BB71E1 /* StatsMockDataLoader.swift */,
+				DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -16261,7 +16275,6 @@
 				577C2AB62294401800AD1F03 /* PostCompactCell.xib in Resources */,
 				17222D86261DDDF90047B163 /* celadon-icon-app-76x76.png in Resources */,
 				98906504237CC1DF00218CD2 /* WidgetUnconfiguredCell.xib in Resources */,
-				9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				17222D85261DDDF90047B163 /* celadon-icon-app-83.5x83.5@2x.png in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
@@ -16712,7 +16725,6 @@
 				FABB207F2602FC2C00C8785C /* ReaderTagStreamHeader.xib in Resources */,
 				FABB20812602FC2C00C8785C /* PostCompactCell.xib in Resources */,
 				FABB20832602FC2C00C8785C /* WidgetUnconfiguredCell.xib in Resources */,
-				FABB20852602FC2C00C8785C /* QuickStartChecklistHeader.xib in Resources */,
 				FABB20862602FC2C00C8785C /* n.caf in Resources */,
 				FABB20882602FC2C00C8785C /* People.storyboard in Resources */,
 				98A047762821D069001B4E2D /* BloggingPromptsViewController.storyboard in Resources */,
@@ -18274,7 +18286,6 @@
 				D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */,
 				08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */,
 				1788106F260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift in Sources */,
-				9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */,
 				3223393C24FEC18100BDD4BF /* ReaderDetailFeaturedImageView.swift in Sources */,
 				98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */,
 				8BAD272C241FEF3300E9D105 /* PrepublishingViewController.swift in Sources */,
@@ -18452,6 +18463,7 @@
 				735A9681228E421F00461135 /* StatsBarChartConfiguration.swift in Sources */,
 				2F161B0622CC2DC70066A5C5 /* LoadingStatusView.swift in Sources */,
 				080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */,
+				DCF892C9282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */,
 				2FA6511B21F26A57009AA935 /* InlineErrorRetryTableViewCell.swift in Sources */,
 				08216FCF1CDBF96000304BA7 /* MenuItemSourceCell.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
@@ -18870,6 +18882,7 @@
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
 				46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
+				DCF892CC282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */,
 				08D553662821286300AA1E8D /* Tooltip.swift in Sources */,
 				FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
@@ -19946,6 +19959,7 @@
 				2481B1E8260D4EAC00AE59DB /* WPAccount+LookupTests.swift in Sources */,
 				E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */,
 				57D66B9D234BB78B005A2D74 /* PostServiceWPComTests.swift in Sources */,
+				DCF892D0282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift in Sources */,
 				8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */,
@@ -20029,6 +20043,7 @@
 				FAE8EE9C273AD0A800A65307 /* QuickStartSettingsTests.swift in Sources */,
 				400A2C912217B308000A8A59 /* CountryStatsRecordValueTests.swift in Sources */,
 				8BD8201D24BF9E5200FF25FD /* ReaderWelcomeBannerTests.swift in Sources */,
+				DCF892D2282FA45500BB71E1 /* StatsMockDataLoader.swift in Sources */,
 				02761EC222700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift in Sources */,
 				8B749E9025AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift in Sources */,
 				F1450CF72437E8F800A28BFE /* MediaHostTests.swift in Sources */,
@@ -20659,7 +20674,6 @@
 				FABB22AD2602FC2C00C8785C /* GutenbergSuggestionsViewController.swift in Sources */,
 				FABB22AE2602FC2C00C8785C /* TrashComment.swift in Sources */,
 				FABB22AF2602FC2C00C8785C /* MenusService.m in Sources */,
-				FABB22B02602FC2C00C8785C /* QuickStartChecklistHeader.swift in Sources */,
 				FABB22B12602FC2C00C8785C /* ReaderDetailFeaturedImageView.swift in Sources */,
 				FEA7948E26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				FABB22B22602FC2C00C8785C /* StatsDataHelper.swift in Sources */,
@@ -20850,6 +20864,7 @@
 				FABB234C2602FC2C00C8785C /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				FABB234D2602FC2C00C8785C /* ReaderLikeAction.swift in Sources */,
+				DCF892CD282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */,
 				FABB234E2602FC2C00C8785C /* ReaderMenuAction.swift in Sources */,
 				FABB234F2602FC2C00C8785C /* PostSharingController.swift in Sources */,
 				FABB23502602FC2C00C8785C /* LongPressGestureLabel.swift in Sources */,
@@ -21200,6 +21215,7 @@
 				FABB24802602FC2C00C8785C /* JetpackRestoreStatusViewController.swift in Sources */,
 				FABB24812602FC2C00C8785C /* BindableTapGestureRecognizer.swift in Sources */,
 				FABB24822602FC2C00C8785C /* ReaderSearchSuggestion.swift in Sources */,
+				DCF892CA282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */,
 				FABB24832602FC2C00C8785C /* ReaderSearchViewController.swift in Sources */,
 				FABB24842602FC2C00C8785C /* SiteStatsTableHeaderView.swift in Sources */,
 				FABB24852602FC2C00C8785C /* MediaSizeSliderCell.swift in Sources */,

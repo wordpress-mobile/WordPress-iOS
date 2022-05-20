@@ -4,27 +4,22 @@ import XCTest
 
 @testable import WordPress
 
-final class CommentServiceTests: XCTestCase {
+final class CommentServiceTests: CoreDataTestCase {
 
     private var remoteMock: CommentServiceRemoteRESTMock!
     private var service: CommentService!
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
 
     // MARK: Lifecycle
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()
         remoteFactory.restRemote = remoteMock
-        service = CommentService(managedObjectContext: context, commentServiceRemoteFactory: remoteFactory)
+        service = CommentService(managedObjectContext: mainContext, commentServiceRemoteFactory: remoteFactory)
     }
 
     override func tearDown() {
@@ -60,7 +55,7 @@ extension CommentServiceTests {
         let commentID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
         let expectedUsers = [createRemoteLikeUser()]
-        try! context.save()
+        try! mainContext.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
@@ -82,7 +77,7 @@ extension CommentServiceTests {
         // Arrange
         let commentID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        try! context.save()
+        try! mainContext.save()
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act

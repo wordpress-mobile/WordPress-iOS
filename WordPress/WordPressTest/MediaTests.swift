@@ -1,9 +1,8 @@
 import XCTest
 @testable import WordPress
 
-class MediaTests: XCTestCase {
+class MediaTests: CoreDataTestCase {
 
-    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
 
     fileprivate func newTestMedia() -> Media {
@@ -12,7 +11,6 @@ class MediaTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
     }

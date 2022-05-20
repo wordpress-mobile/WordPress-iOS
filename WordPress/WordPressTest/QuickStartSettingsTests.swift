@@ -1,9 +1,8 @@
 import XCTest
 @testable import WordPress
 
-class QuickStartSettingsTests: XCTestCase {
+class QuickStartSettingsTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var userDefaults: UserDefaults!
     private var quickStartSettings: QuickStartSettings!
@@ -11,7 +10,6 @@ class QuickStartSettingsTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
 

@@ -1,8 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class NotificationsContentFactoryTests: XCTestCase {
-    private let contextManager = ContextManagerMock()
+final class NotificationsContentFactoryTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     func testTextNotificationReturnsExpectedImplementationOfFormattableContent() throws {

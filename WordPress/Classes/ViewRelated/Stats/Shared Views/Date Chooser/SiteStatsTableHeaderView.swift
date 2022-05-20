@@ -8,7 +8,7 @@ protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
     func didTouchHeaderButton(forward: Bool)
 }
 
-class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
+class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -143,7 +143,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        contentView.backgroundColor = .listForeground
+        backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
