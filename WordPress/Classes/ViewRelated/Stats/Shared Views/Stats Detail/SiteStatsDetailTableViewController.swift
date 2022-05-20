@@ -87,7 +87,12 @@ class SiteStatsDetailTableViewController: SiteStatsBaseTableViewController, Stor
         initViewModel()
 
         if FeatureFlag.statsNewInsights.enabled && tableStyle == .insetGrouped {
-            updateHeader()
+            switch statSection {
+            case .insightsViewsVisitors:
+                updateHeader()
+            default:
+                break
+            }
         }
     }
 
