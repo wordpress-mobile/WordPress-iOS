@@ -25,7 +25,7 @@ class SiteStatsDetailsViewModel: Observable {
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
-    private var selectedDate: Date?
+    private(set) var selectedDate: Date?
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
@@ -190,7 +190,20 @@ class SiteStatsDetailsViewModel: Observable {
     }
 
     func updateSelectedDate(_ selectedDate: Date) {
-        self.selectedDate = selectedDate
+        // the max selectedDate has to be currentDateForSite
+        // otherwise this can result in an API error
+        if selectedDate > StatsDataHelper.currentDateForSite() {
+            self.selectedDate = StatsDataHelper.currentDateForSite()
+        } else {
+            self.selectedDate = selectedDate
+        }
+
+        if FeatureFlag.statsNewInsights.enabled {
+            fetchDataFor(statSection: statSection!,
+                    selectedDate: self.selectedDate,
+                    selectedPeriod: selectedPeriod,
+                    postID: postID)
+        }
     }
 
     // MARK: - Table Model
