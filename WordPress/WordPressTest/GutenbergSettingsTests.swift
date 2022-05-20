@@ -3,7 +3,6 @@ import XCTest
 
 class GutenbergSettingsTests: CoreDataTestCase {
 
-    fileprivate var context: NSManagedObjectContext!
     private let gutenbergContent = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
 
     var database: EphemeralKeyValueDatabase!
@@ -12,19 +11,19 @@ class GutenbergSettingsTests: CoreDataTestCase {
     var post: Post!
 
     fileprivate func newTestPost(with blog: Blog) -> Post {
-        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
         post.blog = blog
         return post
     }
 
     private func newTestBlog(isWPComAPIEnabled: Bool = true) -> Blog {
         if isWPComAPIEnabled {
-            let blog = ModelTestHelper.insertDotComBlog(context: context)
+            let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
             blog.account?.authToken = "auth"
             blog.dotComID = 1
             return blog
         } else {
-            return ModelTestHelper.insertSelfHostedBlog(context: context)
+            return ModelTestHelper.insertSelfHostedBlog(context: mainContext)
         }
     }
 
@@ -42,8 +41,6 @@ class GutenbergSettingsTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
         Environment.replaceEnvironment(contextManager: contextManager)
         database = EphemeralKeyValueDatabase()
         settings = GutenbergSettings(database: database)
@@ -53,7 +50,6 @@ class GutenbergSettingsTests: CoreDataTestCase {
     }
 
     override func tearDown() {
-        context.rollback()
         TestAnalyticsTracker.tearDown()
         super.tearDown()
     }
@@ -333,11 +329,11 @@ class GutenbergSettingsTests: CoreDataTestCase {
     }
 
     func setupAccount(withId userId: Int) {
-        let account = ModelTestHelper.insertAccount(context: context)
+        let account = ModelTestHelper.insertAccount(context: mainContext)
         account.authToken = "auth"
         account.uuid = UUID().uuidString
         account.userID = NSNumber(value: userId)
-        contextManager.saveContextAndWait(context)
-        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
+        contextManager.saveContextAndWait(mainContext)
+        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
     }
 }

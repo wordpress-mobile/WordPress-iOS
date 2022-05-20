@@ -3,21 +3,8 @@ import XCTest
 
 class MediaTests: CoreDataTestCase {
 
-    fileprivate var context: NSManagedObjectContext!
-
     fileprivate func newTestMedia() -> Media {
-        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as! Media
-    }
-
-    override func setUp() {
-        super.setUp()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        context.rollback()
-        super.tearDown()
+        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
     }
 
     func testThatAbsoluteURLsWork() {
@@ -65,7 +52,7 @@ class MediaTests: CoreDataTestCase {
     }
 
     func testMediaHasAssociatedPost() {
-        let post = PostBuilder(context).build()
+        let post = PostBuilder(mainContext).build()
         let media = newTestMedia()
         media.addPostsObject(post)
 
