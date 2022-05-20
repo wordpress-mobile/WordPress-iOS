@@ -6,7 +6,11 @@
 
 @end
 
-@protocol JetpackModuleHelperDelegate;
+@protocol JetpackModuleHelperDelegate
+
+- (void)jetpackModuleEnabled;
+
+@end
 
 @class Blog;
 
