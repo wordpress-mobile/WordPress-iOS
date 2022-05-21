@@ -53,28 +53,36 @@ struct SiteDesignSectionLoader {
         )
     }
 
-
-    /// Assembles Site Design sections by placing a single larger recommended section above regular sections.
+    /// Gets `SiteDesignSection`s for the supplied `RemoteSiteDesigns`
     ///
-    /// - If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
-    /// - If designs aren't found for the fallback category, the recommended section won't be included.
     /// - If there are no designs for a category, it won't be included.
-    /// - Parameters:
-    ///   - remoteDesigns: `RemoteSiteDesigns`
-    ///   - vertical: Optional `SiteIntentVertical`
-    /// - Returns: Array of `SiteDesignSection`s
-    static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
-        let categorySections = remoteDesigns.categories.map { category in
+    /// - Designs for categories are shuffled, but the order of categories is not.
+    ///
+    /// - Parameter remoteDesigns: Remote Site Designs.
+    /// - Returns: Array of Site Design sections with the designs shuffled.
+    static func getCategorySectionsForRemoteSiteDesigns(_ remoteDesigns: RemoteSiteDesigns) -> [SiteDesignSection] {
+        return remoteDesigns.categories.map { category in
             SiteDesignSection(
                 category: category,
-                designs: remoteDesigns.designs.filter {
-                    $0.categories.map { $0.slug }.contains(category.slug)
-                },
+                designs: remoteDesigns.shuffledDesignsForCategory(category),
                 thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
             )
         }.filter { !$0.designs.isEmpty }
+    }
 
-        if let vertical = vertical, let recommendedVertical = getSectionForVerticalSlug(vertical, remoteDesigns: remoteDesigns) {
+    /// Assembles Site Design sections by placing a single larger recommended section above category sections.
+    ///
+    /// - If designs aren't found for a supplied vertical, it will attempt to find designs for a fallback category.
+    /// - If designs aren't found for the fallback category, the recommended section won't be included.
+    ///
+    /// - Parameters:
+    ///   - remoteDesigns: Remote Site Designs.
+    ///   - vertical: An optional Site Intent vertical.
+    /// - Returns: An array of Site Design sections.
+    static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
+        let categorySections = getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+
+        if let vertical = vertical, let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns) {
             // Recommended designs for the vertical were found
             return [recommendedVertical] + categorySections
         }
