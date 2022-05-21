@@ -4,6 +4,11 @@ import WordPressKit
 struct SiteDesignSectionLoader {
     static let recommendedTitle = NSLocalizedString("Best for %@", comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
 
+    /// Fetches and assembles `SiteDesignSection`s from the API.
+    ///
+    /// - Parameters:
+    ///   - vertical: An optional Site Intent vertical.
+    ///   - completion: The result closure.
     static func fetchSections(vertical: SiteIntentVertical?, completion: @escaping (Result<[SiteDesignSection], Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
         let templateGroups: [TemplateGroup] = [.stable, .singlePage]
@@ -29,12 +34,13 @@ struct SiteDesignSectionLoader {
         }
     }
 
-    /// Returns designs whose `group` property contains a vertical's slug.
+    /// Returns a single recommended section of designs whose `group` property contains a vertical's slug.
+    ///
     /// - Parameters:
-    ///   - vertical: `SiteIntentVertical`
-    ///   - remoteDesigns: `RemoteSiteDesigns`
-    /// - Returns: Optional `SiteDesignSection`
-    static func getSectionForVerticalSlug(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
+    ///   - vertical: A Site Intent vertical.
+    ///   - remoteDesigns: Remote Site Designs.
+    /// - Returns: A `SiteDesignSection` if there was a match, otherwise `nil`.
+    static func getRecommendedSectionForVertical(_ vertical: SiteIntentVertical, remoteDesigns: RemoteSiteDesigns) -> SiteDesignSection? {
         let designsForVertical = remoteDesigns.designs.filter({
             $0.group?
                 .map { $0.lowercased() }
