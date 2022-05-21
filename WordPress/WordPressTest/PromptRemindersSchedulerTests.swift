@@ -200,12 +200,6 @@ private extension PromptRemindersSchedulerTests {
         contextManager.mainContext
     }
 
-    var weekdayForTomorrow: Weekday {
-        /// `DateComponent`'s weekday is 1-based, while `Weekday` is 0-based.
-        /// We want to get the next weekday, so no need to decrement the weekday from `DateComponent`.
-        return Weekday(rawValue: Calendar.current.dateComponents([.weekday], from: Date()).weekday! % 7)!
-    }
-
     func stubFetchPromptsResponse() {
         stub(condition: isMethodGET()) { _ in
             return .init(jsonObject: self.makeDynamicPromptObjects(), statusCode: 200, headers: ["Content-Type": "application/json"])
