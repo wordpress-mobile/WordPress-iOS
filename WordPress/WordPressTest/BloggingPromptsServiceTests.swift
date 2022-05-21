@@ -141,7 +141,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
     func test_fetchPrompts_givenNoParameters_assignsDefaultValue() {
         let expectedDifferenceInHours = 10 * 24 // 10 days ago.
-        let expectedNumber = 24
+        let expectedNumber = 25
         remote.shouldReturnSuccess = false
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
