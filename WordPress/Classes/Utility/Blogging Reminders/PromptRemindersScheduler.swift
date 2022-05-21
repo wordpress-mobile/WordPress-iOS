@@ -9,8 +9,6 @@ class PromptRemindersScheduler {
         case unknown
     }
 
-    private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)!
-
     private let promptsServiceFactory: BloggingPromptsServiceFactory
     private let notificationScheduler: NotificationScheduler
     private let pushAuthorizer: PushNotificationAuthorizer
@@ -130,10 +128,14 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func scheduleNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
-        let utcDateComponents = Calendar.current.dateComponents(in: Self.gmtTimeZone, from: prompt.date)
-        guard let year = utcDateComponents.year,
-              let month = utcDateComponents.month,
-              let day = utcDateComponents.day else {
+        guard let gmtTimeZone = TimeZone(secondsFromGMT: 0) else {
+            return nil
+        }
+
+        let gmtDateComponents = Calendar.current.dateComponents(in: gmtTimeZone, from: prompt.date)
+        guard let year = gmtDateComponents.year,
+              let month = gmtDateComponents.month,
+              let day = gmtDateComponents.day else {
             return nil
         }
 
