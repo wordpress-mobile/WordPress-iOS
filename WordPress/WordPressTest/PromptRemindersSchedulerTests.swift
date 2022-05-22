@@ -9,7 +9,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
     typealias Weekday = BloggingRemindersScheduler.Weekday
 
     private let timeout: TimeInterval = 1
-    private let currentDate = ISO8601DateFormatter().date(from: "2022-05-20T09:00:00+00:00")! // Friday
+    private let currentDate = ISO8601DateFormatter().date(from: "2022-05-20T09:30:00+00:00")! // Friday
 
     private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)!
     private static var gmtCalendar: Calendar = {
@@ -162,6 +162,35 @@ class PromptRemindersSchedulerTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
+    func test_schedule_givenTodayIsIncluded_withReminderTimeMinutesAfterCurrentTime_excludesTodayFromSchedule() {
+        let schedule = scheduleForToday
+        let expectedHour = 9
+        let expectedMinute = 35
+        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
+        let dateForTime = Calendar.current.date(from: timeComponents)
+
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(self.notificationScheduler.requests.count, 3)
+
+            // verify that the reminder time is set correctly.
+            let request = self.notificationScheduler.requests.first!
+            let trigger = request.trigger! as! UNCalendarNotificationTrigger
+            XCTAssertEqual(trigger.dateComponents.hour, expectedHour)
+            XCTAssertEqual(trigger.dateComponents.minute, expectedMinute)
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
     func test_schedule_givenTodayIsIncluded_withReminderTimeBeforeCurrentTime_excludesTodayFromSchedule() {
         let schedule = scheduleForToday
         let expectedHour = 8
@@ -186,6 +215,28 @@ class PromptRemindersSchedulerTests: XCTestCase {
             XCTAssertEqual(trigger.dateComponents.hour, expectedHour)
             XCTAssertEqual(trigger.dateComponents.minute, expectedMinute)
 
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    func test_schedule_givenTodayIsIncluded_withReminderTimeMinutesBeforeCurrentTime_excludesTodayFromSchedule() {
+        let schedule = scheduleForToday
+        let expectedHour = 9
+        let expectedMinute = 20
+        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
+        let dateForTime = Calendar.current.date(from: timeComponents)
+
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(self.notificationScheduler.requests.count, 2)
             expectation.fulfill()
         }
 

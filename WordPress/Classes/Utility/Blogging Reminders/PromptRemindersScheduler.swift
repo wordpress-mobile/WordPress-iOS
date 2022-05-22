@@ -78,13 +78,11 @@ private extension PromptRemindersScheduler {
             let hourToCompare = Calendar.current.component(.hour, from: date)
             let minuteToCompare = Calendar.current.component(.minute, from: date)
 
-            if hour == hourToCompare && minute == minuteToCompare {
-                return .orderedSame
-            } else if hour < hourToCompare || (hour < hourToCompare && minute < minuteToCompare) {
-                return .orderedAscending
+            if hour == hourToCompare {
+                return NSNumber(value: minute).compare(NSNumber(value: minuteToCompare))
             }
 
-            return .orderedDescending
+            return NSNumber(value: hour).compare(NSNumber(value: hourToCompare))
         }
     }
 
