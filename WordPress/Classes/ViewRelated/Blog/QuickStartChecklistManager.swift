@@ -3,14 +3,17 @@ class QuickStartChecklistManager: NSObject {
 
     private var blog: Blog
     private var tours: [QuickStartTour]
+    private var title: String
     private var completedToursKeys = Set<String>()
     private var didSelectTour: QuickStartChecklistDidSelectTour
 
     init(blog: Blog,
          tours: [QuickStartTour],
+         title: String,
          didSelectTour: @escaping QuickStartChecklistDidSelectTour) {
         self.blog = blog
         self.tours = tours
+        self.title = title
         self.didSelectTour = didSelectTour
         super.init()
         reloadData()
@@ -62,11 +65,13 @@ extension QuickStartChecklistManager: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return WPDeviceIdentification.isiPhone() ? nil : UIView()
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: QuickStartChecklistHeader.identifier) as? QuickStartChecklistHeader
+        headerView?.title = title
+        return headerView
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return WPDeviceIdentification.isiPhone() ? 0.0 : Constants.iPadTopInset
+        return Constants.headerHeight
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -117,7 +122,7 @@ private extension QuickStartChecklistManager {
 
 private extension QuickStartChecklistManager {
     enum Constants {
-        static let iPadTopInset: CGFloat = 36.0
+        static let headerHeight: CGFloat = 220
     }
 }
 

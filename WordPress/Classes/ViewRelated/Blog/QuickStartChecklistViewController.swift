@@ -49,11 +49,11 @@ class QuickStartChecklistViewController: UITableViewController {
 
         configureTableView()
 
-        navigationItem.title = collection.title
         navigationItem.rightBarButtonItem = closeButtonItem
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: collection.tours,
+                                                 title: collection.shortTitle,
                                                  didSelectTour: { [weak self] tour in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else {
@@ -86,7 +86,7 @@ class QuickStartChecklistViewController: UITableViewController {
 
 private extension QuickStartChecklistViewController {
     func configureTableView() {
-        let tableView = UITableView(frame: .zero)
+        let tableView = UITableView(frame: .zero, style: .grouped)
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
         tableView.separatorStyle = .none
@@ -94,7 +94,7 @@ private extension QuickStartChecklistViewController {
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
-
+        tableView.register(QuickStartChecklistHeader.defaultNib, forHeaderFooterViewReuseIdentifier: QuickStartChecklistHeader.defaultReuseID)
         self.tableView = tableView
         WPStyleGuide.configureTableViewColors(view: self.tableView)
     }
