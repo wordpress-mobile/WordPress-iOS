@@ -52,7 +52,6 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Metrics.progressStackViewSpacing
         return stackView
     }()
 
@@ -117,8 +116,22 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         stopObservingQuickStart()
     }
 
+    // MARK: - Trait Collection
 
-    // MARK: - Configue
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        configureProgressStackViewSpacing()
+    }
+
+    private func configureProgressStackViewSpacing() {
+        if UIDevice.current.orientation.isLandscape {
+            progressStackView.spacing = Metrics.progressStackViewSpacingLandscape
+        } else {
+            progressStackView.spacing = Metrics.progressStackViewSpacingPortrait
+        }
+    }
+
+    // MARK: - Configure
 
     func configure(collection: QuickStartToursCollection, blog: Blog) {
         self.tours = collection.tours
@@ -136,6 +149,8 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
 extension NewQuickStartChecklistView {
 
     private func setupViews() {
+        configureProgressStackViewSpacing()
+
         addSubview(mainStackView)
         pinSubviewToAllEdges(mainStackView, insets: Metrics.mainStackViewInsets)
 
@@ -209,7 +224,8 @@ extension NewQuickStartChecklistView {
         static let mainStackViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 24).flippedForRightToLeft
         static let verticalStackViewWidthMultiplier = 3.0 / 5.0
         static let verticalStackViewSpacing = 8.0
-        static let progressStackViewSpacing = 8.0
+        static let progressStackViewSpacingPortrait = 12.0
+        static let progressStackViewSpacingLandscape = 16.0
         static let progressViewHeight = 5.0
         static let imageWidth = 56.0
         static let imageHeight = 100.0
