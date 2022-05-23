@@ -444,10 +444,13 @@ extension PushNotificationsManager {
 
         let content = UNMutableNotificationContent()
         content.title = tour.title
-        content.body = tour.description
         content.sound = UNNotificationSound.default
         content.userInfo = [Notification.typeKey: Notification.local,
                             QuickStartTracking.taskNameKey: tour.analyticsKey]
+
+        if let description = tour.description {
+            content.body = description
+        }
 
         guard let futureDate = Calendar.current.date(byAdding: .day,
                                                      value: Constants.localNotificationIntervalInDays,

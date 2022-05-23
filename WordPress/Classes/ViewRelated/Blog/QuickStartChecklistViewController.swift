@@ -90,6 +90,7 @@ private extension QuickStartChecklistViewController {
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
         tableView.separatorStyle = .none
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.alwaysBounceVertical = false
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
