@@ -44,9 +44,7 @@ extension QuickStartChecklistManager: UITableViewDataSource {
         }
         let tour = self.tour(at: indexPath)
         let completed = isCompleted(tour: tour)
-        let topSeparatorIsHidden = hideTopSeparator(at: indexPath) // TODO: Won't be needed
-        let lastRow = isLastTour(at: indexPath) // TODO: Won't be needed
-        cell.configure(tour: tour, completed: completed, topSeparatorIsHidden: topSeparatorIsHidden, lastRow: lastRow)
+        cell.configure(tour: tour, completed: completed)
         return cell
     }
 }

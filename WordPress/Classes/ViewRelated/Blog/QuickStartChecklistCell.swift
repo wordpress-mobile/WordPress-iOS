@@ -4,71 +4,45 @@ import UIKit
 class QuickStartChecklistCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel! {
         didSet {
-            WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
+            WPStyleGuide.configureLabel(titleLabel, textStyle: .callout, fontWeight: .semibold)
         }
     }
     @IBOutlet private var descriptionLabel: UILabel! {
         didSet {
-            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
+            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .footnote)
         }
     }
-    @IBOutlet private var iconView: UIImageView?
-    @IBOutlet private var stroke: UIView? {
-        didSet {
-            stroke?.backgroundColor = .divider
-        }
-    }
-    @IBOutlet private var topSeparator: UIView? {
-        didSet {
-            topSeparator?.backgroundColor = .divider
-        }
-    }
-
-    private var bottomStrokeLeading: NSLayoutConstraint?
-    private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
-        return WPDeviceIdentification.isiPhone() ? contentView.leadingAnchor : contentView.readableContentGuide.leadingAnchor
-    }
-    private var contentViewTrailingAnchor: NSLayoutXAxisAnchor {
-        return WPDeviceIdentification.isiPhone() ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor
-    }
+    @IBOutlet private weak var descriptionContainerView: UIStackView!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var iconContainerView: UIView!
+    @IBOutlet private weak var iconView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .listForeground
-        setupConstraints()
+        applyStyles()
     }
 
-    func configure(tour: QuickStartTour, completed: Bool, topSeparatorIsHidden: Bool, lastRow: Bool) {
-        setupColors(completed: completed)
+    func configure(tour: QuickStartTour, completed: Bool) {
+        setupColors(tour: tour, completed: completed)
         setupTitle(tour: tour, completed: completed)
         setupContent(tour: tour)
         setupAccessibility(tour: tour, completed: completed)
-        setupSeperators(topSeparatorIsHidden: topSeparatorIsHidden, lastRow: lastRow)
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"
 }
 
 private extension QuickStartChecklistCell {
-    func setupConstraints() {
-        guard let stroke = stroke,
-            let topSeparator = topSeparator else {
-            return
-        }
 
-        bottomStrokeLeading = stroke.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
-        bottomStrokeLeading?.isActive = true
-        let strokeSuperviewLeading = stroke.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor)
-        strokeSuperviewLeading.priority = UILayoutPriority(999.0)
-        strokeSuperviewLeading.isActive = true
-        stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
-        topSeparator.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor).isActive = true
-        topSeparator.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+    func applyStyles() {
+        contentView.backgroundColor = .clear
+        mainContainerView.layer.cornerRadius = Constants.mainContainerCornerRadius
+        iconContainerView.layer.cornerRadius = Constants.iconContainerCornerRadius
     }
 
     func setupTitle(tour: QuickStartTour, completed: Bool) {
         let strikeThroughStyle = completed ? 1 : 0
-        let titleColor: UIColor = completed ? .neutral(.shade30) : .text
+        let titleColor: UIColor = completed ? .textTertiary : .label
         titleLabel.attributedText = NSAttributedString(string: tour.title,
                                                        attributes: [.strikethroughStyle: strikeThroughStyle,
                                                                     .foregroundColor: titleColor])
@@ -88,13 +62,19 @@ private extension QuickStartChecklistCell {
         }
     }
 
-    func setupColors(completed: Bool) {
+    func setupColors(tour: QuickStartTour, completed: Bool) {
+        mainContainerView.layer.borderColor = UIColor.textTertiary.cgColor
+        descriptionLabel.textColor = Constants.descriptionLabelColor // TODO: Check if different when completed
         if completed {
-            descriptionLabel.textColor = .neutral(.shade30)
-            iconView?.tintColor = .neutral(.shade30)
+            mainContainerView.backgroundColor = .clear
+            iconContainerView.backgroundColor = .systemGray4
+            iconView?.tintColor = UIColor(light: .white, dark: .textTertiary) // TODO: Check Dark colors
+            mainContainerView.layer.borderWidth = Constants.completedTourBorderWidth
         } else {
-            descriptionLabel.textColor = .textSubtle
-            iconView?.tintColor = .listIcon
+            mainContainerView.backgroundColor = .secondarySystemBackground
+            iconContainerView.backgroundColor = tour.iconColor
+            iconView?.tintColor = .white
+            mainContainerView.layer.borderWidth = 0
         }
     }
 
@@ -103,8 +83,10 @@ private extension QuickStartChecklistCell {
         iconView?.image = tour.icon.withRenderingMode(.alwaysTemplate)
     }
 
-    func setupSeperators(topSeparatorIsHidden: Bool, lastRow: Bool) {
-        bottomStrokeLeading?.isActive = !lastRow
-        topSeparator?.isHidden = topSeparatorIsHidden
+    enum Constants {
+        static let mainContainerCornerRadius: CGFloat = 8
+        static let iconContainerCornerRadius: CGFloat = 4
+        static let completedTourBorderWidth: CGFloat = 0.5
+        static let descriptionLabelColor: UIColor = .init(red: 0.23, green: 0.23, blue: 0.26, alpha: 0.6)
     }
 }
