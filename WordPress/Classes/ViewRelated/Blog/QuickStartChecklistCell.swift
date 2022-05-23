@@ -24,6 +24,11 @@ class QuickStartChecklistCell: UITableViewCell {
         applyStyles()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        applyStyles()
+    }
+
     func configure(tour: QuickStartTour, completed: Bool) {
         setupColors(tour: tour, completed: completed)
         setupTitle(tour: tour, completed: completed)
@@ -40,8 +45,10 @@ private extension QuickStartChecklistCell {
     func applyStyles() {
         selectionStyle = .none
         contentView.backgroundColor = .clear
+        backgroundColor = .clear
         mainContainerView.layer.cornerRadius = Constants.mainContainerCornerRadius
         iconContainerView.layer.cornerRadius = Constants.iconContainerCornerRadius
+        mainContainerView.layer.borderColor = Constants.borderColor.cgColor
     }
 
     func setupTitle(tour: QuickStartTour, completed: Bool) {
@@ -67,12 +74,11 @@ private extension QuickStartChecklistCell {
     }
 
     func setupColors(tour: QuickStartTour, completed: Bool) {
-        mainContainerView.layer.borderColor = UIColor.textTertiary.cgColor
-        descriptionLabel.textColor = Constants.descriptionLabelColor // TODO: Check if different when completed
+        descriptionLabel.textColor = .secondaryLabel
         if completed {
             mainContainerView.backgroundColor = .clear
             iconContainerView.backgroundColor = .systemGray4
-            iconView?.tintColor = UIColor(light: .white, dark: .textTertiary) // TODO: Check Dark colors
+            iconView?.tintColor = Constants.iconTintColor
             mainContainerView.layer.borderWidth = Constants.completedTourBorderWidth
         } else {
             mainContainerView.backgroundColor = .secondarySystemBackground
@@ -89,7 +95,7 @@ private extension QuickStartChecklistCell {
 
     func setupCheckmarkView(completed: Bool) {
         checkmarkImageView.image = .gridicon(.checkmark)
-        checkmarkImageView.tintColor = UIColor(hexString: "AEAEB2")
+        checkmarkImageView.tintColor = Constants.checkmarkColor
         checkmarkContainerView.isHidden = !completed
     }
 
@@ -97,6 +103,11 @@ private extension QuickStartChecklistCell {
         static let mainContainerCornerRadius: CGFloat = 8
         static let iconContainerCornerRadius: CGFloat = 4
         static let completedTourBorderWidth: CGFloat = 0.5
-        static let descriptionLabelColor: UIColor = .init(red: 0.23, green: 0.23, blue: 0.26, alpha: 0.6)
+        static let borderColor = UIColor(light: UIColor(hexString: "3c3c43")?.withAlphaComponent(0.36) ?? .clear,
+                                         dark: UIColor(hexString: "545458")?.withAlphaComponent(0.65) ?? .clear)
+        static let iconTintColor = UIColor(light: .white,
+                                           dark: UIColor(hexString: "636366") ?? .clear)
+        static let checkmarkColor = UIColor(light: UIColor(hexString: "AEAEB2") ?? .clear,
+                                            dark: UIColor(hexString: "636366") ?? .clear)
     }
 }
