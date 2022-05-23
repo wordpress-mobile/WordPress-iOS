@@ -1,5 +1,12 @@
 import UIKit
 
+// A view representing the progress on a Quick Start checklist. Built according to new design specs.
+//
+// This view is used to display a single Quick Start tour collection per Quick Start card.
+//
+// This view can be renamed to QuickStartChecklistView once we've fully migrated to using this new view.
+// See QuickStartChecklistConfigurable for more details.
+//
 final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable {
 
     var tours: [QuickStartTour] = []

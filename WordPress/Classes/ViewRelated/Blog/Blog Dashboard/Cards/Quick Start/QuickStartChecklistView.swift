@@ -1,6 +1,13 @@
 import UIKit
 import WordPressShared
 
+// A view representing the progress on a Quick Start checklist. Built according to old design specs.
+//
+// This view is used to display multiple Quick Start tour collections per Quick Start card.
+//
+// This view can be deleted once we've fully migrated to using NewQuicksTartChecklistView.
+// See QuickStartChecklistConfigurable for more details.
+//
 final class QuickStartChecklistView: UIView, QuickStartChecklistConfigurable {
 
     var tours: [QuickStartTour] = []
