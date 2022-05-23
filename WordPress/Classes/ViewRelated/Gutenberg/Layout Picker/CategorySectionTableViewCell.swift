@@ -17,6 +17,7 @@ protocol Thumbnail {
 
 protocol CategorySection {
     var categorySlug: String { get }
+    var caption: String? { get }
     var title: String { get }
     var emoji: String? { get }
     var description: String? { get }
