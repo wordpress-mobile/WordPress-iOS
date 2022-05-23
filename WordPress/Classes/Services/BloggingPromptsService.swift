@@ -118,6 +118,33 @@ class BloggingPromptsService {
         fetchListPrompts(success: success, failure: failure)
     }
 
+    // MARK: - Settings
+
+    func fetchSettings(success: @escaping () -> Void,
+                       failure: @escaping (Error?) -> Void) {
+        remote.fetchSettings(for: siteID) { result in
+            switch result {
+            case .success(let remoteSettings):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
+    func updateSettings(settings: RemoteBloggingPromptsSettings,
+                        success: @escaping () -> Void,
+                        failure: @escaping (Error?) -> Void) {
+        remote.updateSettings(for: siteID, with: settings) { result in
+            switch result {
+            case .success(let updatedSettings):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
     // MARK: - Init
 
     required init?(contextManager: CoreDataStack = ContextManager.shared,
