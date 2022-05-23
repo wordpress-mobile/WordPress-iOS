@@ -40,15 +40,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
 
-    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
-        didSet {
-            if oldValue == nil {
-                guard let mostRecentChartData = mostRecentChartData else {
-                    return
-                }
-            }
-        }
-    }
+    private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
     // MARK: - Constructor
 
@@ -435,16 +427,7 @@ private extension SiteStatsInsightsViewModel {
         var tableRows = [ImmuTableRow]()
 
         let periodSummary = periodStore.getSummary()
-
-        if mostRecentChartData == nil {
-            mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-                  let periodSummary = periodSummary,
-                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
-            self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
-            mostRecentChartData = chartData
-        }
+        updateMostRecentChartData(periodSummary)
 
         let periodDate = self.lastRequestedDate
         let period = StatsPeriodUnit.week
@@ -530,6 +513,8 @@ private extension SiteStatsInsightsViewModel {
                     currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
                 default:
                     break
+                case .comments:
+                    currentCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
                 }
             case .prevWeek(let data):
                 switch summaryType {
@@ -539,6 +524,8 @@ private extension SiteStatsInsightsViewModel {
                     previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
                 default:
                     break
+                case .comments:
+                    previousCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
                 }
             }
         }
@@ -653,10 +640,37 @@ private extension SiteStatsInsightsViewModel {
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
         // TODO: Populate with real data!
         return StatsTotalInsightsData(count: 15.abbreviatedString())
+        let periodSummary = periodStore.getSummary()
+        updateMostRecentChartData(periodSummary)
+
+        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount)
+        let commentsData = intervalData(summaryType: .comments)
+
+        return StatsTotalInsightsData(count: commentsData.count.abbreviatedString(), sparklineData: sparklineData)
+    }
+
+    func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>) -> [Int] {
+        var sparklineData = [Int]()
+        if let chartData = mostRecentChartData {
+            let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData)
+
+            splitSummaryTimeIntervalData.forEach { statsSummaryTimeIntervalDataAsAWeek in
+                switch statsSummaryTimeIntervalDataAsAWeek {
+                case .thisWeek(let data):
+                    for statsSummaryData in data.summaryData {
+                        sparklineData.append(statsSummaryData[keyPath: countKey])
+                    }
+                default:
+                    break
+                }
+            }
+        }
+
+        return sparklineData
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount().abbreviatedString())
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount().abbreviatedString(), sparklineData: [0, 1, 2, 3, 4, 5, 6])
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
@@ -861,6 +875,18 @@ private extension SiteStatsInsightsViewModel {
                                  data: "",
                                  icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
                                  statSection: .insightsAddInsight)
+    }
+
+    func updateMostRecentChartData(_ periodSummary: StatsSummaryTimeIntervalData?) {
+        if mostRecentChartData == nil {
+            mostRecentChartData = periodSummary
+        } else if let mostRecentChartData = mostRecentChartData,
+                  let periodSummary = periodSummary,
+                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
+            self.mostRecentChartData = periodSummary
+        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
+            mostRecentChartData = chartData
+        }
     }
 }
 

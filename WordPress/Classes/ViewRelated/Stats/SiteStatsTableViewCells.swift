@@ -331,7 +331,7 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(count: dataRow.count, sparklineData: dataRow.sparklineData, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

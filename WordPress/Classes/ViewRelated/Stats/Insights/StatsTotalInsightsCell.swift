@@ -4,6 +4,7 @@ import WordPressShared
 
 struct StatsTotalInsightsData {
     var count: String
+    var sparklineData: [Int]
     var comparison: String = ""
 }
 
@@ -81,12 +82,11 @@ class StatsTotalInsightsCell: StatsBaseCell {
         ])
     }
 
-    // TODO: This will need updating to pass some graph data too.
-    // Assuming this will be something like a small array of ints
-    func configure(count: String, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: String, sparklineData: [Int], statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
+        graphView.data = sparklineData
         countLabel.text = count
     }
 
