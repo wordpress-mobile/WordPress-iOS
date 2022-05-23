@@ -17,7 +17,7 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let validVertical = SiteIntentVertical(slug: "test-vertical", localizedTitle: "Testing", emoji: "")
 
         // When
-        let section = SiteDesignSectionLoader.getSectionForVerticalSlug(
+        let section = SiteDesignSectionLoader.getRecommendedSectionForVertical(
             validVertical,
             remoteDesigns: remoteDesigns
         )
@@ -34,13 +34,24 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let invalidVertical = SiteIntentVertical(slug: "invalid-vertical", localizedTitle: "Testing", emoji: "")
 
         // When
-        let section = SiteDesignSectionLoader.getSectionForVerticalSlug(
+        let section = SiteDesignSectionLoader.getRecommendedSectionForVertical(
             invalidVertical,
             remoteDesigns: remoteDesigns
         )
 
         // Then
         XCTAssertNil(section)
+    }
+
+    func testCategorySectionsForRemoteSiteSiteDesigns() throws {
+        // When
+        let sections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+
+        // Then
+        // The Slugs category has no designs so it isn't returned
+        XCTAssertEqual(sections.count, 2)
+        XCTAssertEqual(sections[0].categorySlug, "about")
+        XCTAssertEqual(sections[1].categorySlug, "blog")
     }
 
     /// Tests entire assembly of sections when a recommended vertical is used
