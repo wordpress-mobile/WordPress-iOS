@@ -12,6 +12,8 @@ class SparklineView: UIView {
             if chartColor == nil {
                 chartColor = SparklineView.defaultChartColor
             }
+
+            updateChartColors()
         }
     }
 
@@ -42,9 +44,9 @@ class SparklineView: UIView {
         layoutChart()
     }
 
-    func initializeChart() {layer.isGeometryFlipped = true
+    func initializeChart() {
+        layer.isGeometryFlipped = true
 
-        lineLayer.strokeColor = chartColor.cgColor
         lineLayer.lineWidth = Constants.lineWidth
         lineLayer.fillColor = UIColor.clear.cgColor
 
@@ -53,12 +55,17 @@ class SparklineView: UIView {
 
         gradientLayer.startPoint = Constants.gradientStart
         gradientLayer.endPoint = Constants.gradientEnd
-        gradientLayer.colors = [chartColor.cgColor, UIColor(white: 1.0, alpha: 0.0).cgColor]
         gradientLayer.mask = maskLayer
         gradientLayer.opacity = Constants.gradientOpacity
 
+        updateChartColors()
         layer.addSublayer(gradientLayer)
         layer.addSublayer(lineLayer)
+    }
+
+    private func updateChartColors() {
+        lineLayer.strokeColor = chartColor.cgColor
+        gradientLayer.colors = [chartColor.cgColor, UIColor(white: 1.0, alpha: 0.0).cgColor]
     }
 
     private func interpolateData(_ inputData: [CGFloat]) -> [CGFloat] {

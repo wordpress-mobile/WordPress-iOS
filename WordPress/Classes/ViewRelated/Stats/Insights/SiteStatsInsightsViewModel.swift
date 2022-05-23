@@ -639,7 +639,7 @@ private extension SiteStatsInsightsViewModel {
         let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.likesCount)
         let likesData = intervalData(summaryType: .likes)
 
-        return StatsTotalInsightsData(count: likesData.count.abbreviatedString(), sparklineData: sparklineData)
+        return StatsTotalInsightsData(count: likesData.count, difference: likesData.difference, percentage: likesData.percentage, sparklineData: sparklineData)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
@@ -649,7 +649,7 @@ private extension SiteStatsInsightsViewModel {
         let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount)
         let commentsData = intervalData(summaryType: .comments)
 
-        return StatsTotalInsightsData(count: commentsData.count.abbreviatedString(), sparklineData: sparklineData)
+        return StatsTotalInsightsData(count: commentsData.count, difference: commentsData.difference, percentage: commentsData.percentage, sparklineData: sparklineData)
     }
 
     func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>) -> [Int] {
@@ -673,7 +673,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount().abbreviatedString(), sparklineData: [0, 1, 2, 3, 4, 5, 6])
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount(), difference: 100, percentage: 50)
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
