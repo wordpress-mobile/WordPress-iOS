@@ -84,6 +84,7 @@ class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
     /// The VC presenting this cell
     private weak var viewController: BlogDashboardViewController?
     private var blog: Blog?
+    private var cardType: DashboardCard?
 
     // MARK: Initializers
 
@@ -126,6 +127,7 @@ extension DashboardEmptyPostsCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?, cardType: DashboardCard) {
         self.blog = blog
         self.viewController = viewController
+        self.cardType = cardType
 
         switch cardType {
         case .createPost:
@@ -147,6 +149,7 @@ extension DashboardEmptyPostsCardCell {
 
 private extension DashboardEmptyPostsCardCell {
     func presentEditor() {
+        BlogDashboardAnalytics.shared.track(.dashboardCardItemTapped, properties: ["type": "post", "sub_type": cardType?.rawValue ?? ""])
         let controller = viewController?.tabBarController as? WPTabBarController
         controller?.showPostTab()
     }
