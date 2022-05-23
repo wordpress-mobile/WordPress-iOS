@@ -124,10 +124,8 @@ class BloggingPromptsService {
         remote.fetchSettings(for: siteID) { result in
             switch result {
             case .success(let remoteSettings):
-                print("🔴 Blogging prompts > fetch settings > success:\n\(remoteSettings)")
                 success()
             case .failure(let error):
-                print("🔴 Blogging prompts > fetch settings > failure: \(String(describing: error))")
                 failure(error)
             }
         }
@@ -139,10 +137,8 @@ class BloggingPromptsService {
         remote.updateSettings(for: siteID, with: settings) { result in
             switch result {
             case .success(let updatedSettings):
-                print("🔴 Blogging prompts > update settings > success:\n\(String(describing: updatedSettings))")
                 success()
             case .failure(let error):
-                print("🔴 Blogging prompts > update settings > failure: \(String(describing: error))")
                 failure(error)
             }
         }
