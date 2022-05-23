@@ -78,7 +78,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     private lazy var checkmarkIcon: UIImageView = {
         let imageView = UIImageView(image: .gridicon(.checkmark, size: Metrics.checkmarkIconSize))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .muriel(color: .jetpackGreen, .shade40)
+        imageView.tintColor = Colors.allTasksComplete
         return imageView
     }()
 
@@ -86,7 +86,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = .primary
-        progressView.trackTintColor = UIColor(light: .listBackground, dark: .systemGray3)
+        progressView.trackTintColor = Colors.progressViewTrackTint
         progressView.layer.cornerRadius = Metrics.progressViewHeight / 2
         progressView.clipsToBounds = true
         return progressView
@@ -179,7 +179,7 @@ extension NewQuickStartChecklistView {
 
         if completedToursCount == tours.count {
             subtitle = Strings.allTasksComplete
-            progressView.progressTintColor = .muriel(color: .jetpackGreen, .shade40)
+            progressView.progressTintColor = Colors.allTasksComplete
             checkmarkIcon.isHidden = false
         } else {
             subtitle = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
@@ -230,6 +230,11 @@ extension NewQuickStartChecklistView {
         static let imageWidth = 56.0
         static let imageHeight = 100.0
         static let checkmarkIconSize = CGSize(width: 16.0, height: 16.0)
+    }
+
+    private enum Colors {
+        static let allTasksComplete = UIColor(light: .muriel(color: .jetpackGreen, .shade40), dark: .muriel(color: .jetpackGreen, .shade50))
+        static let progressViewTrackTint = UIColor(light: .listBackground, dark: .systemGray3)
     }
 
     private enum Strings {
