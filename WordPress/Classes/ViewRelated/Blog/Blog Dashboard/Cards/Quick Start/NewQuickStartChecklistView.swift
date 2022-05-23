@@ -87,7 +87,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = .primary
-        progressView.trackTintColor = .listBackground
+        progressView.trackTintColor = UIColor(light: .listBackground, dark: .systemGray3)
         progressView.layer.cornerRadius = Metrics.progressViewHeight / 2
         progressView.clipsToBounds = true
         return progressView
