@@ -2,7 +2,6 @@ import Foundation
 import WordPressKit
 
 struct SiteDesignSectionLoader {
-    static let recommendedTitle = NSLocalizedString("Best for %@", comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
 
     static func fetchSections(vertical: SiteIntentVertical?, completion: @escaping (Result<[SiteDesignSection], Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
@@ -48,8 +47,9 @@ struct SiteDesignSectionLoader {
         return SiteDesignSection(
             designs: designsForVertical,
             thumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
+            caption: TextContent.recommendedCaption,
             categorySlug: "recommended_" + vertical.slug,
-            title: String(format: recommendedTitle, vertical.localizedTitle)
+            title: String(format: TextContent.recommendedTitle, vertical.localizedTitle)
         )
     }
 
@@ -81,12 +81,23 @@ struct SiteDesignSectionLoader {
 
         if var recommendedFallback = categorySections.first(where: { $0.categorySlug.lowercased() == "blog" }) {
             // Recommended designs for the vertical weren't found, so we used the fallback category
-            recommendedFallback.title = String(format: recommendedTitle, "Blogging")
+            recommendedFallback.title = String(format: TextContent.recommendedTitle, "Blogging")
             recommendedFallback.thumbnailSize = SiteDesignCategoryThumbnailSize.recommended.value
+            recommendedFallback.caption = TextContent.recommendedCaption
             return [recommendedFallback] + categorySections.filter { $0 != recommendedFallback }
         }
 
         // No recommended designs were found
         return categorySections
+    }
+}
+
+private extension SiteDesignSectionLoader {
+
+    enum TextContent {
+        static let recommendedTitle = NSLocalizedString("Best for %@",
+                                                        comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
+        static let recommendedCaption = NSLocalizedString("PICKED FOR YOU",
+                                                          comment: "Caption for the recommended sections in site designs.")
     }
 }
