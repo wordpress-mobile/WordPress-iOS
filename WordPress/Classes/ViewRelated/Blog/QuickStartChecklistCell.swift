@@ -16,6 +16,8 @@ class QuickStartChecklistCell: UITableViewCell {
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var iconContainerView: UIView!
     @IBOutlet private weak var iconView: UIImageView!
+    @IBOutlet private weak var checkmarkContainerView: UIStackView!
+    @IBOutlet private weak var checkmarkImageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,6 +28,7 @@ class QuickStartChecklistCell: UITableViewCell {
         setupColors(tour: tour, completed: completed)
         setupTitle(tour: tour, completed: completed)
         setupContent(tour: tour)
+        setupCheckmarkView(completed: completed)
         setupAccessibility(tour: tour, completed: completed)
     }
 
@@ -82,6 +85,12 @@ private extension QuickStartChecklistCell {
     func setupContent(tour: QuickStartTour) {
         descriptionLabel.text = tour.description
         iconView?.image = tour.icon.withRenderingMode(.alwaysTemplate)
+    }
+    
+    func setupCheckmarkView(completed: Bool) {
+        checkmarkImageView.image = .gridicon(.checkmark)
+        checkmarkImageView.tintColor = UIColor(hexString: "AEAEB2")
+        checkmarkContainerView.isHidden = !completed
     }
 
     enum Constants {
