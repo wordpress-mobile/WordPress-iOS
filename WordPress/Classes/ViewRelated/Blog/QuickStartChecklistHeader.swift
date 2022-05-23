@@ -1,11 +1,3 @@
-//
-//  QuickStartChecklistHeader.swift
-//  WordPress
-//
-//  Created by Hassaan El-Garem on 22/05/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import UIKit
 
 class QuickStartChecklistHeader: UITableViewHeaderFooterView, NibReusable {
