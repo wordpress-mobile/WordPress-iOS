@@ -35,6 +35,7 @@ class QuickStartChecklistCell: UITableViewCell {
 private extension QuickStartChecklistCell {
 
     func applyStyles() {
+        selectionStyle = .none
         contentView.backgroundColor = .clear
         mainContainerView.layer.cornerRadius = Constants.mainContainerCornerRadius
         iconContainerView.layer.cornerRadius = Constants.iconContainerCornerRadius
