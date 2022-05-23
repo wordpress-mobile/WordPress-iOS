@@ -42,6 +42,8 @@ steps:
     command: ".buildkite/commands/build-for-testing.sh"
     env: *common_env
     plugins: *common_plugins
+    artifact_paths:
+      - "build/results/*"
     notify:
       - github_commit_status:
           context: "Build for Testing"

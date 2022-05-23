@@ -19,8 +19,19 @@ echo "--- Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
+set +e
 bundle exec fastlane build_for_testing
+BUILD_EXIT_STATUS=$?
+set -e
+
+if [[ $BUILD_EXIT_STATUS -ne 0 ]]; then
+  # Keep the (otherwise collapsed) current section open in Buildkite logs on error. See https://buildkite.com/docs/pipelines/managing-log-output#collapsing-output
+  echo "^^^ +++"
+  echo "Build failed!"
+fi
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf build-products.tar DerivedData/Build/Products/
 upload_artifact build-products.tar
+
+exit $BUILD_EXIT_STATUS
