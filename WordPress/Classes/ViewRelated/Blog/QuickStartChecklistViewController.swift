@@ -48,8 +48,7 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidLoad()
 
         configureTableView()
-
-        navigationItem.rightBarButtonItem = closeButtonItem
+        configureNavigationBar()
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: collection.tours,
@@ -97,6 +96,20 @@ private extension QuickStartChecklistViewController {
         tableView.register(QuickStartChecklistHeader.defaultNib, forHeaderFooterViewReuseIdentifier: QuickStartChecklistHeader.defaultReuseID)
         self.tableView = tableView
         WPStyleGuide.configureTableViewColors(view: self.tableView)
+    }
+
+    func configureNavigationBar() {
+        navigationItem.rightBarButtonItem = closeButtonItem
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = appearance
+        }
     }
 
     func startObservingForQuickStart() {
