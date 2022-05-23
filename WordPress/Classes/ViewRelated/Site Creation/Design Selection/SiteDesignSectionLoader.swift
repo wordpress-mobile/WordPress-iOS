@@ -62,15 +62,15 @@ struct SiteDesignSectionLoader {
     /// Gets `SiteDesignSection`s for the supplied `RemoteSiteDesigns`
     ///
     /// - If there are no designs for a category, it won't be included.
-    /// - Designs for categories are shuffled, but the order of categories is not.
+    /// - Order of designs for each category are randomized, but the order of categories is not.
     ///
     /// - Parameter remoteDesigns: Remote Site Designs.
-    /// - Returns: Array of Site Design sections with the designs shuffled.
+    /// - Returns: Array of Site Design sections with the designs randomized.
     static func getCategorySectionsForRemoteSiteDesigns(_ remoteDesigns: RemoteSiteDesigns) -> [SiteDesignSection] {
         return remoteDesigns.categories.map { category in
             SiteDesignSection(
                 category: category,
-                designs: remoteDesigns.shuffledDesignsForCategory(category),
+                designs: remoteDesigns.randomizedDesignsForCategory(category),
                 thumbnailSize: SiteDesignCategoryThumbnailSize.category.value
             )
         }.filter { !$0.designs.isEmpty }

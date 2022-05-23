@@ -8,7 +8,7 @@ extension RemoteSiteDesigns {
        }
     }
 
-    func shuffledDesignsForCategory(_ category: RemoteSiteDesignCategory) -> [RemoteSiteDesign] {
+    func randomizedDesignsForCategory(_ category: RemoteSiteDesignCategory) -> [RemoteSiteDesign] {
         return designsForCategory(category).shuffled()
     }
 }
