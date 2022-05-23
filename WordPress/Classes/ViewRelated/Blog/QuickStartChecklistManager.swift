@@ -120,7 +120,7 @@ private extension QuickStartChecklistManager {
 
 private extension QuickStartChecklistManager {
     enum Constants {
-        static let headerHeight: CGFloat = 220
+        static let headerHeight: CGFloat = 204
     }
 }
 
