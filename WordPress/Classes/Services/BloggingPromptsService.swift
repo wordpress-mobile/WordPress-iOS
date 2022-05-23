@@ -125,6 +125,10 @@ class BloggingPromptsService {
         remote.fetchSettings(for: siteID) { result in
             switch result {
             case .success(let remoteSettings):
+                let tempSettings = BloggingPromptSettings(context: self.contextManager.mainContext,
+                                                          siteID: self.siteID.int32Value,
+                                                          remoteSettings: remoteSettings)
+                print("🔴 Success: \(tempSettings)")
                 success()
             case .failure(let error):
                 failure(error)
@@ -137,7 +141,7 @@ class BloggingPromptsService {
                         failure: @escaping (Error?) -> Void) {
         remote.updateSettings(for: siteID, with: settings) { result in
             switch result {
-            case .success(let updatedSettings):
+            case .success(_):
                 success()
             case .failure(let error):
                 failure(error)
