@@ -17,7 +17,7 @@ class PromptRemindersScheduler {
 
     // MARK: Public Methods
 
-    init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory,
+    init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
          notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
          pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {

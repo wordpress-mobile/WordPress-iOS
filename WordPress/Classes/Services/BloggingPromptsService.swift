@@ -139,10 +139,10 @@ class BloggingPromptsService {
 /// Convenience factory to generate `BloggingPromptsService` for different blogs.
 ///
 class BloggingPromptsServiceFactory {
-    let contextManager: ContextManager
+    let contextManager: CoreDataStack
     let remote: BloggingPromptsServiceRemote?
 
-    init(contextManager: ContextManager, remote: BloggingPromptsServiceRemote? = nil) {
+    init(contextManager: CoreDataStack = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote
     }
