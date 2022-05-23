@@ -37,7 +37,7 @@ class PromptRemindersScheduler {
     ///   - blog: The blog that will upload the user's post.
     ///   - time: The user's preferred time to be notified.
     ///   - completion: Closure called after the process completes.
-    func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping(Result<Void, Error>) -> Void) {
+    func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
         guard schedule != .none else {
             // If there's no schedule, then we don't need to request authorization
             processSchedule(schedule, blog: blog, time: time, completion: completion)
@@ -142,6 +142,7 @@ private extension PromptRemindersScheduler {
 
             // TODO: Schedule static notifications.
 
+            print("[BloggingPrompt] Prompt reminder scheduled!")
             completion(.success(()))
 
         } failure: { error in
