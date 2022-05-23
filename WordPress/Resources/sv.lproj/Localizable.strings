@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-20 13:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-23 13:36:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -815,7 +815,7 @@ translators: Block name. %s: The localized block name */
 "Answer Prompt" = "Svara på förslaget";
 
 /* Title of answered Blogging Prompts filter. */
-"Answered" = "Besvarat";
+"Answered" = "Besvarade";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
