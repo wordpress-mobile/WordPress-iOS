@@ -36,6 +36,7 @@ class CategorySectionTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var categoryCaptionLabel: UILabel!
 
     weak var delegate: CategorySectionTableViewCellDelegate?
 
@@ -64,6 +65,22 @@ class CategorySectionTableViewCell: UITableViewCell {
         }
     }
 
+    var categoryCaption: String? {
+        didSet {
+            setCaption()
+        }
+    }
+
+    private func setCaption() {
+        guard let caption = categoryCaption else {
+            categoryCaptionLabel.isHidden = true
+            return
+        }
+
+        categoryCaptionLabel.isHidden = false
+        categoryCaptionLabel.setText(caption)
+    }
+
     var isGhostCell: Bool = false
     var ghostThumbnailSize: CGSize = defaultThumbnailSize {
         didSet {
@@ -79,6 +96,7 @@ class CategorySectionTableViewCell: UITableViewCell {
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
         categoryTitleFont = nil
+        categoryCaption = nil
     }
 
     override func awakeFromNib() {
@@ -87,6 +105,8 @@ class CategorySectionTableViewCell: UITableViewCell {
         categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
+        categoryCaptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        setCaption()
     }
 
     private func deselectItem(_ indexPath: IndexPath) {
