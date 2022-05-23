@@ -57,6 +57,12 @@ class CategorySectionTableViewCell: UITableViewCell {
         }
     }
 
+    var categoryTitleFont: UIFont? {
+        didSet {
+            categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+        }
+    }
+
     var isGhostCell: Bool = false
     var ghostThumbnailSize: CGSize = defaultThumbnailSize {
         didSet {
@@ -71,12 +77,13 @@ class CategorySectionTableViewCell: UITableViewCell {
         delegate = nil
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
+        categoryTitleFont = nil
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
-        categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+        categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
     }
