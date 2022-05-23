@@ -79,7 +79,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     private lazy var checkmarkIcon: UIImageView = {
         let imageView = UIImageView(image: .gridicon(.checkmark, size: Metrics.checkmarkIconSize))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .success
+        imageView.tintColor = .muriel(color: .jetpackGreen, .shade40)
         return imageView
     }()
 
@@ -164,7 +164,7 @@ extension NewQuickStartChecklistView {
 
         if completedToursCount == tours.count {
             subtitle = Strings.allTasksComplete
-            progressView.progressTintColor = .success
+            progressView.progressTintColor = .muriel(color: .jetpackGreen, .shade40)
             checkmarkIcon.isHidden = false
         } else {
             subtitle = String(format: Strings.subtitleFormat, completedToursCount, tours.count)
