@@ -511,8 +511,8 @@ private extension SiteStatsInsightsViewModel {
                     currentCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
                 case .visitors:
                     currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                default:
-                    break
+                case .likes:
+                    currentCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
                 case .comments:
                     currentCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
                 }
@@ -522,8 +522,8 @@ private extension SiteStatsInsightsViewModel {
                     previousCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
                 case .visitors:
                     previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                default:
-                    break
+                case .likes:
+                    previousCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
                 case .comments:
                     previousCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
                 }
@@ -633,13 +633,16 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        // TODO: Populate with real data!
-        return StatsTotalInsightsData(count: 12.abbreviatedString())
+        let periodSummary = periodStore.getSummary()
+        updateMostRecentChartData(periodSummary)
+
+        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.likesCount)
+        let likesData = intervalData(summaryType: .likes)
+
+        return StatsTotalInsightsData(count: likesData.count.abbreviatedString(), sparklineData: sparklineData)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        // TODO: Populate with real data!
-        return StatsTotalInsightsData(count: 15.abbreviatedString())
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
