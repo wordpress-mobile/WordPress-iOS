@@ -86,7 +86,7 @@ private extension QuickStartChecklistCell {
         descriptionLabel.text = tour.description
         iconView?.image = tour.icon.withRenderingMode(.alwaysTemplate)
     }
-    
+
     func setupCheckmarkView(completed: Bool) {
         checkmarkImageView.image = .gridicon(.checkmark)
         checkmarkImageView.tintColor = UIColor(hexString: "AEAEB2")
