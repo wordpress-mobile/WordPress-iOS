@@ -75,7 +75,7 @@ class QuickStartChecklistViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // should display bg and trigger qs notification
+        tableView.flashScrollIndicators()
 
         WPAnalytics.trackQuickStartStat(.quickStartChecklistViewed,
                                         properties: [Constants.analyticsTypeKey: collection.analyticsKey],
