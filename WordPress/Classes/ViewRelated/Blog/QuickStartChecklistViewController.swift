@@ -149,7 +149,7 @@ private struct QuickStartChecklistConfiguration {
 
 private enum Constants {
     static let analyticsTypeKey = "type"
-    static let closeButtonRadius: CGFloat = 24
-    static let closeButtonSymbolSize: CGFloat = 11
+    static let closeButtonRadius: CGFloat = 30
+    static let closeButtonSymbolSize: CGFloat = 16
     static let estimatedRowHeight: CGFloat = 90.0
 }
