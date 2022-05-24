@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -117,10 +117,32 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="j5b-6q-6Yj" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leading" constant="16" id="GOF-fL-o2C"/>
+                    <constraint firstAttribute="trailing" secondItem="j5b-6q-6Yj" secondAttribute="trailing" constant="96" id="QU9-Nx-Pk9"/>
+                    <constraint firstItem="j5b-6q-6Yj" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leading" constant="96" id="VdG-ue-A7q"/>
                     <constraint firstAttribute="bottom" secondItem="j5b-6q-6Yj" secondAttribute="bottom" id="Wc8-N2-dyb"/>
                     <constraint firstAttribute="trailing" secondItem="j5b-6q-6Yj" secondAttribute="trailing" constant="16" id="ZOI-ar-rKJ"/>
                     <constraint firstItem="j5b-6q-6Yj" firstAttribute="top" secondItem="fK0-aP-tbW" secondAttribute="top" constant="16" id="kQX-v2-HNW"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="GOF-fL-o2C"/>
+                        <exclude reference="QU9-Nx-Pk9"/>
+                        <exclude reference="VdG-ue-A7q"/>
+                        <exclude reference="ZOI-ar-rKJ"/>
+                    </mask>
+                </variation>
+                <variation key="widthClass=compact">
+                    <mask key="constraints">
+                        <include reference="GOF-fL-o2C"/>
+                        <include reference="ZOI-ar-rKJ"/>
+                    </mask>
+                </variation>
+                <variation key="widthClass=regular">
+                    <mask key="constraints">
+                        <include reference="QU9-Nx-Pk9"/>
+                        <include reference="VdG-ue-A7q"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <accessibility key="accessibilityConfiguration">
                 <accessibilityTraits key="traits" button="YES"/>
@@ -135,7 +157,7 @@
                 <outlet property="mainContainerView" destination="l4h-MI-mNe" id="3tI-sq-zXU"/>
                 <outlet property="titleLabel" destination="Yc4-11-laP" id="fxd-Fh-PS5"/>
             </connections>
-            <point key="canvasLocation" x="-190" y="4"/>
+            <point key="canvasLocation" x="-1217" y="-86"/>
         </tableViewCell>
     </objects>
     <resources>
