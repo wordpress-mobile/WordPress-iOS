@@ -44,7 +44,9 @@ steps:
     plugins: *common_plugins
     artifact_paths:
       - "build/results/*" # FIXME: Note that there's nothing in there–because we only build, not run the tests?
-      - "DerivedData/Logs/Build/*.xcactivitylog"
+      # FIXME: Why isn't there any file in there?! See https://buildkite.com/automattic/wordpress-ios/builds/7828#964dc9dc-b8ec-4562-8d78-64fccffc0fd2
+      # - "DerivedData/Logs/Build/*.xcactivitylog"
+      - DerivedData
     notify:
       - github_commit_status:
           context: "Build for Testing"
