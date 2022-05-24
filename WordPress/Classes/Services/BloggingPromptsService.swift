@@ -30,6 +30,12 @@ class BloggingPromptsService {
         loadPrompts(from: listStartDate, number: maxListPrompts)
     }
 
+    /// Convenience computed variable that returns prompt settings from the local store.
+    ///
+    var localSettings: BloggingPromptSettings? {
+        loadSettings(context: contextManager.mainContext)
+    }
+
     /// Fetches a number of blogging prompts starting from the specified date.
     /// When no parameters are specified, this method will attempt to return prompts from ten days ago and two weeks ahead.
     ///
@@ -308,8 +314,7 @@ private extension BloggingPromptsService {
         let derivedContext = contextManager.newDerivedContext()
         derivedContext.perform {
             do {
-                let fetchRequest = BloggingPromptSettings.fetchRequest()
-                let settings = (try? derivedContext.fetch(fetchRequest))?.first as? BloggingPromptSettings ?? BloggingPromptSettings(context: derivedContext)
+                let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
                 settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
 
                 self.contextManager.save(derivedContext) {
@@ -325,11 +330,11 @@ private extension BloggingPromptsService {
         }
     }
 
-    func loadSettingsRequest() -> NSFetchRequest<BloggingPromptSettings> {
+    func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
-        return fetchRequest
+        return (try? context.fetch(fetchRequest))?.first as? BloggingPromptSettings
     }
 
     /// A completion closure that will load the settings on success and calls the failure closure on an error.
@@ -343,8 +348,7 @@ private extension BloggingPromptsService {
         return { result in
             switch result {
             case .success:
-                let fetchRequest = self.loadSettingsRequest()
-                let settings = (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
+                let settings = self.loadSettings(context: self.contextManager.mainContext)
                 success(settings)
             case .failure(let error):
                 failure(error)
