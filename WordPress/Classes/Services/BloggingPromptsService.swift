@@ -120,6 +120,11 @@ class BloggingPromptsService {
 
     // MARK: - Settings
 
+    /// Fetches the blogging prompt settings for the configured `siteID`.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object.
+    ///   - failure: Closure to be called on failure with an optional `Error` object.
     func fetchSettings(success: @escaping (BloggingPromptSettings?) -> Void,
                        failure: @escaping (Error?) -> Void) {
         remote.fetchSettings(for: siteID) { result in
@@ -133,6 +138,13 @@ class BloggingPromptsService {
         }
     }
 
+    /// Updates the blogging prompt settings for the configured `siteID`.
+    ///
+    /// - Parameters:
+    ///   - settings: The new settings to update the remote with
+    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object. `nil` is passed
+    ///              when the call is successful but there were no updated settings on the remote.
+    ///   - failure: Closure to be called on failure with an optional `Error` object.
     func updateSettings(settings: RemoteBloggingPromptsSettings,
                         success: @escaping (BloggingPromptSettings?) -> Void,
                         failure: @escaping (Error?) -> Void) {
@@ -287,6 +299,11 @@ private extension BloggingPromptsService {
         }
     }
 
+    /// Updates existing settings or creates new settings from the remote prompt settings.
+    ///
+    /// - Parameters:
+    ///   - remoteSettings: The blogging prompt settings from the remote.
+    ///   - completion: Closure to be called on completion. Result object with `Void` on success and an `Error` on failure.
     func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping (Result<Void, Error>) -> Void) {
         let derivedContext = contextManager.newDerivedContext()
         derivedContext.perform {
@@ -315,6 +332,12 @@ private extension BloggingPromptsService {
         return fetchRequest
     }
 
+    /// A completion closure that will load the settings on success and calls the failure closure on an error.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object.
+    ///   - failure: Closure to be called on failure with an optional `Error` object.
+    /// - Returns: A closure which takes a `Result<Void, Error>` input
     func loadSettingsCompletion(success: @escaping (BloggingPromptSettings?) -> Void,
                                 failure: @escaping (Error?) -> Void) -> (Result<Void, Error>) -> Void {
         return { result in
