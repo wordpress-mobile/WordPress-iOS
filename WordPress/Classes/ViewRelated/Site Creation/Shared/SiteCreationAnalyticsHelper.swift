@@ -81,8 +81,8 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
 
-    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, additionalProperties: [String: Any]? = nil) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign, additionalProperties))
     }
 
     // MARK: - Site Design Preview
@@ -146,6 +146,12 @@ class SiteCreationAnalyticsHelper {
             }
             if let previewMode = property as? PreviewDevice {
                 result.merge([previewModeKey: previewMode.rawValue]) { (_, new) in new }
+            }
+
+            if let dictionary = property as? [String: Any] {
+                dictionary.forEach {
+                    result[$0] = $1
+                }
             }
         }
 
