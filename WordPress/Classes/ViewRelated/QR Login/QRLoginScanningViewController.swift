@@ -18,6 +18,35 @@ extension QRLoginScanningViewController: QRLoginScanningView {
         view.layer.insertSublayer(previewLayer, below: overlayView.layer)
     }
 }
+
+// MARK: - View Methods
+extension QRLoginScanningViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        errorLabel.isHidden = true
+        coordinator?.start()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        coordinator?.viewDidAppear()
+        startAnimations()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        coordinator?.viewWillDisappear()
+        stopAnimations()
+    }
+
+    @IBAction func didTapCloseButton(_ sender: Any) {
+        dismiss(animated: true)
+    }
+}
+
 // MARK: - Animations
 private extension QRLoginScanningViewController {
     func startAnimations() {
