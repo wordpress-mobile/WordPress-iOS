@@ -4,11 +4,19 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
     private let createsSite: Bool
     let completion: SiteDesignStep.SiteDesignSelection
     let siteDesign: RemoteSiteDesign
+    let sectionType: SiteDesignSectionType
 
-    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDevice?, createsSite: Bool, onDismissWithDeviceSelected: ((PreviewDevice) -> ())?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign,
+         selectedPreviewDevice: PreviewDevice?,
+         createsSite: Bool,
+         sectionType: SiteDesignSectionType,
+         onDismissWithDeviceSelected: ((PreviewDevice) -> ())?,
+         completion: @escaping SiteDesignStep.SiteDesignSelection) {
+
         self.completion = completion
         self.siteDesign = siteDesign
         self.createsSite = createsSite
+        self.sectionType = sectionType
         super.init(demoURL: siteDesign.demoURL, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
         delegate = self
         title = TextContent.previewTitle
@@ -32,6 +40,8 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         static let previewTitle = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design.")
         static let createSiteButton = NSLocalizedString("Create Site", comment: "Title for the button to progress with creating the site with the selected design.")
         static let chooseButton = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design.")
+
+        static let recommendedKey = "recommended"
     }
 }
 
@@ -61,7 +71,7 @@ extension SiteDesignPreviewViewController: TemplatePreviewViewDelegate {
     }
 
     func templatePicked() {
-        SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign, additionalProperties: [TextContent.recommendedKey: sectionType == .recommended])
         completion(siteDesign)
     }
 }
