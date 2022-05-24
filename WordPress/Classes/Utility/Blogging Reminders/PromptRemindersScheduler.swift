@@ -142,7 +142,6 @@ private extension PromptRemindersScheduler {
 
             // TODO: Schedule static notifications.
 
-            print("[BloggingPrompt] Prompt reminder scheduled!")
             completion(.success(()))
 
         } failure: { error in
