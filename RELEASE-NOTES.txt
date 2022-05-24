@@ -1,9 +1,6 @@
 20.0
 -----
 * [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688]
-
-19.9
------
 * [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors.
 
 19.9
