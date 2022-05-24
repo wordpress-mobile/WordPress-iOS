@@ -19,8 +19,7 @@ class QuickStartChecklistHeader: UITableViewHeaderFooterView, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        imageView.image = UIImage(named: "wp-illustration-quickstart-existing-site") // TODO: Use this instead
-        imageView.image = UIImage(named: "wp-illustration-first-post")
+        imageView.image = UIImage(named: "wp-illustration-quickstart-existing-site")
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
     }
 }
