@@ -15,6 +15,10 @@ extension Post {
     @NSManaged var categories: Set<PostCategory>?
     @NSManaged var isStickyPost: Bool
 
+
+    // If the post is created as an answer to a Blogging Prompt, the promptID is stored here.
+    @NSManaged var bloggingPromptID: String?
+
     // These were added manually, since the code generator for Swift is not generating them.
     //
     @NSManaged func addCategoriesObject(_ value: PostCategory)
