@@ -18,6 +18,7 @@ protocol QuickStartTour {
     var accessibilityHintText: String { get }
     var showWaypointNotices: Bool { get }
     var taskCompleteDescription: NSAttributedString? { get }
+    var showDescriptionInQuickStartModal: Bool { get }
 
     /// Represents where the tour can be shown from.
     var possibleEntryPoints: Set<QuickStartTourEntryPoint> { get }
@@ -47,6 +48,12 @@ extension QuickStartTour {
     var mustBeShownInBlogDetails: Bool {
         get {
             return possibleEntryPoints == [.blogDetails]
+        }
+    }
+
+    var showDescriptionInQuickStartModal: Bool {
+        get {
+            return false
         }
     }
 }
@@ -274,12 +281,13 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let analyticsKey = "site_icon"
     let title = NSLocalizedString("Choose a unique site icon", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Choose a unique site icon", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Shown in your visitor's browser tab and other places online.", comment: "Description of a Quick Start Tour")
+    let description = NSLocalizedString("Used across the web: in browser tabs, social media previews, and the WordPress.com Reader.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.globe)
     let iconColor = UIColor.muriel(color: MurielColor(name: .purple, shade: .shade40))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+    let showDescriptionInQuickStartModal = true
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
