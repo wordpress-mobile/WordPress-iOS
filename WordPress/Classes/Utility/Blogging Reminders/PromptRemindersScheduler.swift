@@ -6,6 +6,7 @@ import UserNotifications
 class PromptRemindersScheduler {
     enum Errors: Error {
         case invalidSite
+        case needsPushAuthorization
         case unknown
     }
 
@@ -16,7 +17,7 @@ class PromptRemindersScheduler {
 
     // MARK: Public Methods
 
-    init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory,
+    init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
          notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
          pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
@@ -29,17 +30,81 @@ class PromptRemindersScheduler {
     /// Schedule local notifications that will show prompts on selected weekdays based on the given `Schedule`.
     /// Prompt notifications will be bulk-scheduled for 2 weeks ahead.
     ///
+    /// Note: Calling this method will trigger the push notification authorization flow.
+    ///
     /// - Parameters:
     ///   - schedule: The preferred notification schedule.
     ///   - blog: The blog that will upload the user's post.
     ///   - time: The user's preferred time to be notified.
     ///   - completion: Closure called after the process completes.
-    func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping(Result<Void, Error>) -> Void) {
+    func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard schedule != .none else {
+            // If there's no schedule, then we don't need to request authorization
+            processSchedule(schedule, blog: blog, time: time, completion: completion)
+            return
+        }
 
-        // TODO: Add push authorization before proceeding with the logic.
+        pushAuthorizer.requestAuthorization { [weak self] allowed in
+            guard let self = self else {
+                return
+            }
+
+            guard allowed else {
+                completion(.failure(Errors.needsPushAuthorization))
+                return
+            }
+
+            self.processSchedule(schedule, blog: blog, time: time, completion: completion)
+        }
+    }
+
+    func unschedule(for blog: Blog) {
+        // TODO: Implement
+    }
+}
+
+// MARK: - Private Helpers
+
+private extension PromptRemindersScheduler {
+    typealias Schedule = BloggingRemindersScheduler.Schedule
+    typealias Weekday = BloggingRemindersScheduler.Weekday
+
+    /// A simple structure representing hour and minute.
+    struct Time {
+        let hour: Int
+        let minute: Int
+
+        func compare(with date: Date) -> ComparisonResult {
+            let hourToCompare = Calendar.current.component(.hour, from: date)
+            let minuteToCompare = Calendar.current.component(.minute, from: date)
+
+            if hour == hourToCompare {
+                return NSNumber(value: minute).compare(NSNumber(value: minuteToCompare))
+            }
+
+            return NSNumber(value: hour).compare(NSNumber(value: hourToCompare))
+        }
+    }
+
+    enum Constants {
+        static let defaultTime = Time(hour: 10, minute: 0) // 10:00 AM
+        static let promptsToFetch = 15 // fetch prompts for today + two weeks ahead
+        static let notificationTitle = NSLocalizedString("Today's Prompt 💡", comment: "Title for a push notification showing today's blogging prompt.")
+    }
+
+    /// The actual implementation for the prompt notification scheduling.
+    /// This method should only be called after push notifications have been authorized.
+    ///
+    /// - Parameters:
+    ///   - schedule: The preferred notification schedule.
+    ///   - blog: The blog that will upload the user's post.
+    ///   - time: The user's preferred time to be notified.
+    ///   - completion: Closure called after the process completes.
+    func processSchedule(_ schedule: Schedule, blog: Blog, time: Date? = nil, completion: @escaping(Result<Void, Error>) -> Void) {
+        // always reset pending notifications.
+        unschedule(for: blog)
 
         guard case .weekdays(let weekdays) = schedule else {
-            unschedule(for: blog)
             completion(.success(()))
             return
         }
@@ -70,7 +135,7 @@ class PromptRemindersScheduler {
                 && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedDescending)
 
             }.forEach { promptToSchedule in
-                let _ = self.scheduleNotification(for: promptToSchedule, blog: blog, at: reminderTime)
+                let _ = self.addLocalNotification(for: promptToSchedule, blog: blog, at: reminderTime)
             }
 
             // TODO: Save notification identifiers to local store.
@@ -84,42 +149,6 @@ class PromptRemindersScheduler {
         }
     }
 
-    func unschedule(for blog: Blog) {
-        // TODO: Implement
-    }
-}
-
-// MARK: - Private Helpers
-
-private extension PromptRemindersScheduler {
-    typealias Schedule = BloggingRemindersScheduler.Schedule
-    typealias Weekday = BloggingRemindersScheduler.Weekday
-
-    /// A simple structure representing hour and minute.
-    struct Time {
-        let hour: Int
-        let minute: Int
-
-        func compare(with date: Date) -> ComparisonResult {
-            let hourToCompare = Calendar.current.component(.hour, from: date)
-            let minuteToCompare = Calendar.current.component(.minute, from: date)
-
-            if hour == hourToCompare && minute == minuteToCompare {
-                return .orderedSame
-            } else if hour < hourToCompare || (hour < hourToCompare && minute < minuteToCompare) {
-                return .orderedAscending
-            }
-
-            return .orderedDescending
-        }
-    }
-
-    enum Constants {
-        static let defaultTime = Time(hour: 10, minute: 0) // 10:00 AM
-        static let promptsToFetch = 15 // fetch prompts for today + two weeks ahead
-        static let notificationTitle = NSLocalizedString("Today's Prompt 💡", comment: "Title for a push notification showing today's blogging prompt.")
-    }
-
     /// Schedules the local notification.
     ///
     /// - Parameters:
@@ -127,7 +156,7 @@ private extension PromptRemindersScheduler {
     ///   - blog: The user's blog.
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
-    func scheduleNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
+    func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
         guard let gmtTimeZone = TimeZone(secondsFromGMT: 0) else {
             return nil
         }

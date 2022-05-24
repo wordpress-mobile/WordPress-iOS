@@ -9,7 +9,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
     typealias Weekday = BloggingRemindersScheduler.Weekday
 
     private let timeout: TimeInterval = 1
-    private let currentDate = ISO8601DateFormatter().date(from: "2022-05-20T09:00:00+00:00")! // friday
+    private let currentDate = ISO8601DateFormatter().date(from: "2022-05-20T09:30:00+00:00")! // Friday
 
     private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)!
     private static var gmtCalendar: Calendar = {
@@ -29,7 +29,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
     private var contextManager: ContextManagerMock!
     private var serviceFactory: BloggingPromptsServiceFactory!
     private var notificationScheduler: MockNotificationScheduler!
-    private var pushAuthorizer: PushNotificationAuthorizer!
+    private var pushAuthorizer: MockPushNotificationAuthorizer!
     private var blog: Blog!
     private var accountService: AccountService!
     private var scheduler: PromptRemindersScheduler!
@@ -39,7 +39,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         contextManager = ContextManagerMock()
         serviceFactory = BloggingPromptsServiceFactory(contextManager: contextManager)
         notificationScheduler = MockNotificationScheduler()
-        pushAuthorizer = PushNotificationsAuthorizerMock()
+        pushAuthorizer = MockPushNotificationAuthorizer()
         dateProvider = MockCurrentDateProvider(currentDate)
         blog = makeBlog()
         accountService = makeAccountService()
@@ -48,6 +48,8 @@ class PromptRemindersSchedulerTests: XCTestCase {
                                              pushAuthorizer: pushAuthorizer,
                                              currentDateProvider: dateProvider)
         NSTimeZone.default = Self.gmtTimeZone
+
+        stubFetchPromptsResponse()
 
         super.setUp()
     }
@@ -61,18 +63,17 @@ class PromptRemindersSchedulerTests: XCTestCase {
         blog = nil
         accountService = nil
         scheduler = nil
-        HTTPStubs.removeAllStubs()
         NSTimeZone.default = NSTimeZone.system
+
+        HTTPStubs.removeAllStubs()
 
         super.tearDown()
     }
 
-    // MARK: Tests
+    // MARK: - Tests
 
     func test_schedule_addsNotificationRequestsCorrectly() {
-        // the mocked current date is friday.
         let schedule = Schedule.weekdays([.saturday])
-        stubFetchPromptsResponse()
 
         struct Expected {
             let body: String
@@ -123,7 +124,6 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
     func test_schedule_givenEmptySchedule_doesNothing() {
         let schedule = Schedule.none
-        stubFetchPromptsResponse()
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog) { result in
@@ -134,6 +134,10 @@ class PromptRemindersSchedulerTests: XCTestCase {
             }
 
             XCTAssertTrue(self.notificationScheduler.requests.isEmpty)
+
+            // Passing `.none` should NOT trigger push notification authorization!
+            XCTAssertFalse(self.pushAuthorizer.triggered)
+
             expectation.fulfill()
         }
 
@@ -141,8 +145,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
     }
 
     func test_schedule_givenTodayIsIncluded_withReminderTimeAfterCurrentTime_includesTodayInSchedule() {
-        let schedule = Schedule.weekdays([.friday])
-        stubFetchPromptsResponse()
+        let schedule = scheduleForToday
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog) { result in
@@ -159,14 +162,41 @@ class PromptRemindersSchedulerTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
+    func test_schedule_givenTodayIsIncluded_withReminderTimeMinutesAfterCurrentTime_excludesTodayFromSchedule() {
+        let schedule = scheduleForToday
+        let expectedHour = 9
+        let expectedMinute = 35
+        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
+        let dateForTime = Calendar.current.date(from: timeComponents)
+
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(self.notificationScheduler.requests.count, 3)
+
+            // verify that the reminder time is set correctly.
+            let request = self.notificationScheduler.requests.first!
+            let trigger = request.trigger! as! UNCalendarNotificationTrigger
+            XCTAssertEqual(trigger.dateComponents.hour, expectedHour)
+            XCTAssertEqual(trigger.dateComponents.minute, expectedMinute)
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
     func test_schedule_givenTodayIsIncluded_withReminderTimeBeforeCurrentTime_excludesTodayFromSchedule() {
-        let schedule = Schedule.weekdays([.friday])
+        let schedule = scheduleForToday
         let expectedHour = 8
         let expectedMinute = 30
         let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
         let dateForTime = Calendar.current.date(from: timeComponents)
-
-        stubFetchPromptsResponse()
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
@@ -190,6 +220,47 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
         wait(for: [expectation], timeout: timeout)
     }
+
+    func test_schedule_givenTodayIsIncluded_withReminderTimeMinutesBeforeCurrentTime_excludesTodayFromSchedule() {
+        let schedule = scheduleForToday
+        let expectedHour = 9
+        let expectedMinute = 20
+        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
+        let dateForTime = Calendar.current.date(from: timeComponents)
+
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(self.notificationScheduler.requests.count, 2)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    func test_schedule_givenDeniedPushAuthorization_shouldReturnFailure() {
+        let schedule = scheduleForToday
+        pushAuthorizer.shouldAuthorize = false
+
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog) { result in
+            guard case .failure(let error) = result else {
+                XCTFail("Expected a failure result")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(error as! PromptRemindersScheduler.Errors, PromptRemindersScheduler.Errors.needsPushAuthorization)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
 }
 
 // MARK: - Private Helpers
@@ -198,6 +269,11 @@ private extension PromptRemindersSchedulerTests {
 
     var mainContext: NSManagedObjectContext {
         contextManager.mainContext
+    }
+
+    var scheduleForToday: Schedule {
+        // the mocked current date is Friday.
+        .weekdays([.friday])
     }
 
     func stubFetchPromptsResponse() {
@@ -251,6 +327,16 @@ private extension PromptRemindersSchedulerTests {
 
         func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
             // no-op
+        }
+    }
+
+    class MockPushNotificationAuthorizer: PushNotificationAuthorizer {
+        var shouldAuthorize = true
+        var triggered = false
+
+        func requestAuthorization(completion: @escaping (Bool) -> Void) {
+            triggered = true
+            completion(shouldAuthorize)
         }
     }
 
