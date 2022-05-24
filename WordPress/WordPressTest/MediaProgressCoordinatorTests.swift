@@ -1,13 +1,14 @@
 import Foundation
+import XCTest
+
 @testable import WordPress
 
 class MediaProgressCoordinatorTests: CoreDataTestCase {
 
-    fileprivate var context: NSManagedObjectContext!
     var mediaProgressCoordinator: MediaProgressCoordinator!
 
     fileprivate func makeTestMedia() -> Media {
-        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as! Media
+        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
     }
 
     fileprivate func makeTestError() -> NSError {
@@ -16,13 +17,10 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
         mediaProgressCoordinator = MediaProgressCoordinator()
     }
 
     override func tearDown() {
-        context.rollback()
         mediaProgressCoordinator = nil
         super.tearDown()
     }

@@ -23,15 +23,14 @@ final class ReplyToCommentActionTests: CoreDataTestCase {
     }
 
     private var action: ReplyToComment?
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
         action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
@@ -39,8 +38,7 @@ final class ReplyToCommentActionTests: CoreDataTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {

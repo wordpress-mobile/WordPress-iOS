@@ -73,9 +73,11 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
-    // This provides a quick way to toggle the `Remove from dashboard` menu item.
-    // Since it (probably) will not be included in Blogging Prompts V1, it is disabled by default.
+    // This provides a quick way to toggle in flux features.
+    // Since they probably will not be included in Blogging Prompts V1,
+    // they are disabled by default.
     private let removeFromDashboardEnabled = false
+    private let sharePromptEnabled = false
 
     // Used to present:
     // - The menu sheet for contextual menu in iOS13.
@@ -257,7 +259,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.answeredButtonsSpacing
-        stackView.addArrangedSubviews([answeredLabel, shareButton])
+        stackView.addArrangedSubviews(sharePromptEnabled ? [answeredLabel, shareButton] : [answeredLabel])
 
         // center the stack view's contents based on its total intrinsic width (instead of having it stretched edge to edge).
         let containerView = UIView()

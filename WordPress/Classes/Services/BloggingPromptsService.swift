@@ -6,6 +6,7 @@ class BloggingPromptsService {
     private let siteID: NSNumber
     private let remote: BloggingPromptsServiceRemote
     private let calendar: Calendar = .autoupdatingCurrent
+    private let maxListPrompts = 11
 
     /// A UTC date formatter that ignores time information.
     private static var dateFormatter: DateFormatter = {
@@ -23,16 +24,22 @@ class BloggingPromptsService {
         loadPrompts(from: Date(), number: 1).first
     }
 
+    /// Convenience computed variable that returns prompts for the prompts list from local store.
+    ///
+    var localListPrompts: [BloggingPrompt] {
+        loadPrompts(from: listStartDate, number: maxListPrompts)
+    }
+
     /// Fetches a number of blogging prompts starting from the specified date.
     /// When no parameters are specified, this method will attempt to return prompts from ten days ago and two weeks ahead.
     ///
     /// - Parameters:
     ///   - date: When specified, only prompts from the specified date will be returned. Defaults to 10 days ago.
-    ///   - number: The amount of prompts to return. Defaults to 24 when unspecified.
+    ///   - number: The amount of prompts to return. Defaults to 25 when unspecified (10 days back, today, 14 days ahead).
     ///   - success: Closure to be called when the fetch process succeeded.
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchPrompts(from date: Date? = nil,
-                      number: Int = 24,
+                      number: Int = 25,
                       success: @escaping ([BloggingPrompt]) -> Void,
                       failure: @escaping (Error?) -> Void) {
         let fromDate = date ?? defaultStartDate
@@ -46,6 +53,7 @@ class BloggingPromptsService {
                     }
 
                     success(self.loadPrompts(from: fromDate, number: number))
+
                 }
             case .failure(let error):
                 failure(error)
@@ -89,9 +97,55 @@ class BloggingPromptsService {
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchListPrompts(success: @escaping ([BloggingPrompt]) -> Void,
                           failure: @escaping (Error?) -> Void) {
-        let fromDate = calendar.date(byAdding: .day, value: -9, to: Date()) ?? Date()
-        fetchPrompts(from: fromDate, number: 11, success: success, failure: failure)
+        fetchPrompts(from: listStartDate, number: maxListPrompts, success: success, failure: failure)
     }
+
+    /// Convenience method to obtain the blogging prompts for the prompts list,
+    /// either from local cache or remote.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch process succeeded.
+    ///   - failure: Closure to be called when the fetch process failed.
+    func listPrompts(success: @escaping ([BloggingPrompt]) -> Void,
+                     failure: @escaping (Error?) -> Void) {
+
+        // If there aren't maxListPrompts cached, need to fetch more.
+        guard localListPrompts.count < maxListPrompts else {
+            success(localListPrompts)
+            return
+        }
+
+        fetchListPrompts(success: success, failure: failure)
+    }
+
+    // MARK: - Settings
+
+    func fetchSettings(success: @escaping () -> Void,
+                       failure: @escaping (Error?) -> Void) {
+        remote.fetchSettings(for: siteID) { result in
+            switch result {
+            case .success(let remoteSettings):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
+    func updateSettings(settings: RemoteBloggingPromptsSettings,
+                        success: @escaping () -> Void,
+                        failure: @escaping (Error?) -> Void) {
+        remote.updateSettings(for: siteID, with: settings) { result in
+            switch result {
+            case .success(let updatedSettings):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
+    // MARK: - Init
 
     required init?(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
@@ -107,12 +161,34 @@ class BloggingPromptsService {
     }
 }
 
+// MARK: - Service Factory
+
+/// Convenience factory to generate `BloggingPromptsService` for different blogs.
+///
+class BloggingPromptsServiceFactory {
+    let contextManager: CoreDataStack
+    let remote: BloggingPromptsServiceRemote?
+
+    init(contextManager: CoreDataStack = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
+        self.contextManager = contextManager
+        self.remote = remote
+    }
+
+    func makeService(for blog: Blog) -> BloggingPromptsService? {
+        return .init(contextManager: contextManager, remote: remote, blog: blog)
+    }
+}
+
 // MARK: - Private Helpers
 
 private extension BloggingPromptsService {
 
     var defaultStartDate: Date {
         calendar.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+    }
+
+    var listStartDate: Date {
+        calendar.date(byAdding: .day, value: -(maxListPrompts - 2), to: Date()) ?? Date()
     }
 
     /// Converts the given date to UTC and ignores the time information.

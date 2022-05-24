@@ -3,14 +3,10 @@ import XCTest
 
 class QuickStartFactoryTests: CoreDataTestCase {
 
-    private var context: NSManagedObjectContext!
-
     override func setUp() {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
     }
 
     func testCollectionsForExistingSite() {
@@ -106,7 +102,7 @@ class QuickStartFactoryTests: CoreDataTestCase {
     }
 
     private func newTestBlog(id: Int) -> Blog {
-        let blog = ModelTestHelper.insertDotComBlog(context: context)
+        let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = id as NSNumber
         return blog
     }

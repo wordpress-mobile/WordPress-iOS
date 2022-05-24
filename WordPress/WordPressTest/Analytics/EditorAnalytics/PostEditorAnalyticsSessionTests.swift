@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 @testable import WordPress
 
 class PostEditorAnalyticsSessionTests: CoreDataTestCase {
@@ -14,11 +15,7 @@ class PostEditorAnalyticsSessionTests: CoreDataTestCase {
         """
     }
 
-    private var context: NSManagedObjectContext!
-
     override func setUp() {
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = mainContext
         TestAnalyticsTracker.setup()
     }
 
@@ -158,10 +155,10 @@ class PostEditorAnalyticsSessionTests: CoreDataTestCase {
 
 extension PostEditorAnalyticsSessionTests {
     func createPost(title: String? = nil, body: String? = nil, blogID: NSNumber? = nil) -> AbstractPost {
-        let post = AbstractPost(context: context)
+        let post = AbstractPost(context: mainContext)
         post.postTitle = title
         post.content = body
-        post.blog = Blog(context: context)
+        post.blog = Blog(context: mainContext)
         post.blog.dotComID = blogID
         return post
     }

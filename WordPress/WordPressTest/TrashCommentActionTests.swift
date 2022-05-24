@@ -21,15 +21,14 @@ final class TrashCommentActionTests: CoreDataTestCase {
     }
 
     private var action: TrashComment?
-    let utils = NotificationUtility()
+    private var utils: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utils.setUp()
+        utils = NotificationUtility(coreDataStack: contextManager)
         action = TestableTrashComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
@@ -37,8 +36,7 @@ final class TrashCommentActionTests: CoreDataTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utils.tearDown()
-        super.tearDown()
+        utils = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {

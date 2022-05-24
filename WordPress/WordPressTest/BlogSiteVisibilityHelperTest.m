@@ -3,7 +3,7 @@
 
 #import "Blog.h"
 #import "BlogSiteVisibilityHelper.h"
-#import "ContextManagerMock.h"
+#import "WordPressTest-Swift.h"
 
 @interface BlogSiteVisibilityHelperTest : XCTestCase
 @end
