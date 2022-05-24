@@ -8,9 +8,18 @@ class QRLoginScanningViewController: UIViewController {
 
     var coordinator: QRLoginScanningCoordinator?
 }
+
 extension QRLoginScanningViewController: QRLoginScanningView {
     func showError(_ message: String) {
+        scanFocusImageView.isHidden = true
+        stopAnimations()
+
+        errorLabel.text = message
+        errorLabel.font = WPStyleGuide.regularTextFont()
+        view.backgroundColor = .black
+        errorLabel.textColor = .white
     }
+
     func showCameraLayer(_ previewLayer: AVCaptureVideoPreviewLayer) {
         previewLayer.frame = view.layer.bounds
 
