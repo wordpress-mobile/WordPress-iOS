@@ -1,0 +1,14 @@
+È ora possibile trascinare e rilasciare i blocchi, quindi puoi riorganizzare facilmente i tuoi contenuti come preferisci. Ci piace se li muovi! Ci piace se li muovi!
+
+Non è la sola modifica nell'editor a blocchi. Abbiamo regolato il contrasto del colore in modo da rendere più semplice la lettura del testo quando stai lavorando in Dark Mode. Abbiamo anche risolto un problema con l'impostazione Collega a nei blocchi Galleria e abbiamo aggiunto le impostazioni Dimensione dell'immagine mentre eravamo lì.
+
+Il banner del tour di WordPress.com non viene più visualizzato nell'editor a blocchi non supportato. Parlando del tour, ora vedrai un diverso insieme di attività della sessione di orientamento, a seconda che tu stia creando un nuovo sito o lavorando con uno esistente. Apprendere nuove attività, come la verifica delle notifiche e il caricamento di elementi multimediali, è una parte del gioco.
+
+Infine, abbiamo eliminato alcuni fastidiosi bug per rendere l'app più semplice da usare.
+
+- Il testo del widget non viene più capovolto per i dispositivi che utilizzano lingue scritte da destra a sinistra.
+- L'app non si arresta in modo anomalo quando passi da Panoramica delle statistiche ad altre sezioni del sito. Meno male.
+- Nell'Elenco degli articoli, il pulsante Crea non è visibile per gli utenti iPad che lavorano a schermo diviso.
+- Quando modifichi il titolo del tuo sito nelle impostazioni del sito, verrà aggiornato anche in Il mio sito.
+- Vedrai il messaggio giusto nel selezionatore di elementi multimediali quando non ci sono media disponibili.
+- I pulsanti di navigazione nel processo di creazione del sito ora vengono ridimensionati correttamente quando il dispositivo utilizza caratteri di grandi dimensioni.
