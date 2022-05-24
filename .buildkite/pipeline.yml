@@ -43,7 +43,7 @@ steps:
     env: *common_env
     plugins: *common_plugins
     artifact_paths:
-      - "build/results/*"
+      - "build/results/*" # FIXME: Note that there's nothing in there–because we only build, not run the tests?
     notify:
       - github_commit_status:
           context: "Build for Testing"
