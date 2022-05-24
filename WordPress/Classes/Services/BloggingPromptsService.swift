@@ -120,12 +120,13 @@ class BloggingPromptsService {
 
     // MARK: - Settings
 
-    func fetchSettings(success: @escaping () -> Void,
+    func fetchSettings(success: @escaping (BloggingPromptSettings?) -> Void,
                        failure: @escaping (Error?) -> Void) {
         remote.fetchSettings(for: siteID) { result in
             switch result {
-            case .success(_):
-                success()
+            case .success(let remoteSettings):
+                self.saveSettings(remoteSettings,
+                        completion: self.loadSettingsCompletion(success: success, failure: failure))
             case .failure(let error):
                 failure(error)
             }
@@ -133,12 +134,18 @@ class BloggingPromptsService {
     }
 
     func updateSettings(settings: RemoteBloggingPromptsSettings,
-                        success: @escaping () -> Void,
+                        success: @escaping (BloggingPromptSettings?) -> Void,
                         failure: @escaping (Error?) -> Void) {
         remote.updateSettings(for: siteID, with: settings) { result in
             switch result {
-            case .success(_):
-                success()
+            case .success(let remoteSettings):
+                guard let updatedSettings = remoteSettings else {
+                    success(nil)
+                    return
+                }
+
+                self.saveSettings(updatedSettings,
+                        completion: self.loadSettingsCompletion(success: success, failure: failure))
             case .failure(let error):
                 failure(error)
             }
@@ -279,4 +286,47 @@ private extension BloggingPromptsService {
             }
         }
     }
+
+    func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping (Result<Void, Error>) -> Void) {
+        let derivedContext = contextManager.newDerivedContext()
+        derivedContext.perform {
+            do {
+                let fetchRequest = BloggingPromptSettings.fetchRequest()
+                let settings = (try? derivedContext.fetch(fetchRequest))?.first as? BloggingPromptSettings ?? BloggingPromptSettings(context: derivedContext)
+                settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
+
+                self.contextManager.save(derivedContext) {
+                    DispatchQueue.main.async {
+                        completion(.success(()))
+                    }
+                }
+            } catch let error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    func loadSettingsRequest() -> NSFetchRequest<BloggingPromptSettings> {
+        let fetchRequest = BloggingPromptSettings.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
+        fetchRequest.fetchLimit = 1
+        return fetchRequest
+    }
+
+    func loadSettingsCompletion(success: @escaping (BloggingPromptSettings?) -> Void,
+                                failure: @escaping (Error?) -> Void) -> (Result<Void, Error>) -> Void {
+        return { result in
+            switch result {
+            case .success:
+                let fetchRequest = self.loadSettingsRequest()
+                let settings = (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
+                success(settings)
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
 }
