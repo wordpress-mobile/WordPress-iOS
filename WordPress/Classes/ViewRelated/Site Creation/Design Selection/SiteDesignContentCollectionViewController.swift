@@ -289,7 +289,7 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
         cell.clipsToBounds = false
         cell.collectionView.allowsSelection = !isLoading
         cell.categoryTitleFont = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
-        cell.categoryCaption = sections[safe: indexPath.row]?.caption
+        cell.categoryCaption = cell.section?.caption
         return cell
     }
 }
