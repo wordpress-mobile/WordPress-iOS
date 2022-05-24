@@ -15,7 +15,7 @@ class QRLoginCoordinator {
     func didScanCode(_ code: String) {
         showVerifyAuthorization(code: code)
     }
-    
+
     func showCameraScanningView(from source: UIViewController? = nil) {
         let controller = QRLoginScanningViewController()
         controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
@@ -65,4 +65,3 @@ extension QRLoginCoordinator {
         QRLoginCoordinator().showVerifyAuthorization(code: code, from: source)
     }
 }
-
