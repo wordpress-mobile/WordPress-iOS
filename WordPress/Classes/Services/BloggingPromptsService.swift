@@ -124,7 +124,7 @@ class BloggingPromptsService {
                        failure: @escaping (Error?) -> Void) {
         remote.fetchSettings(for: siteID) { result in
             switch result {
-            case .success(let remoteSettings):
+            case .success(_):
                 success()
             case .failure(let error):
                 failure(error)
@@ -137,7 +137,7 @@ class BloggingPromptsService {
                         failure: @escaping (Error?) -> Void) {
         remote.updateSettings(for: siteID, with: settings) { result in
             switch result {
-            case .success(let updatedSettings):
+            case .success(_):
                 success()
             case .failure(let error):
                 failure(error)
