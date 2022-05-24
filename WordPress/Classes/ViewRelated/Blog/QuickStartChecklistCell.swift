@@ -90,7 +90,6 @@ private extension QuickStartChecklistCell {
 
     func setupContent(tour: QuickStartTour) {
         descriptionLabel.text = tour.description
-        descriptionContainerView.isHidden = tour.description == nil
         iconView?.image = tour.icon.withRenderingMode(.alwaysTemplate)
     }
 
