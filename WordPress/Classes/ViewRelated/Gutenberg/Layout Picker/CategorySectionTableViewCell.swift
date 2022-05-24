@@ -51,6 +51,7 @@ class CategorySectionTableViewCell: UITableViewCell {
             thumbnails = section?.thumbnails ?? []
             categoryTitle.text = section?.title
             collectionView.contentOffset = section?.scrollOffset ?? .zero
+            setCaption()
 
             if let section = section {
                 collectionViewHeight.constant = section.thumbnailSize.height
@@ -65,14 +66,8 @@ class CategorySectionTableViewCell: UITableViewCell {
         }
     }
 
-    var categoryCaption: String? {
-        didSet {
-            setCaption()
-        }
-    }
-
     private func setCaption() {
-        guard let caption = categoryCaption else {
+        guard let caption = section?.caption else {
             categoryCaptionLabel.isHidden = true
             return
         }
@@ -96,7 +91,6 @@ class CategorySectionTableViewCell: UITableViewCell {
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
         categoryTitleFont = nil
-        categoryCaption = nil
     }
 
     override func awakeFromNib() {
