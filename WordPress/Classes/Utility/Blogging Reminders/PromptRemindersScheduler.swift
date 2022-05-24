@@ -238,7 +238,7 @@ private extension PromptRemindersScheduler {
             localStore.save(contents: data, at: fileURL)
         }
 
-        let data = try Data(contentsOf: fileURL)
+        let data = try localStore.data(from: fileURL)
         return try PropertyListDecoder().decode([Int: [String]].self, from: data)
     }
 
@@ -286,10 +286,18 @@ struct DefaultCurrentDateProvider: CurrentDateProvider {
 /// Created to simplify unit testing.
 ///
 protocol LocalFileStore {
+    func data(from url: URL) throws -> Data
+
     func fileExists(at url: URL) -> Bool
 
     @discardableResult
     func save(contents: Data, at url: URL) -> Bool
+}
+
+extension LocalFileStore {
+    func data(from url: URL) throws -> Data {
+        return try Data(contentsOf: url)
+    }
 }
 
 extension FileManager: LocalFileStore {

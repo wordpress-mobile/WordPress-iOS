@@ -33,6 +33,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
     private var blog: Blog!
     private var accountService: AccountService!
     private var scheduler: PromptRemindersScheduler!
+    private var localStore: MockLocalFileStore!
     private var dateProvider: MockCurrentDateProvider!
 
     override func setUp() {
@@ -43,9 +44,11 @@ class PromptRemindersSchedulerTests: XCTestCase {
         dateProvider = MockCurrentDateProvider(currentDate)
         blog = makeBlog()
         accountService = makeAccountService()
+        localStore = MockLocalFileStore()
         scheduler = PromptRemindersScheduler(bloggingPromptsServiceFactory: serviceFactory,
                                              notificationScheduler: notificationScheduler,
                                              pushAuthorizer: pushAuthorizer,
+                                             localStore: localStore,
                                              currentDateProvider: dateProvider)
         NSTimeZone.default = Self.gmtTimeZone
 
@@ -60,6 +63,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         notificationScheduler = nil
         pushAuthorizer = nil
         dateProvider = nil
+        localStore = nil
         blog = nil
         accountService = nil
         scheduler = nil
@@ -94,8 +98,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog) { result in
             guard case .success = result else {
-                XCTFail("Expected a success result")
-                expectation.fulfill()
+                XCTFail("Expected a success result, but got error: \(result)")
                 return
             }
 
@@ -115,6 +118,14 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 XCTAssertEqual(trigger.dateComponents.hour, value.dateComponents.hour)
                 XCTAssertEqual(trigger.dateComponents.minute, value.dateComponents.minute)
             }
+
+            // verify that notification receipts are stored.
+            XCTAssertNotNil(self.localStore.storedReceipts)
+
+            let allReceipts = self.localStore.storedReceipts!
+            let receiptsForSite = allReceipts[self.blog.dotComID!.intValue]!
+            XCTAssertFalse(receiptsForSite.isEmpty)
+            XCTAssertEqual(receiptsForSite.count, 2)
 
             expectation.fulfill()
         }
@@ -349,6 +360,46 @@ private extension PromptRemindersSchedulerTests {
 
         func date() -> Date {
             return dateToReturn
+        }
+    }
+
+    class MockLocalFileStore: LocalFileStore {
+        enum Errors: Error {
+            case dataNotFound
+        }
+
+        var fileShouldExist = true
+        var savedData: Data? = try? PropertyListEncoder().encode([Int: [String]]())
+        var saveShouldSucceed = true
+
+        var storedReceipts: [Int: [String]]? {
+            guard let savedData = savedData,
+                  let dictionary = try? PropertyListDecoder().decode([Int: [String]].self, from: savedData) else {
+                return nil
+            }
+
+            return dictionary
+        }
+
+        // MARK: LocalFileStore
+
+        func data(from url: URL) throws -> Data {
+            guard let someData = savedData else {
+                throw Errors.dataNotFound
+            }
+
+            return someData
+        }
+
+        func fileExists(at url: URL) -> Bool {
+            return fileShouldExist
+        }
+
+        @discardableResult
+        func save(contents: Data, at url: URL) -> Bool {
+            savedData = contents
+
+            return saveShouldSucceed
         }
     }
 }
