@@ -191,7 +191,7 @@ extension QRLoginScanningCoordinator: AVCaptureMetadataOutputObjectsDelegate {
         guard let first = metadataObjects.first as? AVMetadataMachineReadableCodeObject, let string = first.stringValue else {
             return
         }
-        
+
         guard validLink(string) else {
             return
         }

@@ -32,7 +32,7 @@ extension QRLoginScanningViewController: QRLoginScanningView {
 extension QRLoginScanningViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         errorLabel.isHidden = true
         coordinator?.start()
     }
