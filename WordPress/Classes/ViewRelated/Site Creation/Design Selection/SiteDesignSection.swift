@@ -10,16 +10,23 @@ struct SiteDesignSection: CategorySection {
     var description: String?
     var thumbnails: [Thumbnail] { designs }
     var scrollOffset: CGPoint = .zero
+
+    var sectionType: SiteDesignSectionType = .standard
 }
 
 extension SiteDesignSection {
-    init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign], thumbnailSize: CGSize) {
+    init(category: RemoteSiteDesignCategory,
+         designs: [RemoteSiteDesign],
+         thumbnailSize: CGSize,
+         sectionType: SiteDesignSectionType = .standard) {
+
         self.designs = designs
         self.thumbnailSize = thumbnailSize
         self.categorySlug = category.slug
         self.title = category.title
         self.emoji = category.emoji
         self.description = category.description
+        self.sectionType = sectionType
     }
 }
 
@@ -27,4 +34,9 @@ extension SiteDesignSection: Equatable {
     static func == (lhs: SiteDesignSection, rhs: SiteDesignSection) -> Bool {
         lhs.categorySlug == rhs.categorySlug
     }
+}
+
+enum SiteDesignSectionType {
+    case recommended
+    case standard
 }
