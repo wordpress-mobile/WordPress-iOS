@@ -162,7 +162,7 @@ struct QuickStartShareTour: QuickStartTour {
     let titleMarkedCompleted = NSLocalizedString("Completed: Social sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.share)
-    let iconColor = UIColor.muriel(color: MurielColor(name: .blue, shade: .shade40))
+    let iconColor = UIColor.muriel(color: MurielColor(name: .blue, shade: .shade40)).color(for: UITraitCollection(userInterfaceStyle: .light))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
