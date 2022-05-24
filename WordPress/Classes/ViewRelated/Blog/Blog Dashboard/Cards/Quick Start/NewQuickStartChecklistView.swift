@@ -32,7 +32,6 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Metrics.verticalStackViewSpacing
         return stackView
     }()
 
@@ -52,6 +51,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.spacing = Metrics.progressStackViewSpacing
         return stackView
     }()
 
@@ -120,14 +120,14 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        configureProgressStackViewSpacing()
+        configureVerticalStackViewSpacing()
     }
 
-    private func configureProgressStackViewSpacing() {
+    private func configureVerticalStackViewSpacing() {
         if UIDevice.current.orientation.isLandscape {
-            progressStackView.spacing = Metrics.progressStackViewSpacingLandscape
+            verticalStackView.spacing = Metrics.verticalStackViewSpacingLandscape
         } else {
-            progressStackView.spacing = Metrics.progressStackViewSpacingPortrait
+            verticalStackView.spacing = Metrics.verticalStackViewSpacingPortrait
         }
     }
 
@@ -149,7 +149,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
 extension NewQuickStartChecklistView {
 
     private func setupViews() {
-        configureProgressStackViewSpacing()
+        configureVerticalStackViewSpacing()
 
         addSubview(mainStackView)
         pinSubviewToAllEdges(mainStackView, insets: Metrics.mainStackViewInsets)
@@ -221,11 +221,11 @@ extension NewQuickStartChecklistView {
 extension NewQuickStartChecklistView {
 
     private enum Metrics {
-        static let mainStackViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 24).flippedForRightToLeft
+        static let mainStackViewInsets = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 24).flippedForRightToLeft
         static let verticalStackViewWidthMultiplier = 3.0 / 5.0
-        static let verticalStackViewSpacing = 8.0
-        static let progressStackViewSpacingPortrait = 12.0
-        static let progressStackViewSpacingLandscape = 16.0
+        static let verticalStackViewSpacingPortrait = 12.0
+        static let verticalStackViewSpacingLandscape = 16.0
+        static let progressStackViewSpacing = 8.0
         static let progressViewHeight = 5.0
         static let imageWidth = 56.0
         static let imageHeight = 100.0
