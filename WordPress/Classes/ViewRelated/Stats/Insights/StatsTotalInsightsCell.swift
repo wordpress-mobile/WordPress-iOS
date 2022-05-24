@@ -87,12 +87,9 @@ class StatsTotalInsightsCell: StatsBaseCell {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
-        graphView.isHidden = sparklineData == nil
-        if let sparklineData = sparklineData {
-            graphView.data = sparklineData
-            graphView.chartColor = chartColor(for: difference)
-        }
-
+        graphView.data = sparklineData ?? []
+        graphView.chartColor = chartColor(for: difference)
+        
         countLabel.text = count.abbreviatedString()
         let differenceText = difference > 0 ? TextContent.differenceHigher : TextContent.differenceLower
         let differencePrefix = difference < 0 ? "" : "+"

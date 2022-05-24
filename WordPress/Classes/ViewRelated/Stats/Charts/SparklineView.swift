@@ -98,12 +98,21 @@ class SparklineView: UIView {
         maskLayer.frame = bounds
         gradientLayer.frame = bounds
 
+        guard bounds.width > 0,
+              bounds.height > 0,
+              chartData.count > 1 else {
+                  lineLayer.path = nil
+                  maskLayer.path = nil
+                  CATransaction.commit()
+                  return
+              }
+
         // Calculate points to fit along X axis, using existing interpolated Y values
         let segmentWidth = bounds.width / CGFloat(chartData.count-1)
         let points = chartData.enumerated().map({ CGPoint(x: CGFloat($0.offset) * segmentWidth, y: $0.element) })
 
         // Scale Y values to fit within our bounds
-        let maxYValue = points.map(\.y).max() ?? 1.0
+        let maxYValue = max(1.0, points.map(\.y).max() ?? 1.0)
         let scaleFactor = bounds.height / maxYValue
         var transform = CGAffineTransform(scaleX: 1.0, y: scaleFactor)
 
