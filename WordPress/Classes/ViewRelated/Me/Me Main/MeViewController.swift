@@ -124,7 +124,7 @@ class MeViewController: UITableViewController {
             title: RowTitles.qrLogin,
             icon: .gridicon(.camera),
             accessoryType: accessoryType,
-            action: pushQRLogin(),
+            action: presentQRLogin(),
             accessibilityIdentifier: "qrLogin")
 
         let accountSettings = NavigationItemRow(
@@ -248,13 +248,18 @@ class MeViewController: UITableViewController {
         }
     }
 
-    private func pushQRLogin() -> ImmuTableAction {
+    private func presentQRLogin() -> ImmuTableAction {
         return { [weak self] row in
+            guard let self = self else {
+                return
+            }
 
-            self?.tableView.deselectSelectedRowWithAnimation(true)
+            self.tableView.deselectSelectedRowWithAnimation(true)
 
             #warning("TODO: Add tracks")
             #warning("TODO: Present QR Scanning Flow")
+
+            QRLoginCoordinator.present(from: self)
         }
     }
 
