@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 142
+
+@scoutharris 2022-05-24
+
+- `Post`: added `bloggingPromptID` attribute. (optional, no default, `String`)
+
 ## WordPress 141
 
 @wargcm 2022-05-23
