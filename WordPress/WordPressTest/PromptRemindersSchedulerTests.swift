@@ -81,21 +81,30 @@ class PromptRemindersSchedulerTests: XCTestCase {
         struct Expected {
             let body: String?
             let dateComponents: DateComponents
+            let userInfo: [AnyHashable: AnyHashable]
 
-            static func values(with hour: Int, minute: Int) -> [Self] {
+            static func values(for siteID: Int, hour: Int, minute: Int) -> [Self] {
                 return [
                     // prompt notifications
-                    Expected(body: "Prompt text 1", dateComponents: .init(year: 2022, month: 5, day: 21, hour: hour, minute: minute)),
-                    Expected(body: "Prompt text 8", dateComponents: .init(year: 2022, month: 5, day: 28, hour: hour, minute: minute)),
+                    Expected(body: "Prompt text 1",
+                             dateComponents: .init(year: 2022, month: 5, day: 21, hour: hour, minute: minute),
+                             userInfo: ["promptID": 101, "siteID": siteID]),
+                    Expected(body: "Prompt text 8",
+                             dateComponents: .init(year: 2022, month: 5, day: 28, hour: hour, minute: minute),
+                             userInfo: ["promptID": 108, "siteID": siteID]),
 
                     // static notifications
-                    Expected(body: .staticNotificationContent, dateComponents: .init(year: 2022, month: 6, day: 4, hour: hour, minute: minute)),
-                    Expected(body: .staticNotificationContent, dateComponents: .init(year: 2022, month: 6, day: 11, hour: hour, minute: minute))
+                    Expected(body: .staticNotificationContent,
+                             dateComponents: .init(year: 2022, month: 6, day: 4, hour: hour, minute: minute),
+                             userInfo: ["siteID": siteID]),
+                    Expected(body: .staticNotificationContent,
+                             dateComponents: .init(year: 2022, month: 6, day: 11, hour: hour, minute: minute),
+                             userInfo: ["siteID": siteID])
                 ]
             }
         }
 
-        let expectedValues = Expected.values(with: expectedHour, minute: expectedMinute)
+        let expectedValues = Expected.values(for: siteID, hour: expectedHour, minute: expectedMinute)
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog, time: makeTime(hour: expectedHour, minute: expectedMinute)) { result in
             guard case .success = result else {
@@ -111,6 +120,10 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 XCTAssertEqual(request.content.body, value.body)
                 XCTAssertNotNil(request.trigger)
                 XCTAssertNotNil(request.trigger as? UNCalendarNotificationTrigger)
+
+                // verify user info
+                let userInfo = request.content.userInfo as! [AnyHashable: AnyHashable]
+                XCTAssertEqual(userInfo, value.userInfo)
 
                 let trigger = request.trigger as! UNCalendarNotificationTrigger
                 XCTAssertEqual(trigger.dateComponents.year, value.dateComponents.year)
