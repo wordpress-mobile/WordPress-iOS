@@ -42,4 +42,39 @@ public class BloggingPrompt: NSManagedObject {
     func textForDisplay() -> String {
         return text.stringByDecodingXMLCharacters().trim()
     }
+
+    /// Convenience method that checks if the given date is within the same day of the prompt's date without considering the timezone information.
+    ///
+    /// Example: `2022-05-19 23:00:00 UTC-5` and `2022-05-20 00:00:00 UTC` are both dates within the same day (when the UTC date is converted to UTC-5),
+    /// but this method will return `false`.
+    ///
+    /// - Parameters:
+    ///   - localDate: The date to compare against in local timezone.
+    /// - Returns: True if the year, month, and day components of the `localDate` matches the prompt's localized date.
+    func inSameDay(as dateToCompare: Date) -> Bool {
+        return DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
+    }
+}
+
+// MARK: - Private Helpers
+
+private extension BloggingPrompt {
+
+    struct DateFormatters {
+        static let local: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.locale = .init(identifier: "en_US_POSIX")
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter
+        }()
+
+        static let utc: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.locale = .init(identifier: "en_US_POSIX")
+            formatter.timeZone = .init(secondsFromGMT: 0)
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter
+        }()
+    }
+
 }

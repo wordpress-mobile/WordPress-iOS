@@ -1,5 +1,5 @@
 import Foundation
-
+import XCTest
 
 // MARK: - Scanner+QuotedTextTests
 //
