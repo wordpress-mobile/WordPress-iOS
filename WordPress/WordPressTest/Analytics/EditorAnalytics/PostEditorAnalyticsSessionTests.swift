@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 @testable import WordPress
 
 class PostEditorAnalyticsSessionTests: CoreDataTestCase {
