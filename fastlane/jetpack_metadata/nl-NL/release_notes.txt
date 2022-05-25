@@ -1,0 +1,14 @@
+Blokken kunnen nu versleept worden. Je kunt je inhoud dus plaatsen zoals je wilt. We like to move it, move it.
+
+En dat is niet de enige wijziging in de blokeditor. We hebben het kleurcontrast aangepast waardoor tekst eenvoudiger te lezen is als je in nachtmodus werkt. We hebben ook een probleem opgelost met de link naar-instelling in galerijblokken en we hebben meteen ook instellingen voor afbeeldingsgroottes toegevoegd.
+
+De WordPress.com-tourbanner verschijnt niet langer in de niet-ondersteunde blokeditor. En over tours gesproken: je ziet nu andere snelstarttaken, afhankelijk van of je een nieuwe site bouwt of aan een bestaande site werkt. Het is heel makkelijk om nieuwe taken te leren, zoals het controleren van meldingen en het uploaden van media.
+
+Ten slotte hebben we nog wat vervelende bugs geplet waardoor de app eenvoudiger te gebruiken is.
+
+- De tekst van widgets wordt niet langer omgekeerd voor toestellen die talen gebruiken die van rechts naar links worden gelezen.
+- De app crasht niet langer als je schakelt tussen statistische inzichten en andere gedeelten van de site. Gelukkig!
+- De knop Aanmaken is nu zichtbaar in de berichtenlijst voor iPad-gebruikers die werken in split screen.
+- Als je de titel van je site wijzigt in de site-instellingen, wordt dit ook aangepast in Mijn site.
+- Je ziet het juiste bericht in de mediakiezer als er geen media beschikbaar is.
+- De navigatieknoppen in het site-ontwerpproces worden nu juist geschaald als je apparaat grote lettertypen gebruikt.

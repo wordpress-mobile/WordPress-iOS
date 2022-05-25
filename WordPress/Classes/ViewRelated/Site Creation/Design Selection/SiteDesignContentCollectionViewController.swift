@@ -254,7 +254,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                                                   comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
         static let errorSubtitle = NSLocalizedString("Check your network connection and try again.",
                                                      comment: "Default subtitle for no-results when there is no connection.")
-        static let helperText = NSLocalizedString("Can’t decide? You can change the theme at any time",
+        static let helperText = NSLocalizedString("Can’t decide? You can change the theme at any time.",
                                                   comment: "Helper text that appears at the bottom of the design screen.")
     }
 

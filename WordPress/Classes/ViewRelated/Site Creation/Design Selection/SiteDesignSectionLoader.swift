@@ -31,7 +31,7 @@ struct SiteDesignSectionLoader {
     /// - Parameter completion: A closure providing remote site designs or an error.
     static func fetchRemoteDesigns(completion: @escaping (Result<RemoteSiteDesigns, Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
-        let templateGroups: [TemplateGroup] = [.stable, .singlePage]
+        let templateGroups: [TemplateGroup] = FeatureFlag.betaSiteDesigns.enabled ? [.stable, .beta] : []
 
         let restAPI = WordPressComRestApi.anonymousApi(
             userAgent: WPUserAgent.wordPress(),

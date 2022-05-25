@@ -1,7 +1,7 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-
-import Nimble
 
 private typealias ButtonGroups = PostCardStatusViewModel.ButtonGroups
 
