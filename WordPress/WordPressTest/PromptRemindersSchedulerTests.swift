@@ -19,6 +19,10 @@ class PromptRemindersSchedulerTests: XCTestCase {
         return formatter
     }()
 
+    private var siteID: Int {
+        blog.dotComID!.intValue
+    }
+
     private var contextManager: ContextManagerMock!
     private var serviceFactory: BloggingPromptsServiceFactory!
     private var notificationScheduler: MockNotificationScheduler!
@@ -71,7 +75,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
     func test_schedule_addsNotificationRequestsCorrectly() {
         let schedule = Schedule.weekdays([.saturday])
-        let expectedHour = 0
+        let expectedHour = 10
         let expectedMinute = 0
 
         struct Expected {
@@ -118,7 +122,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
             // verify that notification receipts are stored.
             XCTAssertNotNil(self.localStore.storedReceipts)
-            let receipts = self.localStore.receipts(for: self.blog.dotComID!.intValue)!
+            let receipts = self.localStore.receipts(for: self.siteID)!
             XCTAssertFalse(receipts.isEmpty)
             XCTAssertEqual(receipts.count, expectedValues.count)
 
@@ -264,6 +268,86 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
         wait(for: [expectation], timeout: timeout)
     }
+
+    // MARK: Unscheduling
+
+    func test_unschedule_shouldRemoveNotificationRequestsAndReceipts() {
+        let schedule = scheduleForToday
+
+        // schedule the notifications beforehand.
+        let expectation = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: blog) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expectation.fulfill()
+                return
+            }
+
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: timeout)
+
+        // there should be notification requests and receipts stored.
+        XCTAssertFalse(notificationScheduler.requests.isEmpty)
+        XCTAssertNotNil(localStore.receipts(for: siteID))
+        XCTAssertFalse(localStore.receipts(for: siteID)!.isEmpty)
+
+        // perform the unschedule operation.
+        scheduler.unschedule(for: blog)
+
+        // the requests and receipts should be wiped.
+        XCTAssertFalse(notificationScheduler.removedIdentifiers.isEmpty)
+        XCTAssertNil(localStore.receipts(for: siteID))
+    }
+
+    func test_unschedule_shouldNotImpactReceiptsFromOtherSites() {
+        // Arrange
+        let schedule = scheduleForToday
+        let controlBlog = makeBlog()
+        let controlSiteID = controlBlog.dotComID!.intValue
+
+        // first, schedule reminders in the control blog.
+        let expect = expectation(description: "Notification scheduling should succeed")
+        scheduler.schedule(schedule, for: controlBlog) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                expect.fulfill()
+                return
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+
+        // store the notification requests from the control blog.
+        let controlRequestIDs = notificationScheduler.requests.map { $0.identifier }
+
+        // schedule reminders in the default blog.
+        let secondExpect = expectation(description: "Notification scheduling for second blog should succeed")
+        scheduler.schedule(schedule, for: blog) { result in
+            guard case .success = result else {
+                XCTFail("Expected a success result")
+                secondExpect.fulfill()
+                return
+            }
+            secondExpect.fulfill()
+        }
+        wait(for: [secondExpect], timeout: timeout)
+
+        // Act
+        // unschedule notifications for the first blog.
+        scheduler.unschedule(for: controlBlog)
+
+        // Assert
+        // verify that notification requests and receipts from the control blog is removed.
+        XCTAssertNil(localStore.receipts(for: controlSiteID))
+        XCTAssertTrue(controlRequestIDs.reduce(into: true) { partialResult, requestID in
+            partialResult = partialResult && notificationScheduler.removedIdentifiers.contains(requestID)
+        })
+
+        // verify that the notification requests and receipts from the default blog is retained.
+        XCTAssertNotNil(localStore.receipts(for: siteID))
+        XCTAssertFalse(notificationScheduler.requests.isEmpty)
+    }
 }
 
 // MARK: - Private Helpers
@@ -327,6 +411,7 @@ private extension PromptRemindersSchedulerTests {
 
     class MockNotificationScheduler: NotificationScheduler {
         var requests = [UNNotificationRequest]()
+        var removedIdentifiers = [String]()
 
         func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
             requests.append(request)
@@ -334,7 +419,7 @@ private extension PromptRemindersSchedulerTests {
         }
 
         func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
-            // no-op
+            removedIdentifiers.append(contentsOf: identifiers)
         }
     }
 

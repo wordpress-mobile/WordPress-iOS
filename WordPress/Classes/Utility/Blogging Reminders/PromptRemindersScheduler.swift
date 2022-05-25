@@ -363,7 +363,7 @@ private extension PromptRemindersScheduler {
     /// Loads a dictionary containing all of the pending notification IDs for all sites.
     ///
     /// - Parameter fileURL: The file store location.
-    /// - Returns: A dictionary containing `siteID` and an array of `String`representing pending notification IDs.
+    /// - Returns: A dictionary containing `siteID` and an array of `String` representing pending notification IDs.
     func fetchAllReceipts(from fileURL: URL) throws -> [Int: [String]] {
         if !localStore.fileExists(at: fileURL) {
             let data = try PropertyListEncoder().encode([Int: [String]]())
