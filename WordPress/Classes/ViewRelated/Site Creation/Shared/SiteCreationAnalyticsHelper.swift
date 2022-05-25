@@ -22,6 +22,7 @@ class SiteCreationAnalyticsHelper {
     private static let verticalSearchTerm = "search_term"
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
+    private static let recommendedKey = "recommended"
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -81,8 +82,10 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
 
-    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, additionalProperties: [String: Any]? = nil) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign, additionalProperties))
+    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, sectionType: SiteDesignSectionType) {
+        var properties = commonProperties(siteDesign)
+        properties[recommendedKey] = sectionType == .recommended
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: properties)
     }
 
     // MARK: - Site Design Preview
@@ -146,12 +149,6 @@ class SiteCreationAnalyticsHelper {
             }
             if let previewMode = property as? PreviewDevice {
                 result.merge([previewModeKey: previewMode.rawValue]) { (_, new) in new }
-            }
-
-            if let dictionary = property as? [String: Any] {
-                dictionary.forEach {
-                    result[$0] = $1
-                }
             }
         }
 
