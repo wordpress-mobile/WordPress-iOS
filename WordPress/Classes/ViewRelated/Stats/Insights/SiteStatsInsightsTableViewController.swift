@@ -411,9 +411,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
-        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
-        navigationController?.pushViewController(detailTableViewController, animated: true)
+        if FeatureFlag.statsNewInsights.enabled {
+            let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+            navigationController?.pushViewController(detailTableViewController, animated: true)
+        } else {
+            let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+            navigationController?.pushViewController(detailTableViewController, animated: true)
+        }
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {

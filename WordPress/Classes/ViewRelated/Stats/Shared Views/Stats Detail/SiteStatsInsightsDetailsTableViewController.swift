@@ -47,22 +47,19 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-//        tableView.register(SiteStatsTableHeaderView.defaultNib,
-//                forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         addWillEnterForegroundObserver()
     }
 
     func configure(statSection: StatSection,
                    selectedDate: Date? = nil,
                    selectedPeriod: StatsPeriodUnit? = nil,
-                   postID: Int? = nil,
-                   tableStyle: UITableView.Style = .insetGrouped
+                   postID: Int? = nil
     ) {
         self.statSection = statSection
         self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
-        self.tableStyle = tableStyle
+        tableStyle = .insetGrouped
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
@@ -77,16 +74,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
             self.tableView.reloadData()
         })
     }
-
-/*
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section == 0 else {
-            return 0
-        }
-
-        return UITableView.automaticDimension
-    }
-*/
 }
 
 extension SiteStatsInsightsDetailsTableViewController: StatsForegroundObservable {
@@ -98,8 +85,6 @@ extension SiteStatsInsightsDetailsTableViewController: StatsForegroundObservable
 
 private extension SiteStatsInsightsDetailsTableViewController {
     private func updateHeader() {
-        //TODO - configure header for a year when from TotalYear.  This is still not working
-
         guard let siteStatsTableHeaderView = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return
         }
