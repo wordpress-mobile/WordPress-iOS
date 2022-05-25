@@ -10,19 +10,12 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
     private let timeout: TimeInterval = 1
     private let currentDate = ISO8601DateFormatter().date(from: "2022-05-20T09:30:00+00:00")! // Friday
-
     private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)!
-    private static var gmtCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = gmtTimeZone
-        return calendar
-    }()
 
-    private static var gmtDateFormatter: DateFormatter = {
+    private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = .init(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.timeZone = gmtTimeZone
         return formatter
     }()
 
@@ -50,7 +43,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
                                              pushAuthorizer: pushAuthorizer,
                                              localStore: localStore,
                                              currentDateProvider: dateProvider)
-        NSTimeZone.default = Self.gmtTimeZone
+        NSTimeZone.default = TimeZone(secondsFromGMT: 0)!
 
         stubFetchPromptsResponse()
 
@@ -298,14 +291,14 @@ private extension PromptRemindersSchedulerTests {
         let currentDate = dateProvider.date()
 
         for i in 0..<count {
-            let date = Self.gmtCalendar.date(byAdding: .day, value: i, to: currentDate)!
+            let date = Calendar.current.date(byAdding: .day, value: i, to: currentDate)!
             objects.append([
                 "id": 100 + i,
                 "text": "Prompt text \(i)",
                 "title": "Prompt title \(i)",
                 "content": "Prompt content \(i)",
                 "attribution": "",
-                "date": Self.gmtDateFormatter.string(from: date),
+                "date": Self.dateFormatter.string(from: date),
                 "answered": false,
                 "answered_users_count": 0,
                 "answered_users_sample": []
