@@ -34,7 +34,7 @@ class PromptRemindersScheduler {
     }
 
     /// Schedule local notifications that will show prompts on selected weekdays based on the given `Schedule`.
-    /// Prompt notifications will be bulk-scheduled for 2 weeks ahead.
+    /// Prompt notifications will be bulk-scheduled for 2 weeks ahead, followed with static notifications for 2 weeks.
     ///
     /// Note: Calling this method will trigger the push notification authorization flow.
     ///
@@ -148,7 +148,7 @@ private extension PromptRemindersScheduler {
                 return
             }
 
-            // filter prompts based on the Schedule.
+            // Step 1: Filter prompts based on the Schedule.
             let promptsToSchedule = prompts.sorted { $0.date < $1.date }.filter { prompt in
                 guard let gmtTimeZone = Self.gmtTimeZone,
                       let weekdayComponent = Calendar.current.dateComponents(in: gmtTimeZone, from: prompt.date).weekday,
@@ -163,7 +163,8 @@ private extension PromptRemindersScheduler {
 
             }
 
-            // schedule prompt reminders.
+            // Step 2: Schedule prompt reminders.
+            // The `lastScheduledPrompt` is stored to help figure out the start date for static local notifications.
             var lastScheduledPrompt: BloggingPrompt? = nil
             var notificationIds = [String]()
             promptsToSchedule.forEach { prompt in
@@ -174,7 +175,7 @@ private extension PromptRemindersScheduler {
                 lastScheduledPrompt = prompt
             }
 
-            // schedule static notifications.
+            // Step 3: Schedule static notifications.
             // first, check the last reminder date. If there are no prompts scheduled (perhaps due to unavailable prompts),
             // this will schedule local notifications after the current date instead of the last scheduled date.
             let lastReminderDate: Date = {
@@ -192,7 +193,7 @@ private extension PromptRemindersScheduler {
             }
 
             do {
-                // store pending notification identifiers to local store.
+                // Step 4: Store pending notification identifiers to local store.
                 try self.saveReceipts(notificationIds, for: siteID)
             } catch {
                 completion(.failure(error))
