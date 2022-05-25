@@ -175,38 +175,30 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
-        isLoading = true
-
-        guard let sectionAssembler = sectionAssembler else {
-            DispatchQueue.main.async {
-                SiteDesignSectionLoader.buildAssembler { [weak self] result in
-                    guard let self = self else { return }
-
-                    switch result {
-                    case .success(let assembler):
-                        let sections = assembler(self.creator.vertical)
-                        self.renderSiteSections(sections: sections)
-                        self.sectionAssembler = assembler
-                    case .failure(let error):
-                        self.handleError(error)
-                    }
-
-                    self.isLoading = false
-                }
-            }
-
+        if let sectionAssembler = sectionAssembler {
+            self.sections = sectionAssembler(creator.vertical)
             return
         }
 
-        let sections = sectionAssembler(creator.vertical)
-        self.renderSiteSections(sections: sections)
-        isLoading = false
-    }
+        isLoading = true
 
-    private func renderSiteSections(sections: [SiteDesignSection]) {
-        self.dismissNoResultsController()
-        self.sections = sections
-        self.setupHelperView()
+        DispatchQueue.main.async {
+            SiteDesignSectionLoader.buildAssembler { [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let assembler):
+                    self.sectionAssembler = assembler
+                    self.dismissNoResultsController()
+                    self.sections = assembler(self.creator.vertical)
+                    self.setupHelperView()
+                case .failure(let error):
+                    self.handleError(error)
+                }
+
+                self.isLoading = false
+            }
+        }
     }
 
     private func configureSkipButton() {
