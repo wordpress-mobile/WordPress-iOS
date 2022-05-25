@@ -17,6 +17,8 @@ class PromptRemindersScheduler {
     private let currentDateProvider: CurrentDateProvider
     private let localStore: LocalFileStore
 
+    private static var gmtTimeZone = TimeZone(secondsFromGMT: 0)
+
     // MARK: Public Methods
 
     init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
@@ -108,7 +110,10 @@ private extension PromptRemindersScheduler {
     enum Constants {
         static let defaultTime = Time(hour: 10, minute: 0) // 10:00 AM
         static let promptsToFetch = 15 // fetch prompts for today + two weeks ahead
+        static let staticNotificationMaxDays = 14 // schedule static notifications up to two weeks ahead
         static let notificationTitle = NSLocalizedString("Today's Prompt 💡", comment: "Title for a push notification showing today's blogging prompt.")
+        static let staticNotificationContent = NSLocalizedString("Tap to load today's prompt...", comment: "Title for a push notification with fixed content"
+                                                                 + " that invites the user to load today's blogging prompt.")
         static let defaultFileName = "PromptReminders.plist"
     }
 
@@ -143,9 +148,10 @@ private extension PromptRemindersScheduler {
                 return
             }
 
-            // Filter prompts based on the Schedule.
-            let notificationIds = prompts.sorted { $0.date < $1.date }.filter { prompt in
-                guard let weekdayComponent = Calendar.current.dateComponents([.weekday], from: prompt.date).weekday,
+            // filter prompts based on the Schedule.
+            let promptsToSchedule = prompts.sorted { $0.date < $1.date }.filter { prompt in
+                guard let gmtTimeZone = Self.gmtTimeZone,
+                      let weekdayComponent = Calendar.current.dateComponents(in: gmtTimeZone, from: prompt.date).weekday,
                       let weekday = Weekday(rawValue: weekdayComponent - 1) else { // Calendar.Component.weekday starts from 1 (Sunday)
                     return false
                 }
@@ -155,11 +161,35 @@ private extension PromptRemindersScheduler {
                 return weekdays.contains(weekday)
                 && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedDescending)
 
-            }.compactMap { promptToSchedule in
-                self.addLocalNotification(for: promptToSchedule, blog: blog, at: reminderTime)
             }
 
-            // TODO: Schedule static notifications.
+            // schedule prompt reminders.
+            var lastScheduledPrompt: BloggingPrompt? = nil
+            var notificationIds = [String]()
+            promptsToSchedule.forEach { prompt in
+                guard let identifier = self.addLocalNotification(for: prompt, blog: blog, at: reminderTime) else {
+                    return
+                }
+                notificationIds.append(identifier)
+                lastScheduledPrompt = prompt
+            }
+
+            // schedule static notifications.
+            // first, check the last reminder date. If there are no prompts scheduled (perhaps due to unavailable prompts),
+            // this will schedule local notifications after the current date instead of the last scheduled date.
+            let lastReminderDate: Date = {
+                guard let lastScheduledPrompt = lastScheduledPrompt,
+                      let lastReminderDateComponents = self.reminderDateComponents(for: lastScheduledPrompt, at: reminderTime),
+                      let lastReminderDate = Calendar.current.date(from: lastReminderDateComponents) else {
+                    return currentDate
+                }
+
+                return lastReminderDate
+            }()
+
+            if let staticNotificationIds = self.addStaticNotifications(after: lastReminderDate, with: schedule, time: reminderTime, blog: blog) {
+                notificationIds.append(contentsOf: staticNotificationIds)
+            }
 
             do {
                 // store pending notification identifiers to local store.
@@ -177,7 +207,7 @@ private extension PromptRemindersScheduler {
 
     // MARK: Notification Scheduler
 
-    /// Schedules the local notification.
+    /// Schedules the local notification for the given blogging prompt.
     ///
     /// - Parameters:
     ///   - prompt: The `BloggingPrompt` instance used to populate the content.
@@ -185,7 +215,31 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
-        guard let gmtTimeZone = TimeZone(secondsFromGMT: 0) else {
+        let content = UNMutableNotificationContent()
+        content.title = Constants.notificationTitle
+        content.subtitle = blog.title ?? String()
+        content.body = prompt.text
+
+        guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
+            return nil
+        }
+
+        return addLocalNotification(with: content, dateComponents: reminderDateComponents)
+    }
+
+    /// Converts the date from the `BloggingPrompt` to local date and time (matching the given `Time`), ignoring timezone conversion.
+    /// For example, given:
+    ///     - Local timezone: GMT-5
+    ///     - BloggingPrompt date: 2022-05-01 00:00:00 +00:00
+    ///     - Time: 10:30
+    /// This method will return `DateComponents` for `2022-05-01 10:30:00 -05:00`.
+    ///
+    /// - Parameters:
+    ///   - prompt: The `BloggingPrompt` instance used for date reference.
+    ///   - time: The preferred time for the reminder.
+    /// - Returns: Date components in local date and time.
+    func reminderDateComponents(for prompt: BloggingPrompt, at time: Time) -> DateComponents? {
+        guard let gmtTimeZone = Self.gmtTimeZone else {
             return nil
         }
 
@@ -196,14 +250,84 @@ private extension PromptRemindersScheduler {
             return nil
         }
 
+        return DateComponents(year: year, month: month, day: day, hour: time.hour, minute: time.minute)
+    }
+
+    /// Bulk schedule local notifications with static content for the given `Blog`.
+    /// The notifications are scheduled after `afterDate` according to the provided `Schedule` and `Time`.
+    ///
+    /// - Parameters:
+    ///   - afterDate: Local notifications will be scheduled after this date.
+    ///   - schedule: The preferred notification schedule.
+    ///   - time: The preferred reminder time.
+    ///   - blog: The blog to be associated with the reminder notification.
+    ///   - maxDays: Defines how far the reminders should be scheduled in the future.
+    /// - Returns: An array of notification identifiers, or nil if there are logic errors.
+    func addStaticNotifications(after afterDate: Date,
+                                with schedule: Schedule,
+                                time: Time,
+                                blog: Blog,
+                                maxDays: Int = Constants.staticNotificationMaxDays) -> [String]? {
+        guard case .weekdays(let weekdays) = schedule,
+              maxDays > 0,
+              let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate) else {
+            return nil
+        }
+
+        // create the notification content.
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
-        content.subtitle = blog.title ?? String()
-        content.body = prompt.text
+        content.body = Constants.staticNotificationContent
 
-        // craft the notification trigger.
-        let reminderDateComponents = DateComponents(year: year, month: month, day: day, hour: time.hour, minute: time.minute)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: reminderDateComponents, repeats: false)
+        var date = currentDateProvider.date()
+        var identifiers = [String]()
+        while date < maxDate {
+            // find the next dates matching the given schedule. The dates are sorted at the end to properly order the dates based on current date.
+            // for example: given that today is Tuesday and the schedule is [.monday, .wednesday], the correct order for nextDates should be
+            // [Wednesday this week, Monday next week].
+            let nextDates: [Date] = weekdays.compactMap { weekday in
+                guard let nextDate = Calendar.current.nextDate(after: date, matching: .init(weekday: weekday.rawValue + 1), matchingPolicy: .nextTime),
+                      nextDate < maxDate else {
+                    return nil
+                }
+
+                return nextDate
+            }.sorted()
+
+            // in case if the next dates are empty, then we should break to prevent infinite loop.
+            // although, this should not happen since the `date` variable is always updated with the next dates.
+            guard !nextDates.isEmpty else {
+                break
+            }
+
+            // finally, schedule the local notifications.
+            nextDates.forEach { nextDate in
+                let components = Calendar.current.dateComponents([.year, .month, .day], from: nextDate)
+                guard let year = components.year,
+                      let month = components.month,
+                      let day = components.day else {
+                    return
+                }
+
+                let reminderDateComponents = DateComponents(year: year, month: month, day: day, hour: time.hour, minute: time.minute)
+                let identifier = self.addLocalNotification(with: content, dateComponents: reminderDateComponents)
+
+                identifiers.append(identifier)
+                date = nextDate // move the `date` forward to get it closer to `maxDate`.
+            }
+        }
+
+        return identifiers
+    }
+
+    /// Adds the local notification request to the notification scheduler.
+    ///
+    /// - Parameters:
+    ///   - content: The local notification contents.
+    ///   - dateComponents: When the local notification should occur.
+    /// - Returns: A String representing the notification identifier.
+    func addLocalNotification(with content: UNMutableNotificationContent, dateComponents: DateComponents) -> String {
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         let identifier = UUID().uuidString
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
