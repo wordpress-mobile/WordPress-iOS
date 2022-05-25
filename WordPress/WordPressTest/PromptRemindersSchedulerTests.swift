@@ -161,7 +161,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(self.notificationScheduler.requests.count, 3)
+            XCTAssertEqual(self.notificationScheduler.requests.count, 5) // 3 prompt + 2 static notifications
             expectation.fulfill()
         }
 
@@ -182,7 +182,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(self.notificationScheduler.requests.count, 3)
+            XCTAssertEqual(self.notificationScheduler.requests.count, 5) // 3 prompt + 2 static notifications
 
             // verify that the reminder time is set correctly.
             let request = self.notificationScheduler.requests.first!
@@ -211,7 +211,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
             }
 
             // today should be skipped because the reminder is set to 8:30 while current time is 9:00.
-            XCTAssertEqual(self.notificationScheduler.requests.count, 2)
+            XCTAssertEqual(self.notificationScheduler.requests.count, 4) // 2 prompt + 2 static notifications
 
             // verify that the reminder time is set correctly.
             let request = self.notificationScheduler.requests.first!
@@ -239,7 +239,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(self.notificationScheduler.requests.count, 2)
+            XCTAssertEqual(self.notificationScheduler.requests.count, 4) // 2 prompt + 2 static notifications
             expectation.fulfill()
         }
 
