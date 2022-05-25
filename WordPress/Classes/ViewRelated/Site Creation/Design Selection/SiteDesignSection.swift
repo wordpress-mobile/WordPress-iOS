@@ -4,6 +4,7 @@ struct SiteDesignSection: CategorySection {
     var designs: [RemoteSiteDesign]
     var thumbnailSize: CGSize
 
+    var caption: String?
     var categorySlug: String
     var title: String
     var emoji: String?
@@ -13,13 +14,14 @@ struct SiteDesignSection: CategorySection {
 }
 
 extension SiteDesignSection {
-    init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign], thumbnailSize: CGSize) {
+    init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign], thumbnailSize: CGSize, caption: String? = nil) {
         self.designs = designs
         self.thumbnailSize = thumbnailSize
         self.categorySlug = category.slug
         self.title = category.title
         self.emoji = category.emoji
         self.description = category.description
+        self.caption = caption
     }
 }
 

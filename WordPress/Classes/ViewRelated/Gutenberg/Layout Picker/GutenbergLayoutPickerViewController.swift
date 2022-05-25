@@ -9,6 +9,8 @@ extension PageTemplateLayout: Thumbnail {
 }
 
 class GutenbergLayoutSection: CategorySection {
+    var caption: String?
+
     var section: PageTemplateCategory
     var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
