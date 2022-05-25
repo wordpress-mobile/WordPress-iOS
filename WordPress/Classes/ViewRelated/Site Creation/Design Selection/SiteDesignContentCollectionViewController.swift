@@ -9,6 +9,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private let createsSite: Bool
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
+    private var sectionAssembler: SiteDesignSectionLoader.Assembler?
 
     private var sections: [SiteDesignSection] = [] {
         didSet {
@@ -176,22 +177,34 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private func fetchSiteDesigns() {
         isLoading = true
 
-        SiteDesignSectionLoader.fetchSections(vertical: creator.vertical) { [weak self] result in
-            DispatchQueue.main.async {
+        guard let sectionAssembler = sectionAssembler else {
+            SiteDesignSectionLoader.buildAssembler { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
-                case .success(let sections):
-                    self.dismissNoResultsController()
-                    self.sections = sections
-                    self.setupHelperView()
+                case .success(let assembler):
+                    let sections = assembler(self.creator.vertical)
+                    self.renderSiteSections(sections: sections)
+                    self.sectionAssembler = assembler
                 case .failure(let error):
                     self.handleError(error)
                 }
 
                 self.isLoading = false
             }
+
+            return
         }
+
+        let sections = sectionAssembler(creator.vertical)
+        self.renderSiteSections(sections: sections)
+        isLoading = false
+    }
+
+    private func renderSiteSections(sections: [SiteDesignSection]) {
+        self.dismissNoResultsController()
+        self.sections = sections
+        self.setupHelperView()
     }
 
     private func configureSkipButton() {
