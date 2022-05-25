@@ -366,6 +366,54 @@ class SiteStatsInsightsViewModel: Observable {
         pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
+    static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
+        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
+            return (0, 0, 0, 0)
+        }
+
+        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData)
+
+        var currentCount: Int = 0
+        var previousCount: Int = 0
+
+        splitSummaryTimeIntervalData.forEach { week in
+            switch week {
+            case .thisWeek(let data):
+                switch summaryType {
+                case .views:
+                    currentCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+                case .visitors:
+                    currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+                case .likes:
+                    currentCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
+                case .comments:
+                    currentCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
+                }
+            case .prevWeek(let data):
+                switch summaryType {
+                case .views:
+                    previousCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+                case .visitors:
+                    previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+                case .likes:
+                    previousCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
+                case .comments:
+                    previousCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
+                }
+            }
+        }
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, previousCount, difference, roundedPercentage)
+    }
+
     var followTopicsViewController: ReaderSelectInterestsViewController {
         let configuration = ReaderSelectInterestsConfiguration(title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
                                                                subtitle: nil,
@@ -424,64 +472,13 @@ private extension SiteStatsInsightsViewModel {
     // MARK: - Create Table Rows
 
     func overviewTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
-
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
         let periodDate = self.lastRequestedDate
-        let period = StatsPeriodUnit.week
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData, periodDate: periodDate,
                 statsLineChartViewDelegate: statsLineChartViewDelegate, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-    }
-
-    public static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
-        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
-            return (0, 0, 0, 0)
-        }
-
-        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData)
-
-        var currentCount: Int = 0
-        var previousCount: Int = 0
-
-        splitSummaryTimeIntervalData.forEach { week in
-            switch week {
-            case .thisWeek(let data):
-                switch summaryType {
-                case .views:
-                    currentCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-                case .visitors:
-                    currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                case .likes:
-                    currentCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
-                case .comments:
-                    currentCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
-                }
-            case .prevWeek(let data):
-                switch summaryType {
-                case .views:
-                    previousCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-                case .visitors:
-                    previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                case .likes:
-                    previousCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
-                case .comments:
-                    previousCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
-                }
-            }
-        }
-
-        let difference = currentCount - previousCount
-        var roundedPercentage = 0
-
-        if previousCount > 0 {
-            let percentage = (Float(difference) / Float(previousCount)) * 100
-            roundedPercentage = Int(round(percentage))
-        }
-
-        return (currentCount, previousCount, difference, roundedPercentage)
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
@@ -580,7 +577,7 @@ private extension SiteStatsInsightsViewModel {
         updateMostRecentChartData(periodSummary)
 
         let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.likesCount)
-        let likesData = intervalData(summaryType: .likes)
+        let likesData = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: .likes)
 
         return StatsTotalInsightsData(count: likesData.count, difference: likesData.difference, percentage: likesData.percentage, sparklineData: sparklineData)
     }
@@ -590,7 +587,7 @@ private extension SiteStatsInsightsViewModel {
         updateMostRecentChartData(periodSummary)
 
         let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount)
-        let commentsData = intervalData(summaryType: .comments)
+        let commentsData = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: .comments)
 
         return StatsTotalInsightsData(count: commentsData.count, difference: commentsData.difference, percentage: commentsData.percentage, sparklineData: sparklineData)
     }
