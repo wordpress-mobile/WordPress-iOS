@@ -3,8 +3,10 @@ import WordPressShared
 
 
 struct StatsTotalInsightsData {
-    var count: String
-    var comparison: String = ""
+    var count: Int
+    var difference: Int
+    var percentage: Int
+    var sparklineData: [Int]? = nil
 }
 
 class StatsTotalInsightsCell: StatsBaseCell {
@@ -81,18 +83,32 @@ class StatsTotalInsightsCell: StatsBaseCell {
         ])
     }
 
-    // TODO: This will need updating to pass some graph data too.
-    // Assuming this will be something like a small array of ints
-    func configure(count: String, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int, percentage: Int, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
-        countLabel.text = count
+        graphView.data = sparklineData ?? []
+        graphView.chartColor = chartColor(for: difference)
+
+        countLabel.text = count.abbreviatedString()
+        let differenceText = difference > 0 ? TextContent.differenceHigher : TextContent.differenceLower
+        let differencePrefix = difference < 0 ? "" : "+"
+
+        comparisonLabel.text = String(format: differenceText, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+    }
+
+    private func chartColor(for difference: Int) -> UIColor {
+        return difference < 0 ? WPStyleGuide.Stats.neutralColor : WPStyleGuide.Stats.positiveColor
     }
 
     private enum Metrics {
         static let outerStackViewSpacing: CGFloat = 16.0
         static let stackViewSpacing: CGFloat = 8.0
         static let graphViewAspectRatio: CGFloat = 3.27
+    }
+
+    private enum TextContent {
+        static let differenceHigher = NSLocalizedString("%@%@ (%@%%) higher than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'")
+        static let differenceLower = NSLocalizedString("%@%@ (%@%%) lower than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'")
     }
 }
