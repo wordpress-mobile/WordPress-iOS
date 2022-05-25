@@ -178,19 +178,21 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         isLoading = true
 
         guard let sectionAssembler = sectionAssembler else {
-            SiteDesignSectionLoader.buildAssembler { [weak self] result in
-                guard let self = self else { return }
+            DispatchQueue.main.async {
+                SiteDesignSectionLoader.buildAssembler { [weak self] result in
+                    guard let self = self else { return }
 
-                switch result {
-                case .success(let assembler):
-                    let sections = assembler(self.creator.vertical)
-                    self.renderSiteSections(sections: sections)
-                    self.sectionAssembler = assembler
-                case .failure(let error):
-                    self.handleError(error)
+                    switch result {
+                    case .success(let assembler):
+                        let sections = assembler(self.creator.vertical)
+                        self.renderSiteSections(sections: sections)
+                        self.sectionAssembler = assembler
+                    case .failure(let error):
+                        self.handleError(error)
+                    }
+
+                    self.isLoading = false
                 }
-
-                self.isLoading = false
             }
 
             return
