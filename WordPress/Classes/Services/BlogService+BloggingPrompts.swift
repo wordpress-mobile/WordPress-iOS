@@ -18,7 +18,6 @@ extension BlogService {
         let existingSettings = (try? context.fetch(fetchRequest))?.first as? BloggingPromptSettings
         let settings = existingSettings ?? BloggingPromptSettings(context: context)
         settings.configure(with: remoteSettings, siteID: siteID.int32Value, context: context)
-        print("🟣 Created/updated:\nSite ID: \(settings.siteID)\n\(settings)")
     }
 
 }

@@ -331,11 +331,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
               let settings = promptsService.localSettings,
               settings.isPotentialBloggingSite,
               settings.promptCardEnabled else {
-            print("🟣 Hiding prompt card")
             return false
         }
-
-        print("🟣 Settings is cached:\n\(settings)")
 
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
