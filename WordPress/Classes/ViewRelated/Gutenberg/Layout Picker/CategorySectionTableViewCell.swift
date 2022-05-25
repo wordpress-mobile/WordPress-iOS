@@ -17,6 +17,7 @@ protocol Thumbnail {
 
 protocol CategorySection {
     var categorySlug: String { get }
+    var caption: String? { get }
     var title: String { get }
     var emoji: String? { get }
     var description: String? { get }
@@ -35,6 +36,7 @@ class CategorySectionTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var categoryCaptionLabel: UILabel!
 
     weak var delegate: CategorySectionTableViewCellDelegate?
 
@@ -49,6 +51,7 @@ class CategorySectionTableViewCell: UITableViewCell {
             thumbnails = section?.thumbnails ?? []
             categoryTitle.text = section?.title
             collectionView.contentOffset = section?.scrollOffset ?? .zero
+            setCaption()
 
             if let section = section {
                 collectionViewHeight.constant = section.thumbnailSize.height
@@ -61,6 +64,16 @@ class CategorySectionTableViewCell: UITableViewCell {
         didSet {
             categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         }
+    }
+
+    private func setCaption() {
+        guard let caption = section?.caption else {
+            categoryCaptionLabel.isHidden = true
+            return
+        }
+
+        categoryCaptionLabel.isHidden = false
+        categoryCaptionLabel.setText(caption)
     }
 
     var isGhostCell: Bool = false
@@ -86,6 +99,8 @@ class CategorySectionTableViewCell: UITableViewCell {
         categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
+        categoryCaptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        setCaption()
     }
 
     private func deselectItem(_ indexPath: IndexPath) {

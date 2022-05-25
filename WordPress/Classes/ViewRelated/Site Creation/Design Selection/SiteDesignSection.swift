@@ -4,6 +4,7 @@ struct SiteDesignSection: CategorySection {
     var designs: [RemoteSiteDesign]
     var thumbnailSize: CGSize
 
+    var caption: String?
     var categorySlug: String
     var title: String
     var emoji: String?
