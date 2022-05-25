@@ -101,4 +101,10 @@ extension WPTabBarController {
         }
     }
 
+    // TODO: temporary
+    func showStatsRevampV2FeatureIntroduction() {
+        if FeatureFlag.statsNewInsights.enabled {
+            StatsRevampV2IntroductionPresenter().present(from: selectedViewController ?? self)
+        }
+    }
 }
