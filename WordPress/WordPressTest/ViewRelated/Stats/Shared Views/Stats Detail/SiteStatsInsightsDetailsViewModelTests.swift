@@ -2,13 +2,15 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteStatsDetailsViewModelTests: XCTestCase {
+class SiteStatsInsightsDetailsViewModelTests: XCTestCase {
 
-    var viewModel: SiteStatsDetailsViewModel!
+    var viewModel: SiteStatsInsightsDetailsViewModel!
 
     override func setUpWithError() throws {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: MockDetailsDelegate(),
+        viewModel = SiteStatsInsightsDetailsViewModel(detailsDelegate: MockDetailsDelegate(),
                                               referrerDelegate: MockReferrerDeletage())
+
+        viewModel.fetchDataFor(statSection: StatSection.insightsAddInsight)
     }
 
     override func tearDownWithError() throws {
@@ -57,10 +59,9 @@ class SiteStatsDetailsViewModelTests: XCTestCase {
         // Using MediumString so that seconds / millis can be ignored in test
         XCTAssertEqual(selectedDate.toMediumString(), StatsDataHelper.currentDateForSite().toMediumString())
     }
-
 }
 
-private extension SiteStatsDetailsViewModelTests {
+private extension SiteStatsInsightsDetailsViewModelTests {
     class MockDetailsDelegate: SiteStatsDetailsDelegate {
         func tabbedTotalsCellUpdated() { }
 
