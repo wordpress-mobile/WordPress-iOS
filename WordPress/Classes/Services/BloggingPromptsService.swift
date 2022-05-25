@@ -35,11 +35,11 @@ class BloggingPromptsService {
     ///
     /// - Parameters:
     ///   - date: When specified, only prompts from the specified date will be returned. Defaults to 10 days ago.
-    ///   - number: The amount of prompts to return. Defaults to 24 when unspecified.
+    ///   - number: The amount of prompts to return. Defaults to 25 when unspecified (10 days back, today, 14 days ahead).
     ///   - success: Closure to be called when the fetch process succeeded.
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchPrompts(from date: Date? = nil,
-                      number: Int = 24,
+                      number: Int = 25,
                       success: @escaping ([BloggingPrompt]) -> Void,
                       failure: @escaping (Error?) -> Void) {
         let fromDate = date ?? defaultStartDate
@@ -53,6 +53,7 @@ class BloggingPromptsService {
                     }
 
                     success(self.loadPrompts(from: fromDate, number: number))
+
                 }
             case .failure(let error):
                 failure(error)
@@ -117,6 +118,33 @@ class BloggingPromptsService {
         fetchListPrompts(success: success, failure: failure)
     }
 
+    // MARK: - Settings
+
+    func fetchSettings(success: @escaping () -> Void,
+                       failure: @escaping (Error?) -> Void) {
+        remote.fetchSettings(for: siteID) { result in
+            switch result {
+            case .success(_):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
+    func updateSettings(settings: RemoteBloggingPromptsSettings,
+                        success: @escaping () -> Void,
+                        failure: @escaping (Error?) -> Void) {
+        remote.updateSettings(for: siteID, with: settings) { result in
+            switch result {
+            case .success(_):
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+
     // MARK: - Init
 
     required init?(contextManager: CoreDataStack = ContextManager.shared,
@@ -130,6 +158,24 @@ class BloggingPromptsService {
         self.contextManager = contextManager
         self.siteID = siteID
         self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+    }
+}
+
+// MARK: - Service Factory
+
+/// Convenience factory to generate `BloggingPromptsService` for different blogs.
+///
+class BloggingPromptsServiceFactory {
+    let contextManager: CoreDataStack
+    let remote: BloggingPromptsServiceRemote?
+
+    init(contextManager: CoreDataStack = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
+        self.contextManager = contextManager
+        self.remote = remote
+    }
+
+    func makeService(for blog: Blog) -> BloggingPromptsService? {
+        return .init(contextManager: contextManager, remote: remote, blog: blog)
     }
 }
 

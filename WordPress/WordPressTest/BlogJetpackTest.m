@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "ContextManagerMock.h"
 #import "WordPressTest-Swift.h"
 
 @import WordPressKit;

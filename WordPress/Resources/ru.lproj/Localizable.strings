@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-20 09:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
@@ -814,6 +814,9 @@ translators: Block name. %s: The localized block name */
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Подсказка по ответам";
 
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Ответ дан";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "Значок приложения";
@@ -1178,6 +1181,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Briefly describe the link to help screen reader user" = "Кратко опишите ссылку, чтобы помочь пользователям с программой чтения с экрана";
+
+/* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "Загрузка на сайт файлов с устройства или сделанных на камеру фото и видео.";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Посмотрите все наши темы, чтобы найти свой идеал.";
@@ -1759,6 +1765,9 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "Готово: Как поделиться в социальных сетях";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "Завершено: загрузка фото и видео";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Готово: просмотр сайта";
 
 /* Section title for the configure table section in the blog details screen */
@@ -1781,6 +1790,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Сначала подтвердите адрес электронной почты";
+
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "Поздравляем! Теперь вы знаете, как тут всё устроено";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Поздравляем с завершением списка. Отлично сработано!";
@@ -2470,6 +2482,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Документ: %@";
 
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "не правда ли, хорошо выбирать вещи из списка?";
+
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Контактная информация для домена";
 
@@ -2815,6 +2830,12 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "Включить";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Включить уведомления";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "Включить уведомления?";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Включить Publicize";
 
@@ -2951,6 +2972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Ошибка загрузки плагинов";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "Ошибка при загрузке подсказки";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Ошибка отметки комментария как спам.";
@@ -3339,6 +3363,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Частозадаваемые вопросы";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "Из %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "С другого устройства";
 
@@ -3408,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Поехали! Увеличьте число просмотров вашей записи поделившись ей.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "Ознакомьтесь с приложением Jetpack";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "Познакомьтесь с приложением WordPress";
@@ -3519,6 +3549,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Гид по процессу загрузки значка для вашего сайта.";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "Рекомендации по процедуре загрузки новых медиафайлов.";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -4125,6 +4158,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Достигнут лимит попыток. Вы можете попробовать снова через 1 минуту. Если вы попытаетесь подключиться раньше, время ожидания только увеличится. Если вы считаете, что произошла ошибка, обратитесь в службу поддержки.";
 
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "Линейная диаграмма обзора просмотров.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "Линейная диаграмма обзора пользователей.";
+
 /* No comment provided by engineer. */
 "Line Height" = "Высота строки";
 
@@ -4223,6 +4262,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "Загрузка плагинов...";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "Загрузка подсказок...";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Загрузка потока...";
@@ -4938,6 +4980,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "Основной адрес сайта не найден";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "Пока нет подсказок";
+
 /* A message title */
 "No recent posts" = "Нет свежих записей";
 
@@ -4971,6 +5016,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Не установлены";
+
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "Без ответа";
 
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Нет подключения";
@@ -5749,6 +5797,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Посмотрите ваш сайт перед тем, как его увидят посетители.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "На прошлой неделе";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Предыдущий месяц";
 
@@ -5757,6 +5808,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Предыдущий период";
+
+/* Previous week legend label */
+"Previous week" = "На прошлой неделе";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6509,6 +6563,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "Выберите %@ для просмотра списка";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "Нажмите %@, чтобы открыть библиотеку.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "Выберите %@ для просмотра вашего текущего тарифа и других доступных тарифов.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6522,6 +6579,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the site url. */
 "Select %@ to view your site" = "Нажмите %@, чтобы перейти на свой сайт.";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "Нажмите %@, чтобы загрузить медиафайл. Можете добавить его в записи или на страницы с любого устройства.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Выберите страну";
@@ -7672,6 +7732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Возникла ошибка при загрузке плагинов";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "При загрузке подсказок возникла ошибка.";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "При загрузке комментария произошла ошибка.";
 
@@ -7710,6 +7773,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Они публикуются как новые записи блога на вашем сайте, ваша аудитория их не пропустит, это точно.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "На этой неделе";
 
 /* Insights 'This Year' header */
 "This Year" = "В этом году";
@@ -7776,6 +7842,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Эту учетную запись пользователя нельзя закрыть, если есть активные подписки.";
+
+/* This week legend label */
+"This week" = "На этой неделе";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8393,6 +8462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "Загрузка не удалась, нажмите для выбора.";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "Загрузка фото и видео";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Загружено";
@@ -8589,6 +8661,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Просмотры";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "Просмотры и посетители";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "Просмотров вашего сайта";
@@ -8978,6 +9053,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "В чем была проблема?";
 
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "С чего начнём?";
+
 /* Title of section that contains plugins' change log */
 "What's New" = "Что нового";
 
@@ -9220,6 +9298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Узнать подробности, а также настроить напоминания можно в любой момент в разделе \"Мой сайт\" > \"Настройки\" > \"Напоминания о блоге\".";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Вы можете узнать подробности и настроить напоминания в разделе \"Мой сайт\", \"Настройки\", \"Напоминания Blogging\".";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Можно изменять эти параметры для отдельных записей.";
@@ -9472,6 +9553,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Ваш сайт больше не будет отправлять данные на WordPress.com, и функции плагина Jetpack станут недоступны. Вы потеряете доступ к сайту из приложения и должны будете заново добавить его с учётными данными сайта.";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "На этой неделе было на %@ больше просмотров сайта, чем на прошлой.\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "На этой неделе было на %@ меньше просмотров сайта, чем на прошлой.\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "На этой неделе на сайте было на %@ больше посетителей, чем на прошлой.\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "На этой неделе на сайте было на %@ меньше посетителей, чем на прошлой.\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Ваши данные входа на сайт не сохраняются и будут использованы только для установки Jetpack.";
 
@@ -9633,8 +9726,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Комментарии";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Создать запись";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Отметки «нравится»";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "Вы ещё не опубликовали ни одной записи. Вернитесь позже, когда опубликуете первую запись!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Опубликовано %@";
@@ -9647,6 +9746,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewPercentage" = "%d%% просмотров";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "Недостаточно активности. Вернитесь позже, когда на сайте будет больше посетителей!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";

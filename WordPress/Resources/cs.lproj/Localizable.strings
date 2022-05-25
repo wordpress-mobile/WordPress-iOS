@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-04 05:27:44+0000 */
+/* Translation-Revision-Date: 2022-05-18 13:05:15+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: cs_CZ */
@@ -2430,6 +2430,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
+
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "není to dobrý pocit, když věci odškrtnete ze seznamu?";
 
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Kontaktní údaje domény";
@@ -7575,6 +7578,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Při načítání pluginů došlo k chybě";
+
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "Došlo k chybě při načítání to se mi líbí";
 
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Během nahrávání tohoto komentáře došlo k chybě.";

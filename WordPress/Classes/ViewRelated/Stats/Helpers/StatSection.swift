@@ -15,6 +15,8 @@
     case insightsViewsVisitors
     case insightsLatestPostSummary
     case insightsAllTime
+    case insightsLikesTotals
+    case insightsCommentsTotals
     case insightsFollowerTotals
     case insightsMostPopularTime
     case insightsTagsAndCategories
@@ -36,6 +38,8 @@
                                     [StatSection.insightsViewsVisitors,
                                      .insightsLatestPostSummary,
                                      .insightsAllTime,
+                                     .insightsLikesTotals,
+                                     .insightsCommentsTotals,
                                      .insightsFollowerTotals,
                                      .insightsMostPopularTime,
                                      .insightsTagsAndCategories,
@@ -93,6 +97,10 @@
             return InsightsHeaders.latestPostSummary
         case .insightsAllTime:
             return InsightsHeaders.allTimeStats
+        case .insightsLikesTotals:
+            return InsightsHeaders.likesTotals
+        case .insightsCommentsTotals:
+            return InsightsHeaders.commentsTotals
         case .insightsFollowerTotals:
             return InsightsHeaders.followerTotals
         case .insightsMostPopularTime:
@@ -281,6 +289,10 @@
             return .latestPostSummary
         case .insightsAllTime:
             return .allTimeStats
+        case.insightsLikesTotals:
+            return .likesTotals
+        case .insightsCommentsTotals:
+            return .commentsTotals
         case .insightsFollowerTotals:
             return .followersTotals
         case .insightsMostPopularTime:
@@ -370,7 +382,9 @@
                 return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
             }
         }
-        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
+        static let likesTotals = NSLocalizedString("Likes Total", comment: "Insights 'Likes Total' header")
+        static let commentsTotals = NSLocalizedString("Comments Total", comment: "Insights 'Comments Total' header")
+        static let followerTotals = NSLocalizedString("Followers Total", comment: "Insights 'Followers Total' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")

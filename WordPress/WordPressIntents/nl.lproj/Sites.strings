@@ -3,8 +3,12 @@
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
   <dict>
+    <key>BOl9KQ</key>
+    <string>Er zijn ${count} opties die overeenkomen met '${site}'.</string>
     <key>gpCwrM</key>
     <string>Selecteer site</string>
+    <key>s4dJhx</key>
+    <string>Even ter bevestiging, je wilt '${site}'?</string>
     <key>tVvJ9c</key>
     <string>Selecteer site doel</string>
   </dict>
