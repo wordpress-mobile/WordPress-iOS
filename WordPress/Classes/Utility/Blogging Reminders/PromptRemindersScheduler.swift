@@ -164,7 +164,7 @@ private extension PromptRemindersScheduler {
             }
 
             // Step 2: Schedule prompt reminders.
-            // The `lastScheduledPrompt` is stored to help figure out the start date for static local notifications.
+            // The `lastScheduledPrompt` is stored to figure out the start date for static local notifications.
             var lastScheduledPrompt: BloggingPrompt? = nil
             var notificationIds = [String]()
             promptsToSchedule.forEach { prompt in
@@ -280,7 +280,7 @@ private extension PromptRemindersScheduler {
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
 
-        var date = currentDateProvider.date()
+        var date = afterDate
         var identifiers = [String]()
         while date < maxDate {
             // find the next dates matching the given schedule. The dates are sorted at the end to properly order the dates based on current date.
@@ -288,15 +288,12 @@ private extension PromptRemindersScheduler {
             // [Wednesday this week, Monday next week].
             let nextDates: [Date] = weekdays.compactMap { weekday in
                 guard let nextDate = Calendar.current.nextDate(after: date, matching: .init(weekday: weekday.rawValue + 1), matchingPolicy: .nextTime),
-                      nextDate < maxDate else {
+                      nextDate <= maxDate else {
                     return nil
                 }
-
                 return nextDate
             }.sorted()
 
-            // in case if the next dates are empty, then we should break to prevent infinite loop.
-            // although, this should not happen since the `date` variable is always updated with the next dates.
             guard !nextDates.isEmpty else {
                 break
             }
@@ -332,7 +329,7 @@ private extension PromptRemindersScheduler {
         let identifier = UUID().uuidString
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
-        // schedule the notification.
+        // schedule the local notification.
         notificationScheduler.add(request) { error in
             if let error = error {
                 DDLogError("[PromptRemindersScheduler] Error adding notification request: \(error.localizedDescription)")

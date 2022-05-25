@@ -71,35 +71,39 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
     func test_schedule_addsNotificationRequestsCorrectly() {
         let schedule = Schedule.weekdays([.saturday])
+        let expectedHour = 0
+        let expectedMinute = 0
 
         struct Expected {
-            let body: String
+            let body: String?
             let dateComponents: DateComponents
 
-            static let values = [
-                Expected(
-                    body: "Prompt text 1",
-                    dateComponents: DateComponents(year: 2022, month: 5, day: 21, hour: 10, minute: 0)
-                ),
-                Expected(
-                    body: "Prompt text 8",
-                    dateComponents: DateComponents(year: 2022, month: 5, day: 28, hour: 10, minute: 0)
-                )
-            ]
+            static func values(with hour: Int, minute: Int) -> [Self] {
+                return [
+                    // prompt notifications
+                    Expected(body: "Prompt text 1", dateComponents: .init(year: 2022, month: 5, day: 21, hour: hour, minute: minute)),
+                    Expected(body: "Prompt text 8", dateComponents: .init(year: 2022, month: 5, day: 28, hour: hour, minute: minute)),
+
+                    // static notifications
+                    Expected(body: .staticNotificationContent, dateComponents: .init(year: 2022, month: 6, day: 4, hour: hour, minute: minute)),
+                    Expected(body: .staticNotificationContent, dateComponents: .init(year: 2022, month: 6, day: 11, hour: hour, minute: minute))
+                ]
+            }
         }
 
+        let expectedValues = Expected.values(with: expectedHour, minute: expectedMinute)
         let expectation = expectation(description: "Notification scheduling should succeed")
-        scheduler.schedule(schedule, for: blog) { result in
+        scheduler.schedule(schedule, for: blog, time: makeTime(hour: expectedHour, minute: expectedMinute)) { result in
             guard case .success = result else {
                 XCTFail("Expected a success result, but got error: \(result)")
                 return
             }
 
-            XCTAssertEqual(self.notificationScheduler.requests.count, Expected.values.count)
+            XCTAssertEqual(self.notificationScheduler.requests.count, expectedValues.count)
 
             // verify mappings to notification request.
             for (index, request) in self.notificationScheduler.requests.enumerated() {
-                let value = Expected.values[index]
+                let value = expectedValues[index]
                 XCTAssertEqual(request.content.body, value.body)
                 XCTAssertNotNil(request.trigger)
                 XCTAssertNotNil(request.trigger as? UNCalendarNotificationTrigger)
@@ -114,11 +118,9 @@ class PromptRemindersSchedulerTests: XCTestCase {
 
             // verify that notification receipts are stored.
             XCTAssertNotNil(self.localStore.storedReceipts)
-
-            let allReceipts = self.localStore.storedReceipts!
-            let receiptsForSite = allReceipts[self.blog.dotComID!.intValue]!
-            XCTAssertFalse(receiptsForSite.isEmpty)
-            XCTAssertEqual(receiptsForSite.count, 2)
+            let receipts = self.localStore.receipts(for: self.blog.dotComID!.intValue)!
+            XCTAssertFalse(receipts.isEmpty)
+            XCTAssertEqual(receipts.count, expectedValues.count)
 
             expectation.fulfill()
         }
@@ -170,8 +172,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         let schedule = scheduleForToday
         let expectedHour = 9
         let expectedMinute = 35
-        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
-        let dateForTime = Calendar.current.date(from: timeComponents)
+        let dateForTime = makeTime(hour: expectedHour, minute: expectedMinute)
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
@@ -199,8 +200,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         let schedule = scheduleForToday
         let expectedHour = 8
         let expectedMinute = 30
-        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
-        let dateForTime = Calendar.current.date(from: timeComponents)
+        let dateForTime = makeTime(hour: expectedHour, minute: expectedMinute)
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
@@ -229,8 +229,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         let schedule = scheduleForToday
         let expectedHour = 9
         let expectedMinute = 20
-        let timeComponents = DateComponents(hour: expectedHour, minute: expectedMinute)
-        let dateForTime = Calendar.current.date(from: timeComponents)
+        let dateForTime = makeTime(hour: expectedHour, minute: expectedMinute)
 
         let expectation = expectation(description: "Notification scheduling should succeed")
         scheduler.schedule(schedule, for: blog, time: dateForTime) { result in
@@ -321,6 +320,11 @@ private extension PromptRemindersSchedulerTests {
         return service
     }
 
+    func makeTime(hour: Int, minute: Int) -> Date? {
+        let timeComponents = DateComponents(hour: hour, minute: minute)
+        return Calendar.current.date(from: timeComponents)
+    }
+
     class MockNotificationScheduler: NotificationScheduler {
         var requests = [UNNotificationRequest]()
 
@@ -374,6 +378,10 @@ private extension PromptRemindersSchedulerTests {
             return dictionary
         }
 
+        func receipts(for siteID: Int) -> [String]? {
+            return storedReceipts?[siteID]
+        }
+
         // MARK: LocalFileStore
 
         func data(from url: URL) throws -> Data {
@@ -395,4 +403,9 @@ private extension PromptRemindersSchedulerTests {
             return saveShouldSucceed
         }
     }
+}
+
+private extension String {
+    static let staticNotificationContent = NSLocalizedString("Tap to load today's prompt...", comment: "Title for a push notification with fixed content"
+                                                                             + " that invites the user to load today's blogging prompt.")
 }
