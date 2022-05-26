@@ -2,13 +2,34 @@ import Foundation
 import WordPressKit
 
 struct SiteDesignSectionLoader {
+    typealias Assembler = ((SiteIntentVertical?) -> [SiteDesignSection])
 
-    /// Fetches and assembles `SiteDesignSection`s from the API.
+    /// Builds a site design section assembler based on data fetched from the API.
     ///
-    /// - Parameters:
-    ///   - vertical: An optional Site Intent vertical.
-    ///   - completion: The result closure.
-    static func fetchSections(vertical: SiteIntentVertical?, completion: @escaping (Result<[SiteDesignSection], Error>) -> Void) {
+    /// - Parameter completion: A closure providing an assembler function or an error.
+    static func buildAssembler(completion: @escaping (Result<Assembler, Error>) -> Void) {
+        fetchRemoteDesigns { result in
+            switch result {
+            case .success(let remoteDesigns):
+                let categorySections = getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+
+                completion(.success({ vertical in
+                    assembleSections(
+                        categorySections: categorySections,
+                        remoteDesigns: remoteDesigns,
+                        vertical: vertical
+                    )
+                }))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// Fetches remote designs from the API
+    ///
+    /// - Parameter completion: A closure providing remote site designs or an error.
+    static func fetchRemoteDesigns(completion: @escaping (Result<RemoteSiteDesigns, Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
         let templateGroups: [TemplateGroup] = FeatureFlag.betaSiteDesigns.enabled ? [.stable, .beta] : []
 
@@ -25,8 +46,7 @@ struct SiteDesignSectionLoader {
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { result in
             switch result {
             case .success(let designs):
-                let sections = assembleSections(remoteDesigns: designs, vertical: vertical)
-                completion(.success(sections))
+                completion(.success(designs))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -86,9 +106,7 @@ struct SiteDesignSectionLoader {
     ///   - remoteDesigns: Remote Site Designs.
     ///   - vertical: An optional Site Intent vertical.
     /// - Returns: An array of Site Design sections.
-    static func assembleSections(remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
-        let categorySections = getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
-
+    static func assembleSections(categorySections: [SiteDesignSection], remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
         if let vertical = vertical, let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns) {
             // Recommended designs for the vertical were found
             return [recommendedVertical] + categorySections

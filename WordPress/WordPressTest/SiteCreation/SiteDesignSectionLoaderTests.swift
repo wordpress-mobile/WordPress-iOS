@@ -58,9 +58,11 @@ class SiteDesignSectionLoaderTests: XCTestCase {
     func testAssembleSections() throws {
         // Given
         let testVertical = SiteIntentVertical(slug: "test-vertical", localizedTitle: "Testing", emoji: "")
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
+            categorySections: categorySections,
             remoteDesigns: remoteDesigns,
             vertical: testVertical
         )
@@ -84,8 +86,12 @@ class SiteDesignSectionLoaderTests: XCTestCase {
 
     /// Tests entire assembly of sections when there are no matches for a vertical and we fall back to the "Blog" category
     func testAssembleSectionsFallback() throws {
+        // Given
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteDesigns)
+
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
+            categorySections: categorySections,
             remoteDesigns: remoteDesigns,
             vertical: nil
         )
@@ -114,9 +120,11 @@ class SiteDesignSectionLoaderTests: XCTestCase {
             RemoteSiteDesigns.self,
             from: remoteSiteDesignsWithoutBlogCategoryPayload.data(using: .utf8)!
         )
+        let categorySections = SiteDesignSectionLoader.getCategorySectionsForRemoteSiteDesigns(remoteSiteDesignsWithoutBlogCategory)
 
         // When
         let sections = SiteDesignSectionLoader.assembleSections(
+            categorySections: categorySections,
             remoteDesigns: remoteSiteDesignsWithoutBlogCategory,
             vertical: nil
         )

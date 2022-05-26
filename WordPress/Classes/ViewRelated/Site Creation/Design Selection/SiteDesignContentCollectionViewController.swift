@@ -9,6 +9,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     private let createsSite: Bool
     private let tableView: UITableView
     private let completion: SiteDesignStep.SiteDesignSelection
+    private var sectionAssembler: SiteDesignSectionLoader.Assembler?
 
     private var sections: [SiteDesignSection] = [] {
         didSet {
@@ -174,16 +175,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
+        if let sectionAssembler = sectionAssembler {
+            self.sections = sectionAssembler(creator.vertical)
+            return
+        }
+
         isLoading = true
 
-        SiteDesignSectionLoader.fetchSections(vertical: creator.vertical) { [weak self] result in
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            SiteDesignSectionLoader.buildAssembler { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
-                case .success(let sections):
+                case .success(let assembler):
+                    self.sectionAssembler = assembler
                     self.dismissNoResultsController()
-                    self.sections = sections
+                    self.sections = assembler(self.creator.vertical)
                     self.setupHelperView()
                 case .failure(let error):
                     self.handleError(error)
