@@ -7,7 +7,7 @@ protocol StatsInsightsManagementDelegate: AnyObject {
     func userUpdatedActiveInsights(_ insights: [StatSection])
 }
 
-class AddInsightTableViewController: UITableViewController {
+class InsightsManagementViewController: UITableViewController {
 
     // MARK: - Properties
     private weak var insightsManagementDelegate: StatsInsightsManagementDelegate?
@@ -46,7 +46,7 @@ class AddInsightTableViewController: UITableViewController {
     }
 
     convenience init(insightsDelegate: SiteStatsInsightsDelegate, insightsManagementDelegate: StatsInsightsManagementDelegate? = nil, insightsShown: [StatSection]) {
-        self.init(style: .grouped)
+        self.init(style: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
         self.insightsDelegate = insightsDelegate
         self.insightsManagementDelegate = insightsManagementDelegate
         self.insightsShown = insightsShown
@@ -197,6 +197,7 @@ class AddInsightTableViewController: UITableViewController {
     fileprivate enum TextContent {
         static let title = NSLocalizedString("stats.insights.management.title", value: "Manage Stats Cards", comment: "Title of the Stats Insights Management screen")
         static let activeCardsHeader = NSLocalizedString("stats.insights.management.activeCards", value: "Active Cards", comment: "Header title indicating which Stats Insights cards the user currently has set to active.")
+        static let inactiveCardsHeader = NSLocalizedString("stats.insights.management.inactiveCards", value: "Inactive Cards", comment: "Header title indicating which Stats Insights cards the user currently has disabled.")
         static let placeholderRowTitle = NSLocalizedString("stats.insights.management.selectCardsPrompt", value: "Select cards from the list below", comment: "Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards.")
 
         static let savePromptMessage = NSLocalizedString("stats.insights.management.savePrompt.message", value: "You've made changes to your active Insights cards.", comment: "Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards.")
@@ -206,7 +207,7 @@ class AddInsightTableViewController: UITableViewController {
     }
 }
 
-private extension AddInsightTableViewController {
+private extension InsightsManagementViewController {
 
     // MARK: - Table Model
 
@@ -215,11 +216,17 @@ private extension AddInsightTableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        return ImmuTable(sections: [ selectedStatsSection(),
-                                     sectionForCategory(.general),
-                                     sectionForCategory(.postsAndPages),
-                                     sectionForCategory(.activity) ].compactMap({$0})
-        )
+        if FeatureFlag.statsNewAppearance.enabled {
+            return ImmuTable(sections: [ selectedStatsSection(),
+                                         inactiveCardsSection() ].compactMap({$0})
+            )
+        } else {
+            return ImmuTable(sections: [ selectedStatsSection(),
+                                         sectionForCategory(.general),
+                                         sectionForCategory(.postsAndPages),
+                                         sectionForCategory(.activity) ].compactMap({$0})
+            )
+        }
     }
 
     // MARK: - Table Sections
@@ -235,6 +242,21 @@ private extension AddInsightTableViewController {
 
         return ImmuTableSection(headerText: TextContent.activeCardsHeader,
                                 rows: insightsShown.map {
+                                    return AddInsightStatRow(title: $0.insightManagementTitle,
+                                                             enabled: true,
+                                                             action: rowActionFor($0)) }
+        )
+    }
+
+    func inactiveCardsSection() -> ImmuTableSection {
+        let rows = InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+
+        guard insightsShown.count > 0 else {
+            return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [placeholderRow])
+        }
+
+        return ImmuTableSection(headerText: TextContent.inactiveCardsHeader,
+                                rows: rows.map {
                                     return AddInsightStatRow(title: $0.insightManagementTitle,
                                                              enabled: true,
                                                              action: rowActionFor($0)) }
@@ -294,6 +316,22 @@ private extension AddInsightTableViewController {
                                  enabled: false,
                                  action: nil)
     }
+
+    private static let allInsights: [StatSection] = [
+        .insightsViewsVisitors,
+        .insightsLikesTotals,
+        .insightsCommentsTotals,
+        .insightsFollowerTotals,
+        .insightsMostPopularTime,
+        .insightsLatestPostSummary,
+        .insightsAllTime,
+        .insightsAnnualSiteStats,
+        .insightsTodaysStats,
+        .insightsPostingActivity,
+        .insightsTagsAndCategories,
+        .insightsFollowersEmail,
+        .insightsPublicize
+    ]
 
     // MARK: - Insights Categories
 

@@ -95,7 +95,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
             dismissCustomizeCard()
         }
 
-        let controller = AddInsightTableViewController(insightsDelegate: self,
+        let controller = InsightsManagementViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.presentationController?.delegate = self
@@ -607,7 +607,7 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
 extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let navigationController = presentationController.presentedViewController as? UINavigationController,
-        let controller = navigationController.topViewController as? AddInsightTableViewController else {
+        let controller = navigationController.topViewController as? InsightsManagementViewController else {
             return
         }
 
