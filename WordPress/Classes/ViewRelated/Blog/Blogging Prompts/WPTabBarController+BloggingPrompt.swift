@@ -3,6 +3,10 @@
 ///
 extension WPTabBarController {
 
+    @objc func makeBloggingPromptCoordinator() -> BloggingPromptCoordinator {
+        return BloggingPromptCoordinator()
+    }
+
     func showPromptAnsweringFlow(siteID: Int, promptID: Int?, source: BloggingPromptCoordinator.Source) {
         // Ensure that the blog exists.
         guard let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
