@@ -158,7 +158,7 @@ class MeViewController: UITableViewController {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
                     var loggedInRows = [myProfile, accountSettings]
-                    if FeatureFlag.qrLogin.enabled {
+                    if AppConfiguration.qrLoginEnabled && FeatureFlag.qrLogin.enabled {
                         loggedInRows.append(qrLogin)
                     }
 
