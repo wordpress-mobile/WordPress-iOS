@@ -14,11 +14,13 @@ protocol QRLoginVerifyView {
 class QRLoginVerifyCoordinator {
     private let parentCoordinator: QRLoginCoordinator
     private let view: QRLoginVerifyView
-    private let loginCode: String
+    private let token: QRLoginToken
     private var state: ViewState = .verifyingCode
 
-    init(loginCode: String, view: QRLoginVerifyView, parentCoordinator: QRLoginCoordinator) {
-        self.loginCode = loginCode
+    init(token: QRLoginToken,
+         view: QRLoginVerifyView,
+         parentCoordinator: QRLoginCoordinator,
+        self.token = token
         self.view = view
         self.parentCoordinator = parentCoordinator
     }

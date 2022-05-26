@@ -2269,6 +2269,8 @@
 		C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
+		C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
 		C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
@@ -13775,6 +13777,7 @@
 				C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */,
 				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
 				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
+				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -17700,6 +17703,7 @@
 				F1C197A62670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
+				C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
@@ -21563,6 +21567,7 @@
 				FABB25D82602FC2C00C8785C /* ImageCropOverlayView.swift in Sources */,
 				FABB25D92602FC2C00C8785C /* UIView+SpringAnimations.swift in Sources */,
 				FABB25DA2602FC2C00C8785C /* ReaderGapMarkerCell.swift in Sources */,
+				C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				FABB25DB2602FC2C00C8785C /* SupportTableViewController+Activity.swift in Sources */,
 				FABB25DC2602FC2C00C8785C /* ThemeIdHelper.swift in Sources */,
 				FABB25DD2602FC2C00C8785C /* BottomScrollAnalyticsTracker.swift in Sources */,

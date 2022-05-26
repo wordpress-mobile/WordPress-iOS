@@ -57,7 +57,7 @@ extension QRLoginScanningCoordinator {
         parentCoordinator.dismiss()
     }
 
-    func didScanCode(_ code: String) {
+    func didScanToken(_ token: QRLoginToken) {
         // Give the user a tap to let them know they've successfully scanned the code
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
@@ -65,7 +65,7 @@ extension QRLoginScanningCoordinator {
         stopCameraSession()
 
         // Show the next step in the flow
-        parentCoordinator.didScanCode(code)
+        parentCoordinator.didScanToken(token)
     }
 }
 
@@ -183,7 +183,7 @@ extension QRLoginScanningCoordinator {
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
 extension QRLoginScanningCoordinator: AVCaptureMetadataOutputObjectsDelegate {
     func validLink(_ stringValue: String) -> Bool {
-        guard let url = URL(string: stringValue), url.host == "apps.wordpress.com" else {
+        guard let url = URL(string: stringValue), QRLoginURLParser.isValidHost(url: url) else {
             return false
         }
 
@@ -200,6 +200,10 @@ extension QRLoginScanningCoordinator: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        didScanCode(string)
+        guard let token = QRLoginURLParser(urlString: string).parse() else {
+            return
+        }
+
+        didScanToken(token)
     }
 }
