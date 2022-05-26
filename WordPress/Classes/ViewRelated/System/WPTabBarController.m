@@ -636,10 +636,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (BloggingPromptCoordinator *)bloggingPromptCoordinator
 {
     if (_bloggingPromptCoordinator) {
-        return _bloggingPromptCoordinator
+        return _bloggingPromptCoordinator;
     }
 
-    self.bloggingPromptCoordinator = [[BloggingPromptCoordinator alloc] init];
+    self.bloggingPromptCoordinator = [self makeBloggingPromptCoordinator];
     return _bloggingPromptCoordinator;
 }
 
