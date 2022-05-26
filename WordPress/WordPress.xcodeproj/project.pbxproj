@@ -40,17 +40,6 @@
 			name = SwiftLint;
 			productName = SwiftLint;
 		};
-		FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = FFC3F6F51B0DBF1000EFC359 /* Build configuration list for PBXAggregateTarget "UpdatePlistPreprocessor" */;
-			buildPhases = (
-				FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */,
-			);
-			dependencies = (
-			);
-			name = UpdatePlistPreprocessor;
-			productName = UpdatePlistPreprocessor;
-		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -4833,13 +4822,6 @@
 			remoteGlobalIDString = F1F163BD25658B4D003DC13B;
 			remoteInfo = WordPressIntents;
 		};
-		FABB1F912602FC2C00C8785C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FFC3F6F41B0DBF0900EFC359;
-			remoteInfo = UpdatePlistPreprocessor;
-		};
 		FAF64C392637E02700E8A1DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4853,13 +4835,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
-		};
-		FFC3F6FB1B0DBF7200EFC359 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FFC3F6F41B0DBF0900EFC359;
-			remoteInfo = UpdatePlistPreprocessor;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -15597,7 +15572,6 @@
 			);
 			dependencies = (
 				096A92FD26E2A0AE00448C68 /* PBXTargetDependency */,
-				FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */,
 				93E5284519A7741A003A1A9C /* PBXTargetDependency */,
 				93E5284819A7741A003A1A9C /* PBXTargetDependency */,
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
@@ -15866,7 +15840,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FABB1F902602FC2C00C8785C /* PBXTargetDependency */,
 			);
 			name = Jetpack;
 			packageProductDependencies = (
@@ -16060,10 +16033,6 @@
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 					};
-					FFC3F6F41B0DBF0900EFC359 = {
-						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = PZYM8XX95Q;
-					};
 				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WordPress" */;
@@ -16132,7 +16101,6 @@
 				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				096A92F526E29FFF00448C68 /* GenerateCredentials */,
 				A2795807198819DE0031C6A3 /* OCLint */,
-				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
 				FFA8E22A1F94E3DE0002170F /* SwiftLint */,
 				FABB1F8F2602FC2C00C8785C /* Jetpack */,
 				FAF64B662637DEEC00E8A1DF /* JetpackScreenshotGeneration */,
@@ -17803,21 +17771,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nrake lint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Update Plist Preprocessor file";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[ -a $WPCOM_CONFIG ] && source $WPCOM_CONFIG\n touch Info.plist\n echo \"\" > InfoPlist.h\n echo \"\" > InfoPlist-alpha.h\n echo \"\" > InfoPlist-internal.h\n if [ \"x$GOOGLE_LOGIN_SCHEME_ID\" != \"x\" ]; then\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-alpha.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-internal.h\n else\n echo \"warning: Google Client ID not found\"\n fi\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -21939,11 +21892,6 @@
 			target = F1F163BD25658B4D003DC13B /* WordPressIntents */;
 			targetProxy = F1F163D425658B4D003DC13B /* PBXContainerItemProxy */;
 		};
-		FABB1F902602FC2C00C8785C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */;
-			targetProxy = FABB1F912602FC2C00C8785C /* PBXContainerItemProxy */;
-		};
 		FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
@@ -21953,11 +21901,6 @@
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = FF2716941CAAC87B0006E2D4 /* PBXContainerItemProxy */;
-		};
-		FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */;
-			targetProxy = FFC3F6FB1B0DBF7200EFC359 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -22198,7 +22141,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -22265,7 +22207,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -23595,7 +23536,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -23724,15 +23664,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
-			};
-			name = "Release-Alpha";
-		};
-		8546B4491BEAD39700193C07 /* Release-Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Alpha";
 		};
@@ -24100,7 +24031,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25207,7 +25137,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25277,7 +25206,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25346,7 +25274,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25415,7 +25342,6 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Jetpack/Info.plist;
-				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -25874,33 +25800,6 @@
 			};
 			name = "Release-Alpha";
 		};
-		FFC3F6F61B0DBF1000EFC359 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		FFC3F6F71B0DBF1000EFC359 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		FFC3F6F81B0DBF1000EFC359 /* Release-Internal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = "Release-Internal";
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -26120,17 +26019,6 @@
 				FFA8E22C1F94E3DE0002170F /* Release */,
 				FFA8E22D1F94E3DE0002170F /* Release-Internal */,
 				FFA8E22E1F94E3DE0002170F /* Release-Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FFC3F6F51B0DBF1000EFC359 /* Build configuration list for PBXAggregateTarget "UpdatePlistPreprocessor" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FFC3F6F61B0DBF1000EFC359 /* Debug */,
-				FFC3F6F71B0DBF1000EFC359 /* Release */,
-				FFC3F6F81B0DBF1000EFC359 /* Release-Internal */,
-				8546B4491BEAD39700193C07 /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
