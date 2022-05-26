@@ -12,15 +12,25 @@ class QuickStartChecklistViewController: UITableViewController {
     }
 
     private lazy var closeButtonItem: UIBarButtonItem = {
-        let cancelButton = WPStyleGuide.buttonForBar(with: Constants.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
+        let closeButton = UIButton()
+
+        let configuration = UIImage.SymbolConfiguration(pointSize: Constants.closeButtonSymbolSize, weight: .bold)
+        closeButton.setImage(UIImage(systemName: "xmark", withConfiguration: configuration), for: .normal)
+        closeButton.tintColor = .secondaryLabel
+        closeButton.backgroundColor = .quaternarySystemFill
+
+        NSLayoutConstraint.activate([
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonRadius),
+            closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor)
+        ])
+        closeButton.layer.cornerRadius = Constants.closeButtonRadius * 0.5
 
         let accessibleFormat = NSLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
-        cancelButton.accessibilityLabel = String(format: accessibleFormat, self.collection.title)
+        closeButton.accessibilityLabel = String(format: accessibleFormat, self.collection.title)
 
-        return UIBarButtonItem(customView: cancelButton)
+        closeButton.addTarget(self, action: #selector(closeWasPressed), for: .touchUpInside)
+
+        return UIBarButtonItem(customView: closeButton)
     }()
 
     init(blog: Blog, collection: QuickStartToursCollection) {
@@ -38,12 +48,11 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidLoad()
 
         configureTableView()
-
-        navigationItem.title = collection.title
-        navigationItem.leftBarButtonItem = closeButtonItem
+        configureNavigationBar()
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: collection.tours,
+                                                 title: collection.shortTitle,
                                                  didSelectTour: { [weak self] tour in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else {
@@ -66,7 +75,7 @@ class QuickStartChecklistViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // should display bg and trigger qs notification
+        tableView.flashScrollIndicators()
 
         WPAnalytics.trackQuickStartStat(.quickStartChecklistViewed,
                                         properties: [Constants.analyticsTypeKey: collection.analyticsKey],
@@ -76,7 +85,7 @@ class QuickStartChecklistViewController: UITableViewController {
 
 private extension QuickStartChecklistViewController {
     func configureTableView() {
-        let tableView = UITableView(frame: .zero)
+        let tableView = UITableView(frame: .zero, style: .grouped)
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
         tableView.separatorStyle = .none
@@ -84,9 +93,23 @@ private extension QuickStartChecklistViewController {
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
-
+        tableView.register(QuickStartChecklistHeader.defaultNib, forHeaderFooterViewReuseIdentifier: QuickStartChecklistHeader.defaultReuseID)
         self.tableView = tableView
         WPStyleGuide.configureTableViewColors(view: self.tableView)
+    }
+
+    func configureNavigationBar() {
+        navigationItem.rightBarButtonItem = closeButtonItem
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = appearance
+        }
     }
 
     func startObservingForQuickStart() {
@@ -126,7 +149,7 @@ private struct QuickStartChecklistConfiguration {
 
 private enum Constants {
     static let analyticsTypeKey = "type"
-    static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-    static let closeButtonModalImage = UIImage.gridicon(.cross)
+    static let closeButtonRadius: CGFloat = 30
+    static let closeButtonSymbolSize: CGFloat = 16
     static let estimatedRowHeight: CGFloat = 90.0
 }

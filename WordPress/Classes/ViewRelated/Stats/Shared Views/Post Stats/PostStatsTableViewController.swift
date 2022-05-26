@@ -38,8 +38,6 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableView.register(SiteStatsTableHeaderView.defaultNib,
-                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         initViewModel()
         trackAccessEvent()
         addWillEnterForegroundObserver()
@@ -57,7 +55,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+        guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
 

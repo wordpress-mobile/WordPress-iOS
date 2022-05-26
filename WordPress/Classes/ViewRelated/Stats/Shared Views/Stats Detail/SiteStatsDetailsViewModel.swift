@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 import WordPressFlux
 
 /// The view model used by SiteStatsDetailTableViewController to show
@@ -52,39 +51,14 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case let statSection where StatSection.allInsights.contains(statSection):
-            if FeatureFlag.statsNewInsights.enabled {
-                switch statSection {
-                case .insightsViewsVisitors:
-                    self.selectedPeriod = .week
-
-                    var date = selectedDate ?? StatsDataHelper.currentDateForSite()
-                    periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
-                            period: StatsPeriodUnit.day,
-                            forceRefresh: false))
-
-                    periodChangeReceipt = periodStore.onChange { [weak self] in
-                        self?.emitChange()
-                    }
-                default:
-                    guard let storeQuery = queryForInsightStatSection(statSection) else {
-                        return
-                    }
-
-                    insightsChangeReceipt = insightsStore.onChange { [weak self] in
-                        self?.emitChange()
-                    }
-                    insightsReceipt = insightsStore.query(storeQuery)
-                }
-            } else { //TODO - REMOVE AFTER FEATURE FLAG IS REMOVED
-                guard let storeQuery = queryForInsightStatSection(statSection) else {
-                    return
-                }
-
-                insightsChangeReceipt = insightsStore.onChange { [weak self] in
-                    self?.emitChange()
-                }
-                insightsReceipt = insightsStore.query(storeQuery)
+            guard let storeQuery = queryForInsightStatSection(statSection) else {
+                return
             }
+
+            insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                self?.emitChange()
+            }
+            insightsReceipt = insightsStore.query(storeQuery)
         case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return
@@ -115,30 +89,10 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case let statSection where StatSection.allInsights.contains(statSection):
-            if FeatureFlag.statsNewInsights.enabled {
-                switch statSection {
-                case .insightsViewsVisitors:
-                    guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection),
-                          let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers),
-                          let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
-                        return true
-                    }
-
-                    return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
-                            periodStore.fetchingFailed(for: storeQueryReferrers) &&
-                            periodStore.fetchingFailed(for: storeQueryCountries)
-                default:
-                    guard let storeQuery = queryForInsightStatSection(statSection) else {
-                        return true
-                    }
-                    return insightsStore.fetchingFailed(for: storeQuery)
-                }
-            } else { //TODO - REMOVE AFTER FEATURE FLAG IS REMOVED
-                guard let storeQuery = queryForInsightStatSection(statSection) else {
-                    return true
-                }
-                return insightsStore.fetchingFailed(for: storeQuery)
+            guard let storeQuery = queryForInsightStatSection(statSection) else {
+                return true
             }
+            return insightsStore.fetchingFailed(for: storeQuery)
         case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return true
@@ -154,8 +108,6 @@ class SiteStatsDetailsViewModel: Observable {
 
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
-        case .insightsViewsVisitors:
-            return periodStore.isFetchingReferrers
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
@@ -206,42 +158,6 @@ class SiteStatsDetailsViewModel: Observable {
         }
 
         switch statSection {
-        case .insightsViewsVisitors:
-            return periodImmuTable(for: periodStore.topReferrersStatus, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped) { status in
-                var rows = [ImmuTableRow]()
-
-                if let periodSummary = periodStore.getSummary() {
-                    // Views Visitors
-                    rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!,
-                            statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil))
-
-                    // Referrers
-                    rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                        dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                                                        dataRows: referrersRowData(),
-                                                        statSection: StatSection.periodReferrers,
-                                                        siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                                                        siteStatsReferrerDelegate: nil))
-
-
-                    // Countries
-                    let map = countriesMap()
-                    if !map.data.isEmpty {
-                        rows.append(CountriesMapRow(countriesMap: map))
-                    }
-                    rows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
-                                                       dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                       dataRows: countriesRowData(),
-                                                       siteStatsPeriodDelegate: nil))
-
-                    return rows
-                } else {
-                    rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                            dataSubtitle: StatSection.periodReferrers.dataSubtitle))
-                    rows.append(contentsOf: referrersRows(for: status))
-                    return rows
-                }
-            }
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
             let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
@@ -535,8 +451,6 @@ private extension SiteStatsDetailsViewModel {
             return .allPublished(date: selectedDate, period: selectedPeriod)
         case .periodFileDownloads:
             return .allFileDownloads(date: selectedDate, period: selectedPeriod)
-        case .insightsViewsVisitors:
-            return .periods(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -1090,10 +1004,7 @@ private extension SiteStatsDetailsViewModel {
         ])
     }
 
-    func periodImmuTable(for status: StoreFetchingStatus,
-                         tableStyle: UITableView.Style = .grouped,
-                         rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]
-                         ) -> ImmuTable {
+    func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]) -> ImmuTable {
         var rows = [ImmuTableRow]()
 
         switch status {
@@ -1113,24 +1024,6 @@ private extension SiteStatsDetailsViewModel {
             rows.append(contentsOf: rowsBlock(status))
         case .error:
             break
-        }
-
-        if tableStyle == .insetGrouped {
-            var countriesRows: [ImmuTableRow] = []
-            var otherRows: [ImmuTableRow] = []
-            var sections: [ImmuTableSection] = []
-
-            rows.forEach({ row in
-                if row is CountriesMapRow || row is CountriesStatsRow {
-                    countriesRows.append(row)
-                } else {
-                    sections.append(ImmuTableSection(rows: [row]))
-                }
-
-            })
-            let countriesSection = ImmuTableSection(rows: countriesRows)
-            sections.append(countriesSection)
-            return ImmuTable(sections: sections)
         }
 
         return ImmuTable(sections: [

@@ -7,6 +7,7 @@ class PromptRemindersScheduler {
     enum Errors: Error {
         case invalidSite
         case needsPushAuthorization
+        case fileSaveError
         case unknown
     }
 
@@ -14,16 +15,19 @@ class PromptRemindersScheduler {
     private let notificationScheduler: NotificationScheduler
     private let pushAuthorizer: PushNotificationAuthorizer
     private let currentDateProvider: CurrentDateProvider
+    private let localStore: LocalFileStore
 
     // MARK: Public Methods
 
     init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
          notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
          pushAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+         localStore: LocalFileStore = FileManager.default,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.promptsServiceFactory = bloggingPromptsServiceFactory
         self.notificationScheduler = notificationScheduler
         self.pushAuthorizer = pushAuthorizer
+        self.localStore = localStore
         self.currentDateProvider = currentDateProvider
     }
 
@@ -74,6 +78,21 @@ private extension PromptRemindersScheduler {
         let hour: Int
         let minute: Int
 
+        init(hour: Int, minute: Int) {
+            self.hour = hour
+            self.minute = minute
+        }
+
+        init?(from date: Date?) {
+            guard let dateComponents = date?.dateAndTimeComponents(),
+                  let hourComponent = dateComponents.hour,
+                  let minuteComponent = dateComponents.minute else {
+                return nil
+            }
+
+            self.init(hour: hourComponent, minute: minuteComponent)
+        }
+
         func compare(with date: Date) -> ComparisonResult {
             let hourToCompare = Calendar.current.component(.hour, from: date)
             let minuteToCompare = Calendar.current.component(.minute, from: date)
@@ -90,6 +109,7 @@ private extension PromptRemindersScheduler {
         static let defaultTime = Time(hour: 10, minute: 0) // 10:00 AM
         static let promptsToFetch = 15 // fetch prompts for today + two weeks ahead
         static let notificationTitle = NSLocalizedString("Today's Prompt 💡", comment: "Title for a push notification showing today's blogging prompt.")
+        static let defaultFileName = "PromptReminders.plist"
     }
 
     /// The actual implementation for the prompt notification scheduling.
@@ -109,7 +129,8 @@ private extension PromptRemindersScheduler {
             return
         }
 
-        guard let promptsService = promptsServiceFactory.makeService(for: blog) else {
+        guard let siteID = blog.dotComID?.intValue,
+              let promptsService = promptsServiceFactory.makeService(for: blog) else {
             completion(.failure(Errors.invalidSite))
             return
         }
@@ -123,7 +144,7 @@ private extension PromptRemindersScheduler {
             }
 
             // Filter prompts based on the Schedule.
-            prompts.sorted { $0.date < $1.date }.filter { prompt in
+            let notificationIds = prompts.sorted { $0.date < $1.date }.filter { prompt in
                 guard let weekdayComponent = Calendar.current.dateComponents([.weekday], from: prompt.date).weekday,
                       let weekday = Weekday(rawValue: weekdayComponent - 1) else { // Calendar.Component.weekday starts from 1 (Sunday)
                     return false
@@ -134,13 +155,18 @@ private extension PromptRemindersScheduler {
                 return weekdays.contains(weekday)
                 && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedDescending)
 
-            }.forEach { promptToSchedule in
-                let _ = self.addLocalNotification(for: promptToSchedule, blog: blog, at: reminderTime)
+            }.compactMap { promptToSchedule in
+                self.addLocalNotification(for: promptToSchedule, blog: blog, at: reminderTime)
             }
 
-            // TODO: Save notification identifiers to local store.
-
             // TODO: Schedule static notifications.
+
+            do {
+                // store pending notification identifiers to local store.
+                try self.saveReceipts(notificationIds, for: siteID)
+            } catch {
+                completion(.failure(error))
+            }
 
             completion(.success(()))
 
@@ -148,6 +174,8 @@ private extension PromptRemindersScheduler {
             completion(.failure(error ?? Errors.unknown))
         }
     }
+
+    // MARK: Notification Scheduler
 
     /// Schedules the local notification.
     ///
@@ -188,17 +216,52 @@ private extension PromptRemindersScheduler {
 
         return identifier
     }
-}
 
-private extension PromptRemindersScheduler.Time {
-    init?(from date: Date?) {
-        guard let dateComponents = date?.dateAndTimeComponents(),
-              let hourComponent = dateComponents.hour,
-              let minuteComponent = dateComponents.minute else {
-            return nil
+    // MARK: Local Storage
+
+    func defaultFileURL() throws -> URL {
+        let directoryURL = try FileManager.default.url(for: .applicationSupportDirectory,
+                                                       in: .userDomainMask,
+                                                       appropriateFor: nil,
+                                                       create: true)
+
+        return directoryURL.appendingPathComponent(Constants.defaultFileName)
+    }
+
+    /// Loads a dictionary containing all of the pending notification IDs for all sites.
+    ///
+    /// - Parameter fileURL: The file store location.
+    /// - Returns: A dictionary containing `siteID` and an array of `String`representing pending notification IDs.
+    func fetchAllReceipts(from fileURL: URL) throws -> [Int: [String]] {
+        if !localStore.fileExists(at: fileURL) {
+            let data = try PropertyListEncoder().encode([Int: [String]]())
+            localStore.save(contents: data, at: fileURL)
         }
 
-        self.init(hour: hourComponent, minute: minuteComponent)
+        let data = try localStore.data(from: fileURL)
+        return try PropertyListDecoder().decode([Int: [String]].self, from: data)
+    }
+
+    /// Updates the stored receipts under the given `siteID` key.
+    /// When passing nil, this method will remove the receipts for `siteID` instead.
+    ///
+    /// - Parameters:
+    ///   - receipts: A sequence of notification receipts to store.
+    ///   - siteID: The `siteID` of the Blog associated with the prompt reminders.
+    func saveReceipts(_ receipts: [String]?, for siteID: Int) throws {
+        let fileURL = try defaultFileURL()
+        var allReceipts = try fetchAllReceipts(from: fileURL)
+
+        if let receipts = receipts, !receipts.isEmpty {
+            allReceipts[siteID] = receipts
+        } else {
+            allReceipts.removeValue(forKey: siteID)
+        }
+
+        let data = try PropertyListEncoder().encode(allReceipts)
+        guard localStore.save(contents: data, at: fileURL) else {
+            throw Errors.fileSaveError
+        }
     }
 }
 
@@ -214,5 +277,36 @@ protocol CurrentDateProvider {
 struct DefaultCurrentDateProvider: CurrentDateProvider {
     func date() -> Date {
         return Date()
+    }
+}
+
+// MARK: - Local Store
+
+/// A wrapper protocol intended for `FileManager`.
+/// Created to simplify unit testing.
+///
+protocol LocalFileStore {
+    func data(from url: URL) throws -> Data
+
+    func fileExists(at url: URL) -> Bool
+
+    @discardableResult
+    func save(contents: Data, at url: URL) -> Bool
+}
+
+extension LocalFileStore {
+    func data(from url: URL) throws -> Data {
+        return try Data(contentsOf: url)
+    }
+}
+
+extension FileManager: LocalFileStore {
+    func fileExists(at url: URL) -> Bool {
+        return fileExists(atPath: url.path)
+    }
+
+    @discardableResult
+    func save(contents: Data, at url: URL) -> Bool {
+        return createFile(atPath: url.path, contents: contents)
     }
 }
