@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mQ0-DH-hTW" customClass="AccessibleCollectionView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="55" width="320" height="224"/>
+                        <rect key="frame" x="0.0" y="59" width="320" height="220"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="999" constant="240" id="iK4-y8-V36"/>
@@ -35,8 +35,8 @@
                             <outlet property="delegate" destination="KGk-i7-Jjw" id="7er-Am-6i2"/>
                         </connections>
                     </collectionView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="b14-QX-4ea">
-                        <rect key="frame" x="20" y="20" width="80" height="15"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="b14-QX-4ea">
+                        <rect key="frame" x="20" y="20" width="80" height="19"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujI-Bw-5eP">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="0.0"/>
@@ -45,7 +45,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pe-2p-9as">
-                                <rect key="frame" x="0.0" y="0.0" width="80" height="15"/>
+                                <rect key="frame" x="0.0" y="4" width="80" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="Cne-bu-2aD"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="b0Y-Uh-CXP"/>
