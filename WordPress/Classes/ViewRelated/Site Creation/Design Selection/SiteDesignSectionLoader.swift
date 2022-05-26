@@ -55,7 +55,8 @@ struct SiteDesignSectionLoader {
             thumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
             caption: TextContent.recommendedCaption,
             categorySlug: "recommended_" + vertical.slug,
-            title: String(format: TextContent.recommendedTitle, vertical.localizedTitle)
+            title: String(format: TextContent.recommendedTitle, vertical.localizedTitle),
+            sectionType: .recommended
         )
     }
 
@@ -97,6 +98,7 @@ struct SiteDesignSectionLoader {
             // Recommended designs for the vertical weren't found, so we used the fallback category
             recommendedFallback.title = String(format: TextContent.recommendedTitle, "Blogging")
             recommendedFallback.thumbnailSize = SiteDesignCategoryThumbnailSize.recommended.value
+            recommendedFallback.sectionType = .recommended
             recommendedFallback.caption = TextContent.recommendedCaption
             return [recommendedFallback] + categorySections.filter { $0 != recommendedFallback }
         }

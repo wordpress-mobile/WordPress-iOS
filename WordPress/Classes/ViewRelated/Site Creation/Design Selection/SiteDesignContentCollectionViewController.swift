@@ -299,12 +299,15 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
 
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
         guard let sectionIndex = sections.firstIndex(where: { $0.categorySlug == slug }) else { return }
-        let design = sections[sectionIndex].designs[position]
+        let section = sections[sectionIndex]
+        let design = section.designs[position]
+        let sectionType = section.sectionType
 
         let previewVC = SiteDesignPreviewViewController(
             siteDesign: design,
             selectedPreviewDevice: previewViewSelectedPreviewDevice,
             createsSite: createsSite,
+            sectionType: sectionType,
             onDismissWithDeviceSelected: { [weak self] device in
                 self?.previewViewSelectedPreviewDevice = device
                 cell.deselectItems()
