@@ -2273,6 +2273,8 @@
 		C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
 		C7AFF878283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
+		C7AFF87C283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */; };
+		C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */; };
 		C7B7CC702812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC7328134347007B9807 /* OnboardingQuestionsPromptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */; };
@@ -7045,6 +7047,7 @@
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
 		C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningCoordinator.swift; sourceTree = "<group>"; };
+		C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinator.swift; sourceTree = "<group>"; };
 		C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+OnboardingPrompt.swift"; sourceTree = "<group>"; };
 		C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptScreen.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
@@ -13781,6 +13784,7 @@
 			children = (
 				C7234A392832BA240045C63F /* QRLoginCoordinator.swift */,
 				C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */,
+				C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -18117,6 +18121,7 @@
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
 				B06378C0253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift in Sources */,
+				C7AFF87C283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */,
 				436D55DB210F862A00CEAA33 /* NibReusable.swift in Sources */,
 				98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */,
@@ -20426,6 +20431,7 @@
 				FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */,
 				FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */,
 				FABB22162602FC2C00C8785C /* WebAddressWizardContent.swift in Sources */,
+				C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				FABB22172602FC2C00C8785C /* VisitsSummaryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				3F8D988A26153484003619E5 /* UnifiedPrologueBackgroundView.swift in Sources */,
 				FABB22182602FC2C00C8785C /* SiteSegmentsStep.swift in Sources */,
