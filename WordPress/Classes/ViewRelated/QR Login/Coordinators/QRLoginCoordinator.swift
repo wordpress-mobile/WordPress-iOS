@@ -23,10 +23,11 @@ class QRLoginCoordinator {
         pushOrPresent(controller, from: source)
     }
 
-    func showVerifyAuthorization(code: String, from source: UIViewController? = nil) {
-        print("showVerifyAuthorization:", code)
-
+    func showVerifyAuthorization(loginCode: String, from source: UIViewController? = nil) {
         let controller = QRLoginVerifyAuthorizationViewController()
+        controller.coordinator = QRLoginVerifyCoordinator(loginCode: loginCode,
+                                                          view: controller,
+                                                          parentCoordinator: self)
 
         pushOrPresent(controller, from: source)
     }
