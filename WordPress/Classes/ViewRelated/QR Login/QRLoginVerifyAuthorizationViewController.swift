@@ -50,5 +50,29 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     func showNoConnectionError() {
     }
 }
+
+// MARK: - Private: View Helpers
+extension QRLoginVerifyAuthorizationViewController {
+    private func applyStyles() {
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        titleLabel.textColor = .text
+
+        subTitleLabel.font = .preferredFont(forTextStyle: .headline)
+        subTitleLabel.textColor = .systemRed
+    }
+
+    private struct Strings {
+        static let imageName = "wp-illustration-mobile-save-for-later"
+        static let title = NSLocalizedString("Are you trying to login on your web browser?", comment: "TODO")
+        static let subtitle = NSLocalizedString("Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else.", comment: "TODO")
+        static let confirmButton = NSLocalizedString("Yes, log me in", comment: "TODO")
+        static let cancelButton = NSLocalizedString("Cancel", comment: "TODO")
+
+        struct completed {
+            static let imageName = "domains-success"
+            static let title = NSLocalizedString("You're logged in!", comment: "TODO")
+            static let subtitle = NSLocalizedString("Tap dismiss and head back to your web browser to continue.", comment: "TODO")
+            static let confirmButton = NSLocalizedString("Dismiss", comment: "TODO")
+        }
     }
 }
