@@ -1,6 +1,7 @@
 import Foundation
 import Nimble
 import OHHTTPStubs
+import XCTest
 
 @testable import WordPress
 

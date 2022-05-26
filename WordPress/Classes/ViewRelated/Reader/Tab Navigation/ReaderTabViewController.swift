@@ -78,6 +78,8 @@ class ReaderTabViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         ReaderTracker.shared.stop(.main)
+
+        QuickStartTourGuide.shared.endCurrentTour()
     }
 
     func setupNavigationButtons() {

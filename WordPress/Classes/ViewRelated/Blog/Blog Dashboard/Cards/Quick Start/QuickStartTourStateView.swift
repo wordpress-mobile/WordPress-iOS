@@ -24,7 +24,7 @@ final class QuickStartTourStateView: UIView {
         stackView.removeAllSubviews()
         let availableCollections = QuickStartFactory.collections(for: blog)
         for collection in availableCollections {
-            let checklistView = QuickStartChecklistView()
+            var checklistView = collection.checklistViewType.init()
             checklistView.translatesAutoresizingMaskIntoConstraints = false
             checklistView.configure(collection: collection, blog: blog)
             checklistView.onTap = { [weak self] in

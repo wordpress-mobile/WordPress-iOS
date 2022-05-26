@@ -10,7 +10,7 @@ struct SiteDesignSectionLoader {
     ///   - completion: The result closure.
     static func fetchSections(vertical: SiteIntentVertical?, completion: @escaping (Result<[SiteDesignSection], Error>) -> Void) {
         typealias TemplateGroup = SiteDesignRequest.TemplateGroup
-        let templateGroups: [TemplateGroup] = [.stable, .singlePage]
+        let templateGroups: [TemplateGroup] = FeatureFlag.betaSiteDesigns.enabled ? [.stable, .beta] : []
 
         let restAPI = WordPressComRestApi.anonymousApi(
             userAgent: WPUserAgent.wordPress(),

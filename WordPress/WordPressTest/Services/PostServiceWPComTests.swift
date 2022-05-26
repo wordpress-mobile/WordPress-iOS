@@ -1,6 +1,7 @@
-
 import Foundation
 import Nimble
+import XCTest
+
 @testable import WordPress
 
 /// Tests common and WPCom-only PostService behavior.

@@ -1,6 +1,6 @@
-
 import Foundation
 import Nimble
+import XCTest
 @testable import WordPress
 
 /// Tests unique behaviors of self-hosted sites.

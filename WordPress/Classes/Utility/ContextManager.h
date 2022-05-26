@@ -20,6 +20,13 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
 
 @interface ContextManager : NSObject <CoreDataStack>
 
+/**
+ The URL for creating an in-memory database.
+
+ @see -[ContextManager initWithModelName:storeURL:]
+ */
+@property (class, nonatomic, readonly) NSURL *inMemoryStoreURL;
+
 ///----------------------------------------------
 ///@name Persistent Contexts
 ///
@@ -49,7 +56,7 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
  @param modelName Model name in Core Data data model file.
                   Use ContextManagerModelNameCurrent for current version, or
                   "WordPress <version>" for specific version.
- @param storeURL Database location.
+ @param storeURL Database location. Use +[ContextManager inMemoryStoreURL] to create an in-memory database.
  */
 - (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
 

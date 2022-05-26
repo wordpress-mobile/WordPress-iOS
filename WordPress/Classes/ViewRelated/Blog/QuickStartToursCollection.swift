@@ -6,6 +6,7 @@ protocol QuickStartToursCollection {
     var completedImageName: String { get }
     var analyticsKey: String { get }
     var tours: [QuickStartTour] { get }
+    var checklistViewType: QuickStartChecklistConfigurableView.Type { get }
 
     init(blog: Blog)
 }
@@ -16,6 +17,7 @@ struct QuickStartCustomizeToursCollection: QuickStartToursCollection {
     let completedImageName: String
     let analyticsKey: String
     let tours: [QuickStartTour]
+    let checklistViewType: QuickStartChecklistConfigurableView.Type = QuickStartChecklistView.self
 
     init(blog: Blog) {
         self.title = NSLocalizedString("Customize Your Site",
@@ -40,6 +42,7 @@ struct QuickStartGrowToursCollection: QuickStartToursCollection {
     let completedImageName: String
     let analyticsKey: String
     let tours: [QuickStartTour]
+    let checklistViewType: QuickStartChecklistConfigurableView.Type = QuickStartChecklistView.self
 
     init(blog: Blog) {
         self.title = NSLocalizedString("Grow Your Audience",
@@ -65,6 +68,7 @@ struct QuickStartGetToKnowAppCollection: QuickStartToursCollection {
     let completedImageName: String
     let analyticsKey: String
     let tours: [QuickStartTour]
+    let checklistViewType: QuickStartChecklistConfigurableView.Type = NewQuickStartChecklistView.self
 
     init(blog: Blog) {
         self.title = AppConstants.QuickStart.getToKnowTheAppTourTitle

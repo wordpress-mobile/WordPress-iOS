@@ -74,6 +74,11 @@ static ContextManager *_instance;
     return _instance;
 }
 
++ (NSURL *)inMemoryStoreURL
+{
+    return [NSURL fileURLWithPath:@"/dev/null"];
+}
+
 #pragma mark - Contexts
 
 - (NSManagedObjectContext *const)newDerivedContext

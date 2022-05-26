@@ -1,6 +1,7 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-import Nimble
 
 class PostAutoUploadInteractorTests: CoreDataTestCase {
     private var interactor: PostAutoUploadInteractor!
