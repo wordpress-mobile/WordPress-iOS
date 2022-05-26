@@ -354,6 +354,12 @@ import Foundation
 
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
+    case promptsIntroductionModalViewed
+    case promptsIntroductionModalDismissed
+    case promptsIntroductionModalTryItNow
+    case promptsIntroductionModalRemindMe
+    case promptsIntroductionModalGotIt
+
 
     /// A String that represents the event
     var value: String {
@@ -950,6 +956,16 @@ import Foundation
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
             return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsIntroductionModalViewed:
+            return "blogging_prompts_introduction_modal_viewed"
+        case .promptsIntroductionModalDismissed:
+            return "blogging_prompts_introduction_modal_dismissed"
+        case .promptsIntroductionModalTryItNow:
+            return "blogging_prompts_introduction_modal_try_it_now_tapped"
+        case .promptsIntroductionModalRemindMe:
+            return "blogging_prompts_introduction_modal_remind_me_tapped"
+        case .promptsIntroductionModalGotIt:
+            return "blogging_prompts_introduction_modal_got_it_tapped"
         } // END OF SWITCH
     }
 
