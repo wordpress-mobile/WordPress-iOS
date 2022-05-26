@@ -124,6 +124,24 @@ class BloggingPromptsService {
         fetchListPrompts(success: success, failure: failure)
     }
 
+    /// Loads a single prompt with the given `promptID`.
+    ///
+    /// - Parameters:
+    ///   - promptID: The unique ID for the blogging prompt.
+    ///   - blog: The blog associated with the prompt.
+    /// - Returns: The blogging prompt object if it exists, or nil otherwise.
+    func loadPrompt(with promptID: Int, in blog: Blog) -> BloggingPrompt? {
+        guard let siteID = blog.dotComID else {
+            return nil
+        }
+
+        let fetchRequest = BloggingPrompt.fetchRequest()
+        fetchRequest.predicate = .init(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) = %@", siteID, promptID)
+        fetchRequest.fetchLimit = 1
+
+        return (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
+    }
+
     // MARK: - Settings
 
     /// Fetches the blogging prompt settings for the configured `siteID`.
