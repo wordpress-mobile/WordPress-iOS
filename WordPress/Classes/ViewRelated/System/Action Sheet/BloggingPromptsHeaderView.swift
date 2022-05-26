@@ -16,6 +16,11 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
 
     var answerPromptHandler: (() -> Void)?
 
+    // This provides a quick way to toggle the shareButton.
+    // Since it probably will not be included in Blogging Prompts V1,
+    // it is disabled by default.
+    private let sharePromptEnabled = false
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
@@ -71,6 +76,7 @@ private extension BloggingPromptsHeaderView {
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        attributionLabel.adjustsFontForContentSizeCategory = true
     }
 
     func configureConstraints() {
@@ -92,11 +98,12 @@ private extension BloggingPromptsHeaderView {
     }
 
     func configure(_ prompt: BloggingPrompt?) {
-        promptLabel.text = prompt?.text
+        promptLabel.text = prompt?.textForDisplay()
 
         let answered = prompt?.answered ?? false
         answerPromptButton.isHidden = answered
         answeredStackView.isHidden = !answered
+        shareButton.isHidden = !sharePromptEnabled
 
         if let promptAttribution = prompt?.attribution.lowercased(),
            let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {

@@ -1,8 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableUserContentTests: XCTestCase {
-    private let contextManager = ContextManagerMock()
+final class FormattableUserContentTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: FormattableUserContent?
@@ -130,7 +129,7 @@ final class FormattableUserContentTests: XCTestCase {
     }
 
     private func mockDictionary() throws -> JSONObject {
-        return try .loadFile(named: "notifications-user-content.json")
+        return try JSONObject(fromFileNamed: "notifications-user-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {
@@ -138,7 +137,7 @@ final class FormattableUserContentTests: XCTestCase {
     }
 
     private func loadMeta() throws -> JSONObject {
-        return try .loadFile(named: "notifications-user-content-meta.json")
+        return try JSONObject(fromFileNamed: "notifications-user-content-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {

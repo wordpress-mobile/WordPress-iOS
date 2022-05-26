@@ -75,8 +75,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableView.register(SiteStatsTableHeaderView.defaultNib,
-                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
     }
@@ -93,7 +91,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+        guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
 

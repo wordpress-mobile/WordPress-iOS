@@ -1,9 +1,9 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-import Nimble
 
-class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class PostCoordinatorFailedPostsFetcherTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     private var fetcher: PostCoordinator.FailedPostsFetcher!
@@ -11,7 +11,6 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         fetcher = PostCoordinator.FailedPostsFetcher(context)
     }

@@ -1,19 +1,16 @@
-
+import CoreData
 import Foundation
 import XCTest
 @testable import WordPress
 
 class NotificationUtility {
-    var contextManager: ContextManagerMock!
-
-    func setUp() {
-        contextManager = ContextManagerMock()
+    private let coreDataStack: CoreDataStack
+    private var context: NSManagedObjectContext {
+        coreDataStack.mainContext
     }
 
-    func tearDown() {
-        // Note: We'll force ContextManager override reset, since, for (unknown reasons) the ContextManager
-        // might be retained more than expected, and it may break other core data based tests.
-        contextManager.tearDown()
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
     }
 
     private var entityName: String {
@@ -21,33 +18,33 @@ class NotificationUtility {
     }
 
     func loadBadgeNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-badge.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-badge.json", insertInto: context)
     }
 
     func loadLikeNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-like.json", insertInto: context)
     }
 
     func loadFollowerNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-new-follower.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-new-follower.json", insertInto: context)
     }
 
     func loadCommentNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-replied-comment.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-replied-comment.json", insertInto: context)
     }
 
     func loadUnapprovedCommentNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-unapproved-comment.json", insertInto: context)
     }
 
     func loadPingbackNotification() throws -> WordPress.Notification {
-        return try .fixture(fromFile: "notifications-pingback.json", insertInto: contextManager.mainContext)
+        return try .fixture(fromFile: "notifications-pingback.json", insertInto: context)
     }
 
     func mockCommentContent() throws -> FormattableCommentContent {
-        let dictionary = try JSONObject.loadFile(named: "notifications-replied-comment.json")
+        let dictionary = try JSONObject(fromFileNamed: "notifications-replied-comment.json")
         let body = dictionary["body"]
-        let blocks = NotificationContentFactory.content(from: body as! [[String: AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: contextManager.mainContext))
+        let blocks = NotificationContentFactory.content(from: body as! [[String: AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: context))
         return blocks.filter { $0.kind == .comment }.first! as! FormattableCommentContent
     }
 

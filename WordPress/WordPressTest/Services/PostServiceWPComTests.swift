@@ -1,20 +1,17 @@
-
 import Foundation
 import Nimble
+import XCTest
+
 @testable import WordPress
 
 /// Tests common and WPCom-only PostService behavior.
 ///
 /// - SeeAlso: PostServiceSelfHostedTests
 ///
-class PostServiceWPComTests: XCTestCase {
+class PostServiceWPComTests: CoreDataTestCase {
 
     private var remoteMock: PostServiceRESTMock!
     private var service: PostService!
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
 
     private let impossibleFailureBlock: (Error?) -> Void = { _ in
         assertionFailure("This shouldn't happen.")
@@ -23,14 +20,13 @@ class PostServiceWPComTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
 
         remoteMock = PostServiceRESTMock()
 
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock
-        service = PostService(managedObjectContext: context, postServiceRemoteFactory: remoteFactory)
+        service = PostService(managedObjectContext: mainContext, postServiceRemoteFactory: remoteFactory)
     }
 
     override func tearDown() {
@@ -38,12 +34,11 @@ class PostServiceWPComTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        contextManager.tearDown()
     }
 
     func testGettingANewPostFromTheAPIWillSetTheStatusAfterSyncProperty() {
         // Arrange
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         remoteMock.remotePostToReturnOnGetPostWithID = createRemotePost(.scheduled)
 
         // Act
@@ -64,7 +59,7 @@ class PostServiceWPComTests: XCTestCase {
 
     func testSyncingPostsWillSetTheStatusAfterSyncProperty() {
         // Arrange
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         remoteMock.remotePostsToReturnOnSyncPostsOfType =
             [createRemotePost(.scheduled), createRemotePost(.publishPrivate)]
 
@@ -90,8 +85,8 @@ class PostServiceWPComTests: XCTestCase {
 
     func testUpdatingAPostWillUpdateItsStatusAfterSyncProperty() {
         // Arrange
-        let post = PostBuilder(context).with(statusAfterSync: .publish).drafted().withRemote().build()
-        try! context.save()
+        let post = PostBuilder(mainContext).with(statusAfterSync: .publish).drafted().withRemote().build()
+        try! mainContext.save()
 
         let remotePost = createRemotePost(.draft)
         remoteMock.remotePostToReturnOnUpdatePost = remotePost
@@ -109,7 +104,7 @@ class PostServiceWPComTests: XCTestCase {
         expect(postFromAPI).notTo(beNil())
 
         // Refetch from DB to make sure we're getting the updated data.
-        let postFromDB = context.object(with: postFromAPI!.objectID) as! AbstractPost
+        let postFromDB = mainContext.object(with: postFromAPI!.objectID) as! AbstractPost
         // .draft is the status because it's what the returned RemotePost has
         expect(postFromDB.statusAfterSync).to(equal(.draft))
         expect(postFromDB.status).to(equal(.draft))
@@ -117,9 +112,9 @@ class PostServiceWPComTests: XCTestCase {
 
     func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() {
         // Arrange
-        let post = PostBuilder(context).with(statusAfterSync: .publish).withRemote().build()
+        let post = PostBuilder(mainContext).with(statusAfterSync: .publish).withRemote().build()
         let revision = post.createRevision()
-        try! context.save()
+        try! mainContext.save()
 
         let remotePost = createRemotePost(.trash)
         remoteMock.remotePostToReturnOnTrashPost = remotePost
@@ -140,8 +135,8 @@ class PostServiceWPComTests: XCTestCase {
 
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {
         // Arrange
-        let post = PostBuilder(context).drafted().with(remoteStatus: .local).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).drafted().with(remoteStatus: .local).build()
+        try! mainContext.save()
 
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
@@ -159,8 +154,8 @@ class PostServiceWPComTests: XCTestCase {
 
     func testAutoSavingADraftWillCallTheUpdateEndpointInstead() {
         // Arrange
-        let post = PostBuilder(context).with(statusAfterSync: .draft).drafted().withRemote().build()
-        try! context.save()
+        let post = PostBuilder(mainContext).with(statusAfterSync: .draft).drafted().withRemote().build()
+        try! mainContext.save()
 
         let remotePost = createRemotePost(.draft)
         remoteMock.remotePostToReturnOnUpdatePost = remotePost
@@ -181,8 +176,8 @@ class PostServiceWPComTests: XCTestCase {
     /// Local drafts with `.published` status will be created on the server as a `.draft`.
     func testAutoSavingALocallyPublishedDraftWillCreateThePostAsADraft() {
         // Arrange
-        let post = PostBuilder(context).published().with(remoteStatus: .local).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).published().with(remoteStatus: .local).build()
+        try! mainContext.save()
 
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
@@ -201,8 +196,8 @@ class PostServiceWPComTests: XCTestCase {
     /// Local drafts with `.trash` status will not be automatically created on the server.
     func testAutoSavingALocallyTrashedPostWillFail() {
         // Arrange
-        let post = PostBuilder(context).trashed().with(remoteStatus: .local).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).trashed().with(remoteStatus: .local).build()
+        try! mainContext.save()
 
         // Act
         var failureBlockCalled = false
@@ -221,8 +216,8 @@ class PostServiceWPComTests: XCTestCase {
 
     func testAutoSavingAnExistingPostWillCallTheAutoSaveEndpoint() {
         // Arrange
-        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).published().withRemote().with(remoteStatus: .sync).build()
+        try! mainContext.save()
 
         remoteMock.autoSaveStubbedBehavior = .success(createRemotePost(.publish))
 
@@ -240,8 +235,8 @@ class PostServiceWPComTests: XCTestCase {
 
     func testAnAutoSaveFailureWillSetTheRemoteStatusToFailed() {
         // Arrange
-        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).published().withRemote().with(remoteStatus: .sync).build()
+        try! mainContext.save()
 
         remoteMock.autoSaveStubbedBehavior = .fail
 
@@ -264,7 +259,7 @@ class PostServiceWPComTests: XCTestCase {
         let postID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
         let expectedUsers = [createRemoteLikeUser()]
-        try! context.save()
+        try! mainContext.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
@@ -285,7 +280,7 @@ class PostServiceWPComTests: XCTestCase {
         // Arrange
         let postID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        try! context.save()
+        try! mainContext.save()
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act

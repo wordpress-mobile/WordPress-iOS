@@ -3,6 +3,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ A constant representing the current version of the data model.
+
+ @see -[ContextManager initWithModelName:storeURL:]
+ */
+FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
+
 @protocol CoreDataStack
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 - (NSManagedObjectContext *const)newDerivedContext;
@@ -12,6 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface ContextManager : NSObject <CoreDataStack>
+
+/**
+ The URL for creating an in-memory database.
+
+ @see -[ContextManager initWithModelName:storeURL:]
+ */
+@property (class, nonatomic, readonly) NSURL *inMemoryStoreURL;
 
 ///----------------------------------------------
 ///@name Persistent Contexts
@@ -33,6 +47,18 @@ NS_ASSUME_NONNULL_BEGIN
  @return instance of ContextManager
 */
 + (instancetype)internalSharedInstance;
+
+/**
+ Create a ContextManager instance with given model name and database location.
+
+ Note: This initialiser is only used for testing purpose at the moment.
+
+ @param modelName Model name in Core Data data model file.
+                  Use ContextManagerModelNameCurrent for current version, or
+                  "WordPress <version>" for specific version.
+ @param storeURL Database location. Use +[ContextManager inMemoryStoreURL] to create an in-memory database.
+ */
+- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
 
 
 ///--------------------------

@@ -1,14 +1,9 @@
 import Foundation
+import XCTest
+
 @testable import WordPress
 
-
-class BlogSettingsDiscussionTests: XCTestCase {
-    fileprivate var manager: ContextManagerMock!
-
-    override func setUp() {
-        manager = ContextManagerMock()
-    }
-
+class BlogSettingsDiscussionTests: CoreDataTestCase {
     func testCommentsAutoapprovalDisabledEnablesManualModerationFlag() {
         let settings = newSettings()
         settings.commentsAutoapproval = .disabled
@@ -76,9 +71,8 @@ class BlogSettingsDiscussionTests: XCTestCase {
 
     // MARK: - Private Helpers
     fileprivate func newSettings() -> BlogSettings {
-        let context = manager!.mainContext
         let name = BlogSettings.classNameWithoutNamespaces()
-        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: mainContext)
 
         return entity as! BlogSettings
     }

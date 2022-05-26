@@ -1,23 +1,12 @@
 import XCTest
 @testable import WordPress
 
-class QuickStartFactoryTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext!
+class QuickStartFactoryTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        contextManager.tearDown()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
     }
 
     func testCollectionsForExistingSite() {
@@ -113,7 +102,7 @@ class QuickStartFactoryTests: XCTestCase {
     }
 
     private func newTestBlog(id: Int) -> Blog {
-        let blog = ModelTestHelper.insertDotComBlog(context: context)
+        let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = id as NSNumber
         return blog
     }

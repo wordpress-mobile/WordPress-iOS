@@ -1,18 +1,22 @@
 import XCTest
+import OHHTTPStubs
 
 @testable import WordPress
 
-final class BloggingPromptsServiceTests: XCTestCase {
+final class BloggingPromptsServiceTests: CoreDataTestCase {
     private let siteID = 1
     private let timeout: TimeInterval = 2
-    private var endpoint: String {
-        "sites/\(siteID)/blogging-prompts"
-    }
 
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
+    private static let utcTimeZone = TimeZone(secondsFromGMT: 0)!
+    private static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = .init(identifier: "en_US_POSIX")
+        formatter.timeZone = utcTimeZone
+
+        return formatter
+    }()
+
     private var remote: BloggingPromptsServiceRemoteMock!
     private var service: BloggingPromptsService!
     private var blog: Blog!
@@ -21,15 +25,15 @@ final class BloggingPromptsServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()
-        service = BloggingPromptsService(context: context, remote: remote, blog: blog)
+        service = BloggingPromptsService(contextManager: contextManager, remote: remote, blog: blog)
     }
 
     override func tearDown() {
-        contextManager = nil
+        HTTPStubs.removeAllStubs()
+
         remote = nil
         blog = nil
         accountService = nil
@@ -40,12 +44,80 @@ final class BloggingPromptsServiceTests: XCTestCase {
     // MARK: - Tests
 
     func test_fetchPrompts_givenSuccessfulResult_callsSuccessBlock() {
-        let expectation = expectation(description: "Fetch prompts should succeed")
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
 
-        service.fetchPrompts { _ in
-            // TODO: Add mapping tests once CoreData model is added.
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: .init(timeIntervalSince1970: 0)) { prompts in
+            XCTAssertEqual(prompts.count, 2)
+
+            // Verify mappings for the first prompt
+            let firstPrompt = prompts.first!
+            XCTAssertEqual(firstPrompt.promptID, 239)
+            XCTAssertEqual(firstPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
+            XCTAssertEqual(firstPrompt.title, "Prompt number 1")
+            XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
+            XCTAssertEqual(firstPrompt.attribution, "dayone")
+
+            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
+            XCTAssertEqual(firstDateComponents.year!, 2022)
+            XCTAssertEqual(firstDateComponents.month!, 5)
+            XCTAssertEqual(firstDateComponents.day!, 3)
+
+            XCTAssertFalse(firstPrompt.answered)
+            XCTAssertEqual(firstPrompt.answerCount, 0)
+            XCTAssertTrue(firstPrompt.displayAvatarURLs.isEmpty)
+
+            // Verify mappings for the second prompt
+            let secondPrompt = prompts.last!
+            XCTAssertEqual(secondPrompt.promptID, 248)
+            XCTAssertEqual(secondPrompt.text, "Tell us about a time when you felt out of place.")
+            XCTAssertEqual(secondPrompt.title, "Prompt number 10")
+            XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
+            XCTAssertTrue(secondPrompt.attribution.isEmpty)
+
+            let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
+            XCTAssertEqual(secondDateComponents.year!, 2021)
+            XCTAssertEqual(secondDateComponents.month!, 9)
+            XCTAssertEqual(secondDateComponents.day!, 12)
+
+            XCTAssertTrue(secondPrompt.answered)
+            XCTAssertEqual(secondPrompt.answerCount, 1)
+            XCTAssertEqual(secondPrompt.displayAvatarURLs.count, 1)
+
             expectation.fulfill()
-        } failure: { _ in
+
+        } failure: { error in
+            XCTFail("This closure shouldn't be called.")
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: timeout)
+    }
+
+    func test_fetchPrompts_shouldExcludePromptsOutsideGivenDate() {
+        // this should exclude the second prompt dated 2021-09-12.
+        let dateParam = Self.dateFormatter.date(from: "2022-01-01")
+
+        // use actual remote object so the request can be intercepted by HTTPStubs.
+        service = BloggingPromptsService(contextManager: contextManager, blog: blog)
+        stubFetchPromptsResponse()
+
+        let expectation = expectation(description: "Fetch prompts should succeed")
+        service.fetchPrompts(from: dateParam) { prompts in
+            XCTAssertEqual(prompts.count, 1)
+
+            // Ensure that the date returned is more recent than the supplied date parameter.
+            let firstPrompt = prompts.first!
+            let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
+            XCTAssertEqual(firstDateComponents.year!, 2022)
+            XCTAssertEqual(firstDateComponents.month!, 5)
+            XCTAssertEqual(firstDateComponents.day!, 3)
+
+            expectation.fulfill()
+
+        } failure: { error in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -69,7 +141,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
     func test_fetchPrompts_givenNoParameters_assignsDefaultValue() {
         let expectedDifferenceInHours = 10 * 24 // 10 days ago.
-        let expectedNumber = 24
+        let expectedNumber = 25
         remote.shouldReturnSuccess = false
 
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
@@ -77,7 +149,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
         XCTAssertNotNil(remote.passedDateParameter)
         let passedDate = remote.passedDateParameter!
-        let differenceInHours = Calendar.autoupdatingCurrent.dateComponents([.hour], from: passedDate, to: Date()).hour!
+        let differenceInHours = Calendar.current.dateComponents([.hour], from: passedDate, to: Date()).hour!
         XCTAssertEqual(differenceInHours, expectedDifferenceInHours)
 
         XCTAssertNotNil(remote.passedNumberParameter)
@@ -105,7 +177,7 @@ final class BloggingPromptsServiceTests: XCTestCase {
 
 private extension BloggingPromptsServiceTests {
     func makeAccountService() -> AccountService {
-        let service = AccountService(managedObjectContext: context)
+        let service = AccountService(managedObjectContext: mainContext)
         let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
         account.userID = NSNumber(value: 1)
         service.setDefaultWordPressComAccount(account)
@@ -114,7 +186,14 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(context).isHostedAtWPcom().build()
+        return BlogBuilder(mainContext).isHostedAtWPcom().build()
+    }
+
+    func stubFetchPromptsResponse() {
+        stub(condition: isMethodGET()) { _ in
+            let stubPath = OHPathForFile("blogging-prompts-fetch-success.json", type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
+        }
     }
 }
 
@@ -123,6 +202,7 @@ class BloggingPromptsServiceRemoteMock: BloggingPromptsServiceRemote {
     var passedNumberParameter: Int? = nil
     var passedDateParameter: Date? = nil
     var shouldReturnSuccess: Bool = true
+    var promptsToReturn = [RemoteBloggingPrompt]()
 
     override func fetchPrompts(for siteID: NSNumber,
                                number: Int? = nil,
@@ -133,7 +213,7 @@ class BloggingPromptsServiceRemoteMock: BloggingPromptsServiceRemote {
         passedDateParameter = fromDate
 
         if shouldReturnSuccess {
-            completion(.success([]))
+            completion(.success(promptsToReturn))
         } else {
             completion(.failure(Errors.failed))
         }

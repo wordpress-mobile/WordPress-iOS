@@ -1,8 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class NotificationTextContentTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+final class NotificationTextContentTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: NotificationTextContent?
@@ -15,7 +14,6 @@ final class NotificationTextContentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        contextManager = ContextManagerMock()
         subject = try NotificationTextContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
@@ -89,11 +87,11 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func mockDictionary() throws -> JSONObject {
-        return try .loadFile(named: "notifications-text-content.json")
+        return try JSONObject(fromFileNamed: "notifications-text-content.json")
     }
 
     private func mockButtonContentDictionary() throws -> JSONObject {
-        return try .loadFile(named: "notifications-button-text-content.json")
+        return try JSONObject(fromFileNamed: "notifications-button-text-content.json")
     }
 
     private func loadLikeNotification() throws -> WordPress.Notification {

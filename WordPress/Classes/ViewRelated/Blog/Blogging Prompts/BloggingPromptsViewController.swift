@@ -85,29 +85,27 @@ private extension BloggingPromptsViewController {
 
     func showNoResultsView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.emptyTitle,
                                      image: NoResults.imageName)
     }
 
     func showLoadingView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showErrorView() {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
+        configureAndDisplayNoResults(on: view,
                                      title: NoResults.errorTitle,
                                      subtitle: NoResults.errorSubtitle,
                                      image: NoResults.imageName)
     }
 
     func fetchPrompts() {
-        // TODO: show cached prompts first.
-
         guard let bloggingPromptsService = bloggingPromptsService else {
             DDLogError("Failed creating BloggingPromptsService instance.")
             showErrorView()
@@ -116,7 +114,7 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.fetchListPrompts(success: { [weak self] (prompts) in
+        bloggingPromptsService.listPrompts(success: { [weak self] (prompts) in
             self?.isLoading = false
             self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
         }, failure: { [weak self] (error) in

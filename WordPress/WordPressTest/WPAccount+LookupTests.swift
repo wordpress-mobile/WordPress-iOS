@@ -1,14 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class WPAccountLookupTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        super.setUp()
-        contextManager = ContextManagerMock()
-    }
+class WPAccountLookupTests: CoreDataTestCase {
 
     func testIsDefaultWordPressComAccountIsFalseWhenNoAccountIsSet() {
         UserSettings.defaultDotComUUID = nil

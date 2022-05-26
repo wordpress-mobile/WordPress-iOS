@@ -2,9 +2,8 @@ import XCTest
 @testable import WordPress
 import WPMediaPicker
 
-class MediaLibraryPickerDataSourceTests: XCTestCase {
+class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
 
-    fileprivate var contextManager: ContextManagerMock!
     fileprivate var context: NSManagedObjectContext!
     fileprivate var dataSource: MediaLibraryPickerDataSource!
     fileprivate var blog: Blog!
@@ -12,7 +11,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = "http://wordpress.com"
