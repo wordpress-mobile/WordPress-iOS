@@ -64,8 +64,18 @@ class PromptRemindersScheduler {
         }
     }
 
+    /// Removes all pending notifications for a given `siteID`.
+    ///
+    /// - Parameter blog: The blog that will have its pending reminder notifications cleared.
     func unschedule(for blog: Blog) {
-        // TODO: Implement
+        guard let siteID = blog.dotComID?.intValue,
+              let receiptsForSite = fetchReceipts(for: siteID),
+              !receiptsForSite.isEmpty else {
+            return
+        }
+
+        notificationScheduler.removePendingNotificationRequests(withIdentifiers: receiptsForSite)
+        try? deleteReceipts(for: siteID)
     }
 }
 
@@ -353,7 +363,7 @@ private extension PromptRemindersScheduler {
     /// Loads a dictionary containing all of the pending notification IDs for all sites.
     ///
     /// - Parameter fileURL: The file store location.
-    /// - Returns: A dictionary containing `siteID` and an array of `String`representing pending notification IDs.
+    /// - Returns: A dictionary containing `siteID` and an array of `String` representing pending notification IDs.
     func fetchAllReceipts(from fileURL: URL) throws -> [Int: [String]] {
         if !localStore.fileExists(at: fileURL) {
             let data = try PropertyListEncoder().encode([Int: [String]]())
@@ -362,6 +372,19 @@ private extension PromptRemindersScheduler {
 
         let data = try localStore.data(from: fileURL)
         return try PropertyListDecoder().decode([Int: [String]].self, from: data)
+    }
+
+    /// Convenience method to fetch notification receipts for a given `siteID`.
+    ///
+    /// - Parameter siteID: The ID of the blog associated with the notification receipts.
+    /// - Returns: An array of string representing the notification receipts.
+    func fetchReceipts(for siteID: Int) -> [String]? {
+        guard let allReceipts = try? fetchAllReceipts(from: defaultFileURL()),
+              let receiptsForSite = allReceipts[siteID] else {
+            return nil
+        }
+
+        return receiptsForSite
     }
 
     /// Updates the stored receipts under the given `siteID` key.
@@ -384,6 +407,13 @@ private extension PromptRemindersScheduler {
         guard localStore.save(contents: data, at: fileURL) else {
             throw Errors.fileSaveError
         }
+    }
+
+    /// Convenience method for deleting notification receipts.
+    ///
+    /// - Parameter siteID: The blog's ID associated with the notification receipts.
+    func deleteReceipts(for siteID: Int) throws {
+        try saveReceipts(nil, for: siteID)
     }
 }
 
