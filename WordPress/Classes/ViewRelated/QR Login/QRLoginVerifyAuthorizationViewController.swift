@@ -36,12 +36,25 @@ extension QRLoginVerifyAuthorizationViewController {
 // MARK: - QRLoginVerifyView
 extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     func render() {
+        imageView.image = UIImage(named: Strings.imageName)
+        titleLabel.text = Strings.title
+        subTitleLabel.text = Strings.subtitle
+        confirmButton.setTitle(Strings.confirmButton, for: .normal)
+        cancelButton.setTitle(Strings.cancelButton, for: .normal)
+
+        stackView.isHidden = false
+
+        loadingIndicator.isHidden = true
+        loadingIndicator.stopAnimating()
     }
 
     func renderCompletion() {
     }
 
     func showLoading() {
+        stackView.isHidden = true
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
     }
 
     func showAuthenticating() {
