@@ -9,7 +9,7 @@ struct StatsTotalInsightsData {
     var sparklineData: [Int]? = nil
 
     public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
-        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount(), difference: 100, percentage: 50)
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 }
 
