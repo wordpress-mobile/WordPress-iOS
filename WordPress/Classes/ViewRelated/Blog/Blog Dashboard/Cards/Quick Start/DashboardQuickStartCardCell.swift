@@ -7,7 +7,6 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
-        frameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.onEllipsisButtonTap = { [weak self] in
             guard let viewController = self?.viewController,
@@ -62,6 +61,7 @@ extension DashboardQuickStartCardCell {
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.constraintPriority)
 
         cardFrameView.add(subview: tourStateView)
+        cardFrameView.hideHeader()
     }
 }
 
