@@ -1355,6 +1355,10 @@
 		7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208520EAD918009C4699 /* FormattableUserContent.swift */; };
 		7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */; };
 		7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */; };
+		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
+		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
+		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
+		803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6192,6 +6196,8 @@
 		7EFF208520EAD918009C4699 /* FormattableUserContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableUserContent.swift; sourceTree = "<group>"; };
 		7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTextContent.swift; sourceTree = "<group>"; };
 		7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableCommentContent.swift; sourceTree = "<group>"; };
+		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
+		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -12705,6 +12711,8 @@
 				FAE4CA662732C094003BFDFE /* QuickStartPromptViewController.swift */,
 				FAE4CA672732C094003BFDFE /* QuickStartPromptViewController.xib */,
 				43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */,
+				803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */,
+				803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -16170,6 +16178,7 @@
 				98579BC8203DD86F004086E4 /* EpilogueSectionHeaderFooter.xib in Resources */,
 				8B64B4B2247EC3A2009A1229 /* reader.css in Resources */,
 				17222DA1261DDDF90047B163 /* pink-classic-icon-app-76x76.png in Resources */,
+				803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
 				1761F17726209AEE000815EF /* wordpress-dark-icon-app-76x76.png in Resources */,
 				98F537A922496D0D00B334F9 /* SiteStatsTableHeaderView.xib in Resources */,
@@ -16814,6 +16823,7 @@
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
 				C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */,
 				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
+				803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
 				FABB207E2602FC2C00C8785C /* EpilogueUserInfoCell.xib in Resources */,
 				FABB207F2602FC2C00C8785C /* ReaderTagStreamHeader.xib in Resources */,
@@ -18607,6 +18617,7 @@
 				931F312C2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */,
+				803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
@@ -20389,6 +20400,7 @@
 				9856A39E261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */,
 				FABB21632602FC2C00C8785C /* FeatureItemCell.swift in Sources */,
+				803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */,
 				FABB21642602FC2C00C8785C /* WPRichContentView.swift in Sources */,
 				FABB21652602FC2C00C8785C /* MediaFileManager.swift in Sources */,
 				FABB21662602FC2C00C8785C /* WPUserAgent.m in Sources */,

@@ -1,6 +1,7 @@
 20.0
 -----
 * [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688]
+* [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
 
 19.9
 -----
