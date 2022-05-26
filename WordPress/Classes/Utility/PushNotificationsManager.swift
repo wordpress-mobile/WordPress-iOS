@@ -484,9 +484,10 @@ extension PushNotificationsManager {
 // MARK: - Blogging Prompt notifications
 
 extension PushNotificationsManager {
+
     enum BloggingPromptPayload {
-        static let promptID = "prompt_id"
-        static let siteID = "site_id"
+        static let promptIDKey = "prompt_id"
+        static let siteIDKey = "site_id"
     }
 
     /// Handles Blogging Prompt local notifications.
@@ -502,7 +503,22 @@ extension PushNotificationsManager {
             return false
         }
 
-        // TODO: Switch sites first, or show Post Editor.
+        // extract userInfo from payload.
+        guard let siteID = userInfo[BloggingPromptPayload.siteIDKey] as? Int else {
+            return false
+        }
+
+        // When the promptID is nil, it's most likely a static prompt notification.
+        let promptID = userInfo[BloggingPromptPayload.promptIDKey] as? Int
+
+        let source: BloggingPromptCoordinator.Source = {
+            if promptID != nil {
+                return .promptNotification
+            }
+            return .promptStaticNotification
+        }()
+
+        WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(siteID: siteID, promptID: promptID, source: source)
 
         // TODO: Tracking
 

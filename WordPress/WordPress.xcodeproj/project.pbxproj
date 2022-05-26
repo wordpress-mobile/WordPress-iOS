@@ -4676,6 +4676,8 @@
 		FEAC916F28001FC4005026E7 /* AvatarTrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAC916D28001FC4005026E7 /* AvatarTrainView.swift */; };
 		FEC26030283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */; };
 		FEC26031283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */; };
+		FEC26033283FC902003D886A /* WPTabBarController+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* WPTabBarController+BloggingPrompt.swift */; };
+		FEC26034283FC902003D886A /* WPTabBarController+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* WPTabBarController+BloggingPrompt.swift */; };
 		FEC3B81726C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
 		FEC3B81826C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
 		FEC3B81926C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */; };
@@ -7977,6 +7979,7 @@
 		FEAC916D28001FC4005026E7 /* AvatarTrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTrainView.swift; sourceTree = "<group>"; };
 		FEB7A8922718852A00A8CF85 /* WordPress 134.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 134.xcdatamodel"; sourceTree = "<group>"; };
 		FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptCoordinator.swift; sourceTree = "<group>"; };
+		FEC26032283FC902003D886A /* WPTabBarController+BloggingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+BloggingPrompt.swift"; sourceTree = "<group>"; };
 		FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersScheduler.swift; sourceTree = "<group>"; };
@@ -12444,6 +12447,7 @@
 				98517E5828220411001FFD45 /* BloggingPromptTableViewCell.swift */,
 				98517E5B28220474001FFD45 /* BloggingPromptTableViewCell.xib */,
 				FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */,
+				FEC26032283FC902003D886A /* WPTabBarController+BloggingPrompt.swift */,
 			);
 			path = "Blogging Prompts";
 			sourceTree = "<group>";
@@ -19315,6 +19319,7 @@
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				8BE8545D27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
+				FEC26033283FC902003D886A /* WPTabBarController+BloggingPrompt.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
@@ -21762,6 +21767,7 @@
 				46F583B02624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */,
 				FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
+				FEC26034283FC902003D886A /* WPTabBarController+BloggingPrompt.swift in Sources */,
 				FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */,
 				9856A3E5261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				FABB25D62602FC2C00C8785C /* ActivityListSectionHeaderView.swift in Sources */,

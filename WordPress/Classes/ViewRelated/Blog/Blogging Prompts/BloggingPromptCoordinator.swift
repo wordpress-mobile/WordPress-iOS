@@ -12,6 +12,31 @@ import UIKit
         case unknown
     }
 
+    /// Defines the interaction sources for Blogging Prompts.
+    enum Source {
+        case dashboard
+        case featureIntroduction
+        case actionSheetHeader
+        case promptNotification
+        case promptStaticNotification
+        case unknown
+
+        var editorEntryPoint: PostEditorEntryPoint {
+            switch self {
+            case .dashboard:
+                return .dashboard
+            case .featureIntroduction:
+                return .bloggingPromptsFeatureIntroduction
+            case .actionSheetHeader:
+                return .bloggingPromptsActionSheetHeader
+            case .promptNotification, .promptStaticNotification:
+                return .bloggingPromptsNotification
+            default:
+                return .unknown
+            }
+        }
+    }
+
     // MARK: Public Method
 
     init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) {
@@ -27,22 +52,25 @@ import UIKit
     ///   - promptID: The ID of the blogging prompt. When nil, the method will use today's prompt.
     ///   - blog: The blog associated with the blogging prompt.
     ///   - completion: Closure invoked after the post creation flow is presented.
-    func showPromptAnsweringFlow(from viewController: UIViewController, promptID: Int? = nil, blog: Blog, completion: @escaping () -> Void) {
+    func showPromptAnsweringFlow(from viewController: UIViewController,
+                                 promptID: Int? = nil,
+                                 blog: Blog,
+                                 source: Source,
+                                 completion: (() -> Void)? = nil) {
         fetchPrompt(with: promptID, blog: blog) { result in
             guard case .success(let prompt) = result else {
-                completion()
+                completion?()
                 return
             }
 
             // Present the post creation flow.
             let editor = EditPostViewController(blog: blog, prompt: prompt)
             editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = .dashboard
+            editor.entryPoint = source.editorEntryPoint
             viewController.present(editor, animated: true)
-            completion()
+            completion?()
         }
     }
-
 }
 
 // MARK: Private Helpers
