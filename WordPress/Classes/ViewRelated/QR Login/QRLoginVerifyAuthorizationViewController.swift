@@ -12,10 +12,27 @@ class QRLoginVerifyAuthorizationViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
 
     var coordinator: QRLoginVerifyCoordinator?
+}
+
+// MARK: - View Methods
+extension QRLoginVerifyAuthorizationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        coordinator?.start()
+
+        applyStyles()
+    }
+
+    @IBAction func didTapConfirm(_ sender: Any) {
+        coordinator?.confirm()
+    }
+
+    @IBAction func didTapCancel(_ sender: Any) {
+        coordinator?.cancel()
+    }
+}
+
 // MARK: - QRLoginVerifyView
 extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     func render() {
