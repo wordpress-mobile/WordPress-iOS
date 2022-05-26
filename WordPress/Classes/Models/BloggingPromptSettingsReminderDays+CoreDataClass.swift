@@ -14,4 +14,21 @@ public class BloggingPromptSettingsReminderDays: NSManagedObject {
         self.sunday = remoteReminderDays.sunday
     }
 
+    func getActiveWeekdays() -> [BloggingRemindersScheduler.Weekday] {
+        return [
+            sunday,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday
+        ].enumerated().flatMap { (index: Int, isReminderActive: Bool) in
+            guard isReminderActive else {
+                return nil
+            }
+            return BloggingRemindersScheduler.Weekday(rawValue: index)
+        }
+    }
+
 }

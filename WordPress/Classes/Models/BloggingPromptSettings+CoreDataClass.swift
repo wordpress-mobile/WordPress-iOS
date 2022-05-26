@@ -14,4 +14,13 @@ public class BloggingPromptSettings: NSManagedObject {
         reminderDays?.configure(with: remoteSettings.reminderDays)
     }
 
+    func reminderTimeDate() -> Date? {
+        guard let reminderTime = reminderTime else {
+            return nil
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH.mm"
+        return dateFormatter.date(from: reminderTime)
+    }
+
 }
