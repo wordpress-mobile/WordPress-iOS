@@ -77,7 +77,7 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
 
     func showAuthenticating() {
         stackView.layer.opacity = 0.5
-        
+
         loadingIndicator.startAnimating()
         loadingIndicator.isHidden = false
     }
