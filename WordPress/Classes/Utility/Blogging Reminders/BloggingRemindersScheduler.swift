@@ -60,7 +60,7 @@ class BloggingRemindersScheduler {
     /// The raw values have been selected for convenience, so that they perfectly match Apple's
     /// index for weekday symbol methods, such as `Calendar.weekdaySymbols`.
     ///
-    enum Weekday: Int, Codable, Comparable {
+    enum Weekday: Int, Codable, Comparable, CaseIterable {
         case sunday = 0
         case monday
         case tuesday
