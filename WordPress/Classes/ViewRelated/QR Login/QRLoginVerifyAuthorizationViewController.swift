@@ -49,6 +49,24 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     }
 
     func renderCompletion() {
+        imageView.image = UIImage(named: Strings.completed.imageName)
+        titleLabel.text = Strings.completed.title
+        subTitleLabel.text = Strings.completed.subtitle
+        subTitleLabel.textColor = .secondaryLabel
+        confirmButton.setTitle(Strings.completed.confirmButton, for: .normal)
+        cancelButton.isHidden = true
+
+        stackView.layer.opacity = 1
+        loadingIndicator.isHidden = true
+        loadingIndicator.stopAnimating()
+
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+        ConfettiView.cleanupAndAnimate(on: view, frame: navigationController?.view.frame ?? view.frame) { confettiView in
+            // removing this instance when the animation completes, will prevent
+            // the animation to suddenly stop if users navigate away early
+            confettiView.removeFromSuperview()
+        }
     }
 
     func showLoading() {
