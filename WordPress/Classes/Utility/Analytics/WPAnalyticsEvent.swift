@@ -352,6 +352,9 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
+    // Blogging Prompts
+    case promptsBottomSheetAnswerPrompt
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -944,6 +947,9 @@ import Foundation
         case .enhancedSiteCreationSiteNameExperiment:
             return "enhanced_site_creation_site_name_experiment"
 
+        // Blogging Prompts
+        case .promptsBottomSheetAnswerPrompt:
+            return "my_site_create_sheet_answer_prompt_tapped"
         } // END OF SWITCH
     }
 
