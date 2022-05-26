@@ -162,7 +162,10 @@ final class BlogDashboardViewController: UIViewController {
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
                 switch element {
-                case .setupQuickStart, .removeQuickStart:
+                case .setupQuickStart:
+                    self.loadCardsFromCache()
+                    self.displayQuickStart()
+                case .updateQuickStart:
                     self.loadCardsFromCache()
                 case .stats, .mediaScreen:
                     if self.embeddedInScrollView {
@@ -272,6 +275,18 @@ extension BlogDashboardViewController {
 
     private func shouldShowQuickStartChecklist() -> Bool {
         return DashboardCard.quickStart.shouldShow(for: blog)
+    }
+
+    private func displayQuickStart() {
+        let currentCollections = QuickStartFactory.collections(for: blog)
+        guard let collectionToShow = currentCollections.first else {
+            return
+        }
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
+        let navigationViewController = UINavigationController(rootViewController: checklist)
+        present(navigationViewController, animated: true)
+
+        QuickStartTourGuide.shared.visited(.checklist)
     }
 }
 
