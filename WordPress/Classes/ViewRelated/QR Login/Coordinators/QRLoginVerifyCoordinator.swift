@@ -1,8 +1,7 @@
 import Foundation
 
 protocol QRLoginVerifyView {
-    // TODO: Pass view model to the render
-    func render()
+    func render(response: QRLoginValidationResponse)
     func renderCompletion()
 
     func showLoading()
@@ -16,13 +15,17 @@ class QRLoginVerifyCoordinator {
     private let view: QRLoginVerifyView
     private let token: QRLoginToken
     private var state: ViewState = .verifyingCode
+    private let service: QRLoginService
 
     init(token: QRLoginToken,
          view: QRLoginVerifyView,
          parentCoordinator: QRLoginCoordinator,
+         service: QRLoginService? = nil,
+         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.token = token
         self.view = view
         self.parentCoordinator = parentCoordinator
+        self.service = service ?? QRLoginService(managedObjectContext: context)
     }
 
     enum ViewState {
@@ -38,13 +41,18 @@ extension QRLoginVerifyCoordinator {
     func start() {
         state = .verifyingCode
 
-        //TODO: Make network request to validate the code and get the browser info
         view.showLoading()
+
+        service.validate(token: token) { response in
+            self.state = .waitingForUserVerification
+            self.view.render(response: response)
+
+        } failure: { error, qrLoginError in
+            //TODO: Handle error state
+        }
 
         // Temporary loading -> render
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-            self.state = .waitingForUserVerification
-            self.view.render()
         }
     }
 
