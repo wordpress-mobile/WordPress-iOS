@@ -613,7 +613,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount(), difference: 100, percentage: 50)
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
