@@ -7,7 +7,7 @@ protocol StatsInsightsManagementDelegate: AnyObject {
     func userUpdatedActiveInsights(_ insights: [StatSection])
 }
 
-class AddInsightTableViewController: UITableViewController {
+class InsightsManagementViewController: UITableViewController {
 
     // MARK: - Properties
     private weak var insightsManagementDelegate: StatsInsightsManagementDelegate?
@@ -206,7 +206,7 @@ class AddInsightTableViewController: UITableViewController {
     }
 }
 
-private extension AddInsightTableViewController {
+private extension InsightsManagementViewController {
 
     // MARK: - Table Model
 
