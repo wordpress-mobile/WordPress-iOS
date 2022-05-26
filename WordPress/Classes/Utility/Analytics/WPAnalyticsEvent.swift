@@ -359,7 +359,11 @@ import Foundation
     case promptsIntroductionModalTryItNow
     case promptsIntroductionModalRemindMe
     case promptsIntroductionModalGotIt
-
+    case promptsDashboardCardAnswerPrompt
+    case promptsDashboardCardMenu
+    case promptsDashboardCardMenuViewMore
+    case promptsDashboardCardMenuSkip
+    case promptsDashboardCardMenuRemove
 
     /// A String that represents the event
     var value: String {
@@ -966,6 +970,17 @@ import Foundation
             return "blogging_prompts_introduction_modal_remind_me_tapped"
         case .promptsIntroductionModalGotIt:
             return "blogging_prompts_introduction_modal_got_it_tapped"
+        case .promptsDashboardCardAnswerPrompt:
+            return "blogging_prompts_my_site_card_answer_prompt_tapped"
+        case .promptsDashboardCardMenu:
+            return "blogging_prompts_my_site_card_menu_tapped"
+        case .promptsDashboardCardMenuViewMore:
+            return "blogging_prompts_my_site_card_menu_view_more_prompts_tapped"
+        case .promptsDashboardCardMenuSkip:
+            return "blogging_prompts_my_site_card_menu_skip_this_prompt_tapped"
+        case .promptsDashboardCardMenuRemove:
+            return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
+
         } // END OF SWITCH
     }
 
