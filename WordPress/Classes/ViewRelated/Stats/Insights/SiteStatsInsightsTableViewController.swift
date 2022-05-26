@@ -412,14 +412,27 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         if FeatureFlag.statsNewInsights.enabled {
-            let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
-            navigationController?.pushViewController(detailTableViewController, animated: true)
+            switch statSection {
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            default:
+                segueToDetails(statSection: statSection, selectedDate: selectedDate)
+            }
         } else {
-            let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
-            navigationController?.pushViewController(detailTableViewController, animated: true)
+            segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
+    }
+
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func segueToDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
