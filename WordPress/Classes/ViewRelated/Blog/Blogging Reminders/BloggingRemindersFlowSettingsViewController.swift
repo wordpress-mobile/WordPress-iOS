@@ -209,6 +209,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     private let previousWeekdays: [BloggingRemindersScheduler.Weekday]
 
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        BloggingPromptsService(blog: blog)
+    }()
+
     // MARK: - Initializers
 
     private let blog: Blog
@@ -310,6 +314,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
+        syncPromptsSchedule()
         scheduleReminders()
     }
 
@@ -368,6 +373,42 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 }
             }
         }
+    }
+
+    func syncPromptsSchedule() {
+        guard FeatureFlag.bloggingPrompts.enabled else {
+            return
+        }
+
+        typealias Weekday = BloggingRemindersScheduler.Weekday
+        let selectedDays = Weekday.allCases.map {
+            weekdays.contains($0)
+        }
+        let days = RemoteBloggingPromptsSettings.ReminderDays(
+                monday: selectedDays[Weekday.monday.rawValue],
+                tuesday: selectedDays[Weekday.tuesday.rawValue],
+                wednesday: selectedDays[Weekday.wednesday.rawValue],
+                thursday: selectedDays[Weekday.thursday.rawValue],
+                friday: selectedDays[Weekday.friday.rawValue],
+                saturday: selectedDays[Weekday.saturday.rawValue],
+                sunday: selectedDays[Weekday.sunday.rawValue]
+        )
+        let timeDateFormatter = DateFormatter()
+        timeDateFormatter.dateFormat = "HH.mm"
+        let reminderTime = timeDateFormatter.string(from: scheduledTime)
+        let settings = RemoteBloggingPromptsSettings(
+                promptRemindersEnabled: bloggingPromptsSwitch.isOn,
+                reminderDays: days,
+                reminderTime: reminderTime
+        )
+
+        bloggingPromptsService?.updateSettings(settings: settings,
+                success: { updatedSettings in
+                    DDLogInfo("Updated prompt reminder schedule")
+                },
+                failure: { error in
+                    DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
+                })
     }
 }
 
