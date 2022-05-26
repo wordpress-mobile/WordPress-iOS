@@ -46,7 +46,11 @@ steps:
       - "build/results/*" # FIXME: Note that there's nothing in there–because we only build, not run the tests?
       # FIXME: Why isn't there any file in there?! See https://buildkite.com/automattic/wordpress-ios/builds/7828#964dc9dc-b8ec-4562-8d78-64fccffc0fd2
       # - "DerivedData/Logs/Build/*.xcactivitylog"
-      - DerivedData
+      #
+      # Note to self: You can't upload _folder_ on Buildkite, only files.
+      # _If_ you anted to upload the whole DerivedData folder, you'd have to zip it first.
+      # - DerivedData
+      - DerivedData/WordPress/Logs/Build/*.xcactivitylog
     notify:
       - github_commit_status:
           context: "Build for Testing"
