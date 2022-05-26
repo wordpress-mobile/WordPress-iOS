@@ -13,7 +13,7 @@ class QRLoginCoordinator {
     }
 
     func didScanCode(_ code: String) {
-        showVerifyAuthorization(code: code)
+        showVerifyAuthorization(loginCode: code)
     }
 
     func showCameraScanningView(from source: UIViewController? = nil) {
@@ -62,7 +62,7 @@ extension QRLoginCoordinator {
 
     /// Display QR validation flow with a specific code, skipping the scanning step
     /// and going to the validation flow
-    static func present(with code: String, from source: UIViewController) {
-        QRLoginCoordinator().showVerifyAuthorization(code: code, from: source)
+    static func present(code: String, from source: UIViewController) {
+        QRLoginCoordinator().showVerifyAuthorization(loginCode: code, from: source)
     }
 }
