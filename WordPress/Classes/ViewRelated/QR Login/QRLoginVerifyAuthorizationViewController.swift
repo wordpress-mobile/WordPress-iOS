@@ -83,6 +83,8 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     }
 
     func showNoConnectionError() {
+        // TODO: Add error handling
+        print("no connection error")
     }
 }
 
