@@ -91,7 +91,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .quickStartForExistingUsers:
             return true
         case .qrLogin:
-            return AppConfiguration.qrLoginEnabled && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
