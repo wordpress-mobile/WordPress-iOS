@@ -136,7 +136,7 @@ class BloggingPromptsService {
         }
 
         let fetchRequest = BloggingPrompt.fetchRequest()
-        fetchRequest.predicate = .init(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) = %@", siteID, promptID)
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) = %@", siteID, NSNumber(value: promptID))
         fetchRequest.fetchLimit = 1
 
         return (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
