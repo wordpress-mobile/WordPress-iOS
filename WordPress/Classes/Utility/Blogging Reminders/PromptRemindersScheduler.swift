@@ -125,6 +125,8 @@ private extension PromptRemindersScheduler {
         static let staticNotificationContent = NSLocalizedString("Tap to load today's prompt...", comment: "Title for a push notification with fixed content"
                                                                  + " that invites the user to load today's blogging prompt.")
         static let defaultFileName = "PromptReminders.plist"
+        static let promptIDUserInfoKey = "promptID"
+        static let siteIDUserInfoKey = "siteID"
     }
 
     /// The actual implementation for the prompt notification scheduling.
@@ -226,10 +228,18 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
+        guard let siteID = blog.dotComID?.intValue else {
+            return nil
+        }
+
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.subtitle = blog.title ?? String()
         content.body = prompt.text
+        content.userInfo = [
+            Constants.promptIDUserInfoKey: Int(prompt.promptID),
+            Constants.siteIDUserInfoKey: siteID
+        ]
 
         guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
             return nil
@@ -281,14 +291,19 @@ private extension PromptRemindersScheduler {
                                 maxDays: Int = Constants.staticNotificationMaxDays) -> [String]? {
         guard case .weekdays(let weekdays) = schedule,
               maxDays > 0,
-              let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate) else {
+              let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate),
+              let siteID = blog.dotComID?.intValue else {
             return nil
         }
 
         // create the notification content.
+        // note that the userInfo dictionary excludes `promptID` since there is no prompt associated with it.
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
+        content.userInfo = [
+            Constants.siteIDUserInfoKey: siteID
+        ]
 
         var date = afterDate
         var identifiers = [String]()
