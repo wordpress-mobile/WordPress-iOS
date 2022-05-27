@@ -62,7 +62,7 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
 
         cancelButton.isHidden = true
         subTitleLabel.textColor = .secondaryLabel
-        
+
         hideLoading()
 
         UINotificationFeedbackGenerator().notificationOccurred(.success)
