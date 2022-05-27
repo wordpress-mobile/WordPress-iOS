@@ -54,7 +54,7 @@ extension QRLoginScanningViewController {
     }
 
     @IBAction func didTapCloseButton(_ sender: Any) {
-        dismiss(animated: true)
+        coordinator?.didTapDismiss()
     }
 }
 
