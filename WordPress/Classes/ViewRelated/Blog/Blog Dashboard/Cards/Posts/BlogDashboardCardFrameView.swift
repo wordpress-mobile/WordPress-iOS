@@ -77,7 +77,7 @@ class BlogDashboardCardFrameView: UIView {
 
     /// Button container stack view anchored to the top right corner of the view.
     /// Displayed only when the header view is hidden.
-    private lazy var buttonContainerStackView: UIStackView = {
+    private(set) lazy var buttonContainerStackView: UIStackView = {
         let containerStackView = UIStackView()
         containerStackView.translatesAutoresizingMaskIntoConstraints = false
         containerStackView.axis = .horizontal
