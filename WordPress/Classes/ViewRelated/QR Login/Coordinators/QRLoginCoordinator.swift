@@ -8,16 +8,7 @@ class QRLoginCoordinator {
         configureNavigationController()
     }
 
-    func dismiss() {
-        navigationController.dismiss(animated: true)
-    }
 
-    func didScanToken(_ token: QRLoginToken) {
-        showVerifyAuthorization(token: token)
-    }
-
-    func scanAgain() {
-        navigationController.setViewControllers([scanningViewController()], animated: true)
     }
 
     func showCameraScanningView(from source: UIViewController? = nil) {
@@ -33,11 +24,20 @@ class QRLoginCoordinator {
         pushOrPresent(controller, from: source)
     }
 
-    private func scanningViewController() -> QRLoginScanningViewController {
-        let controller = QRLoginScanningViewController()
-        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+// MARK: - Child Coordinator Interactions
+extension QRLoginCoordinator {
+    func dismiss() {
+        navigationController.dismiss(animated: true)
+    }
 
-        return controller
+    func didScanToken(_ token: QRLoginToken) {
+        showVerifyAuthorization(token: token)
+    }
+
+    func scanAgain() {
+        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController) {
+            self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
+        }
     }
 }
 
@@ -56,6 +56,13 @@ private extension QRLoginCoordinator {
 
         navigationController.setViewControllers([controller], animated: false)
         source?.present(navigationController, animated: true)
+    }
+
+    private func scanningViewController() -> QRLoginScanningViewController {
+        let controller = QRLoginScanningViewController()
+        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+
+        return controller
     }
 }
 
