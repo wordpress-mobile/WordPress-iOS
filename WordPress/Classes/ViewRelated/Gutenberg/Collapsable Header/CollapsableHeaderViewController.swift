@@ -229,6 +229,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewDidLoad()
         insertChildView()
         insertAccessoryView()
+        configureSubtitleToCategoryBarSpacing()
         configureHeaderImageView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
@@ -389,6 +390,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func configureHeaderImageView() {
         headerImageView.isHidden = (headerImage == nil)
         headerImageView.image = headerImage
+    }
+
+    private func configureSubtitleToCategoryBarSpacing() {
+        if prompt?.isEmpty ?? true {
+            subtitleToCategoryBarSpacing.constant = 0
+        }
     }
 
     func configureHeaderTitleVisibility() {
