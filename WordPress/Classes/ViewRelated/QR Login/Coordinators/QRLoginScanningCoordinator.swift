@@ -85,6 +85,7 @@ private extension QRLoginScanningCoordinator {
     }
 
     func showNoCameraError() {
+        Self.showNeedAccessAlert()
         view.showError(Strings.noCameraError)
     }
 
@@ -166,7 +167,7 @@ extension QRLoginScanningCoordinator {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: completion)
     }
 
-    static private func showNeedAccessAlert(from source: UIViewController) {
+    static private func showNeedAccessAlert(from source: UIViewController? = nil) {
         let alert = UIAlertController(title: Strings.accessAlert.title,
                                       message: Strings.accessAlert.message,
                                       preferredStyle: .alert)
@@ -174,6 +175,11 @@ extension QRLoginScanningCoordinator {
         alert.addActionWithTitle(Strings.accessAlert.dismiss, style: .cancel)
         alert.addDefaultActionWithTitle(Strings.accessAlert.openSettings) { action in
             UIApplication.shared.openSettings()
+        }
+
+        guard let source = source else {
+            alert.presentFromRootViewController()
+            return
         }
 
         source.present(alert, animated: true)
