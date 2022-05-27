@@ -177,7 +177,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var bloggingPromptsSwitch: UISwitch = {
         let bloggingPromptsSwitch = UISwitch()
         bloggingPromptsSwitch.translatesAutoresizingMaskIntoConstraints = false
-        bloggingPromptsSwitch.isOn = bloggingPromptsService?.localSettings?.promptRemindersEnabled ?? true
+        bloggingPromptsSwitch.isOn = true
         bloggingPromptsSwitch.addTarget(self, action: #selector(bloggingPromptsSwitchChanged), for: .valueChanged)
         return bloggingPromptsSwitch
     }()
@@ -241,7 +241,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
+            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled {
+                previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
+            } else {
+                previousWeekdays = []
+            }
         case .weekdays(let scheduledWeekdays):
             previousWeekdays = scheduledWeekdays
         }

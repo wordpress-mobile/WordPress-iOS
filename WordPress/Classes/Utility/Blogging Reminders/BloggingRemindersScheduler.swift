@@ -101,10 +101,13 @@ class BloggingRemindersScheduler {
             return daysWithTime.time
         default:
             let settings = BloggingPromptsService(blog: blog)?.localSettings
+            let defaultTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current, hour: Weekday.defaultHour, minute: 0)) ?? Date()
 
-            return settings?.reminderTimeDate()
-                    ?? Calendar.current.date(from: DateComponents(calendar: Calendar.current, hour: Weekday.defaultHour, minute: 0))
-                    ?? Date()
+            if FeatureFlag.bloggingPrompts.enabled, setings?.promptRemindersEnabled {
+                return settings?.reminderTimeDate() ?? defaultTime
+            } else {
+                return defaultTime
+            }
         }
     }
 
