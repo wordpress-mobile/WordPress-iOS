@@ -326,11 +326,15 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // Specifically, it checks if today's prompt has been skipped,
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard FeatureFlag.bloggingPrompts.enabled else {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let promptsService = BloggingPromptsService(blog: blog),
+              let settings = promptsService.localSettings,
+              settings.isPotentialBloggingSite,
+              settings.promptCardEnabled else {
             return false
         }
 
-        guard let todaysPrompt = BloggingPromptsService(blog: blog)?.localTodaysPrompt else {
+        guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
             return true
         }

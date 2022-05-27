@@ -55,6 +55,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong) BloggingPromptCoordinator *bloggingPromptCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -629,6 +630,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
     return _whatIsNewScenePresenter;
+}
+
+#pragma mark - Blogging Prompt
+- (BloggingPromptCoordinator *)bloggingPromptCoordinator
+{
+    if (_bloggingPromptCoordinator) {
+        return _bloggingPromptCoordinator;
+    }
+
+    self.bloggingPromptCoordinator = [self makeBloggingPromptCoordinator];
+    return _bloggingPromptCoordinator;
 }
 
 @end

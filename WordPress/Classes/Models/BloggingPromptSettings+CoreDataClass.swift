@@ -4,17 +4,14 @@ import WordPressKit
 
 public class BloggingPromptSettings: NSManagedObject {
 
-    convenience init(context: NSManagedObjectContext,
-                     siteID: Int32,
-                     remoteSettings: RemoteBloggingPromptsSettings) {
-        self.init(context: context)
+    func configure(with remoteSettings: RemoteBloggingPromptsSettings, siteID: Int32, context: NSManagedObjectContext) {
         self.siteID = siteID
         self.promptCardEnabled = remoteSettings.promptCardEnabled
         self.reminderTime = remoteSettings.reminderTime
         self.promptRemindersEnabled = remoteSettings.promptRemindersEnabled
         self.isPotentialBloggingSite = remoteSettings.isPotentialBloggingSite
-        self.reminderDays = BloggingPromptSettingsReminderDays(context: context,
-                                                               remoteReminderDays: remoteSettings.reminderDays)
+        self.reminderDays = reminderDays ?? BloggingPromptSettingsReminderDays(context: context)
+        reminderDays?.configure(with: remoteSettings.reminderDays)
     }
 
 }

@@ -4,9 +4,7 @@ import WordPressKit
 
 public class BloggingPromptSettingsReminderDays: NSManagedObject {
 
-    convenience init(context: NSManagedObjectContext,
-                     remoteReminderDays: RemoteBloggingPromptsSettings.ReminderDays) {
-        self.init(context: context)
+    func configure(with remoteReminderDays: RemoteBloggingPromptsSettings.ReminderDays) {
         self.monday = remoteReminderDays.monday
         self.tuesday = remoteReminderDays.tuesday
         self.wednesday = remoteReminderDays.wednesday
