@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 protocol QRLoginVerifyView {
     func render(response: QRLoginValidationResponse)
@@ -8,6 +9,8 @@ protocol QRLoginVerifyView {
     func showAuthenticating()
 
     func showNoConnectionError()
+    func showQRLoginError(error: QRLoginError?)
+    func showAuthenticationFailedError()
 }
 
 class QRLoginVerifyCoordinator {
@@ -32,6 +35,7 @@ class QRLoginVerifyCoordinator {
         case verifyingCode
         case waitingForUserVerification
         case authenticating
+        case error
         case done
     }
 }
@@ -46,30 +50,46 @@ extension QRLoginVerifyCoordinator {
         service.validate(token: token) { response in
             self.state = .waitingForUserVerification
             self.view.render(response: response)
+        } failure: { _, qrLoginError in
+            self.state = .error
 
-        } failure: { error, qrLoginError in
-            //TODO: Handle error state
-        }
+            // Check if we have no connection
+            let appDelegate = WordPressAppDelegate.shared
 
-        // Temporary loading -> render
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+            guard
+                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
+            else {
+                self.view.showNoConnectionError()
+                return
+            }
+
+            self.view.showQRLoginError(error: qrLoginError)
         }
     }
 
     func confirm() {
         // If we're in the done state, dismiss the flow
-        if state == .done {
-            parentCoordinator.dismiss()
-            return
+        // If we're in the error state, do something
+        switch state {
+            case .done:
+                parentCoordinator.dismiss()
+                return
+            case .error:
+                parentCoordinator.scanAgain()
+                return
+            default: break
         }
 
         // TODO: Make network request to log the user in
         view.showAuthenticating()
         state = .authenticating
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+        service.authenticate(token: token) { success in
             self.state = .done
             self.view.renderCompletion()
+        } failure: { error in
+            self.state = .error
+            self.view.showAuthenticationFailedError()
         }
     }
 
