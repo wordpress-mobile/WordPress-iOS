@@ -137,7 +137,7 @@ class NoticePresenter {
     /// device is rotated.
     private func listenToOrientationChangeEvents() {
         let nc = NotificationCenter.default
-        nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+        nc.addObserver(forName: NSNotification.Name.WPTabBarHeightChanged, object: nil, queue: nil) { [weak self] _ in
             guard let self = self,
                 let containerView = self.currentNoticePresentation?.containerView else {
                     return
