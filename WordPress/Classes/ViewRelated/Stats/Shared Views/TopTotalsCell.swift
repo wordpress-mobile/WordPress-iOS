@@ -15,8 +15,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     private var originalSubtitleStackViewTopConstant: CGFloat = 0
@@ -33,13 +31,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        subtitlesStackViewHeightConstraint = subtitleStackView.heightAnchor.constraint(equalToConstant: 0)
-        originalSubtitleStackViewTopConstant = subtitlesStackViewTopConstraint.constant
-    }
 
     // MARK: - Configure
 
@@ -136,14 +127,8 @@ private extension TopTotalsCell {
 
     private func updateSubtitleConstraints(showSubtitles: Bool) {
         if showSubtitles {
-            rowsStackViewTopConstraint.constant = originalSubtitleStackViewTopConstant
-            subtitlesStackViewTopConstraint.constant = originalSubtitleStackViewTopConstant
-            subtitlesStackViewHeightConstraint?.isActive = false
             subtitleStackView.isHidden = false
         } else {
-            rowsStackViewTopConstraint.constant = 0
-            subtitlesStackViewTopConstraint.constant = 0
-            subtitlesStackViewHeightConstraint?.isActive = true
             subtitleStackView.isHidden = true
         }
     }
