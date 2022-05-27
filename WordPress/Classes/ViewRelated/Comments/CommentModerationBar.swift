@@ -112,7 +112,8 @@ private extension CommentModerationBar {
         // - Non split view iPhone landscape
         let horizontalPadding: CGFloat = {
             if WPDeviceIdentification.isiPad() &&
-                UIDevice.current.orientation.isLandscape {
+                UIDevice.current.orientation.isLandscape &&
+                traitCollection.horizontalSizeClass == .regular {
                 return bounds.width * iPadPaddingMultiplier
             }
 
