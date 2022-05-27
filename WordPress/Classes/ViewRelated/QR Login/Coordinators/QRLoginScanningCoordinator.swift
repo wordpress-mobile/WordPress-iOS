@@ -64,4 +64,3 @@ extension QRLoginScanningCoordinator {
         source.present(alert, animated: true)
     }
 }
-}
