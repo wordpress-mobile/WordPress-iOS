@@ -57,6 +57,18 @@ extension QRLoginCoordinator {
             self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
         }
     }
+
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
+        var props: [AnyHashable: Any] = ["origin": origin.rawValue]
+
+        guard let properties = properties else {
+            WPAnalytics.track(event, properties: props)
+            return
+        }
+        
+        props.merge(properties) { (_, new) in new }
+        WPAnalytics.track(event, properties: props)
+    }
 }
 
 // MARK: - Private
