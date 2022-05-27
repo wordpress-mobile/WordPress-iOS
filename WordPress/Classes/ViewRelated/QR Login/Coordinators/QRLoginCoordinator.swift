@@ -8,7 +8,16 @@ class QRLoginCoordinator {
         configureNavigationController()
     }
 
+    static func didHandle(url: URL) -> Bool {
+        guard
+            let token = QRLoginURLParser(urlString: url.absoluteString).parse(),
+            let source = UIApplication.shared.leafViewController
+        else {
+            return false
+        }
 
+        QRLoginCoordinator().showVerifyAuthorization(token: token, from: source)
+        return true
     }
 
     func showCameraScanningView(from source: UIViewController? = nil) {
@@ -23,6 +32,7 @@ class QRLoginCoordinator {
 
         pushOrPresent(controller, from: source)
     }
+}
 
 // MARK: - Child Coordinator Interactions
 extension QRLoginCoordinator {
