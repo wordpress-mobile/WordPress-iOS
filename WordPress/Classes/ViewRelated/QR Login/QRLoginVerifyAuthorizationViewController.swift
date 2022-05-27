@@ -36,29 +36,34 @@ extension QRLoginVerifyAuthorizationViewController {
 // MARK: - QRLoginVerifyView
 extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
     func render(response: QRLoginValidationResponse) {
-        imageView.image = UIImage(named: Strings.imageName)
-        titleLabel.text = Strings.title
-        subTitleLabel.text = Strings.subtitle
-        confirmButton.setTitle(Strings.confirmButton, for: .normal)
-        cancelButton.setTitle(Strings.cancelButton, for: .normal)
+        let title: String
+        if let browser = response.browser {
+            title = String(format: Strings.title, browser, response.location)
+        } else {
+            title = String(format: Strings.defaultTitle, response.location)
+        }
+
+        update(imageName: Strings.imageName,
+               title: title,
+               subTitle: Strings.subtitle,
+               confirmButton: Strings.confirmButton,
+               cancelButton: Strings.cancelButton)
 
         stackView.isHidden = false
-
-        loadingIndicator.isHidden = true
-        loadingIndicator.stopAnimating()
+        hideLoading()
     }
 
     func renderCompletion() {
-        imageView.image = UIImage(named: Strings.completed.imageName)
-        titleLabel.text = Strings.completed.title
-        subTitleLabel.text = Strings.completed.subtitle
-        subTitleLabel.textColor = .secondaryLabel
-        confirmButton.setTitle(Strings.completed.confirmButton, for: .normal)
-        cancelButton.isHidden = true
+        update(imageName: Strings.completed.imageName,
+               title: Strings.completed.title,
+               subTitle: Strings.completed.subtitle,
+               confirmButton: Strings.completed.confirmButton,
+               cancelButton: nil)
 
-        stackView.layer.opacity = 1
-        loadingIndicator.isHidden = true
-        loadingIndicator.stopAnimating()
+        cancelButton.isHidden = true
+        subTitleLabel.textColor = .secondaryLabel
+        
+        hideLoading()
 
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
@@ -71,20 +76,59 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
 
     func showLoading() {
         stackView.isHidden = true
-        loadingIndicator.startAnimating()
-        loadingIndicator.isHidden = false
+        startLoading()
     }
 
     func showAuthenticating() {
         stackView.layer.opacity = 0.5
 
-        loadingIndicator.startAnimating()
-        loadingIndicator.isHidden = false
+        startLoading()
     }
 
     func showNoConnectionError() {
-        // TODO: Add error handling
-        print("no connection error")
+        update(imageName: Strings.noConnection.imageName,
+               title: Strings.noConnection.title,
+               subTitle: Strings.noConnection.subtitle,
+               confirmButton: Strings.noConnection.confirmButton,
+               cancelButton: nil)
+
+        hideLoading()
+
+        subTitleLabel.textColor = .secondaryLabel
+    }
+
+    func showQRLoginError(error: QRLoginError?) {
+        switch error ?? .invalidData {
+            case .invalidData:
+                update(imageName: Strings.validationError.imageName,
+                       title: Strings.validationError.invalidData.title,
+                       subTitle: Strings.validationError.invalidData.subtitle,
+                       confirmButton: Strings.validationError.confirmButton,
+                       cancelButton: nil)
+
+            case .expired:
+                update(imageName: Strings.validationError.imageName,
+                       title: Strings.validationError.expired.title,
+                       subTitle: Strings.validationError.expired.subtitle,
+                       confirmButton: Strings.validationError.confirmButton,
+                       cancelButton: nil)
+        }
+
+        hideLoading()
+
+        subTitleLabel.textColor = .secondaryLabel
+    }
+
+    func showAuthenticationFailedError() {
+        update(imageName: Strings.validationError.imageName,
+               title: Strings.validationError.authenticationFailed.title,
+               subTitle: Strings.validationError.authenticationFailed.subtitle,
+               confirmButton: Strings.validationError.confirmButton,
+               cancelButton: nil)
+
+        hideLoading()
+
+        subTitleLabel.textColor = .secondaryLabel
     }
 }
 
@@ -98,18 +142,73 @@ extension QRLoginVerifyAuthorizationViewController {
         subTitleLabel.textColor = .systemRed
     }
 
+    private func hideLoading() {
+        stackView.isHidden = false
+        stackView.layer.opacity = 1
+
+        loadingIndicator.isHidden = true
+        loadingIndicator.stopAnimating()
+    }
+
+    private func startLoading() {
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+    }
+
+    private func update(imageName: String, title: String, subTitle: String, confirmButton: String, cancelButton: String?) {
+        imageView.image = UIImage(named: imageName)
+        titleLabel.text = title
+        subTitleLabel.text = subTitle
+        self.confirmButton.setTitle(confirmButton, for: .normal)
+
+        guard let cancelButton = cancelButton else {
+            self.cancelButton.isHidden = true
+            return
+        }
+
+        self.cancelButton.setTitle(cancelButton, for: .normal)
+    }
+
     private struct Strings {
         static let imageName = "wp-illustration-mobile-save-for-later"
-        static let title = NSLocalizedString("Are you trying to login on your web browser?", comment: "TODO")
-        static let subtitle = NSLocalizedString("Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else.", comment: "TODO")
-        static let confirmButton = NSLocalizedString("Yes, log me in", comment: "TODO")
-        static let cancelButton = NSLocalizedString("Cancel", comment: "TODO")
+        static let title = NSLocalizedString("Are you trying to log in to %1$@ near %2$@?", comment: "Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location")
+        static let defaultTitle = NSLocalizedString("Are you trying to log in to your web browser near %1$@?", comment: "Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location")
+        static let subtitle = NSLocalizedString("Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else.", comment: "Warning label that informs the user to only scan login codes that they generated.")
+        static let confirmButton = NSLocalizedString("Yes, log me in", comment: "Button label that confirms the user wants to log in and will authenticate them via the browser")
+        static let cancelButton = NSLocalizedString("Cancel", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
 
         struct completed {
             static let imageName = "domains-success"
-            static let title = NSLocalizedString("You're logged in!", comment: "TODO")
-            static let subtitle = NSLocalizedString("Tap dismiss and head back to your web browser to continue.", comment: "TODO")
-            static let confirmButton = NSLocalizedString("Dismiss", comment: "TODO")
+            static let title = NSLocalizedString("You're logged in!", comment: "Title for the success view when the user has successfully logged in")
+            static let subtitle = NSLocalizedString("Tap dismiss and head back to your web browser to continue.", comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow")
+            static let confirmButton = NSLocalizedString("Dismiss", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
+        }
+
+        struct noConnection {
+            static let imageName = "wp-illustration-empty-results"
+            static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+            static let subtitle = NSLocalizedString("An active internet connection is required to scan log in codes", comment: "Error message shown when trying to scan a log in code without an active internet connection.")
+            static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
+        }
+
+        struct validationError {
+            static let imageName = "wp-illustration-empty-results"
+            static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
+
+            struct invalidData {
+                static let title = NSLocalizedString("Could not validate the log in code", comment: "Title for the error view when the user scanned an invalid log in code")
+                static let subtitle = NSLocalizedString("The log in code that was scanned could not be validated. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when trying to scan an invalid log in code.")
+            }
+
+            struct expired {
+                static let title = NSLocalizedString("Expired log in code", comment: "Title for the error view when the user scanned an expired log in code")
+                static let subtitle = NSLocalizedString("This log in code has expired. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when the user scanned an expired log in code.")
+            }
+
+            struct authenticationFailed {
+                static let title = NSLocalizedString("Authentication Failed", comment: "Title for the error view when the authentication failed for any reason")
+                static let subtitle = NSLocalizedString("Could not log you in using this log in code. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when the user scanned an expired log in code.")
+            }
         }
     }
 }
