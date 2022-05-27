@@ -255,9 +255,7 @@ class MeViewController: UITableViewController {
             }
 
             self.tableView.deselectSelectedRowWithAnimation(true)
-
-            #warning("TODO: Add tracks")
-            QRLoginCoordinator.present(from: self)
+            QRLoginCoordinator.present(from: self, origin: .menu)
         }
     }
 
