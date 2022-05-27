@@ -22,6 +22,6 @@ import UIKit
     }
 
     private enum Metrics {
-        static let margins = UIEdgeInsets(top: 16, left: 8, bottom: 8, right: 8)
+        static let margins = UIEdgeInsets(top: 0, left: 8, bottom: 8, right: 8)
     }
 }
