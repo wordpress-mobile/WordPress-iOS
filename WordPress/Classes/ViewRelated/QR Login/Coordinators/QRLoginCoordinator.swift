@@ -1,10 +1,18 @@
 import UIKit
 
 struct QRLoginCoordinator {
-    var navigationController: UINavigationController
+    enum QRLoginOrigin: String {
+        case menu
+        case deepLink = "deep_link"
+    }
 
-    init(navigationController: UINavigationController = UINavigationController()) {
+    let navigationController: UINavigationController
+    let origin: QRLoginOrigin
+
+    init(navigationController: UINavigationController = UINavigationController(), origin: QRLoginOrigin) {
         self.navigationController = navigationController
+        self.origin = origin
+
         configureNavigationController()
     }
 
@@ -16,7 +24,7 @@ struct QRLoginCoordinator {
             return false
         }
 
-        self.init().showVerifyAuthorization(token: token, from: source)
+        self.init(origin: .deepLink).showVerifyAuthorization(token: token, from: source)
         return true
     }
 
@@ -45,7 +53,7 @@ extension QRLoginCoordinator {
     }
 
     func scanAgain() {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController) {
+        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController, origin: origin) {
             self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
         }
     }
@@ -79,15 +87,15 @@ private extension QRLoginCoordinator {
 // MARK: - Presenting the QR Login Flow
 extension QRLoginCoordinator {
     /// Present the QR login flow starting with the scanning step
-    static func present(from source: UIViewController) {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: source) {
-            QRLoginCoordinator().showCameraScanningView(from: source)
+    static func present(from source: UIViewController, origin: QRLoginOrigin) {
+        QRLoginScanningCoordinator.checkCameraPermissions(from: source, origin: origin) {
+            QRLoginCoordinator(origin: origin).showCameraScanningView(from: source)
         }
     }
 
     /// Display QR validation flow with a specific code, skipping the scanning step
     /// and going to the validation flow
-    static func present(token: QRLoginToken, from source: UIViewController) {
-        QRLoginCoordinator().showVerifyAuthorization(token: token, from: source)
+    static func present(token: QRLoginToken, from source: UIViewController, origin: QRLoginOrigin) {
+        QRLoginCoordinator(origin: origin).showVerifyAuthorization(token: token, from: source)
     }
 }
