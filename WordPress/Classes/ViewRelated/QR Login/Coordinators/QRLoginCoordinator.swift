@@ -65,7 +65,7 @@ extension QRLoginCoordinator {
             WPAnalytics.track(event, properties: props)
             return
         }
-        
+
         props.merge(properties) { (_, new) in new }
         WPAnalytics.track(event, properties: props)
     }
