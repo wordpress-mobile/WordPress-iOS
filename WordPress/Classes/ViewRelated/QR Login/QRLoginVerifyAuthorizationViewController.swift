@@ -90,7 +90,7 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
                title: Strings.noConnection.title,
                subTitle: Strings.noConnection.subtitle,
                confirmButton: Strings.noConnection.confirmButton,
-               cancelButton: nil)
+               cancelButton: Strings.noConnection.cancelButton)
 
         hideLoading()
 
@@ -104,14 +104,14 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
                        title: Strings.validationError.invalidData.title,
                        subTitle: Strings.validationError.invalidData.subtitle,
                        confirmButton: Strings.validationError.confirmButton,
-                       cancelButton: nil)
+                       cancelButton: Strings.validationError.cancelButton)
 
             case .expired:
                 update(imageName: Strings.validationError.imageName,
                        title: Strings.validationError.expired.title,
                        subTitle: Strings.validationError.expired.subtitle,
                        confirmButton: Strings.validationError.confirmButton,
-                       cancelButton: nil)
+                       cancelButton: Strings.validationError.cancelButton)
         }
 
         hideLoading()
@@ -124,7 +124,7 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
                title: Strings.validationError.authenticationFailed.title,
                subTitle: Strings.validationError.authenticationFailed.subtitle,
                confirmButton: Strings.validationError.confirmButton,
-               cancelButton: nil)
+               cancelButton: Strings.validationError.cancelButton)
 
         hideLoading()
 
@@ -189,11 +189,13 @@ extension QRLoginVerifyAuthorizationViewController {
             static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
             static let subtitle = NSLocalizedString("An active internet connection is required to scan log in codes", comment: "Error message shown when trying to scan a log in code without an active internet connection.")
             static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
+            static let cancelButton = NSLocalizedString("Cancel", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
         }
 
         struct validationError {
             static let imageName = "wp-illustration-empty-results"
             static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
+            static let cancelButton = NSLocalizedString("Cancel", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
 
             struct invalidData {
                 static let title = NSLocalizedString("Could not validate the log in code", comment: "Title for the error view when the user scanned an invalid log in code")
