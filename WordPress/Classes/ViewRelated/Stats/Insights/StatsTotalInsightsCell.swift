@@ -7,6 +7,10 @@ struct StatsTotalInsightsData {
     var difference: Int? = nil
     var percentage: Int? = nil
     var sparklineData: [Int]? = nil
+
+    public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
+    }
 }
 
 class StatsTotalInsightsCell: StatsBaseCell {
@@ -86,6 +90,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
         graphView.data = sparklineData ?? []
         graphView.chartColor = chartColor(for: difference ?? 0)
