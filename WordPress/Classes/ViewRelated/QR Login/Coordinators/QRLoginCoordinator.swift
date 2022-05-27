@@ -1,6 +1,6 @@
 import UIKit
 
-class QRLoginCoordinator {
+struct QRLoginCoordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController = UINavigationController()) {
@@ -16,7 +16,7 @@ class QRLoginCoordinator {
             return false
         }
 
-        QRLoginCoordinator().showVerifyAuthorization(token: token, from: source)
+        self.init().showVerifyAuthorization(token: token, from: source)
         return true
     }
 
