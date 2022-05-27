@@ -43,11 +43,13 @@ class QRLoginVerifyCoordinator {
 // MARK: - View Interactions
 extension QRLoginVerifyCoordinator {
     func start() {
+        parentCoordinator.track(.qrLoginVerifyCodeDisplayed)
         state = .verifyingCode
 
         view.showLoading()
 
         service.validate(token: token) { response in
+            self.parentCoordinator.track(.qrLoginVerifyCodeTokenValidated)
             self.state = .waitingForUserVerification
             self.view.render(response: response)
         } failure: { _, qrLoginError in
@@ -59,10 +61,22 @@ extension QRLoginVerifyCoordinator {
             guard
                 let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
             else {
+                self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
                 self.view.showNoConnectionError()
                 return
             }
 
+            let errorType: String
+            switch qrLoginError {
+            case .invalidData:
+                errorType = "invalid_data"
+            case .expired:
+                errorType = "expired_token"
+            case .none:
+                errorType = "unknown"
+            }
+
+            self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": errorType])
             self.view.showQRLoginError(error: qrLoginError)
         }
     }
@@ -72,28 +86,47 @@ extension QRLoginVerifyCoordinator {
         // If we're in the error state, do something
         switch state {
             case .done:
+                parentCoordinator.track(.qrLoginVerifyCodeDismissed)
                 parentCoordinator.dismiss()
                 return
             case .error:
+                parentCoordinator.track(.qrLoginVerifyCodeScanAgain)
                 parentCoordinator.scanAgain()
                 return
+
             default: break
         }
 
-        // TODO: Make network request to log the user in
+        parentCoordinator.track(.qrLoginVerifyCodeApproved)
+
         view.showAuthenticating()
         state = .authenticating
 
         service.authenticate(token: token) { success in
+            self.parentCoordinator.track(.qrLoginAuthenticated)
             self.state = .done
             self.view.renderCompletion()
         } failure: { error in
             self.state = .error
+
+            // Check if we have no connection
+            let appDelegate = WordPressAppDelegate.shared
+
+            guard
+                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
+            else {
+                self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
+                self.view.showNoConnectionError()
+                return
+            }
+
             self.view.showAuthenticationFailedError()
+            self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "authentication_failed"])
         }
     }
 
     func cancel() {
+        parentCoordinator.track(.qrLoginVerifyCodeCancelled)
         parentCoordinator.dismiss()
     }
 }
