@@ -351,6 +351,24 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
+    // QR Login
+    case qrLoginScannerDisplayed
+    case qrLoginScannerScannedCode
+    case qrLoginScannerDismissed
+
+    case qrLoginCameraPermissionDisplayed
+    case qrLoginCameraPermissionApproved
+    case qrLoginCameraPermissionDenied
+
+    case qrLoginVerifyCodeDisplayed
+    case qrLoginVerifyCodeDismissed
+    case qrLoginVerifyCodeScanAgain
+    case qrLoginVerifyCodeFailed
+    case qrLoginVerifyCodeTokenValidated
+    case qrLoginVerifyCodeApproved
+    case qrLoginVerifyCodeCancelled
+    case qrLoginAuthenticated
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -929,6 +947,7 @@ import Foundation
             return "onboarding_enable_notifications_skipped"
         case .onboardingEnableNotificationsEnableTapped:
             return "onboarding_enable_notifications_enable_tapped"
+
         // Site Name
         case .enhancedSiteCreationSiteNameCanceled:
             return "enhanced_site_creation_site_name_canceled"
@@ -940,6 +959,36 @@ import Foundation
             return "enhanced_site_creation_site_name_viewed"
         case .enhancedSiteCreationSiteNameExperiment:
             return "enhanced_site_creation_site_name_experiment"
+
+        // QR Login
+        case .qrLoginScannerDisplayed:
+            return "qrlogin_scanner_displayed"
+        case .qrLoginScannerScannedCode:
+            return "qrlogin_scanner_scanned_code"
+        case .qrLoginScannerDismissed:
+            return "qrlogin_scanned_dismissed"
+        case .qrLoginVerifyCodeDisplayed:
+            return "qrlogin_verify_displayed"
+        case .qrLoginVerifyCodeDismissed:
+            return "qrlogin_verify_dismissed"
+        case .qrLoginVerifyCodeFailed:
+            return "qrlogin_verify_failed"
+        case .qrLoginVerifyCodeApproved:
+            return "qrlogin_verify_approved"
+        case .qrLoginVerifyCodeScanAgain:
+            return "qrlogin_verify_scan_again"
+        case .qrLoginVerifyCodeCancelled:
+            return "qrlogin_verify_cancelled"
+        case .qrLoginVerifyCodeTokenValidated:
+            return "qrlogin_verify_token_validated"
+        case .qrLoginAuthenticated:
+            return "qrlogin_authenticated"
+        case .qrLoginCameraPermissionDisplayed:
+            return "qrlogin_camera_permission_displayed"
+        case .qrLoginCameraPermissionApproved:
+            return "qrlogin_camera_permission_approved"
+        case .qrLoginCameraPermissionDenied:
+            return "qrlogin_camera_permission_denied"
 
         } // END OF SWITCH
     }
