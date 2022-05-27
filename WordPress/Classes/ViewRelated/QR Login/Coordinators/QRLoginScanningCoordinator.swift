@@ -20,6 +20,8 @@ class QRLoginScanningCoordinator: NSObject {
     }
 
     func start() {
+        parentCoordinator.track(.qrLoginScannerDisplayed)
+
         configureCamera()
 
         guard cameraDevice == nil else {
@@ -54,10 +56,13 @@ extension QRLoginScanningCoordinator {
     }
 
     func didTapDismiss() {
+        parentCoordinator.track(.qrLoginScannerDismissed)
         parentCoordinator.dismiss()
     }
 
     func didScanToken(_ token: QRLoginToken) {
+        parentCoordinator.track(.qrLoginScannerScannedCode)
+
         // Give the user a tap to let them know they've successfully scanned the code
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
@@ -141,14 +146,23 @@ private extension QRLoginScanningCoordinator {
 
 // MARK: - Camera Access Check
 extension QRLoginScanningCoordinator {
-    static func checkCameraPermissions(from source: UIViewController, completion: @escaping () -> Void) {
-        Self.requestCameraAccessIfNeeded { granted in
+    static func checkCameraPermissions(from source: UIViewController, origin: QRLoginCoordinator.QRLoginOrigin, completion: @escaping () -> Void) {
+        guard needsCameraAccess() else {
+            completion()
+            return
+        }
+
+        WPAnalytics.track(.qrLoginCameraPermissionDisplayed, properties: ["origin": origin.rawValue])
+
+        Self.requestCameraAccess { granted in
             DispatchQueue.main.async {
                 guard granted else {
+                    WPAnalytics.track(.qrLoginCameraPermissionDenied, properties: ["origin": origin.rawValue])
                     Self.showNeedAccessAlert(from: source)
                     return
                 }
 
+                WPAnalytics.track(.qrLoginCameraPermissionApproved, properties: ["origin": origin.rawValue])
                 completion()
             }
         }
@@ -158,12 +172,7 @@ extension QRLoginScanningCoordinator {
         return AVCaptureDevice.authorizationStatus(for: .video) != .authorized
     }
 
-    static private func requestCameraAccessIfNeeded(_ completion: @escaping (Bool) -> Void ) {
-        guard needsCameraAccess() else {
-            completion(true)
-            return
-        }
-
+    static private func requestCameraAccess(_ completion: @escaping (Bool) -> Void ) {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: completion)
     }
 
