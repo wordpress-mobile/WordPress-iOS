@@ -23,7 +23,7 @@ public class BloggingPromptSettingsReminderDays: NSManagedObject {
             thursday,
             friday,
             saturday
-        ].enumerated().flatMap { (index: Int, isReminderActive: Bool) in
+        ].enumerated().compactMap { (index: Int, isReminderActive: Bool) in
             guard isReminderActive else {
                 return nil
             }
