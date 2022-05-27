@@ -37,6 +37,7 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
     }
 
     class func show(for blog: Blog, from presentingViewController: UIViewController) {
+        WPAnalytics.track(.promptsListViewed)
         let controller = BloggingPromptsViewController.controllerWithBlog(blog)
         presentingViewController.navigationController?.pushViewController(controller, animated: true)
     }
