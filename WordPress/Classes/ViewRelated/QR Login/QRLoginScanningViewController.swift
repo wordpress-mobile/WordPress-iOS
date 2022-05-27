@@ -14,10 +14,12 @@ extension QRLoginScanningViewController: QRLoginScanningView {
         scanFocusImageView.isHidden = true
         stopAnimations()
 
+        view.backgroundColor = .black
+
         errorLabel.text = message
         errorLabel.font = WPStyleGuide.regularTextFont()
-        view.backgroundColor = .black
         errorLabel.textColor = .white
+        errorLabel.isHidden = false
     }
 
     func showCameraLayer(_ previewLayer: AVCaptureVideoPreviewLayer) {
