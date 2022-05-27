@@ -182,7 +182,8 @@ final public class PushNotificationsManager: NSObject {
                         handleAuthenticationNotification,
                         handleInactiveNotification,
                         handleBackgroundNotification,
-                        handleQuickStartLocalNotification]
+                        handleQuickStartLocalNotification,
+                        handleBloggingPromptNotification]
 
         for handler in handlers {
             if handler(userInfo, userInteraction, completionHandler) {
@@ -393,6 +394,7 @@ extension PushNotificationsManager {
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
         static let local = "qs-local-notification"
+        static let bloggingPrompts = "blogging-prompts-notification"
     }
 
     enum Tracking {
@@ -477,6 +479,53 @@ extension PushNotificationsManager {
     private enum QuickStartTracking {
         static let taskNameKey = "task_name"
         static let quickStartTypeKey = "site_type"
+    }
+}
+
+// MARK: - Blogging Prompt notifications
+
+extension PushNotificationsManager {
+
+    enum BloggingPromptPayload {
+        static let promptIDKey = "prompt_id"
+        static let siteIDKey = "site_id"
+    }
+
+    /// Handles Blogging Prompt local notifications.
+    ///
+    /// - Parameters:
+    ///     - userInfo: The notification's payload
+    ///     - userInteraction: Indicates if the user interacted with the push notification
+    ///     - completionHandler: A callback, to be executed on completion
+    /// - Returns: True when handled. False otherwise
+    @objc func handleBloggingPromptNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+              type == Notification.bloggingPrompts else {
+            return false
+        }
+
+        // extract userInfo from payload.
+        guard let siteID = userInfo[BloggingPromptPayload.siteIDKey] as? Int else {
+            return false
+        }
+
+        // When the promptID is nil, it's most likely a static prompt notification.
+        let promptID = userInfo[BloggingPromptPayload.promptIDKey] as? Int
+
+        let source: BloggingPromptCoordinator.Source = {
+            if promptID != nil {
+                return .promptNotification
+            }
+            return .promptStaticNotification
+        }()
+
+        WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(siteID: siteID, promptID: promptID, source: source)
+
+        // TODO: Tracking
+
+        completionHandler?(.newData)
+
+        return true
     }
 }
 

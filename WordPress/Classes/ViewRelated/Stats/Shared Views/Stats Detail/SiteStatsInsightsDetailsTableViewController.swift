@@ -50,6 +50,11 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         addWillEnterForegroundObserver()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeWillEnterForegroundObserver()
+    }
+
     func configure(statSection: StatSection,
                    selectedDate: Date? = nil,
                    selectedPeriod: StatsPeriodUnit? = nil,
@@ -161,7 +166,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
                 StatsGhostTopHeaderImmutableRow.self,
                 StatsGhostDetailRow.self,
                 ViewsVisitorsRow.self,
-                PeriodEmptyCellHeaderRow.self]
+                PeriodEmptyCellHeaderRow.self,
+                TotalInsightStatsRow.self]
     }
 
     // MARK: - Table Refreshing

@@ -95,7 +95,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
             dismissCustomizeCard()
         }
 
-        let controller = AddInsightTableViewController(insightsDelegate: self,
+        let controller = InsightsManagementViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.presentationController?.delegate = self
@@ -412,14 +412,27 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         if FeatureFlag.statsNewInsights.enabled {
-            let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
-            navigationController?.pushViewController(detailTableViewController, animated: true)
+            switch statSection {
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            default:
+                segueToDetails(statSection: statSection, selectedDate: selectedDate)
+            }
         } else {
-            let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-            detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
-            navigationController?.pushViewController(detailTableViewController, animated: true)
+            segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
+    }
+
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func segueToDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
@@ -607,7 +620,7 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
 extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let navigationController = presentationController.presentedViewController as? UINavigationController,
-        let controller = navigationController.topViewController as? AddInsightTableViewController else {
+        let controller = navigationController.topViewController as? InsightsManagementViewController else {
             return
         }
 

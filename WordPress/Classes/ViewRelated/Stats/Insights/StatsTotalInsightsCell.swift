@@ -4,9 +4,13 @@ import WordPressShared
 
 struct StatsTotalInsightsData {
     var count: Int
-    var difference: Int
-    var percentage: Int
+    var difference: Int? = nil
+    var percentage: Int? = nil
     var sparklineData: [Int]? = nil
+
+    public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
+    }
 }
 
 class StatsTotalInsightsCell: StatsBaseCell {
@@ -83,19 +87,27 @@ class StatsTotalInsightsCell: StatsBaseCell {
         ])
     }
 
-    func configure(count: Int, difference: Int, percentage: Int, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
         graphView.data = sparklineData ?? []
-        graphView.chartColor = chartColor(for: difference)
+        graphView.chartColor = chartColor(for: difference ?? 0)
 
         countLabel.text = count.abbreviatedString()
+
+        guard let difference = difference,
+              let percentage = percentage else {
+                  comparisonLabel.isHidden = true
+                  return
+              }
 
         let differenceText = difference > 0 ? TextContent.differenceHigher : TextContent.differenceLower
         let differencePrefix = difference < 0 ? "" : "+"
         let formattedText = String(format: differenceText, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
 
+        comparisonLabel.isHidden = false
         comparisonLabel.attributedText = attributedDifferenceString(formattedText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
     }
 

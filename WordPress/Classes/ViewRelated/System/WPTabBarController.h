@@ -8,6 +8,7 @@ extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 
 @class AbstractPost;
 @class Blog;
+@class BloggingPromptCoordinator;
 @class BlogListViewController;
 @class MeViewController;
 @class MySitesCoordinator;
@@ -23,6 +24,7 @@ extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
+@property (nonatomic, strong, readonly) BloggingPromptCoordinator *bloggingPromptCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong) id<ScenePresenter> whatIsNewScenePresenter;
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;

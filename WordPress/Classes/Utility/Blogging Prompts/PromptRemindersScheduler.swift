@@ -125,8 +125,6 @@ private extension PromptRemindersScheduler {
         static let staticNotificationContent = NSLocalizedString("Tap to load today's prompt...", comment: "Title for a push notification with fixed content"
                                                                  + " that invites the user to load today's blogging prompt.")
         static let defaultFileName = "PromptReminders.plist"
-        static let promptIDUserInfoKey = "promptID"
-        static let siteIDUserInfoKey = "siteID"
     }
 
     /// The actual implementation for the prompt notification scheduling.
@@ -236,10 +234,7 @@ private extension PromptRemindersScheduler {
         content.title = Constants.notificationTitle
         content.subtitle = blog.title ?? String()
         content.body = prompt.text
-        content.userInfo = [
-            Constants.promptIDUserInfoKey: Int(prompt.promptID),
-            Constants.siteIDUserInfoKey: siteID
-        ]
+        content.userInfo = notificationPayload(for: blog, prompt: prompt)
 
         guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
             return nil
@@ -301,9 +296,7 @@ private extension PromptRemindersScheduler {
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
-        content.userInfo = [
-            Constants.siteIDUserInfoKey: siteID
-        ]
+        content.userInfo = notificationPayload(for: blog)
 
         var date = afterDate
         var identifiers = [String]()
@@ -362,6 +355,23 @@ private extension PromptRemindersScheduler {
         }
 
         return identifier
+    }
+
+    func notificationPayload(for blog: Blog, prompt: BloggingPrompt? = nil) -> [AnyHashable: Any] {
+        guard let siteID = blog.dotComID?.intValue else {
+            return [:]
+        }
+
+        var userInfo: [AnyHashable: Any] = [
+            PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
+            PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
+        ]
+
+        if let prompt = prompt {
+            userInfo[PushNotificationsManager.BloggingPromptPayload.promptIDKey] = Int(prompt.promptID)
+        }
+
+        return userInfo
     }
 
     // MARK: Local Storage

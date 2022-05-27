@@ -64,6 +64,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 periodChangeReceipt = periodStore.onChange { [weak self] in
                     self?.emitChange()
                 }
+            case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+                guard let storeQuery = queryForInsightStatSection(statSection) else {
+                    return
+                }
+
+                insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                    self?.emitChange()
+                }
+                insightsReceipt = insightsStore.query(storeQuery)
+
+                refreshFollowers()
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -115,6 +126,11 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
                         periodStore.fetchingFailed(for: storeQueryReferrers) &&
                         periodStore.fetchingFailed(for: storeQueryCountries)
+            case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+                guard let storeQuery = queryForInsightStatSection(statSection) else {
+                    return true
+                }
+                return insightsStore.fetchingFailed(for: storeQuery)
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
@@ -138,7 +154,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         switch statSection {
         case .insightsViewsVisitors:
             return periodStore.isFetchingReferrers
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return insightsStore.isFetchingComments
@@ -239,24 +255,18 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     return rows
                 }
             }
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
             let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
             return insightsImmuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
-                let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-                let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
-                let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
-                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
-                        siteStatsDetailsDelegate: detailsDelegate,
-                        showTotalCount: true,
-                        selectedIndex: selectedIndex))
-                let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
-                if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
-                } else {
-                    rows.append(contentsOf: tabbedRowsFrom(dataRows))
-                }
+                rows.append(TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: nil))
+
+                rows.append(TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
+                                                            tabDataForFollowerType(.insightsFollowersEmail)],
+                        statSection: .insightsFollowersWordPress,
+                        siteStatsInsightsDelegate: nil,
+                        showTotalCount: true))
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
@@ -385,6 +395,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         }
     }
 
+    func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
+        return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+    }
+
     // MARK: - Refresh Data
 
     func refreshFollowers() {
@@ -493,7 +507,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
         switch statSection {
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return .allFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return .allComments
@@ -1064,10 +1078,8 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
         if insightsStore.containsCachedData(for: row.type) {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                        rows: rowsBlock())
-            ])
+            let sections = rowsBlock().map({ ImmuTableSection(rows: [$0]) })
+            return ImmuTable(sections: sections)
         }
 
         var rows = [ImmuTableRow]()
@@ -1081,10 +1093,20 @@ private extension SiteStatsInsightsDetailsViewModel {
             break
         }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                    rows: rows)
-        ])
+        var sections: [ImmuTableSection] = []
+        var ghostRows: [ImmuTableRow] = []
+
+        rows.forEach({ row in
+            if row is StatsGhostTopHeaderImmutableRow || row is StatsGhostDetailRow {
+                ghostRows.append(row)
+            } else {
+                sections.append(ImmuTableSection(rows: [row]))
+            }
+        })
+
+        let ghostSection = ImmuTableSection(rows: ghostRows)
+        sections.append(ghostSection)
+        return ImmuTable(sections: sections)
     }
 
     func periodImmuTable(for status: StoreFetchingStatus,
