@@ -16,11 +16,12 @@ class QRLoginCoordinator {
         showVerifyAuthorization(token: token)
     }
 
-    func showCameraScanningView(from source: UIViewController? = nil) {
-        let controller = QRLoginScanningViewController()
-        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+    func scanAgain() {
+        navigationController.setViewControllers([scanningViewController()], animated: true)
+    }
 
-        pushOrPresent(controller, from: source)
+    func showCameraScanningView(from source: UIViewController? = nil) {
+        pushOrPresent(scanningViewController(), from: source)
     }
 
     func showVerifyAuthorization(token: QRLoginToken, from source: UIViewController? = nil) {
@@ -30,6 +31,13 @@ class QRLoginCoordinator {
                                                           parentCoordinator: self)
 
         pushOrPresent(controller, from: source)
+    }
+
+    private func scanningViewController() -> QRLoginScanningViewController {
+        let controller = QRLoginScanningViewController()
+        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+
+        return controller
     }
 }
 
