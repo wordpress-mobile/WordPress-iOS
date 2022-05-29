@@ -354,8 +354,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
-
-        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
     // MARK: - Helpers
