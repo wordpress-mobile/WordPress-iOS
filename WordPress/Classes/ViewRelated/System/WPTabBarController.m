@@ -570,7 +570,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self.tabBar && [keyPath isEqualToString:WPTabBarFrameKeyPath]) {
-        [self notifyOfTabBarHeightChangeIfNeeded];
+        [self notifyOfTabBarHeightChangedIfNeeded];
     }
 
     if (object == [UIApplication sharedApplication] && [keyPath isEqualToString:WPApplicationIconBadgeNumberKeyPath]) {
