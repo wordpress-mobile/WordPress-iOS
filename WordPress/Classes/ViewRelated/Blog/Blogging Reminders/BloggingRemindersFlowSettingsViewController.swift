@@ -241,7 +241,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled {
+            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled ?? false {
                 previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
             } else {
                 previousWeekdays = []
