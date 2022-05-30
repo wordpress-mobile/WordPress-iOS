@@ -314,8 +314,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
-        syncPromptsSchedule()
-        scheduleReminders()
+        syncPromptsScheduleIfNeeded { [weak self] in
+            self?.scheduleReminders()
+        }
     }
 
     @objc private func bloggingPromptsInfoButtonTapped() {
@@ -375,10 +376,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    func syncPromptsSchedule() {
-        guard FeatureFlag.bloggingPrompts.enabled else {
+    /// Ensure that the prompt settings are synced to remote before proceeding with the scheduling.
+    ///
+    /// Only sync prompt settings when the "Include Prompts" switch is turned on, OR when the user turned the switch off.
+    /// In other cases, prompt reminders will not be synced and the completion block should be executed immediately.
+    ///
+    /// - Parameter completion: Closure called when the process completes.
+    func syncPromptsScheduleIfNeeded(_ completion: @escaping () -> Void) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
+              let service = bloggingPromptsService else {
+            completion()
             return
         }
+
+        // show that some process is occurring, and prevent multiple tap events.
+        button.isEnabled = false
 
         typealias Weekday = BloggingRemindersScheduler.Weekday
         let selectedDays = Weekday.allCases.map {
@@ -402,13 +415,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 reminderTime: reminderTime
         )
 
-        bloggingPromptsService?.updateSettings(settings: settings,
-                success: { updatedSettings in
-                    DDLogInfo("Updated prompt reminder schedule")
-                },
-                failure: { error in
-                    DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
-                })
+        service.updateSettings(settings: settings) { [weak self] updatedSettings in
+            DDLogInfo("Updated prompt reminder schedule")
+            completion()
+            self?.button.isEnabled = true
+
+        } failure: { [weak self] error in
+            DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
+            completion()
+            self?.button.isEnabled = true
+        }
     }
 }
 
