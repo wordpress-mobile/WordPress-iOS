@@ -17,7 +17,7 @@
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPTextFieldTableViewCell.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import Gridicons;
 @import WordPressShared;

@@ -1,6 +1,6 @@
 #import "AbstractPost+HashHelpers.h"
 #import "Media+WPMediaAsset.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @implementation AbstractPost (HashHelpers)
 

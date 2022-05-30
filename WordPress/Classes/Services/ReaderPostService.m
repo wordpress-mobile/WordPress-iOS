@@ -9,7 +9,7 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 @import WordPressKit;
 @import WordPressShared;
 

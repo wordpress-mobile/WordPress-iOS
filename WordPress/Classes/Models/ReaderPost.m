@@ -6,7 +6,7 @@
 #import "WPAvatarSource.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";

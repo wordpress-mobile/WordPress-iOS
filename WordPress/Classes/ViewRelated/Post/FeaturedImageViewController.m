@@ -1,7 +1,7 @@
 #import "FeaturedImageViewController.h"
 
 #import "Media.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 #import <WordPressUI/WordPressUI.h>
 
 

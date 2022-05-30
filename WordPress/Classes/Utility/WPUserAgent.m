@@ -1,5 +1,5 @@
 #import "WPUserAgent.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import WebKit;
 

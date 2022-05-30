@@ -4,7 +4,7 @@
 #import "Menu.h"
 #import "MenuItem.h"
 #import "Blog.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 static NSUInteger const CategorySyncLimit = 1000;
 static NSString * const CategorySortKey = @"categoryName";

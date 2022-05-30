@@ -2,7 +2,7 @@
 #import "MenuItemSourceCell.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @interface MenuItemSourceFooterView ()
 

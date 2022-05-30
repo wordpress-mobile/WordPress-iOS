@@ -2,7 +2,7 @@
 #import <NotificationCenter/NotificationCenter.h>
 #import "Constants.h"
 #import "SFHFKeychainUtils.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @implementation TodayExtensionService
 

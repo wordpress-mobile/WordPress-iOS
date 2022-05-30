@@ -4,7 +4,7 @@
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 NSString * const SettingsSelectionTitleKey = @"Title";
 NSString * const SettingsSelectionTitlesKey = @"Titles";

@@ -1,6 +1,6 @@
 #import "PostListFooterView.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @interface PostListFooterView()
 

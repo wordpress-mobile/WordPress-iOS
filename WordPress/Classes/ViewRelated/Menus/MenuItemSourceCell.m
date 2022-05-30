@@ -2,7 +2,7 @@
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 #pragma mark - MenuItemSourceRadioButton
 

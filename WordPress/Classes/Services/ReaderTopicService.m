@@ -6,7 +6,7 @@
 #import "ReaderPostService.h"
 #import "WPAccount.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 @import WordPressKit;
 
 

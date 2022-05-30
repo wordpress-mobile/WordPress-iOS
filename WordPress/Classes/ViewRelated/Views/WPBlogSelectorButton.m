@@ -1,5 +1,5 @@
 #import "WPBlogSelectorButton.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 @import WordPressUI;
 
 

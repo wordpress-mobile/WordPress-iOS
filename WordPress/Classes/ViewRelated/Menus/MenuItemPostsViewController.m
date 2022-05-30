@@ -1,6 +1,6 @@
 #import "MenuItemPostsViewController.h"
 #import "PostService.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 @end

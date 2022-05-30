@@ -1,6 +1,6 @@
 #import "Media.h"
 #import "ContextManager.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @implementation Media
 

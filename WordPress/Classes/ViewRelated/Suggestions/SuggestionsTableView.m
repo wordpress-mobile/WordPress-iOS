@@ -1,7 +1,7 @@
 #import "SuggestionsTableView.h"
 #import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";

@@ -1,6 +1,6 @@
 #import "WPUploadStatusButton.h"
 #import <WordPressShared/WPFontManager.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 @import WordPressUI;
 
 

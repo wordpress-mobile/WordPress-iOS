@@ -1,7 +1,7 @@
 #import "UIViewController+RemoveQuickStart.h"
 
 #import "Blog.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @implementation UIViewController (RemoveQuickStart)
 

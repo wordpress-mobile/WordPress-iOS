@@ -6,7 +6,7 @@
 #import "WPAccount.h"
 #import "PostService.h"
 #import "AbstractPost.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;

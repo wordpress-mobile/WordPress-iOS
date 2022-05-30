@@ -1,5 +1,5 @@
 #import "ContextManager.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 @import WordPressShared.WPAnalytics;
 @import Foundation;
 

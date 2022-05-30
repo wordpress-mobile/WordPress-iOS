@@ -8,7 +8,7 @@
 #import "RelatedPostsPreviewTableViewCell.h"
 
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 
 static const CGFloat RelatePostsSettingsCellHeight = 44;

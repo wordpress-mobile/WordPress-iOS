@@ -1,6 +1,6 @@
 #import "WPAccount.h"
 #import "SFHFKeychainUtils.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
 

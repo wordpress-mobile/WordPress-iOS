@@ -1,6 +1,6 @@
 #import "PageListTableViewCell.h"
 #import "WPStyleGuide+Pages.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import Gridicons;
 

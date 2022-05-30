@@ -1,5 +1,5 @@
 #import "MenuItemInsertionView.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import Gridicons;
 

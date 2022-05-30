@@ -1,5 +1,5 @@
 #import "PostFeaturedImageCell.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 CGFloat const PostFeaturedImageCellMargin = 15.0f;
 

@@ -1,7 +1,7 @@
 #import "LocationService.h"
 
 #import <CoreLocation/CoreLocation.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import MapKit;
 @import WordPressUI;

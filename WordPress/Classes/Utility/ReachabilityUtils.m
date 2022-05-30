@@ -1,5 +1,5 @@
 #import "ReachabilityUtils.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @import WordPressUI;
 

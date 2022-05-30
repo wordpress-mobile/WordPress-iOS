@@ -5,7 +5,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 @interface BlogSelectorViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 

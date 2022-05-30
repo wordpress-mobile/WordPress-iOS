@@ -9,7 +9,7 @@
 #import "ContextManager.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPress-Swift.h"
+#import "WordPressSwift.h"
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 
