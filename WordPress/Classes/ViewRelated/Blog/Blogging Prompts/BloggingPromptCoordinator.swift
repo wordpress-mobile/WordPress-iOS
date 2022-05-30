@@ -5,6 +5,7 @@ import UIKit
 @objc class BloggingPromptCoordinator: NSObject {
 
     private let promptsServiceFactory: BloggingPromptsServiceFactory
+    private let scheduler: PromptRemindersScheduler
 
     enum Errors: Error {
         case invalidSite
@@ -41,6 +42,7 @@ import UIKit
 
     init(bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) {
         self.promptsServiceFactory = bloggingPromptsServiceFactory
+        self.scheduler = PromptRemindersScheduler(bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
     }
 
     /// Present the post creation flow to answer the prompt with `promptID`.
@@ -69,6 +71,30 @@ import UIKit
             editor.entryPoint = source.editorEntryPoint
             viewController.present(editor, animated: true)
             completion?()
+        }
+    }
+
+    /// Replaces the current blogging prompt notifications with a new timeframe that starts from today.
+    ///
+    /// Prompt notifications will eventually run out, so unless the user has explicitly disable the reminders,
+    /// we'll need to keep rescheduling the local notifications so the reminders can keep coming.
+    ///
+    /// - Parameters:
+    ///   - blog: The blog associated with the blogging prompt.
+    ///   - completion: Closure invoked after the scheduling process completes.
+    func renewPromptRemindersIfNeeded(for blog: Blog, completion: ((Result<Void, Error>) -> Void)? = nil) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let service = self.promptsServiceFactory.makeService(for: blog),
+              let settings = service.localSettings,
+              let reminderDays = settings.reminderDays,
+              settings.promptRemindersEnabled,
+              !reminderDays.getActiveWeekdays().isEmpty else {
+            return
+        }
+
+        let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
+        scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
+            completion?(result)
         }
     }
 }
