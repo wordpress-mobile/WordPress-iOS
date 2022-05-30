@@ -1134,7 +1134,6 @@ private extension SiteStatsInsightsDetailsViewModel {
         }
 
         var countriesRows: [ImmuTableRow] = []
-        var otherRows: [ImmuTableRow] = []
         var sections: [ImmuTableSection] = []
 
         rows.forEach({ row in
