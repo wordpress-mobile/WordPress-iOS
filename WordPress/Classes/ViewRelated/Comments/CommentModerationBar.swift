@@ -67,6 +67,16 @@ class CommentModerationBar: UIView {
         NotificationCenter.default.removeObserver(self)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // readjust stack view width when horizontal size class changes.
+        if let previousTraitCollection = previousTraitCollection,
+           previousTraitCollection.horizontalSizeClass != traitCollection.horizontalSizeClass {
+            configureStackViewWidth()
+        }
+    }
+
 }
 
 // MARK: - Private Extension
@@ -112,7 +122,9 @@ private extension CommentModerationBar {
         // - Non split view iPhone landscape
         let horizontalPadding: CGFloat = {
             if WPDeviceIdentification.isiPad() &&
-                UIDevice.current.orientation.isLandscape {
+                UIDevice.current.orientation.isLandscape &&
+                !isInMultitasking &&
+                traitCollection.horizontalSizeClass == .regular {
                 return bounds.width * iPadPaddingMultiplier
             }
 
@@ -301,6 +313,15 @@ private extension UIView {
 
     func hideDivider(_ hidden: Bool) {
         backgroundColor = hidden ? Style.dividerHiddenColor : Style.dividerColor
+    }
+
+    /// Detects if the current view is displayed in multitasking context.
+    var isInMultitasking: Bool {
+        guard let window = window else {
+            return false
+        }
+
+        return window.frame.width != window.screen.bounds.width
     }
 
 }
