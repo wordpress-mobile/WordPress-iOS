@@ -10,7 +10,7 @@
 #import "PostService.h"
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;

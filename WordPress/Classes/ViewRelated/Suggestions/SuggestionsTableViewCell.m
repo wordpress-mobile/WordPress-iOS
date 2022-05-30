@@ -1,6 +1,6 @@
 #import "SuggestionsTableViewCell.h"
 #import <WordPressShared/WPFontManager.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 NSInteger const SuggestionsTableViewCellIconSize = 24;
 

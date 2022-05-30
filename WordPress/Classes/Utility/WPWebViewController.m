@@ -7,7 +7,7 @@
 #import "WPStyleGuide+WebView.h"
 #import <WordPressUI/WordPressUI.h>
 #import <WordPressShared/UIDevice+Helpers.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 

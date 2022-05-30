@@ -13,7 +13,7 @@
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SVProgressHUD+Dismiss.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "WPWebViewController.h"
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "AccountService.h"

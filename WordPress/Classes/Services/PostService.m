@@ -6,7 +6,7 @@
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 @import WordPressShared;
 

@@ -1,5 +1,5 @@
 #import "NavBarTitleDropdownButton.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressUI/WordPressUI.h>
 

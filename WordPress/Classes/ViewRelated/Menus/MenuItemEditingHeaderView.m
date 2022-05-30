@@ -2,7 +2,7 @@
 #import "MenuItem.h"
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 

@@ -2,7 +2,7 @@
 #import <WordPressShared/WPTextFieldTableViewCell.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressUI/WordPressUI.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 
 

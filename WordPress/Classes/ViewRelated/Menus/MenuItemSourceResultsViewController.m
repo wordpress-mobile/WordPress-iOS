@@ -5,7 +5,7 @@
 #import "Blog.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;

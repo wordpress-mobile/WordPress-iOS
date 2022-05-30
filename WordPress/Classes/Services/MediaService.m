@@ -5,7 +5,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import <WordPressShared/WPImageSource.h>
 #import <WordPressShared/WPAnalytics.h>

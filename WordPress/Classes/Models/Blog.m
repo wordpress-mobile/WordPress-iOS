@@ -4,10 +4,10 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @class Comment;
 

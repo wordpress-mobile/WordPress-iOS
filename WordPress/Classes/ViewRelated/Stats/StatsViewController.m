@@ -8,7 +8,7 @@
 #import "BlogService.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";

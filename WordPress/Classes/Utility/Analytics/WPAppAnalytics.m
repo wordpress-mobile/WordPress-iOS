@@ -8,7 +8,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import "AbstractPost.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
 NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated  = @"usage_tracking_enabled";

@@ -10,7 +10,7 @@
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;
 static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;

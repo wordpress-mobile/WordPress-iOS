@@ -3,7 +3,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import "PostType.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @interface MenuItemTypeViewController () <MenuItemTypeViewDelegate>
 

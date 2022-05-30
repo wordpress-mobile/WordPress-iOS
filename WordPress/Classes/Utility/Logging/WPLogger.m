@@ -1,5 +1,5 @@
 #import "WPLogger.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @import CocoaLumberjack;
 

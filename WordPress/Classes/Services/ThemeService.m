@@ -4,7 +4,7 @@
 #import "Theme.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 
 /**

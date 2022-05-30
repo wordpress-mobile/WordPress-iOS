@@ -11,7 +11,7 @@
 #import "WPScrollableViewController.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;

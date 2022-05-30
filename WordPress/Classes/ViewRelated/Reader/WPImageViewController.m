@@ -1,5 +1,5 @@
 #import "WPImageViewController.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 @import Gridicons;
 
 static CGFloat const MaximumZoomScale = 4.0;

@@ -1,7 +1,7 @@
 #import "MeHeaderView.h"
 #import "Blog.h"
 #import <WordPressUI/WordPressUI.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 
 

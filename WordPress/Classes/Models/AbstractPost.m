@@ -1,7 +1,7 @@
 #import "AbstractPost.h"
 #import "Media.h"
 #import "ContextManager.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "BasePost.h"
 @import WordPressKit;
 

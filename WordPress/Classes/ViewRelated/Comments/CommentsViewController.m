@@ -1,6 +1,6 @@
 #import "CommentsViewController.h"
 #import "Blog.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPStyleGuide.h>
 

@@ -1,6 +1,6 @@
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPTableViewCell.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 static NSString * const DefaultCellIdentifier = @"DefaultCellIdentifier";
 static CGFloat const DefaultCellHeight = 44.0;

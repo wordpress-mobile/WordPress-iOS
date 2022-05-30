@@ -4,7 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 @import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject

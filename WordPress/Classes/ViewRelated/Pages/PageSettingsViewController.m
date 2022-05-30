@@ -1,6 +1,6 @@
 #import "PageSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @interface PageSettingsViewController ()
 

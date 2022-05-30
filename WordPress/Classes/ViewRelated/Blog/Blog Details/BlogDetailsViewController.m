@@ -11,7 +11,7 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import "UIViewController+RemoveQuickStart.h"
 #import <Reachability/Reachability.h>

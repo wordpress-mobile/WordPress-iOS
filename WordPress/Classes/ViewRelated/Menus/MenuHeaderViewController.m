@@ -6,7 +6,7 @@
 #import "MenuLocation.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;
 

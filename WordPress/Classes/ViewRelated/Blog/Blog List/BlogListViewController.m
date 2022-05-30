@@ -1,5 +1,5 @@
 #import "BlogListViewController.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 

@@ -4,7 +4,7 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 #import <WordPressShared/NSString+XMLExtensions.h>
 

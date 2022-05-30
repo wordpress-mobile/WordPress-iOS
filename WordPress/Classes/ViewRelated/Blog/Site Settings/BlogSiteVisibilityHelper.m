@@ -1,5 +1,5 @@
 #import "BlogSiteVisibilityHelper.h"
-#import "WordPressSwift.h"
+#import "WordPress-Swift.h"
 
 @implementation BlogSiteVisibilityHelper
 
