@@ -289,7 +289,11 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(error as! PromptRemindersScheduler.Errors, PromptRemindersScheduler.Errors.needsPushAuthorization)
+            guard case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications = error else {
+                XCTFail("Expected BloggingRemindersScheduler.Error.needsPermissionForPushNotifications, instead got: \(String(describing: error))")
+                return
+            }
+
             expectation.fulfill()
         }
 
