@@ -177,7 +177,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var bloggingPromptsSwitch: UISwitch = {
         let bloggingPromptsSwitch = UISwitch()
         bloggingPromptsSwitch.translatesAutoresizingMaskIntoConstraints = false
-        bloggingPromptsSwitch.isOn = true
+        bloggingPromptsSwitch.isOn = promptRemindersEnabled
         bloggingPromptsSwitch.addTarget(self, action: #selector(bloggingPromptsSwitchChanged), for: .valueChanged)
         return bloggingPromptsSwitch
     }()
@@ -236,16 +236,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }()
         self.delegate = delegate
 
-        let settings = BloggingPromptsService(blog: blog)?.localSettings
         scheduler = try ReminderScheduleCoordinator()
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled ?? false {
-                previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
-            } else {
-                previousWeekdays = []
-            }
+            previousWeekdays = []
         case .weekdays(let scheduledWeekdays):
             previousWeekdays = scheduledWeekdays
         }
@@ -676,6 +671,21 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
     var preferredDrawerPosition: DrawerPosition {
         return .expanded
     }
+}
+
+// MARK: - Blogging Prompts Helpers
+
+private extension BloggingRemindersFlowSettingsViewController {
+
+    var promptRemindersEnabled: Bool {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let settings = bloggingPromptsService?.localSettings else {
+            return false
+        }
+
+        return settings.promptRemindersEnabled
+    }
+
 }
 
 // MARK: - Constants
