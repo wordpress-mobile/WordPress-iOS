@@ -68,6 +68,8 @@ class CommentModerationBar: UIView {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
         // readjust stack view width when horizontal size class changes.
         if let previousTraitCollection = previousTraitCollection,
            previousTraitCollection.horizontalSizeClass != traitCollection.horizontalSizeClass {
