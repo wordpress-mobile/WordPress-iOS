@@ -10,32 +10,34 @@ class ReminderScheduleCoordinator {
 
     // MARK: Dependencies
 
-    private let notificationScheduler: NotificationScheduler
-    private let pushNotificationAuthorizer: PushNotificationAuthorizer
-    private let bloggingPromptsServiceFactory: BloggingPromptsServiceFactory
-
     private let bloggingRemindersScheduler: BloggingRemindersScheduler
     private let promptRemindersScheduler: PromptRemindersScheduler
+    private let bloggingPromptsServiceFactory: BloggingPromptsServiceFactory
 
     // MARK: Public Methods
 
-    init(notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
-         pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
-         bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) throws {
-
-        // initialize the dependencies
-        self.notificationScheduler = notificationScheduler
-        self.pushNotificationAuthorizer = pushNotificationAuthorizer
+    init(bloggingRemindersScheduler: BloggingRemindersScheduler,
+         promptRemindersScheduler: PromptRemindersScheduler,
+         bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) {
+        self.bloggingRemindersScheduler = bloggingRemindersScheduler
+        self.promptRemindersScheduler = promptRemindersScheduler
         self.bloggingPromptsServiceFactory = bloggingPromptsServiceFactory
-
-        // initialize the schedulers
-        self.bloggingRemindersScheduler = try .init(notificationCenter: notificationScheduler,
-                                                    pushNotificationAuthorizer: pushNotificationAuthorizer)
-        self.promptRemindersScheduler = .init(bloggingPromptsServiceFactory: bloggingPromptsServiceFactory,
-                                              notificationScheduler: notificationScheduler,
-                                              pushAuthorizer: pushNotificationAuthorizer)
     }
 
+    convenience init(notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
+                     pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+                     bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) throws {
+
+        let bloggingRemindersScheduler = try BloggingRemindersScheduler(notificationCenter: notificationScheduler,
+                                                                        pushNotificationAuthorizer: pushNotificationAuthorizer)
+        let promptRemindersScheduler = PromptRemindersScheduler(bloggingPromptsServiceFactory: bloggingPromptsServiceFactory,
+                                                                notificationScheduler: notificationScheduler,
+                                                                pushAuthorizer: pushNotificationAuthorizer)
+
+        self.init(bloggingRemindersScheduler: bloggingRemindersScheduler,
+                  promptRemindersScheduler: promptRemindersScheduler,
+                  bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
+    }
 
     /// Returns the user's reminder schedule for the given `blog`, based on the current reminder type.
     ///

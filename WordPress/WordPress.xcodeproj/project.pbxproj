@@ -4626,6 +4626,7 @@
 		FE25C235271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */; };
+		FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */; };
 		FE32EFFF275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
 		FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
 		FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */; };
@@ -7934,6 +7935,7 @@
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
 		FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsServiceTests.swift; sourceTree = "<group>"; };
+		FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSheetViewController.swift; sourceTree = "<group>"; };
 		FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentRenderer.swift; sourceTree = "<group>"; };
 		FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommentContentRenderer.swift; sourceTree = "<group>"; };
@@ -11473,6 +11475,7 @@
 			children = (
 				DC06DFF727BD52A100969974 /* BackgroundTasks */,
 				F15D1FB8265C40EA00854EE5 /* Blogging Reminders */,
+				FE32E7EF284496F500744D80 /* Blogging Prompts */,
 				174C116D2624601000346EC6 /* Deep Linking */,
 				F93735F422D53C1800A3C312 /* Logging */,
 				93B853211B44165B0064FE72 /* Analytics */,
@@ -14902,7 +14905,6 @@
 			children = (
 				F15D1FB9265C41A900854EE5 /* BloggingRemindersStoreTests.swift */,
 				F151EC822665271200AEA89E /* BloggingRemindersSchedulerTests.swift */,
-				FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */,
 			);
 			name = "Blogging Reminders";
 			sourceTree = "<group>";
@@ -15432,6 +15434,15 @@
 				FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */,
 			);
 			path = Prompts;
+			sourceTree = "<group>";
+		};
+		FE32E7EF284496F500744D80 /* Blogging Prompts */ = {
+			isa = PBXGroup;
+			children = (
+				FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */,
+				FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */,
+			);
+			name = "Blogging Prompts";
 			sourceTree = "<group>";
 		};
 		FE32F004275F60360040BE67 /* ContentRenderer */ = {
@@ -20076,6 +20087,7 @@
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				C3439B5F27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
+				FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */,
 				4688E6CC26AB571D00A5D894 /* RequestAuthenticatorTests.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				938466B92683CA0E00A538DC /* ReferrerDetailsViewModelTests.swift in Sources */,
