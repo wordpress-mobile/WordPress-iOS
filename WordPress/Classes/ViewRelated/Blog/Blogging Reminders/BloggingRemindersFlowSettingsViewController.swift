@@ -197,7 +197,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Properties
 
     private let calendar: Calendar
-    private let scheduler: BloggingRemindersScheduler
+    private let scheduler: ReminderScheduleCoordinator
     private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
@@ -237,7 +237,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         self.delegate = delegate
 
         let settings = BloggingPromptsService(blog: blog)?.localSettings
-        scheduler = try BloggingRemindersScheduler()
+        scheduler = try ReminderScheduleCoordinator()
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
