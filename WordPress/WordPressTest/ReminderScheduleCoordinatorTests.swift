@@ -194,10 +194,18 @@ private extension ReminderScheduleCoordinatorTests {
     func makeAccountService() -> AccountService {
         let service = AccountService(managedObjectContext: mainContext)
         let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
-        account.defaultBlog = blog
-        account.primaryBlogID = blog.dotComID!
         account.userID = NSNumber(value: 1)
         service.setDefaultWordPressComAccount(account)
+
+        /// NOTE: When the whole suite is run, somehow the defaultWordPress account set here is wiped.
+        /// The account is created and stored successfully, but the UUID stored in the user defaults is somehow always nil.
+        ///
+        /// The strangest thing is, it works just fine when this suite is run exclusively; but only fails when the whole suite is run.
+        /// My suspicion is that some part may have wiped the user defaults, resetting the default account to nil.
+        ///
+        /// Until there's a better solution, setting the account UUID directly here seemed to fix the problem.
+        ///
+        UserDefaults.standard.set(account.uuid, forKey: "AccountDefaultDotcomUUID")
 
         return service
     }
