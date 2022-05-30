@@ -6,7 +6,6 @@ import UserNotifications
 class PromptRemindersScheduler {
     enum Errors: Error {
         case invalidSite
-        case needsPushAuthorization
         case fileSaveError
         case unknown
     }
