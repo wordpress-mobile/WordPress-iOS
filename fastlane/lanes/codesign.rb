@@ -25,7 +25,8 @@ platform :ios do
     register_device(
       name: device_name,
       udid: device_id,
-      team_id: team_id
+      team_id: team_id,
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
     # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
