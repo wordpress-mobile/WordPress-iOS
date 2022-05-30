@@ -724,11 +724,6 @@ private extension BloggingRemindersFlowSettingsViewController {
         }
     }
 
-    /// Synchronizes the prompt settings to remote when `shouldSyncSchedule` parameter is `true`.
-    ///
-    /// - Parameters:
-    ///   - completion: Closure called when the process completes.
-
     /// Synchronizes the prompt settings to remote.
     ///
     /// - Parameter completion: Closure called when the process completes.
@@ -742,7 +737,6 @@ private extension BloggingRemindersFlowSettingsViewController {
 
         let newSettings = RemoteBloggingPromptsSettings(with: settings)
         service.updateSettings(settings: newSettings) { updatedSettings in
-            DDLogInfo("Updated prompt reminder schedule")
             completion()
         } failure: { error in
             DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
