@@ -236,11 +236,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }()
         self.delegate = delegate
 
+        let settings = BloggingPromptsService(blog: blog)?.localSettings
         scheduler = try BloggingRemindersScheduler()
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            previousWeekdays = []
+            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled ?? false {
+                previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
+            } else {
+                previousWeekdays = []
+            }
         case .weekdays(let scheduledWeekdays):
             previousWeekdays = scheduledWeekdays
         }
