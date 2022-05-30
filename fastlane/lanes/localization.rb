@@ -87,7 +87,7 @@ JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br
 
 # List of `.strings` files manually maintained by developers (as opposed to being automatically extracted from code and generated)
 # which we will merge into the main `Localizable.strings` file imported by GlotPress, then extract back once we download the translations.
-# Each `.strings` file to be merged/extracted is associated with a prefix to add the the keys being used to avoid conflicts and differentiate.
+# Each `.strings` file to be merged/extracted is associated with a prefix to add to the keys, used to avoid conflicts and differentiate the source of the copies.
 # See calls to `ios_merge_strings_files` and `ios_extract_keys_from_strings_files` for usage.
 #
 MANUALLY_MAINTAINED_STRINGS_FILES = {
