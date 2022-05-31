@@ -230,6 +230,37 @@ final class InteractiveNotificationsManager: NSObject {
                         timePeriod: .weeks,
                         date: targetDate)
                 }
+
+            case .bloggingPrompt:
+                let answerPromptBlock = {
+                    WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(with: userInfo)
+                }
+
+                // check if user interacted with custom notification actions.
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .answerPrompt: // user taps on the "Answer" button.
+                        WPAnalytics.track(.promptsNotificationAnswerActionTapped)
+                        answerPromptBlock()
+
+                    case .dismissPrompt: // user taps on the "Dismiss" button.
+                        WPAnalytics.track(.promptsNotificationDismissActionTapped)
+                        // no-op, let the notification be dismissed.
+
+                    default:
+                        break
+                    }
+                }
+
+                // handle default notification actions.
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    WPAnalytics.track(.promptsNotificationTapped)
+                    answerPromptBlock()
+                } else if identifier == UNNotificationDismissActionIdentifier {
+                    WPAnalytics.track(.promptsNotificationDismissed)
+                    // no-op
+                }
+
             default: break
             }
         }

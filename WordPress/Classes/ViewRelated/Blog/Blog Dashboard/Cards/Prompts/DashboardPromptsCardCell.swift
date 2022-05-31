@@ -448,9 +448,33 @@ private extension DashboardPromptsCardCell {
     }
 
     func skipMenuTapped() {
-        WPAnalytics.track(.promptsDashboardCardMenuSkip)
-        saveSkippedPromptForSite()
-        presenterViewController?.reloadCardsLocally()
+//        WPAnalytics.track(.promptsDashboardCardMenuSkip)
+//        saveSkippedPromptForSite()
+//        presenterViewController?.reloadCardsLocally()
+
+        // FIXME: Remove this test code!
+        guard let prompt = prompt,
+              let siteID = blog?.dotComID?.intValue else {
+            return
+        }
+
+        // show notification.
+        let content = UNMutableNotificationContent()
+        content.title = "Today's Prompts 💡"
+        content.body = prompt.textForDisplay()
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
+        content.userInfo = [
+            BloggingPrompt.NotificationKeys.siteID: siteID,
+            BloggingPrompt.NotificationKeys.promptID: Int(prompt.promptID)
+        ]
+
+        print(">>> Scheduling prompt with ID: \(prompt.promptID) for siteID: \(siteID)...")
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(5), repeats: false)
+        let request = UNNotificationRequest(identifier: "foo", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { error in
+            print("Error: \(String(describing: error))")
+        }
     }
 
     func removeMenuTapped() {

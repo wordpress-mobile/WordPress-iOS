@@ -363,13 +363,10 @@ private extension PromptRemindersScheduler {
             return [:]
         }
 
-        var userInfo: [AnyHashable: Any] = [
-            PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-            PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
-        ]
+        var userInfo: [AnyHashable: Any] = [BloggingPrompt.NotificationKeys.siteID: siteID]
 
         if let prompt = prompt {
-            userInfo[PushNotificationsManager.BloggingPromptPayload.promptIDKey] = Int(prompt.promptID)
+            userInfo[BloggingPrompt.NotificationKeys.promptID] = Int(prompt.promptID)
         }
 
         return userInfo
