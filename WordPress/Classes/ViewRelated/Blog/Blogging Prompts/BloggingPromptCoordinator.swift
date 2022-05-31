@@ -76,25 +76,23 @@ import UIKit
 
     /// Replaces the current blogging prompt notifications with a new timeframe that starts from today.
     ///
-    /// Prompt notifications will eventually run out, so unless the user has explicitly disable the reminders,
-    /// we'll need to keep rescheduling the local notifications so the reminders can keep coming.
-    ///
     /// - Parameters:
     ///   - blog: The blog associated with the blogging prompt.
     ///   - completion: Closure invoked after the scheduling process completes.
-    func renewPromptRemindersIfNeeded(for blog: Blog, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    func updatePromptsIfNeeded(for blog: Blog, completion: ((Result<Void, Error>) -> Void)? = nil) {
         guard FeatureFlag.bloggingPrompts.enabled,
-              let service = self.promptsServiceFactory.makeService(for: blog),
-              let settings = service.localSettings,
-              let reminderDays = settings.reminderDays,
-              settings.promptRemindersEnabled,
-              !reminderDays.getActiveWeekdays().isEmpty else {
+              let service = self.promptsServiceFactory.makeService(for: blog) else {
             return
         }
 
-        let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
-        scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
-            completion?(result)
+        // fetch and update local prompts.
+        service.fetchPrompts { [weak self] _ in
+            // try to reschedule prompts if the user has any active reminders.
+            self?.reschedulePromptRemindersIfNeeded(for: blog) {
+                completion?(.success(()))
+            }
+        } failure: { error in
+            completion?(.failure(error ?? Errors.unknown))
         }
     }
 }
@@ -102,6 +100,38 @@ import UIKit
 // MARK: Private Helpers
 
 private extension BloggingPromptCoordinator {
+    /// Replaces the current blogging prompt notifications with a new timeframe that starts from today.
+    ///
+    /// Prompt notifications will eventually run out, so unless the user has explicitly disabled the reminders,
+    /// we'll need to keep rescheduling the local notifications so the reminders can keep coming.
+    ///
+    /// - Parameters:
+    ///   - blog: The blog associated with the blogging prompt.
+    ///   - completion: Closure invoked after the scheduling process completes.
+    func reschedulePromptRemindersIfNeeded(for blog: Blog, completion: @escaping () -> Void) {
+        guard let service = promptsServiceFactory.makeService(for: blog),
+              let settings = service.localSettings,
+              let reminderDays = settings.reminderDays,
+              settings.promptRemindersEnabled else {
+            completion()
+            return
+        }
+
+        // IMPORTANT: Ensure that push authorization is already granted before rescheduling.
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] notificationSettings in
+            guard let self = self,
+                  notificationSettings.authorizationStatus == .authorized else {
+                completion()
+                return
+            }
+
+            // Reschedule the prompt reminders.
+            let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
+            self.scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
+                completion()
+            }
+        }
+    }
 
     func fetchPrompt(with localPromptID: Int? = nil, blog: Blog, completion: @escaping (Result<BloggingPrompt, Error>) -> Void) {
         guard let service = promptsServiceFactory.makeService(for: blog) else {

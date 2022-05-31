@@ -7,12 +7,12 @@ extension WPTabBarController {
         return BloggingPromptCoordinator()
     }
 
-    @objc func renewPromptRemindersIfNeeded() {
+    @objc func updatePromptsIfNeeded() {
         guard let blog = currentOrLastBlog() else {
             return
         }
 
-        bloggingPromptCoordinator.renewPromptRemindersIfNeeded(for: blog)
+        bloggingPromptCoordinator.updatePromptsIfNeeded(for: blog)
     }
 
     func showPromptAnsweringFlow(siteID: Int, promptID: Int?, source: BloggingPromptCoordinator.Source) {
