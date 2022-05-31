@@ -368,6 +368,8 @@ import Foundation
     case promptsDashboardCardMenuSkip
     case promptsDashboardCardMenuRemove
     case promptsListViewed
+    case promptsReminderSettingsIncludeSwitch
+    case promptsReminderSettingsHelp
     case promptsNotificationAnswerActionTapped
     case promptsNotificationDismissActionTapped
     case promptsNotificationTapped
@@ -994,6 +996,10 @@ import Foundation
             return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
         case .promptsListViewed:
             return "blogging_prompts_prompts_list_viewed"
+        case .promptsReminderSettingsIncludeSwitch:
+            return "blogging_reminders_include_prompt_tapped"
+        case .promptsReminderSettingsHelp:
+            return "blogging_reminders_include_prompt_help_tapped"
         case .promptsNotificationAnswerActionTapped:
             return "blogging_reminders_notification_prompt_answer_tapped"
         case .promptsNotificationDismissActionTapped:

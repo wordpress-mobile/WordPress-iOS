@@ -352,7 +352,7 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
-        return (try? context.fetch(fetchRequest))?.first as? BloggingPromptSettings
+        return (try? context.fetch(fetchRequest))?.first
     }
 
     /// A completion closure that will load the settings on success and calls the failure closure on an error.
