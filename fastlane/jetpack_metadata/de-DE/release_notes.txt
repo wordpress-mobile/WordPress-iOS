@@ -1,0 +1,14 @@
+Für Blöcke kann ab sofort die Drag-and-drop-Funktion verwendet werden. So kannst du deine Inhalte ganz nach deinen Wünschen neu anordnen. Wir finden das super.
+
+Das ist aber nicht die einzige Änderung im Block-Editor. Wir haben den Farbkontrast angepasst, damit du Text im dunklen Modus besser lesen kannst. Außerdem haben wir ein Problem mit der „Link zu“-Einstellung in den Galerie-Blöcken behoben und dabei auch gerade noch Einstellungen für die Bildgröße hinzugefügt.
+
+Der WordPress.com-Tour-Banner wird nicht länger im nicht unterstützen Block-Editor angezeigt. Apropos Touren: Ab sofort werden dir unterschiedliche Schnellstart-Aufgaben angezeigt, je nachdem, ob du eine neue Website erstellst oder an einer bestehenden arbeitest. Das Lernen neuer Aufgaben wie Benachrichtigungen ansehen und Medien hochladen ist kinderleicht.
+
+Zu guter Letzt haben wir einige lästige Fehler behoben, um die App benutzerfreundlicher zu machen.
+
+– Widget-Text wird auf Geräten mit Rechts-nach-Links-Sprachen nicht mehr gespiegelt.
+– Die App stürzt nicht mehr ab, wenn du zwischen Statistikeinsichten und anderen Website-Abschnitten wechselst. Was ein Glück.
+– In der Beitragsliste wird der Erstellen-Button nun auch iPad-Benutzern angezeigt, die mit geteiltem Bildschirm arbeiten.
+– Wenn du deinen Website-Titel in den Website-Einstellungen änderst, wird er auch unter „Meine Website“ aktualisiert.
+– In der Medienauswahl wird dir die richtige Nachricht angezeigt, wenn keine Medien verfügbar sind.
+– Die Navigations-Buttons im Website-Erstellungsprozess werden nun korrekt skaliert, wenn dein Gerät große Schriften verwendet.

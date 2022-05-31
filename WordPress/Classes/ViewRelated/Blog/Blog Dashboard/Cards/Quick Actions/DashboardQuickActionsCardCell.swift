@@ -13,10 +13,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            pagesButton,
+            statsButton,
             postsButton,
-            mediaButton,
-            statsButton
+            pagesButton,
+            mediaButton
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal

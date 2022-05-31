@@ -1,0 +1,14 @@
+Artık blokları sürükleyip bırakabilir, böylece içeriğinizi istediğiniz gibi kolayca yeniden düzenleyebilirsiniz. Hareketi seviyoruz, çok seviyoruz.
+
+Blok düzenleyicideki tek değişiklik bu değil. Karanlık modda çalışırken metni daha kolay okuyabilmeniz için renk kontrastını ayarladık. Ayrıca Galeri bloklarındaki Bağlantı Yeri ayarıyla ilgili bir sorunu düzelttik ve bu sırada Görüntü Boyutu ayarlarını ekledik.
+
+WordPress.com tur başlığı artık desteklenmeyen blok düzenleyicide görünmeyecek. Turlardan bahsetmişken, yeni bir site oluşturuyor veya mevcut bir siteyle çalışıyor olmanıza bağlı olarak artık farklı bir Hızlı Başlangıç görevleri kümesi göreceksiniz. Bildirimleri kontrol etmek ve ortam yüklemek gibi yeni görevleri öğrenmek artık çok kolay.
+
+Son olarak, uygulamanın kullanımını kolaylaştırmak için bazı sinir bozucu hataları ortadan kaldırdık.
+
+- Sağdan sola yazılan dilleri kullanan cihazlarda artık bileşen metni ters çevrilmeyecek.
+- İstatistik Tek Bakışta ve diğer site bölümleri arasında geçiş yaptığınızda uygulama çökmeyecek. Harika!
+- Gönderiler listesinde artık bölünmüş ekranda çalışan iPad kullanıcıları için oluştur düğmesi görünecek.
+- Site ayarlarından site başlığınızı değiştirdiğinizde Sitem'de de güncellenecek.
+- Artık kullanılabilir ortam olmadığında ortam seçicide doğru mesajı göreceksiniz.
+- Site Oluşturma sürecindeki gezinme düğmeleri, cihazınız büyük yazı tipleri kullandığında artık düzgün şekilde ölçeklenecek.

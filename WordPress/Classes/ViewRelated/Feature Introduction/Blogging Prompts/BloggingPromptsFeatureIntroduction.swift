@@ -72,16 +72,23 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
         addHeaderImageGradient()
     }
 
+    override func closeButtonTapped() {
+        WPAnalytics.track(.promptsIntroductionModalDismissed)
+        super.closeButtonTapped()
+    }
+
 }
 
 extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
 
     func primaryActionSelected() {
         guard interactionType == .actionable else {
+            WPAnalytics.track(.promptsIntroductionModalGotIt)
             super.closeButtonTapped()
             return
         }
 
+        WPAnalytics.track(.promptsIntroductionModalTryItNow)
         presenter?.primaryButtonSelected()
     }
 
@@ -90,6 +97,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
             return
         }
 
+        WPAnalytics.track(.promptsIntroductionModalRemindMe)
         presenter?.secondaryButtonSelected()
     }
 

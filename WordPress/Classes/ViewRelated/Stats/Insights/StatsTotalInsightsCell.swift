@@ -3,8 +3,14 @@ import WordPressShared
 
 
 struct StatsTotalInsightsData {
-    var count: String
-    var comparison: String = ""
+    var count: Int
+    var difference: Int? = nil
+    var percentage: Int? = nil
+    var sparklineData: [Int]? = nil
+
+    public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
+        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
+    }
 }
 
 class StatsTotalInsightsCell: StatsBaseCell {
@@ -65,7 +71,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
         comparisonLabel.textColor = .textSubtle
-        comparisonLabel.text = "+87 (40%) compared to last week"
+        comparisonLabel.numberOfLines = 0
     }
 
     private func configureConstraints() {
@@ -81,18 +87,68 @@ class StatsTotalInsightsCell: StatsBaseCell {
         ])
     }
 
-    // TODO: This will need updating to pass some graph data too.
-    // Assuming this will be something like a small array of ints
-    func configure(count: String, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
-        countLabel.text = count
+        graphView.data = sparklineData ?? []
+        graphView.chartColor = chartColor(for: difference ?? 0)
+
+        countLabel.text = count.abbreviatedString()
+
+        guard let difference = difference,
+              let percentage = percentage else {
+                  comparisonLabel.isHidden = true
+                  return
+              }
+
+        let differenceText = difference > 0 ? TextContent.differenceHigher : TextContent.differenceLower
+        let differencePrefix = difference < 0 ? "" : "+"
+        let formattedText = String(format: differenceText, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+
+        comparisonLabel.isHidden = false
+        comparisonLabel.attributedText = attributedDifferenceString(formattedText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
+    }
+
+    private func differenceTextColor(for difference: Int) -> UIColor {
+        return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
+    }
+
+    private func chartColor(for difference: Int) -> UIColor {
+        return difference < 0 ? WPStyleGuide.Stats.neutralColor : WPStyleGuide.Stats.positiveColor
+    }
+
+    private func attributedDifferenceString(_ string: String, highlightAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString? {
+        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
+
+        guard let firstIndex = string.firstIndex(of: TextContent.differenceDelimiter),
+              let lastIndex = string.lastIndex(of: TextContent.differenceDelimiter),
+              firstIndex != lastIndex else {
+                  return nil
+              }
+
+        let string = string.replacingOccurrences(of: String(TextContent.differenceDelimiter), with: "")
+
+        // Move the end of the range back by one as we've removed a character
+        let range: Range<String.Index> = firstIndex..<string.index(lastIndex, offsetBy: -1)
+        let nsRange = NSRange(range, in: string)
+
+        let mutableString = NSMutableAttributedString(string: string, attributes: defaultAttributes)
+        mutableString.addAttributes(highlightAttributes, range: nsRange)
+
+        return NSAttributedString(attributedString: mutableString)
     }
 
     private enum Metrics {
         static let outerStackViewSpacing: CGFloat = 16.0
         static let stackViewSpacing: CGFloat = 8.0
         static let graphViewAspectRatio: CGFloat = 3.27
+    }
+
+    private enum TextContent {
+        static let differenceDelimiter = Character("*")
+        static let differenceHigher = NSLocalizedString("*%@%@ (%@%%)* higher than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
+        static let differenceLower = NSLocalizedString("*%@%@ (%@%%)* lower than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
     }
 }

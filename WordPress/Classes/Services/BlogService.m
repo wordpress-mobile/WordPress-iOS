@@ -691,6 +691,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
         [self updateBlogWithRemoteBlog:remoteBlog account:account];
+        [self updatePromptSettingsFor:remoteBlog context:self.managedObjectContext];
     }
 
     /*
@@ -969,6 +970,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                                                                error:&error];
                 if (blog) {
                     [self updateBlog:blog withRemoteBlog:blogs.firstObject];
+                    [self updatePromptSettingsFor:blogs.firstObject context:self.managedObjectContext];
 
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                 }

@@ -13,8 +13,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         frameView.title = Strings.cardFrameTitle
         frameView.icon = Style.frameIconImage
 
-        // NOTE: Remove the logic for iOS 13 once we drop that version.
-        if #available (iOS 14.0, *) {
+        // NOTE: Remove the logic when support for iOS 14 is dropped
+        if #available (iOS 15.0, *) {
             // assign an empty closure so the button appears.
             frameView.onEllipsisButtonTap = {}
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
@@ -22,6 +22,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         } else {
             // Show a fallback implementation using `MenuSheetViewController`.
             // iOS 13 doesn't support showing UIMenu programmatically.
+            // iOS 14 doesn't support `UIDeferredMenuElement.uncached`.
             frameView.onEllipsisButtonTap = { [weak self] in
                 self?.showMenuSheet()
             }
@@ -291,9 +292,16 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return [defaultItems]
     }
 
+    @available(iOS 15.0, *)
     private var contextMenu: UIMenu {
         return .init(title: String(), options: .displayInline, children: contextMenuItems.map { menuSection in
-            UIMenu(title: String(), options: .displayInline, children: menuSection.map { $0.toAction })
+            UIMenu(title: String(), options: .displayInline, children: [
+                // Use an uncached deferred element so we can track each time the menu is shown
+                UIDeferredMenuElement.uncached { completion in
+                    WPAnalytics.track(.promptsDashboardCardMenu)
+                    completion(menuSection.map { $0.toAction })
+                }
+            ])
         })
     }
 
@@ -326,11 +334,15 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // Specifically, it checks if today's prompt has been skipped,
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard FeatureFlag.bloggingPrompts.enabled else {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let promptsService = BloggingPromptsService(blog: blog),
+              let settings = promptsService.localSettings,
+              settings.isPotentialBloggingSite,
+              settings.promptCardEnabled else {
             return false
         }
 
-        guard let todaysPrompt = BloggingPromptsService(blog: blog)?.localTodaysPrompt else {
+        guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
             return true
         }
@@ -414,6 +426,7 @@ private extension DashboardPromptsCardCell {
               let prompt = prompt else {
             return
         }
+        WPAnalytics.track(.promptsDashboardCardAnswerPrompt)
 
         let editor = EditPostViewController(blog: blog, prompt: prompt)
         editor.modalPresentationStyle = .fullScreen
@@ -430,15 +443,18 @@ private extension DashboardPromptsCardCell {
             return
         }
 
+        WPAnalytics.track(.promptsDashboardCardMenuViewMore)
         BloggingPromptsViewController.show(for: blog, from: presenterViewController)
     }
 
     func skipMenuTapped() {
+        WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
     }
 
     func removeMenuTapped() {
+        WPAnalytics.track(.promptsDashboardCardMenuRemove)
         // TODO.
     }
 
@@ -447,6 +463,7 @@ private extension DashboardPromptsCardCell {
         guard let presenterViewController = presenterViewController else {
             return
         }
+        WPAnalytics.track(.promptsDashboardCardMenu)
 
         let menuViewController = MenuSheetViewController(items: contextMenuItems.map { menuSection in
             menuSection.map { $0.toMenuSheetItem }
