@@ -82,6 +82,7 @@
                 <outlet property="bottomSeparatorLine" destination="9px-XX-eCP" id="jWU-xt-Cru"/>
                 <outlet property="dataSubtitleLabel" destination="DfF-g0-7Iu" id="JdZ-nM-kKj"/>
                 <outlet property="itemSubtitleLabel" destination="vbE-CG-voj" id="eZl-wI-KfG"/>
+                <outlet property="outerStackView" destination="Odo-Xd-cYF" id="WQ4-Ed-f0y"/>
                 <outlet property="rowsStackView" destination="w2N-OJ-hIR" id="5DU-xj-fcC"/>
                 <outlet property="subtitleStackView" destination="Tyj-5B-MLc" id="Ddg-AW-G7w"/>
                 <outlet property="topConstraint" destination="tsc-9l-RqU" id="AVy-aN-qDf"/>

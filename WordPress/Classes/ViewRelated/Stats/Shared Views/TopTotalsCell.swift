@@ -11,14 +11,24 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var outerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
-    private var originalSubtitleStackViewTopConstant: CGFloat = 0
-    private var subtitlesStackViewHeightConstraint: NSLayoutConstraint? = nil
+    private var topAccessoryView: UIView? = nil {
+        didSet {
+            oldValue?.removeFromSuperview()
+
+            if let topAccessoryView = topAccessoryView {
+                outerStackView.insertArrangedSubview(topAccessoryView, at: 0)
+                topAccessoryView.layoutMargins = subtitleStackView.layoutMargins
+                outerStackView.setCustomSpacing(Metrics.topAccessoryViewSpacing, after: topAccessoryView)
+            }
+        }
+    }
 
     private var forDetails = false
     private var limitRowsDisplayed = true
@@ -43,6 +53,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
                    siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
+                   topAccessoryView: UIView? = nil,
                    limitRowsDisplayed: Bool = true,
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
@@ -55,6 +66,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.siteStatsReferrerDelegate = siteStatsReferrerDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
+        self.topAccessoryView = topAccessoryView
         self.limitRowsDisplayed = limitRowsDisplayed
         self.forDetails = forDetails
 
@@ -92,6 +104,10 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         }
 
         removeRowsFromStackView(rowsStackView)
+    }
+
+    private enum Metrics {
+        static let topAccessoryViewSpacing: CGFloat = 32.0
     }
 }
 
