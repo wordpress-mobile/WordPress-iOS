@@ -317,14 +317,16 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
             sectionType: sectionType,
             onDismissWithDeviceSelected: { [weak self] device in
                 self?.previewViewSelectedPreviewDevice = device
-                cell.deselectItems()
             },
             completion: completion
         )
 
         let navController = GutenbergLightNavigationController(rootViewController: previewVC)
         navController.modalPresentationStyle = .pageSheet
-        navigationController?.present(navController, animated: true)
+        navigationController?.present(navController, animated: true) {
+            // deselect so no border is shown on dismissal of the preview
+            cell.deselectItems()
+        }
     }
 
     func didDeselectItem(forCell cell: CategorySectionTableViewCell) {}
