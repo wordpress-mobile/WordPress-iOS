@@ -233,6 +233,7 @@ private extension PromptRemindersScheduler {
         content.title = Constants.notificationTitle
         content.subtitle = blog.title ?? String()
         content.body = prompt.text
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
         content.userInfo = notificationPayload(for: blog, prompt: prompt)
 
         guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
@@ -295,6 +296,7 @@ private extension PromptRemindersScheduler {
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
         content.userInfo = notificationPayload(for: blog)
 
         var date = afterDate

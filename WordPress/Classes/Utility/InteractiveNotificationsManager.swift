@@ -375,6 +375,7 @@ extension InteractiveNotificationsManager {
         case login                  = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
         case weeklyRoundup          = "weekly-roundup"
+        case bloggingPrompt         = "blogging-prompt"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -404,6 +405,8 @@ extension InteractiveNotificationsManager {
                 return []
             case .weeklyRoundup:
                 return []
+            case .bloggingPrompt:
+                return [.answerPrompt, .dismissPrompt]
             }
         }
 
@@ -442,6 +445,8 @@ extension InteractiveNotificationsManager {
         case shareEditPost    = "SHARE_EDIT_POST"
         case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
         case denyLogin        = "DENY_LOGIN_ATTEMPT"
+        case answerPrompt     = "ANSWER_BLOGGING_PROMPT"
+        case dismissPrompt    = "DISMISS_BLOGGING_PROMPT"
 
         var description: String {
             switch self {
@@ -465,6 +470,10 @@ extension InteractiveNotificationsManager {
                 return NSLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
             case .denyLogin:
                 return NSLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
+            case .answerPrompt:
+                return NSLocalizedString("Answer", comment: "Verb. Opens the editor to answer the blogging prompt.")
+            case .dismissPrompt:
+                return NSLocalizedString("Dismiss", comment: "Verb. Dismisses the blogging prompt notification.")
             }
         }
 
