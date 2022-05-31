@@ -24,3 +24,21 @@ public class BloggingPromptSettings: NSManagedObject {
     }
 
 }
+
+extension RemoteBloggingPromptsSettings {
+
+    init(with model: BloggingPromptSettings) {
+        self.init(promptCardEnabled: model.promptCardEnabled,
+                  promptRemindersEnabled: model.promptRemindersEnabled,
+                  reminderDays: ReminderDays(monday: model.reminderDays?.monday ?? false,
+                                             tuesday: model.reminderDays?.tuesday ?? false,
+                                             wednesday: model.reminderDays?.wednesday ?? false,
+                                             thursday: model.reminderDays?.thursday ?? false,
+                                             friday: model.reminderDays?.friday ?? false,
+                                             saturday: model.reminderDays?.saturday ?? false,
+                                             sunday: model.reminderDays?.sunday ?? false),
+                  reminderTime: model.reminderTime ?? String(),
+                  isPotentialBloggingSite: model.isPotentialBloggingSite)
+    }
+
+}

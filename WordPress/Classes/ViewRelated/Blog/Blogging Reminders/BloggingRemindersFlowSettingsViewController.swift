@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 protocol BloggingRemindersFlowDelegate: AnyObject {
     func didSetUpBloggingReminders()
@@ -177,7 +178,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var bloggingPromptsSwitch: UISwitch = {
         let bloggingPromptsSwitch = UISwitch()
         bloggingPromptsSwitch.translatesAutoresizingMaskIntoConstraints = false
-        bloggingPromptsSwitch.isOn = true
+        bloggingPromptsSwitch.isOn = promptRemindersEnabled
         bloggingPromptsSwitch.addTarget(self, action: #selector(bloggingPromptsSwitchChanged), for: .valueChanged)
         return bloggingPromptsSwitch
     }()
@@ -197,7 +198,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Properties
 
     private let calendar: Calendar
-    private let scheduler: BloggingRemindersScheduler
+    private let scheduler: ReminderScheduleCoordinator
     private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
@@ -236,16 +237,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }()
         self.delegate = delegate
 
-        let settings = BloggingPromptsService(blog: blog)?.localSettings
-        scheduler = try BloggingRemindersScheduler()
+        scheduler = try ReminderScheduleCoordinator()
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled ?? false {
-                previousWeekdays = settings?.reminderDays?.getActiveWeekdays() ?? []
-            } else {
-                previousWeekdays = []
-            }
+            previousWeekdays = []
         case .weekdays(let scheduledWeekdays):
             previousWeekdays = scheduledWeekdays
         }
@@ -318,8 +314,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
-
-        syncPromptsSchedule()
         scheduleReminders()
     }
 
@@ -351,7 +345,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             schedule = .none
         }
 
-        scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
+        // update local prompt settings so that the coordinator uses the right scheduler.
+        let resetPromptSettingsClosure = temporarilyUpdatePromptSettings()
+        let promptSettingsChanged = resetPromptSettingsClosure != nil
+
+         scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -361,9 +359,27 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
-                    self?.delegate?.didSetUpBloggingReminders()
-                    self?.pushCompletionViewController()
+                    let completion = {
+                        self?.delegate?.didSetUpBloggingReminders()
+                        self?.pushCompletionViewController()
+                    }
+
+                    // only sync prompt settings in Blogging Prompts context.
+                    guard promptSettingsChanged else {
+                        completion()
+                        return
+                    }
+
+                    // show that some process is occurring, and prevent multiple tap events.
+                    self?.button.isEnabled = false
+
+                    // sync the updated settings to remote.
+                    self?.syncPromptsScheduleIfNeeded {
+                        self?.button.isEnabled = true
+                        completion()
+                    }
                 }
+
             case .failure(let error):
                 switch error {
                 case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
@@ -376,45 +392,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                     DDLogError("Error scheduling blogging reminders: \(error)")
                     break
                 }
+
+                // When scheduling fails, call the reset closure to reset prompt settings to its previous state.
+                // Note that this closure should only exist in Blogging Prompts context; in Blogging Reminders context, this should be nil.
+                resetPromptSettingsClosure?()
             }
         }
     }
 
-    func syncPromptsSchedule() {
-        guard FeatureFlag.bloggingPrompts.enabled else {
-            return
-        }
-
-        typealias Weekday = BloggingRemindersScheduler.Weekday
-        let selectedDays = Weekday.allCases.map {
-            weekdays.contains($0)
-        }
-        let days = RemoteBloggingPromptsSettings.ReminderDays(
-                monday: selectedDays[Weekday.monday.rawValue],
-                tuesday: selectedDays[Weekday.tuesday.rawValue],
-                wednesday: selectedDays[Weekday.wednesday.rawValue],
-                thursday: selectedDays[Weekday.thursday.rawValue],
-                friday: selectedDays[Weekday.friday.rawValue],
-                saturday: selectedDays[Weekday.saturday.rawValue],
-                sunday: selectedDays[Weekday.sunday.rawValue]
-        )
-        let timeDateFormatter = DateFormatter()
-        timeDateFormatter.dateFormat = "HH.mm"
-        let reminderTime = timeDateFormatter.string(from: scheduledTime)
-        let settings = RemoteBloggingPromptsSettings(
-                promptRemindersEnabled: bloggingPromptsSwitch.isOn,
-                reminderDays: days,
-                reminderTime: reminderTime
-        )
-
-        bloggingPromptsService?.updateSettings(settings: settings,
-                success: { updatedSettings in
-                    DDLogInfo("Updated prompt reminder schedule")
-                },
-                failure: { error in
-                    DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
-                })
-    }
 }
 
 // MARK: - Navigation
@@ -676,6 +661,89 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
     var preferredDrawerPosition: DrawerPosition {
         return .expanded
     }
+}
+
+// MARK: - Blogging Prompts Helpers
+
+private extension BloggingRemindersFlowSettingsViewController {
+
+    var promptRemindersEnabled: Bool {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let settings = bloggingPromptsService?.localSettings else {
+            return false
+        }
+
+        return settings.promptRemindersEnabled
+    }
+
+    /// Temporarily update the local prompt settings with the new one.
+    /// The method returns a closure that will revert the changes made to the settings when executed.
+    ///
+    /// Note that the settings will only be updated when the switch to ON, or when the user turns the switch from ON to OFF.
+    ///
+    /// - Returns: A closure used to reset changes made to the prompt settings. Returns nil if the update condition is not fulfilled.
+    func temporarilyUpdatePromptSettings() -> (() -> Void)? {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
+              let settings = bloggingPromptsService?.localSettings,
+              let context = settings.managedObjectContext else {
+            return nil
+        }
+
+        let previousSettings = RemoteBloggingPromptsSettings(with: settings)
+
+        // update local settings to the selected schedule and time.
+        typealias Weekday = BloggingRemindersScheduler.Weekday
+        let selectedDays = Weekday.allCases.map {
+            weekdays.contains($0)
+        }
+        let days = RemoteBloggingPromptsSettings.ReminderDays(
+                monday: selectedDays[Weekday.monday.rawValue],
+                tuesday: selectedDays[Weekday.tuesday.rawValue],
+                wednesday: selectedDays[Weekday.wednesday.rawValue],
+                thursday: selectedDays[Weekday.thursday.rawValue],
+                friday: selectedDays[Weekday.friday.rawValue],
+                saturday: selectedDays[Weekday.saturday.rawValue],
+                sunday: selectedDays[Weekday.sunday.rawValue]
+        )
+        let timeDateFormatter = DateFormatter()
+        timeDateFormatter.dateFormat = "HH.mm"
+        let reminderTime = timeDateFormatter.string(from: scheduledTime)
+        let newSettings = RemoteBloggingPromptsSettings(
+            promptRemindersEnabled: bloggingPromptsSwitch.isOn,
+            reminderDays: days,
+            reminderTime: reminderTime
+        )
+
+        settings.configure(with: newSettings, siteID: settings.siteID, context: context)
+        ContextManager.shared.saveContextAndWait(context)
+
+        return {
+            settings.configure(with: previousSettings, siteID: settings.siteID, context: context)
+            ContextManager.shared.saveContextAndWait(context)
+        }
+    }
+
+    /// Synchronizes the prompt settings to remote.
+    ///
+    /// - Parameter completion: Closure called when the process completes.
+    func syncPromptsScheduleIfNeeded(_ completion: @escaping () -> Void) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let service = bloggingPromptsService,
+              let settings = service.localSettings else {
+            completion()
+            return
+        }
+
+        let newSettings = RemoteBloggingPromptsSettings(with: settings)
+        service.updateSettings(settings: newSettings) { updatedSettings in
+            completion()
+        } failure: { error in
+            DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
+            completion()
+        }
+    }
+
 }
 
 // MARK: - Constants

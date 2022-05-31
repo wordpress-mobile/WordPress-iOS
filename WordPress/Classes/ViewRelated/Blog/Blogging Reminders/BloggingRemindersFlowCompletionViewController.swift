@@ -166,7 +166,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     // Populates the prompt label with formatted text detailing the reminders set by the user.
     //
     private func configurePromptLabel() {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return
         }
 
@@ -196,7 +196,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     }
 
     private func configureTitleLabel() {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return
         }
 
