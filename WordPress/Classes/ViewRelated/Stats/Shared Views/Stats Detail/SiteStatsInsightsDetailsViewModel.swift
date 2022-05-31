@@ -223,18 +223,25 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             return periodImmuTable(for: periodStore.topReferrersStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if let periodSummary = periodStore.getSummary() {
+                if let periodSummary = periodStore.getSummary(),
+                   let referrers = periodStore.getTopReferrers() {
+                    let referrersData = referrersRowData()
+                    let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
+                    let chartView = chartViewModel.makeReferrersChartView()
+
                     // Views Visitors
                     rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!,
                             statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil))
 
                     // Referrers
-                    rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                            dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                            dataRows: referrersRowData(),
-                            statSection: StatSection.periodReferrers,
-                            siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                            siteStatsReferrerDelegate: nil))
+                    var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                               dataSubtitle: StatSection.periodReferrers.dataSubtitle,
+                                                               dataRows: referrersData,
+                                                               statSection: StatSection.periodReferrers,
+                                                               siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
+                                                               siteStatsReferrerDelegate: nil)
+                    referrersRow.topAccessoryView = chartView
+                    rows.append(referrersRow)
 
 
                     // Countries
