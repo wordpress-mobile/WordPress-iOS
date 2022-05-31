@@ -42,6 +42,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     // MARK: - Present Feature Introduction
 
     func present(from presentingViewController: UIViewController) {
+        WPAnalytics.track(.promptsIntroductionModalViewed)
 
         // We shouldn't get here, but just in case - verify the account actually has a site.
         // If not, fallback to the non-actionable/informational view.

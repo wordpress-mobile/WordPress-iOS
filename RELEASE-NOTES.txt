@@ -1,5 +1,10 @@
+20.1
+-----
+
+
 20.0
 -----
+* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
 * [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
 * [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
 * [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688]

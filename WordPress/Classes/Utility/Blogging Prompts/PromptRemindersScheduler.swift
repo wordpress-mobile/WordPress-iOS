@@ -6,7 +6,6 @@ import UserNotifications
 class PromptRemindersScheduler {
     enum Errors: Error {
         case invalidSite
-        case needsPushAuthorization
         case fileSaveError
         case unknown
     }
@@ -56,7 +55,7 @@ class PromptRemindersScheduler {
             }
 
             guard allowed else {
-                completion(.failure(Errors.needsPushAuthorization))
+                completion(.failure(BloggingRemindersScheduler.Error.needsPermissionForPushNotifications))
                 return
             }
 
