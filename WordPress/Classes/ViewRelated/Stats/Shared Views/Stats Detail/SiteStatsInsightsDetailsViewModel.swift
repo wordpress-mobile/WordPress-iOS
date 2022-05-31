@@ -227,7 +227,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                    let referrers = periodStore.getTopReferrers() {
                     let referrersData = referrersRowData()
                     let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
-                    let chartView = chartViewModel.makeReferrersChartView()
+                    let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
 
                     // Views Visitors
                     rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!,
