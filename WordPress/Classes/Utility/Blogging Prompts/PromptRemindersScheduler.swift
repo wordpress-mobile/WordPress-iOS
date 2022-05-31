@@ -225,7 +225,7 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
-        guard let siteID = blog.dotComID?.intValue else {
+        guard blog.dotComID != nil else {
             return nil
         }
 
@@ -287,7 +287,7 @@ private extension PromptRemindersScheduler {
         guard case .weekdays(let weekdays) = schedule,
               maxDays > 0,
               let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate),
-              let siteID = blog.dotComID?.intValue else {
+              blog.dotComID != nil else {
             return nil
         }
 

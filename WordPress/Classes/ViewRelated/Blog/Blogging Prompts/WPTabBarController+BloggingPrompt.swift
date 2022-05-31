@@ -7,6 +7,14 @@ extension WPTabBarController {
         return BloggingPromptCoordinator()
     }
 
+    @objc func updatePromptsIfNeeded() {
+        guard let blog = currentOrLastBlog() else {
+            return
+        }
+
+        bloggingPromptCoordinator.updatePromptsIfNeeded(for: blog)
+    }
+
     /// Shows prompt answering flow when a prompt notification is tapped.
     ///
     /// - Parameter userInfo: Notification payload.
