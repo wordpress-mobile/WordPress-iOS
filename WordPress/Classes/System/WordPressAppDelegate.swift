@@ -184,7 +184,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask?.rawValue)")
+        if let bgTask = bgTask {
+            DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

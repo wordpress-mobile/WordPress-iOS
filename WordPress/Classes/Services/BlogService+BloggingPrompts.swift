@@ -15,7 +15,7 @@ extension BlogService {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
-        let existingSettings = (try? context.fetch(fetchRequest))?.first as? BloggingPromptSettings
+        let existingSettings = (try? context.fetch(fetchRequest))?.first
         let settings = existingSettings ?? BloggingPromptSettings(context: context)
         settings.configure(with: remoteSettings, siteID: siteID.int32Value, context: context)
     }

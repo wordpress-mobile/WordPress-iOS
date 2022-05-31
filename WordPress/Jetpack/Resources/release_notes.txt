@@ -1,14 +1,7 @@
-Blocks are now drag-and-drop, so you can easily rearrange your content however you like. We like to move it, move it.
+* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
+* [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
+* [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
+* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
+* [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
+* [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
 
-That’s not the only change in the block editor. We adjusted color contrast so it’s easier to read text when you’re working in dark mode. We also fixed a problem with the Link To setting in Gallery blocks, and we added Image Size settings while we were at it.
-
-The WordPress.com tour banner no longer pops up in the unsupported block editor. Speaking of tours—you’ll now see a different set of Quick Start tasks, depending on whether you’re building a new site or working with an existing one. Learning new tasks, like checking notifications and uploading media, is a piece of cake.
-
-Finally, we squashed some pesky bugs to make the app easier to use.
-
-- Widget text isn’t flipped anymore for devices using right-to-left languages.
-- The app won’t crash when you switch between Stat Insights and other site sections. Phew.
-- In the Posts list, the create button is now visible for iPad users working in split screen.
-- When you change your site title in site settings, it’ll be updated in My Site, too.
-- You’ll see the right message in the media picker when there’s no media available.
-- The navigation buttons in the Site Creation process now scale properly when your device uses large fonts.
