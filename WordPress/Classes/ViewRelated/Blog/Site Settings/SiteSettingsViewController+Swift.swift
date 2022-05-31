@@ -325,7 +325,7 @@ extension SiteSettingsViewController {
     // MARK: - Schedule Description
 
     private func schedule(for blog: Blog) -> String {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return ""
         }
 
