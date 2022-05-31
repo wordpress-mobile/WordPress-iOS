@@ -3,5 +3,5 @@
 /// As a workaround, we ignore all multiple method declarations warnings when importing WordPress-Swift.h
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wduplicate-method-match"
-#import "WordPress-Swift-Workaround.h"
+#import "WordPress-Swift-XcodeGenerated.h"
 #pragma clang diagnostic pop
