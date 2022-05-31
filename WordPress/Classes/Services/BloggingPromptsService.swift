@@ -259,7 +259,7 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = .init(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) >= %@", siteID, utcDate as NSDate)
         fetchRequest.fetchLimit = number
-        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: false)]
+        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: true)]
 
         return (try? self.contextManager.mainContext.fetch(fetchRequest)) ?? []
     }
