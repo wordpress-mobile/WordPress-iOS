@@ -4,10 +4,10 @@
 # Constants
 #################################################
 
-# URL of the GlotPress project which contains App strings
+# URL of the GlotPress project containing the app's strings
 GLOTPRESS_APP_STRINGS_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
 
-# URL of the GlotPress projects containing AppStore metadata (title, keywords, release notes, …)
+# URL of the GlotPress projects containing App Store metadata (title, keywords, release notes, …)
 GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
 GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
 
