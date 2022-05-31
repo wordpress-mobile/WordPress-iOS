@@ -69,7 +69,7 @@ private extension StatsRevampV2FeatureDescriptionView {
     enum Strings {
         static let featureDescription: String = NSLocalizedString("Insights help you understand how your content resonates with your audience with an overview of how it is performing and guidance to your next steps.", comment: "Description of updated Stats Insights displayed in the Feature Introduction view.")
         static let noteLabel: String = NSLocalizedString("Note:", comment: "Label for the note displayed in the Feature Introduction view.")
-        static let noteText: String = NSLocalizedString("You can learn more about Insights at an time in My Site > Stats > Insights", comment: "Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
+        static let noteText: String = NSLocalizedString("You can learn more about Insights at any time in My Site > Stats > Insights", comment: "Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
         static let noteTextAccessibilityLabel: String = NSLocalizedString("You can learn more about Insights at any time in My Site, Stats, Insights.", comment: "Accessibility hint for Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
     }
 
