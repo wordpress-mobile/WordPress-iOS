@@ -56,7 +56,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             case .insightsViewsVisitors:
                 self.selectedPeriod = .week
 
-                var date = selectedDate ?? StatsDataHelper.currentDateForSite()
+                let date = selectedDate ?? StatsDataHelper.currentDateForSite()
                 periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
                         period: StatsPeriodUnit.day,
                         forceRefresh: false))
@@ -1134,7 +1134,6 @@ private extension SiteStatsInsightsDetailsViewModel {
         }
 
         var countriesRows: [ImmuTableRow] = []
-        var otherRows: [ImmuTableRow] = []
         var sections: [ImmuTableSection] = []
 
         rows.forEach({ row in

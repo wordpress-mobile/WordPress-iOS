@@ -27,4 +27,5 @@ extension AppStyleGuide {
 extension AppStyleGuide {
     static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
     static let aboutAppIcon = UIImage(named: "icon-wp")
+    static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site")
 }
