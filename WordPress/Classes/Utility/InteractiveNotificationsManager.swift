@@ -232,6 +232,8 @@ final class InteractiveNotificationsManager: NSObject {
                 }
 
             case .bloggingPrompt:
+                WPAnalytics.track(.bloggingRemindersNotificationReceived, properties: ["prompt_included": true])
+
                 let answerPromptBlock = {
                     WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(with: userInfo)
                 }
@@ -256,6 +258,7 @@ final class InteractiveNotificationsManager: NSObject {
                 if identifier == UNNotificationDefaultActionIdentifier {
                     WPAnalytics.track(.promptsNotificationTapped)
                     answerPromptBlock()
+
                 } else if identifier == UNNotificationDismissActionIdentifier {
                     WPAnalytics.track(.promptsNotificationDismissed)
                     // no-op
