@@ -365,6 +365,9 @@ import Foundation
     case promptsDashboardCardMenuSkip
     case promptsDashboardCardMenuRemove
     case promptsListViewed
+    case promptsReminderSettingsIncludeSwitch
+    case promptsReminderSettingsHelp
+
 
     /// A String that represents the event
     var value: String {
@@ -983,6 +986,10 @@ import Foundation
             return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
         case .promptsListViewed:
             return "blogging_prompts_prompts_list_viewed"
+        case .promptsReminderSettingsIncludeSwitch:
+            return "blogging_reminders_include_prompt_tapped"
+        case .promptsReminderSettingsHelp:
+            return "blogging_reminders_include_prompt_help_tapped"
 
         } // END OF SWITCH
     }
