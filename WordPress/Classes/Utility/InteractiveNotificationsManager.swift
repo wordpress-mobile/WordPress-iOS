@@ -232,8 +232,6 @@ final class InteractiveNotificationsManager: NSObject {
                 }
 
             case .bloggingPrompt:
-                WPAnalytics.track(.bloggingRemindersNotificationReceived, properties: ["prompt_included": true])
-
                 let answerPromptBlock = {
                     WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(with: userInfo)
                 }

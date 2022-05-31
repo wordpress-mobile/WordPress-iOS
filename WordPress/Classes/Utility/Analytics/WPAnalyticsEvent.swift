@@ -352,9 +352,6 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
-    // Blogging Reminders Notification
-    case bloggingRemindersNotificationReceived
-
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
     case promptsIntroductionModalViewed
@@ -964,10 +961,6 @@ import Foundation
             return "enhanced_site_creation_site_name_viewed"
         case .enhancedSiteCreationSiteNameExperiment:
             return "enhanced_site_creation_site_name_experiment"
-
-        // Blogging Reminders Notification
-        case .bloggingRemindersNotificationReceived:
-            return "blogging_reminders_notification_received"
 
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
