@@ -28,7 +28,7 @@ class SiteDesignSection: CategorySection {
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
     typealias TemplateGroup = SiteDesignRequest.TemplateGroup
     private let createsSite: Bool
-    private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
+    private let templateGroups: [TemplateGroup] = FeatureFlag.betaSiteDesigns.enabled ? [.stable, .beta] : []
 
     let completion: SiteDesignStep.SiteDesignSelection
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)

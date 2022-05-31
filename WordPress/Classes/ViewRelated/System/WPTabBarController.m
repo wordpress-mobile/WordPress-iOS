@@ -55,6 +55,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong) BloggingPromptCoordinator *bloggingPromptCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -187,7 +188,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
     self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"icon-tab-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
+    self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
     _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
@@ -629,6 +631,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
     return _whatIsNewScenePresenter;
+}
+
+#pragma mark - Blogging Prompt
+- (BloggingPromptCoordinator *)bloggingPromptCoordinator
+{
+    if (_bloggingPromptCoordinator) {
+        return _bloggingPromptCoordinator;
+    }
+
+    self.bloggingPromptCoordinator = [self makeBloggingPromptCoordinator];
+    return _bloggingPromptCoordinator;
 }
 
 @end

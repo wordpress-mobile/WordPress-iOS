@@ -25,7 +25,6 @@ class BloggingRemindersTracker {
         // Misc UI events
         case buttonPressed = "blogging_reminders_button_pressed"
         case screenShown = "blogging_reminders_screen_shown"
-        case switchPressed = "blogging_reminders_switch_pressed"
     }
 
     enum FlowStartSource: String {
@@ -33,7 +32,7 @@ class BloggingRemindersTracker {
         case blogSettings = "blog_settings"
         case notificationSettings = "notification_settings"
         case statsInsights = "stats_insights"
-        case bloggingPromptsFeatureIntroduction = "blogging_prompts_feature_introduction"
+        case bloggingPromptsFeatureIntroduction = "blogging_prompts_onboarding"
     }
 
     enum FlowDismissSource: String {
@@ -54,16 +53,6 @@ class BloggingRemindersTracker {
         case `continue`
         case dismiss
         case notificationSettings
-        case bloggingPromptsInfo
-    }
-
-    enum Switch: String {
-        case bloggingPrompts
-    }
-
-    enum State: String {
-        case disabled
-        case enabled
     }
 
     enum Property: String {
@@ -72,7 +61,6 @@ class BloggingRemindersTracker {
         case source = "source"
         case screen = "screen"
         case selectedTime = "selected_time"
-        case `switch` = "switch"
         case state = "state"
     }
 
@@ -99,16 +87,6 @@ class BloggingRemindersTracker {
         ]
 
         track(event(.buttonPressed, properties: properties))
-    }
-
-    func switchPressed(control: Switch, state: State, screen: Screen) {
-        let properties = [
-            Property.switch.rawValue: control.rawValue,
-            Property.state.rawValue: state.rawValue,
-            Property.screen.rawValue: screen.rawValue,
-        ]
-
-        track(event(.switchPressed, properties: properties))
     }
 
     func flowCompleted() {

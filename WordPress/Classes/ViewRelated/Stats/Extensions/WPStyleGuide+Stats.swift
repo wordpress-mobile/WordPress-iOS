@@ -230,6 +230,7 @@ extension WPStyleGuide {
 
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
+        static let neutralColor = UIColor.primary
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 

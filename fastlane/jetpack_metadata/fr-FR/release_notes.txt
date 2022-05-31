@@ -1,0 +1,14 @@
+Les blocs peuvent désormais être déplacés par glisser-déposer, ce qui vous permet de réorganiser facilement votre contenu comme vous l’entendez. Cette fonctionnalité de déplacement est très appréciée.
+
+Il ne s’agit pas du seul changement dans l’éditeur de blocs. Nous avons ajusté le contraste des couleurs afin de faciliter la lecture du texte lorsque vous travaillez en mode sombre. Nous avons également corrigé un problème avec le réglage Lien vers dans les blocs de galerie, puis, tant que nous y étions, nous en avons profité pour ajouter des réglages de taille d’image.
+
+La bannière de visite de WordPress.com ne s’affiche plus dans l’éditeur de blocs non pris en charge. En parlant de visites, un ensemble différent de tâches de démarrage rapide s’affiche désormais selon que vous créez un nouveau site ou que vous travaillez sur un site existant. L’apprentissage de nouvelles tâches, comme la vérification des notifications et le téléchargement de médias, est à présent un jeu d’enfant.
+
+Enfin, nous avons corrigé quelques bogues pour rendre l’application plus conviviale.
+
+- Le texte des widgets n’est plus inversé pour les appareils utilisant des langues s’écrivant de droite à gauche.
+- L’application ne se bloque plus lorsque vous passez des statistiques et tendances à d’autres sections du site. Ouf !
+- Dans la liste d’articles, le bouton de création est désormais visible pour les utilisateurs d’iPad travaillant dans un écran partagé.
+- Lorsque vous modifiez le titre de votre site dans les réglages du site, il est également mis à jour dans Mon site.
+- Le message correct s’affiche dans le sélecteur de médias en l’absence de média disponible.
+- La taille des boutons de navigation dans le processus de création de site s’ajuste désormais correctement lorsque votre appareil utilise de grandes polices.

@@ -95,7 +95,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
             dismissCustomizeCard()
         }
 
-        let controller = AddInsightTableViewController(insightsDelegate: self,
+        let controller = InsightsManagementViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.presentationController?.delegate = self
@@ -411,8 +411,27 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
+        if FeatureFlag.statsNewInsights.enabled {
+            switch statSection {
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            default:
+                segueToDetails(statSection: statSection, selectedDate: selectedDate)
+            }
+        } else {
+            segueToDetails(statSection: statSection, selectedDate: selectedDate)
+        }
+    }
+
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func segueToDetails(statSection: StatSection, selectedDate: Date?) {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, tableStyle: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
@@ -601,7 +620,7 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
 extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let navigationController = presentationController.presentedViewController as? UINavigationController,
-        let controller = navigationController.topViewController as? AddInsightTableViewController else {
+        let controller = navigationController.topViewController as? InsightsManagementViewController else {
             return
         }
 

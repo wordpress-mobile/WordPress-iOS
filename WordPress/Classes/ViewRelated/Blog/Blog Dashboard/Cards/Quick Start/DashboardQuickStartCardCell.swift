@@ -7,15 +7,13 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
-        frameView.title = Strings.nextSteps
-        frameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.onEllipsisButtonTap = { [weak self] in
             guard let viewController = self?.viewController,
                   let blog = self?.blog else {
                 return
             }
-            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.ellipsisButton.frame)
+            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.buttonContainerStackView.frame)
         }
         return frameView
     }()
@@ -42,6 +40,8 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         self.viewController = viewController
         self.blog = blog
 
+        cardFrameView.title = Strings.title(for: blog.quickStartType)
+
         let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties:["type": DashboardCard.quickStart.rawValue])
 
         tourStateView.configure(blog: blog, sourceController: viewController, checklistTappedTracker: checklistTappedTracker)
@@ -61,6 +61,7 @@ extension DashboardQuickStartCardCell {
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.constraintPriority)
 
         cardFrameView.add(subview: tourStateView)
+        cardFrameView.hideHeader()
     }
 }
 
@@ -70,6 +71,15 @@ extension DashboardQuickStartCardCell {
 
     private enum Strings {
         static let nextSteps = NSLocalizedString("Next Steps", comment: "Title for the Quick Start dashboard card.")
+
+        static func title(for quickStartType: QuickStartType) -> String? {
+            switch quickStartType {
+            case .newSite:
+                return nextSteps
+            default:
+                return nil
+            }
+        }
     }
 
     private enum Metrics {

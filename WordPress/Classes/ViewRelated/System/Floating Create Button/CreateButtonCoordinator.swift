@@ -332,6 +332,7 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen

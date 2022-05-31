@@ -115,6 +115,8 @@ platform :ios do
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
+    git_pull
+
     version = ios_get_app_version
     trigger_release_build(branch_to_build: "release/#{version}")
   end
@@ -133,6 +135,7 @@ platform :ios do
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
     ios_finalize_prechecks(options)
+    git_pull
 
     check_all_translations(interactive: true)
 
