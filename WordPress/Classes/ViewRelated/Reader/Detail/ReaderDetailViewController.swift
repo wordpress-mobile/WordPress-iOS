@@ -395,6 +395,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                              comments: approvedComments,
                                              totalComments: totalComments,
                                              presentingViewController: self,
+                                             containerScrollView: scrollView,
                                              buttonDelegate: self)
 
         commentsTableView.reloadData()

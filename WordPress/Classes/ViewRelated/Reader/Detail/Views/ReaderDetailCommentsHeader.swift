@@ -48,6 +48,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
             delegate: self,
             presentingViewController: presentingViewController
         )
+    }
+
+    func configureTooltip(onView view: UIView, anchorAction: (() -> Void)?) {
         let tooltip = Tooltip()
         self.tooltip = tooltip
 
@@ -61,7 +64,14 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
             tooltip: tooltip,
             targetView: followButton
         )
-        tooltipPresenter?.attachAnchor(withTitle: "New", onView: presentingViewController.view)
+        
+        if let anchorAction = anchorAction {
+            tooltipPresenter?.attachAnchor(
+                withTitle: "New",
+                onView: view,
+                anchorAction: anchorAction
+            )
+        }
         tooltipPresenter?.showTooltip()
     }
 

@@ -30,6 +30,7 @@ final class TooltipAnchor: UIControl {
     private lazy var stackView: UIStackView = {
         $0.addArrangedSubviews([highlightLabel, titleLabel])
         $0.spacing = Constants.stackViewSpacing
+        $0.isUserInteractionEnabled = false
         return $0
     }(UIStackView())
 

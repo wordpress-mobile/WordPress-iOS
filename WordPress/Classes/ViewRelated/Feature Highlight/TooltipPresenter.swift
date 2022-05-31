@@ -24,6 +24,7 @@ final class TooltipPresenter {
     private var secondaryTooltipAction: (() -> Void)?
     private var anchor: TooltipAnchor?
     private var tooltipTopConstraint: NSLayoutConstraint?
+    private var anchorAction: (() -> Void)?
 
     var tooltipVerticalPosition: TooltipVerticalPosition = .auto
 
@@ -54,10 +55,12 @@ final class TooltipPresenter {
         )
     }
 
-    func attachAnchor(withTitle title: String, onView view: UIView) {
+    func attachAnchor(withTitle title: String, onView view: UIView, anchorAction: @escaping (() -> Void)) {
         let anchor = TooltipAnchor()
         self.anchor = anchor
+        self.anchorAction = anchorAction
         anchor.title = title
+        anchor.addTarget(self, action: #selector(didTapAnchor), for: .touchUpInside)
         anchor.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(anchor)
 
@@ -96,6 +99,10 @@ final class TooltipPresenter {
             tooltipTopConstraint.constant -= Constants.tooltipTopConstraintAnimationOffset
             self.containerView.layoutIfNeeded()
         }
+    }
+
+    @objc private func didTapAnchor() {
+        anchorAction?()
     }
 
     private func configureDismissal() {

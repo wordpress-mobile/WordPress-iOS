@@ -10,6 +10,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
+    private unowned var containerScrollView: UIScrollView?
 
     private var totalRows = 0
     private var hideButton = true
@@ -43,12 +44,14 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                     comments: [Comment] = [],
                     totalComments: Int = 0,
                     presentingViewController: UIViewController,
+                    containerScrollView: UIScrollView?,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
         self.post = post
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
+        self.containerScrollView = containerScrollView
         self.buttonDelegate = buttonDelegate
     }
 
@@ -108,6 +111,11 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             totalComments: totalComments,
             presentingViewController: presentingViewController
         )
+        header.configureTooltip(
+            onView: presentingViewController.view
+        ) { [weak self] in
+            self?.containerScrollView?.scrollToBottom(animated: true)
+        }
         headerView = header
         return header
     }
