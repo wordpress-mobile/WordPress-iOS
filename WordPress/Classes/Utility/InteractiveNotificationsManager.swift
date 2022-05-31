@@ -418,16 +418,25 @@ extension InteractiveNotificationsManager {
             return NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
+        var notificationCategoryOptions: [UNNotificationCategoryOptions] {
+            switch self {
+            case .bloggingPrompt:
+                return [.customDismissAction]
+            default:
+                return []
+            }
+        }
+
         func notificationCategory() -> UNNotificationCategory {
             return UNNotificationCategory(
                 identifier: identifier,
                 actions: actions.map({ $0.notificationAction() }),
                 intentIdentifiers: [],
-                options: [])
+                options: UNNotificationCategoryOptions())
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly, bloggingPrompt]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup, bloggingPrompt]
     }
 
 
@@ -496,7 +505,7 @@ extension InteractiveNotificationsManager {
 
         var requiresForeground: Bool {
             switch self {
-            case .mediaWritePost, .mediaRetry, .postView, .shareEditPost:
+            case .mediaWritePost, .mediaRetry, .postView, .shareEditPost, .answerPrompt:
                 return true
             default: return false
             }
@@ -546,7 +555,7 @@ extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
     }
 }
 
