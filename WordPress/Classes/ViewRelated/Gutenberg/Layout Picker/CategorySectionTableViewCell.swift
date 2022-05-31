@@ -99,7 +99,7 @@ class CategorySectionTableViewCell: UITableViewCell {
         categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
-        categoryCaptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        categoryCaptionLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         setCaption()
     }
 
