@@ -17,28 +17,52 @@ final class TooltipPresenter {
         case below
     }
 
+    enum Target {
+        case view(UIView)
+        case point(CGPoint)
+    }
+
     private let containerView: UIView
     private let tooltip: Tooltip
-    private let targetView: UIView
     private var primaryTooltipAction: (() -> Void)?
     private var secondaryTooltipAction: (() -> Void)?
     private var anchor: TooltipAnchor?
     private var tooltipTopConstraint: NSLayoutConstraint?
     private var anchorAction: (() -> Void)?
+    private let target: Target
+
+    private var targetMidX: CGFloat {
+        switch target {
+        case .view(let targetView):
+            return targetView.frame.midX
+        case .point(let targetPoint):
+            return targetPoint.x
+        }
+    }
+
+    private var targetMinY: CGFloat {
+        switch target {
+        case .view(let targetView):
+            return targetView.frame.minY
+        case .point(let targetPoint):
+            return targetPoint.y
+        }
+    }
+
 
     var tooltipVerticalPosition: TooltipVerticalPosition = .auto
 
     init(containerView: UIView,
          tooltip: Tooltip,
-         targetView: UIView,
+         target: Target,
          primaryTooltipAction: (() -> Void)? = nil,
          secondaryTooltipAction: (() -> Void)? = nil
     ) {
         self.containerView = containerView
         self.tooltip = tooltip
-        self.targetView = targetView
         self.primaryTooltipAction = primaryTooltipAction
         self.secondaryTooltipAction = secondaryTooltipAction
+        self.target = target
 
         configureDismissal()
 
@@ -131,16 +155,24 @@ final class TooltipPresenter {
             tooltip.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: extraArrowOffsetX())
         ]
 
-        switch tooltipOrientation() {
-        case .bottom:
-            tooltipTopConstraint = targetView.topAnchor.constraint(
+        switch target {
+        case .view(let targetView):
+            switch tooltipOrientation() {
+            case .bottom:
+                tooltipTopConstraint = targetView.topAnchor.constraint(
+                    equalTo: tooltip.bottomAnchor,
+                    constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
+                )
+            case .top:
+                tooltipTopConstraint = tooltip.topAnchor.constraint(
+                    equalTo: targetView.bottomAnchor,
+                    constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
+                )
+            }
+        case .point(let targetPoint):
+            tooltipTopConstraint = containerView.topAnchor.constraint(
                 equalTo: tooltip.bottomAnchor,
-                constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
-            )
-        case .top:
-            tooltipTopConstraint = tooltip.topAnchor.constraint(
-                equalTo: targetView.bottomAnchor,
-                constant: Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
+                constant: targetPoint.y - Constants.verticalTooltipDistanceToFocus - Constants.tooltipTopConstraintAnimationOffset
             )
         }
 
@@ -154,31 +186,31 @@ final class TooltipPresenter {
     }
 
     /// Calculates where the arrow needs to place in the borders of the tooltip.
-    /// This depends on the position of the `targetView` relative to `tooltip`.
+    /// This depends on the position of the target relative to `tooltip`.
     private func arrowOffsetX() -> CGFloat {
-        return targetView.frame.midX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
+        return targetMidX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
     }
 
-    /// If the tooltip is always vertically centered, tooltip's width may not be big enough to reach to the `targetView`
-    /// If `xxxxxxxx` is the Tooltip and `oo` is the `targetView`:
+    /// If the tooltip is always vertically centered, tooltip's width may not be big enough to reach to the target
+    /// If `xxxxxxxx` is the Tooltip and `oo` is the target:
     /// |                                               |
     /// |                xxxxxxxx                 |
     /// |                                    oo       |
     /// The tooltip needs an extra X offset to be aligned with target so that tooltip arrow points to the correct position.
-    /// Here the tooltip is pushed to the right so the arrow is pointing at the `targetView`
+    /// Here the tooltip is pushed to the right so the arrow is pointing at the target
     /// |                                               |
     /// |                           xxxxxxxx     |
     /// |                                    oo       |
-    /// It would be retracted instead of the `targetView` was at the left of the screen.
+    /// It would be retracted instead of the target was at the left of the screen.
     ///
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width
         let extraPushOffset = max(
-            (targetView.frame.midX + Constants.horizontalBufferMargin) - (containerView.frame.midX + tooltipWidth / 2),
+            (targetMidX + Constants.horizontalBufferMargin) - (containerView.frame.midX + tooltipWidth / 2),
             0
         )
         let extraRetractOffset = min(
-            (targetView.frame.midX - Constants.horizontalBufferMargin) - (containerView.frame.midX - tooltipWidth / 2),
+            (targetMidX - Constants.horizontalBufferMargin) - (containerView.frame.midX - tooltipWidth / 2),
             0
         )
 
@@ -193,7 +225,7 @@ final class TooltipPresenter {
     private func tooltipOrientation() -> Tooltip.ArrowPosition {
         switch tooltipVerticalPosition {
         case .auto:
-            if containerView.frame.midY < targetView.frame.minY {
+            if containerView.frame.midY < targetMinY {
                 return .bottom
             }
             return .top

@@ -114,7 +114,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         header.configureTooltip(
             onView: presentingViewController.view
         ) { [weak self] in
-            self?.containerScrollView?.scrollToBottom(animated: true)
+            self?.scrollContainerScrollViewTo(view: tableView)
         }
         headerView = header
         return header
@@ -126,6 +126,27 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
+    }
+
+    private func scrollContainerScrollViewTo(view: UIView) {
+        guard let containerScrollView = containerScrollView else { return }
+
+        if let origin = view.superview {
+
+            let childStartPoint = origin.convert(view.frame.origin, to: containerScrollView)
+            if childStartPoint.y + containerScrollView.safeAreaLayoutGuide.layoutFrame.height < containerScrollView.contentSize.height {
+                let targetRect = CGRect(
+                    x: 0,
+                    y: childStartPoint.y - 220,
+                    width: 1,
+                    height: containerScrollView.safeAreaLayoutGuide.layoutFrame.height
+                )
+                containerScrollView.setContentOffset(CGPoint(x: targetRect.midX, y: targetRect.minY), animated: true)
+                containerScrollView.layoutIfNeeded()
+            } else {
+                containerScrollView.scrollToBottom(animated: true)
+            }
+        }
     }
 
 }

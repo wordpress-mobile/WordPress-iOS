@@ -60,9 +60,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         tooltip.secondaryButtonTitle = "Learn more"
 
         tooltipPresenter = TooltipPresenter(
-            containerView: self,
+            containerView: contentStackView,
             tooltip: tooltip,
-            targetView: followButton
+            target: .view(followButton)
         )
         
         if let anchorAction = anchorAction {
