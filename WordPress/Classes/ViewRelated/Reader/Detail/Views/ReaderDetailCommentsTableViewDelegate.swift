@@ -60,8 +60,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
-    func setAnchorVisibility(_ isVisible: Bool) {
-        headerView?.toggleAnchorVisibility(isVisible)
+    func followButtonMidPoint() -> CGPoint? {
+        headerView?.followButtonMidPoint()
     }
 
     // MARK: - Table Methods
@@ -111,11 +111,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             totalComments: totalComments,
             presentingViewController: presentingViewController
         )
-        header.configureTooltip(
-            onView: presentingViewController.view
-        ) { [weak self] in
-            self?.scrollContainerScrollViewTo(view: tableView)
-        }
         headerView = header
         return header
     }

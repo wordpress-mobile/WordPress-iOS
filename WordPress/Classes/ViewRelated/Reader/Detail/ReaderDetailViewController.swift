@@ -149,6 +149,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// has a comment anchor fragment.
     private var hasAutomaticallyTriggeredCommentAction = false
 
+    private var tooltipPresenter: TooltipPresenter?
+    private var tooltip: Tooltip?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -262,6 +265,35 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
         relatedPostsTableView.reloadData()
         relatedPostsTableView.invalidateIntrinsicContentSize()
+    }
+
+    private func configureTooltip(anchorAction: (() -> Void)?) {
+        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else { return }
+
+        let tooltip = Tooltip()
+        self.tooltip = tooltip
+
+        tooltip.title = "Follow the conversation"
+        tooltip.message = "Get notified."
+        tooltip.primaryButtonTitle = "Got it"
+        tooltip.secondaryButtonTitle = "Learn more"
+
+        tooltipPresenter = TooltipPresenter(
+            containerView: scrollView,
+            tooltip: tooltip,
+            target: .point(CGPoint(x: commentsTableView.frame.minX + followButtonMidPoint.x, y: commentsTableView.frame.minY + followButtonMidPoint.y))
+        )
+        tooltipPresenter?.tooltipVerticalPosition = .above
+
+        if let anchorAction = anchorAction {
+            tooltipPresenter?.attachAnchor(
+                withTitle: "New",
+                onView: view,
+                anchorAction: anchorAction
+            )
+        }
+        
+        tooltipPresenter?.showTooltip()
     }
 
     private func navigateToCommentIfNecessary() {
@@ -399,6 +431,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                              buttonDelegate: self)
 
         commentsTableView.reloadData()
+        let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+            self.configureTooltip {
+                print("IT WORKS!!!")
+            }
+        }
     }
 
     func updateFollowButtonState() {
@@ -1051,12 +1088,12 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 // MARK: - UIScrollViewDelegate
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let tooltip = commentsTableViewDelegate.headerView?.tooltip else { return }
+        guard let tooltip = self.tooltip else { return }
         let isTooltipVisible = isFullyVisibleInScrollView(tooltip)
 
         guard isTooltipVisible != shouldShowTooltipAnchor else { return }
 
         shouldShowTooltipAnchor = !shouldShowTooltipAnchor
-        commentsTableViewDelegate.setAnchorVisibility(!isTooltipVisible)
+        tooltipPresenter?.toggleAnchorVisibility(isTooltipVisible)
     }
 }

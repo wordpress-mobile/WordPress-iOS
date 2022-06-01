@@ -170,9 +170,9 @@ final class TooltipPresenter {
                 )
             }
         case .point(let targetPoint):
-            tooltipTopConstraint = containerView.topAnchor.constraint(
-                equalTo: tooltip.bottomAnchor,
-                constant: targetPoint.y - Constants.verticalTooltipDistanceToFocus - Constants.tooltipTopConstraintAnimationOffset
+            tooltipTopConstraint = tooltip.bottomAnchor.constraint(
+                equalTo: containerView.topAnchor,
+                constant: targetPoint.y + Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
             )
         }
 

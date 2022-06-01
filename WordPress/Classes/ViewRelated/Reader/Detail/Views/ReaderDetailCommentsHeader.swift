@@ -10,8 +10,6 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var followButton: UIButton!
     private var post: ReaderPost?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
-    private var tooltipPresenter: TooltipPresenter?
-    private(set) var tooltip: Tooltip?
 
     private var totalComments = 0 {
         didSet {
@@ -50,38 +48,13 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         )
     }
 
-    func configureTooltip(onView view: UIView, anchorAction: (() -> Void)?) {
-        let tooltip = Tooltip()
-        self.tooltip = tooltip
-
-        tooltip.title = "Follow the conversation"
-        tooltip.message = "Get notified."
-        tooltip.primaryButtonTitle = "Got it"
-        tooltip.secondaryButtonTitle = "Learn more"
-
-        tooltipPresenter = TooltipPresenter(
-            containerView: contentStackView,
-            tooltip: tooltip,
-            target: .view(followButton)
-        )
-        
-        if let anchorAction = anchorAction {
-            tooltipPresenter?.attachAnchor(
-                withTitle: "New",
-                onView: view,
-                anchorAction: anchorAction
-            )
-        }
-        tooltipPresenter?.showTooltip()
-    }
-
     func updateFollowButtonState(post: ReaderPost) {
         self.post = post
         configureButton()
     }
 
-    func toggleAnchorVisibility(_ isVisible: Bool) {
-        tooltipPresenter?.toggleAnchorVisibility(isVisible)
+    func followButtonMidPoint() -> CGPoint {
+        CGPoint(x: followButton.frame.midX, y: followButton.frame.minY)
     }
 }
 
