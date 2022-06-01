@@ -15,11 +15,14 @@ common_params:
 steps:
 
   - label: "Test"
-    command: echo $FASTLANE_HIDE_PLUGINS_TABLE
+    command: echo $$FASTLANE_HIDE_PLUGINS_TABLE
     env: *common_env
     plugins: *common_plugins
 
   - label: "Test some more"
-    command: bundle exec fastlane cowabunga
+    command: |
+      gem install bundler
+      install_gems
+      bundle exec fastlane cowabunga
     env: *common_env
     plugins: *common_plugins
