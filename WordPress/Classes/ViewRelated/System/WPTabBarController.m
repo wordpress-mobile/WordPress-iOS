@@ -595,6 +595,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
+
+    [self updatePromptsIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -318,15 +318,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }
 
     @objc private func bloggingPromptsInfoButtonTapped() {
-        tracker.buttonPressed(button: .bloggingPromptsInfo, screen: .dayPicker)
+        WPAnalytics.track(.promptsReminderSettingsHelp)
 
         present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
     }
 
     @objc private func bloggingPromptsSwitchChanged(_ sender: UISwitch) {
-        tracker.switchPressed(control: .bloggingPrompts,
-                              state: sender.isOn ? .enabled : .disabled,
-                              screen: .dayPicker)
+        WPAnalytics.track(.promptsReminderSettingsIncludeSwitch, properties: ["enabled": String(sender.isOn)])
     }
 
     /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
