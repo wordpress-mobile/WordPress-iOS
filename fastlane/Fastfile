@@ -95,3 +95,8 @@ before_all do |lane|
   end
   # rubocop:enable Style/IfUnlessModifier
 end
+
+lane :cowabunga do
+  UI.success "Who doesn't love pizza :)"
+end
+
