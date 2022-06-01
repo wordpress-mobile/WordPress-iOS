@@ -5,7 +5,7 @@
 #################################################
 
 # URL of the GlotPress project containing the app's strings
-GLOTPRESS_APP_STRINGS_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
+GLOTPRESS_APP_STRINGS_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
 
 # URL of the GlotPress projects containing App Store metadata (title, keywords, release notes, …)
 GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
@@ -228,7 +228,7 @@ platform :ios do
     # Download `Localizable.strings` translations used within the app
     parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
     ios_download_strings_files_from_glotpress(
-      project_url: GLOTPRESS_APP_STRINGS_URL,
+      project_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
       locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
       download_dir: parent_dir_for_lprojs
     )
@@ -409,7 +409,7 @@ platform :ios do
 
     UI.message('Checking app strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_APP_STRINGS_URL,
+      glotpress_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
