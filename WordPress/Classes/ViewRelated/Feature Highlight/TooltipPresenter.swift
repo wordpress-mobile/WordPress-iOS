@@ -201,7 +201,7 @@ final class TooltipPresenter {
     /// |                                               |
     /// |                           xxxxxxxx     |
     /// |                                    oo       |
-    /// It would be retracted instead of the target was at the left of the screen.
+    /// It would be retracted instead if the target was at the left of the screen.
     ///
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width
