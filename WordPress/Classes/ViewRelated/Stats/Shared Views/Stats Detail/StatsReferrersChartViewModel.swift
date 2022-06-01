@@ -73,7 +73,7 @@ struct StatsReferrersChartViewModel {
         ]
 
         static let referrersTitlesMap = [
-            "WordPress.com Reader":  "WordPress",
+            "WordPress.com Reader": "WordPress",
             "Search Engines": NSLocalizedString("Search", comment: "Title of Stats section that shows search engine referrer traffic.")
         ]
 
