@@ -3,11 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 142
+## WordPress 143
 
-@scoutharris 2022-05-24
+@wargcm 2022-06-01 (@scoutharris 2022-05-24)
 
 - `Post`: added `bloggingPromptID` attribute. (optional, no default, `String`)
+
+## WordPress 142
+
+@dvdchr 2022-05-31
+
+- Updated `BloggingPrompt`:
+    - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
 
 ## WordPress 141
 

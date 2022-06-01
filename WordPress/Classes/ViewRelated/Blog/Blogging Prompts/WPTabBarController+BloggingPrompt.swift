@@ -15,12 +15,25 @@ extension WPTabBarController {
         bloggingPromptCoordinator.updatePromptsIfNeeded(for: blog)
     }
 
-    func showPromptAnsweringFlow(siteID: Int, promptID: Int?, source: BloggingPromptCoordinator.Source) {
+    /// Shows prompt answering flow when a prompt notification is tapped.
+    ///
+    /// - Parameter userInfo: Notification payload.
+    func showPromptAnsweringFlow(with userInfo: NSDictionary) {
         guard Feature.enabled(.bloggingPrompts),
+              let siteID = userInfo[BloggingPrompt.NotificationKeys.siteID] as? Int,
               let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
               let viewController = viewControllers?[selectedIndex] else {
             return
         }
+
+        // When the promptID is nil, it's most likely a static prompt notification.
+        let promptID = userInfo[BloggingPrompt.NotificationKeys.promptID] as? Int
+        let source: BloggingPromptCoordinator.Source = {
+            if promptID != nil {
+                return .promptNotification
+            }
+            return .promptStaticNotification
+        }()
 
         bloggingPromptCoordinator.showPromptAnsweringFlow(from: viewController, promptID: promptID, blog: blog, source: source)
     }
