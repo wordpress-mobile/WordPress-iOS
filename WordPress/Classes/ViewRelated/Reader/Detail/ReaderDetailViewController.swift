@@ -89,7 +89,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
-    private var shouldShowTooltip = true
+    private var lastToggleAnchorVisibility = false
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -299,18 +299,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         tooltipPresenter?.showTooltip()
+        tooltipPresenter?.toggleAnchorVisibility(!isVisibleInScrollView(tooltip))
+
     }
 
-    private func scrollScrollViewToTooltip() {
-        guard let tooltip = tooltip else {
-            return
-        }
-
-        let childStartPoint = scrollView.convert(tooltip.frame.origin, to: scrollView)
-        if childStartPoint.y + tooltip.safeAreaLayoutGuide.layoutFrame.height < scrollView.contentSize.height {
+    private func scrollToTooltip() {
+        let childStartPoint = scrollView.convert(commentsTableView.frame.origin, to: scrollView)
+        if childStartPoint.y + commentsTableView.safeAreaLayoutGuide.layoutFrame.height < scrollView.contentSize.height {
             let targetRect = CGRect(
                 x: 0,
-                y: childStartPoint.y - 220,
+                y: childStartPoint.y,
                 width: 1,
                 height: scrollView.safeAreaLayoutGuide.layoutFrame.height
             )
@@ -418,7 +416,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         scrollView.layoutIfNeeded()
 
         self.showTooltip {
-            self.scrollScrollViewToTooltip()
+            self.scrollToTooltip()
         }
     }
 
@@ -1034,16 +1032,6 @@ private extension ReaderDetailViewController {
         let convertedViewFrame = scrollView.convert(view.bounds, from: view)
         return scrollViewFrame.intersects(convertedViewFrame)
     }
-        /// Checks if the view is fully visible in the viewport.
-    func isFullyVisibleInScrollView(_ view: UIView) -> Bool {
-        guard view.superview != nil, !view.isHidden else {
-            return false
-        }
-
-        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
-        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
-        return scrollViewFrame.contains(convertedViewFrame)
-    }
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -1112,14 +1100,14 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 // MARK: - UIScrollViewDelegate
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        guard isVisibleInScrollView(commentsTableView),
-//        shouldShowTooltip else {
-//            return
-//        }
-//
-//        showTooltip { [weak self] in
-//            self?.scrollScrollViewToTooltip()
-//        }
-//        shouldShowTooltip = false
+        guard let tooltip = tooltip else { return }
+
+        let currentToggleVisibility = isVisibleInScrollView(tooltip)
+
+        if lastToggleAnchorVisibility != currentToggleVisibility {
+            tooltipPresenter?.toggleAnchorVisibility(!currentToggleVisibility)
+        }
+
+        lastToggleAnchorVisibility = currentToggleVisibility
     }
 }
