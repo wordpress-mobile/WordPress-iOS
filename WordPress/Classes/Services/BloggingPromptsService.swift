@@ -154,8 +154,10 @@ class BloggingPromptsService {
         remote.fetchSettings(for: siteID) { result in
             switch result {
             case .success(let remoteSettings):
-                self.saveSettings(remoteSettings,
-                        completion: self.loadSettingsCompletion(success: success, failure: failure))
+                self.saveSettings(remoteSettings) {
+                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    success(settings)
+                }
             case .failure(let error):
                 failure(error)
             }
@@ -179,9 +181,10 @@ class BloggingPromptsService {
                     success(nil)
                     return
                 }
-
-                self.saveSettings(updatedSettings,
-                        completion: self.loadSettingsCompletion(success: success, failure: failure))
+                self.saveSettings(updatedSettings) {
+                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    success(settings)
+                }
             case .failure(let error):
                 failure(error)
             }
@@ -259,7 +262,7 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = .init(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) >= %@", siteID, utcDate as NSDate)
         fetchRequest.fetchLimit = number
-        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: false)]
+        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: true)]
 
         return (try? self.contextManager.mainContext.fetch(fetchRequest)) ?? []
     }
@@ -327,22 +330,16 @@ private extension BloggingPromptsService {
     ///
     /// - Parameters:
     ///   - remoteSettings: The blogging prompt settings from the remote.
-    ///   - completion: Closure to be called on completion. Result object with `Void` on success and an `Error` on failure.
-    func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping (Result<Void, Error>) -> Void) {
+    ///   - completion: Closure to be called on completion.
+    func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping () -> Void) {
         let derivedContext = contextManager.newDerivedContext()
         derivedContext.perform {
-            do {
-                let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
-                settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
+            let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
+            settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
 
-                self.contextManager.save(derivedContext) {
-                    DispatchQueue.main.async {
-                        completion(.success(()))
-                    }
-                }
-            } catch let error {
+            self.contextManager.save(derivedContext) {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion()
                 }
             }
         }
@@ -353,25 +350,6 @@ private extension BloggingPromptsService {
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
         return (try? context.fetch(fetchRequest))?.first
-    }
-
-    /// A completion closure that will load the settings on success and calls the failure closure on an error.
-    ///
-    /// - Parameters:
-    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object.
-    ///   - failure: Closure to be called on failure with an optional `Error` object.
-    /// - Returns: A closure which takes a `Result<Void, Error>` input
-    func loadSettingsCompletion(success: @escaping (BloggingPromptSettings?) -> Void,
-                                failure: @escaping (Error?) -> Void) -> (Result<Void, Error>) -> Void {
-        return { result in
-            switch result {
-            case .success:
-                let settings = self.loadSettings(context: self.contextManager.mainContext)
-                success(settings)
-            case .failure(let error):
-                failure(error)
-            }
-        }
     }
 
 }

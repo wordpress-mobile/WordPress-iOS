@@ -56,6 +56,17 @@ public class BloggingPrompt: NSManagedObject {
     }
 }
 
+// MARK: - Notification Payload
+
+extension BloggingPrompt {
+
+    struct NotificationKeys {
+        static let promptID = "prompt_id"
+        static let siteID = "site_id"
+    }
+
+}
+
 // MARK: - Private Helpers
 
 private extension BloggingPrompt {
