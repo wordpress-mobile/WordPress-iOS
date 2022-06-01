@@ -9,6 +9,7 @@ common_params:
   # Common environment values to use with the `env` key.
   - &common_env
     IMAGE_ID: xcode-13 # Remember to address all 'FIXIT-13.1' comments when we'll update to new image
+    FASTLANE_HIDE_PLUGINS_TABLE: 1 # Don't print noisy plugins table and save logs lines
 
 # This is the default pipeline – it will build and test the app
 steps:

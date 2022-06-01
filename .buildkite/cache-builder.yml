@@ -14,6 +14,7 @@ common_params:
   # Common environment values to use with the `env` key.
   - &common_env
     IMAGE_ID: xcode-13
+    FASTLANE_HIDE_PLUGINS_TABLE: 1 # Don't print noisy plugins table and save logs lines
 
 steps:
 
