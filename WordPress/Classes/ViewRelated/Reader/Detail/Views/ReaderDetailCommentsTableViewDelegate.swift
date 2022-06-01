@@ -10,7 +10,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
-    private unowned var containerScrollView: UIScrollView?
 
     private var totalRows = 0
     private var hideButton = true
@@ -44,14 +43,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                     comments: [Comment] = [],
                     totalComments: Int = 0,
                     presentingViewController: UIViewController,
-                    containerScrollView: UIScrollView?,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
         self.post = post
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
-        self.containerScrollView = containerScrollView
         self.buttonDelegate = buttonDelegate
     }
 
@@ -122,28 +119,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
     }
-
-    private func scrollContainerScrollViewTo(view: UIView) {
-        guard let containerScrollView = containerScrollView else { return }
-
-        if let origin = view.superview {
-
-            let childStartPoint = origin.convert(view.frame.origin, to: containerScrollView)
-            if childStartPoint.y + containerScrollView.safeAreaLayoutGuide.layoutFrame.height < containerScrollView.contentSize.height {
-                let targetRect = CGRect(
-                    x: 0,
-                    y: childStartPoint.y - 220,
-                    width: 1,
-                    height: containerScrollView.safeAreaLayoutGuide.layoutFrame.height
-                )
-                containerScrollView.setContentOffset(CGPoint(x: targetRect.midX, y: targetRect.minY), animated: true)
-                containerScrollView.layoutIfNeeded()
-            } else {
-                containerScrollView.scrollToBottom(animated: true)
-            }
-        }
-    }
-
 }
 
 private extension ReaderDetailCommentsTableViewDelegate {

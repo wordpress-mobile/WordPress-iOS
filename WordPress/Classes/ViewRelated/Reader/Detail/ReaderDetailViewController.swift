@@ -89,7 +89,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
-    private var shouldShowTooltipAnchor = true
+    private var shouldShowTooltip = true
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -267,7 +267,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
-    private func configureTooltip(anchorAction: (() -> Void)?) {
+    private func showTooltip(anchorAction: (() -> Void)?) {
         guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else { return }
 
         let tooltip = Tooltip()
@@ -281,7 +281,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tooltipPresenter = TooltipPresenter(
             containerView: scrollView,
             tooltip: tooltip,
-            target: .point(CGPoint(x: commentsTableView.frame.minX + followButtonMidPoint.x, y: commentsTableView.frame.minY + followButtonMidPoint.y))
+            target: .point(
+                CGPoint(
+                    x: commentsTableView.frame.minX + followButtonMidPoint.x,
+                    y: commentsTableView.frame.minY + followButtonMidPoint.y
+                )
+            )
         )
         tooltipPresenter?.tooltipVerticalPosition = .above
 
@@ -292,8 +297,28 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 anchorAction: anchorAction
             )
         }
-        
+
         tooltipPresenter?.showTooltip()
+    }
+
+    private func scrollScrollViewToTooltip() {
+        guard let tooltip = tooltip else {
+            return
+        }
+
+        let childStartPoint = scrollView.convert(tooltip.frame.origin, to: scrollView)
+        if childStartPoint.y + tooltip.safeAreaLayoutGuide.layoutFrame.height < scrollView.contentSize.height {
+            let targetRect = CGRect(
+                x: 0,
+                y: childStartPoint.y - 220,
+                width: 1,
+                height: scrollView.safeAreaLayoutGuide.layoutFrame.height
+            )
+            scrollView.setContentOffset(CGPoint(x: targetRect.midX, y: targetRect.minY), animated: true)
+            scrollView.layoutIfNeeded()
+        } else {
+            scrollView.scrollToBottom(animated: true)
+        }
     }
 
     private func navigateToCommentIfNecessary() {
@@ -389,6 +414,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if likesSummary.superview == nil {
             configureLikesSummary()
         }
+
+        scrollView.layoutIfNeeded()
+
+        self.showTooltip {
+            self.scrollScrollViewToTooltip()
+        }
     }
 
     func updateSelfLike(with avatarURLString: String?) {
@@ -427,15 +458,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                              comments: approvedComments,
                                              totalComments: totalComments,
                                              presentingViewController: self,
-                                             containerScrollView: scrollView,
                                              buttonDelegate: self)
 
         commentsTableView.reloadData()
-        let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-            self.configureTooltip {
-                print("IT WORKS!!!")
-            }
-        }
     }
 
     func updateFollowButtonState() {
@@ -1009,7 +1034,7 @@ private extension ReaderDetailViewController {
         let convertedViewFrame = scrollView.convert(view.bounds, from: view)
         return scrollViewFrame.intersects(convertedViewFrame)
     }
-        /// Checks if the view is visible in the viewport.
+        /// Checks if the view is fully visible in the viewport.
     func isFullyVisibleInScrollView(_ view: UIView) -> Bool {
         guard view.superview != nil, !view.isHidden else {
             return false
@@ -1019,7 +1044,6 @@ private extension ReaderDetailViewController {
         let convertedViewFrame = scrollView.convert(view.bounds, from: view)
         return scrollViewFrame.contains(convertedViewFrame)
     }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -1088,12 +1112,14 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 // MARK: - UIScrollViewDelegate
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let tooltip = self.tooltip else { return }
-        let isTooltipVisible = isFullyVisibleInScrollView(tooltip)
-
-        guard isTooltipVisible != shouldShowTooltipAnchor else { return }
-
-        shouldShowTooltipAnchor = !shouldShowTooltipAnchor
-        tooltipPresenter?.toggleAnchorVisibility(isTooltipVisible)
+//        guard isVisibleInScrollView(commentsTableView),
+//        shouldShowTooltip else {
+//            return
+//        }
+//
+//        showTooltip { [weak self] in
+//            self?.scrollScrollViewToTooltip()
+//        }
+//        shouldShowTooltip = false
     }
 }
