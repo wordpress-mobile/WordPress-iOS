@@ -8,8 +8,8 @@
 GLOTPRESS_APP_STRINGS_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
 
 # URL of the GlotPress projects containing App Store metadata (title, keywords, release notes, …)
-GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
-GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
+GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
+GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
 
 # List of locales used for the app strings (GlotPress code => `*.lproj` folder name`)
 #
@@ -270,7 +270,7 @@ platform :ios do
 
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
-      glotpress_project_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
+      glotpress_project_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
       metadata_directory: metadata_directory,
       locales: WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES,
       commit_message: 'Update WordPress metadata translations'
@@ -292,7 +292,7 @@ platform :ios do
 
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
-      glotpress_project_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      glotpress_project_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
       locales: JETPACK_METADATA_GLOTPRESS_LOCALE_CODES,
       metadata_directory: metadata_directory,
       commit_message: 'Update Jetpack metadata translations'
@@ -416,14 +416,14 @@ platform :ios do
 
     UI.message('Checking WordPress release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
+      glotpress_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
 
     UI.message('Checking Jetpack release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      glotpress_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
