@@ -54,37 +54,37 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             // Verify mappings for the first prompt
             let firstPrompt = prompts.first!
-            XCTAssertEqual(firstPrompt.promptID, 239)
-            XCTAssertEqual(firstPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
-            XCTAssertEqual(firstPrompt.title, "Prompt number 1")
-            XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
-            XCTAssertEqual(firstPrompt.attribution, "dayone")
+            XCTAssertEqual(firstPrompt.promptID, 248)
+            XCTAssertEqual(firstPrompt.text, "Tell us about a time when you felt out of place.")
+            XCTAssertEqual(firstPrompt.title, "Prompt number 10")
+            XCTAssertEqual(firstPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
+            XCTAssertTrue(firstPrompt.attribution.isEmpty)
 
             let firstDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: firstPrompt.date)
-            XCTAssertEqual(firstDateComponents.year!, 2022)
-            XCTAssertEqual(firstDateComponents.month!, 5)
-            XCTAssertEqual(firstDateComponents.day!, 3)
+            XCTAssertEqual(firstDateComponents.year!, 2021)
+            XCTAssertEqual(firstDateComponents.month!, 9)
+            XCTAssertEqual(firstDateComponents.day!, 12)
 
-            XCTAssertFalse(firstPrompt.answered)
-            XCTAssertEqual(firstPrompt.answerCount, 0)
-            XCTAssertTrue(firstPrompt.displayAvatarURLs.isEmpty)
+            XCTAssertTrue(firstPrompt.answered)
+            XCTAssertEqual(firstPrompt.answerCount, 1)
+            XCTAssertEqual(firstPrompt.displayAvatarURLs.count, 1)
 
             // Verify mappings for the second prompt
             let secondPrompt = prompts.last!
-            XCTAssertEqual(secondPrompt.promptID, 248)
-            XCTAssertEqual(secondPrompt.text, "Tell us about a time when you felt out of place.")
-            XCTAssertEqual(secondPrompt.title, "Prompt number 10")
-            XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Tell us about a time when you felt out of place.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
-            XCTAssertTrue(secondPrompt.attribution.isEmpty)
+            XCTAssertEqual(secondPrompt.promptID, 239)
+            XCTAssertEqual(secondPrompt.text, "Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.")
+            XCTAssertEqual(secondPrompt.title, "Prompt number 1")
+            XCTAssertEqual(secondPrompt.content, "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>Was there a toy or thing you always wanted as a child, during the holidays or on your birthday, but never received? Tell us about it.</p><cite>(courtesy of plinky.com)</cite></blockquote></figure>\n<!-- /wp:pullquote -->")
+            XCTAssertEqual(secondPrompt.attribution, "dayone")
 
             let secondDateComponents = Calendar.current.dateComponents(in: Self.utcTimeZone, from: secondPrompt.date)
-            XCTAssertEqual(secondDateComponents.year!, 2021)
-            XCTAssertEqual(secondDateComponents.month!, 9)
-            XCTAssertEqual(secondDateComponents.day!, 12)
+            XCTAssertEqual(secondDateComponents.year!, 2022)
+            XCTAssertEqual(secondDateComponents.month!, 5)
+            XCTAssertEqual(secondDateComponents.day!, 3)
 
-            XCTAssertTrue(secondPrompt.answered)
-            XCTAssertEqual(secondPrompt.answerCount, 1)
-            XCTAssertEqual(secondPrompt.displayAvatarURLs.count, 1)
+            XCTAssertFalse(secondPrompt.answered)
+            XCTAssertEqual(secondPrompt.answerCount, 0)
+            XCTAssertTrue(secondPrompt.displayAvatarURLs.isEmpty)
 
             expectation.fulfill()
 

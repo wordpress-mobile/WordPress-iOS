@@ -41,13 +41,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         }
     }
 
-    private lazy var isAnswered: Bool = {
+    private var isAnswered: Bool {
         if forExampleDisplay {
             return false
         }
 
         return prompt?.answered ?? false
-    }()
+    }
 
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
         return BloggingPromptsService(blog: blog)
@@ -118,13 +118,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Middle row views
 
-    private lazy var answerCount: Int = {
+    private var answerCount: Int {
         if forExampleDisplay {
             return Constants.exampleAnswerCount
         }
 
         return Int(prompt?.answerCount ?? 0)
-    }()
+    }
 
     private var answerInfoText: String {
         let stringFormat = (answerCount == 1 ? Strings.answerInfoSingularFormat : Strings.answerInfoPluralFormat)

@@ -15,6 +15,7 @@ class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
         return formatter
     }()
