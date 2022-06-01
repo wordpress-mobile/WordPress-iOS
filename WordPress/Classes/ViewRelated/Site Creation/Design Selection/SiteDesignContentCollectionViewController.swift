@@ -164,6 +164,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
+        configureHeaderStyling()
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
@@ -199,6 +200,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 self.isLoading = false
             }
         }
+    }
+
+    private func configureHeaderStyling() {
+        headerView.backgroundColor = .systemBackground
+        hideHeaderVisualEffects()
     }
 
     private func configureSkipButton() {
