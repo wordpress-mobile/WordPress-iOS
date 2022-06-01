@@ -1,7 +1,7 @@
-* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
-* [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
-* [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
-* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
-* [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
-* [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
+We’re kicking off version 20 with a fresh new look. The Quick Start card and Next Steps tours now match the new tour designs for existing sites, including a snazzy illustration. High five.
 
+You can now insert images from other websites using the “Insert from URL” option in the app. More cat photos, please.
+
+We’ve made some accessibility improvements in the block editor, so your screen reader offers more of the context you need.
+
+Finally, we took a paintbrush to the media cache, spotlight index, and Siri shortcut functions in App Settings. They now match standard and brand colors—no more panic red.
