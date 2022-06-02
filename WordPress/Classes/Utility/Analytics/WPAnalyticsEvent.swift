@@ -743,7 +743,7 @@ import Foundation
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
         case .domainsSearchSelectDomainTapped:
-            return "domains_dashboard_add_domain_tapped"
+            return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:
             return "domains_registration_form_viewed"
         case .domainsRegistrationFormSubmitted:
