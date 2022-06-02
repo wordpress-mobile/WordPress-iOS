@@ -96,8 +96,6 @@ final class TooltipPresenter {
                 constant: Constants.anchorBottomConstraintConstant
             )
         ])
-
-        toggleAnchorVisibility(true)
     }
 
     func toggleAnchorVisibility(_ isVisible: Bool) {

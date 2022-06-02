@@ -90,7 +90,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private var scrollObserver: NSKeyValueObservation?
 
     private var lastToggleAnchorVisibility = false
-    private var didShowTooltip = false
+    private var didShowTooltip = false {
+        didSet {
+            FeatureHighlightStore.followConversationTooltipCounter += 1
+        }
+    }
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -169,6 +173,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureCommentsTable()
 
         coordinator?.start()
+
+        // FIXME: Remove, temporary code
+        FeatureHighlightStore.didDismissTooltip = false
+        FeatureHighlightStore.followConversationTooltipCounter = 0
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -288,7 +296,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tooltipPresenter = TooltipPresenter(
             containerView: scrollView,
             tooltip: tooltip,
-            target: .point(followButtonMidPoint)
+            target: .point(followButtonMidPoint),
+            primaryTooltipAction: {
+                FeatureHighlightStore.didDismissTooltip = true
+            }
         )
         tooltipPresenter?.tooltipVerticalPosition = .above
 
@@ -300,15 +311,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             )
         }
 
-        tooltipPresenter?.toggleAnchorVisibility(!isVisibleInScrollView(tooltip))
         scrollView.delegate = self
 
-        if isVisibleInScrollView(commentsTableView) {
+        let isCommentsTableViewVisible = isVisibleInScrollView(commentsTableView)
+        if isCommentsTableViewVisible {
             tooltipPresenter?.showTooltip()
-            tooltipPresenter?.toggleAnchorVisibility(false)
             didShowTooltip = true
             scrollView.layoutIfNeeded()
         }
+
+        tooltipPresenter?.toggleAnchorVisibility(!isCommentsTableViewVisible)
     }
 
     private func scrollToTooltip() {
@@ -414,9 +426,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         scrollView.layoutIfNeeded()
 
-        self.configureTooltipPresenter {
-            self.scrollToTooltip()
+        if shouldConfigureTooltipPresenter() {
+            self.configureTooltipPresenter { [weak self] in
+                self?.scrollToTooltip()
+            }
         }
+    }
+
+    private func shouldConfigureTooltipPresenter() -> Bool {
+        FeatureFlag.featureHighlightTooltip.enabled
+        && FeatureHighlightStore.shouldShowTooltip
+        && (!(post?.isSubscribedComments ?? false))
     }
 
     func updateSelfLike(with avatarURLString: String?) {
@@ -1074,7 +1094,10 @@ extension ReaderDetailViewController {
         static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
         static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
         static let tooltipTitle = NSLocalizedString("Follow the conversation", comment: "Title of follow conversations tooltip.")
-        static let tooltipMessage = NSLocalizedString("Got notified", comment: "Message for the follow conversations tooltip.")
+        static let tooltipMessage = NSLocalizedString(
+            "Get notified when new comments are added to this post.",
+            comment: "Message for the follow conversations tooltip."
+        )
         static let tooltipButtonTitle = NSLocalizedString("Got it", comment: "Button title for the follow conversations tooltip.")
         static let tooltipAnchorTitle = NSLocalizedString("New", comment: "Title for the tooltip anchor.")
     }
