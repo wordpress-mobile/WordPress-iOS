@@ -90,6 +90,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private var scrollObserver: NSKeyValueObservation?
 
     private var lastToggleAnchorVisibility = false
+    private var didShowTooltip = false
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -166,7 +167,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
         configureCommentsTable()
-        scrollView.delegate = self
 
         coordinator?.start()
 
@@ -267,8 +267,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
-    private func showTooltip(anchorAction: (() -> Void)?) {
-        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else { return }
+    private func tooltipTargetPoint() -> CGPoint? {
+        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else { return nil }
+        return CGPoint(
+            x: commentsTableView.frame.minX + followButtonMidPoint.x,
+            y: commentsTableView.frame.minY + followButtonMidPoint.y
+        )
+    }
+
+    private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
+        guard let followButtonMidPoint = tooltipTargetPoint() else { return }
 
         let tooltip = Tooltip()
         self.tooltip = tooltip
@@ -281,12 +289,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tooltipPresenter = TooltipPresenter(
             containerView: scrollView,
             tooltip: tooltip,
-            target: .point(
-                CGPoint(
-                    x: commentsTableView.frame.minX + followButtonMidPoint.x,
-                    y: commentsTableView.frame.minY + followButtonMidPoint.y
-                )
-            )
+            target: .point(followButtonMidPoint)
         )
         tooltipPresenter?.tooltipVerticalPosition = .above
 
@@ -298,25 +301,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             )
         }
 
-        tooltipPresenter?.showTooltip()
         tooltipPresenter?.toggleAnchorVisibility(!isVisibleInScrollView(tooltip))
+        scrollView.delegate = self
 
+        if isVisibleInScrollView(commentsTableView) {
+            tooltipPresenter?.showTooltip()
+            tooltipPresenter?.toggleAnchorVisibility(false)
+            didShowTooltip = true
+        }
     }
 
     private func scrollToTooltip() {
-        let childStartPoint = scrollView.convert(commentsTableView.frame.origin, to: scrollView)
-        if childStartPoint.y + commentsTableView.safeAreaLayoutGuide.layoutFrame.height < scrollView.contentSize.height {
-            let targetRect = CGRect(
-                x: 0,
-                y: childStartPoint.y,
-                width: 1,
-                height: scrollView.safeAreaLayoutGuide.layoutFrame.height
-            )
-            scrollView.setContentOffset(CGPoint(x: targetRect.midX, y: targetRect.minY), animated: true)
-            scrollView.layoutIfNeeded()
-        } else {
-            scrollView.scrollToBottom(animated: true)
-        }
+        guard let followButtonMidPoint = tooltipTargetPoint() else { return }
+
+        scrollView.setContentOffset(CGPoint(x: 0, y: followButtonMidPoint.y - scrollView.frame.height/2), animated: true)
+        scrollView.layoutIfNeeded()
     }
 
     private func navigateToCommentIfNecessary() {
@@ -415,7 +414,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         scrollView.layoutIfNeeded()
 
-        self.showTooltip {
+        self.configureTooltipPresenter {
             self.scrollToTooltip()
         }
     }
@@ -1100,6 +1099,14 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 // MARK: - UIScrollViewDelegate
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard didShowTooltip else {
+            if isVisibleInScrollView(commentsTableView) {
+                tooltipPresenter?.showTooltip()
+                didShowTooltip = true
+            }
+            return
+        }
+
         guard let tooltip = tooltip else { return }
 
         let currentToggleVisibility = isVisibleInScrollView(tooltip)

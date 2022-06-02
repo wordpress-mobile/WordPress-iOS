@@ -142,6 +142,7 @@ final class TooltipPresenter {
                 tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
                 self.containerView.layoutIfNeeded()
             } completion: { isSuccess in
+                self.anchor = nil
                 self.primaryTooltipAction?()
                 self.tooltip.removeFromSuperview()
             }
