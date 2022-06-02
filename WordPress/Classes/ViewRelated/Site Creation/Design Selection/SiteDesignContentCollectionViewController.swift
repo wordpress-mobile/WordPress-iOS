@@ -13,9 +13,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private var sections: [SiteDesignSection] = [] {
         didSet {
-            if oldValue.isEmpty {
-                scrollableView.setContentOffset(.zero, animated: false)
-            }
+            tableView.scrollToTop(animated: false)
             contentSizeWillChange()
             tableView.reloadData()
         }
