@@ -363,7 +363,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func schedule(for blog: Blog) -> String {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
         }
 

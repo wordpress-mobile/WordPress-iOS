@@ -93,7 +93,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     }()
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "wp-illustration-quickstart-existing-site"))
+        let imageView = UIImageView(image: AppStyleGuide.quickStartExistingSite)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView

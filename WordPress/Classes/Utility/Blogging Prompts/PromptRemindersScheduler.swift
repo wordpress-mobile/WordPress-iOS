@@ -6,7 +6,6 @@ import UserNotifications
 class PromptRemindersScheduler {
     enum Errors: Error {
         case invalidSite
-        case needsPushAuthorization
         case fileSaveError
         case unknown
     }
@@ -56,7 +55,7 @@ class PromptRemindersScheduler {
             }
 
             guard allowed else {
-                completion(.failure(Errors.needsPushAuthorization))
+                completion(.failure(BloggingRemindersScheduler.Error.needsPermissionForPushNotifications))
                 return
             }
 
@@ -226,7 +225,7 @@ private extension PromptRemindersScheduler {
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
     func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
-        guard let siteID = blog.dotComID?.intValue else {
+        guard blog.dotComID != nil else {
             return nil
         }
 
@@ -234,6 +233,7 @@ private extension PromptRemindersScheduler {
         content.title = Constants.notificationTitle
         content.subtitle = blog.title ?? String()
         content.body = prompt.text
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
         content.userInfo = notificationPayload(for: blog, prompt: prompt)
 
         guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
@@ -287,7 +287,7 @@ private extension PromptRemindersScheduler {
         guard case .weekdays(let weekdays) = schedule,
               maxDays > 0,
               let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate),
-              let siteID = blog.dotComID?.intValue else {
+              blog.dotComID != nil else {
             return nil
         }
 
@@ -296,6 +296,7 @@ private extension PromptRemindersScheduler {
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
         content.userInfo = notificationPayload(for: blog)
 
         var date = afterDate
@@ -362,13 +363,10 @@ private extension PromptRemindersScheduler {
             return [:]
         }
 
-        var userInfo: [AnyHashable: Any] = [
-            PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-            PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
-        ]
+        var userInfo: [AnyHashable: Any] = [BloggingPrompt.NotificationKeys.siteID: siteID]
 
         if let prompt = prompt {
-            userInfo[PushNotificationsManager.BloggingPromptPayload.promptIDKey] = Int(prompt.promptID)
+            userInfo[BloggingPrompt.NotificationKeys.promptID] = Int(prompt.promptID)
         }
 
         return userInfo

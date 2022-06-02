@@ -64,7 +64,7 @@ class InsightsLineChart {
             (thisWeekEntries, prevWeekEntries) = filterData(path: \StatsSummaryData.visitorsCount)
         }
 
-        var chartData = createLineChartData(thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
+        let chartData = createLineChartData(thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
         let lineChartDataConvertibles = createLineChartDataConvertibles(chartData: chartData)
 
         let chartStyling: [LineChartStyling] = [

@@ -172,10 +172,21 @@ final class TooltipPresenter {
                 )
             }
         case .point(let targetPoint):
-            tooltipTopConstraint = tooltip.bottomAnchor.constraint(
-                equalTo: containerView.topAnchor,
-                constant: targetPoint.y + Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
-            )
+            switch tooltipOrientation() {
+            case .bottom:
+                tooltipTopConstraint = tooltip.bottomAnchor.constraint(
+                    equalTo: containerView.topAnchor,
+                    constant: targetPoint.y + Constants.verticalTooltipDistanceToFocus + Constants.tooltipTopConstraintAnimationOffset
+                )
+            case .top:
+                tooltipTopConstraint = tooltip.bottomAnchor.constraint(
+                    equalTo: containerView.topAnchor,
+                    constant: targetPoint.y
+                    + Constants.verticalTooltipDistanceToFocus
+                    + Constants.tooltipTopConstraintAnimationOffset
+                    + tooltip.size().height
+                )
+            }
         }
 
         tooltipConstraints.append(tooltipTopConstraint!)
@@ -203,7 +214,7 @@ final class TooltipPresenter {
     /// |                                               |
     /// |                           xxxxxxxx     |
     /// |                                    oo       |
-    /// It would be retracted instead of the target was at the left of the screen.
+    /// It would be retracted instead if the target was at the left of the screen.
     ///
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width

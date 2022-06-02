@@ -1758,6 +1758,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Pull To Refresh
 
+- (void)pulledToRefresh {
+    [self pulledToRefreshWith:self.tableView.refreshControl onCompletion:^{}];
+}
+
 - (void)pulledToRefreshWith:(UIRefreshControl *)refreshControl onCompletion:( void(^)(void))completion {
 
     [self updateTableView: ^{

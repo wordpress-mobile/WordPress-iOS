@@ -1,9 +1,12 @@
+20.1
+-----
+
+
 20.0
 -----
 * [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
 * [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
 * [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
-* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688]
 * [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
 * [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
 * [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
