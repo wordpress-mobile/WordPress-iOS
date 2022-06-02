@@ -86,6 +86,7 @@ final class TooltipPresenter {
         anchor.title = title
         anchor.addTarget(self, action: #selector(didTapAnchor), for: .touchUpInside)
         anchor.translatesAutoresizingMaskIntoConstraints = false
+        anchor.alpha = 0
         view.addSubview(anchor)
 
         NSLayoutConstraint.activate([
@@ -95,6 +96,8 @@ final class TooltipPresenter {
                 constant: Constants.anchorBottomConstraintConstant
             )
         ])
+
+        toggleAnchorVisibility(true)
     }
 
     func toggleAnchorVisibility(_ isVisible: Bool) {
@@ -102,7 +105,7 @@ final class TooltipPresenter {
             return
         }
 
-        anchor.isHidden = !isVisible
+        anchor.toggleVisibility(isVisible)
     }
 
     func showTooltip() {

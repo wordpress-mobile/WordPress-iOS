@@ -281,10 +281,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let tooltip = Tooltip()
         self.tooltip = tooltip
 
-        tooltip.title = "Follow the conversation"
-        tooltip.message = "Get notified."
-        tooltip.primaryButtonTitle = "Got it"
-        tooltip.secondaryButtonTitle = "Learn more"
+        tooltip.title = Strings.tooltipTitle
+        tooltip.message = Strings.tooltipMessage
+        tooltip.primaryButtonTitle = Strings.tooltipButtonTitle
 
         tooltipPresenter = TooltipPresenter(
             containerView: scrollView,
@@ -295,7 +294,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         if let anchorAction = anchorAction {
             tooltipPresenter?.attachAnchor(
-                withTitle: "New",
+                withTitle: Strings.tooltipAnchorTitle,
                 onView: view,
                 anchorAction: anchorAction
             )
@@ -308,6 +307,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             tooltipPresenter?.showTooltip()
             tooltipPresenter?.toggleAnchorVisibility(false)
             didShowTooltip = true
+            scrollView.layoutIfNeeded()
         }
     }
 
@@ -1065,7 +1065,6 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 
 // MARK: - Strings
 extension ReaderDetailViewController {
-
     private struct Strings {
         static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
         static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
@@ -1074,6 +1073,10 @@ extension ReaderDetailViewController {
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
         static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
         static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
+        static let tooltipTitle = NSLocalizedString("Follow the conversation", comment: "Title of follow conversations tooltip.")
+        static let tooltipMessage = NSLocalizedString("Got notified", comment: "Message for the follow conversations tooltip.")
+        static let tooltipButtonTitle = NSLocalizedString("Got it", comment: "Button title for the follow conversations tooltip.")
+        static let tooltipAnchorTitle = NSLocalizedString("New", comment: "Title for the tooltip anchor.")
     }
 }
 
