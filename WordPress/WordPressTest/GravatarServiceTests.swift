@@ -6,7 +6,7 @@ import WordPressKit
 
 /// GravatarService Unit Tests
 ///
-class GravatarServiceTests: XCTestCase {
+class GravatarServiceTests: CoreDataTestCase {
     class GravatarServiceRemoteMock: GravatarServiceRemote {
         var capturedAccountToken: String = ""
         var capturedAccountEmail: String = ""
@@ -29,13 +29,6 @@ class GravatarServiceTests: XCTestCase {
             gravatarServiceRemoteMock = GravatarServiceRemoteMock()
             return gravatarServiceRemoteMock!
         }
-    }
-
-    private var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        super.setUp()
-        contextManager = ContextManagerMock()
     }
 
     func testServiceSanitizesEmailAddressCapitals() {

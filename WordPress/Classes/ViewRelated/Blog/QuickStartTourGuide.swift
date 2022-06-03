@@ -17,6 +17,7 @@ open class QuickStartTourGuide: NSObject {
     private var suggestionWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
+    private let noticeCompleteTag: Notice.Tag = "QuickStartTaskComplete"
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
@@ -59,7 +60,6 @@ open class QuickStartTourGuide: NSObject {
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
         WPAnalytics.trackQuickStartEvent(.quickStartStarted, blog: blog)
-
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
                                         object: self,
                                         userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.setupQuickStart])
@@ -76,10 +76,7 @@ open class QuickStartTourGuide: NSObject {
         blog.quickStartType = .undefined
         endCurrentTour()
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self)
-
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
-                                        object: self,
-                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.removeQuickStart])
+        refreshQuickStart()
     }
 
     @objc static func quickStartEnabled(for blog: Blog) -> Bool {
@@ -179,6 +176,17 @@ open class QuickStartTourGuide: NSObject {
         default:
             currentTourState = TourState(tour: adjustedTour, blog: blog, step: 0)
         }
+    }
+
+    /// Posts a notification to trigger updates to Quick Start Cards if needed.
+    func refreshQuickStart() {
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification,
+                                        object: self,
+                                        userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.updateQuickStart])
+    }
+
+    func dismissTaskCompleteNotice() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeCompleteTag))
     }
 
     private func addSiteMenuWayPointIfNeeded(for tour: QuickStartTour) -> QuickStartTour {
@@ -313,7 +321,7 @@ open class QuickStartTourGuide: NSObject {
         }
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: taskCompleteDescription, isDismissable: true)
-        let notice = Notice(title: "", style: noticeStyle, tag: noticeTag)
+        let notice = Notice(title: "", style: noticeStyle, tag: noticeCompleteTag)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
             ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -459,6 +467,7 @@ private extension QuickStartTourGuide {
     // - TODO: Research if dispatching `NoticeAction.empty` is still necessary now that we use `.clearWithTag`.
     func dismissCurrentNotice() {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeCompleteTag))
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }

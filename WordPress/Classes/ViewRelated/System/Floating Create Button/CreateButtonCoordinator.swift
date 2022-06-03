@@ -309,16 +309,16 @@ private extension CreateButtonCoordinator {
         // TODO: check for cached prompt first.
 
         guard let bloggingPromptsService = bloggingPromptsService else {
-            DDLogError("FAB > failed creating BloggingPromptsService instance.")
+            DDLogError("FAB: failed creating BloggingPromptsService instance.")
             prompt = nil
             return
         }
 
-        bloggingPromptsService.fetchTodaysPrompt(success: { [weak self] (prompt) in
+        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
             self?.prompt = prompt
         }, failure: { [weak self] (error) in
             self?.prompt = nil
-            DDLogError("FAB > failed fetching blogging prompt: \(String(describing: error))")
+            DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
         })
     }
 
@@ -332,6 +332,7 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen

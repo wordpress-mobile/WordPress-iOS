@@ -6,7 +6,7 @@ import Nimble
 
 private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
 
-class PostNoticeViewModelTests: XCTestCase {
+class PostNoticeViewModelTests: CoreDataTestCase {
     private struct Scenario {
         let name: String
         let post: AbstractPost
@@ -45,7 +45,6 @@ class PostNoticeViewModelTests: XCTestCase {
         }
     }
 
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     // MARK: - Test Setup
@@ -53,14 +52,12 @@ class PostNoticeViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         context = nil
-        contextManager.tearDown()
 
         super.tearDown()
     }

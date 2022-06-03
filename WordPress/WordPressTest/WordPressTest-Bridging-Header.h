@@ -3,5 +3,4 @@
 //
 
 #import "WordPress-Bridging-Header.h"
-#import "ContextManagerMock.h"
 #import "TestingAppDelegate.h"

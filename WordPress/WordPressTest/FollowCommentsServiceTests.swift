@@ -3,26 +3,10 @@ import WordPressKit
 
 @testable import WordPress
 
-class FollowCommentsServiceTests: XCTestCase {
+class FollowCommentsServiceTests: CoreDataTestCase {
 
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
     private let siteID = NSNumber(value: 1)
     private let postID = NSNumber(value: 1)
-
-    // MARK: - Lifecycle
-
-    override func setUp() {
-        super.setUp()
-        contextManager = ContextManagerMock()
-    }
-
-    override func tearDown() {
-        contextManager = nil
-        super.tearDown()
-    }
 
     // MARK: - Tests
 
@@ -168,13 +152,13 @@ class FollowCommentsServiceTests: XCTestCase {
     // MARK: - Helpers
 
        func seedReaderListTopic() -> ReaderListTopic {
-           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderListTopic
            topic.path = "/list/topic1"
            topic.title = "topic1"
            topic.type = ReaderListTopic.TopicType
 
            do {
-               try context.save()
+               try mainContext.save()
            } catch let error as NSError {
                XCTAssertNil(error, "Error seeding list topic")
            }
@@ -184,13 +168,13 @@ class FollowCommentsServiceTests: XCTestCase {
 
 
        func seedReaderTeamTopic() -> ReaderTeamTopic {
-           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: context) as! ReaderTeamTopic
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderTeamTopic
             topic.path = "/a8c/topic2"
             topic.title = "topic2"
             topic.type = ReaderTeamTopic.TopicType
 
            do {
-               try context.save()
+               try mainContext.save()
            } catch let error as NSError {
                XCTAssertNil(error, "Error seeding team topic")
            }
@@ -199,13 +183,13 @@ class FollowCommentsServiceTests: XCTestCase {
        }
 
        func seedReaderPostForTopic(_ topic: ReaderAbstractTopic) -> ReaderPost {
-           let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+           let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: mainContext) as! ReaderPost
            post.siteID = siteID
            post.postID = postID
            post.topic = topic
 
            do {
-               try context.save()
+               try mainContext.save()
            } catch let error as NSError {
                XCTAssertNil(error, "Error seeding post")
            }
@@ -214,7 +198,7 @@ class FollowCommentsServiceTests: XCTestCase {
        }
 
        func seedBlog(isWPForTeams: Bool) {
-           let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.classNameWithoutNamespaces(), into: context) as! Blog
+           let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.classNameWithoutNamespaces(), into: mainContext) as! Blog
            blog.dotComID = siteID
            blog.xmlrpc = "http://test.blog/xmlrpc.php"
            blog.url = "http://test.blog/"
@@ -225,7 +209,7 @@ class FollowCommentsServiceTests: XCTestCase {
            ]
 
            do {
-               try context.save()
+               try mainContext.save()
            } catch let error as NSError {
                XCTAssertNil(error, "Error seeding blog")
            }

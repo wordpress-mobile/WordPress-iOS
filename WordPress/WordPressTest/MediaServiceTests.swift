@@ -2,21 +2,15 @@ import Foundation
 @testable import WordPress
 import XCTest
 
-class MediaServiceTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class MediaServiceTests: CoreDataTestCase {
     private var mediaService: MediaService!
     private var mediaBuilder: MediaBuilder!
     private var postBuilder: PostBuilder!
 
-    private var context: NSManagedObjectContext {
-        return contextManager.mainContext
-    }
-
     override func setUp() {
-        contextManager = ContextManagerMock()
-        mediaService = MediaService(managedObjectContext: context)
-        mediaBuilder = MediaBuilder(context)
-        postBuilder = PostBuilder(context)
+        mediaService = MediaService(managedObjectContext: mainContext)
+        mediaBuilder = MediaBuilder(mainContext)
+        postBuilder = PostBuilder(mainContext)
     }
 
     // MARK: - Tests for failedMediaForUpload(automatedRetry:)

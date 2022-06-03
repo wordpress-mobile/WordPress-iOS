@@ -1,27 +1,20 @@
 import XCTest
 @testable import WordPress
 
-class PreviewWebKitViewControllerTests: XCTestCase {
+class PreviewWebKitViewControllerTests: CoreDataTestCase {
 
     private var rootWindow: UIWindow!
     private var navController = UINavigationController()
 
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
-
     override func setUp() {
         super.setUp()
-        contextManager = ContextManagerMock()
-
         rootWindow = UIWindow(frame: UIScreen.main.bounds)
         rootWindow.isHidden = false
         rootWindow.rootViewController = navController
     }
 
     func testMissingPermalink() {
-        let post = PostBuilder(context).drafted().build()
+        let post = PostBuilder(mainContext).drafted().build()
 
         let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_missing_permalink")
         XCTAssertEqual(vc.url!.absoluteString, "about:blank", "Should load blank page when no permalink is available")
@@ -29,7 +22,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
 
     func testDraftToolbarItems() {
 
-        let post = PostBuilder(context).drafted().build()
+        let post = PostBuilder(mainContext).drafted().build()
         post.permaLink = "http://example.com/"
 
         let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_draft_toolbar")
@@ -45,7 +38,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
 
     func testPublishedToolbarItems() {
 
-        let post = PostBuilder(context).published().build()
+        let post = PostBuilder(mainContext).published().build()
         post.permaLink = "http://example.com/"
 
         let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_published_toolbar")
@@ -60,7 +53,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
 
     func testSitePageToolbarItems() {
 
-        let page = PageBuilder(context).build()
+        let page = PageBuilder(mainContext).build()
         page.permaLink = "http://example.com/"
 
         let vc = PreviewWebKitViewController(post: page, previewURL: nil, source: "test_site_page")

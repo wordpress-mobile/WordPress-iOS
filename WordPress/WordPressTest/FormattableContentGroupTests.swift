@@ -1,26 +1,22 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableContentGroupTests: XCTestCase {
+final class FormattableContentGroupTests: CoreDataTestCase {
     private var subject: FormattableContentGroup?
-    private let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let kind: FormattableContentGroup.Kind = .activity
     }
 
     override func setUpWithError() throws {
-        try super.setUpWithError()
-        utility.setUp()
-        ContextManager.overrideSharedInstance(nil)
+        utility = NotificationUtility(coreDataStack: contextManager)
         subject = FormattableContentGroup(blocks: [try mockContent()], kind: Constants.kind)
     }
 
     override func tearDown() {
-        utility.tearDown()
         subject = nil
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
+        utility = nil
     }
 
     func testKindRemainsAsInitialised() {
@@ -59,7 +55,7 @@ final class FormattableContentGroupTests: XCTestCase {
     }
 
     private func mockActivity() throws -> JSONObject {
-        return try .loadFile(named: "activity-log-activity-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-activity-content.json")
     }
 
 }

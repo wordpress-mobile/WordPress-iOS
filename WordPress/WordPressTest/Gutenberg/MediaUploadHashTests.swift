@@ -1,4 +1,6 @@
 import Foundation
+import XCTest
+
 @testable import WordPress
 
 class MediaUploadHashTests: XCTestCase {

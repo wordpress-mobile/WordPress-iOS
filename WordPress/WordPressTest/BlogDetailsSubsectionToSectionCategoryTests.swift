@@ -1,12 +1,10 @@
 import XCTest
 @testable import WordPress
 
-class BlogDetailsSubsectionToSectionCategoryTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class BlogDetailsSubsectionToSectionCategoryTests: CoreDataTestCase {
     var blog: Blog!
 
     override func setUp() {
-        contextManager = ContextManagerMock()
         blog = BlogBuilder(contextManager.mainContext).build()
     }
 

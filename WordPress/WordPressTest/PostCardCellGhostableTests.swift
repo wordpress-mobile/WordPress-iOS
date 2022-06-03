@@ -3,21 +3,14 @@ import XCTest
 
 @testable import WordPress
 
-class PostCardCellGhostableTests: XCTestCase {
+class PostCardCellGhostableTests: CoreDataTestCase {
 
     var postCell: PostCardCell!
-    private var coreDataStack: ContextManagerMock!
 
     override func setUp() {
         postCell = postCellFromNib()
         postCell.ghostAnimationWillStart()
-        coreDataStack = ContextManagerMock()
         super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        coreDataStack.tearDown()
     }
 
     func testHideFeaturedImage() {
@@ -65,7 +58,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testIsInteractiveAfterAConfigure() {
-        let post = PostBuilder(coreDataStack.mainContext).build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -73,7 +66,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testVerticalContentSpacingAfterConfigure() {
-        let post = PostBuilder(coreDataStack.mainContext).build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -81,7 +74,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testActionBarOpacityAfterConfigure() {
-        let post = PostBuilder(coreDataStack.mainContext).build()
+        let post = PostBuilder(mainContext).build()
         assert(post.managedObjectContext != nil)
         postCell.configure(with: post)
 
@@ -89,7 +82,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testHideGhostView() {
-        let post = PostBuilder(coreDataStack.mainContext).build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 

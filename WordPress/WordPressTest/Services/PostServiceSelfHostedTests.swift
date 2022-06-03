@@ -1,6 +1,6 @@
-
 import Foundation
 import Nimble
+import XCTest
 @testable import WordPress
 
 /// Tests unique behaviors of self-hosted sites.
@@ -10,14 +10,10 @@ import Nimble
 ///
 /// - SeeAlso: PostServiceWPComTests
 ///
-class PostServiceSelfHostedTests: XCTestCase {
+class PostServiceSelfHostedTests: CoreDataTestCase {
 
     private var remoteMock: PostServiceXMLRPCMock!
     private var service: PostService!
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
 
     private let impossibleFailureBlock: (Error?) -> Void = { _ in
         assertionFailure("This shouldn't happen.")
@@ -26,13 +22,11 @@ class PostServiceSelfHostedTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-
         remoteMock = PostServiceXMLRPCMock()
 
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock
-        service = PostService(managedObjectContext: context, postServiceRemoteFactory: remoteFactory)
+        service = PostService(managedObjectContext: mainContext, postServiceRemoteFactory: remoteFactory)
     }
 
     override func tearDown() {
@@ -44,8 +38,8 @@ class PostServiceSelfHostedTests: XCTestCase {
 
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {
         // Arrange
-        let post = PostBuilder(context).drafted().with(remoteStatus: .local).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).drafted().with(remoteStatus: .local).build()
+        try! mainContext.save()
 
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
@@ -64,8 +58,8 @@ class PostServiceSelfHostedTests: XCTestCase {
     /// Local drafts with `.published` status will be ignored.
     func testAutoSavingALocallyPublishedDraftWillFail() {
         // Arrange
-        let post = PostBuilder(context).published().with(remoteStatus: .local).build()
-        try! context.save()
+        let post = PostBuilder(mainContext).published().with(remoteStatus: .local).build()
+        try! mainContext.save()
 
         // Act
         var failureBlockCalled = false
@@ -91,8 +85,8 @@ class PostServiceSelfHostedTests: XCTestCase {
         // (by pressing Cancel in the Post List), we will still upload the post as a draft.
 
         // Arrange
-        let post = PostBuilder(context).with(status: .publish).with(remoteStatus: .local).with(title: "sequi").build()
-        try! context.save()
+        let post = PostBuilder(mainContext).with(status: .publish).with(remoteStatus: .local).with(title: "sequi").build()
+        try! mainContext.save()
 
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 

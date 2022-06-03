@@ -103,18 +103,4 @@ private extension TwoColumnCell {
             WPAppAnalytics.track(event)
         }
     }
-
-}
-
-// MARK: - Analytics support
-
-private extension StatSection {
-    var analyticsViewMoreEvent: WPAnalyticsStat? {
-        switch self {
-        case .insightsAnnualSiteStats:
-            return .statsViewMoreTappedThisYear
-        default:
-            return nil
-        }
-    }
 }

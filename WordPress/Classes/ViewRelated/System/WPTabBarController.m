@@ -41,6 +41,9 @@ NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
 NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
 NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications";
 
+NSNotificationName const WPTabBarHeightChangedNotification = @"WPTabBarHeightChangedNotification";
+static NSString * const WPTabBarFrameKeyPath = @"frame";
+
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
@@ -55,12 +58,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong) BloggingPromptCoordinator *bloggingPromptCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 @property (nonatomic, strong) UIImage *meTabBarImage;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
+
+@property (nonatomic, assign) CGFloat tabBarHeight;
 
 @end
 
@@ -127,12 +133,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                             forKeyPath:WPApplicationIconBadgeNumberKeyPath
                                                options:NSKeyValueObservingOptionNew
                                                context:nil];
+
+        [self.tabBar addObserver:self
+                      forKeyPath:WPTabBarFrameKeyPath
+                         options:NSKeyValueObservingOptionNew
+                         context:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
     [self stopWatchingQuickTours];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
@@ -558,8 +570,22 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:WPApplicationIconBadgeNumberKeyPath]) {
+    if (object == self.tabBar && [keyPath isEqualToString:WPTabBarFrameKeyPath]) {
+        [self notifyOfTabBarHeightChangedIfNeeded];
+    }
+
+    if (object == [UIApplication sharedApplication] && [keyPath isEqualToString:WPApplicationIconBadgeNumberKeyPath]) {
         [self updateNotificationBadgeVisibility];
+    }
+}
+
+- (void)notifyOfTabBarHeightChangedIfNeeded
+{
+    CGFloat newTabBarHeight = self.tabBar.frame.size.height;
+    if (newTabBarHeight != self.tabBarHeight) {
+        self.tabBarHeight = newTabBarHeight;
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPTabBarHeightChangedNotification
+                                                            object:nil];
     }
 }
 
@@ -629,6 +655,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
     return _whatIsNewScenePresenter;
+}
+
+#pragma mark - Blogging Prompt
+- (BloggingPromptCoordinator *)bloggingPromptCoordinator
+{
+    if (_bloggingPromptCoordinator) {
+        return _bloggingPromptCoordinator;
+    }
+
+    self.bloggingPromptCoordinator = [self makeBloggingPromptCoordinator];
+    return _bloggingPromptCoordinator;
 }
 
 @end

@@ -352,6 +352,20 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
+    // Blogging Prompts
+    case promptsBottomSheetAnswerPrompt
+    case promptsIntroductionModalViewed
+    case promptsIntroductionModalDismissed
+    case promptsIntroductionModalTryItNow
+    case promptsIntroductionModalRemindMe
+    case promptsIntroductionModalGotIt
+    case promptsDashboardCardAnswerPrompt
+    case promptsDashboardCardMenu
+    case promptsDashboardCardMenuViewMore
+    case promptsDashboardCardMenuSkip
+    case promptsDashboardCardMenuRemove
+    case promptsListViewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -729,7 +743,7 @@ import Foundation
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
         case .domainsSearchSelectDomainTapped:
-            return "domains_dashboard_add_domain_tapped"
+            return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:
             return "domains_registration_form_viewed"
         case .domainsRegistrationFormSubmitted:
@@ -943,6 +957,32 @@ import Foundation
             return "enhanced_site_creation_site_name_viewed"
         case .enhancedSiteCreationSiteNameExperiment:
             return "enhanced_site_creation_site_name_experiment"
+
+        // Blogging Prompts
+        case .promptsBottomSheetAnswerPrompt:
+            return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsIntroductionModalViewed:
+            return "blogging_prompts_introduction_modal_viewed"
+        case .promptsIntroductionModalDismissed:
+            return "blogging_prompts_introduction_modal_dismissed"
+        case .promptsIntroductionModalTryItNow:
+            return "blogging_prompts_introduction_modal_try_it_now_tapped"
+        case .promptsIntroductionModalRemindMe:
+            return "blogging_prompts_introduction_modal_remind_me_tapped"
+        case .promptsIntroductionModalGotIt:
+            return "blogging_prompts_introduction_modal_got_it_tapped"
+        case .promptsDashboardCardAnswerPrompt:
+            return "blogging_prompts_my_site_card_answer_prompt_tapped"
+        case .promptsDashboardCardMenu:
+            return "blogging_prompts_my_site_card_menu_tapped"
+        case .promptsDashboardCardMenuViewMore:
+            return "blogging_prompts_my_site_card_menu_view_more_prompts_tapped"
+        case .promptsDashboardCardMenuSkip:
+            return "blogging_prompts_my_site_card_menu_skip_this_prompt_tapped"
+        case .promptsDashboardCardMenuRemove:
+            return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
+        case .promptsListViewed:
+            return "blogging_prompts_prompts_list_viewed"
 
         } // END OF SWITCH
     }

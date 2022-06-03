@@ -2,36 +2,23 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-class MediaRequestAuthenticatorTests: XCTestCase {
-    fileprivate var contextManager: ContextManagerMock!
-    fileprivate var context: NSManagedObjectContext!
-
+class MediaRequestAuthenticatorTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
-        contextManager.setUpAsSharedInstance()
-        context = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        contextManager.tearDown()
-        contextManager = nil
-        context = nil
-
-        super.tearDown()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
     }
 
     // MARK: - Utility
 
     func setupAccount(username: String, authToken: String) {
-        let account = ModelTestHelper.insertAccount(context: context)
+        let account = ModelTestHelper.insertAccount(context: mainContext)
         account.uuid = UUID().uuidString
         account.userID = NSNumber(value: 156)
         account.username = username
         account.authToken = authToken
-        contextManager.saveContextAndWait(context)
-        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
+        contextManager.saveContextAndWait(mainContext)
+        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
     }
 
     fileprivate func stubResponse(forEndpoint endpoint: String, responseFilename filename: String) {
@@ -153,6 +140,6 @@ class MediaRequestAuthenticatorTests: XCTestCase {
             XCTFail("This should not be called")
         }
 
-        waitForExpectations(timeout: 0.05)
+        waitForExpectations(timeout: 0.5)
     }
 }

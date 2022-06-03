@@ -3,9 +3,7 @@ import XCTest
 @testable import WordPress
 @testable import WordPressKit
 
-class TimeZoneSelectorViewModelTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
+class TimeZoneSelectorViewModelTests: CoreDataTestCase {
 
     private var viewModel: TimeZoneSelectorViewModel!
 
@@ -13,8 +11,6 @@ class TimeZoneSelectorViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
-        contextManager = ContextManagerMock()
 
         // Given TimeZoneGroups
         // When new ViewModel created with TimeZoneStore with state=loaded

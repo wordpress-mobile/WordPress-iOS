@@ -2,7 +2,7 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "ContextManagerMock.h"
+#import "WordPressTest-Swift.h"
 
 @interface BlogTimeZoneTests : XCTestCase
 @property (nonatomic, strong) ContextManagerMock *coreDataStack;

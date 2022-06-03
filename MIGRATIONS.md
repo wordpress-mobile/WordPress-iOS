@@ -3,6 +3,43 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 141
+
+@wargcm 2022-05-23
+
+- Created a new entity `BloggingPromptSettings` with:
+    - `isPotentialBloggingSite` (required, default `NO`, `Boolean`)
+    - `promptCardEnabled` (required, default `YES`, `Boolean`)
+    - `promptRemindersEnabled` (required, default `NO`, `Boolean`)
+    - `reminderTime` (required, default empty string, `String`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `reminderDays` one-to-one mapping to `BloggingPromptSettingsReminderDays`
+- Created a new entity `BloggingPromptSettingsReminderDays` with:
+    - `monday` (required, default `NO`, `Boolean`)
+    - `tuesday` (required, default `NO`, `Boolean`)
+    - `wednesday` (required, default `NO`, `Boolean`)
+    - `thursday` (required, default `NO`, `Boolean`)
+    - `friday` (required, default `NO`, `Boolean`)
+    - `saturday` (required, default `NO`, `Boolean`)
+    - `sunday` (required, default `NO`, `Boolean`)
+    - `settings` one-to-one mapping to `BloggingPromptSettings`
+
+## WordPress 140
+
+@dvdchr 2022-05-13
+
+- Created a new entity `BloggingPrompt` with:
+    - `promptID` (required, default `0`, `Int 32`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `text` (required, default empty string, `String`)
+    - `title` (required, default empty string, `String`)
+    - `content` (required, default empty string, `String`)
+    - `attribution` (required, default empty string, `String`)
+    - `date` (optional, no default, `Date`)
+    - `answered` (required, default `NO`, `Boolean`)
+    - `answerCount` (required, default `0`, `Int 32`)
+    - `displayAvatarURLs` (optional, no default, `Transformable` with type `[URL]`)
+
 ## WordPress 138
 
 @dvdchr 2022-03-07

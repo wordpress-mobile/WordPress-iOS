@@ -1,5 +1,6 @@
 import UIKit
 import Nimble
+import XCTest
 
 @testable import WordPress
 

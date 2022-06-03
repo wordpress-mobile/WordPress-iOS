@@ -15,6 +15,8 @@
     case insightsViewsVisitors
     case insightsLatestPostSummary
     case insightsAllTime
+    case insightsLikesTotals
+    case insightsCommentsTotals
     case insightsFollowerTotals
     case insightsMostPopularTime
     case insightsTagsAndCategories
@@ -36,6 +38,8 @@
                                     [StatSection.insightsViewsVisitors,
                                      .insightsLatestPostSummary,
                                      .insightsAllTime,
+                                     .insightsLikesTotals,
+                                     .insightsCommentsTotals,
                                      .insightsFollowerTotals,
                                      .insightsMostPopularTime,
                                      .insightsTagsAndCategories,
@@ -93,6 +97,10 @@
             return InsightsHeaders.latestPostSummary
         case .insightsAllTime:
             return InsightsHeaders.allTimeStats
+        case .insightsLikesTotals:
+            return InsightsHeaders.likesTotals
+        case .insightsCommentsTotals:
+            return InsightsHeaders.commentsTotals
         case .insightsFollowerTotals:
             return InsightsHeaders.followerTotals
         case .insightsMostPopularTime:
@@ -281,6 +289,10 @@
             return .latestPostSummary
         case .insightsAllTime:
             return .allTimeStats
+        case.insightsLikesTotals:
+            return .likesTotals
+        case .insightsCommentsTotals:
+            return .commentsTotals
         case .insightsFollowerTotals:
             return .followersTotals
         case .insightsMostPopularTime:
@@ -299,6 +311,41 @@
             return .postingActivity
         case .insightsPublicize:
             return .publicize
+        default:
+            return nil
+        }
+    }
+
+    // MARK: - analyticsEvent on ViewMore tapped
+
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsViewMoreTappedAuthors
+        case .periodClicks:
+            return .statsViewMoreTappedClicks
+        case .periodOverviewComments:
+            return .statsViewMoreTappedComments
+        case .periodCountries:
+            return .statsViewMoreTappedCountries
+        case .insightsFollowerTotals, .insightsFollowersEmail, .insightsFollowersWordPress:
+            return .statsViewMoreTappedFollowers
+        case .periodPostsAndPages:
+            return .statsViewMoreTappedPostsAndPages
+        case .insightsPublicize:
+            return .statsViewMoreTappedPublicize
+        case .periodReferrers:
+            return .statsViewMoreTappedReferrers
+        case .periodSearchTerms:
+            return .statsViewMoreTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsViewMoreTappedTagsAndCategories
+        case .periodVideos:
+            return .statsViewMoreTappedVideoPlays
+        case .periodFileDownloads:
+            return .statsViewMoreTappedFileDownloads
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
         default:
             return nil
         }
@@ -335,7 +382,9 @@
                 return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
             }
         }
-        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
+        static let likesTotals = NSLocalizedString("Likes Total", comment: "Insights 'Likes Total' header")
+        static let commentsTotals = NSLocalizedString("Comments Total", comment: "Insights 'Comments Total' header")
+        static let followerTotals = NSLocalizedString("Followers Total", comment: "Insights 'Followers Total' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")

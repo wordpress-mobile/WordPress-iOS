@@ -3,10 +3,6 @@ import UIKit
 
 public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate & UIViewController
 
-@objc public protocol JetpackModuleHelperDelegate: AnyObject {
-    func jetpackModuleEnabled()
-}
-
 /// Shows a NoResultsViewController on a given VC and handle enabling
 /// a Jetpack module
 @objc class JetpackModuleHelper: NSObject {
