@@ -42,6 +42,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         true
     }
 
+    override var alwaysResetHeaderOnRotation: Bool {
+        true
+    }
+
     private lazy var helperView: UIView = {
         let view = UIView(frame: Metrics.helperFrame)
         view.addSubview(helperStackView)
