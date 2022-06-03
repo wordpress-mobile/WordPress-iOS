@@ -20,6 +20,7 @@ typedef void (^BlogSelectorDismissHandler)(void);
 @property (nonatomic, assign) BOOL displaysOnlyDefaultAccountSites;
 @property (nonatomic, assign) BOOL displaysNavigationBarWhenSearching;
 @property (nonatomic, assign) BOOL displaysCancelButton;
+@property (nonatomic, assign) BOOL shouldHideSelfHostedSites;
 @property (nonatomic, assign) BOOL dismissOnCancellation;
 @property (nonatomic, assign) BOOL dismissOnCompletion;
 
