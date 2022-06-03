@@ -430,7 +430,7 @@ private extension DashboardPromptsCardCell {
 
         let editor = EditPostViewController(blog: blog, prompt: prompt)
         editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .dashboard
+        editor.entryPoint = .bloggingPromptsDashboardCard
         presenterViewController?.present(editor, animated: true)
     }
 
