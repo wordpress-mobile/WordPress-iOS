@@ -16,11 +16,20 @@ platform :ios do
   # @option [String] scheme (default: "WordPressScreenshotGeneration") The name of the scheme to use to run the screenshots
   # @option [String] output_directory (default: `${PWD}/screenhots`) The directory to generate the screenshots to
   # @option [Array<String>] language (default: the list of Mag16 locales) The subset of locales to generate the screenshots for
+  # @option [Boolean] skip_clean Skip the deletion of DerivedData before starting. Useful to speed up iterating while adjusting screenshots until we're happy with the final results, for example
+  #
+  # @note When you're working on updating the screenshots with new design, and might need to run this lane multiple time to do some
+  # trial and errors to adjust the results until you're happy with it, you might want to run this lane with the following options:
+  #
+  #   `bundle exec fastlane screenshots language:fr-FR skip_clean:true`
+  #
+  # That way, it uses incremental builds instead of clean builds (faster iterations), and only generates screenshots for one language
+  # (which is usually enough to check that the design and screens being captured look correct while iterating).
   #
   desc 'Generate localised screenshots'
   lane :screenshots do |options|
     sh('bundle exec pod install')
-    FileUtils.rm_rf(DERIVED_DATA_PATH)
+    FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
     scheme = options[:scheme] || 'WordPressScreenshotGeneration'
 
