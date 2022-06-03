@@ -53,31 +53,69 @@ extension UIScrollView {
     // Scroll to a specific view in a horizontal scrollview so that it's leading edge is at the leading edge of our scrollview
     @objc func scrollHorizontallyToView(_ view: UIView, animated: Bool) {
         if let origin = view.superview {
-
-            // Get the X position of your child view
-            let childStartPoint = origin.convert(view.frame.origin, to: self)
-
-            // Scroll to a rectangle starting at the X of your subview, with a width of the scrollview safe area
-            // if the end of the rectangle is within the content size width.
-            //
-            // Otherwise, scroll all the way to the end.
-            //
-            if childStartPoint.x + safeAreaLayoutGuide.layoutFrame.width < contentSize.width {
-                let targetRect = CGRect(x: childStartPoint.x - Constants.targetRectPadding,
-                                        y: 0,
-                                        width: safeAreaLayoutGuide.layoutFrame.width,
-                                        height: Constants.targetRectDimension)
-                scrollRectToVisible(targetRect, animated: animated)
-
-                // This ensures scrolling to the correct position, especially when there are layout changes
-                //
-                // See: https://stackoverflow.com/a/35437399
-                //
-                layoutIfNeeded()
+            let childStartPoint = origin.convert(view.frame.origin, to: self).x
+            let childEndPoint = childStartPoint + view.frame.width
+            if userInterfaceLayoutDirection() == .leftToRight {
+                normalScrollHorizontallyToPoint(childStartPoint, animated: true)
             } else {
-                scrollToEnd(animated: true)
+                flippedScrollHorizontallyToPoint(childEndPoint, animated: true)
             }
+        }
+    }
 
+    /// Scroll horizontally to a view with the provided starting point
+    /// Used when the layout direction is Left to Right
+    /// - Parameters:
+    ///   - point: The point to scroll to. Normally the starting point of the view.
+    ///   - animated: `true` if the scrolling should be animated, `false` if it should be immediate.
+    private func normalScrollHorizontallyToPoint(_ point: CGFloat, animated: Bool) {
+        // Scroll to a rectangle starting at the X of your subview, with a width of the scrollview safe area
+        // if the end of the rectangle is within the content size width.
+        //
+        // Otherwise, scroll all the way to the end.
+        //
+        if point + safeAreaLayoutGuide.layoutFrame.width < contentSize.width {
+            let targetRect = CGRect(x: point - Constants.targetRectPadding,
+                                    y: 0,
+                                    width: safeAreaLayoutGuide.layoutFrame.width,
+                                    height: Constants.targetRectDimension)
+            scrollRectToVisible(targetRect, animated: animated)
+
+            // This ensures scrolling to the correct position, especially when there are layout changes
+            //
+            // See: https://stackoverflow.com/a/35437399
+            //
+            layoutIfNeeded()
+        } else {
+            scrollToEnd(animated: true)
+        }
+    }
+
+    /// Scroll horizontally to a view with the provided end point
+    /// Used when the layout direction is Right to Left
+    /// - Parameters:
+    ///   - point: The point to scroll to. Normally the ending point of the view.
+    ///   - animated: `true` if the scrolling should be animated, `false` if it should be immediate.
+    private func flippedScrollHorizontallyToPoint(_ point: CGFloat, animated: Bool) {
+        // Scroll to a rectangle ending at the X of your subview, with a width of the scrollview safe area
+        // if the start of the rectangle is within the content size width.
+        //
+        // Otherwise, scroll all the way to the start.
+        //
+        if point - safeAreaLayoutGuide.layoutFrame.width > 0 {
+            let targetRect = CGRect(x: point - safeAreaLayoutGuide.layoutFrame.width,
+                                    y: 0,
+                                    width: safeAreaLayoutGuide.layoutFrame.width,
+                                    height: Constants.targetRectDimension)
+            scrollRectToVisible(targetRect, animated: animated)
+
+            // This ensures scrolling to the correct position, especially when there are layout changes
+            //
+            // See: https://stackoverflow.com/a/35437399
+            //
+            layoutIfNeeded()
+        } else {
+            scrollToStart(animated: true)
         }
     }
 
@@ -87,6 +125,12 @@ extension UIScrollView {
             setContentOffset(endOffset, animated: animated)
             layoutIfNeeded()
         }
+    }
+
+    func scrollToStart(animated: Bool) {
+        let startOffset = CGPoint(x: 0, y: 0)
+        setContentOffset(startOffset, animated: animated)
+        layoutIfNeeded()
     }
 
     private enum Constants {

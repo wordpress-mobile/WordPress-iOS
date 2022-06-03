@@ -26,4 +26,8 @@ extension UIViewController {
     @objc func dismissNotice() {
         ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
+
+    @objc func dismissQuickStartTaskCompleteNotice() {
+        QuickStartTourGuide.shared.dismissTaskCompleteNotice()
+    }
 }

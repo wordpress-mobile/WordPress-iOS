@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d respostas";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d de %2$d concluídas";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -512,9 +513,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Adicionar conteúdo ao post";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Adicionar novo cartão de estatísticas";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Adicionar no início";
 
@@ -685,9 +683,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Tudo pronto!";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Todas as tarefas concluídas";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Até o momento";
@@ -1609,14 +1604,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Código";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Recolhido, %i tarefas completadas. Expandir a lista dessas tarefas.";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Recolhido. Toque para expandir.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Recolhe a lista de tarefas completas.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Coletar informação";
@@ -1716,9 +1705,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compacta";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Concluídas (%i)";
-
 /* The action is completed */
 "Completed" = "Operação concluída";
 
@@ -1781,9 +1767,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Confirme seu e-mail primeiro";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Parabéns por concluir sua lista. Ótimo trabalho!";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Parabéns por sua compra!";
@@ -3046,14 +3029,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expandida";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Expandido, %i tarefas completadas. Recolher a lista dessas tarefas.";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Expandido. Toque para recolher.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Expande a lista de tarefas completadas.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Expande para selecionar um menu diferente";
@@ -3267,9 +3244,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Seguidor";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Total de seguidores";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -4775,9 +4749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Não há pré-visualização disponível. ";
 
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Nenhum post salvo";
-
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Não, obrigado!";
 
@@ -4920,7 +4891,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Nenhum post encontrado na pesquisa por %@, em sua língua.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "Nenhum post recente";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -6809,9 +6780,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Mostrando senha";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Exibido na guia do navegador do seu visitante e outros lugares online.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Exibido publicamente quando você comenta em blogs.";
 
@@ -6951,7 +6919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "Tamanho";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -9223,9 +9190,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "É possível substituir essas configurações para posts individuais.";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Você pode reorganizar os blocos tocando em um bloco e, em seguida, nas setas para cima e para baixo que aparecem no canto inferior esquerdo do bloco para movê-lo acima ou abaixo de outros blocos.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Você pode mudar de site a qualquer momento.";
