@@ -89,30 +89,26 @@ class PromptRemindersSchedulerTests: XCTestCase {
                     Expected(body: "Prompt text 1",
                              dateComponents: .init(year: 2022, month: 5, day: 21, hour: hour, minute: minute),
                              userInfo: [
-                                PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-                                PushNotificationsManager.BloggingPromptPayload.promptIDKey: 101,
-                                PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
+                                BloggingPrompt.NotificationKeys.promptID: 101,
+                                BloggingPrompt.NotificationKeys.siteID: siteID
                              ]),
                     Expected(body: "Prompt text 8",
                              dateComponents: .init(year: 2022, month: 5, day: 28, hour: hour, minute: minute),
                              userInfo: [
-                                PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-                                PushNotificationsManager.BloggingPromptPayload.promptIDKey: 108,
-                                PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
+                                BloggingPrompt.NotificationKeys.promptID: 108,
+                                BloggingPrompt.NotificationKeys.siteID: siteID
                              ]),
 
                     // static notifications
                     Expected(body: .staticNotificationContent,
                              dateComponents: .init(year: 2022, month: 6, day: 4, hour: hour, minute: minute),
                              userInfo: [
-                                PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-                                PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
+                                BloggingPrompt.NotificationKeys.siteID: siteID
                              ]),
                     Expected(body: .staticNotificationContent,
                              dateComponents: .init(year: 2022, month: 6, day: 11, hour: hour, minute: minute),
                              userInfo: [
-                                PushNotificationsManager.Notification.typeKey: PushNotificationsManager.Notification.bloggingPrompts,
-                                PushNotificationsManager.BloggingPromptPayload.siteIDKey: siteID
+                                BloggingPrompt.NotificationKeys.siteID: siteID
                              ]),
                 ]
             }
@@ -289,7 +285,11 @@ class PromptRemindersSchedulerTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(error as! PromptRemindersScheduler.Errors, PromptRemindersScheduler.Errors.needsPushAuthorization)
+            guard case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications = error else {
+                XCTFail("Expected BloggingRemindersScheduler.Error.needsPermissionForPushNotifications, instead got: \(String(describing: error))")
+                return
+            }
+
             expectation.fulfill()
         }
 

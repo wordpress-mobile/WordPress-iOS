@@ -352,6 +352,9 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
+    // Blogging Reminders Notification
+    case bloggingRemindersNotificationReceived
+
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
     case promptsIntroductionModalViewed
@@ -365,6 +368,12 @@ import Foundation
     case promptsDashboardCardMenuSkip
     case promptsDashboardCardMenuRemove
     case promptsListViewed
+    case promptsReminderSettingsIncludeSwitch
+    case promptsReminderSettingsHelp
+    case promptsNotificationAnswerActionTapped
+    case promptsNotificationDismissActionTapped
+    case promptsNotificationTapped
+    case promptsNotificationDismissed
 
     /// A String that represents the event
     var value: String {
@@ -958,6 +967,10 @@ import Foundation
         case .enhancedSiteCreationSiteNameExperiment:
             return "enhanced_site_creation_site_name_experiment"
 
+        // Blogging Reminders Notification
+        case .bloggingRemindersNotificationReceived:
+            return "blogging_reminders_notification_received"
+
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
             return "my_site_create_sheet_answer_prompt_tapped"
@@ -983,7 +996,18 @@ import Foundation
             return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
         case .promptsListViewed:
             return "blogging_prompts_prompts_list_viewed"
-
+        case .promptsReminderSettingsIncludeSwitch:
+            return "blogging_reminders_include_prompt_tapped"
+        case .promptsReminderSettingsHelp:
+            return "blogging_reminders_include_prompt_help_tapped"
+        case .promptsNotificationAnswerActionTapped:
+            return "blogging_reminders_notification_prompt_answer_tapped"
+        case .promptsNotificationDismissActionTapped:
+            return "blogging_reminders_notification_prompt_dismiss_tapped"
+        case .promptsNotificationTapped:
+            return "blogging_reminders_notification_prompt_tapped"
+        case .promptsNotificationDismissed:
+            return "blogging_reminders_notification_prompt_dismissed"
         } // END OF SWITCH
     }
 

@@ -5,6 +5,11 @@ data model as well as any custom migrations.
 
 ## WordPress 141
 
+@dvdchr 2022-05-31
+
+- Updated `BloggingPrompt`:
+    - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
+
 @wargcm 2022-05-23
 
 - Created a new entity `BloggingPromptSettings` with:
