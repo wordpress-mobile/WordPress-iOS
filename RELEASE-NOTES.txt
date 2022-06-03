@@ -1,5 +1,6 @@
 20.1
 -----
+* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable.
 
 
 20.0
