@@ -174,10 +174,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         coordinator?.start()
 
-        // FIXME: Remove, temporary code
-        FeatureHighlightStore.didDismissTooltip = false
-        FeatureHighlightStore.followConversationTooltipCounter = 0
-
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
