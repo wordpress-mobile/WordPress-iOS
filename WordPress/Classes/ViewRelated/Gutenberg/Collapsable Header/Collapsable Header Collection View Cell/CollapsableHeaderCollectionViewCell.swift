@@ -25,6 +25,8 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    var showsCheckMarkWhenSelected = true
+
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.cancelImageDownload()
@@ -117,6 +119,11 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     private func checkmarkHidden(_ isHidden: Bool, animated: Bool = false) {
+        guard showsCheckMarkWhenSelected else {
+            checkmarkContainerView.isHidden = true
+            return
+        }
+
         guard animated else {
             checkmarkContainerView.isHidden = isHidden
             return

@@ -1,6 +1,6 @@
 20.1
 -----
-
+* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
 
 20.0
 -----
@@ -10,6 +10,7 @@
 * [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
 * [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
 * [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
+* [*] [internal] Quick Start: Fixed a couple of layout issues with the Quick Start notices when rotating the device. [#18758]
 
 19.9
 -----

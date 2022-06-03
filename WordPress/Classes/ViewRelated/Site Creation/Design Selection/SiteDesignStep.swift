@@ -8,7 +8,7 @@ final class SiteDesignStep: WizardStep {
     private let isLastStep: Bool
 
     private(set) lazy var content: UIViewController = {
-        return SiteDesignContentCollectionViewController(createsSite: isLastStep) { [weak self] (design) in
+        return SiteDesignContentCollectionViewController(creator: creator, createsSite: isLastStep) { [weak self] (design) in
             self?.didSelect(design)
         }
     }()

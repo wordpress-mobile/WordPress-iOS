@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-20 13:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-27 15:22:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: fr */
@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d réponses";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d sur %2$d terminée";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -512,9 +513,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Ajouter le contenu dans l’article";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Ajouter une nouvelle carte de statistiques";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Ajouter au début";
 
@@ -685,9 +683,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Tout est bon !";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Toutes les tâches terminées";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Depuis la création";
@@ -1615,14 +1610,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Code";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Pliée, %i tâches terminées, basculer sur déplier la liste de ces tâches";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Replié. Toucher pour déplier.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Plier la liste des tâches terminées.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Recueil d’information";
@@ -1722,9 +1711,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compact";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Terminée (%i)";
-
 /* The action is completed */
 "Completed" = "Terminé";
 
@@ -1793,9 +1779,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title shown when all tours have been completed. */
 "Congrats! You know your way around" = "Félicitations ! Vous connaissez le chemin";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Félicitations pour avoir terminer votre liste. Un boulot rondement mené.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Félicitations pour votre achat !";
@@ -2661,6 +2644,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliquer le bloc";
 
+/* Placeholder text for the search field int the Site Intent screen. */
+"E.g. Fashion, Poetry, Politics" = "Par ex. Mode, Poésie, Politique";
+
 /* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Chaque bloc possède ses propres réglages. Pour les trouver, appuyez sur un bloc. Ses réglages apparaissent sur la barre d’outils en bas de l’écran.";
 
@@ -3067,14 +3053,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Développé";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Déplier, %i tâches terminées, basculer sur plier la liste de ces tâches";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Déplié. Toucher pour replier.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Cela étend la liste de tâches terminées.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Déplier pour sélectionner un menu différent";
@@ -3288,9 +3268,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Abonné";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Total des abonnés";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -4814,9 +4791,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Aucune URL d’aperçu disponible";
 
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Aucun article enregistré";
-
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Non merci";
 
@@ -4959,7 +4933,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Aucun article ne correspond à %@ dans votre langue.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "Aucun article n'a été fait récemment";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -6866,9 +6840,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Affiché";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Contenu affiché dans l’onglet du navigateur de vos visiteurs et à d’autres endroits en ligne.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Affichée publiquement quand vous commentez sur des blogs.";
 
@@ -7008,7 +6979,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "Taille";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -7840,7 +7810,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Impossible de clôturer ce compte utilisateur tant qu’il bénéficie d’abonnements en cours.";
 
-/* This week legend label */
+/* This week legend label
+   Title of a button. A call to action to view more stats for this week */
 "This week" = "Cette semaine";
 
 /* A description of the twitter sharing setting.
@@ -9302,9 +9273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Vous pouvez remplacer ces paramètres pour des articles précis.";
 
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Vous pouvez réorganiser les blocs en touchant un bloc, puis en touchant les flèches haut et bas qui apparaissent en bas à gauche du bloc pour le déplacer au-dessus ou au-dessous d’autres blocs.";
-
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Vous pouvez changer de site à tout moment.";
 
@@ -9731,6 +9699,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
 "stats.insights.latestPostSummary.noData" = "Vous n’avez pas encore publié d’articles. Revenez lorsque vous aurez publié votre premier article !";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Publié %@";
 
 /* Title for Views count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.views" = "Vues";

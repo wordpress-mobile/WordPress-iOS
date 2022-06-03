@@ -487,7 +487,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.54.0-beta.1):
+  - WordPressKit (4.54.0-beta.2):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -495,7 +495,7 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.15)
-  - WordPressShared (1.17.1):
+  - WordPressShared (1.18.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.5)
@@ -593,7 +593,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 2.0.0)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/18429-post_metadata_key`)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (~> 1.17.1)
+  - WordPressShared (~> 1.18.0-beta.1)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.4)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0-alpha1/third-party-podspecs/Yoga.podspec.json`)
@@ -771,7 +771,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.78.0-alpha1
   WordPressKit:
-    :commit: e5de66ddd9e6309b2f279efa02fedf89963e0a5a
+    :commit: 18ed58e8c09ee8ae03041267c3936774c3e06713
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -858,9 +858,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
-  WordPressKit: 290ea2a473e4a67bc5b9ac7e37dd7bb25b1acee0
+  WordPressKit: fd65d442b814b286ec0d97e0a93cb4b9c19fa4d1
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
-  WordPressShared: 0c4bc5e25765732fcf5d07f28c81970ab28493fb
+  WordPressShared: c0f1fe75e45e6f396bd325b45243bd9805b2cc56
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 9533160e5587939876aeeb1461a441a4e5dc4c4d
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
@@ -874,6 +874,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: bf59adced92f9a020d7e87e27cbb74c1fa3b5be8
+PODFILE CHECKSUM: 004384b29af73be29ff6434114db829f9277346d
 
 COCOAPODS: 1.11.2
