@@ -293,6 +293,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             containerView: scrollView,
             tooltip: tooltip,
             target: .point(followButtonMidPoint),
+            shouldShowSpotlightView: true,
             primaryTooltipAction: {
                 FeatureHighlightStore.didDismissTooltip = true
             }
