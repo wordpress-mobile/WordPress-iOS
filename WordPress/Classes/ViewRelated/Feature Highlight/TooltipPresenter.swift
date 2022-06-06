@@ -10,7 +10,7 @@ final class TooltipPresenter {
         static let tooltipAnimationDuration: TimeInterval = 0.2
         static let anchorBottomConstraintConstant: CGFloat = 58
         static let spotlightViewBufferHeight: CGFloat = 38
-        static let spotlightViewRadius: CGFloat = 10
+        static let spotlightViewRadius: CGFloat = 20
     }
 
     enum TooltipVerticalPosition {
@@ -238,17 +238,11 @@ final class TooltipPresenter {
             return nil
         }
 
-        var extraSpotlightOffsetX = extraArrowOffsetX()
-        if extraSpotlightOffsetX >= 0 {
-            extraSpotlightOffsetX += arrowOffsetX()
-            extraSpotlightOffsetX -= Constants.spotlightViewRadius
-        } else {
-            extraSpotlightOffsetX -= arrowOffsetX()
-            extraSpotlightOffsetX += Constants.spotlightViewRadius
-        }
-
         var constraints = [
-            spotlightView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: extraSpotlightOffsetX)
+            spotlightView.leadingAnchor.constraint(
+                equalTo: containerView.safeAreaLayoutGuide.leadingAnchor,
+                constant: arrowOffsetX() + tooltip.frame.minX - Constants.spotlightViewRadius
+            )
         ]
 
         let verticalConstraint: NSLayoutConstraint
