@@ -1,9 +1,5 @@
 #!/bin/bash -eu
 
-echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products.tar
-tar -xf build-products.tar
-
 # Temporary fix until we're on the Xcode 13.1 VM
 echo "--- :rubygems: Fixing Ruby Setup"
 gem install bundler
@@ -13,7 +9,7 @@ install_gems
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+bundle exec fastlane screenshots language:en-US skip_clean:true
 TESTS_EXIT_STATUS=$?
 set -e
 
