@@ -137,7 +137,9 @@ final class TooltipPresenter {
             delay: 0,
             options: .curveEaseOut
         ) {
-            guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+            guard let tooltipTopConstraint = self.tooltipTopConstraint else {
+                return
+            }
 
             self.tooltip.alpha = 1
             tooltipTopConstraint.constant -= Constants.tooltipTopConstraintAnimationOffset
@@ -161,7 +163,9 @@ final class TooltipPresenter {
                 delay: 0,
                 options: .curveEaseOut
             ) {
-                guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+                guard let tooltipTopConstraint = self.tooltipTopConstraint else {
+                    return
+                }
 
                 self.tooltip.alpha = 0
                 tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
@@ -171,6 +175,7 @@ final class TooltipPresenter {
                 self.primaryTooltipAction?()
                 self.tooltip.removeFromSuperview()
                 self.spotlightView?.removeFromSuperview()
+                NotificationCenter.default.removeObserver(self)
             }
         }
     }
@@ -289,7 +294,9 @@ final class TooltipPresenter {
             delay: 0,
             options: .curveEaseOut
         ) {
-            guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+            guard let tooltipTopConstraint = self.tooltipTopConstraint else {
+                return
+            }
 
             self.tooltip.alpha = 0
             tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset

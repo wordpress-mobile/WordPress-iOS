@@ -240,7 +240,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
-        // Here
         header.configure(for: post)
         fetchLikes()
         fetchComments()
@@ -1134,7 +1133,9 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
             return
         }
 
-        guard let tooltip = tooltipPresenter?.tooltip else { return }
+        guard let tooltip = tooltipPresenter?.tooltip else {
+            return
+        }
 
         let currentToggleVisibility = isVisibleInScrollView(tooltip)
 
