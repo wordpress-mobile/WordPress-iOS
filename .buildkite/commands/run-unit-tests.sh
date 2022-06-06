@@ -7,6 +7,15 @@ gem install bundler
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
+echo "--- :writing_hand: Copy Files"
+cp -v fastlane/env/project.env-example .configure-files/project.env
+mkdir -pv ~/.configure/wordpress-ios/secrets
+cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/project.env
+
+echo "--- Installing Secrets"
+bundle exec fastlane run configure_apply
+
+
 echo "--- 🔬 Testing"
 set +e
 bundle exec fastlane screenshots language:en-US skip_clean:true
