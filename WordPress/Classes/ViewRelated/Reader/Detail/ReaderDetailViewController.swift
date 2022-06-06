@@ -178,10 +178,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // When comments are moderated or edited from the Comments view, update the Comments snippet here.
         NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
-
-        // FIXME: Remove, temporary code
-        FeatureHighlightStore.didDismissTooltip = false
-        FeatureHighlightStore.followConversationTooltipCounter = 0
     }
 
     override func viewWillAppear(_ animated: Bool) {
