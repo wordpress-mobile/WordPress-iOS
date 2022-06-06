@@ -272,6 +272,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func tooltipTargetPoint() -> CGPoint {
+        setupFeaturedImage()
+        updateFollowButtonState()
         guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else {
             return .zero
         }

@@ -25,7 +25,7 @@ final class TooltipPresenter {
     }
 
     private let containerView: UIView
-    private let tooltip: Tooltip
+    private var tooltip: Tooltip
     private var spotlightView: QuickStartSpotlightView?
     private var primaryTooltipAction: (() -> Void)?
     private var secondaryTooltipAction: (() -> Void)?
@@ -126,8 +126,12 @@ final class TooltipPresenter {
         self.tooltip.alpha = 0
         tooltip.addArrowHead(toXPosition: arrowOffsetX(), arrowPosition: tooltipOrientation())
         setUpTooltipConstraints()
-        containerView.layoutIfNeeded()
 
+        containerView.layoutIfNeeded()
+        animateTooltipIn()
+    }
+
+    private func animateTooltipIn() {
         UIView.animate(
             withDuration: Constants.tooltipAnimationDuration,
             delay: 0,
@@ -286,8 +290,27 @@ final class TooltipPresenter {
     }
 
     @objc private func resetTooltipAndShow() {
-        tooltip.removeFromSuperview()
-        showTooltip()
+        UIView.animate(
+            withDuration: Constants.tooltipAnimationDuration,
+            delay: 0,
+            options: .curveEaseOut
+        ) {
+            guard let tooltipTopConstraint = self.tooltipTopConstraint else { return }
+
+            self.tooltip.alpha = 0
+            tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
+            self.containerView.layoutIfNeeded()
+        } completion: { isSuccess in
+            let newTooltip = Tooltip()
+            newTooltip.title = self.tooltip.title
+            newTooltip.message = self.tooltip.message
+            newTooltip.primaryButtonTitle = self.tooltip.primaryButtonTitle
+            newTooltip.secondaryButtonTitle = self.tooltip.secondaryButtonTitle
+            newTooltip.dismissalAction = self.tooltip.dismissalAction
+            self.tooltip = newTooltip
+
+            self.showTooltip()
+        }
     }
 
     /// Calculates where the arrow needs to place in the borders of the tooltip.
