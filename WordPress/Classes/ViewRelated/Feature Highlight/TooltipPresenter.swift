@@ -25,7 +25,6 @@ final class TooltipPresenter {
     }
 
     private let containerView: UIView
-    private var tooltip: Tooltip
     private var spotlightView: QuickStartSpotlightView?
     private var primaryTooltipAction: (() -> Void)?
     private var secondaryTooltipAction: (() -> Void)?
@@ -53,6 +52,7 @@ final class TooltipPresenter {
     }
 
 
+    private(set) var tooltip: Tooltip
     var tooltipVerticalPosition: TooltipVerticalPosition = .auto
     private let shouldShowSpotlightView: Bool
 

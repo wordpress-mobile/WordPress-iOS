@@ -155,7 +155,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private var hasAutomaticallyTriggeredCommentAction = false
 
     private var tooltipPresenter: TooltipPresenter?
-    private var tooltip: Tooltip?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -290,7 +289,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
         let tooltip = Tooltip()
-        self.tooltip = tooltip
 
         tooltip.title = Strings.tooltipTitle
         tooltip.message = Strings.tooltipMessage
@@ -1136,7 +1134,7 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
             return
         }
 
-        guard let tooltip = tooltip else { return }
+        guard let tooltip = tooltipPresenter?.tooltip else { return }
 
         let currentToggleVisibility = isVisibleInScrollView(tooltip)
 
