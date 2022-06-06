@@ -238,7 +238,7 @@ final class Tooltip: UIView {
 
         arrowShapeLayer.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
-        arrowShapeLayer.lineWidth = 2.0
+        arrowShapeLayer.lineWidth = 4.0
 
         arrowShapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
 
@@ -258,6 +258,19 @@ final class Tooltip: UIView {
                 message: message
             )
         )
+    }
+
+    func copy() -> Tooltip {
+        let copyTooltip = Tooltip()
+        copyTooltip.title = title
+        copyTooltip.message = message
+        copyTooltip.primaryButtonTitle = primaryButtonTitle
+        copyTooltip.secondaryButtonTitle = secondaryButtonTitle
+        copyTooltip.dismissalAction = dismissalAction
+        copyTooltip.secondaryButtonAction = secondaryButtonAction
+        copyTooltip.shouldPrefixLeadingIcon = shouldPrefixLeadingIcon
+        copyTooltip.buttonAlignment = buttonAlignment
+        return copyTooltip
     }
 
     private func commonInit() {

@@ -301,14 +301,8 @@ final class TooltipPresenter {
             tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
             self.containerView.layoutIfNeeded()
         } completion: { isSuccess in
-            let newTooltip = Tooltip()
-            newTooltip.title = self.tooltip.title
-            newTooltip.message = self.tooltip.message
-            newTooltip.primaryButtonTitle = self.tooltip.primaryButtonTitle
-            newTooltip.secondaryButtonTitle = self.tooltip.secondaryButtonTitle
-            newTooltip.dismissalAction = self.tooltip.dismissalAction
-            self.tooltip = newTooltip
-
+            self.tooltip.removeFromSuperview()
+            self.tooltip = self.tooltip.copy()
             self.showTooltip()
         }
     }
@@ -316,7 +310,7 @@ final class TooltipPresenter {
     /// Calculates where the arrow needs to place in the borders of the tooltip.
     /// This depends on the position of the target relative to `tooltip`.
     private func arrowOffsetX() -> CGFloat {
-        return targetMidX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
+        targetMidX - ((containerView.bounds.width - tooltip.size().width) / 2) - extraArrowOffsetX()
     }
 
     /// If the tooltip is always vertically centered, tooltip's width may not be big enough to reach to the target
@@ -334,17 +328,18 @@ final class TooltipPresenter {
     private func extraArrowOffsetX() -> CGFloat {
         let tooltipWidth = tooltip.size().width
         let extraPushOffset = max(
-            (targetMidX + Constants.horizontalBufferMargin) - (containerView.frame.midX + tooltipWidth / 2),
-            0
-        )
-        let extraRetractOffset = min(
-            (targetMidX - Constants.horizontalBufferMargin) - (containerView.frame.midX - tooltipWidth / 2),
+            (targetMidX + Constants.horizontalBufferMargin) - (containerView.safeAreaLayoutGuide.layoutFrame.midX + tooltipWidth / 2),
             0
         )
 
         if extraPushOffset > 0 {
             return extraPushOffset
         }
+
+        let extraRetractOffset = min(
+            (targetMidX - Constants.horizontalBufferMargin) - (containerView.safeAreaLayoutGuide.layoutFrame.midX - tooltipWidth / 2),
+            0
+        )
 
         return extraRetractOffset
     }
