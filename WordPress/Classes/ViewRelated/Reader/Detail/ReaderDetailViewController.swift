@@ -271,8 +271,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
-    private func tooltipTargetPoint() -> CGPoint? {
-        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else { return nil }
+    private func tooltipTargetPoint() -> CGPoint {
+        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else {
+            return .zero
+        }
+
         return CGPoint(
             x: commentsTableView.frame.minX + followButtonMidPoint.x,
             y: commentsTableView.frame.minY + followButtonMidPoint.y
@@ -280,8 +283,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
-        guard let followButtonMidPoint = tooltipTargetPoint() else { return }
-
         let tooltip = Tooltip()
         self.tooltip = tooltip
 
@@ -292,7 +293,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tooltipPresenter = TooltipPresenter(
             containerView: scrollView,
             tooltip: tooltip,
-            target: .point(followButtonMidPoint),
+            target: .point(tooltipTargetPoint),
             shouldShowSpotlightView: true,
             primaryTooltipAction: {
                 FeatureHighlightStore.didDismissTooltip = true
@@ -321,9 +322,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func scrollToTooltip() {
-        guard let followButtonMidPoint = tooltipTargetPoint() else { return }
-
-        scrollView.setContentOffset(CGPoint(x: 0, y: followButtonMidPoint.y - scrollView.frame.height/2), animated: true)
+        scrollView.setContentOffset(CGPoint(x: 0, y: tooltipTargetPoint().y - scrollView.frame.height/2), animated: true)
         scrollView.layoutIfNeeded()
     }
 

@@ -21,7 +21,7 @@ final class TooltipPresenter {
 
     enum Target {
         case view(UIView)
-        case point(CGPoint)
+        case point((() -> CGPoint))
     }
 
     private let containerView: UIView
@@ -39,7 +39,7 @@ final class TooltipPresenter {
         case .view(let targetView):
             return targetView.frame.midX
         case .point(let targetPoint):
-            return targetPoint.x
+            return targetPoint().x
         }
     }
 
@@ -48,7 +48,7 @@ final class TooltipPresenter {
         case .view(let targetView):
             return targetView.frame.minY
         case .point(let targetPoint):
-            return targetPoint.y
+            return targetPoint().y
         }
     }
 
@@ -197,12 +197,12 @@ final class TooltipPresenter {
             case .bottom:
                 tooltipTopConstraint = tooltip.bottomAnchor.constraint(
                     equalTo: containerView.topAnchor,
-                    constant: targetPoint.y + totalVerticalBuffer
+                    constant: targetPoint().y + totalVerticalBuffer
                 )
             case .top:
                 tooltipTopConstraint = tooltip.bottomAnchor.constraint(
                     equalTo: containerView.topAnchor,
-                    constant: targetPoint.y
+                    constant: targetPoint().y
                     + totalVerticalBuffer
                     + tooltip.size().height
                 )
@@ -268,12 +268,12 @@ final class TooltipPresenter {
             case .bottom:
                 verticalConstraint = spotlightView.bottomAnchor.constraint(
                     equalTo: containerView.topAnchor,
-                    constant: targetPoint.y + spotlightVerticalBuffer
+                    constant: targetPoint().y + spotlightVerticalBuffer
                 )
             case .top:
                 verticalConstraint = spotlightView.bottomAnchor.constraint(
                     equalTo: containerView.topAnchor,
-                    constant: targetPoint.y
+                    constant: targetPoint().y
                     + spotlightVerticalBuffer
                     + tooltip.size().height
                 )
