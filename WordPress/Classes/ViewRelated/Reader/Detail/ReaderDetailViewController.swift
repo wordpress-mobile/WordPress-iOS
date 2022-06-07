@@ -421,9 +421,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         scrollView.layoutIfNeeded()
 
-        if shouldConfigureTooltipPresenter() {
-            self.configureTooltipPresenter { [weak self] in
-                self?.scrollToTooltip()
+        // Delay configuration due to the sideeffect in fresh install.
+        // The position calculation is wrong for the first time this VC is opened
+        // regardless of the post. It never happens after that. Although the timing
+        // of this call is accurate, the calculation returns wrong result on that case.
+        // This manually delays the configuration and hacks the issue.
+        // We can remove this once the culprit is out.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            if self.shouldConfigureTooltipPresenter() {
+                self.configureTooltipPresenter { [weak self] in
+                    self?.scrollToTooltip()
+                }
             }
         }
     }
