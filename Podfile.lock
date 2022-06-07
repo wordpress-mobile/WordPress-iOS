@@ -28,9 +28,10 @@ PODS:
   - boost (1.76.0)
   - BVLinearGradient (2.5.6-wp-2):
     - React-Core
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
+  - Charts (4.0.3):
+    - Charts/Core (= 4.0.3)
+  - Charts/Core (4.0.3):
+    - SwiftAlgorithms (~> 1.0)
   - CocoaLumberjack (3.7.4):
     - CocoaLumberjack/Core (= 3.7.4)
   - CocoaLumberjack/Core (3.7.4)
@@ -473,6 +474,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
+  - SwiftAlgorithms (1.0.0)
   - UIDeviceIdentifier (2.0.0)
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
@@ -527,7 +529,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (~> 0.11.1)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0-alpha2/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0-alpha2/third-party-podspecs/BVLinearGradient.podspec.json`)
-  - Charts (~> 3.6)
+  - Charts (~> 4.0)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
@@ -638,6 +640,7 @@ SPEC REPOS:
     - Sodium
     - Starscream
     - SVProgressHUD
+    - SwiftAlgorithms
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
@@ -779,7 +782,7 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  Charts: d959d6723c8eedfdd0735dfc28cb0a71762ac4d9
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
@@ -849,6 +852,7 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
   UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
@@ -869,6 +873,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 45e5d8c9cc9b529c0cf4b2d74bced92bc6a44974
+PODFILE CHECKSUM: a2251989fbfce602f435e5b6dd1446e3aa151fae
 
 COCOAPODS: 1.11.2
