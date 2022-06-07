@@ -81,7 +81,7 @@ class StatsBarChartView: BarChartView {
         return lastEntryIndex
     }
 
-    private var primaryDataSet: IChartDataSet? {
+    private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
 

@@ -64,7 +64,7 @@ class StatsLineChartView: LineChartView {
         return styling.primaryHighlightColor != nil
     }
 
-    private var primaryDataSet: IChartDataSet? {
+    private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
 
