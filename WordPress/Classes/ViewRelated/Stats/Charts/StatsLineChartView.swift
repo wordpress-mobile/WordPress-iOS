@@ -322,9 +322,6 @@ extension StatsLineChartView: ChartViewDelegate {
 extension StatsLineChartView: Accessible {
     func prepareForVoiceOver() {
         // ChartDataRendererBase creates a meaningful a11y description, relying on the chart description
-        guard let chartDescription = chartDescription else {
-            return
-        }
         chartDescription.text = lineChartData.accessibilityDescription
         chartDescription.enabled = false    // disabling the description hides a corresponding label
     }
