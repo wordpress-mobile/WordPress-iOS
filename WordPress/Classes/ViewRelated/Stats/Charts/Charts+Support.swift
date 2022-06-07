@@ -4,14 +4,14 @@ import Charts
 // MARK: - Charts extensions
 
 extension BarChartData {
-    convenience init(entries: [BarChartDataEntry], valueFormatter: IValueFormatter? = nil) {
+    convenience init(entries: [BarChartDataEntry], valueFormatter: ValueFormatter? = nil) {
         let dataSet = BarChartDataSet(values: entries, label: nil, valueFormatter: valueFormatter)
         self.init(dataSets: [dataSet])
     }
 }
 
 extension BarChartDataSet {
-    convenience init(values: [BarChartDataEntry], label: String?, valueFormatter: IValueFormatter?) {
+    convenience init(values: [BarChartDataEntry], label: String?, valueFormatter: ValueFormatter?) {
         self.init(entries: values, label: label)
         self.valueFormatter = valueFormatter
     }
