@@ -114,10 +114,10 @@ private final class PeriodChartDataTransformer {
 
         var chartData = [BarChartData]()
 
-        let viewsDataSet = BarChartDataSet(values: viewEntries,
+        let viewsDataSet = BarChartDataSet(entries: viewEntries,
                                            label: NSLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                            valueFormatter: dataSetValueFormatter)
-        let visitorsDataSet = BarChartDataSet(values: visitorEntries,
+        let visitorsDataSet = BarChartDataSet(entries: visitorEntries,
                                               label: NSLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                               valueFormatter: dataSetValueFormatter)
         let viewsDataSets = [ viewsDataSet, visitorsDataSet ]

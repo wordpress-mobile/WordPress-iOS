@@ -114,7 +114,7 @@ private final class PostChartDataTransformer {
             entries.append(entry)
         }
 
-        let chartData = BarChartData(entries: entries)
+        let chartData = BarChartData(dataSet: BarChartDataSet(entries: entries))
         chartData.barWidth = effectiveWidth
 
         let xAxisFormatter: AxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
