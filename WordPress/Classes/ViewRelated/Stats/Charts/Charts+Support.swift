@@ -48,10 +48,10 @@ protocol BarChartStyling {
     var lineColor: UIColor { get }
 
     /// Formatter for x-axis values
-    var xAxisValueFormatter: IAxisValueFormatter { get }
+    var xAxisValueFormatter: AxisValueFormatter { get }
 
     /// Formatter for y-axis values
-    var yAxisValueFormatter: IAxisValueFormatter { get }
+    var yAxisValueFormatter: AxisValueFormatter { get }
 }
 
 protocol LineChartStyling {
@@ -75,7 +75,7 @@ protocol LineChartStyling {
     var lineColor: UIColor { get }
 
     /// Formatter for y-axis values
-    var yAxisValueFormatter: IAxisValueFormatter { get }
+    var yAxisValueFormatter: AxisValueFormatter { get }
 }
 
 /// Transforms a given data set for consumption by BarChartView in the Charts framework.

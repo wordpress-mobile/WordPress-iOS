@@ -330,7 +330,7 @@ extension StatsLineChartView: Accessible {
     }
 }
 
-private class DateValueFormatter: NSObject, IAxisValueFormatter {
+private class DateValueFormatter: NSObject, AxisValueFormatter {
     var dateFormatter: DateFormatter
     var xAxisDates: [Date] = []
 
