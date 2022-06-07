@@ -93,6 +93,10 @@
 		086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086103951EE09C91004D7C01 /* MediaVideoExporter.swift */; };
 		086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C4D0F1E81F9240011D960 /* Media+Blog.swift */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
+		086F2481284F52DB00032F39 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
+		086F2482284F52DD00032F39 /* TooltipAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E4B4B281C019A0085E89C /* TooltipAnchor.swift */; };
+		086F2483284F52DF00032F39 /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D553652821286300AA1E8D /* Tooltip.swift */; };
+		086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
 		0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0879FC151E9301DD00E1EFC8 /* MediaTests.swift */; };
 		087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */; };
 		0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */; };
@@ -20556,6 +20560,7 @@
 				FABB21E42602FC2C00C8785C /* GutenbergCoverUploadProcessor.swift in Sources */,
 				FABB21E52602FC2C00C8785C /* MediaQuotaCell.swift in Sources */,
 				FABB21E62602FC2C00C8785C /* PartScreenPresentationController.swift in Sources */,
+				086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */,
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
 				17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
 				FABB21E82602FC2C00C8785C /* FormattableContentRange.swift in Sources */,
@@ -20847,6 +20852,7 @@
 				FE32F003275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FABB22D52602FC2C00C8785C /* TenorStrings.swift in Sources */,
 				FAFC064F27D2360B002F0483 /* QuickStartCell.swift in Sources */,
+				086F2482284F52DD00032F39 /* TooltipAnchor.swift in Sources */,
 				FABB22D62602FC2C00C8785C /* PostEditor+MoreOptions.swift in Sources */,
 				FABB22D72602FC2C00C8785C /* NotificationSupportService.swift in Sources */,
 				FABB22D82602FC2C00C8785C /* MenusSelectionView.m in Sources */,
@@ -21069,6 +21075,7 @@
 				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,
 				FABB23932602FC2C00C8785C /* LoadMoreCounter.swift in Sources */,
 				FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */,
+				086F2483284F52DF00032F39 /* Tooltip.swift in Sources */,
 				FABB23952602FC2C00C8785C /* WPAvatarSource.m in Sources */,
 				FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */,
 				FABB23972602FC2C00C8785C /* BlogSyncFacade.m in Sources */,
@@ -21255,6 +21262,7 @@
 				FABB243B2602FC2C00C8785C /* GravatarButtonView.swift in Sources */,
 				AE2F3126270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
 				FABB243C2602FC2C00C8785C /* StockPhotosService.swift in Sources */,
+				086F2481284F52DB00032F39 /* TooltipPresenter.swift in Sources */,
 				FABB243D2602FC2C00C8785C /* Blog+Analytics.swift in Sources */,
 				FABB243E2602FC2C00C8785C /* ReaderStreamViewController+Helper.swift in Sources */,
 				FABB243F2602FC2C00C8785C /* ReaderAbstractTopic.swift in Sources */,
