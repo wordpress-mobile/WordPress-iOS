@@ -177,7 +177,7 @@ private extension StatsLineChartView {
                               styling.primaryLineColor.withAlphaComponent(0).cgColor]
         if let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil) {
             primaryDataSet.fillAlpha = 0.1
-            primaryDataSet.fill = Fill.fillWithLinearGradient(gradient, angle: 0)
+            primaryDataSet.fill = LinearGradientFill(gradient: gradient, angle: 0)
             primaryDataSet.drawFilledEnabled = true
         }
 
