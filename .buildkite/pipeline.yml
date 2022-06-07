@@ -8,7 +8,7 @@ common_params:
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-13 # Remember to address all 'FIXIT-13.1' comments when we'll update to new image
+    IMAGE_ID: xcode-13.4.1 # Remember to address all 'FIXIT-13.1' comments when we'll update to new image
 
 # This is the default pipeline – it will build and test the app
 steps:
