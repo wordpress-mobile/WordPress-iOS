@@ -263,7 +263,7 @@ private extension StatsLineChartView {
     func configureYAxisMaximum() {
         let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
 
-        if let maxY = data?.getYMax(),
+        if let maxY = data?.getYMax(axis: .left),
            maxY >= lowestMaxValue {
             leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
         } else {
