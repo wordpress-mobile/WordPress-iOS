@@ -424,7 +424,7 @@ private extension StatsBarChartView {
     }
 
     func redrawChartMarkersIfNeeded() {
-        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entryForHighlight(highlight) else {
+        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entry(for: highlight) else {
             return
         }
 

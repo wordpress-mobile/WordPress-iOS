@@ -293,7 +293,7 @@ private extension StatsLineChartView {
     }
 
     func redrawChartMarkersIfNeeded() {
-        guard marker != nil, let highlight = lastHighlighted, let entry = lineData?.entryForHighlight(highlight) else {
+        guard marker != nil, let highlight = lastHighlighted, let entry = lineData?.entry(for: highlight) else {
             return
         }
 
