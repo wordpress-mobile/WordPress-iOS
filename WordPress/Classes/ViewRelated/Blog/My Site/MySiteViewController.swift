@@ -128,6 +128,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             updateNavigationTitle(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
+            fetchPrompt(for: newBlog)
         }
 
         get {
@@ -154,6 +155,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
+        subscribeToPostPublished()
         startObservingQuickStart()
         startObservingOnboardingPrompt()
     }
@@ -191,6 +193,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavBarAppearance()
 
         createFABIfNeeded()
+        fetchPrompt(for: blog)
     }
 
     override func viewDidLayoutSubviews() {
@@ -249,6 +252,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func subscribeToPostPublished() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
     }
 
     func updateNavigationTitle(for blog: Blog) {
@@ -797,6 +804,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
+            self.fetchPrompt(for: blog)
         }
 
         return sitePickerViewController
@@ -917,6 +925,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         self.blog = blog
     }
+
+    // MARK: - Blogging Prompts
+
+    @objc func handlePostPublished() {
+        fetchPrompt(for: blog)
+    }
+
+    func fetchPrompt(for blog: Blog?) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let blog = blog,
+              blog.isAccessibleThroughWPCom(),
+              let promptsService = BloggingPromptsService(blog: blog) else {
+            return
+        }
+
+        promptsService.fetchTodaysPrompt()
+    }
+
+    // MARK: - Constants
 
     private enum Constants {
         static let segmentedControlXOffset: CGFloat = 20
