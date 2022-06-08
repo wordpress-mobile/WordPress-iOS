@@ -95,6 +95,8 @@ import Foundation
     case readerSearchHistoryCleared
     case readerArticleLinkTapped
     case readerArticleImageTapped
+    case readerFollowConversationTooltipTapped
+    case readerFollowConversationAnchorTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -539,6 +541,10 @@ import Foundation
             return "reader_article_link_tapped"
         case .readerArticleImageTapped:
             return "reader_article_image_tapped"
+        case .readerFollowConversationTooltipTapped:
+            return "reader_follow_conversation_tooltip_tapped"
+        case .readerFollowConversationAnchorTapped:
+            return "reader_follow_conversation_anchor_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
