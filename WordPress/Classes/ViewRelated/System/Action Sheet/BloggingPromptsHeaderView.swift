@@ -130,7 +130,7 @@ private extension BloggingPromptsHeaderView {
     @IBAction func shareTapped(_ sender: Any) {
         // TODO
     }
-    
+
     @IBAction func infoButtonTapped(_ sender: Any) {
         infoButtonHandler?()
     }

@@ -341,7 +341,7 @@ private extension CreateButtonCoordinator {
                 self?.viewController?.present(editor, animated: true)
             }
         }
-        
+
         promptsHeaderView.infoButtonHandler = { [weak self] in
             self?.viewController?.presentedViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
         }
