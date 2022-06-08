@@ -296,6 +296,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             shouldShowSpotlightView: true,
             primaryTooltipAction: {
                 FeatureHighlightStore.didDismissTooltip = true
+                WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
             }
         )
         tooltipPresenter?.tooltipVerticalPosition = .above
@@ -431,6 +432,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             if self.shouldConfigureTooltipPresenter() {
                 self.configureTooltipPresenter { [weak self] in
                     self?.scrollToTooltip()
+                    WPAnalytics.trackReader(.readerFollowConversationAnchorTapped)
                 }
             }
         }
