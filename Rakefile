@@ -1,7 +1,10 @@
-SWIFTLINT_VERSION='0.27.0'.freeze
-XCODE_WORKSPACE='WordPress.xcworkspace'.freeze
-XCODE_SCHEME='WordPress'.freeze
-XCODE_CONFIGURATION='Debug'.freeze
+# frozen_string_literal: true
+
+require 'English'
+SWIFTLINT_VERSION = '0.27.0'
+XCODE_WORKSPACE = 'WordPress.xcworkspace'
+XCODE_SCHEME = 'WordPress'
+XCODE_CONFIGURATION = 'Debug'
 
 require 'fileutils'
 require 'tmpdir'
@@ -9,21 +12,21 @@ require 'rake/clean'
 require 'yaml'
 require 'digest'
 
-PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
+PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
 task default: %w[test]
 
 desc 'Install required dependencies'
-task :dependencies => %w[dependencies:check assets:check]
+task dependencies: %w[dependencies:check assets:check]
 
 namespace :dependencies do
-  task :check => %w[ruby:check bundler:check bundle:check credentials:apply pod:check lint:check]
+  task check: %w[ruby:check bundler:check bundle:check credentials:apply pod:check lint:check]
 
   namespace :ruby do
     task :check do
       unless ruby_version_is_match?
-        #show a warning that Ruby doesn't match .ruby-version
+        # show a warning that Ruby doesn't match .ruby-version
         puts '====================================================================================='
         puts 'Warning: Your local Ruby version doesn\'t match .ruby-version'
         puts ''
@@ -34,16 +37,16 @@ namespace :dependencies do
         puts ''
         puts 'Press enter to continue anyway'
         puts '====================================================================================='
-        STDIN.gets.strip
+        $stdin.gets.strip
       end
     end
 
-    #compare repo Ruby version to local
+    # compare repo Ruby version to local
     def ruby_version_is_match?
       get_ruby_repo_version == RUBY_VERSION
     end
 
-    #get Ruby version defined in the repo
+    # get Ruby version defined in the repo
     def get_ruby_repo_version
       repo_version = File.read('./.ruby-version').strip
     end
@@ -51,15 +54,13 @@ namespace :dependencies do
 
   namespace :bundler do
     task :check do
-      unless command?('bundler')
-        Rake::Task['dependencies:bundler:install'].invoke
-      end
+      Rake::Task['dependencies:bundler:install'].invoke unless command?('bundler')
     end
 
     task :install do
       puts 'Bundler not found in PATH, installing to vendor'
       ENV['GEM_HOME'] = File.join(PROJECT_DIR, 'vendor', 'gems')
-      ENV['PATH'] = File.join(PROJECT_DIR, 'vendor', 'gems', 'bin') + ":#{ENV['PATH']}"
+      ENV['PATH'] = File.join(PROJECT_DIR, 'vendor', 'gems', 'bin') + ":#{ENV.fetch('PATH', nil)}"
       sh 'gem install bundler' unless command?('bundler')
     end
     CLOBBER << 'vendor/gems'
@@ -69,6 +70,7 @@ namespace :dependencies do
     task :check do
       sh 'bundle check --path=${BUNDLE_PATH:-vendor/bundle} > /dev/null', verbose: false do |ok, _res|
         next if ok
+
         # bundle check exits with a non zero code if install is needed
         dependency_failed('Bundler')
         Rake::Task['dependencies:bundle:install'].invoke
@@ -87,6 +89,7 @@ namespace :dependencies do
   namespace :credentials do
     task :apply do
       next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
+
       sh('FASTLANE_SKIP_UPDATE_CHECK=1 FASTLANE_ENV_PRINTER=1 bundle exec fastlane run configure_apply force:true')
     end
   end
@@ -102,7 +105,7 @@ namespace :dependencies do
     task :install do
       fold('install.cocoapds') do
         pod %w[install]
-      rescue
+      rescue StandardError
         puts "Attempting to fix Gutenberg-Mobile local podspecs failing to install — since that is one of the most common reason for `pod install` to fail — then retrying…\n\n"
         Rake::Task['dependencies:pod:fix_gbm_pods'].invoke
         pod %w[install]
@@ -113,7 +116,7 @@ namespace :dependencies do
       require 'yaml'
 
       deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
-      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}
+      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
       gbm_pods = deps.map do |pod|
         GBM_POD_REGEX.match(pod)&.captures&.first
       end.compact
@@ -144,7 +147,7 @@ namespace :dependencies do
           # Try first using a binary release
           zipfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.zip"
           sh "curl --fail --location -o #{zipfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/portable_swiftlint.zip || true"
-          if File.exists?(zipfile)
+          if File.exist?(zipfile)
             extracted_dir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
             sh "unzip #{zipfile} -d #{extracted_dir}"
             FileUtils.mkdir_p("#{swiftlint_path}/bin")
@@ -169,6 +172,7 @@ end
 namespace :assets do
   task :check do
     next unless Dir['WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/*.png'].empty?
+
     Dir.mktmpdir do |tmpdir|
       puts 'Generate internal icon set'
       if system("export PROJECT_DIR=#{Dir.pwd}/WordPress && export TEMP_DIR=#{tmpdir} && ./Scripts/BuildPhases/AddVersionToIcons.sh >/dev/null 2>&1") != 0
@@ -184,25 +188,23 @@ desc 'Mocks'
 task :mocks do
   wordpress_mocks_path = './Pods/WordPressMocks'
   # If WordPressMocks is referenced by a local path, use that.
-  unless lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path).nil?
-    wordpress_mocks_path = lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path)
-  end
+  wordpress_mocks_path = lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path) unless lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path).nil?
 
   sh "#{wordpress_mocks_path}/scripts/start.sh 8282"
 end
 
 desc "Build #{XCODE_SCHEME}"
-task :build => [:dependencies] do
+task build: [:dependencies] do
   xcodebuild(:build)
 end
 
 desc "Profile build #{XCODE_SCHEME}"
-task :buildprofile => [:dependencies] do
+task buildprofile: [:dependencies] do
   ENV['verbose'] = '1'
   xcodebuild(:build, "OTHER_SWIFT_FLAGS='-Xfrontend -debug-time-compilation -Xfrontend -debug-time-expression-type-checking'")
 end
 
-task :timed_build => [:clean] do
+task timed_build: [:clean] do
   require 'benchmark'
   time = Benchmark.measure do
     Rake::Task['build'].invoke
@@ -212,7 +214,7 @@ task :timed_build => [:clean] do
 end
 
 desc 'Run test suite'
-task :test => [:dependencies] do
+task test: [:dependencies] do
   xcodebuild(:build, :test)
 end
 
@@ -222,13 +224,13 @@ task :clean do
 end
 
 desc 'Checks the source for style errors'
-task :lint => %w[dependencies:lint:check] do
+task lint: %w[dependencies:lint:check] do
   swiftlint %w[lint --quiet]
 end
 
 namespace :lint do
   desc 'Automatically corrects style errors where possible'
-  task :autocorrect => %w[dependencies:lint:check] do
+  task autocorrect: %w[dependencies:lint:check] do
     swiftlint %w[autocorrect]
   end
 end
@@ -243,11 +245,12 @@ namespace :git do
       source = hook_source(hook)
       backup = hook_backup(hook)
 
-      next if File.symlink?(target) and File.readlink(target) == source
-      next if File.file?(target) and File.identical?(target, source)
+      next if File.symlink?(target) && (File.readlink(target) == source)
+      next if File.file?(target) && File.identical?(target, source)
+
       if File.exist?(target)
         puts "Existing hook for #{hook}. Creating backup at #{target} -> #{backup}"
-        FileUtils.mv(target, backup, :force => true)
+        FileUtils.mv(target, backup, force: true)
       end
       FileUtils.ln_s(source, target)
       puts "Installed #{hook} hook"
@@ -261,7 +264,8 @@ namespace :git do
       source = hook_source(hook)
       backup = hook_backup(hook)
 
-      next unless File.symlink?(target) and File.readlink(target) == source
+      next unless File.symlink?(target) && (File.readlink(target) == source)
+
       puts "Removing hook for #{hook}"
       File.unlink(target)
       if File.exist?(backup)
@@ -285,12 +289,10 @@ namespace :git do
 end
 
 namespace :git do
-  task :pre_commit => %[dependencies:lint:check] do
-    begin
-      swiftlint %w[lint --quiet --strict]
-    rescue
-      exit $?.exitstatus
-    end
+  task pre_commit: %(dependencies:lint:check) do
+    swiftlint %w[lint --quiet --strict]
+  rescue StandardError
+    exit $CHILD_STATUS.exitstatus
   end
 
   task :post_merge do
@@ -303,44 +305,46 @@ namespace :git do
 end
 
 desc 'Open the project in Xcode'
-task :xcode => [:dependencies] do
+task xcode: [:dependencies] do
   sh "open #{XCODE_WORKSPACE}"
 end
 
-desc "Install and configure WordPress iOS and its dependencies - External Contributors"
+desc 'Install and configure WordPress iOS and its dependencies - External Contributors'
 namespace :init do
-task :oss => %w[
-  install:xcode:check
-  dependencies
-  install:tools:check_oss
-  install:lint:check
-  credentials:setup
-]
+  task oss: %w[
+    install:xcode:check
+    dependencies
+    install:tools:check_oss
+    install:lint:check
+    credentials:setup
+  ]
 
-desc "Install and configure WordPress iOS and its dependencies - Automattic Developers"
-task :developer => %w[
-  install:xcode:check
-  dependencies
-  install:tools:check_developer
-  install:lint:check
-  credentials:setup
-  gpg_key:setup
-]
+  desc 'Install and configure WordPress iOS and its dependencies - Automattic Developers'
+  task developer: %w[
+    install:xcode:check
+    dependencies
+    install:tools:check_developer
+    install:lint:check
+    credentials:setup
+    gpg_key:setup
+  ]
 end
 
 namespace :install do
   namespace :xcode do
-    task :check => %w[xcode_app:check xcode_select:check]
+    task check: %w[xcode_app:check xcode_select:check]
 
-    #xcode_app namespace checks for the existance of xcode on developer's machine,
-    #checks to make sure that developer is using the correct version per the CI specs
-    #and confirms developer has xcode-select command line tools, if not installs them
+    # xcode_app namespace checks for the existance of xcode on developer's machine,
+    # checks to make sure that developer is using the correct version per the CI specs
+    # and confirms developer has xcode-select command line tools, if not installs them
     namespace :xcode_app do
-      #check the existance of xcode, and compare version to CI specs
+      # check the existance of xcode, and compare version to CI specs
       task :check do
         puts 'Checking for system for Xcode'
-        if !xcode_installed?
-          #if xcode is not installed, prompt user to install and terminate rake
+        if xcode_installed?
+          puts 'Xcode installed'
+        else
+          # if xcode is not installed, prompt user to install and terminate rake
           puts 'Xcode not Found!'
           puts ''
           puts '====================================================================================='
@@ -348,28 +352,26 @@ namespace :install do
           puts 'Please install Xcode before setting up WordPressiOS'
           puts 'https://apps.apple.com/app/xcode/id497799835?mt=12'
           abort('')
-        else
-          puts 'Xcode installed'
         end
 
         puts 'Checking CI recommended installed Xcode version'
 
         unless xcode_version_is_correct?
-          #if xcode is the wrong version, prompt user to install the correct version and terminate rake
+          # if xcode is the wrong version, prompt user to install the correct version and terminate rake
           puts 'Not recommended version of Xcode installed'
           puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
           puts 'Please press enter to continue'
-          STDIN.gets.strip
+          $stdin.gets.strip
           next
         end
       end
 
-      #Check if Xcode is installed
+      # Check if Xcode is installed
       def xcode_installed?
-        system 'xcodebuild -version', [:out, :err] => File::NULL
+        system 'xcodebuild -version', %i[out err] => File::NULL
       end
 
-      #compare xcode version to expected CI spec version
+      # compare xcode version to expected CI spec version
       def xcode_version_is_correct?
         if get_xcode_version == get_ci_xcode_version
           puts 'Correct version of Xcode installed'
@@ -379,12 +381,12 @@ namespace :install do
         end
       end
 
-      #get xcode version
+      # get xcode version
       def get_xcode_version
         puts 'Checking installed version of Xcode'
-        version = %x[xcodebuild -version]
+        version = `xcodebuild -version`
 
-        version.split(' ')[1]
+        version.split[1]
       end
 
       def get_ci_xcode_version
@@ -392,15 +394,15 @@ namespace :install do
       end
     end
 
-    #Xcode-select command line tools must be installed to update dependencies
-    #Xcode_select checks the existence of xcode-select on developer's machine, installs if not found
+    # Xcode-select command line tools must be installed to update dependencies
+    # Xcode_select checks the existence of xcode-select on developer's machine, installs if not found
     namespace :xcode_select do
       task :check do
         puts 'Checking system for Xcode-select'
-        unless command?('xcode-select')
-          Rake::Task['install:xcode:xcode_select:install'].invoke
-        else
+        if command?('xcode-select')
           puts 'Xcode-select installed'
+        else
+          Rake::Task['install:xcode:xcode_select:install'].invoke
         end
       end
 
@@ -411,24 +413,24 @@ namespace :install do
     end
   end
 
-  #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
+  # Tools namespace deals with installing developer and OSS tools required to work on WPiOS
   namespace :tools do
-    task :check_oss => %w[homebrew:check addons:check_oss]
-    task :check_developer => %w[homebrew:check addons:check_developer]
+    task check_oss: %w[homebrew:check addons:check_oss]
+    task check_developer: %w[homebrew:check addons:check_developer]
 
-    #Check for Homebrew and install if missing
+    # Check for Homebrew and install if missing
     namespace :homebrew do
       task :check do
         puts 'Checking system for Homebrew'
-        unless command?('brew')
-          Rake::Task['install:tools:homebrew:prompt'].invoke
-        else
+        if command?('brew')
           puts 'Homebrew installed'
+        else
+          Rake::Task['install:tools:homebrew:prompt'].invoke
         end
       end
 
-      #prompt developer that Homebrew is required to install required tools and confirm they want to install
-      #allow to bail out of install script if they developer declines to install homebrew
+      # prompt developer that Homebrew is required to install required tools and confirm they want to install
+      # allow to bail out of install script if they developer declines to install homebrew
       task :prompt do
         puts '====================================================================================='
         puts 'Setting WordPress iOS requires installing Homebrew to manage installing some tools'
@@ -450,21 +452,19 @@ namespace :install do
       end
     end
 
-    #Install required tools to work with WPiOS
+    # Install required tools to work with WPiOS
     namespace :addons do
-      #NOTE: hash key = default installed directory on device
+      # NOTE: hash key = default installed directory on device
       # hash value = brew install location
       oss_tools = { 'convert' => 'imagemagick',
-                  'gs' => 'ghostscript'
-      }
+                    'gs' => 'ghostscript' }
       developer_tools = { 'convert' => 'imagemagick',
-                        'gs' => 'ghostscript',
-                        'sentry-cli' => 'getsentry/tools/sentry-cli',
-                        'gpg' => 'gpg',
-                        'git-crypt' => 'git-crypt'
-      }
+                          'gs' => 'ghostscript',
+                          'sentry-cli' => 'getsentry/tools/sentry-cli',
+                          'gpg' => 'gpg',
+                          'git-crypt' => 'git-crypt' }
 
-      #Check for tool, install if not installed
+      # Check for tool, install if not installed
       task :check_oss do
         tool_check(oss_tools)
       end
@@ -473,19 +473,19 @@ namespace :install do
         tool_check(developer_tools)
       end
 
-      #check if the developer tool is present in the machine, if not install
+      # check if the developer tool is present in the machine, if not install
       def tool_check(hash)
         hash.each do |key, value|
           puts "Checking system for #{key}"
-          unless command?(key)
-            tool_install(value)
-          else
+          if command?(key)
             puts "#{key} found"
+          else
+            tool_install(value)
           end
         end
       end
 
-      #install selected developer tool
+      # install selected developer tool
       def tool_install(tool)
         puts "#{tool} not found.  Installing #{tool}"
         sh "brew install #{tool}"
@@ -509,9 +509,9 @@ namespace :install do
   end
 end
 
-#Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
+# Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
 namespace :credentials do
-  task :setup => %w[credentials:prompt credentials:set_app_secrets]
+  task setup: %w[credentials:prompt credentials:set_app_secrets]
 
   task :prompt do
     puts ''
@@ -540,22 +540,22 @@ namespace :credentials do
 
   def prompt_for_continue(prompt)
     puts "#{prompt} Please press enter to continue"
-    STDIN.gets.strip
+    $stdin.gets.strip
   end
 
-  #user given app id and secret and create a new wpcom_app_credentials file
+  # user given app id and secret and create a new wpcom_app_credentials file
   task :set_app_secrets do
     set_app_secrets(get_client_id, get_client_secret)
   end
 
   def get_client_id
-    STDOUT.puts 'Please enter your Client ID'
-    STDIN.gets.strip
+    $stdout.puts 'Please enter your Client ID'
+    $stdin.gets.strip
   end
 
   def get_client_secret
-    STDOUT.puts 'Please enter your Client Secret'
-    STDIN.gets.strip
+    $stdout.puts 'Please enter your Client Secret'
+    $stdin.gets.strip
   end
 
   # Duplicate the example file and add the new app secret and app id
@@ -563,37 +563,37 @@ namespace :credentials do
     puts 'Writing App ID and App Secret to secrets file'
 
     replaced_text = File.read('WordPress/Credentials/Secrets-example.swift')
-      .gsub('let client = "0"', "let client=\"#{id}\"")
-      .gsub('let secret = "your-secret-here"', "let secret=\"#{secret}\"")
+                        .gsub('let client = "0"', "let client=\"#{id}\"")
+                        .gsub('let secret = "your-secret-here"', "let secret=\"#{secret}\"")
 
-    File.open('WordPress/Credentials/Secrets.swift', 'w') do |file| 
+    File.open('WordPress/Credentials/Secrets.swift', 'w') do |file|
       file.puts replaced_text
     end
   end
 end
 
 namespace :gpg_key do
-  #automate the process of creatong a GPG key
-  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:finish]
+  # automate the process of creatong a GPG key
+  task setup: %w[gpg_key:check gpg_key:prompt gpg_key:finish]
 
-  #confirm that GPG tools is installed
+  # confirm that GPG tools is installed
   task :check do
     puts 'Checking system for GPG Tools'
-    unless command?('gpg')
-      Rake::Task['gpg_key:install'].invoke
-    else
+    if command?('gpg')
       puts 'GPG Tools found'
+    else
+      Rake::Task['gpg_key:install'].invoke
     end
   end
 
-  #install GPG Tools
+  # install GPG Tools
   task :install do
     puts 'GPG Tools not found.  Installing GPG Tools'
     sh 'brew install gpg'
   end
 
-  #Ask developer if they need to create a new key.
-  #If yes, begin process of creating key, if no move on
+  # Ask developer if they need to create a new key.
+  # If yes, begin process of creating key, if no move on
   task :prompt do
     if create_gpg_key?
       if create_default_key?
@@ -607,7 +607,7 @@ namespace :gpg_key do
     end
   end
 
-  #Generate new GPG key
+  # Generate new GPG key
   task :generate_custom do
     puts ''
     puts 'Begin Generating Custom GPG Keys'
@@ -616,7 +616,7 @@ namespace :gpg_key do
     sh 'gpg --full-generate-key', verbose: false
   end
 
-  #Generate new default GPG key
+  # Generate new default GPG key
   task :generate_default do
     puts ''
     puts 'Begin Generating Default GPG Keys'
@@ -625,7 +625,7 @@ namespace :gpg_key do
     sh 'gpg --generate-key', verbose: false
   end
 
-  #prompt developer to send GPG key to Platform
+  # prompt developer to send GPG key to Platform
   task :finish do
     puts '====================================================================================='
     puts 'Key Generation Complete!'
@@ -634,7 +634,7 @@ namespace :gpg_key do
     puts '====================================================================================='
   end
 
-  #ask user if they want to create a key, loop till given a valid answer
+  # ask user if they want to create a key, loop till given a valid answer
   def create_gpg_key?
     puts '====================================================================================='
     puts 'To access production credentials for the WordPress app you will need to a GPG Key'
@@ -644,7 +644,7 @@ namespace :gpg_key do
     display_prompt_response
   end
 
-  #ask user if they want to create a key,  loop till given a valid answer
+  # ask user if they want to create a key,  loop till given a valid answer
   def create_default_key?
     puts '====================================================================================='
     puts 'You can choose to setup with a default or custom key pair setup'
@@ -656,7 +656,7 @@ namespace :gpg_key do
     display_prompt_response
   end
 
-  #display prompt for developer to aid in setting up default key
+  # display prompt for developer to aid in setting up default key
   def display_default_config_helpers
     puts ''
     puts ''
@@ -667,20 +667,19 @@ namespace :gpg_key do
   end
 end
 
-#prompt for a Y or N response, continue asking if other character
-#return true for Y and false for N
+# prompt for a Y or N response, continue asking if other character
+# return true for Y and false for N
 def display_prompt_response
-  response = STDIN.gets.strip.upcase
-  until response == 'Y' || response == 'N'
-      puts 'Invalid entry, please enter Y or N'
-      response = STDIN.gets.strip.upcase
+  response = $stdin.gets.strip.upcase
+  until %w[Y N].include?(response)
+    puts 'Invalid entry, please enter Y or N'
+    response = $stdin.gets.strip.upcase
   end
 
   response == 'Y'
 end
 
-
-def fold(label, &block)
+def fold(label)
   puts "travis_fold:start:#{label}" if is_travis?
   yield
   puts "travis_fold:end:#{label}" if is_travis?
@@ -696,7 +695,7 @@ def pod(args)
 end
 
 def lockfile_hash
-  YAML.load(File.read('Podfile.lock'))
+  YAML.safe_load(File.read('Podfile.lock'))
 end
 
 def lockfiles_match?
@@ -711,7 +710,7 @@ def podfile_locked?
 end
 
 def swiftlint_path
-    "#{PROJECT_DIR}/vendor/swiftlint"
+  "#{PROJECT_DIR}/vendor/swiftlint"
 end
 
 def swiftlint(args)
@@ -720,11 +719,12 @@ def swiftlint(args)
 end
 
 def swiftlint_bin
-    "#{swiftlint_path}/bin/swiftlint"
+  "#{swiftlint_path}/bin/swiftlint"
 end
 
 def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
+
   installed_version = `"#{swiftlint_bin}" version`.chomp
   (installed_version != SWIFTLINT_VERSION)
 end
@@ -743,17 +743,18 @@ def xcodebuild(*build_cmds)
 end
 
 def xcode_configuration
-  ENV['XCODE_CONFIGURATION'] || XCODE_CONFIGURATION
+  ENV.fetch('XCODE_CONFIGURATION') { XCODE_CONFIGURATION }
 end
 
 def command?(command)
   system("which #{command} > /dev/null 2>&1")
 end
+
 def dependency_failed(component)
   msg = "#{component} dependencies missing or outdated. "
   if ENV['DRY_RUN']
     msg += 'Run rake dependencies to install them.'
-    fail msg
+    raise msg
   else
     msg += 'Installing...'
     puts msg
