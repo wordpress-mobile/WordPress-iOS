@@ -291,6 +291,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.18.0)
       parser (>= 3.1.1.0)
+    rubocop-rake (0.6.0)
+      rubocop (~> 1.0)
     ruby-enum (0.9.0)
       i18n
     ruby-macho (2.5.1)
@@ -356,6 +358,7 @@ DEPENDENCIES
   rake
   rmagick (~> 3.2.0)
   rubocop (~> 1.30)
+  rubocop-rake (~> 0.6)
   xcpretty-travis-formatter
 
 BUNDLED WITH

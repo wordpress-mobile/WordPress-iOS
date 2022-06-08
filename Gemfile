@@ -9,6 +9,7 @@ gem 'fastlane', '~> 2.174'
 gem 'octokit', '~> 4.0'
 gem 'rake'
 gem 'rubocop', '~> 1.30'
+gem 'rubocop-rake', '~> 0.6'
 gem 'xcpretty-travis-formatter'
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
