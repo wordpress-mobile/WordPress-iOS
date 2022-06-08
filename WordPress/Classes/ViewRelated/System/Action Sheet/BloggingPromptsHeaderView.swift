@@ -4,6 +4,7 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var infoButton: UIButton!
     @IBOutlet private weak var promptLabel: UILabel!
     @IBOutlet private weak var attributionStackView: UIStackView!
     @IBOutlet private weak var attributionImage: UIImageView!
@@ -15,6 +16,7 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var dividerView: UIView!
 
     var answerPromptHandler: (() -> Void)?
+    var infoButtonHandler: (() -> Void)?
 
     // This provides a quick way to toggle the shareButton.
     // Since it probably will not be included in Blogging Prompts V1,
@@ -31,7 +33,6 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
         promptsHeaderView.configure(prompt)
         return promptsHeaderView
     }
-
 }
 
 // MARK: - Private methods
@@ -56,6 +57,7 @@ private extension BloggingPromptsHeaderView {
 
     func configureStrings() {
         titleLabel.text = Strings.title
+        infoButton.accessibilityLabel = Strings.infoButtonAccessibilityLabel
         answerPromptButton.titleLabel?.text = Strings.answerButtonTitle
         answeredLabel.text = Strings.answeredLabelTitle
         shareButton.titleLabel?.text = Strings.shareButtonTitle
@@ -64,6 +66,8 @@ private extension BloggingPromptsHeaderView {
     func configureStyles() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.adjustsFontForContentSizeCategory = true
+        infoButton.setImage(.gridicon(.helpOutline), for: .normal)
+        infoButton.tintColor = .listSmallIcon
         promptLabel.font = WPStyleGuide.BloggingPrompts.promptContentFont
         promptLabel.adjustsFontForContentSizeCategory = true
         answerPromptButton.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont
@@ -126,6 +130,10 @@ private extension BloggingPromptsHeaderView {
     @IBAction func shareTapped(_ sender: Any) {
         // TODO
     }
+    
+    @IBAction func infoButtonTapped(_ sender: Any) {
+        infoButtonHandler?()
+    }
 
     // MARK: - Constants
 
@@ -143,6 +151,7 @@ private extension BloggingPromptsHeaderView {
         static let answerButtonTitle = NSLocalizedString("Answer Prompt", comment: "Title for a call-to-action button in the create new bottom action sheet.")
         static let answeredLabelTitle = NSLocalizedString("✓ Answered", comment: "Title label that indicates the prompt has been answered.")
         static let shareButtonTitle = NSLocalizedString("Share", comment: "Title for a button that allows the user to share their answer to the prompt.")
+        static let infoButtonAccessibilityLabel = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the prompts header view.")
     }
 
 }
