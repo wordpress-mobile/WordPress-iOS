@@ -174,11 +174,6 @@ class BlogDashboardCardFrameView: UIView {
     }
 
     private func configureStackViews() {
-        configureMainStackView()
-        configureButtonContainerStackView()
-    }
-
-    private func configureMainStackView() {
         addSubview(mainStackView)
 
         let trailingConstraint = mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
@@ -199,9 +194,7 @@ class BlogDashboardCardFrameView: UIView {
             chevronImageView,
             ellipsisButton
         ])
-    }
 
-    private func configureButtonContainerStackView() {
         addSubview(buttonContainerStackView)
 
         NSLayoutConstraint.activate([
