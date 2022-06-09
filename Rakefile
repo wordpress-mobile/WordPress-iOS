@@ -537,15 +537,15 @@ namespace :credentials do
 
   # user given app id and secret and create a new wpcom_app_credentials file
   task :set_app_secrets do
-    set_app_secrets(get_client_id, get_client_secret)
+    set_app_secrets(client_id, client_secret)
   end
 
-  def get_client_id
+  def client_id
     $stdout.puts 'Please enter your Client ID'
     $stdin.gets.strip
   end
 
-  def get_client_secret
+  def client_secret
     $stdout.puts 'Please enter your Client Secret'
     $stdin.gets.strip
   end
