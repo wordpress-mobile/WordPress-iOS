@@ -695,7 +695,7 @@ def pod(args)
 end
 
 def lockfile_hash
-  YAML.safe_load(File.read('Podfile.lock'))
+  YAML.load_file('Podfile.lock')
 end
 
 def lockfiles_match?
