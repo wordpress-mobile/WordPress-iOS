@@ -93,7 +93,7 @@ steps:
           context: "UI Tests (iPhone)"
 
   - label: "🔬 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 15.0
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
