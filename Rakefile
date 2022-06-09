@@ -369,7 +369,7 @@ namespace :install do
 
       # compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        if get_xcode_version == get_ci_xcode_version
+        if xcode_version == get_ci_xcode_version
           puts 'Correct version of Xcode installed'
           true
         else
@@ -377,8 +377,7 @@ namespace :install do
         end
       end
 
-      # get xcode version
-      def get_xcode_version
+      def xcode_version
         puts 'Checking installed version of Xcode'
         version = `xcodebuild -version`
 
