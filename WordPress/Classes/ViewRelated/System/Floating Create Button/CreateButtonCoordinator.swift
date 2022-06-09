@@ -343,6 +343,7 @@ private extension CreateButtonCoordinator {
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetHelp)
             self?.viewController?.presentedViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
         }
 
