@@ -1,0 +1,7 @@
+Kami merombak versi 20 dengan tampilan baru yang segar. Sekarang, kartu Mulai Cepat dan tur Langkah Berikutnya serasi dengan desain tur baru untuk situs yang sudah ada, dengan ilustrasi keren! Mantap!
+
+Sekarang, Anda bisa menyisipkan gambar dari situs lain menggunakan pilihan "Sisipkan dari URL" di aplikasi. Sisipkan lebih banyak foto kucing, ya!
+
+Kami telah meningkatkan aksesibilitas di editor blok. Kini, pembaca layar menawarkan lebih banyak konteks yang Anda butuhkan.
+
+Terakhir, kami memperbarui tampilan cache media, indeks sorotan, dan fungsi pintasan Siri di Pengaturan Aplikasi.  Sekarang, semua serasi dengan warna standar dan merek—tak ada lagi warna yang mencolok.
