@@ -64,7 +64,7 @@ class StatsLineChartView: LineChartView {
         return styling.primaryHighlightColor != nil
     }
 
-    private var primaryDataSet: IChartDataSet? {
+    private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
 
@@ -177,7 +177,7 @@ private extension StatsLineChartView {
                               styling.primaryLineColor.withAlphaComponent(0).cgColor]
         if let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil) {
             primaryDataSet.fillAlpha = 0.1
-            primaryDataSet.fill = Fill.fillWithLinearGradient(gradient, angle: 0)
+            primaryDataSet.fill = LinearGradientFill(gradient: gradient, angle: 0)
             primaryDataSet.drawFilledEnabled = true
         }
 
@@ -263,7 +263,7 @@ private extension StatsLineChartView {
     func configureYAxisMaximum() {
         let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
 
-        if let maxY = data?.getYMax(),
+        if let maxY = data?.getYMax(axis: .left),
            maxY >= lowestMaxValue {
             leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
         } else {
@@ -293,7 +293,7 @@ private extension StatsLineChartView {
     }
 
     func redrawChartMarkersIfNeeded() {
-        guard marker != nil, let highlight = lastHighlighted, let entry = lineData?.entryForHighlight(highlight) else {
+        guard marker != nil, let highlight = lastHighlighted, let entry = lineData?.entry(for: highlight) else {
             return
         }
 
@@ -322,15 +322,12 @@ extension StatsLineChartView: ChartViewDelegate {
 extension StatsLineChartView: Accessible {
     func prepareForVoiceOver() {
         // ChartDataRendererBase creates a meaningful a11y description, relying on the chart description
-        guard let chartDescription = chartDescription else {
-            return
-        }
         chartDescription.text = lineChartData.accessibilityDescription
         chartDescription.enabled = false    // disabling the description hides a corresponding label
     }
 }
 
-private class DateValueFormatter: NSObject, IAxisValueFormatter {
+private class DateValueFormatter: NSObject, AxisValueFormatter {
     var dateFormatter: DateFormatter
     var xAxisDates: [Date] = []
 
