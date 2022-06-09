@@ -9,6 +9,8 @@ Metrics/BlockLength:
   Exclude: &fastfiles
     - fastlane/Fastfile
     - fastlane/lanes/*.rb
+    # `Rakefile` should be part of the `&fastfiles` group, but the same settings apply to it, too, so that seems fitting
+    - Rakefile
 
 Metrics/MethodLength:
   Max: 30
