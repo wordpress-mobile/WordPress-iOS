@@ -466,6 +466,14 @@ post_install do |installer|
 
   # Flag Alpha builds for Tracks
   # ============================
+  #
+  # RuboCop tells us that this loop could be combined with the one above,
+  # because both loop on `installer.pods_project.targets`.
+  # But, from a code organzation point of view, it clearer to separate the two operations,
+  # also because of the `next uless` at the start of each loop.
+  # We can easily absorb the performance "hit" of repating the same loop twice if it makes the code clearer.
+  #
+  # rubocop:disable Sytle/CombinableLoops
   installer.pods_project.targets.each do |target|
     next unless target.name == 'Automattic-Tracks-iOS'
 
@@ -473,4 +481,5 @@ post_install do |installer|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
     end
   end
+  # rubocop:enable Sytle/CombinableLoops
 end
