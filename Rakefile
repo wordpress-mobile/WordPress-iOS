@@ -587,15 +587,13 @@ namespace :gpg_key do
   # Ask developer if they need to create a new key.
   # If yes, begin process of creating key, if no move on
   task :prompt do
-    if create_gpg_key?
-      if create_default_key?
-        display_default_config_helpers
-        Rake::Task['gpg_key:generate_default'].invoke
-      else
-        Rake::Task['gpg_key:generate_custom'].invoke
-      end
+    next unless create_gpg_key?
+
+    if create_default_key?
+      display_default_config_helpers
+      Rake::Task['gpg_key:generate_default'].invoke
     else
-      next
+      Rake::Task['gpg_key:generate_custom'].invoke
     end
   end
 
