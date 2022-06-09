@@ -75,6 +75,21 @@ steps:
           context: "Lint Translations"
 
   #################
+  # Lint Ruby Tooling
+  #################
+  #
+  # TODO: This ought to be run on a Docker or Ubuntu agent as there's nothing that requires macOS.
+  # It's currently in the stock setup because... it was faster to build a proof of concept for it this way;
+  # I don't know how to pass the `DANGER_GITHUB_API_TOKEN` secret that we need to a Docker agent.
+  #
+  # This step uses Danger to run RuboCop, but it's "agnostic" about it.
+  # That is, it outwardly only mentions RuboCop, not Danger
+  - label: ":rubocop: Lint Ruby Tooling"
+    command: .buildkite/commands/rubocop-via-danger.sh
+    env: *common_env
+    plugins: *common_plugins
+
+  #################
   # UI Tests
   #################
   - label: "🔬 UI Tests (iPhone)"
