@@ -299,6 +299,9 @@ platform :ios do
     )
   end
 
+  # rubocop:disable Metrics/AbcSize
+  #
+  # Reference: http://wiki.c2.com/?AbcMetric
   def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
@@ -327,6 +330,7 @@ platform :ios do
           + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.")
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     # Ensure even empty locale folders have an empty `.gitkeep` file (in case we don't have any translation at all ready for some locales)
     locales_map.each_value do |locale|
