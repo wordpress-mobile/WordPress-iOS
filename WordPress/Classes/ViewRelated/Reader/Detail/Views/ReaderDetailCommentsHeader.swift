@@ -41,9 +41,11 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
         configureButton()
 
-        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(post: post,
-                                                                           delegate: self,
-                                                                           presentingViewController: presentingViewController)
+        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(
+            post: post,
+            delegate: self,
+            presentingViewController: presentingViewController
+        )
     }
 
     func updateFollowButtonState(post: ReaderPost) {
@@ -51,6 +53,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureButton()
     }
 
+    func followButtonMidPoint() -> CGPoint {
+        CGPoint(x: followButton.frame.midX, y: followButton.frame.minY)
+    }
 }
 
 // MARK: - Private Extension
@@ -61,6 +66,7 @@ private extension ReaderDetailCommentsHeader {
         contentView.backgroundColor = .basicBackground
         addBottomBorder(withColor: .divider)
         configureTitle()
+
     }
 
     func configureTitle() {

@@ -29,6 +29,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteName
     case quickStartForExistingUsers
     case betaSiteDesigns
+    case featureHighlightTooltip
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -94,6 +95,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .quickStartForExistingUsers:
             return true
         case .betaSiteDesigns:
+            return false
+        case .featureHighlightTooltip:
             return false
         }
     }
@@ -179,6 +182,8 @@ extension FeatureFlag {
             return "Quick Start For Existing Users"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
+        case .featureHighlightTooltip:
+            return "Feature Highlight Tooltip"
         }
     }
 
