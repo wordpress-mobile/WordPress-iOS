@@ -750,7 +750,7 @@ def check_dependencies_hook
   ENV['DRY_RUN'] = '1'
   begin
     Rake::Task['dependencies'].invoke
-  rescue Exception => e
+  rescue StandardError => e
     puts e.message
     exit 1
   end
