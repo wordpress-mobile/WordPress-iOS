@@ -7,6 +7,7 @@ require 'rake/clean'
 require 'yaml'
 require 'digest'
 
+RUBY_REPO_VERSION = File.read('./.ruby-version').strip
 SWIFTLINT_VERSION = '0.27.0'
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
@@ -30,7 +31,7 @@ namespace :dependencies do
         puts '====================================================================================='
         puts 'Warning: Your local Ruby version doesn\'t match .ruby-version'
         puts ''
-        puts ".ruby-version:\t#{get_ruby_repo_version}"
+        puts ".ruby-version:\t#{RUBY_REPO_VERSION}"
         puts "Your Ruby:\t#{RUBY_VERSION}"
         puts ''
         puts 'Refer to the WPiOS docs on setting the exact version with rbenv.'
@@ -43,12 +44,7 @@ namespace :dependencies do
 
     # compare repo Ruby version to local
     def ruby_version_is_match?
-      get_ruby_repo_version == RUBY_VERSION
-    end
-
-    # get Ruby version defined in the repo
-    def get_ruby_repo_version
-      repo_version = File.read('./.ruby-version').strip
+      RUBY_REPO_VERSION == RUBY_VERSION
     end
   end
 
