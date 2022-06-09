@@ -244,8 +244,7 @@ abstract_target 'Apps' do
   ## Jetpack App iOS
   ## ===============
   ##
-  target 'Jetpack' do
-  end
+  target 'Jetpack'
 end
 
 ## Share Extension
