@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'English'
-SWIFTLINT_VERSION = '0.27.0'
-XCODE_WORKSPACE = 'WordPress.xcworkspace'
-XCODE_SCHEME = 'WordPress'
-XCODE_CONFIGURATION = 'Debug'
-
 require 'fileutils'
 require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
+
+SWIFTLINT_VERSION = '0.27.0'
+XCODE_WORKSPACE = 'WordPress.xcworkspace'
+XCODE_SCHEME = 'WordPress'
+XCODE_CONFIGURATION = 'Debug'
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
