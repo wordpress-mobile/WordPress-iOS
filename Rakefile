@@ -113,9 +113,9 @@ namespace :dependencies do
       require 'yaml'
 
       deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
-      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
+      gbm_pod_regex = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
       gbm_pods = deps.map do |pod|
-        GBM_POD_REGEX.match(pod)&.captures&.first
+        gbm_pod_regex.match(pod)&.captures&.first
       end.compact
 
       pod ['update', *gbm_pods]
