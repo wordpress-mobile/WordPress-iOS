@@ -675,14 +675,9 @@ def display_prompt_response
   response == 'Y'
 end
 
-def fold(label)
-  puts "travis_fold:start:#{label}" if is_travis?
+# FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
+def fold(_)
   yield
-  puts "travis_fold:end:#{label}" if is_travis?
-end
-
-def is_travis?
-  ENV['TRAVIS'] != nil
 end
 
 def pod(args)
