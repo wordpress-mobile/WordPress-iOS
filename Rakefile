@@ -12,6 +12,7 @@ RUBY_REPO_VERSION = File.read('./.ruby-version').strip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
+EXPECTED_XCODE_VERSION = File.read('.xcversion')
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
@@ -355,7 +356,7 @@ namespace :install do
         unless xcode_version_is_correct?
           # if xcode is the wrong version, prompt user to install the correct version and terminate rake
           puts 'Not recommended version of Xcode installed'
-          puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
+          puts "It is recommended to use Xcode version #{EXPECTED_XCODE_VERSION}"
           puts 'Please press enter to continue'
           $stdin.gets.strip
           next
@@ -369,7 +370,7 @@ namespace :install do
 
       # compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        if xcode_version == get_ci_xcode_version
+        if xcode_version == EXPECTED_XCODE_VERSION
           puts 'Correct version of Xcode installed'
           true
         else
@@ -382,10 +383,6 @@ namespace :install do
         version = `xcodebuild -version`
 
         version.split[1]
-      end
-
-      def get_ci_xcode_version
-        ci_version = File.read('.xcversion')
       end
     end
 
