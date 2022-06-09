@@ -65,7 +65,7 @@ platform :ios do
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote and trigger the beta build?',
-      bypass: ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
     )
       push_to_git_remote(tags: false)
       trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
