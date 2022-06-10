@@ -1,6 +1,7 @@
 20.1
 -----
 * [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
+* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
 * [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
 
 20.0

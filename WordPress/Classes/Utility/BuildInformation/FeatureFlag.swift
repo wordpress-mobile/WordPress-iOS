@@ -97,7 +97,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .betaSiteDesigns:
             return false
         case .featureHighlightTooltip:
-            return false
+            return true
         }
     }
 

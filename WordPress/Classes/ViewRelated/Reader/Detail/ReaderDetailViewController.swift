@@ -89,10 +89,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    private var featureHighlightStore = FeatureHighlightStore()
     private var lastToggleAnchorVisibility = false
     private var didShowTooltip = false {
         didSet {
-            FeatureHighlightStore.followConversationTooltipCounter += 1
+            featureHighlightStore.followConversationTooltipCounter += 1
         }
     }
 
@@ -294,8 +295,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             tooltip: tooltip,
             target: .point(tooltipTargetPoint),
             shouldShowSpotlightView: true,
-            primaryTooltipAction: {
-                FeatureHighlightStore.didDismissTooltip = true
+            primaryTooltipAction: { [weak self] in
+                self?.featureHighlightStore.didDismissTooltip = true
                 WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
             }
         )
@@ -440,7 +441,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func shouldConfigureTooltipPresenter() -> Bool {
         FeatureFlag.featureHighlightTooltip.enabled
-        && FeatureHighlightStore.shouldShowTooltip
+        && featureHighlightStore.shouldShowTooltip
         && (post?.canSubscribeComments ?? false)
         && (!(post?.isSubscribedComments ?? false))
     }
@@ -481,7 +482,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 return
             }
 
-            FeatureHighlightStore.didDismissTooltip = true
+            self?.featureHighlightStore.didDismissTooltip = true
             tooltipPresenter.dismissTooltip()
         }
 
