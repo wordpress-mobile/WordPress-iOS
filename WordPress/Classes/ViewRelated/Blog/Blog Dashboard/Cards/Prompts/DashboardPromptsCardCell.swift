@@ -310,6 +310,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        observeManagedObjectsChange()
     }
 
     required init?(coder: NSCoder) {
@@ -336,18 +337,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
               let promptsService = BloggingPromptsService(blog: blog),
-              let settings = promptsService.localSettings,
-              settings.isPotentialBloggingSite,
-              settings.promptCardEnabled else {
+              let settings = promptsService.localSettings else {
             return false
         }
 
+        let shouldDisplayCard = settings.promptRemindersEnabled || settings.isPotentialBloggingSite
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
-            return true
+            return shouldDisplayCard
         }
 
-        return !userSkippedPrompt(todaysPrompt, for: blog)
+        return !userSkippedPrompt(todaysPrompt, for: blog) && shouldDisplayCard
     }
 
 }
@@ -398,6 +398,30 @@ private extension DashboardPromptsCardCell {
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
+        presenterViewController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    // MARK: - Managed object observer
+
+    func observeManagedObjectsChange() {
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleObjectsChange),
+                name: .NSManagedObjectContextObjectsDidChange,
+                object: ContextManager.shared.mainContext
+        )
+    }
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let prompt = prompt else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(prompt) || refreshed.contains(prompt) {
+            refreshStackView()
+        }
     }
 
     // MARK: Prompt Fetching

@@ -131,6 +131,28 @@ final class TooltipPresenter {
         animateTooltipIn()
     }
 
+    func dismissTooltip() {
+        UIView.animate(
+            withDuration: Constants.tooltipAnimationDuration,
+            delay: 0,
+            options: .curveEaseOut
+        ) {
+            guard let tooltipTopConstraint = self.tooltipTopConstraint else {
+                return
+            }
+
+            self.tooltip.alpha = 0
+            tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
+            self.containerView.layoutIfNeeded()
+        } completion: { isSuccess in
+            self.anchor = nil
+            self.primaryTooltipAction?()
+            self.tooltip.removeFromSuperview()
+            self.spotlightView?.removeFromSuperview()
+            NotificationCenter.default.removeObserver(self)
+        }
+    }
+
     private func animateTooltipIn() {
         UIView.animate(
             withDuration: Constants.tooltipAnimationDuration,
@@ -157,27 +179,7 @@ final class TooltipPresenter {
     }
 
     private func configureDismissal() {
-        tooltip.dismissalAction = {
-            UIView.animate(
-                withDuration: Constants.tooltipAnimationDuration,
-                delay: 0,
-                options: .curveEaseOut
-            ) {
-                guard let tooltipTopConstraint = self.tooltipTopConstraint else {
-                    return
-                }
-
-                self.tooltip.alpha = 0
-                tooltipTopConstraint.constant += Constants.tooltipTopConstraintAnimationOffset
-                self.containerView.layoutIfNeeded()
-            } completion: { isSuccess in
-                self.anchor = nil
-                self.primaryTooltipAction?()
-                self.tooltip.removeFromSuperview()
-                self.spotlightView?.removeFromSuperview()
-                NotificationCenter.default.removeObserver(self)
-            }
-        }
+        tooltip.dismissalAction = dismissTooltip
     }
 
     private func setUpTooltipConstraints() {

@@ -322,7 +322,7 @@ extension RequestAuthenticator {
     }
 }
 
-/// MARK: Navigation Validator
+// MARK: Navigation Validator
 extension RequestAuthenticator {
     /// Validates that the navigation worked as expected then provides a recommendation on if the screen should reload or not.
     func decideActionFor(response: URLResponse, cookieJar: CookieJar, completion: @escaping (WPNavigationActionType) -> Void) {

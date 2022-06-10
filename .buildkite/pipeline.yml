@@ -8,7 +8,11 @@ common_params:
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-13 # Remember to address all 'FIXIT-13.1' comments when we'll update to new image
+    # Remember to address all "FIXIT-13.1" comments when we'll update to new image.
+    #
+    # `xcode-13.4.1` note: The issue "FIXIT-13.1" addresses is still there in this image.
+    # See: https://buildkite.com/automattic/wordpress-ios/builds/8187#01813c28-1c1d-4a25-95c0-0fdd6f2af399
+    IMAGE_ID: xcode-13.4.1
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -89,7 +93,7 @@ steps:
           context: "UI Tests (iPhone)"
 
   - label: "🔬 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 15.0
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
