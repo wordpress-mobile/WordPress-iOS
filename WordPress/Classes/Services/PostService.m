@@ -959,13 +959,14 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:3];
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
 
     if (post.publicID) {
         NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
         publicDictionary[@"id"] = [post.publicID numericValue];
         [metadata addObject:publicDictionary];
     }
+
     if (post.publicizeMessageID || post.publicizeMessage.length) {
         NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         if (post.publicizeMessageID) {
@@ -975,6 +976,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
         [metadata addObject:publicizeMessageDictionary];
     }
+
     for (NSNumber *keyringConnectionId in post.disabledPublicizeConnections.allKeys) {
         NSMutableDictionary *disabledConnectionsDictionary = [NSMutableDictionary dictionaryWithCapacity: 3];
         // We need to compose back the key
@@ -983,6 +985,14 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         [disabledConnectionsDictionary addEntriesFromDictionary:post.disabledPublicizeConnections[keyringConnectionId]];
         [metadata addObject:disabledConnectionsDictionary];
     }
+
+    if (post.bloggingPromptID) {
+        NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        promptDictionary[@"key"] = @"_jetpack_blogging_prompt_key";
+        promptDictionary[@"value"] = post.bloggingPromptID;
+        [metadata addObject:promptDictionary];
+    }
+
     return metadata;
 }
 

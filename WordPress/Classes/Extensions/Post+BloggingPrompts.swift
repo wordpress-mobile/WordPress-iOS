@@ -6,6 +6,7 @@ extension Post {
         }
 
         content = prompt.content
+        bloggingPromptID = String(prompt.promptID)
     }
 
 }
