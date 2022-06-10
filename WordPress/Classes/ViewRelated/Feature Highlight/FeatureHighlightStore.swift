@@ -6,7 +6,7 @@ struct FeatureHighlightStore {
         static let followConversationTooltipCounterKey = "follow-conversation-tooltip-counter"
     }
 
-    @UserDefault(Keys.didUserDismissTooltipKey, defaultValue: true)
+    @UserDefault(Keys.didUserDismissTooltipKey, defaultValue: false)
     static var didDismissTooltip: Bool
 
     @UserDefault(Keys.followConversationTooltipCounterKey, defaultValue: 0)
@@ -14,6 +14,6 @@ struct FeatureHighlightStore {
 
     /// Tooltip will only be shown 3 times if the user never interacts with it.
     static var shouldShowTooltip: Bool {
-        followConversationTooltipCounter < 3 || !didDismissTooltip
+        followConversationTooltipCounter < 3 && !didDismissTooltip
     }
 }

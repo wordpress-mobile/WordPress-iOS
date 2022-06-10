@@ -428,7 +428,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // of this call is accurate, the calculation returns wrong result on that case.
         // This manually delays the configuration and hacks the issue.
         // We can remove this once the culprit is out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.shouldConfigureTooltipPresenter() {
                 self.configureTooltipPresenter { [weak self] in
                     self?.scrollToTooltip()
@@ -476,6 +476,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableViewDelegate.followButtonTappedClosure = { [weak self] in
+            guard let tooltipPresenter = self?.tooltipPresenter else {
+                return
+            }
+
+            FeatureHighlightStore.didDismissTooltip = true
+            tooltipPresenter.dismissTooltip()
+        }
 
         commentsTableViewDelegate.updateWith(post: post,
                                              comments: approvedComments,

@@ -10,6 +10,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var followButton: UIButton!
     private var post: ReaderPost?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
+    private var followButtonTappedClosure: (() ->Void)?
 
     private var totalComments = 0 {
         didSet {
@@ -34,10 +35,16 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: - Configure
 
-    func configure(post: ReaderPost, totalComments: Int, presentingViewController: UIViewController) {
+    func configure(
+        post: ReaderPost,
+        totalComments: Int,
+        presentingViewController: UIViewController,
+        followButtonTappedClosure: (() -> Void)?
+    ) {
         self.post = post
         self.totalComments = totalComments
         self.followConversationEnabled = post.commentsOpen && post.canSubscribeComments
+        self.followButtonTappedClosure = followButtonTappedClosure
 
         configureButton()
 
@@ -121,6 +128,9 @@ private extension ReaderDetailCommentsHeader {
     @objc func followButtonTapped() {
         isSubscribedComments ? readerCommentsFollowPresenter?.showNotificationSheet(sourceView: followButton) :
                                readerCommentsFollowPresenter?.handleFollowConversationButtonTapped()
+        if !isSubscribedComments {
+            followButtonTappedClosure?()
+        }
     }
 
     struct Titles {
