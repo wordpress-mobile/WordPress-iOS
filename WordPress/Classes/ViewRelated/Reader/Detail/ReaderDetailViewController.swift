@@ -428,7 +428,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // of this call is accurate, the calculation returns wrong result on that case.
         // This manually delays the configuration and hacks the issue.
         // We can remove this once the culprit is out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.shouldConfigureTooltipPresenter() {
                 self.configureTooltipPresenter { [weak self] in
                     self?.scrollToTooltip()
