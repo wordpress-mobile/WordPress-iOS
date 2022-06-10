@@ -38,12 +38,31 @@ extension WPTabBarController {
         bloggingPromptCoordinator.showPromptAnsweringFlow(from: viewController, promptID: promptID, blog: blog, source: source)
     }
 
+    @objc func showBloggingPromptsFeatureIntroduction() {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let blog = currentOrLastBlog(),
+              blog.isAccessibleThroughWPCom(),
+              presentedViewController == nil,
+              selectedViewController?.presentedViewController == nil,
+              !UserDefaults.standard.bool(forKey: Constants.featureIntroDisplayedUDKey)
+        else {
+            return
+        }
+
+        UserDefaults.standard.set(true, forKey: Constants.featureIntroDisplayedUDKey)
+        BloggingPromptsIntroductionPresenter().present(from: selectedViewController ?? self)
+    }
+
 }
 
 private extension WPTabBarController {
 
     var accountSites: [Blog]? {
         AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
+    }
+
+    struct Constants {
+        static let featureIntroDisplayedUDKey = "wp_intro_shown_blogging_prompts"
     }
 
 }

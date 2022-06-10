@@ -28,9 +28,6 @@ PODS:
   - boost (1.76.0)
   - BVLinearGradient (2.5.6-wp-2):
     - React-Core
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
   - CocoaLumberjack (3.7.4):
     - CocoaLumberjack/Core (= 3.7.4)
   - CocoaLumberjack/Core (3.7.4)
@@ -527,7 +524,6 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (~> 0.11.1)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0-alpha2/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0-alpha2/third-party-podspecs/BVLinearGradient.podspec.json`)
-  - Charts (~> 3.6)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
@@ -611,7 +607,6 @@ SPEC REPOS:
     - AppAuth
     - AppCenter
     - Automattic-Tracks-iOS
-    - Charts
     - CocoaLumberjack
     - CropViewController
     - DoubleConversion
@@ -784,7 +779,6 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
@@ -874,6 +868,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 871edcd4e0bd0e513944c4d2556f1c17eec774f9
+PODFILE CHECKSUM: 217f5f99fca6b73f17c9e00ffefe3b55fa68bfb0
 
 COCOAPODS: 1.11.2

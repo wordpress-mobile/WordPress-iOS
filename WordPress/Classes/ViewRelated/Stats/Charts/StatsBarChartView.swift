@@ -81,7 +81,7 @@ class StatsBarChartView: BarChartView {
         return lastEntryIndex
     }
 
-    private var primaryDataSet: IChartDataSet? {
+    private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
 
@@ -342,7 +342,7 @@ private extension StatsBarChartView {
     func configureYAxisMaximum() {
         let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
 
-        if let maxY = data?.getYMax(),
+        if let maxY = data?.getYMax(axis: .left),
             maxY >= lowestMaxValue {
             leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
         } else {
@@ -424,7 +424,7 @@ private extension StatsBarChartView {
     }
 
     func redrawChartMarkersIfNeeded() {
-        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entryForHighlight(highlight) else {
+        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entry(for: highlight) else {
             return
         }
 
@@ -454,9 +454,6 @@ extension StatsBarChartView: ChartViewDelegate {
 extension StatsBarChartView: Accessible {
     func prepareForVoiceOver() {
         // ChartDataRendererBase creates a meaningful a11y description, relying on the chart description
-        guard let chartDescription = chartDescription else {
-            return
-        }
         chartDescription.text = barChartData.accessibilityDescription
         chartDescription.enabled = false    // disabling the description hides a corresponding label
     }

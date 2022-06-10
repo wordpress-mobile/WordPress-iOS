@@ -94,11 +94,4 @@ extension WPTabBarController {
         tabBar.isTranslucent = false
     }
 
-    // TODO: remove when final launching source determine.
-    func showBloggingPromptsFeatureIntroduction() {
-        if FeatureFlag.bloggingPrompts.enabled {
-            BloggingPromptsIntroductionPresenter().present(from: selectedViewController ?? self)
-        }
-    }
-
 }
