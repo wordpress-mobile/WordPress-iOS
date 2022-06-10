@@ -599,7 +599,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -636,6 +635,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -779,7 +779,7 @@ SPEC CHECKSUMS:
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 2bf7b5e351f8e33867210ff6eb9c5c178a035522
-  FBReactNativeSpec: 96808aafe6da270f0c19efc511e347c77e21b7fa
+  FBReactNativeSpec: 01f23ca87304feab44850ab6b750abdfa27890cb
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
@@ -847,7 +847,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
-  WordPressKit: 66a02f180ca525253244c4dbb136a5acfa2b4157
+  WordPressKit: fd65d442b814b286ec0d97e0a93cb4b9c19fa4d1
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: c0f1fe75e45e6f396bd325b45243bd9805b2cc56
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
