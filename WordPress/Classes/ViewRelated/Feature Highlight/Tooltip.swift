@@ -8,8 +8,6 @@ final class Tooltip: UIView {
         static let cornerRadius: CGFloat = 4
         static let arrowTipYLength: CGFloat = 8
         static let arrowTipYControlLength: CGFloat = 9
-        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Spacing.superHorizontalMargin
-        static let maxContentWidth = maxWidth - (Constants.Spacing.contentStackViewHorizontal * 2)
         static let invertedTooltipBackgroundColor = UIColor(
             light: UIColor.systemGray5.color(for: UITraitCollection(userInterfaceStyle: .dark)),
             dark: .white
@@ -107,6 +105,10 @@ final class Tooltip: UIView {
 
     var dismissalAction: (() -> Void)?
     var secondaryButtonAction: (() -> Void)?
+
+    private var maxWidth: CGFloat {
+        UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin
+    }
 
     private lazy var titleLabel: UILabel = {
         $0.font = WPStyleGuide.fontForTextStyle(.body)
@@ -236,7 +238,7 @@ final class Tooltip: UIView {
 
         arrowShapeLayer.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
         arrowShapeLayer.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
-        arrowShapeLayer.lineWidth = 2.0
+        arrowShapeLayer.lineWidth = 4.0
 
         arrowShapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
 
@@ -256,6 +258,19 @@ final class Tooltip: UIView {
                 message: message
             )
         )
+    }
+
+    func copy() -> Tooltip {
+        let copyTooltip = Tooltip()
+        copyTooltip.title = title
+        copyTooltip.message = message
+        copyTooltip.primaryButtonTitle = primaryButtonTitle
+        copyTooltip.secondaryButtonTitle = secondaryButtonTitle
+        copyTooltip.dismissalAction = dismissalAction
+        copyTooltip.secondaryButtonAction = secondaryButtonAction
+        copyTooltip.shouldPrefixLeadingIcon = shouldPrefixLeadingIcon
+        copyTooltip.buttonAlignment = buttonAlignment
+        return copyTooltip
     }
 
     private func commonInit() {
@@ -306,7 +321,9 @@ final class Tooltip: UIView {
                 equalTo: contentStackView.bottomAnchor,
                 constant: Constants.Spacing.contentStackViewBottom
             ),
-            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.maxWidth),
+            containerView.widthAnchor.constraint(
+                lessThanOrEqualToConstant: maxWidth
+            ),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.Spacing.buttonStackViewHeight)
         ])
     }
@@ -334,13 +351,13 @@ final class Tooltip: UIView {
         totalHeight += Constants.Spacing.contentStackViewTop
 
         if let title = title {
-            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
+            totalHeight += title.height(withMaxWidth: maxContentWidth(), font: WPStyleGuide.fontForTextStyle(.body))
         }
 
         totalHeight += Constants.Spacing.contentStackViewInterItemSpacing * 2
 
         if let message = message {
-            totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
+            totalHeight += message.height(withMaxWidth: maxContentWidth(), font: WPStyleGuide.fontForTextStyle(.body))
         }
 
         totalHeight += Constants.Spacing.buttonStackViewHeight
@@ -355,23 +372,28 @@ final class Tooltip: UIView {
         primaryButtonTitle: String?,
         secondaryButtonTitle: String?
     ) -> CGFloat {
-
-        let titleWidth = title?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
-        let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
+        let titleWidth = title?.width(withMaxWidth: maxContentWidth(), font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
+        let messageWidth = message?.width(withMaxWidth: maxContentWidth(), font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
 
         var buttonsWidth: CGFloat = 0
         if let primaryButtonTitle = primaryButtonTitle {
-            buttonsWidth += primaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.subheadline))
+            buttonsWidth += primaryButtonTitle.width(withMaxWidth: maxContentWidth(), font: WPStyleGuide.fontForTextStyle(.subheadline))
         }
 
         if let secondaryButtonTitle = secondaryButtonTitle {
             buttonsWidth += secondaryButtonTitle.width(
-                withMaxWidth: Constants.maxContentWidth,
+                withMaxWidth: maxContentWidth(),
                 font: WPStyleGuide.fontForTextStyle(.subheadline)
             ) + Constants.Spacing.buttonsStackViewInterItemSpacing
         }
 
         return max(max(titleWidth, messageWidth), buttonsWidth) + Constants.Spacing.contentStackViewHorizontal * 2
+    }
+
+    private static func maxContentWidth() -> CGFloat {
+        UIScreen.main.bounds.width
+        - Constants.Spacing.superHorizontalMargin
+        - (Constants.Spacing.contentStackViewHorizontal * 2)
     }
 }
 

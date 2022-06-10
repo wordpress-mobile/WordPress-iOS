@@ -325,6 +325,7 @@ private extension CreateButtonCoordinator {
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
+              blog.isAccessibleThroughWPCom(),
               let prompt = prompt else {
             return nil
         }
