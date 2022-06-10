@@ -7,6 +7,16 @@ extension Post {
 
         content = prompt.content
         bloggingPromptID = String(prompt.promptID)
+
+        if let currentTags = tags {
+            tags = "\(currentTags), \(Strings.promptTag)"
+        } else {
+            tags = Strings.promptTag
+        }
+    }
+
+    private struct Strings {
+        static let promptTag = "dailyprompt"
     }
 
 }
