@@ -1,6 +1,7 @@
 20.1
 -----
 * [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
+* [**] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration.
 
 20.0
 -----
