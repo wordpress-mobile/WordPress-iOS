@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'English'
-SWIFTLINT_VERSION = '0.27.0'
+SWIFTLINT_VERSION = '0.47.1'
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
@@ -695,7 +695,7 @@ def pod(args)
 end
 
 def lockfile_hash
-  YAML.safe_load(File.read('Podfile.lock'))
+  YAML.load_file('Podfile.lock')
 end
 
 def lockfiles_match?
