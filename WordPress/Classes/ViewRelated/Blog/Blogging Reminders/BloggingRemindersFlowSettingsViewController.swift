@@ -346,12 +346,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         // update local prompt settings so that the coordinator uses the right scheduler.
         let resetPromptSettingsClosure = temporarilyUpdatePromptSettings()
         let promptSettingsChanged = resetPromptSettingsClosure != nil
+        button.isEnabled = false
 
-         scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
+        scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
             guard let self = self else {
                 return
             }
-
             switch result {
             case .success:
                 self.tracker.scheduled(schedule, time: self.scheduledTime)
@@ -360,6 +360,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                     let completion = {
                         self?.delegate?.didSetUpBloggingReminders()
                         self?.pushCompletionViewController()
+                        self?.button.isEnabled = true
                     }
 
                     // only sync prompt settings in Blogging Prompts context.
@@ -368,12 +369,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                         return
                     }
 
-                    // show that some process is occurring, and prevent multiple tap events.
-                    self?.button.isEnabled = false
-
                     // sync the updated settings to remote.
                     self?.syncPromptsScheduleIfNeeded {
-                        self?.button.isEnabled = true
                         completion()
                     }
                 }
@@ -383,11 +380,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
                     DispatchQueue.main.async { [weak self] in
                         self?.pushPushPromptViewController()
+                        self?.button.isEnabled = true
                     }
                 default:
                     // The scheduler should normally not fail unless it's because of having no push permissions.
                     // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
                     DDLogError("Error scheduling blogging reminders: \(error)")
+                    self.button.isEnabled = true
                     break
                 }
 
