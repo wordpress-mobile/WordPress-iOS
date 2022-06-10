@@ -10,6 +10,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
+    var followButtonTappedClosure: (() ->Void)?
 
     private var totalRows = 0
     private var hideButton = true
@@ -106,7 +107,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         header.configure(
             post: post,
             totalComments: totalComments,
-            presentingViewController: presentingViewController
+            presentingViewController: presentingViewController,
+            followButtonTappedClosure: followButtonTappedClosure
         )
         headerView = header
         return header
