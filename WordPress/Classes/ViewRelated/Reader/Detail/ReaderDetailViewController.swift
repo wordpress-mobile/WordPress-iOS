@@ -440,7 +440,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func shouldConfigureTooltipPresenter() -> Bool {
-        featureHighlightStore.shouldShowTooltip
+        FeatureFlag.featureHighlightTooltip.enabled
+        && featureHighlightStore.shouldShowTooltip
         && (post?.canSubscribeComments ?? false)
         && (!(post?.isSubscribedComments ?? false))
     }
@@ -481,7 +482,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 return
             }
 
-            FeatureHighlightStore.didDismissTooltip = true
+            self?.featureHighlightStore.didDismissTooltip = true
             tooltipPresenter.dismissTooltip()
         }
 
