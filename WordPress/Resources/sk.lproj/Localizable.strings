@@ -2338,9 +2338,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
 
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Žiadne uložené články";
-
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Nie ďakujem";
 
@@ -2405,7 +2402,7 @@
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "V %@ jazyku nebol nájdený žiadny príspevok.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "V poslednom čase neboli publikované žiadne články";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -3569,7 +3566,6 @@
 "Size" = "Veľkosť";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */

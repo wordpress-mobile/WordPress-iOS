@@ -95,6 +95,8 @@ import Foundation
     case readerSearchHistoryCleared
     case readerArticleLinkTapped
     case readerArticleImageTapped
+    case readerFollowConversationTooltipTapped
+    case readerFollowConversationAnchorTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -357,6 +359,7 @@ import Foundation
 
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
+    case promptsBottomSheetHelp
     case promptsIntroductionModalViewed
     case promptsIntroductionModalDismissed
     case promptsIntroductionModalTryItNow
@@ -367,6 +370,7 @@ import Foundation
     case promptsDashboardCardMenuViewMore
     case promptsDashboardCardMenuSkip
     case promptsDashboardCardMenuRemove
+    case promptsDashboardCardMenuLearnMore
     case promptsListViewed
     case promptsReminderSettingsIncludeSwitch
     case promptsReminderSettingsHelp
@@ -539,6 +543,10 @@ import Foundation
             return "reader_article_link_tapped"
         case .readerArticleImageTapped:
             return "reader_article_image_tapped"
+        case .readerFollowConversationTooltipTapped:
+            return "reader_follow_conversation_tooltip_tapped"
+        case .readerFollowConversationAnchorTapped:
+            return "reader_follow_conversation_anchor_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -752,7 +760,7 @@ import Foundation
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
         case .domainsSearchSelectDomainTapped:
-            return "domains_dashboard_add_domain_tapped"
+            return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:
             return "domains_registration_form_viewed"
         case .domainsRegistrationFormSubmitted:
@@ -974,6 +982,8 @@ import Foundation
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
             return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsBottomSheetHelp:
+            return "my_site_create_sheet_prompt_help_tapped"
         case .promptsIntroductionModalViewed:
             return "blogging_prompts_introduction_modal_viewed"
         case .promptsIntroductionModalDismissed:
@@ -994,6 +1004,8 @@ import Foundation
             return "blogging_prompts_my_site_card_menu_skip_this_prompt_tapped"
         case .promptsDashboardCardMenuRemove:
             return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
+        case .promptsDashboardCardMenuLearnMore:
+            return "blogging_prompts_my_site_card_menu_learn_more_tapped"
         case .promptsListViewed:
             return "blogging_prompts_prompts_list_viewed"
         case .promptsReminderSettingsIncludeSwitch:

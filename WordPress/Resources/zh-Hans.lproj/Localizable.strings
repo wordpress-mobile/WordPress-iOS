@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-20 11:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-02 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d 条回复";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -80,6 +81,9 @@
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s是%3$s%4$s。";
 
+/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
+"%1$s. Currently selected: %2$s" = "%1$s. 当前已选择：%2$s";
+
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%3$@ 年 %1$@ - %2$@";
 
@@ -87,7 +91,7 @@
 "%@ Button" = "%@ 按钮";
 
 /* Title of the task complete hint for the Quick Start Tour */
-"%@ Return to My Site screen when you're ready for the next task." = "%@ 准备好下一任务后，返回至“我的站点”。";
+"%@ Return to My Site screen when you're ready for the next task." = "%@ 准备好执行下一任务后，返回至“我的站点”界面。";
 
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ 个标签";
@@ -96,7 +100,7 @@
 "%@ Tags" = "%@ 个标签";
 
 /* Title of the task complete hint for the Quick Start Tour */
-"%@ Tip: get updates faster by enabling push notifications." = "%@ 贴士：启动推送通知，获取更快速的更新。";
+"%@ Tip: get updates faster by enabling push notifications." = "%@ 贴士：启动推送通知，更快获取更新。";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ 十亿";
@@ -280,17 +284,23 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(无标题)";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* is now following your site!" = "*Johann Brandt* 正在关注您的站点！";
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"*%@%@ (%@%%)* higher than the previous week" = "*%1$@%2$@ (%3$@%%)* 比上一周高";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"*%@%@ (%@%%)* lower than the previous week" = "*%1$@%2$@ (%3$@%%)* 比上一周低";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* responded to your comment" = "*Johann Brandt* 回应了您的评论";
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* 关注了您的站点！";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* 回复了您的评论";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*\"约翰-勃兰特 \"回应了您的文章。";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* 添加了新文章至其站点";
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* 在他们的站点上发表了新文章";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* 喜欢了你的文章。";
@@ -512,9 +522,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "在文章中添加内容";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "添加新统计信息卡片";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "添加到开始";
 
@@ -686,8 +693,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "准备就绪！";
 
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "已完成所有任务";
+/* Message shown when all Quick Start tasks are complete. */
+"All tasks complete!" = "已完成所有任务！";
 
 /* Insights 'All-Time' header */
 "All-Time" = "所有时间";
@@ -926,6 +933,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "将您的内容编排成列，添加对操作按钮的调用，在图像上叠加文本。";
+
+/* No comment provided by engineer. */
+"Arrow buttons" = "箭头按钮";
 
 /* An example tag used in the login prologue screens.
    Art site intent topic */
@@ -1615,14 +1625,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "代码";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "已收起，%i 个已完成的任务，切换会展开这些任务的列表";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "已收起。轻点可展开。";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "收起已完成任务的列表。";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "收集信息";
@@ -1698,6 +1702,9 @@ translators: Block name. %s: The localized block name */
    Today's Stats 'Comments' label */
 "Comments" = "评论";
 
+/* Insights 'Comments Total' header */
+"Comments Total" = "评论总数";
+
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "评论功能已关闭";
 
@@ -1721,9 +1728,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "紧凑";
-
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "完成 (%i)";
 
 /* The action is completed */
 "Completed" = "已完成";
@@ -1794,14 +1798,11 @@ translators: Block name. %s: The localized block name */
 /* Title shown when all tours have been completed. */
 "Congrats! You know your way around" = "恭喜！ 您搞明白了";
 
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "恭喜您完成了列表中的任务。做得漂亮！";
-
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "恭喜您购买成功！";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Congratulations! Your site passed *1000 all-time* views!" = "恭喜！ 您的站点通过了 *1000 所有时间* 预览！";
+"Congratulations! Your site passed *1000 all-time* views!" = "恭喜！ 您的站点通过了 *1000 所有时间*查看！";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1820,7 +1821,7 @@ translators: Block name. %s: The localized block name */
 "Connect with other bloggers by following, liking and commenting on their posts." = "通过关注、点赞和评论其他博主的文章，与他们联系。";
 
 /* Title of a Quick Start Tour */
-"Connect with other sites" = "和其他站点连接";
+"Connect with other sites" = "连接其他站点";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "关联您最喜爱的社交媒体服务，自动与朋友共享新文章。";
@@ -2652,6 +2653,12 @@ translators: Block name. %s: The localized block name */
 "Drafts" = "草稿";
 
 /* No comment provided by engineer. */
+"Drag & drop" = "拖放";
+
+/* No comment provided by engineer. */
+"Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "拖放让重新排列区块轻而易举。 按住区块，将其拖动至新位置然后释放。";
+
+/* No comment provided by engineer. */
 "Drag to adjust focal point" = "拖动以调整焦点";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
@@ -3070,14 +3077,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展开";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "已展开，%i 个已完成的任务，切换会收起这些任务的列表";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "已展开。轻点可收起。";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "展开已完成任务的列表。";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "展开以选择其他菜单";
@@ -3292,9 +3293,6 @@ translators: Block name. %s: The localized block name */
    User role badge */
 "Follower" = "粉丝";
 
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "粉丝总数";
-
 /* Blog Followers
    Insights 'Followers' header
    Label for number of followers. */
@@ -3425,7 +3423,7 @@ translators: Block name. %s: The localized block name */
 "Get noticed: comment on posts you've read." = "敬请注意：评论您已读过的文章。";
 
 /* Description of a Quick Start Tour */
-"Get real time updates from your pocket." = "方便获取实时更新。";
+"Get real time updates from your pocket." = "方便您随时随地实时获取更新。";
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "从种类繁多的预设页面布局中选择心仪的布局，开始打造自己的页面。 或者，您也可以从一个空白页面开始。";
@@ -3441,6 +3439,9 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "了解 WordPress 应用程序";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
+"Get to know the app" = "了解此应用程序";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "获取您的域名";
@@ -3515,7 +3516,7 @@ translators: Block name. %s: The localized block name */
 "Grow Your Audience" = "增加您的受众";
 
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of checking your notifications." = "指导您完成检查通知的流程。";
+"Guides you through the process of checking your notifications." = "指导您检查通知。";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "指导您完成为站点选择主题的流程。";
@@ -3748,6 +3749,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "图片说明。%s";
+
+/* No comment provided by engineer. */
+"Image file not found." = "找不到图像文件。";
 
 /* Hint for image title on image settings. */
 "Image title" = "图像标题";
@@ -4146,6 +4150,9 @@ translators: Block name. %s: The localized block name */
    Today's Stats 'Likes' label */
 "Likes" = "赞";
 
+/* Insights 'Likes Total' header */
+"Likes Total" = "赞总数";
+
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "我的评论收到的赞";
 
@@ -4463,6 +4470,10 @@ translators: Block name. %s: The localized block name */
    Title label for the media settings section in the app settings */
 "Media" = "媒体";
 
+/* Label for the media cache navigation row in the app.
+   Media Cache title */
+"Media Cache" = "媒体缓存";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "媒体缓存大小";
 
@@ -4679,6 +4690,9 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "我的十大咖啡馆";
 
+/* No comment provided by engineer. */
+"NEW" = "新建";
+
 /* Title for disclaimer in the dashboard's custom What's New page. */
 "NEW!" = "新！";
 
@@ -4816,9 +4830,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "没有可用预览 URL";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "没有已保存的文章";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "不用了，谢谢";
@@ -4962,7 +4973,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "在您的语言中未找到与 %@ 匹配的文章。";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "没有近期发表的文章";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -5795,7 +5806,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview post" = "预览文章";
 
 /* Description of a Quick Start Tour */
-"Preview your site to see what your visitors will see." = "预览您的站点，查看访问者将看到的内容。";
+"Preview your site to see what your visitors will see." = "预览您的站点，查看访客将看到的内容。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "Previous Week" = "上周";
@@ -6866,9 +6877,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "已显示";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "显示在访问者的浏览器选项卡和其他在线位置。";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "公开显示您对博客作出的评论。";
 
@@ -7008,7 +7016,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "尺寸";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -7397,6 +7404,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "轻点以隐藏键盘";
 
+/* Title for a push notification with fixed content that invites the user to load today's blogging prompt. */
+"Tap to load today's prompt..." = "点击加载今日提示...";
+
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as not spam." = "点击将推荐来源标记为非垃圾内容。";
 
@@ -7423,6 +7433,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "轻点可全屏查看媒体";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
+"Tap to view more stats for this week" = "点击查看本周的更多统计数据";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "轻点以查看此标签的文章";
@@ -7840,7 +7853,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "这个用户账户在有活动订阅时不能被关闭。";
 
-/* This week legend label */
+/* This week legend label
+   Title of a button. A call to action to view more stats for this week */
 "This week" = "本周";
 
 /* A description of the twitter sharing setting.
@@ -7960,6 +7974,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
+
+/* Title for a push notification showing today's blogging prompt. */
+"Today's Prompt 💡" = "今日提示 💡";
 
 /* Insights Management 'Today's Stats' title
    Title for the card displaying today's stats. */
@@ -8527,6 +8544,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
 
+/* Description of a Quick Start Tour */
+"Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "在网络上使用：包括浏览器选项卡、社交媒体上的预览和 WordPress.com 阅读器。";
+
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -8678,6 +8698,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "访问 %@ 以了解更多信息";
+
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "访问仪表盘";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "查看站点";
@@ -9275,6 +9298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "您目前正在上传媒体。此操作将会取消上传进程。\n\n确定吗？";
 
+/* No comment provided by engineer. */
+"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "您现在也可以重新排列区块，方法是点击一个区块，然后点击该区块左下角出现的向上和向下箭头，从而上下移动该区块。";
+
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "通常情况下，您可以随时使用刚刚用过的链接登录，但如果您愿意，也可以设置密码。";
 
@@ -9298,9 +9324,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "您现在可以重新排列区块，方法是轻点一个区块，然后轻点该区块左下角出现的向上和向下箭头，将该区块移动到其他区块上方或下方。";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "您可以随时切换站点。";
@@ -9503,10 +9526,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "在您使用 Safari 访问自己的站点时，站点地址显示在屏幕顶部的地址栏中。";
 
 /* Description for label when the user has a site with VaultPress. */
-"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "您的站点已受 VaultPress 保护。 您可以在下面看到指向您的 VaultPress 仪表盘的链接。";
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "您的站点已受 VaultPress 保护。 您可以在下面找到指向您的 VaultPress 仪表盘的链接。";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "Your site appears to be getting *more traffic* than usual!" = "您站点似乎比往常获得了*更多的流量*！";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "您的站点使用 VaultPress";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "您的站点已创建！";
@@ -9581,13 +9607,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "_%1$d bloggers_ like this." = "_%1$d 位博主为此内容点赞。";
 
 /* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_一个博客_赞过。";
+"_One blogger_ likes this." = "_一位博主_赞过此内容。";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_您和 %1$d 位博主为此内容点赞。";
 
 /* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_您和其他一位博主_赞过。";
+"_You and another blogger_ like this." = "_您和其他一位博主_赞过此内容。";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_您_ 为此内容点赞。";
@@ -9731,6 +9757,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Views count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.views" = "查看次数";
+
+/* Header title indicating which Stats Insights cards the user currently has set to active. */
+"stats.insights.management.activeCards" = "活跃的卡片";
+
+/* Header title indicating which Stats Insights cards the user currently has disabled. */
+"stats.insights.management.inactiveCards" = "非活跃的卡片";
+
+/* Title of button to cancel an alert and take no action. */
+"stats.insights.management.savePrompt.cancelButton" = "取消";
+
+/* Title of button in Stats Insights management, prompting the user to discard changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.discardButton" = "放弃更改";
+
+/* Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.message" = "您已对活跃的数据分析卡片进行了更改。";
+
+/* Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.saveButton" = "保存更改";
+
+/* Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards. */
+"stats.insights.management.selectCardsPrompt" = "从下面的列表中选择卡片";
+
+/* Title of the Stats Insights Management screen */
+"stats.insights.management.title" = "管理统计数据卡片";
 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 人气最高的时间";
