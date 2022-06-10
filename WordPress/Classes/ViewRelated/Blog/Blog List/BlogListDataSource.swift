@@ -173,8 +173,8 @@ class BlogListDataSource: NSObject {
         return nil
     }
 
-    @objc var allBlogsCount: Int {
-        return allBlogs.count
+    @objc var blogsCount: Int {
+        return filteredBlogs.count
     }
 
     @objc var displayedBlogsCount: Int {
@@ -184,7 +184,7 @@ class BlogListDataSource: NSObject {
     }
 
     @objc var visibleBlogsCount: Int {
-        return allBlogs.filter({ $0.visible }).count
+        return filteredBlogs.filter({ $0.visible }).count
     }
 
     // MARK: - Internal properties
@@ -288,12 +288,12 @@ private extension BlogListDataSource {
         if let sections = cachedSections {
             return sections
         }
-        let mappedSections = mode.mapper.map(allBlogs)
+        let mappedSections = mode.mapper.map(filteredBlogs)
         cachedSections = mappedSections
         return mappedSections
     }
 
-    var allBlogs: [Blog] {
+    var filteredBlogs: [Blog] {
         guard var blogs = resultsController.fetchedObjects else {
             return []
         }
