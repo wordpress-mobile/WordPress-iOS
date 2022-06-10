@@ -310,6 +310,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        observeManagedObjectsChange()
     }
 
     required init?(coder: NSCoder) {
@@ -397,6 +398,30 @@ private extension DashboardPromptsCardCell {
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
+        presenterViewController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    // MARK: - Managed object observer
+
+    func observeManagedObjectsChange() {
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleObjectsChange),
+                name: .NSManagedObjectContextObjectsDidChange,
+                object: ContextManager.shared.mainContext
+        )
+    }
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let prompt = prompt else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(prompt) || refreshed.contains(prompt) {
+            refreshStackView()
+        }
     }
 
     // MARK: Prompt Fetching
