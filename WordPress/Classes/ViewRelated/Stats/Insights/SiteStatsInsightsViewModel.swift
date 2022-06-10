@@ -576,40 +576,14 @@ private extension SiteStatsInsightsViewModel {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.likesCount)
-        let likesData = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: .likes)
-
-        return StatsTotalInsightsData(count: likesData.count, difference: likesData.difference, percentage: likesData.percentage, sparklineData: sparklineData)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount)
-        let commentsData = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: .comments)
-
-        return StatsTotalInsightsData(count: commentsData.count, difference: commentsData.difference, percentage: commentsData.percentage, sparklineData: sparklineData)
-    }
-
-    func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>) -> [Int] {
-        var sparklineData = [Int]()
-        if let chartData = mostRecentChartData {
-            let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData)
-
-            splitSummaryTimeIntervalData.forEach { statsSummaryTimeIntervalDataAsAWeek in
-                switch statsSummaryTimeIntervalDataAsAWeek {
-                case .thisWeek(let data):
-                    for statsSummaryData in data.summaryData {
-                        sparklineData.append(statsSummaryData[keyPath: countKey])
-                    }
-                default:
-                    break
-                }
-            }
-        }
-
-        return sparklineData
+        return StatsTotalInsightsData.createCommentsTotalInsightsData(periodStore: periodStore)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
