@@ -86,6 +86,16 @@ class BlogListDataSource: NSObject {
     ///
     @objc var shouldShowDisclosureIndicator = true
 
+    /// If this is set to `true`, blogs that are not accessible through the WP API will be hidden
+    ///
+    @objc var shouldHideSelfHostedSites = false {
+        didSet {
+            if shouldHideSelfHostedSites != oldValue {
+                dataChanged?()
+            }
+        }
+    }
+
     // MARK: - Inputs
 
     // Pass to the LoggedInDataSource to match a specifc blog.
@@ -163,8 +173,8 @@ class BlogListDataSource: NSObject {
         return nil
     }
 
-    @objc var allBlogsCount: Int {
-        return allBlogs.count
+    @objc var blogsCount: Int {
+        return filteredBlogs.count
     }
 
     @objc var displayedBlogsCount: Int {
@@ -174,7 +184,7 @@ class BlogListDataSource: NSObject {
     }
 
     @objc var visibleBlogsCount: Int {
-        return allBlogs.filter({ $0.visible }).count
+        return filteredBlogs.filter({ $0.visible }).count
     }
 
     // MARK: - Internal properties
@@ -278,14 +288,17 @@ private extension BlogListDataSource {
         if let sections = cachedSections {
             return sections
         }
-        let mappedSections = mode.mapper.map(allBlogs)
+        let mappedSections = mode.mapper.map(filteredBlogs)
         cachedSections = mappedSections
         return mappedSections
     }
 
-    var allBlogs: [Blog] {
-        guard let blogs = resultsController.fetchedObjects else {
+    var filteredBlogs: [Blog] {
+        guard var blogs = resultsController.fetchedObjects else {
             return []
+        }
+        if shouldHideSelfHostedSites {
+            blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
         }
         guard let account = account else {
             return blogs
