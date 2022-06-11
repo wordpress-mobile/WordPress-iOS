@@ -702,9 +702,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
             eventName = @"enhanced_site_creation_site_design_preview_loaded";
             break;
-        case     WPAnalyticsStatEnhancedSiteCreationSiteDesignThumbnailModeButtonTapped:
-            eventName = @"enhanced_site_creation_site_design_thumbnail_mode_button_tapped";
-            break;
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeButtonTapped:
             eventName = @"enhanced_site_creation_site_design_preview_mode_button_tapped";
             break;

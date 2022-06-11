@@ -4,7 +4,8 @@ import UIKit
 extension StatsViewController {
 
     @objc func activateStatsModule(success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let context = blog.settings?.managedObjectContext else {
+        guard let blog = blog,
+              let context = blog.settings?.managedObjectContext else {
             return
         }
 

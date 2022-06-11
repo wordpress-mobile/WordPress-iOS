@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d përgjigje";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d nga %2$d të plotësuara";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -512,9 +513,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Shtoje Lëndën te Postimi";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Shtoni Kartë të Re Statistikash";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Shtoje Në Fillim";
 
@@ -685,9 +683,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Gjithçka e rregulluar!";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Krejt punët të plotësuara";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Krejt Kohën";
@@ -1602,14 +1597,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kod";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "E tkurrur, %i hapa të plotësuara, klikimi e zgjeron listën e këtyre hapave";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "E tkurrur. Prekeni që të zgjerohet.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Tkurr listën e hapave të plotësuara.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Grumbullo të dhëna";
@@ -1709,9 +1698,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "E ngjeshur";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Të plotësuar (%i)";
-
 /* The action is completed */
 "Completed" = "I përfunduar";
 
@@ -1774,9 +1760,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Së pari ripohoni email-in tuaj";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Përgëzime për plotësimin e listës tuaj. Punë e paqme.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Përgëzime për blerjen tuaj!";
@@ -3036,14 +3019,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "E zgjeruar";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "E zgjeruar, %i hapa të plotësuar, klikimi e tkurr listën e këtyre hapave";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "E zgjeruar. Prekeni që të tkurret.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Shfaq të zgjeruar listën e hapave të plotësuara.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Zgjerohet për të përzgjedhur një menu tjetër";
@@ -3254,9 +3231,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Ndjekës";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Ndjekës Gjithsej";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -4753,9 +4727,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "S’ka URL Paraparje";
 
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "S’ka Postime të Ruajtur";
-
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Jo, Faleminderit";
 
@@ -4898,7 +4869,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "S’u gjetën postime në gjuhën tuaj për %@.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "S’ka postime të bëra së fundi";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -6779,9 +6750,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "I shfaqur";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shfaqur te skeda e shfletuesit të vizitorit tuaj dhe në vende të tjera në internet.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "E shfaqur publikisht kur komentoni në blogje.";
 
@@ -6921,7 +6889,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "Madhësi";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -9178,9 +9145,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Mund t’i anashkaloni këto rregullime për postime individuale.";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Blloqet mund t’i risistemoni duke prekur mbi një bllok dhe mandej duke prekur shigjetat sipër dhe poshtë që shfaqen në anën e poshtme majtas bllokut, për t’i kaluar sipër ose poshtë blloqesh të tjerë.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Mund të ndërroni sajte në çfarëdo kohe.";

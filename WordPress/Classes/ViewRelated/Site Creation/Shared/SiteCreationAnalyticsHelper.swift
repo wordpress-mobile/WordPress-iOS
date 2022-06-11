@@ -22,6 +22,7 @@ class SiteCreationAnalyticsHelper {
     private static let verticalSearchTerm = "search_term"
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
+    private static let recommendedKey = "recommended"
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -77,16 +78,14 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))
     }
 
-    static func trackSiteDesignThumbnailModeButtonTapped(_ previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignThumbnailModeButtonTapped, withProperties: commonProperties(previewMode))
-    }
-
     static func trackSiteDesignSkipped() {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
 
-    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, sectionType: SiteDesignSectionType) {
+        var properties = commonProperties(siteDesign)
+        properties[recommendedKey] = sectionType == .recommended
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: properties)
     }
 
     // MARK: - Site Design Preview

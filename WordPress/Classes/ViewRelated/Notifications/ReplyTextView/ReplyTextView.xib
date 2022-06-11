@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -100,10 +100,9 @@
                                         <constraint firstAttribute="height" constant="33" id="Ehr-Ib-Hp7"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="43" id="l81-pf-M8M"/>
                                     </constraints>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Reply"/>
-                                    <buttonConfiguration key="configuration" style="plain" title="Reply">
-                                        <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
-                                    </buttonConfiguration>
                                     <connections>
                                         <action selector="btnReplyPressed" destination="-1" eventType="touchUpInside" id="Jeq-hG-haN"/>
                                     </connections>

@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d odpovědí";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d z %2$d dokončeno";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -494,9 +495,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Přidat obsah do příspěvku";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Přidejte novou statistickou kartu";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Přidat na začátek";
 
@@ -667,9 +665,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Vše připraveno!";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Všechny úkoly jsou dokončeny";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Od počátku věků";
@@ -1585,14 +1580,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kód";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Sbalené, %i dokončené úkoly, přepínání rozšiřuje seznam těchto úkolů";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Sbaleno. Klepnutím rozbalíte.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Sbalí seznam dokončených úkolů.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Sbírat informace";
@@ -1692,9 +1681,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Kompaktní";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Kompletní (%i)";
-
 /* The action is completed */
 "Completed" = "Dokončeno";
 
@@ -1751,9 +1737,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Nejprve potvrďte svůj e-mail";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Gratulujeme k dokončení vašeho seznamu. Dobře odvedená práce.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Gratulujeme k nákupu!";
@@ -3007,14 +2990,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Rozšířený";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Rozšířené, %i dokončené úkoly, přepínání sbalí seznam těchto úkolů";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Rozšířený. Klepnutím sbalíte.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Rozbalí seznam dokončených úkolů.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Rozbalí se a vybere jinou nabídku";
@@ -3225,9 +3202,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Odběratel";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Celkem fanoušků";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -4712,9 +4686,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Není k dispozici žádná adresa URL náhledu";
 
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Žádné uložené příspěvky";
-
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Ne, děkuji";
 
@@ -4857,7 +4828,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "V jazyku %@ nebyl nalezen žádný příspěvek.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "Žádné příspěvky nebyly nedávno přidány";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -6728,9 +6699,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Zobrazeno";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Zobrazuje se na kartě prohlížeče návštěvníka a na dalších místech online.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Zobrazit publikované komentáře na vašem blogu.";
 
@@ -6870,7 +6838,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "Velikost";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -9118,9 +9085,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Tato nastavení můžete přepsat pro jednotlivé příspěvky.";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Bloky můžete přeskupit klepnutím na blok a následným klepnutím na šipky nahoru a dolů, které se zobrazují na levé spodní straně bloku, abyste jej přesunuli nad nebo pod jiné bloky.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Stránky můžete kdykoli změnit.";

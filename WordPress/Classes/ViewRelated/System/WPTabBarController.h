@@ -5,6 +5,7 @@ extern NSString * const WPNewPostURLParamTagsKey;
 extern NSString * const WPTabBarCurrentlySelectedScreenSites;
 extern NSString * const WPTabBarCurrentlySelectedScreenReader;
 extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
+extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 @class AbstractPost;
 @class Blog;
