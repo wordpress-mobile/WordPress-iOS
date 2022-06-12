@@ -9,7 +9,7 @@ class StatsBaseCell: UITableViewCell {
         return label
     }()
 
-    private let showDetailsButton: UIButton = {
+    private lazy var showDetailsButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = true
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)

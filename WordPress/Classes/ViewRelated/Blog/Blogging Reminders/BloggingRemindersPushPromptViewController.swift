@@ -57,7 +57,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         return label
     }()
 
-    private let turnOnNotificationsButton: UIButton = {
+    private lazy var turnOnNotificationsButton: UIButton = {
         let button = FancyButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isPrimary = true
@@ -67,7 +67,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         return button
     }()
 
-    private let dismissButton: UIButton = {
+    private lazy var dismissButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(.gridicon(.cross), for: .normal)

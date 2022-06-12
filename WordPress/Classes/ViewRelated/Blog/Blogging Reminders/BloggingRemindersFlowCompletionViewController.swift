@@ -55,7 +55,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         return label
     }()
 
-    private let doneButton: UIButton = {
+    private lazy var doneButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.setTitle(TextContent.doneButtonTitle, for: .normal)
