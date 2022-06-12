@@ -707,7 +707,7 @@
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="sites" inverseEntity="ReaderCard" syncable="YES"/>
         <relationship name="emailSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionEmail" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionEmail" syncable="YES"/>
         <relationship name="postSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionPost" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionPost" syncable="YES"/>
     </entity>
