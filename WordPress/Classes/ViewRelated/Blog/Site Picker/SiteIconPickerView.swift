@@ -120,7 +120,7 @@ struct SiteIconPickerView: View {
         Group {
             let columnCount = SiteIconPickerView.allEmoji.count / Metrics.emojiRowCount
 
-            ForEach((0..<columnCount)) { index in
+            ForEach(0..<columnCount, id: \.self) { index in
                 let startIndex = index * Metrics.emojiRowCount
                 let endIndex = min(startIndex + Metrics.emojiRowCount, SiteIconPickerView.allEmoji.count)
 
