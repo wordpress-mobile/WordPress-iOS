@@ -438,6 +438,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
+    var topAccessoryView: UIView? = nil
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -451,7 +452,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
                        dataRows: dataRows,
                        statSection: statSection,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
-                       siteStatsReferrerDelegate: siteStatsReferrerDelegate)
+                       siteStatsReferrerDelegate: siteStatsReferrerDelegate,
+                       topAccessoryView: topAccessoryView)
     }
 }
 
