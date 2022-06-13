@@ -484,7 +484,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.54.0-beta.2):
+  - WordPressKit (4.54.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -492,7 +492,7 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.15)
-  - WordPressShared (1.18.0-beta.1):
+  - WordPressShared (1.18.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.5)
@@ -587,9 +587,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 2.0.0)
-  - WordPressKit (~> 4.54.0-beta.2)
+  - WordPressKit (~> 4.54.0)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (~> 1.18.0-beta.1)
+  - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.4)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0/third-party-podspecs/Yoga.podspec.json`)
@@ -779,7 +779,7 @@ SPEC CHECKSUMS:
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 2bf7b5e351f8e33867210ff6eb9c5c178a035522
-  FBReactNativeSpec: 01f23ca87304feab44850ab6b750abdfa27890cb
+  FBReactNativeSpec: 96808aafe6da270f0c19efc511e347c77e21b7fa
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
@@ -847,9 +847,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
-  WordPressKit: fd65d442b814b286ec0d97e0a93cb4b9c19fa4d1
+  WordPressKit: 5d4b882436356add961b405f655526161810de34
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
-  WordPressShared: c0f1fe75e45e6f396bd325b45243bd9805b2cc56
+  WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 9533160e5587939876aeeb1461a441a4e5dc4c4d
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
@@ -863,6 +863,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: bcdf87f3cdf25442d81a65bd10bb9d85e1471df1
+PODFILE CHECKSUM: 31779f58b79c601091223493ce3ea9539537e454
 
 COCOAPODS: 1.11.2
