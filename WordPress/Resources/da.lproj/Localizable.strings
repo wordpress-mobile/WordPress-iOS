@@ -1324,7 +1324,6 @@
 "Size" = "Størrelse";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */

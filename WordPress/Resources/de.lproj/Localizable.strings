@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-01 21:51:44+0000 */
+/* Translation-Revision-Date: 2022-06-03 09:54:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: de */
@@ -3444,7 +3444,7 @@ translators: Block name. %s: The localized block name */
 "Get to know the WordPress app" = "Informationen zur WordPress-App";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
-"Get to know the app" = "Lern die App kennen";
+"Get to know the app" = "Lerne die App kennen";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Hol dir deine Domain";
@@ -9308,7 +9308,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Medien werden hochgeladen… Durch diese Aktion werden alle laufenden Uploads abgebrochen.\n\nBist du sicher?";
 
 /* No comment provided by engineer. */
-"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "Du kannst Blöcke neu anordnen, indem du auf einen Block tippst und ihn dann mit den Aufwärts- und Abwärtspfeilen, die unten links auf dem Block erscheinen, nach oben oder unten verschieben.";
+"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "Du kannst Blöcke auch neu anordnen, indem du auf einen Block tippst und ihn dann mit den Aufwärts- und Abwärtspfeilen, die unten links auf dem Block erscheinen, nach oben oder unten verschiebst.";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kannst dich immer mit einem Link wie dem gerade verwendeten anmelden, du kannst aber auch ein Passwort einrichten, wenn du dies bevorzugst.";

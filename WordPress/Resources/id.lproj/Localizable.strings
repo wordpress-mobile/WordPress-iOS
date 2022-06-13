@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-05 15:25:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: id */
@@ -3297,6 +3297,9 @@ translators: Block name. %s: The localized block name */
    Insights 'Followers' header
    Label for number of followers. */
 "Followers" = "Pengikut";
+
+/* Insights 'Followers Total' header */
+"Followers Total" = "Total Follower";
 
 /* Accessibility label for following buttons.
    Title of the Following Reader tab

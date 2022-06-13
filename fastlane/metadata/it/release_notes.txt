@@ -1,0 +1,7 @@
+Stiamo partendo con la versione 20 con un nuovissimo aspetto. La scheda per la sessione di orientamento e i tour Passi successivi ora stanno bene insieme ai nuovi design dei tour per i siti esistenti, che includono illustrazioni raffinate. Schiaccia il cinque!
+
+Ora puoi inserire le immagini da altri siti web usando l'opzione "Inserisci da URL" nell'app. Aggiungi più foto di gattini, per favore.
+
+Abbiamo apportato alcuni miglioramenti all'accessibilità nell'editor a blocchi, in questo modo il tuo lettore di schermo offre più del contesto di cui necessiti.
+
+Infine, abbiamo applicato un pennello alla cache degli elementi multimediali, all'indice in risalto e alle funzionalità dei tasti di scelta rapida di Siri nelle impostazioni dell'app. Ora stanno bene insieme agli standard e ai colori del marchio. Niente più rosso da panico.

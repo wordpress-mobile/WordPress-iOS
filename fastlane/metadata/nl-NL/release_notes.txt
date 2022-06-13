@@ -1,0 +1,7 @@
+We rollen versie 20 uit met een frisse, nieuwe look. - De snelstartkaart en Volgende stappen-rondleidingen komen nu overeen met de nieuwe ontwerpen van bestaande sites, inclusief een hippe afbeelding. High five.
+
+Je kunt nu afbeeldingen van andere sites invoegen door middel van de optie “Invoegen via URL” in de app. Meer kattenplaatjes!
+
+We hebben wat verbeteringen aan de toegankelijkheid van de blokeditor aangebracht, zodat je schermreader meer van de context biedt die jij nodig hebt.
+
+Ten slotte hebben de mediacache, spotlight index en de Siri-snelkoppelingen een likje verf gegeven in de app-instellingen. Ze komen nu overeen met de merkkleuren, niet meer schreeuwend rood.

@@ -1,0 +1,7 @@
+Wir veröffentlichen Version 20 mit einem frischen neuen Look. Die Schnellstart-Karte und die Touren für die nächsten Schritte passen zu den neuen Designs der bestehenden Websites, einschließlich einer schicken Illustration. Klatsch ab.
+
+Ab sofort kannst du Bilder von anderen Websites über die App-Option „Von URL einfügen“ einfügen. Mehr Katzenbilder, bitte.
+
+Wir haben einige Zugänglichkeitsverbesserungen im Block-Editor vorgenommen. Dadurch findest du in deinem Screenreader nun mehr für dich relevante Inhalte.
+
+Zu guter Letzt haben wir die Farben der Funktionen für den Medien-Cache, den Spotlight-Index und die Siri-Tastaturkürzel in den App-Einstellungen überarbeitet. Sie passen jetzt zu den Standard- und Markenfarben – kein Panikrot mehr.
