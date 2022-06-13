@@ -75,17 +75,6 @@ class BlogDashboardCardFrameView: UIView {
         return button
     }()
 
-    /// Button container stack view anchored to the top right corner of the view.
-    /// Displayed only when the header view is hidden.
-    private(set) lazy var buttonContainerStackView: UIStackView = {
-        let containerStackView = UIStackView()
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        containerStackView.axis = .horizontal
-        return containerStackView
-    }()
-
-    private var mainStackViewTrailingConstraint: NSLayoutConstraint?
-
     weak var currentView: UIView?
 
     /// The title at the header
@@ -158,58 +147,22 @@ class BlogDashboardCardFrameView: UIView {
     /// Hide the header
     func hideHeader() {
         headerStackView.isHidden = true
-        buttonContainerStackView.isHidden = false
-
-        if !ellipsisButton.isHidden || !chevronImageView.isHidden {
-            mainStackViewTrailingConstraint?.constant = -Constants.mainStackViewTrailingPadding
-        }
     }
 
     /// Hide the header
     func showHeader() {
         headerStackView.isHidden = false
-        buttonContainerStackView.isHidden = true
-
-        mainStackViewTrailingConstraint?.constant = 0
     }
 
     private func configureStackViews() {
-        configureMainStackView()
-        configureButtonContainerStackView()
-    }
-
-    private func configureMainStackView() {
         addSubview(mainStackView)
-
-        let trailingConstraint = mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
-        mainStackViewTrailingConstraint = trailingConstraint
-
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.bottomPadding),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            trailingConstraint
-        ])
+        pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomPadding, right: 0))
 
         mainStackView.addArrangedSubview(headerStackView)
 
         headerStackView.addArrangedSubviews([
             iconImageView,
             titleLabel,
-            chevronImageView,
-            ellipsisButton
-        ])
-    }
-
-    private func configureButtonContainerStackView() {
-        addSubview(buttonContainerStackView)
-
-        NSLayoutConstraint.activate([
-            buttonContainerStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.buttonContainerStackViewPadding),
-            buttonContainerStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.buttonContainerStackViewPadding)
-        ])
-
-        buttonContainerStackView.addArrangedSubviews([
             chevronImageView,
             ellipsisButton
         ])
@@ -283,8 +236,6 @@ class BlogDashboardCardFrameView: UIView {
         static let iconSize = CGSize(width: 18, height: 18)
         static let cornerRadius: CGFloat = 10
         static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-        static let buttonContainerStackViewPadding: CGFloat = 8
-        static let mainStackViewTrailingPadding: CGFloat = 32
     }
 
     private enum Strings {
