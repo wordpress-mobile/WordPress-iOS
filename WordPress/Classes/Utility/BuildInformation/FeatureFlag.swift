@@ -39,7 +39,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
 
         switch self {
         case .bloggingPrompts:
-            return false
+            return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -97,7 +97,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .betaSiteDesigns:
             return false
         case .featureHighlightTooltip:
-            return false
+            return true
         }
     }
 

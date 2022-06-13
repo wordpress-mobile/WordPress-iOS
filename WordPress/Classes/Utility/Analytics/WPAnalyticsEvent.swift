@@ -359,6 +359,7 @@ import Foundation
 
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
+    case promptsBottomSheetHelp
     case promptsIntroductionModalViewed
     case promptsIntroductionModalDismissed
     case promptsIntroductionModalTryItNow
@@ -981,6 +982,8 @@ import Foundation
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
             return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsBottomSheetHelp:
+            return "my_site_create_sheet_prompt_help_tapped"
         case .promptsIntroductionModalViewed:
             return "blogging_prompts_introduction_modal_viewed"
         case .promptsIntroductionModalDismissed:

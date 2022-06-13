@@ -89,10 +89,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    private var featureHighlightStore = FeatureHighlightStore()
     private var lastToggleAnchorVisibility = false
     private var didShowTooltip = false {
         didSet {
-            FeatureHighlightStore.followConversationTooltipCounter += 1
+            featureHighlightStore.followConversationTooltipCounter += 1
         }
     }
 
@@ -294,8 +295,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             tooltip: tooltip,
             target: .point(tooltipTargetPoint),
             shouldShowSpotlightView: true,
-            primaryTooltipAction: {
-                FeatureHighlightStore.didDismissTooltip = true
+            primaryTooltipAction: { [weak self] in
+                self?.featureHighlightStore.didDismissTooltip = true
                 WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
             }
         )
@@ -428,7 +429,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // of this call is accurate, the calculation returns wrong result on that case.
         // This manually delays the configuration and hacks the issue.
         // We can remove this once the culprit is out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.shouldConfigureTooltipPresenter() {
                 self.configureTooltipPresenter { [weak self] in
                     self?.scrollToTooltip()
@@ -440,7 +441,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func shouldConfigureTooltipPresenter() -> Bool {
         FeatureFlag.featureHighlightTooltip.enabled
-        && FeatureHighlightStore.shouldShowTooltip
+        && featureHighlightStore.shouldShowTooltip
         && (post?.canSubscribeComments ?? false)
         && (!(post?.isSubscribedComments ?? false))
     }
@@ -476,6 +477,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableViewDelegate.followButtonTappedClosure = { [weak self] in
+            guard let tooltipPresenter = self?.tooltipPresenter else {
+                return
+            }
+
+            self?.featureHighlightStore.didDismissTooltip = true
+            tooltipPresenter.dismissTooltip()
+        }
 
         commentsTableViewDelegate.updateWith(post: post,
                                              comments: approvedComments,
