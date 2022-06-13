@@ -90,8 +90,8 @@ class DonutChartView: UIView {
             chartContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             chartContainer.topAnchor.constraint(equalTo: topAnchor),
 
-            legendStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            legendStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            legendStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            legendStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             legendStackView.topAnchor.constraint(equalTo: chartContainer.bottomAnchor, constant: Constants.chartToLegendSpacing),
             legendStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
@@ -141,6 +141,10 @@ class DonutChartView: UIView {
         var currentTotal: Float = 0.0
 
         for segment in segments {
+            if segment.value == 0 {
+                continue
+            }
+
             let segmentLayer = makeSegmentLayer()
             segmentLayer.strokeColor = segment.color.cgColor
 

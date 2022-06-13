@@ -89,6 +89,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    private var featureHighlightStore = FeatureHighlightStore()
+    private var lastToggleAnchorVisibility = false
+    private var didShowTooltip = false {
+        didSet {
+            featureHighlightStore.followConversationTooltipCounter += 1
+        }
+    }
+
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
@@ -146,6 +154,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// This may happen if we initialize our coordinator with a postURL that
     /// has a comment anchor fragment.
     private var hasAutomaticallyTriggeredCommentAction = false
+
+    private var tooltipPresenter: TooltipPresenter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -260,6 +270,63 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
+    private func tooltipTargetPoint() -> CGPoint {
+        setupFeaturedImage()
+        updateFollowButtonState()
+        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else {
+            return .zero
+        }
+
+        return CGPoint(
+            x: commentsTableView.frame.minX + followButtonMidPoint.x,
+            y: commentsTableView.frame.minY + followButtonMidPoint.y
+        )
+    }
+
+    private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
+        let tooltip = Tooltip()
+
+        tooltip.title = Strings.tooltipTitle
+        tooltip.message = Strings.tooltipMessage
+        tooltip.primaryButtonTitle = Strings.tooltipButtonTitle
+
+        tooltipPresenter = TooltipPresenter(
+            containerView: scrollView,
+            tooltip: tooltip,
+            target: .point(tooltipTargetPoint),
+            shouldShowSpotlightView: true,
+            primaryTooltipAction: { [weak self] in
+                self?.featureHighlightStore.didDismissTooltip = true
+                WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
+            }
+        )
+        tooltipPresenter?.tooltipVerticalPosition = .above
+
+        if let anchorAction = anchorAction {
+            tooltipPresenter?.attachAnchor(
+                withTitle: Strings.tooltipAnchorTitle,
+                onView: view,
+                anchorAction: anchorAction
+            )
+        }
+
+        scrollView.delegate = self
+
+        let isCommentsTableViewVisible = isVisibleInScrollView(commentsTableView)
+        if isCommentsTableViewVisible {
+            tooltipPresenter?.showTooltip()
+            didShowTooltip = true
+            scrollView.layoutIfNeeded()
+        }
+
+        tooltipPresenter?.toggleAnchorVisibility(!isCommentsTableViewVisible)
+    }
+
+    private func scrollToTooltip() {
+        scrollView.setContentOffset(CGPoint(x: 0, y: tooltipTargetPoint().y - scrollView.frame.height/2), animated: true)
+        scrollView.layoutIfNeeded()
+    }
+
     private func navigateToCommentIfNecessary() {
         if let post = post,
            let commentID = coordinator?.commentID,
@@ -353,6 +420,30 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if likesSummary.superview == nil {
             configureLikesSummary()
         }
+
+        scrollView.layoutIfNeeded()
+
+        // Delay configuration due to the sideeffect in fresh install.
+        // The position calculation is wrong for the first time this VC is opened
+        // regardless of the post. It never happens after that. Although the timing
+        // of this call is accurate, the calculation returns wrong result on that case.
+        // This manually delays the configuration and hacks the issue.
+        // We can remove this once the culprit is out.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.shouldConfigureTooltipPresenter() {
+                self.configureTooltipPresenter { [weak self] in
+                    self?.scrollToTooltip()
+                    WPAnalytics.trackReader(.readerFollowConversationAnchorTapped)
+                }
+            }
+        }
+    }
+
+    private func shouldConfigureTooltipPresenter() -> Bool {
+        FeatureFlag.featureHighlightTooltip.enabled
+        && featureHighlightStore.shouldShowTooltip
+        && (post?.canSubscribeComments ?? false)
+        && (!(post?.isSubscribedComments ?? false))
     }
 
     func updateSelfLike(with avatarURLString: String?) {
@@ -386,6 +477,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableViewDelegate.followButtonTappedClosure = { [weak self] in
+            guard let tooltipPresenter = self?.tooltipPresenter else {
+                return
+            }
+
+            self?.featureHighlightStore.didDismissTooltip = true
+            tooltipPresenter.dismissTooltip()
+        }
 
         commentsTableViewDelegate.updateWith(post: post,
                                              comments: approvedComments,
@@ -1001,7 +1100,6 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 
 // MARK: - Strings
 extension ReaderDetailViewController {
-
     private struct Strings {
         static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
         static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
@@ -1010,6 +1108,13 @@ extension ReaderDetailViewController {
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
         static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
         static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
+        static let tooltipTitle = NSLocalizedString("Follow the conversation", comment: "Title of follow conversations tooltip.")
+        static let tooltipMessage = NSLocalizedString(
+            "Get notified when new comments are added to this post.",
+            comment: "Message for the follow conversations tooltip."
+        )
+        static let tooltipButtonTitle = NSLocalizedString("Got it", comment: "Button title for the follow conversations tooltip.")
+        static let tooltipAnchorTitle = NSLocalizedString("New", comment: "Title for the tooltip anchor.")
     }
 }
 
@@ -1029,5 +1134,30 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
                                       origin: self,
                                       promptToAddComment: commentsTableViewDelegate.totalComments == 0,
                                       source: .postDetailsComments)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension ReaderDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard didShowTooltip else {
+            if isVisibleInScrollView(commentsTableView) {
+                tooltipPresenter?.showTooltip()
+                didShowTooltip = true
+            }
+            return
+        }
+
+        guard let tooltip = tooltipPresenter?.tooltip else {
+            return
+        }
+
+        let currentToggleVisibility = isVisibleInScrollView(tooltip)
+
+        if lastToggleAnchorVisibility != currentToggleVisibility {
+            tooltipPresenter?.toggleAnchorVisibility(!currentToggleVisibility)
+        }
+
+        lastToggleAnchorVisibility = currentToggleVisibility
     }
 }

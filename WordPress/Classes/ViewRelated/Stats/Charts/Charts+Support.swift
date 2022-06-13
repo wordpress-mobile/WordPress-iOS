@@ -4,15 +4,15 @@ import Charts
 // MARK: - Charts extensions
 
 extension BarChartData {
-    convenience init(entries: [BarChartDataEntry], valueFormatter: IValueFormatter? = nil) {
-        let dataSet = BarChartDataSet(values: entries, label: nil, valueFormatter: valueFormatter)
+    convenience init(entries: [BarChartDataEntry], valueFormatter: ValueFormatter) {
+        let dataSet = BarChartDataSet(entries: entries, valueFormatter: valueFormatter)
         self.init(dataSets: [dataSet])
     }
 }
 
 extension BarChartDataSet {
-    convenience init(values: [BarChartDataEntry], label: String?, valueFormatter: IValueFormatter?) {
-        self.init(entries: values, label: label)
+    convenience init(entries: [BarChartDataEntry], label: String = "", valueFormatter: ValueFormatter) {
+        self.init(entries: entries, label: label)
         self.valueFormatter = valueFormatter
     }
 }
@@ -48,10 +48,10 @@ protocol BarChartStyling {
     var lineColor: UIColor { get }
 
     /// Formatter for x-axis values
-    var xAxisValueFormatter: IAxisValueFormatter { get }
+    var xAxisValueFormatter: AxisValueFormatter { get }
 
     /// Formatter for y-axis values
-    var yAxisValueFormatter: IAxisValueFormatter { get }
+    var yAxisValueFormatter: AxisValueFormatter { get }
 }
 
 protocol LineChartStyling {
@@ -75,7 +75,7 @@ protocol LineChartStyling {
     var lineColor: UIColor { get }
 
     /// Formatter for y-axis values
-    var yAxisValueFormatter: IAxisValueFormatter { get }
+    var yAxisValueFormatter: AxisValueFormatter { get }
 }
 
 /// Transforms a given data set for consumption by BarChartView in the Charts framework.

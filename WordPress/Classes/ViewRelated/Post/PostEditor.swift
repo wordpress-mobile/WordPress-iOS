@@ -154,7 +154,8 @@ enum PostEditorEntryPoint: String {
     case unknown
     case postsList
     case dashboard
-    case bloggingPromptsFeatureIntroduction
-    case bloggingPromptsActionSheetHeader
-    case bloggingPromptsNotification
+    case bloggingPromptsFeatureIntroduction = "blogging_prompts_introduction"
+    case bloggingPromptsActionSheetHeader = "add_new_sheet_answer_prompt"
+    case bloggingPromptsNotification = "blogging_reminders_notification_answer_prompt"
+    case bloggingPromptsDashboardCard = "my_site_card_answer_prompt"
 }

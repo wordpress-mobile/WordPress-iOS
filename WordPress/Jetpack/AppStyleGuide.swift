@@ -28,4 +28,5 @@ extension AppStyleGuide {
 extension AppStyleGuide {
     static let mySiteTabIcon = UIImage.gridicon(.house)
     static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
+    static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site-jetpack")
 }

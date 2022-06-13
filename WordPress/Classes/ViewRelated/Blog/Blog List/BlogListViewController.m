@@ -223,7 +223,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    NSInteger blogCount = self.dataSource.allBlogsCount;
+    NSInteger blogCount = self.dataSource.blogsCount;
     BOOL isLoggedIn = AccountHelper.isLoggedIn;
 
     if (blogCount > 0 && !isLoggedIn) {
@@ -238,7 +238,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateViewsForCurrentSiteCount
 {
-    NSUInteger count = self.dataSource.allBlogsCount;
+    NSUInteger count = self.dataSource.blogsCount;
     NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
@@ -297,7 +297,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self instantiateNoResultsViewControllerIfNeeded];
     
-    NSUInteger count = self.dataSource.allBlogsCount;
+    NSUInteger count = self.dataSource.blogsCount;
     
     NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
     
@@ -869,7 +869,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldShowAddSiteButton
 {
-    return self.dataSource.allBlogsCount > 0;
+    return self.dataSource.blogsCount > 0;
 }
 
 - (BOOL)shouldShowEditButton
@@ -926,7 +926,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
 {
-    if(!visible && self.dataSource.allBlogsCount > HideAllMinSites) {
+    if(!visible && self.dataSource.blogsCount > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -991,7 +991,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showAddSiteAlertFrom:(id)source
 {
-    if (self.dataSource.allBlogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
+    if (self.dataSource.blogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
         [self setEditing:YES animated:YES];
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];

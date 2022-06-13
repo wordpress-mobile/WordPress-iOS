@@ -435,6 +435,14 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return @"relativeDateSectionIdentifier";
 }
 
+- (void)configureCell:(nonnull UITableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    /// No implementation needed here; This method is added to remove protocol conformance warnings.
+    ///
+    /// Note that `WPTableViewHandler` will prioritize `tableView:cellForRowAtIndexPath:` when it is available.
+    /// We're not using the `configureCell` method because the handler only dequeues cell with `DefaultCellIdentifier` for this method.
+}
+
 #pragma mark - Predicate Wrangling
 
 - (void)updateFetchRequestPredicate:(CommentStatusFilter)statusFilter
