@@ -12,29 +12,24 @@ struct StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createCommentsTotalInsightsData(periodStore: StatsPeriodStore) -> StatsTotalInsightsData {
-        let periodSummary = periodStore.getSummary()
-
-        guard let periodSummary = periodStore.getSummary() else {
-            return StatsTotalInsightsData(count: 0)
-        }
-
-        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(periodSummary)
-        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
-        let commentsData = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: .comments)
-
-        return StatsTotalInsightsData(count: commentsData.count, difference: commentsData.difference, percentage: commentsData.percentage, sparklineData: sparklineData)
-    }
-
     public static func createTotalInsightsData(periodStore: StatsPeriodStore, statsSummaryType: StatsSummaryType) -> StatsTotalInsightsData {
-        let periodSummary = periodStore.getSummary()
-
         guard let periodSummary = periodStore.getSummary() else {
             return StatsTotalInsightsData(count: 0)
         }
 
         let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(periodSummary)
-        let sparklineData: [Int] = makeSparklineData(countKey: \StatsSummaryData.commentsCount, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
+
+        var countKey: KeyPath<StatsSummaryData, Int>
+        switch statsSummaryType {
+        case .likes:
+            countKey = \StatsSummaryData.likesCount
+        case .comments:
+            countKey = \StatsSummaryData.commentsCount
+        default:
+            return StatsTotalInsightsData(count: 0)
+        }
+
+        let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
         let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
 
         return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData)

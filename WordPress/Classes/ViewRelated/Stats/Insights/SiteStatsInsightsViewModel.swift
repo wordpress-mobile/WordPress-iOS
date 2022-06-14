@@ -583,7 +583,7 @@ private extension SiteStatsInsightsViewModel {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createCommentsTotalInsightsData(periodStore: periodStore)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
