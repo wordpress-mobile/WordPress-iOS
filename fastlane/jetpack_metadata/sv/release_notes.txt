@@ -1,7 +1,0 @@
-Vi inleder version 20 med ett nytt, fräscht utseende. Snabbstartskortet och Nästa steg-rundturerna matchar nu de nya rundtursdesignerna för befintliga webbplatser, inklusive en häftig illustration. High five.
-
-Du kan nu infoga bilder från andra webbplatser med alternativet "Infoga från URL" i appen. Fler kattfoton, tack.
-
-Vi har gjort ett antal tillgänglighetsförbättringar i blockredigeraren, så att din skärmläsare visar mer av sammanhanget.
-
-Slutligen har vi målat om mediacachen, spotlightindexet och Siri-genvägsfunktionerna i appinställningarna. De matchar nu standard- och varumärkesfärgerna – inget mer panikrött.
