@@ -52,7 +52,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    private let button: UIButton = {
+    private lazy var button: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)

@@ -398,14 +398,16 @@ import WordPressShared
         var rows = [SharingButtonsRow]()
 
         let row = SharingSwitchRow()
-        row.configureCell = {[unowned self] (cell: UITableViewCell) in
+        row.configureCell = {[weak self] (cell: UITableViewCell) in
+            guard let self = self else { return }
             if let switchCell = cell as? SwitchTableViewCell {
                 cell.editingAccessoryView = cell.accessoryView
                 cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit sharing buttons", comment: "Title for the edit sharing buttons section")
                 switchCell.on = self.buttonsSection.editing
-                switchCell.onChange = { newValue in
-                    WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: blog)
+                switchCell.onChange = { [weak self] newValue in
+                    guard let self = self else { return }
+                    WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
                     self.reloadButtons()
@@ -441,17 +443,19 @@ import WordPressShared
         var rows = [SharingButtonsRow]()
 
         let row = SharingSwitchRow()
-        row.configureCell = {[unowned self] (cell: UITableViewCell) in
+        row.configureCell = {[weak self] (cell: UITableViewCell) in
+            guard let self = self else { return }
             if let switchCell = cell as? SwitchTableViewCell {
                 cell.editingAccessoryView = cell.accessoryView
                 cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit \"More\" button", comment: "Title for the edit more button section")
                 switchCell.on = self.moreSection.editing
-                switchCell.onChange = { newValue in
-                    WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: blog)
+                switchCell.onChange = { [weak self] newValue in
+                    guard let self = self else { return }
+                    WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
-                   self.reloadButtons()
+                    self.reloadButtons()
                 }
             }
         }

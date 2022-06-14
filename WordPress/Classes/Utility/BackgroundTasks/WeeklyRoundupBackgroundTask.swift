@@ -123,8 +123,8 @@ class WeeklyRoundupDataProvider {
     private func filterBest(_ count: Int, minimumViewsCount: Int = 5, from blogStats: SiteStats) -> SiteStats {
         let filteredAndSorted = blogStats.filter { (site, stats) in
             stats.viewsCount >= minimumViewsCount
-        }.sorted { (first: (blog: Blog, stats: StatsSummaryData), second: (blog: Blog, stats: StatsSummaryData)) in
-            first.stats.viewsCount >= second.stats.viewsCount
+        }.sorted { (first: (_, value: StatsSummaryData), second: (_, value: StatsSummaryData)) in
+            first.value.viewsCount >= second.value.viewsCount
         }
 
         return filteredAndSorted
