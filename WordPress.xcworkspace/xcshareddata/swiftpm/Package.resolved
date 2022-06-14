@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "BuildkiteCollector",
+        "repositoryURL": "https://github.com/buildkite/test-collector-swift",
+        "state": {
+          "branch": null,
+          "revision": "db62b9ddddba69e4862a1ecbf9336a30b1fc3f07",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "XCUITestHelpers",
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {

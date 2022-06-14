@@ -550,6 +550,8 @@
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F39C93527A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
+		3F3B23C22858A1B300CACE60 /* BuildkiteCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C12858A1B300CACE60 /* BuildkiteCollector */; };
+		3F3B23C42858A1D800CACE60 /* BuildkiteCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C32858A1D800CACE60 /* BuildkiteCollector */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
 		3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */; };
 		3F3DD0AF26FCDA3100F5F121 /* PresentationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */; };
@@ -8308,6 +8310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F3B23C22858A1B300CACE60 /* BuildkiteCollector in Frameworks */,
 				E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8374,6 +8377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */,
+				3F3B23C42858A1D800CACE60 /* BuildkiteCollector in Frameworks */,
 				4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -16033,6 +16037,9 @@
 				E16AB93F14D978520047A2E5 /* PBXTargetDependency */,
 			);
 			name = WordPressTest;
+			packageProductDependencies = (
+				3F3B23C12858A1B300CACE60 /* BuildkiteCollector */,
+			);
 			productName = WordPressTest;
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -16121,6 +16128,9 @@
 				FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */,
 			);
 			name = WordPressUITests;
+			packageProductDependencies = (
+				3F3B23C32858A1D800CACE60 /* BuildkiteCollector */,
+			);
 			productName = WordPressUITests;
 			productReference = FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -16319,6 +16329,7 @@
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
+				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -26365,6 +26376,14 @@
 				minimumVersion = 4.0.3;
 			};
 		};
+		3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/buildkite/test-collector-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/XCUITestHelpers";
@@ -26407,6 +26426,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = Charts;
+		};
+		3F3B23C12858A1B300CACE60 /* BuildkiteCollector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */;
+			productName = BuildkiteCollector;
+		};
+		3F3B23C32858A1D800CACE60 /* BuildkiteCollector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */;
+			productName = BuildkiteCollector;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
