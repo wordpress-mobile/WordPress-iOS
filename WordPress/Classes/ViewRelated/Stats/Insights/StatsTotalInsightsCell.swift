@@ -7,6 +7,7 @@ struct StatsTotalInsightsData {
     var difference: Int? = nil
     var percentage: Int? = nil
     var sparklineData: [Int]? = nil
+    var guideText: String? = nil
 
     public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
@@ -58,6 +59,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private let outerStackView = UIStackView()
     private let topInnerStackView = UIStackView()
+    private let guideView = UIView()
+    private let guideViewLabel = UILabel()
     private let countLabel = UILabel()
     private let comparisonLabel = UILabel()
     private let graphView = SparklineView()
@@ -77,6 +80,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private func configureView() {
         configureStackViews()
         configureGraphView()
+        configureGuideView()
         configureLabels()
         configureConstraints()
     }
@@ -100,6 +104,19 @@ class StatsTotalInsightsCell: StatsBaseCell {
         graphView.setContentHuggingPriority(.required, for: .vertical)
     }
 
+    private func configureGuideView() {
+        guideView.backgroundColor = .systemGray6
+        guideView.translatesAutoresizingMaskIntoConstraints = false
+        guideView.layer.cornerRadius = 10.0
+        guideView.layer.masksToBounds = true
+
+        guideViewLabel.translatesAutoresizingMaskIntoConstraints = false
+        guideView.addSubview(guideViewLabel)
+
+        guideViewLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        guideView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    }
+
     private func configureLabels() {
         countLabel.font = WPStyleGuide.Stats.insightsCountFont
         countLabel.textColor = .text
@@ -111,6 +128,10 @@ class StatsTotalInsightsCell: StatsBaseCell {
         comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
         comparisonLabel.textColor = .textSubtle
         comparisonLabel.numberOfLines = 0
+
+        guideViewLabel.font = .preferredFont(forTextStyle: .subheadline)
+        guideViewLabel.textColor = .text
+        guideViewLabel.numberOfLines = 0
     }
 
     private func configureConstraints() {
@@ -124,9 +145,11 @@ class StatsTotalInsightsCell: StatsBaseCell {
             graphView.widthAnchor.constraint(equalTo: graphView.heightAnchor, multiplier: Metrics.graphViewAspectRatio),
             graphView.heightAnchor.constraint(equalTo: countLabel.heightAnchor)
         ])
+
+        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .defaultHigh)
     }
 
-    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: String? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
@@ -148,6 +171,15 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         comparisonLabel.isHidden = false
         comparisonLabel.attributedText = attributedDifferenceString(formattedText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
+
+        if let guideText = guideText,
+           guideText.isEmpty == false {
+            outerStackView.addArrangedSubview(guideView)
+            guideViewLabel.text = "💡 \(guideText)"
+            guideView.layoutIfNeeded()
+        } else if guideView.superview != nil {
+            guideView.removeFromSuperview()
+        }
     }
 
     private func differenceTextColor(for difference: Int) -> UIColor {
