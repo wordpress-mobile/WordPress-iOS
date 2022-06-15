@@ -31,6 +31,10 @@ extension QRLoginVerifyAuthorizationViewController {
     @IBAction func didTapCancel(_ sender: Any) {
         coordinator?.cancel()
     }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return [.portrait, .portraitUpsideDown]
+    }
 }
 
 // MARK: - QRLoginVerifyView
@@ -169,7 +173,7 @@ extension QRLoginVerifyAuthorizationViewController {
         self.cancelButton.setTitle(cancelButton, for: .normal)
     }
 
-    private struct Strings {
+    private enum Strings {
         static let imageName = "wp-illustration-mobile-save-for-later"
         static let title = NSLocalizedString("Are you trying to log in to %1$@ near %2$@?", comment: "Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location")
         static let defaultTitle = NSLocalizedString("Are you trying to log in to your web browser near %1$@?", comment: "Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location")
@@ -177,7 +181,7 @@ extension QRLoginVerifyAuthorizationViewController {
         static let confirmButton = NSLocalizedString("Yes, log me in", comment: "Button label that confirms the user wants to log in and will authenticate them via the browser")
         static let cancelButton = NSLocalizedString("Cancel", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
 
-        struct completed {
+        enum completed {
             static let imageName = "domains-success"
             static let title = NSLocalizedString("You're logged in!", comment: "Title for the success view when the user has successfully logged in")
             static let subtitle = NSLocalizedString("Tap dismiss and head back to your web browser to continue.", comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow")
