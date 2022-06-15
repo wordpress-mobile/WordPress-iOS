@@ -69,15 +69,28 @@ private extension QRLoginScanningViewController {
     /// Creates a pulsing animation that scales the focus area corners up and down
     func pulsateFocusArea() {
         let layerAnimation = CABasicAnimation(keyPath: "transform.scale")
-        layerAnimation.fromValue = 1
-        layerAnimation.toValue = 1.05
+        layerAnimation.fromValue = AnimationConstants.scale.min
+        layerAnimation.toValue = AnimationConstants.scale.max
+        layerAnimation.duration = AnimationConstants.timing.durationInSeconds
+        layerAnimation.repeatCount = AnimationConstants.timing.repeatCount
+        
         layerAnimation.isAdditive = false
-        layerAnimation.duration = 1
         layerAnimation.fillMode = .forwards
         layerAnimation.isRemovedOnCompletion = true
-        layerAnimation.repeatCount = .infinity
         layerAnimation.autoreverses = true
 
-        scanFocusImageView.layer.add(layerAnimation, forKey: "growingAnimation")
+        scanFocusImageView.layer.add(layerAnimation, forKey: "pulsateAnimation")
+    }
+
+    enum AnimationConstants {
+        enum scale {
+            static let min = 1
+            static let max = 1.05
+        }
+
+        enum timing {
+            static let durationInSeconds: CFTimeInterval = 1
+            static let repeatCount: Float = .infinity
+        }
     }
 }
