@@ -262,7 +262,7 @@ extension StatsWidgetsStore {
 }
 
 
-// MARK: - Login/Logout/Site change notifications
+// MARK: - Login/Logout notifications
 private extension StatsWidgetsStore {
 
     /**
