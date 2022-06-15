@@ -333,7 +333,7 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, guideText: dataRow.guideText, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

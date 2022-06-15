@@ -13,7 +13,7 @@ struct StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodStore: StatsPeriodStore, statsSummaryType: StatsSummaryType) -> StatsTotalInsightsData {
+    public static func createTotalInsightsData(periodStore: StatsPeriodStore, statsSummaryType: StatsSummaryType, guideText: String? = nil) -> StatsTotalInsightsData {
         guard let periodSummary = periodStore.getSummary() else {
             return StatsTotalInsightsData(count: 0)
         }
@@ -33,10 +33,10 @@ struct StatsTotalInsightsData {
         let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
         let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
 
-        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData)
+        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText)
     }
 
-    public static func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>, splitSummaryTimeIntervalData: [StatsSummaryTimeIntervalDataAsAWeek]) -> [Int] {
+    static func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>, splitSummaryTimeIntervalData: [StatsSummaryTimeIntervalDataAsAWeek]) -> [Int] {
         var sparklineData = [Int]()
         splitSummaryTimeIntervalData.forEach { statsSummaryTimeIntervalDataAsAWeek in
             switch statsSummaryTimeIntervalDataAsAWeek {
@@ -50,6 +50,14 @@ struct StatsTotalInsightsData {
         }
 
         return sparklineData
+    }
+
+    public static func makeLikesTotalInsightsGuideText(insightsStore: StatsInsightsStore) -> String? {
+        guard let summary = insightsStore.getLastPostInsight() else {
+            return nil
+        }
+
+        return "Your latest post \(summary.title) has received \(summary.likesCount) likes."
     }
 }
 

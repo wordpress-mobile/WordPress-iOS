@@ -172,9 +172,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .likesTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: periodStore.summaryLikesStatus,
                                            block: {
-                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals,  siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
@@ -183,7 +183,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .commentsTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: insightsStore.commentsInsightStatus,
                                            block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
@@ -576,7 +576,8 @@ private extension SiteStatsInsightsViewModel {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        let guideText = StatsTotalInsightsData.makeLikesTotalInsightsGuideText(insightsStore: insightsStore)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes, guideText: guideText)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
