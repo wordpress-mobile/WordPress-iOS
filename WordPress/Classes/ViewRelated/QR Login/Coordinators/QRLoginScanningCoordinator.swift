@@ -22,12 +22,12 @@ class QRLoginScanningCoordinator: NSObject {
     func start() {
         configureCamera()
 
-        guard cameraDevice == nil else {
-            configureCameraPreview()
+        // Check if the camera is not accessible, and display an error if needed
+        guard cameraDevice != nil else {
+            showNoCameraError()
             return
         }
-
-        showNoCameraError()
+        configureCameraPreview()
     }
 
     // MARK: - Strings
