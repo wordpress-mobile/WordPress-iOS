@@ -31,6 +31,10 @@ extension QRLoginVerifyAuthorizationViewController {
     @IBAction func didTapCancel(_ sender: Any) {
         coordinator?.cancel()
     }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return [.portrait, .portraitUpsideDown]
+    }
 }
 
 // MARK: - QRLoginVerifyView
