@@ -47,12 +47,12 @@
         }
       },
       {
-        "package": "BuildkiteCollector",
+        "package": "BuildkiteTestCollector",
         "repositoryURL": "https://github.com/buildkite/test-collector-swift",
         "state": {
           "branch": null,
-          "revision": "db62b9ddddba69e4862a1ecbf9336a30b1fc3f07",
-          "version": "0.1.0"
+          "revision": "87afcecfb58dd017d6e835ec8e88e9eaa18095ba",
+          "version": "0.1.1"
         }
       },
       {

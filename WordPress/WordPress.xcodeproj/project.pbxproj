@@ -550,8 +550,8 @@
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F39C93527A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
-		3F3B23C22858A1B300CACE60 /* BuildkiteCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C12858A1B300CACE60 /* BuildkiteCollector */; };
-		3F3B23C42858A1D800CACE60 /* BuildkiteCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C32858A1D800CACE60 /* BuildkiteCollector */; };
+		3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */; };
+		3F3B23C42858A1D800CACE60 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C32858A1D800CACE60 /* BuildkiteTestCollector */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
 		3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */; };
 		3F3DD0AF26FCDA3100F5F121 /* PresentationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */; };
@@ -8310,7 +8310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F3B23C22858A1B300CACE60 /* BuildkiteCollector in Frameworks */,
+				3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */,
 				E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8377,7 +8377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */,
-				3F3B23C42858A1D800CACE60 /* BuildkiteCollector in Frameworks */,
+				3F3B23C42858A1D800CACE60 /* BuildkiteTestCollector in Frameworks */,
 				4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -16038,7 +16038,7 @@
 			);
 			name = WordPressTest;
 			packageProductDependencies = (
-				3F3B23C12858A1B300CACE60 /* BuildkiteCollector */,
+				3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */,
 			);
 			productName = WordPressTest;
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
@@ -16129,7 +16129,7 @@
 			);
 			name = WordPressUITests;
 			packageProductDependencies = (
-				3F3B23C32858A1D800CACE60 /* BuildkiteCollector */,
+				3F3B23C32858A1D800CACE60 /* BuildkiteTestCollector */,
 			);
 			productName = WordPressUITests;
 			productReference = FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */;
@@ -26381,7 +26381,7 @@
 			repositoryURL = "https://github.com/buildkite/test-collector-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.1.1;
 			};
 		};
 		3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */ = {
@@ -26427,15 +26427,15 @@
 			package = 3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = Charts;
 		};
-		3F3B23C12858A1B300CACE60 /* BuildkiteCollector */ = {
+		3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */;
-			productName = BuildkiteCollector;
+			productName = BuildkiteTestCollector;
 		};
-		3F3B23C32858A1D800CACE60 /* BuildkiteCollector */ = {
+		3F3B23C32858A1D800CACE60 /* BuildkiteTestCollector */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */;
-			productName = BuildkiteCollector;
+			productName = BuildkiteTestCollector;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
