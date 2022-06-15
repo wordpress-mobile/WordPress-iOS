@@ -2,8 +2,11 @@ import WidgetKit
 import WordPressAuthenticator
 
 class StatsWidgetsStore {
+    private let blogService: BlogService
 
-    init() {
+    init(blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
+        self.blogService = blogService
+
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
     }
@@ -144,7 +147,6 @@ private extension StatsWidgetsStore {
         guard let currentData = T.read() else {
             return nil
         }
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         let updatedSiteList = blogService.visibleBlogsForWPComAccounts()
 
         let newData = updatedSiteList.reduce(into: [Int: T]()) { sitesList, site in
@@ -201,8 +203,6 @@ private extension StatsWidgetsStore {
     }
 
     func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
         return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
