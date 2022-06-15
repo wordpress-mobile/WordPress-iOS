@@ -1,7 +1,6 @@
 import WidgetKit
 import SwiftUI
 
-
 struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
     let service: StatsWidgetsService
@@ -49,21 +48,16 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
+        /// Configuration.site is nil until IntentHandler is initialized. Use defaultSiteID to fetch stats on initial load.
+        guard let defaultSiteID = defaultSiteID,
+              let widgetData = widgetData(for: configuration.site?.identifier ?? String(defaultSiteID)) else {
 
-        guard let site = configuration.site,
-              let siteIdentifier = site.identifier,
-              let widgetData = widgetData(for: siteIdentifier) else {
-
-            /// - TODO: TODAYWIDGET - This is here because configuration is not updated when the site list changes. It might be a WidgetKit bug. More to come on a separate issue.
-            if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(Timeline(entries: [.siteSelected(content, context)], policy: .never))
+            if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
+                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
             } else {
-                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
-                    completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
-                } else {
-                    completion(Timeline(entries: [.noData], policy: .never))
-                }
+                completion(Timeline(entries: [.noData], policy: .never))
             }
+
             return
         }
 
