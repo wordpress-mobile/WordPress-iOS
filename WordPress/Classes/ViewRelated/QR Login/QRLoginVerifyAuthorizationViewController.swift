@@ -188,28 +188,28 @@ extension QRLoginVerifyAuthorizationViewController {
             static let confirmButton = NSLocalizedString("Dismiss", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
         }
 
-        struct noConnection {
+        enum noConnection {
             static let imageName = "wp-illustration-empty-results"
             static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
             static let subtitle = NSLocalizedString("An active internet connection is required to scan log in codes", comment: "Error message shown when trying to scan a log in code without an active internet connection.")
             static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
         }
 
-        struct validationError {
+        enum validationError {
             static let imageName = "wp-illustration-empty-results"
             static let confirmButton = NSLocalizedString("Scan Again", comment: "Button label that prompts the user to scan the log in code again")
 
-            struct invalidData {
+            enum invalidData {
                 static let title = NSLocalizedString("Could not validate the log in code", comment: "Title for the error view when the user scanned an invalid log in code")
                 static let subtitle = NSLocalizedString("The log in code that was scanned could not be validated. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when trying to scan an invalid log in code.")
             }
 
-            struct expired {
+            enum expired {
                 static let title = NSLocalizedString("Expired log in code", comment: "Title for the error view when the user scanned an expired log in code")
                 static let subtitle = NSLocalizedString("This log in code has expired. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when the user scanned an expired log in code.")
             }
 
-            struct authenticationFailed {
+            enum authenticationFailed {
                 static let title = NSLocalizedString("Authentication Failed", comment: "Title for the error view when the authentication failed for any reason")
                 static let subtitle = NSLocalizedString("Could not log you in using this log in code. Please tap the Scan Again button to rescan the code.", comment: "Error message shown when the user scanned an expired log in code.")
             }
