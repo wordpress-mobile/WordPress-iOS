@@ -1,10 +1,11 @@
 import WidgetKit
-
+import WordPressAuthenticator
 
 class StatsWidgetsStore {
 
     init() {
         observeAccountChangesForWidgets()
+        observeAccountSignInForWidgets()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -261,9 +262,13 @@ extension StatsWidgetsStore {
 }
 
 
-// MARK: - Login/Logout notifications
+// MARK: - Login/Logout/Site change notifications
 private extension StatsWidgetsStore {
 
+    /**
+     When WPAccountDefaultWordPressComAccountChanged is posted after login
+     the site data is not yet loaded and cannot be cached for widgets.
+     */
     func observeAccountChangesForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
@@ -284,6 +289,22 @@ private extension StatsWidgetsStore {
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+        }
+    }
+
+    /**
+     When WPSigninDidFinishNotification is posted after login
+     the site data data is loaded and widget data can be cached.
+     */
+    func observeAccountSignInForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.initializeStatsWidgetsIfNeeded()
         }
     }
 }
