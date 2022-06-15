@@ -73,7 +73,7 @@ private extension QRLoginScanningViewController {
         layerAnimation.toValue = AnimationConstants.scale.max
         layerAnimation.duration = AnimationConstants.timing.durationInSeconds
         layerAnimation.repeatCount = AnimationConstants.timing.repeatCount
-        
+
         layerAnimation.isAdditive = false
         layerAnimation.fillMode = .forwards
         layerAnimation.isRemovedOnCompletion = true
