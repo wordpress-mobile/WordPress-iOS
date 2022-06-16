@@ -1,6 +1,6 @@
 import UIKit
 
-class QRLoginCoordinator {
+struct QRLoginCoordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController = UINavigationController()) {
@@ -8,16 +8,16 @@ class QRLoginCoordinator {
         configureNavigationController()
     }
 
-    func dismiss() {
-        navigationController.dismiss(animated: true)
-    }
+    static func didHandle(url: URL) -> Bool {
+        guard
+            let token = QRLoginURLParser(urlString: url.absoluteString).parse(),
+            let source = UIApplication.shared.leafViewController
+        else {
+            return false
+        }
 
-    func didScanToken(_ token: QRLoginToken) {
-        showVerifyAuthorization(token: token)
-    }
-
-    func scanAgain() {
-        navigationController.setViewControllers([scanningViewController()], animated: true)
+        self.init().showVerifyAuthorization(token: token, from: source)
+        return true
     }
 
     func showCameraScanningView(from source: UIViewController? = nil) {
@@ -32,12 +32,22 @@ class QRLoginCoordinator {
 
         pushOrPresent(controller, from: source)
     }
+}
 
-    private func scanningViewController() -> QRLoginScanningViewController {
-        let controller = QRLoginScanningViewController()
-        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+// MARK: - Child Coordinator Interactions
+extension QRLoginCoordinator {
+    func dismiss() {
+        navigationController.dismiss(animated: true)
+    }
 
-        return controller
+    func didScanToken(_ token: QRLoginToken) {
+        showVerifyAuthorization(token: token)
+    }
+
+    func scanAgain() {
+        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController) {
+            self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
+        }
     }
 }
 
@@ -56,6 +66,13 @@ private extension QRLoginCoordinator {
 
         navigationController.setViewControllers([controller], animated: false)
         source?.present(navigationController, animated: true)
+    }
+
+    private func scanningViewController() -> QRLoginScanningViewController {
+        let controller = QRLoginScanningViewController()
+        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+
+        return controller
     }
 }
 
