@@ -1,15 +1,11 @@
 import XCTest
 @testable import WordPress
 
-final class ReaderSubscribeCommentsActionTests: XCTestCase {
+final class ReaderSubscribeCommentsActionTests: CoreDataTestCase {
     let sut = ReaderSubscribeCommentsAction()
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext!
 
     func testExecuteSuccessInvokesCompletion() {
-        contextManager = ContextManagerMock()
-        context = contextManager.mainContext
-        let readerPost = ReaderPost(context: self.context!)
+        let readerPost = ReaderPost(context: self.mainContext)
 
         guard let service = MockFollowCommentsService(subscribeSuccess: true, notificationSuccess: true, post: readerPost) else {
             XCTFail("MockFollowCommentsService instantiation failed.")
@@ -20,7 +16,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
 
         sut.execute(
             with: readerPost,
-            context: context,
+            context: mainContext,
             followCommentsService: service, sourceViewController: UIViewController()) {
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 1)
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
@@ -31,9 +27,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
     }
 
     func testExecuteSubscribeFailureDoesNotInvokeToggleNotification() {
-        contextManager = ContextManagerMock()
-        context = contextManager.mainContext
-        let readerPost = ReaderPost(context: self.context!)
+        let readerPost = ReaderPost(context: self.mainContext)
 
         guard let service = MockFollowCommentsService(subscribeSuccess: false, notificationSuccess: true, post: readerPost) else {
             XCTFail("MockFollowCommentsService instantiation failed.")
@@ -44,7 +38,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
 
         sut.execute(
             with: readerPost,
-            context: context,
+            context: mainContext,
             followCommentsService: service,
             sourceViewController: UIViewController(),
             completion: nil) { error in
@@ -57,9 +51,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
     }
 
     func testExecuteNotificationFailureInvokesFailureHandler() {
-        contextManager = ContextManagerMock()
-        context = contextManager.mainContext
-        let readerPost = ReaderPost(context: self.context!)
+        let readerPost = ReaderPost(context: self.mainContext)
 
         guard let service = MockFollowCommentsService(subscribeSuccess: true, notificationSuccess: false, post: readerPost) else {
             XCTFail("MockFollowCommentsService instantiation failed.")
@@ -70,7 +62,7 @@ final class ReaderSubscribeCommentsActionTests: XCTestCase {
 
         sut.execute(
             with: readerPost,
-            context: context,
+            context: mainContext,
             followCommentsService: service,
             sourceViewController: UIViewController(),
             completion: nil) { error in

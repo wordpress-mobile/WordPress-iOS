@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 11:54:10+0000 */
+/* Translation-Revision-Date: 2022-05-20 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -148,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "已重新连接 %@。";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -372,7 +373,7 @@ translators: Block name. %s: The localized block name */
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "在您的站点上创建、发布吸引人内容的新方法。";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
 "A series of steps helping you to explore the app." = "帮助您查看此应用程序的一系列步骤。";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
@@ -665,6 +666,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "全部";
 
@@ -811,6 +813,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "回复提示";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "已回复";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1178,6 +1183,9 @@ translators: Block name. %s: The localized block name */
 "Briefly describe the link to help screen reader user" = "简要描述该链接以帮助屏幕阅读器用户。";
 
 /* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "将媒体直接从您的设备或照相机中传输到站点。";
+
+/* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "浏览我们所有的主题，寻找最适合您的主题。";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
@@ -1331,8 +1339,7 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "小心！";
 
-/* Example prompt for blogging prompts in the create new bottom action sheet.
-   Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "将您的生活拍成电影。";
 
 /* Label for Categories
@@ -1758,6 +1765,9 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "已完成：社交分享";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "已完成：上传照片或视频";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "已完成：查看您的站点";
 
 /* Section title for the configure table section in the blog details screen */
@@ -1781,8 +1791,8 @@ translators: Block name. %s: The localized block name */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "首先确认您的电子邮件地址";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "恭喜您完成“快速启动”🎉";
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "恭喜！ 您搞明白了";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "恭喜您完成了列表中的任务。做得漂亮！";
@@ -2472,6 +2482,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文档：%@";
 
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "将清单上的事情划掉是不是感觉很棒？";
+
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "域联系信息";
 
@@ -2817,6 +2830,12 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "启用";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "启用通知";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "启用通知？";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "启用 Publicize";
 
@@ -2953,6 +2972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "加载插件时出错";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "加载提示时出错";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "将评论标记为垃圾时出错。";
@@ -3341,6 +3363,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "常见问题解答";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "来自 %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "来自其他设备";
 
@@ -3410,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "了解 Jetpack 应用程序";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "了解 WordPress 应用程序";
@@ -3521,6 +3549,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "指导您完成为站点上传图标的流程。";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "指导您完成上传新媒体的流程。";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -4127,6 +4158,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "达到上限。请在 1 分钟后重试。在之前重试只会导致限制时间加长。如果你认为出错了，请联系支持。";
 
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "折线图，描述用于数据分析的查看次数。";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "折线图，描述用于数据分析的访客数量。";
+
 /* No comment provided by engineer. */
 "Line Height" = "行高";
 
@@ -4225,6 +4262,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "正在加载插件…";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "正在加载提示…";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "正在加载数据流...";
@@ -4417,6 +4457,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4939,6 +4980,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "找不到主站点地址";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "尚无提示";
+
 /* A message title */
 "No recent posts" = "无近期文章";
 
@@ -4973,10 +5017,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "无设置";
 
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "未回应";
+
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "未连接";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "不用了";
 
 /* Display value for Support email field if there is no user email address. */
@@ -5145,6 +5193,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5748,6 +5797,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "预览您的站点，查看访问者将看到的内容。";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "上周";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "上个月";
 
@@ -5756,6 +5808,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "前一个时段";
+
+/* Previous week legend label */
+"Previous week" = "上周";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5814,7 +5869,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "项目";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
-   Title label for the Prompts card in My Sites tab. */
+   Title label for the Prompts card in My Sites tab.
+   View title for Blogging Prompts list. */
 "Prompts" = "提示";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -6507,6 +6563,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "选择“%@”，查看您的清单";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "选择 %@ 以查看您当前的库。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "选择“%@”，查看您的当前套餐和其他可用套餐。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6520,6 +6579,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the site url. */
 "Select %@ to view your site" = "选择“%@”，查看您的站点";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "选择 %@ 以上传媒体。 您可以使用任何设备将其添加到您的文章\/页面。";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "选择国家\/地区";
@@ -7667,6 +7729,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "加载插件时出错";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "加载提示时出错。";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "加载评论时出错。";
 
@@ -7705,6 +7770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "故事文章会以新博文的形式发布在您的站点中，确保您的受众永远不会错过任何内容。";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "本周";
 
 /* Insights 'This Year' header */
 "This Year" = "今年";
@@ -7771,6 +7839,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "这个用户账户在有活动订阅时不能被关闭。";
+
+/* This week legend label */
+"This week" = "本周";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8388,6 +8459,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "上传失败。轻点以查看选项。";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "上传照片或视频";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "已上传";
@@ -8581,8 +8655,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "查看数";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "浏览次数和访客人数";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "到目前为止您站点的浏览次数";
@@ -8612,6 +8690,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "访客数";
 
@@ -8968,6 +9047,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "问题是什么？";
 
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "您想先关注什么？";
+
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
 
@@ -9210,6 +9292,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "您可以在“我的站点”>“设置”>“博客提醒”中了解更多信息并随时设置提醒。";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "您可以在“我的站点”、“设置”、“博客提醒”中了解详情并随时设置提醒。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
@@ -9459,6 +9544,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "您的站点将不再向 WordPress.com 发送数据，并且 Jetpack 功能将停止运行。您将无法访问该应用程序上的站点，并且必须使用站点凭据重新添加该站点。";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "您本周的预览数量比上周高 %@。\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "您本周的预览数量比上周低 %@。\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "您本周的访客数量比上周高 %@。\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "您本周的访客数量比上周低 %@。\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "系统将不会存储您的网站凭据，并且仅将其用于安装 Jetpack。";
 
@@ -9521,9 +9618,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "从列表中划掉内容的感觉是不是很棒？";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
@@ -9623,8 +9717,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "评论数";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "创建文章";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "赞数";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "您尚未发布任何文章。 请先发表第一篇文章，然后再回来查看！";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "发布于 %@";
@@ -9637,6 +9737,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewPercentage" = "查看次数的 %d%%";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
@@ -9764,6 +9867,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•用户与作者";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ 已回复";
 

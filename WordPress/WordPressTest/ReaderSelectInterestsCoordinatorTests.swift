@@ -1,13 +1,7 @@
 import XCTest
 @testable import WordPress
 
-class ReaderSelectInterestsCoordinatorTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        contextManager = ContextManagerMock()
-    }
-
+class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
     func testisFollowingInterestsReturnsFalse() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: false, coreDataStack: contextManager)

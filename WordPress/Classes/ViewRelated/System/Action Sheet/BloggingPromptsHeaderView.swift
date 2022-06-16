@@ -5,6 +5,9 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var promptLabel: UILabel!
+    @IBOutlet private weak var attributionStackView: UIStackView!
+    @IBOutlet private weak var attributionImage: UIImageView!
+    @IBOutlet private weak var attributionLabel: UILabel!
     @IBOutlet private weak var answerPromptButton: UIButton!
     @IBOutlet private weak var answeredStackView: UIStackView!
     @IBOutlet private weak var answeredLabel: UILabel!
@@ -12,6 +15,11 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var dividerView: UIView!
 
     var answerPromptHandler: (() -> Void)?
+
+    // This provides a quick way to toggle the shareButton.
+    // Since it probably will not be included in Blogging Prompts V1,
+    // it is disabled by default.
+    private let sharePromptEnabled = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,6 +76,7 @@ private extension BloggingPromptsHeaderView {
         shareButton.titleLabel?.adjustsFontForContentSizeCategory = true
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        attributionLabel.adjustsFontForContentSizeCategory = true
     }
 
     func configureConstraints() {
@@ -89,11 +98,23 @@ private extension BloggingPromptsHeaderView {
     }
 
     func configure(_ prompt: BloggingPrompt?) {
-        promptLabel.text = prompt?.text
+        promptLabel.text = prompt?.textForDisplay()
 
         let answered = prompt?.answered ?? false
         answerPromptButton.isHidden = answered
         answeredStackView.isHidden = !answered
+        shareButton.isHidden = !sharePromptEnabled
+
+        if let promptAttribution = prompt?.attribution.lowercased(),
+           let attribution = BloggingPromptsAttribution(rawValue: promptAttribution) {
+            attributionStackView.isHidden = false
+            attributionImage.image = attribution.iconImage
+            attributionLabel.attributedText = attribution.attributedText
+            containerStackView.setCustomSpacing(Constants.promptSpacing, after: promptLabel)
+        } else {
+            attributionStackView.isHidden = true
+            containerStackView.setCustomSpacing(.zero, after: promptLabel)
+        }
     }
 
     // MARK: - Button Actions
@@ -110,6 +131,7 @@ private extension BloggingPromptsHeaderView {
 
     struct Constants {
         static let titleSpacing: CGFloat = 8.0
+        static let promptSpacing: CGFloat = 8.0
         static let answeredViewSpacing: CGFloat = 9.0
         static let answerPromptButtonSpacing: CGFloat = 9.0
         static let buttonContentEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)

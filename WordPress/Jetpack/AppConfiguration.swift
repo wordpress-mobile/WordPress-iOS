@@ -12,6 +12,7 @@ import Foundation
     @objc static let allowSiteCreation: Bool = true
     @objc static let allowSignUp: Bool = true
     @objc static let allowsCustomAppIcons: Bool = false
+    @objc static let allowsDomainRegistration: Bool = true
     @objc static let showsReader: Bool = true
     @objc static let showsCreateButton: Bool = true
     @objc static let showAddSelfHostedSiteButton: Bool = false

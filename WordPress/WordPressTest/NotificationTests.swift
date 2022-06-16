@@ -6,18 +6,16 @@ import XCTest
 
 /// Notifications Tests
 ///
-class NotificationTests: XCTestCase {
+class NotificationTests: CoreDataTestCase {
 
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
     }
 
     override func tearDown() {
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testBadgeNotificationHasBadgeFlagSetToTrue() throws {

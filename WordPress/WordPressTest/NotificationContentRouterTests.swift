@@ -2,26 +2,13 @@
 import XCTest
 @testable import WordPress
 
-class NotificationContentRouterTests: XCTestCase {
-
-    let utility = NotificationUtility()
-    var sut: NotificationContentRouter!
-    var coordinator: MockContentCoordinator!
-
-    override func setUp() {
-        super.setUp()
-        utility.setUp()
-        coordinator = MockContentCoordinator()
-    }
-
-    override func tearDown() {
-        utility.tearDown()
-        super.tearDown()
-    }
+class NotificationContentRouterTests: CoreDataTestCase {
 
     func testFollowNotificationSourceRoutesToStream() throws {
+        let utility = NotificationUtility(coreDataStack: contextManager)
+        let coordinator = MockContentCoordinator()
         let notification = try utility.loadFollowerNotification()
-        sut = NotificationContentRouter(activity: notification, coordinator: coordinator)
+        let sut = NotificationContentRouter(activity: notification, coordinator: coordinator)
         try! sut.routeToNotificationSource()
 
         XCTAssertTrue(coordinator.streamWasDisplayed)

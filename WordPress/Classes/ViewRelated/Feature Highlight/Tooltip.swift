@@ -1,12 +1,20 @@
 import UIKit
 
 final class Tooltip: UIView {
+    static let arrowWidth: CGFloat = 17
+
     private enum Constants {
         static let leadingIconUnicode = "✨"
         static let cornerRadius: CGFloat = 4
-        static let arrowTipYLength: CGFloat = 11
-        static let arrowTipYControlLength: CGFloat = 12
-        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Constants.Spacing.superHorizontalMargin
+        static let arrowTipYLength: CGFloat = 8
+        static let arrowTipYControlLength: CGFloat = 9
+        static let maxWidth: CGFloat = UIScreen.main.bounds.width - Spacing.superHorizontalMargin
+        static let maxContentWidth = maxWidth - (Constants.Spacing.contentStackViewHorizontal * 2)
+        static let invertedTooltipBackgroundColor = UIColor(
+            light: UIColor.systemGray5.color(for: UITraitCollection(userInterfaceStyle: .dark)),
+            dark: .white
+        )
+
 
         enum Spacing {
             static let contentStackViewInterItemSpacing: CGFloat = 4
@@ -16,12 +24,6 @@ final class Tooltip: UIView {
             static let contentStackViewHorizontal: CGFloat = 16
             static let superHorizontalMargin: CGFloat = 16
             static let buttonStackViewHeight: CGFloat = 40
-        }
-
-        enum Font {
-            static let title = WPStyleGuide.fontForTextStyle(.body)
-            static let message = WPStyleGuide.fontForTextStyle(.body)
-            static let button = WPStyleGuide.fontForTextStyle(.subheadline)
         }
     }
 
@@ -80,35 +82,61 @@ final class Tooltip: UIView {
             buttonsStackView.removeAllSubviews()
             switch buttonAlignment {
             case .left:
+                buttonsStackView.spacing = Constants.Spacing.buttonsStackViewInterItemSpacing
                 buttonsStackView.addArrangedSubviews([primaryButton, secondaryButton, UIView()])
+                buttonsStackView.setCustomSpacing(0, after: secondaryButton)
             case .right:
+                buttonsStackView.spacing = 0
                 buttonsStackView.addArrangedSubviews([UIView(), primaryButton, secondaryButton])
+                buttonsStackView.setCustomSpacing(Constants.Spacing.buttonsStackViewInterItemSpacing, after: primaryButton)
             }
         }
     }
 
+    var primaryButtonTitle: String? {
+        didSet {
+            primaryButton.setTitle(primaryButtonTitle, for: .normal)
+        }
+    }
+
+    var secondaryButtonTitle: String? {
+        didSet {
+            secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
+        }
+    }
+
+    var dismissalAction: (() -> Void)?
+    var secondaryButtonAction: (() -> Void)?
+
     private lazy var titleLabel: UILabel = {
-        $0.font = Constants.Font.title
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .invertedLabel
+        $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
 
     private lazy var messageLabel: UILabel = {
-        $0.font = Constants.Font.message
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .invertedSecondaryLabel
-        $0.numberOfLines = 3
+        $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
 
-    private(set) lazy var primaryButton: UIButton = {
-        $0.titleLabel?.font = Constants.Font.button
-        $0.setTitleColor(.primaryLight, for: .normal)
+    private lazy var primaryButton: UIButton = {
+        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        $0.setTitleColor(.invertedLink, for: .normal)
+        $0.addTarget(self, action: #selector(didTapPrimaryButton), for: .touchUpInside)
+        $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
 
-    private(set) lazy var secondaryButton: UIButton = {
-        $0.titleLabel?.font = Constants.Font.button
-        $0.setTitleColor(.primaryLight, for: .normal)
+    private lazy var secondaryButton: UIButton = {
+        $0.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        $0.setTitleColor(.invertedLink, for: .normal)
+        $0.addTarget(self, action: #selector(didTapSecondaryButton), for: .touchUpInside)
+        $0.titleLabel?.adjustsFontForContentSizeCategory = true
         return $0
     }(UIButton())
 
@@ -122,6 +150,7 @@ final class Tooltip: UIView {
     private lazy var buttonsStackView: UIStackView = {
         $0.addArrangedSubviews([primaryButton, secondaryButton, UIView()])
         $0.spacing = Constants.Spacing.buttonsStackViewInterItemSpacing
+        $0.setCustomSpacing(0, after: secondaryButton)
         return $0
     }(UIStackView())
 
@@ -140,6 +169,7 @@ final class Tooltip: UIView {
     private let containerView = UIView()
     private var containerTopConstraint: NSLayoutConstraint?
     private var containerBottomConstraint: NSLayoutConstraint?
+    private var arrowShapeLayer: CAShapeLayer?
 
     init() {
         super.init(frame: .zero)
@@ -151,11 +181,19 @@ final class Tooltip: UIView {
         commonInit()
     }
 
+    override func layoutSubviews() {
+        arrowShapeLayer?.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
+        arrowShapeLayer?.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
+        containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
+    }
+
     /// Adds a tooltip  Arrow Head at the given X Offset and either to the top or the bottom.
     /// - Parameters:
     ///   - offsetX: The offset on which the arrow will be placed. The value must be above 0 and below maxX of the view.
     ///   - arrowPosition: Arrow will be placed either on `.top`, pointed up, or `.bottom`, pointed down.
     func addArrowHead(toXPosition offsetX: CGFloat, arrowPosition: ArrowPosition) {
+        arrowShapeLayer?.removeFromSuperlayer()
+
         let arrowTipY: CGFloat
         let arrowTipYControl: CGFloat
         let offsetY: CGFloat
@@ -177,26 +215,47 @@ final class Tooltip: UIView {
 
         let arrowPath = UIBezierPath()
         arrowPath.move(to: CGPoint(x: 0, y: 0))
-        // In order to have a full width of 20, first draw the left side of the triangle until 9.
-        arrowPath.addLine(to: CGPoint(x: 9, y: arrowTipY))
-        // Add curve until 11 (2 points of curve for a rounded arrow tip).
+        let arrowOriginX = (Self.arrowWidth/2 - 1)
+        // In order to have a full width of `arrowWidth`, first draw the left side of the triangle until arrowOriginX.
+        arrowPath.addLine(to: CGPoint(x: arrowOriginX, y: arrowTipY))
+        // Add curve until `arrowWidth/2 + 1` (2 points of curve for a rounded arrow tip).
         arrowPath.addQuadCurve(
-            to: CGPoint(x: 11, y: arrowTipY),
-            controlPoint: CGPoint(x: 10, y: arrowTipYControl)
+            to: CGPoint(x: arrowOriginX + 2, y: arrowTipY),
+            controlPoint: CGPoint(x: Self.arrowWidth/2, y: arrowTipYControl)
         )
         // Draw down to 20.
-        arrowPath.addLine(to: CGPoint(x: 20, y: 0))
+        arrowPath.addLine(to: CGPoint(x: Self.arrowWidth, y: 0))
         arrowPath.close()
 
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = arrowPath.cgPath
-        shapeLayer.strokeColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.fillColor = UIColor.invertedSystem5.cgColor
-        shapeLayer.lineWidth = 1.0
+        arrowShapeLayer = CAShapeLayer()
+        guard let arrowShapeLayer = arrowShapeLayer else {
+            return
+        }
 
-        shapeLayer.position = CGPoint(x: offsetX, y: offsetY)
+        arrowShapeLayer.path = arrowPath.cgPath
 
-        containerView.layer.addSublayer(shapeLayer)
+        arrowShapeLayer.strokeColor = Constants.invertedTooltipBackgroundColor.cgColor
+        arrowShapeLayer.fillColor = Constants.invertedTooltipBackgroundColor.cgColor
+        arrowShapeLayer.lineWidth = 2.0
+
+        arrowShapeLayer.position = CGPoint(x: offsetX - Self.arrowWidth/2, y: offsetY)
+
+        containerView.layer.addSublayer(arrowShapeLayer)
+    }
+
+    func size() -> CGSize {
+        CGSize(
+            width: Self.width(
+                title: titleLabel.text,
+                message: message,
+                primaryButtonTitle: primaryButton.titleLabel?.text,
+                secondaryButtonTitle: secondaryButton.titleLabel?.text
+            ),
+            height: Self.height(
+                withTitle: title,
+                message: message
+            )
+        )
     }
 
     private func commonInit() {
@@ -204,11 +263,12 @@ final class Tooltip: UIView {
 
         setUpContainerView()
         setUpConstraints()
+        addShadow()
         isAccessibilityElement = true
     }
 
     private func setUpContainerView() {
-        containerView.backgroundColor = .invertedSystem5
+        containerView.backgroundColor = Constants.invertedTooltipBackgroundColor
         containerView.layer.cornerRadius = Constants.cornerRadius
         containerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(containerView)
@@ -251,32 +311,72 @@ final class Tooltip: UIView {
         ])
     }
 
+    private func addShadow() {
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        containerView.layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 0.5 : 0
+    }
+
+    @objc private func didTapPrimaryButton() {
+        dismissalAction?()
+    }
+
+    @objc private func didTapSecondaryButton() {
+        secondaryButtonAction?()
+    }
+
     private static func height(
         withTitle title: String?,
-        message: String?) -> CGFloat {
-            var totalHeight: CGFloat = 0
+        message: String?
+    ) -> CGFloat {
+        var totalHeight: CGFloat = 0
 
-            totalHeight += Constants.Spacing.contentStackViewTop
+        totalHeight += Constants.Spacing.contentStackViewTop
 
-            if let title = title {
-                totalHeight += title.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.title)
-            }
-
-            totalHeight += Constants.Spacing.contentStackViewInterItemSpacing
-
-            if let message = message {
-                totalHeight += message.height(withMaxWidth: Constants.maxWidth, font: Constants.Font.message)
-            }
-
-            totalHeight += Constants.Spacing.buttonStackViewHeight
-            totalHeight += Constants.Spacing.contentStackViewBottom
-
-            return totalHeight
+        if let title = title {
+            totalHeight += title.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
         }
+
+        totalHeight += Constants.Spacing.contentStackViewInterItemSpacing * 2
+
+        if let message = message {
+            totalHeight += message.height(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body))
+        }
+
+        totalHeight += Constants.Spacing.buttonStackViewHeight
+        totalHeight += Constants.Spacing.contentStackViewBottom
+
+        return totalHeight
+    }
+
+    private static func width(
+        title: String?,
+        message: String?,
+        primaryButtonTitle: String?,
+        secondaryButtonTitle: String?
+    ) -> CGFloat {
+
+        let titleWidth = title?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
+        let messageWidth = message?.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.body)) ?? 0
+
+        var buttonsWidth: CGFloat = 0
+        if let primaryButtonTitle = primaryButtonTitle {
+            buttonsWidth += primaryButtonTitle.width(withMaxWidth: Constants.maxContentWidth, font: WPStyleGuide.fontForTextStyle(.subheadline))
+        }
+
+        if let secondaryButtonTitle = secondaryButtonTitle {
+            buttonsWidth += secondaryButtonTitle.width(
+                withMaxWidth: Constants.maxContentWidth,
+                font: WPStyleGuide.fontForTextStyle(.subheadline)
+            ) + Constants.Spacing.buttonsStackViewInterItemSpacing
+        }
+
+        return max(max(titleWidth, messageWidth), buttonsWidth) + Constants.Spacing.contentStackViewHorizontal * 2
+    }
 }
 
 private extension String {
-    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+    private func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(
             with: constraintRect,
@@ -285,6 +385,14 @@ private extension String {
             context: nil
         )
 
-        return ceil(boundingBox.height)
+        return boundingBox
+    }
+
+    func height(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).height)
+    }
+
+    func width(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGFloat {
+        ceil(size(withMaxWidth: maxWidth, font: font).width)
     }
 }

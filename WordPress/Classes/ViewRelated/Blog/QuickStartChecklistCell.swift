@@ -1,4 +1,5 @@
 import Gridicons
+import UIKit
 
 class QuickStartChecklistCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel! {
@@ -31,58 +32,18 @@ class QuickStartChecklistCell: UITableViewCell {
         return WPDeviceIdentification.isiPhone() ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor
     }
 
-    public var completed = false {
-        didSet {
-            if completed {
-                guard let titleText = tour?.title else {
-                    return
-                }
-
-                titleLabel.attributedText = NSAttributedString(string: titleText,
-                                                               attributes: [.strikethroughStyle: 1,
-                                                                            .foregroundColor: UIColor.neutral(.shade30)])
-                // Overrides the existing accessibility hint in the tour property observer,
-                // because users don't need the hint repeated to them after a task is completed.
-                accessibilityHint = nil
-                accessibilityLabel = tour?.titleMarkedCompleted
-                descriptionLabel.textColor = .neutral(.shade30)
-                iconView?.tintColor = .neutral(.shade30)
-            } else {
-                titleLabel.textColor = .text
-                descriptionLabel.textColor = .textSubtle
-                iconView?.tintColor = .listIcon
-            }
-        }
-    }
-    public var tour: QuickStartTour? {
-        didSet {
-            titleLabel.text = tour?.title
-            descriptionLabel.text = tour?.description
-            iconView?.image = tour?.icon.withRenderingMode(.alwaysTemplate)
-
-            if let hint = tour?.accessibilityHintText, !hint.isEmpty {
-                accessibilityHint = hint
-            }
-        }
-    }
-
-    public var lastRow: Bool = false {
-        didSet {
-            bottomStrokeLeading?.isActive = !lastRow
-        }
-    }
-
-    public var topSeparatorIsHidden: Bool = false {
-        didSet {
-            topSeparator?.isHidden = topSeparatorIsHidden
-        }
-    }
-
-
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .listForeground
         setupConstraints()
+    }
+
+    func configure(tour: QuickStartTour, completed: Bool, topSeparatorIsHidden: Bool, lastRow: Bool) {
+        setupColors(completed: completed)
+        setupTitle(tour: tour, completed: completed)
+        setupContent(tour: tour)
+        setupAccessibility(tour: tour, completed: completed)
+        setupSeperators(topSeparatorIsHidden: topSeparatorIsHidden, lastRow: lastRow)
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"
@@ -103,5 +64,47 @@ private extension QuickStartChecklistCell {
         stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
         topSeparator.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor).isActive = true
         topSeparator.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+    }
+
+    func setupTitle(tour: QuickStartTour, completed: Bool) {
+        let strikeThroughStyle = completed ? 1 : 0
+        let titleColor: UIColor = completed ? .neutral(.shade30) : .text
+        titleLabel.attributedText = NSAttributedString(string: tour.title,
+                                                       attributes: [.strikethroughStyle: strikeThroughStyle,
+                                                                    .foregroundColor: titleColor])
+    }
+
+    func setupAccessibility(tour: QuickStartTour, completed: Bool) {
+        if completed {
+            // Overrides the existing accessibility hint in the tour property observer,
+            // because users don't need the hint repeated to them after a task is completed.
+            accessibilityHint = nil
+            accessibilityLabel = tour.titleMarkedCompleted
+        } else {
+            let hint = tour.accessibilityHintText
+            if !hint.isEmpty {
+                accessibilityHint = hint
+            }
+        }
+    }
+
+    func setupColors(completed: Bool) {
+        if completed {
+            descriptionLabel.textColor = .neutral(.shade30)
+            iconView?.tintColor = .neutral(.shade30)
+        } else {
+            descriptionLabel.textColor = .textSubtle
+            iconView?.tintColor = .listIcon
+        }
+    }
+
+    func setupContent(tour: QuickStartTour) {
+        descriptionLabel.text = tour.description
+        iconView?.image = tour.icon.withRenderingMode(.alwaysTemplate)
+    }
+
+    func setupSeperators(topSeparatorIsHidden: Bool, lastRow: Bool) {
+        bottomStrokeLeading?.isActive = !lastRow
+        topSeparator?.isHidden = topSeparatorIsHidden
     }
 }

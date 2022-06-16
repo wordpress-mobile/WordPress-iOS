@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 // MARK: - Shared Rows
 
@@ -25,6 +26,33 @@ struct OverviewRow: ImmuTableRow {
         }
 
         cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
+    }
+}
+
+struct ViewsVisitorsRow: ImmuTableRow {
+
+    typealias CellType = ViewsVisitorsLineChartCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let segmentsData: [StatsSegmentedControlData]
+    let action: ImmuTableAction? = nil
+    let chartData: [LineChartDataConvertible]
+    let chartStyling: [LineChartStyling]
+    let period: StatsPeriodUnit?
+    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let xAxisDates: [Date]
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
     }
 }
 
@@ -354,8 +382,14 @@ struct AddInsightStatRow: ImmuTableRow {
 
         cell.accessibilityLabel = title
         cell.isAccessibilityElement = true
-        cell.accessibilityTraits = enabled ? .button : .notEnabled
-        cell.accessibilityHint = enabled ? enabledHint : disabledHint
+
+        let canTap = FeatureFlag.statsNewAppearance.enabled ? action != nil : enabled
+        cell.accessibilityTraits = canTap ? .button : .notEnabled
+        cell.accessibilityHint = canTap && enabled ? disabledHint : enabledHint
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            cell.accessoryView = canTap ? UIImageView(image: .gridicon(.addOutline)) : nil
+        }
     }
 }
 
@@ -392,6 +426,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     let action: ImmuTableAction? = nil
@@ -405,6 +440,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
+                       statSection: statSection,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsReferrerDelegate: siteStatsReferrerDelegate)
     }

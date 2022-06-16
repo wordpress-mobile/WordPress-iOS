@@ -83,12 +83,17 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureInsightsTableView()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
+    }
+
+    func configureInsightsTableView() {
+        insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
     }
 
     func configureNavBar() {

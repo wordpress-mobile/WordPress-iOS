@@ -8,7 +8,7 @@ protocol PostsCardView: AnyObject {
     func removeIfNeeded()
 }
 
-enum PostsListSection {
+enum PostsListSection: CaseIterable {
     case posts
     case error
     case loading
@@ -40,7 +40,7 @@ class PostsCardViewModel: NSObject {
         didSet {
             if oldValue != currentState {
                 forceReloadSnapshot()
-                trackCardDisaplyedIfNeeded()
+                trackCardDisplayedIfNeeded()
             }
         }
     }
@@ -259,7 +259,7 @@ private extension PostsCardViewModel {
         return false
     }
 
-    func trackCardDisaplyedIfNeeded() {
+    func trackCardDisplayedIfNeeded() {
         switch currentState {
         case .posts:
             BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
@@ -336,12 +336,12 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
 
     private func createSnapshot(currentSnapshot: Snapshot, postsSnapshot: PostsSnapshot) -> Snapshot {
         var snapshot = Snapshot()
+        snapshot.appendSections(PostsListSection.allCases)
         switch currentState {
         case .posts:
             var adjustedPostsSnapshot = postsSnapshot
             adjustedPostsSnapshot.deleteItems(adjustedPostsSnapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
             let postItems: [PostsListItem] = adjustedPostsSnapshot.itemIdentifiers.map { .post($0) }
-            snapshot.appendSections([.posts])
             snapshot.appendItems(postItems, toSection: .posts)
 
             let reloadIdentifiers: [PostsListItem] = snapshot.itemIdentifiers.compactMap { item in
@@ -358,21 +358,18 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             snapshot.reloadItems(reloadIdentifiers)
 
         case .error:
-            snapshot.appendSections([.error])
             snapshot.appendItems([.error], toSection: .error)
 
         case .loading:
             let items: [PostsListItem] = (0..<Constants.numberOfPosts).map { .ghost($0) }
-            snapshot.appendSections([.loading])
             snapshot.appendItems(items, toSection: .loading)
         }
         return snapshot
     }
 
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
-        let shouldAnimate = view?.tableView.numberOfSections != 0 && view?.tableView.numberOfRows(inSection: 0) != 0
         dataSource.defaultRowAnimation = .fade
-        dataSource.apply(snapshot, animatingDifferences: shouldAnimate, completion: nil)
+        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
         view?.tableView.allowsSelection = currentState == .posts
     }
 }

@@ -12,6 +12,7 @@
     case periodPublished
     case periodVideos
     case periodFileDownloads
+    case insightsViewsVisitors
     case insightsLatestPostSummary
     case insightsAllTime
     case insightsFollowerTotals
@@ -31,20 +32,35 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights = [StatSection.insightsLatestPostSummary,
-                              .insightsAllTime,
-                              .insightsFollowerTotals,
-                              .insightsMostPopularTime,
-                              .insightsTagsAndCategories,
-                              .insightsAnnualSiteStats,
-                              .insightsCommentsAuthors,
-                              .insightsCommentsPosts,
-                              .insightsFollowersWordPress,
-                              .insightsFollowersEmail,
-                              .insightsTodaysStats,
-                              .insightsPostingActivity,
-                              .insightsPublicize
-    ]
+    static let allInsights = FeatureFlag.statsNewInsights.enabled  ?
+                                    [StatSection.insightsViewsVisitors,
+                                     .insightsLatestPostSummary,
+                                     .insightsAllTime,
+                                     .insightsFollowerTotals,
+                                     .insightsMostPopularTime,
+                                     .insightsTagsAndCategories,
+                                     .insightsAnnualSiteStats,
+                                     .insightsCommentsAuthors,
+                                     .insightsCommentsPosts,
+                                     .insightsFollowersWordPress,
+                                     .insightsFollowersEmail,
+                                     .insightsTodaysStats,
+                                     .insightsPostingActivity,
+                                     .insightsPublicize] :
+                                    [StatSection.insightsLatestPostSummary,
+                                    .insightsAllTime,
+                                    .insightsFollowerTotals,
+                                    .insightsMostPopularTime,
+                                    .insightsTagsAndCategories,
+                                    .insightsAnnualSiteStats,
+                                    .insightsCommentsAuthors,
+                                    .insightsCommentsPosts,
+                                    .insightsFollowersWordPress,
+                                    .insightsFollowersEmail,
+                                    .insightsTodaysStats,
+                                    .insightsPostingActivity,
+                                    .insightsPublicize,
+                                    .insightsAddInsight]
 
     static let allPeriods = [StatSection.periodOverviewViews,
                              .periodOverviewVisitors,
@@ -71,6 +87,8 @@
 
     var title: String {
         switch self {
+        case .insightsViewsVisitors:
+            return InsightsHeaders.viewsVisitors
         case .insightsLatestPostSummary:
             return InsightsHeaders.latestPostSummary
         case .insightsAllTime:
@@ -257,6 +275,8 @@
 
     var insightType: InsightType? {
         switch self {
+        case .insightsViewsVisitors:
+            return .viewsVisitors
         case .insightsLatestPostSummary:
             return .latestPostSummary
         case .insightsAllTime:
@@ -284,6 +304,41 @@
         }
     }
 
+    // MARK: - analyticsEvent on ViewMore tapped
+
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsViewMoreTappedAuthors
+        case .periodClicks:
+            return .statsViewMoreTappedClicks
+        case .periodOverviewComments:
+            return .statsViewMoreTappedComments
+        case .periodCountries:
+            return .statsViewMoreTappedCountries
+        case .insightsFollowerTotals, .insightsFollowersEmail, .insightsFollowersWordPress:
+            return .statsViewMoreTappedFollowers
+        case .periodPostsAndPages:
+            return .statsViewMoreTappedPostsAndPages
+        case .insightsPublicize:
+            return .statsViewMoreTappedPublicize
+        case .periodReferrers:
+            return .statsViewMoreTappedReferrers
+        case .periodSearchTerms:
+            return .statsViewMoreTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsViewMoreTappedTagsAndCategories
+        case .periodVideos:
+            return .statsViewMoreTappedVideoPlays
+        case .periodFileDownloads:
+            return .statsViewMoreTappedFileDownloads
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -305,6 +360,7 @@
     // MARK: String Structs
 
     struct InsightsHeaders {
+        static let viewsVisitors = NSLocalizedString("Views & Visitors", comment: "Insights views and visitors header")
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
         static var mostPopularTime: String {

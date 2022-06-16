@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class MarkAsSpamActionTests: XCTestCase {
+final class MarkAsSpamActionTests: CoreDataTestCase {
     private class TestableMarkAsSpam: MarkAsSpam {
         let service: MockNotificationActionsService
 
@@ -22,26 +22,22 @@ final class MarkAsSpamActionTests: XCTestCase {
     }
 
     private var action: MarkAsSpam?
-    let utility = NotificationUtility()
-    private var testContextManager: ContextManagerMock!
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
-        testContextManager = ContextManagerMock()
-        action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: testContextManager)
+        utility = NotificationUtility(coreDataStack: contextManager)
+        action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {

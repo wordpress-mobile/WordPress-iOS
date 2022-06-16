@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-25 13:42:07+0000 */
+/* Translation-Revision-Date: 2022-05-19 17:19:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: tr */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ düğme";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ Bir sonraki görev için hazır olduğunuzda Sitem ekranına dönün.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ etiket";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ etiket";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "%@ İpucu: Anlık bildirimlerini etkinleştirerek güncellemeleri daha hızlı alın.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ milyar";
@@ -142,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ tekrar bağlandı.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -273,8 +280,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(başlık yok)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Johann Brandt* artık sitenizi takip ediyor!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Johann Brandt* yorumunuza yanıt verdi";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* yazınıza yanıt verdi";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* kendi sitesine yeni bir gönderi ekledi.";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* yazınızı beğendi";
@@ -356,6 +372,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Sitenizde ilgi çekici içerik oluşturmanın ve yayınlamanın yeni bir yolu.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
+"A series of steps helping you to explore the app." = "Uygulamayı keşfetmenize yardımcı olacak bir dizi adım.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Tema, site simgesi ve daha fazlasını nasıl ekleyeceğinizi gösteren bir dizi adım.";
@@ -647,6 +666,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Tümü";
 
@@ -793,6 +813,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Yanıt İstemi";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Yanıtlandı";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1160,6 +1183,9 @@ translators: Block name. %s: The localized block name */
 "Briefly describe the link to help screen reader user" = "Ekran okuyucu kullanıcısına yardımcı olmak için bağlantıyı kısaca açıklayın";
 
 /* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "Medyayı doğrudan cihazınızdan veya kameranızdan sitenize aktarın.";
+
+/* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Size tam uyanı bulmak için tüm temalarımıza göz atın.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
@@ -1313,8 +1339,7 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Dikkatli olun!";
 
-/* Example prompt for blogging prompts in the create new bottom action sheet.
-   Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Hayatınızın filmini oynayın.";
 
 /* Label for Categories
@@ -1413,6 +1438,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Ağ bağlantınızı kontrol edin ve tekrar deneyin veya bir yazı taslağı hazırlayın.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Bildirimlerinizi kontrol edin";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Sitenizin istatistiklerine bakın";
 
 /* Title of a Quick Start Tour */
@@ -1420,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Satın alımlar kontrol ediliyor…";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "İstatistikleri kontrol etme";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "%@ öğesinin alt öğesi";
@@ -1698,6 +1729,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Tamamlandı";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "Tamamlandı: Bildirimlerinizi kontrol edin";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Tamamlandı: Site istatistiklerini kontrol edin";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1708,6 +1742,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Tamamlandı: Benzersiz bir site simgesi seçin";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "Tamamlandı: Diğer sitelerle bağlantı kurun";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Tamamlandı: Site kurulumuna devam edin";
@@ -1726,6 +1763,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Social sharing" = "Tamamlandı: Sosyal paylaşım";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "Tamamlandı: Fotoğraf veya video yükleme";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Tamamlandı: Sitenizi görüntüleyin";
@@ -1751,14 +1791,17 @@ translators: Block name. %s: The localized block name */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "İlk önce e-posta adresinizi onaylayın";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Tebrikler, hızlı başlangıcı tamamladınız  🎉";
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "Tebrikler! Yolunuzu biliyorsunuz";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Tebrikler, listenizi başarıyla tamamladınız. Başarılı bir iş çıkardınız.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Satın aldığınız için tebrikler!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Tebrikler! Sitenizde tüm zamanların görüntülenme sayısı (*1000) geçildi.";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1775,6 +1818,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Gönderilerini takip ederek, beğenerek ve yorum yaparak diğer blog yazarlarıyla bağlantı kurun.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Diğer sitelerle bağlantı kurun";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Yeni yazıları arkadaşlarınızla otomatik olarak paylaşmak için favori sosyal medya hizmetlerinize bağlanın.";
@@ -2371,6 +2417,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Sevdiğiniz blogları keşfedin ve takip edin";
 
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Size ilham veren siteleri keşfedin ve takip edin.";
+
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Takip edilecek blogları keşfedin";
 
@@ -2432,6 +2481,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Belge: %@";
+
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "Listedeki bazı işleri tamamlamak iyi hissettirmiyor mu?";
 
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Alan adı iletişim bilgileri";
@@ -2778,8 +2830,20 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "Etkinleştir";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Bildirimleri etkinleştir";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "Bildirimler etkinleştirilsin mi?";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Duyuruyu Etkinleştir";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for Existing Site" = "Mevcut Site için Hızlı Başlangıcı Etkinleştirin";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Site İçin Hızlı Başlatmayı Etkinleştirin";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Site istatistiklerini etkinleştir";
@@ -2908,6 +2972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Eklentiler yüklenirken hata oluştu";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "İstem yüklenirken hata oluştu";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Yorum spam olarak işaretlenirken hata oluştu.";
@@ -3195,6 +3262,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Sohbeti Takip Et";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Sohbeti Takip Et";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "Siteyi takip et";
 
@@ -3293,6 +3363,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Sık sorulan sorular";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "Kaynak: %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "Başka cihazdan";
 
@@ -3351,6 +3424,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Farkedilin: okuduğunuz yazılara yorum yapın.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Gerçek zamanlı güncellemeler cebinize gelsin.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Önceden hazırlanmış çeşitli sayfa düzenleri arasından seçim yaparak başlayın. Veya boş bir sayfayla başlayın.";
 
@@ -3359,6 +3435,12 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "Jetpack uygulamasını tanıyın";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "WordPress uygulamasını tanıyın";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Alan adınızı alın";
@@ -3380,6 +3462,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Gönderinize veya sayfanıza birkaç blok ekleyerek deneyin!";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "%@ web sitenize bir ad verin";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Sitenize kişiliğini ve konuyu yansıtan bir ad verin. İlk izlenim önemlidir.";
@@ -3429,6 +3514,9 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Kitlenizi genişletin";
 
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Bildirimlerinizi kontrol etme sürecinde size rehberlik eder.";
+
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Siteniz için bir tema seçme işlemine yönlendirir.";
 
@@ -3461,6 +3549,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Siteniz için bir simge yükleme işlemine yönlendirir.";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "Yeni medya yükleme sürecinde size yol gösterir.";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -3690,6 +3781,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Etkin değil, otomatik güncellemeler açık";
+
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include prompt" = "İstemi dahil et";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Site ile beraber";
@@ -3946,6 +4040,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Sitenizin performansıyla ilgili güncel bilgiler edinin.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Favori yazarlarınızın ne zaman yeni içerik yayınladığını öğrenin.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Sitenizin ne zaman daha fazla trafik aldığını, yeni takipçileri veya yeni bir dönüm noktasına ne zaman ulaştığını öğrenin!";
+
 /* Autoapprove only from known users */
 "Known Users" = "Bilinen kullanıcılar";
 
@@ -3990,6 +4090,9 @@ translators: Block name. %s: The localized block name */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Tarih ve zaman biçimi hakkında daha fazlasını öğrenin.";
+
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+"Learn more about prompts" = "İstemler hakkında daha fazla bilgi edinin";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Roller hakkında daha fazla bilgi edinin";
@@ -4054,6 +4157,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite ulaşıldı. Bir dakika içinde tekrar deneyebilirsiniz. Bundan önceki denemeler, sadece engellemenin kalkması için beklemeniz gereken süreyi arttıracaktır. Eğer bunun bir hata olduğunu düşünüyorsanız destek ile iletişime geçin.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "İçgörüler için görünümleri gösteren çizgi grafik.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "İçgörüler için ziyaretçileri gösteren çizgi grafik.";
 
 /* No comment provided by engineer. */
 "Line Height" = "Çizgi Yüksekliği";
@@ -4153,6 +4262,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "Eklentiler yükleniyor...";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "İstemler yükleniyor...";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Akış yükleniyor...";
@@ -4345,6 +4457,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4867,6 +4980,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "Birincil site adresi bulunamadı";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "Henüz istem yok";
+
 /* A message title */
 "No recent posts" = "Güncel yazı yok";
 
@@ -4901,10 +5017,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Hiçbir şey ayarlanmadı";
 
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "Yanıtlanmadı";
+
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Bağlı değil";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Şimdi değil";
 
 /* Display value for Support email field if there is no user email address. */
@@ -4926,6 +5046,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "E-postayı görmüyor musunuz? İstenmeyen posta klasörünüzü kontrol edin.";
+
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "Emin değilim, bana bilgi ver";
 
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Not:";
@@ -4958,6 +5081,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Bildirim zamanı";
+
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Bildirim, ilham almak için bir kelime veya kısa bir kelime öbeği içerecektir";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5067,6 +5193,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5667,6 +5794,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Yazı önizleme";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "Ziyaretçilerinizin neler göreceğini anlamak için sitenizi önizleyin.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "Önceki hafta";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Önceki ay ";
 
@@ -5675,6 +5808,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Önceki dönem";
+
+/* Previous week legend label */
+"Previous week" = "Önceki hafta";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5733,7 +5869,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Projeler";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
-   Title label for the Prompts card in My Sites tab. */
+   Title label for the Prompts card in My Sites tab.
+   View title for Blogging Prompts list. */
 "Prompts" = "İstemler";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -5852,6 +5989,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Okuyucu CSS URLsi";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Diğer sitelerin gönderilerini okumak";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Emlak";
@@ -6414,10 +6554,16 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Yeni temaları keşfetmek için %@ seçin";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to find other sites." = "Diğer siteleri bulmak için %@ öğesini seçin.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Sitenizin performansını görmek için %@ seçin.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your checklist" = "Kontrol listenizi görmek için %@ seçin";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "Geçerli kitaplığınızı görmek için %@ öğesini seçin.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "Mevcut paketi ve kullanılabilecek diğer paketleri görmek için %@ seçin.";
@@ -6430,6 +6576,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Yeni bir tane yüklemek için %@ seçin.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Sitenizi görüntülemek için %@ öğesini seçin";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "%@Yüklenecek ortam dosyasını seçin. Herhangi bir cihazdan yayınlarınıza \/ sayfalarınıza ekleyebilirsiniz.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Ülke seçin";
@@ -6463,6 +6615,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Paragraf stilini seçin";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Hareket halindeyken güncellemeleri almak için %@ sekmesini seçin.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Sosyal medya hesaplarınızı ekleme için %@ seçin";
@@ -7036,6 +7191,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Döngüde kal";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Beğeni ve yorum bildirimlerini kullanarak iletişimde kalın. ";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Beğeni ve yorum bildirimlerini kullanarak hedef kitlenizle iletişimde kalın.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Bildirimlerle her şeyden haberdar olmak";
+
 /* This is the cell title. */
 "Stick post to the front page" = "Yazıyı ön sayfaya yapıştır";
 
@@ -7268,6 +7432,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Sitenizi görüntülemek için dokunun";
+
+/* A hint about the completed guided tour. */
+"Task complete." = "Görev tamamlandı.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Kategorilendirme";
@@ -7565,6 +7732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Eklentiler yüklenirken bir hata oluştu";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "İstemler yüklenirken bir hata oluştu";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Yorum yüklenirken bir hata oluştu.";
 
@@ -7603,6 +7773,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Sitenizde yeni bir blog yazısı olarak yayınlanırlar, böylece kitleniz hiçbir şeyi kaçırmaz.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "Bu hafta";
 
 /* Insights 'This Year' header */
 "This Year" = "Bu yıl";
@@ -7669,6 +7842,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Aktif abonelikleri olduğundan, kullanıcı hesabı kapatılamadı.";
+
+/* This week legend label */
+"This week" = "Bu hafta";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7911,6 +8087,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Şimdi deneyin";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Beğendiğiniz konuları eklemek için %@ öğesini seçmeyi deneyin.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Yeni Blok Düzenleyici'yi deneyin";
 
@@ -8147,6 +8326,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@ takibini bırak";
 
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow Conversation" = "Sohbeti Takip Etmeyi Bırak";
+
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Görüşmeyi takip etmeyi bırak";
 
@@ -8280,6 +8462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "Yükleme başarısz oldu. Seçenekler için dokunun.";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "Fotoğraflar ve videolar yükleyin";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Yüklendi";
@@ -8329,6 +8514,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Use the current image */
 "Use" = "Kullan";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Siteleri ve etiketleri bulmak için %@ kullanın.";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Sandbox Store'u kullanın";
@@ -8470,8 +8658,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Gösterimler";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "Görüntüleme ve Ziyaretçi Sayısı";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "Şimdiye kadar sitenizdeki görüntüleme sayısı";
@@ -8490,6 +8682,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "daha fazlası için %@ ziyaret edin";
 
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Panonuzu ziyaret edin";
+
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Siteyi ziyaret et";
 
@@ -8501,6 +8696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Ziyaretçiler";
 
@@ -8857,6 +9053,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Problem neydi?";
 
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "İlk önce neye odaklanmak istersiniz?";
+
 /* Title of section that contains plugins' change log */
 "What's New" = "Neler yeni";
 
@@ -9033,6 +9232,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Yazı ve Şiir";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Blog yazıları yazmak";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "X Ekseni Konumu";
 
@@ -9096,6 +9298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "İstediğiniz zaman Sitem > Ayarlar > Blog Hatırlatıcıları bölümünden daha fazla bilgi edinebilir ve hatırlatıcı oluşturabilirsiniz.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "İstediğiniz zaman Sitem > Ayarlar > Blog Hatırlatıcıları bölümünden daha fazla bilgi edinebilir ve hatırlatıcı oluşturabilirsiniz.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Bu ayarları yazı özelinde değiştirebilirsiniz.";
@@ -9189,6 +9394,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Bir yazı yayınlamadan önce hesabınızı doğrulamanız gerekli.\nEndişelenmeyin, yazınız güvende ve taslak olarak kaydedilecek.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Yorumunuz için *50 beğeni* aldınız";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "*50 likes* on your site today aldınız";
 
@@ -9214,6 +9422,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Haftada <strong>bir kez<\/strong> (%1$@, %2$@) blog yazmanız için bir hatırlatıcı alacaksınız.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Uygulama üzerinden bildirim alacaksınız";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "%2$@ için haftada %1$@ kez blog yazısı yazmanız gerektiğini hatırlatan bir bildirim alacaksınız.";
@@ -9296,6 +9508,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sitenizin adresi Safari ile sitenizi ziyaret ettiğinizde tepede görüntülenir.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Siteniz zaten VaultPress tarafından korunuyor. Aşağıda VaultPress panonuzun bağlantısını bulabilirsiniz.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Sitenizin normalden *daha fazla trafik* almaya başladığı görülüyor";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Sitenizde VaultPress var";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Siteniz oluşturuldu!";
 
@@ -9332,6 +9553,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Siteniz artık WordPress.com’a veri göndermeyecek ve Jetpack özellikleri çalışmayı durduracak. Uygulamada siteye erişim iznini kaybedeceksiniz ve izni site kimlik bilgileriyle yeniden eklemeniz gerekecek.";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "Bu haftaki görüntülemeleriniz bir önceki haftaya göre %@ daha yüksek.\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "Bu haftaki görüntülemeleriniz bir önceki haftaya göre %@ daha düşük.\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "Bu haftaki ziyaretçileriniz bir önceki haftaya göre %@ daha yüksek.\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "Bu haftaki ziyaretçileriniz bir önceki haftaya göre %@ daha düşük.\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Web sitenizin kimlik bilgileri depolanmayacak ve yalnızca Jetpack’i güvenli bir şekilde yüklemek amacıyla kullanılacaktır.";
 
@@ -9356,8 +9589,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d blog yazarı_ bunu beğendi.";
 
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "_Bir blog yazarı_ bunu beğendi.";
+
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Siz ve %1$d blog yazarı_ bunu beğendi.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "_Siz ve başka bir blog yazarı_ bunu beğendiniz.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "Bunu _beğendiniz_.";
@@ -9388,9 +9627,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "bağlantılar";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "listedeki bazı işleri tamamlamak iyi hissettirmiyor mu?";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
@@ -9486,6 +9722,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Yorumlar";
+
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Yazı oluştur";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Beğeniler";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "Henüz herhangi bir yazı yayınlamadınız. İlk yazınızı yayınladıktan sonra tekrar kontrol edin!";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Yayımlanma tarihi: %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Görüntülemeler";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "🔥 En Popüler Zaman";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "Görüntüleme oranı: %d%%";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "Yeterli etkinlik yok. Sitenizin daha fazla ziyaretçisi olduğunda daha sonra tekrar kontrol edin!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
@@ -9613,6 +9876,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Kullanıcılar ve yazarlar";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ Yanıtlandı";
 

@@ -329,14 +329,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
-        let onDismissQuickStartPromptForExistingSiteHandler = onDismissQuickStartPromptHandler(type: .existingSite, onDismiss: onDismiss)
-
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            let onDismissHandler = FeatureFlag.quickStartForExistingUsers.enabled ? onDismissQuickStartPromptForExistingSiteHandler : onDismissQuickStartPromptForNewSiteHandler
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissHandler)
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
             return
         }
 
@@ -371,6 +373,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.onBlogSelected = onBlogSelected
+
+        let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
         epilogueViewController.onCreateNewSite = {
             let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
@@ -521,7 +525,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     // This should be removed once the experiment is done
     //
     private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
-        if event == .signedIn {
+        if event == .signedIn || event == .createdAccount {
             if FeatureFlag.mySiteDashboard.enabled {
                 let isTreatment = BlogDashboardAB.shared.variant == .treatment
                 MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)

@@ -4,7 +4,7 @@ extension Post {
         guard let prompt = prompt else {
             return
         }
-        postTitle = prompt.title
+
         content = prompt.content
     }
 

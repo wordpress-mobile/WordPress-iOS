@@ -57,7 +57,7 @@ enum DashboardCard: String, CaseIterable {
         case .todaysStats:
             return self.shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
-            return FeatureFlag.bloggingPrompts.enabled
+            return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
             return blog.dashboardState.isFirstLoad
         case .failure:

@@ -14,7 +14,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionPush() throws {
-        let message = try loadJSONMessage(name: "notes-action-push")!
+        let message = try JSONObject(fromFileNamed: "notes-action-push")
         let action = PinghubClient.Action.from(message: message)
 
         guard case .some(.push(let noteID, let userID, _, _)) = action else {
@@ -26,7 +26,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionDelete() throws {
-        let message = try loadJSONMessage(name: "notes-action-delete")!
+        let message = try JSONObject(fromFileNamed: "notes-action-delete")
         let action = PinghubClient.Action.from(message: message)
 
         guard case .some(.delete(let noteID)) = action else {
@@ -37,7 +37,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionUnsupported() throws {
-        let message = try loadJSONMessage(name: "notes-action-unsupported")!
+        let message = try JSONObject(fromFileNamed: "notes-action-unsupported")
         let action = PinghubClient.Action.from(message: message)
         XCTAssertNil(action)
     }
@@ -101,12 +101,6 @@ class PingHubTests: XCTestCase {
 
         XCTAssertNil(delegate.receivedAction)
         XCTAssertNotNil(delegate.unexpected)
-    }
-}
-
-private extension PingHubTests {
-    func loadJSONMessage(name: String) throws -> [String: AnyObject]? {
-        return try .loadFile(name, type: "json")
     }
 }
 

@@ -148,6 +148,7 @@
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Y Cyfan";
 
@@ -1270,6 +1271,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -1434,7 +1436,8 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Dim";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nid nawr";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
@@ -1511,6 +1514,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -2734,6 +2738,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Golwg";
 
@@ -2759,6 +2764,7 @@
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Ymwelwyr";
 

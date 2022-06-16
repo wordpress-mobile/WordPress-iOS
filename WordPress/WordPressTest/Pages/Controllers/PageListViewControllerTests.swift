@@ -4,20 +4,9 @@ import Nimble
 
 @testable import WordPress
 
-class PageListViewControllerTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
-
-    override func setUp() {
-        contextManager = ContextManagerMock()
-        super.setUp()
-    }
-
+class PageListViewControllerTests: CoreDataTestCase {
     func testDoesNotShowGhostableTableView() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         let pageListViewController = PageListViewController.controllerWithBlog(blog)
         let _ = pageListViewController.view
 

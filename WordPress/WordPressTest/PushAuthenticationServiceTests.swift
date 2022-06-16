@@ -2,9 +2,8 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class PushAuthenticationServiceTests: XCTestCase {
+class PushAuthenticationServiceTests: CoreDataTestCase {
 
-    var testContextManager: ContextManagerMock!
     var pushAuthenticationService: PushAuthenticationService!
     var mockPushAuthenticationServiceRemote: MockPushAuthenticationServiceRemote!
     var mockRemoteApi: MockWordPressComRestApi!
@@ -26,9 +25,8 @@ class PushAuthenticationServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockRemoteApi = MockWordPressComRestApi()
-        testContextManager = ContextManagerMock()
         mockPushAuthenticationServiceRemote = MockPushAuthenticationServiceRemote(wordPressComRestApi: mockRemoteApi)
-        pushAuthenticationService = PushAuthenticationService(managedObjectContext: testContextManager.mainContext)
+        pushAuthenticationService = PushAuthenticationService(managedObjectContext: mainContext)
         pushAuthenticationService.authenticationServiceRemote = mockPushAuthenticationServiceRemote
     }
 

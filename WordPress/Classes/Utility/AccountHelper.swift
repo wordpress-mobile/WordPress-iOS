@@ -84,6 +84,9 @@ import Foundation
 
         service.removeDefaultWordPressComAccount()
 
+        // Delete saved dashboard states
+        BlogDashboardState.resetAllStates()
+
         // Delete local notification on logout
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
@@ -94,8 +97,6 @@ import Foundation
         StatsDataHelper.clearWidgetsData()
 
         // Delete donated user activities (e.g., for Siri Shortcuts)
-        if #available(iOS 12.0, *) {
-            NSUserActivity.deleteAllSavedUserActivities {}
-        }
+        NSUserActivity.deleteAllSavedUserActivities {}
     }
 }

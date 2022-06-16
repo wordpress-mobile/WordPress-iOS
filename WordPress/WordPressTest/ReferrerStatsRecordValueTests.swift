@@ -1,4 +1,6 @@
+import XCTest
 @testable import WordPress
+
 class ReferrerStatsRecordValueTests: StatsTestCase {
 
     func testCreation() {

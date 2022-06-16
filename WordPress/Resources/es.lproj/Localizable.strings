@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 15:49:17+0000 */
+/* Translation-Revision-Date: 2022-05-17 11:34:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: es */
@@ -148,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ se reconectó.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -372,7 +373,7 @@ translators: Block name. %s: The localized block name */
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Una nueva forma de crear y publicar contenidos atrayentes en tu sitio.";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
 "A series of steps helping you to explore the app." = "Algunos pasos para ayudarte a explorar la aplicación.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
@@ -665,6 +666,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Todo";
 
@@ -811,6 +813,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Responder estímulo";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Contestada";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1178,6 +1183,9 @@ translators: Block name. %s: The localized block name */
 "Briefly describe the link to help screen reader user" = "Describe brevemente el enlace para ayudar a los usuarios de lectores de pantalla";
 
 /* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "Lleva los medios directamente desde tu dispositivo o cámara a tu sitio.";
+
+/* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Navega por todos nuestros temas para encontrar el que se adapte a ti. ";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
@@ -1331,8 +1339,7 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "¡Cuidado!";
 
-/* Example prompt for blogging prompts in the create new bottom action sheet.
-   Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Haz la película de tu vida.";
 
 /* Label for Categories
@@ -1758,6 +1765,9 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "Completado: Compartir en redes sociales";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "Completado: Subir fotos o vídeos";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Completado: Ver tu sitio";
 
 /* Section title for the configure table section in the blog details screen */
@@ -1781,8 +1791,8 @@ translators: Block name. %s: The localized block name */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Primero, confirma tu dirección de correo electrónico";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Felicidades por terminar el inicio rápido  🎉";
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "Felicidades. Ya sabes lo que tienes que hacer";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Enhorabuena por completar tu lista. Un trabajo bien hecho.";
@@ -2472,6 +2482,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Documento: %@";
 
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "¿A que se siente uno bien terminando una lista?";
+
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Información de contacto del dominio";
 
@@ -2817,6 +2830,12 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "Activar";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Activar los avisos";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "¿Activar avisos?";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Activa Divulgar";
 
@@ -2953,6 +2972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Error al cargar plugins";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "Aviso de error de carga";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Error al marcar el comentario como spam.";
@@ -3341,6 +3363,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Preguntas frecuentes";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "Desde %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "Desde otro dispositivo";
 
@@ -3410,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "Familiarízate con la aplicación Jetpack";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "Familiarízate con la aplicación de WordPress";
@@ -3521,6 +3549,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Te guía a través del proceso de subir un icono para tu sitio.";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "Te guía a través del proceso de subir nuevos medios.";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -3752,7 +3783,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "Inactivo, actualizaciones automáticas activas";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Incluir aviso";
+"Include prompt" = "Incluir estímulo";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluido con el sitio";
@@ -4061,7 +4092,7 @@ translators: Block name. %s: The localized block name */
 "Learn more about date and time formatting." = "Aprende más sobre el formato de fecha y hora.";
 
 /* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
-"Learn more about prompts" = "Más información sobre los avisos";
+"Learn more about prompts" = "Más información sobre los estímulos";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Saber más sobre los perfiles";
@@ -4126,6 +4157,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Límite alcanzado. Puedes intentarlo de nuevo en 1 minuto. Intentarlo antes sólo incrementará el tiempo de espera. Si piensas que esto es un error, contacta con el soporte.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "Gráfico de líneas que representa los puntos de vista para obtener información.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "Gráfico de líneas que representa a los visitantes para obtener información.";
 
 /* No comment provided by engineer. */
 "Line Height" = "Altura de la línea";
@@ -4225,6 +4262,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "Cargando plugins…";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "Cargando estímulos…";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Cargando hilo…";
@@ -4417,6 +4457,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4939,6 +4980,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "No se ha encontrado ninguna dirección del sitio principal";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "Todavía no hay estímulos";
+
 /* A message title */
 "No recent posts" = "No hay entradas recientes";
 
@@ -4973,10 +5017,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Ninguno establecido";
 
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "No contestado";
+
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "No conectado";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "No ahora";
 
 /* Display value for Support email field if there is no user email address. */
@@ -5145,6 +5193,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5748,6 +5797,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Previsualiza tu sitio para comprobar lo que verán los visitantes.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "Semana anterior";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Mes anterior";
 
@@ -5756,6 +5808,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Periodo anterior";
+
+/* Previous week legend label */
+"Previous week" = "Semana anterior";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5814,7 +5869,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Proyectos";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
-   Title label for the Prompts card in My Sites tab. */
+   Title label for the Prompts card in My Sites tab.
+   View title for Blogging Prompts list. */
 "Prompts" = "Estímulos";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -6507,6 +6563,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "Selecciona %@ para ver tu lista de tareas";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "Selecciona %@ para ver tu biblioteca actual.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "Selecciona %@ para ver tu plan actual y otros planes disponibles.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6520,6 +6579,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the site url. */
 "Select %@ to view your site" = "Elige %@ para ver tu sitio.";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "Selecciona %@subir medios. Puedes añadirlo a tus entradas\/páginas desde cualquier dispositivo.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Seleccionar país";
@@ -7670,6 +7732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Hubo un error al cargar los plugins";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "Se ha producido un error al cargar los estímulos.";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Se ha producido un error al cargar el comentario.";
 
@@ -7708,6 +7773,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Se publican como una nueva entrada de blog en tu sitio para que tu audiencia nunca se pierda nada.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "Esta semana";
 
 /* Insights 'This Year' header */
 "This Year" = "Este año";
@@ -7774,6 +7842,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "No es posible cerrar la cuenta de este usuario porque tiene suscripciones activas.";
+
+/* This week legend label */
+"This week" = "Esta semana";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8391,6 +8462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "La subida ha fallado. Toca para opciones.";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "Subir fotos o vídeos";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Subido";
@@ -8584,8 +8658,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visitas";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "Vistas y visitantes";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "Todas las visitas a tu sitio";
@@ -8618,6 +8696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Visitantes";
 
@@ -8942,7 +9021,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We’ll notify you when its done." = "Te avisaremos cuando hayamos terminado.";
 
 /* Description of Blogging Prompts displayed in the Feature Introduction view. */
-"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "¡Te mostraremos un nuevo aviso cada día en tu escritorio para ayudarte a que fluyan esos fluidos creativos!";
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "¡Te mostraremos un nuevo estímulo cada día en tu escritorio para ayudarte a que fluyan esos fluidos creativos!";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "Volveremos a intentar hacer copia de seguridad de tu sitio.";
@@ -8973,6 +9052,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "¿Cuál fue el problema?";
+
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "¿En qué te gustaría enfocarte primero?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "¿Qué hay de nuevo?";
@@ -9216,6 +9298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Puedes aprender más y configurar recordatorios en cualquier momento en «Mi sitio > Ajustes > Recordatorios de bloguear.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Puedes aprender más y configurar recordatorios en cualquier momento en «Mi sitio > Ajustes > Recordatorios de bloguear».";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Se puede ignorar esta configuración para las entradas individuales.";
@@ -9468,6 +9553,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Tu sitio ya no enviará datos a WordPress.com y las características de Jetpack dejarán de funcionar. Perderás acceso al sitio en la aplicación y tendrás que volver a añadirla con las credenciales del sitio.";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "Tus visitas de esta semana son %@ más que los de la semana anterior.\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "Tus visitas de esta semana son %@ menos que los de la semana anterior.\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "Tus visitantes de esta semana son %@ más que los de la semana anterior.\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "Tus visitantes de esta semana son %@ menos que los de la semana anterior.\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Las credenciales de tu web no se almacenarán y solo se usarán para instalar Jetpack.";
 
@@ -9530,9 +9627,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexiones";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "¿a que sienta bien tachar cosas de una lista?";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "doble toque para cambiar de unidad";
@@ -9632,8 +9726,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comentarios";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Crear entrada";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Me gusta";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "Todavía no has publicado ninguna entrada. Vuelve más tarde cuando hayas publicado tu primera entrada.";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Publicado %@";
@@ -9646,6 +9746,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewPercentage" = "%d%% de vistas";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "No hay suficiente actividad. Vuelve a comprobarlo más tarde, cuando tu sitio haya tenido más visitas.";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Se eliminarán estos elementos:";
@@ -9773,6 +9876,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Usuarios y autores";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ Respondido";
 

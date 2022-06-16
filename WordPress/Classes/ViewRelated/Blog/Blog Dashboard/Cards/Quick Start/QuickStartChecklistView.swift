@@ -1,7 +1,14 @@
 import UIKit
 import WordPressShared
 
-final class QuickStartChecklistView: UIView {
+// A view representing the progress on a Quick Start checklist. Built according to old design specs.
+//
+// This view is used to display multiple Quick Start tour collections per Quick Start card.
+//
+// This view can be deleted once we've fully migrated to using NewQuicksTartChecklistView.
+// See QuickStartChecklistConfigurable for more details.
+//
+final class QuickStartChecklistView: UIView, QuickStartChecklistConfigurable {
 
     var tours: [QuickStartTour] = []
     var blog: Blog?
@@ -35,6 +42,9 @@ final class QuickStartChecklistView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.serifFontForTextStyle(.body, fontWeight: .semibold)
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.labelMinimumScaleFactor
         label.textColor = .text
         return label
     }()
@@ -152,6 +162,7 @@ extension QuickStartChecklistView {
         static let mainStackViewSpacing = 16.0
         static let labelStackViewSpacing = 4.0
         static let progressIndicatorViewSize = 24.0
+        static let labelMinimumScaleFactor = 0.5
     }
 
     private enum Strings {

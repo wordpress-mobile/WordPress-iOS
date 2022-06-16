@@ -1,13 +1,11 @@
 import XCTest
 
-class BlogVideoLimitsTests: XCTestCase {
+class BlogVideoLimitsTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL

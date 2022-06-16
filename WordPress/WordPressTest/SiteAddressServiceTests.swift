@@ -2,21 +2,15 @@ import XCTest
 import Nimble
 @testable import WordPress
 
-class SiteAddressServiceTests: XCTestCase {
-
-    private var contextManager: ContextManagerMock!
-    private var context: NSManagedObjectContext {
-        contextManager.mainContext
-    }
+class SiteAddressServiceTests: CoreDataTestCase {
 
     var remoteApi: MockWordPressComRestApi!
     var service: DomainsServiceAdapter!
     var mockedResponse: Any!
 
     override func setUpWithError() throws {
-        contextManager = ContextManagerMock()
         remoteApi = MockWordPressComRestApi()
-        service = DomainsServiceAdapter(managedObjectContext: context, api: remoteApi)
+        service = DomainsServiceAdapter(managedObjectContext: mainContext, api: remoteApi)
 
         let json = Bundle(for: SiteSegmentTests.self).url(forResource: "domain-suggestions", withExtension: "json")!
         let data = try Data(contentsOf: json)

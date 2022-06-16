@@ -51,7 +51,7 @@ extension ReaderStreamViewController {
 
     static let defaultResponse = NoResultsResponse(
         title: NSLocalizedString("No recent posts", comment: "A message title"),
-        message: NSLocalizedString("No posts have been made recently", comment: "A default message shown whe the reader can find no post to display"))
+        message: NSLocalizedString("No posts have been made recently", comment: "A default message shown when the reader can find no post to display"))
 
     /// Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
     ///
@@ -120,7 +120,7 @@ extension ReaderStreamViewController {
 
     func configureNoResultsViewForSavedPosts() {
 
-        let noResultsResponse = NoResultsResponse(title: NSLocalizedString("No Saved Posts",
+        let noResultsResponse = NoResultsResponse(title: NSLocalizedString("No saved posts",
                                                                            comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."),
                                                   message: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.",
                                                                              comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))

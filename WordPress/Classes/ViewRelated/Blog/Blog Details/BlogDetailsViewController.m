@@ -988,7 +988,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [rows addObject:row];
 
-    if ([Feature enabled:FeatureFlagDomains]) {
+    if ([self shouldShowDomainRegistration]) {
         BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
                                                                 identifier:BlogDetailsSettingsCellIdentifier
                                                    accessibilityIdentifier:@"Domains Row"
@@ -1371,13 +1371,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadDomains
 {
-    if (![Feature enabled:FeatureFlagDomains]) {
+    if (![self shouldShowDomainRegistration]) {
         return;
     }
 
     [self.blogService refreshDomainsFor:self.blog
                                 success:nil
                                 failure:nil];
+}
+
+- (BOOL)shouldShowDomainRegistration
+{
+    return [Feature enabled:FeatureFlagDomains]
+            && [AppConfiguration allowsDomainRegistration]
+            && [self.blog supports:BlogFeatureDomains];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element

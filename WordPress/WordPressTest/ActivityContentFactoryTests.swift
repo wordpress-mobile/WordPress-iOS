@@ -9,7 +9,7 @@ final class ActivityContentFactoryTests: XCTestCase {
     }
 
     private func mockBlock() throws -> JSONObject {
-        return try .loadFile(named: "activity-log-activity-content.json")
+        return try JSONObject(fromFileNamed: "activity-log-activity-content.json")
     }
 
 }

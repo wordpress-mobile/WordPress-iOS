@@ -51,6 +51,10 @@ extension QRLoginScanningViewController {
         stopAnimations()
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return [.portrait, .portraitUpsideDown]
+    }
+
     @IBAction func didTapCloseButton(_ sender: Any) {
         dismiss(animated: true)
     }

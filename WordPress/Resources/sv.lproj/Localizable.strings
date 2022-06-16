@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-05 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-05-23 13:36:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -148,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ anslöts igen.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@ %%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -372,7 +373,7 @@ translators: Block name. %s: The localized block name */
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Ett nytt sätt att skapa och publicera engagerande innehåll på din webbplats.";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress app' button. */
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
 "A series of steps helping you to explore the app." = "En serie steg som hjälper dig att utforska appen.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
@@ -665,6 +666,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Alla";
 
@@ -811,6 +813,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Svara på förslaget";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Besvarade";
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
@@ -1178,6 +1183,9 @@ translators: Block name. %s: The localized block name */
 "Briefly describe the link to help screen reader user" = "Beskriv kortfattat länken för den som använder skärmläsare.";
 
 /* Description of a Quick Start Tour */
+"Bring media straight from your device or camera to your site." = "Överför media till din webbplats direkt från din enhet eller kamera.";
+
+/* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Bläddra bland alla teman för att hitta det som passar dig perfekt.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
@@ -1331,8 +1339,7 @@ translators: Block name. %s: The localized block name */
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Var försiktig!";
 
-/* Example prompt for blogging prompts in the create new bottom action sheet.
-   Example prompt for the Prompts card in Feature Introduction. */
+/* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
 
 /* Label for Categories
@@ -1758,6 +1765,9 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "Klart: Social delning";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload photos or videos" = "Slutfört: Ladda upp foton eller videoklipp";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Slutförd: Visa din webbplats";
 
 /* Section title for the configure table section in the blog details screen */
@@ -1781,8 +1791,8 @@ translators: Block name. %s: The localized block name */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Bekräfta först din e-postadress";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Grattis! Du är klar med snabbstarten  🎉";
+/* Title shown when all tours have been completed. */
+"Congrats! You know your way around" = "Grattis! Du kan det här";
 
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Grattis till att ha klarat av hela listan. Bra gjort.";
@@ -2472,6 +2482,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
 
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "Visst är det skönt att kunna bocka av saker i en lista?";
+
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Kontaktinformation för domän";
 
@@ -2817,6 +2830,12 @@ translators: Block name. %s: The localized block name */
    Title of button to enable publicize. */
 "Enable" = "Aktivera";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Aktivera aviseringar";
+
+/* Title of the view, asking the user if they want to enable notifications. */
+"Enable Notifications?" = "Aktivera notiser?";
+
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Aktivera offentliggör";
 
@@ -2953,6 +2972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Fel vid laddning av tilläggen";
+
+/* Text displayed when there is a failure loading a blogging prompt. */
+"Error loading prompt" = "Kunde inte ladda uppmaningen";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Fel när kommentar markerades som skräppost.";
@@ -3341,6 +3363,9 @@ translators: Block name. %s: The localized block name */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Vanliga frågor";
 
+/* Format for blogging prompts attribution. %1$@ is the attribution source. */
+"From %1$@" = "Från %1$@";
+
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "Från annan enhet";
 
@@ -3410,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Sätt bollen i rullning och få fler läsare av ditt inlägg genom att dela ditt inlägg.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "Lär känna Jetpack-appen";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "Lär känna WordPress-appen";
@@ -3521,6 +3549,9 @@ translators: Block name. %s: The localized block name */
 
 /* This value is used to set the accessibility hint text for uploading a site icon. */
 "Guides you through the process of uploading an icon for your site." = "Guidar dig genom processen för att ladda upp en ikon för din webbplats.";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of uploading new media." = "Guidar dig igenom processen med att ladda upp ny media.";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -4127,6 +4158,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Gräns nådd. Du kan försöka igen om 1 minut. Att försöka igen innan kommer bara öka tiden du måste vänta innan förbudet är upphävt. Vänligen kontakta support om du tror detta är ett fel.";
 
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "Linjediagram som visar antalet visningar för Insikter.";
+
+/* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
+"Line Chart depicting Visitors for insights." = "Linjediagram som visar antalet besökare för Insikter.";
+
 /* No comment provided by engineer. */
 "Line Height" = "Radhöjd";
 
@@ -4225,6 +4262,9 @@ translators: Block name. %s: The localized block name */
 
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "Laddar tillägg…";
+
+/* Displayed while blogging prompts are being loaded. */
+"Loading prompts..." = "Laddar uppmaningar...";
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Laddar ström...";
@@ -4417,6 +4457,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4939,6 +4980,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "Ingen primär webbplatsadress hittades";
 
+/* Title displayed when there are no blogging prompts to display. */
+"No prompts yet" = "Inga uppmaningar än";
+
 /* A message title */
 "No recent posts" = "Inga nya inlägg";
 
@@ -4973,10 +5017,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Ingenting är inställt";
 
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "Ej besvarade";
+
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Inte ansluten";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Inte nu";
 
 /* Display value for Support email field if there is no user email address. */
@@ -5145,6 +5193,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5748,6 +5797,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Förhandsgranska din webbplats för att se vad dina besökare kommer att se.";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"Previous Week" = "Föregående vecka";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Föregående månad";
 
@@ -5756,6 +5808,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Föregående period";
+
+/* Previous week legend label */
+"Previous week" = "Föregående vecka";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5814,7 +5869,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Projekt";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
-   Title label for the Prompts card in My Sites tab. */
+   Title label for the Prompts card in My Sites tab.
+   View title for Blogging Prompts list. */
 "Prompts" = "Förslag";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
@@ -6507,6 +6563,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "Välj %@ för att se din checklista";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current library." = "Välj %@ för att se ditt nuvarande bibliotek.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "Välj %@ för att visa ditt nuvarande paket och andra tillgängliga paket.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6520,6 +6579,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the site url. */
 "Select %@ to view your site" = "Välj %@ för att visa din webbplats";
+
+/* A step in a guided tour for quick start. %@ will be a plus icon. */
+"Select %@to upload media. You can add it to your posts \/ pages from any device." = "Välj %@ för att ladda upp media. Du kan lägga till det i dina inlägg\/på dina sidor från valfri enhet.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Välj land";
@@ -7670,6 +7732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Ett fel inträffade när tilläggen lästes in";
 
+/* Text displayed when there is a failure loading blogging prompts. */
+"There was an error loading prompts." = "Ett fel uppstod vid laddningen av uppmaningarna.";
+
 /* Text displayed when there is a failure loading a comment. */
 "There was an error loading the comment." = "Det gick inte att läsa in kommentaren.";
 
@@ -7708,6 +7773,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "De publiceras som ett nytt blogginlägg på din webbplats för att dina läsare aldrig ska missa något.";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"This Week" = "Denna vecka";
 
 /* Insights 'This Year' header */
 "This Year" = "Innevarande år";
@@ -7774,6 +7842,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Detta användarkonto kan inte avslutas eftersom det har aktiva abonnemang.";
+
+/* This week legend label */
+"This week" = "Denna vecka";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8391,6 +8462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "Uppladdning misslyckades. Knacka för alternativ.";
 
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "Ladda upp foton eller videoklipp";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Uppladdad";
@@ -8584,8 +8658,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visningar";
+
+/* Insights views and visitors header */
+"Views & Visitors" = "Visningar och besökare";
 
 /* Description for view count. Singular. */
 "Views to your site so far" = "Visningar för din webbplats hittills";
@@ -8618,6 +8696,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Besökare";
 
@@ -8974,6 +9053,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Vad var problemet?";
 
+/* Title of the view asking the user what they'd like to focus on */
+"What would you like to focus on first?" = "Vad vill du fokusera på först?";
+
 /* Title of section that contains plugins' change log */
 "What's New" = "Vad är nytt?";
 
@@ -9216,6 +9298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Note displayed in the Feature Introduction view. */
 "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Du kan när som helst ta reda på mer och konfigurera påminnelser under Min webbplats > Inställningar > Bloggningspåminnelser.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Du kan läsa mer och ställa in påminnelser när som helst via Min webbplats, Inställningar, Bloggningspåminnelser.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Du kan åsidosätta dessa inställningar för enskilda inlägg.";
@@ -9468,6 +9553,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Din webbplats kommer inte längre att skicka uppgifter till WordPress.com och Jetpack-funktionerna kommer att sluta fungera. Du förlorar åtkomst till webbplatsen från appen och du kommer att behöva lägga till den igen med hjälp av inloggningsuppgifterna för webbplatsen.";
 
+/* Stats insights views higher than previous week */
+"Your views this week are %@ higher than the previous week.\n" = "Dina visningar den här veckan är %@ högre än föregående vecka.\n";
+
+/* Stats insights views lower than previous week */
+"Your views this week are %@ lower than the previous week.\n" = "Dina visningar den här veckan är %@ lägre än föregående vecka.\n";
+
+/* Stats insights visitors higher than previous week */
+"Your visitors this week are %@ higher than the previous week.\n" = "Dina besökare den här veckan är %@ högre än föregående vecka.\n";
+
+/* Stats insights visitors lower than previous week */
+"Your visitors this week are %@ lower than the previous week.\n" = "Dina besökare den här veckan är %@ lägre än föregående vecka.\n";
+
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Inloggningsuppgifterna till din webbplats används enbart för att installera Jetpack och de kommer inte att sparas.";
 
@@ -9530,9 +9627,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "anslutningar";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "Visst är det skönt att stryka utförda punkter i en lista?";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
@@ -9632,8 +9726,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Kommentarer";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Skapa inlägg";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Gillamarkeringar";
+
+/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
+"stats.insights.latestPostSummary.noData" = "Du har inte publicerat några inlägg än. Kom tillbaka när du har publicerat ditt första inlägg.";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Publicerades %@";
@@ -9646,6 +9746,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
 "stats.insights.mostPopularCard.viewPercentage" = "%d%% av visningarna";
+
+/* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
+"stats.insights.mostPopularTime.noData" = "Inte tillräckligt med aktivitet. Kom tillbaka när din webbplats har haft fler besökare.";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Dessa saker kommer att raderas:";
@@ -9773,6 +9876,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Användare och Skribenter";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ Besvarat";
 

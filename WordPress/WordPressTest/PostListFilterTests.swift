@@ -2,14 +2,12 @@ import XCTest
 @testable import WordPress
 import Nimble
 
-class PostListFilterTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class PostListFilterTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
     }
 

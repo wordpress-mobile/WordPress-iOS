@@ -2,15 +2,13 @@ import XCTest
 
 @testable import WordPress
 
-class BlogDashboardStateTests: XCTestCase {
+class BlogDashboardStateTests: CoreDataTestCase {
     private var dashboardState: BlogDashboardState!
     private var blog: Blog!
-    private var contextManager: ContextManagerMock!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = ContextManagerMock()
         blog = BlogBuilder(contextManager.mainContext).build()
         dashboardState = BlogDashboardState.shared(for: blog)
     }

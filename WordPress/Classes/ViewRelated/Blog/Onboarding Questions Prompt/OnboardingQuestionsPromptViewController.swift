@@ -85,6 +85,8 @@ private extension OnboardingQuestionsPromptViewController {
     }
 
     private func updateButtonTitles() {
+        titleLabel.text = Strings.title
+
         statsButton.setTitle(Strings.stats, for: .normal)
         statsButton.setImage("📊".image(), for: .normal)
 
@@ -172,6 +174,7 @@ private extension String {
 
 // MARK: - Helper Structs
 private struct Strings {
+    static let title = NSLocalizedString("What would you like to focus on first?", comment: "Title of the view asking the user what they'd like to focus on")
     static let stats = NSLocalizedString("Checking stats", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
     static let writing = NSLocalizedString("Writing blog posts", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")
     static let notifications = NSLocalizedString("Staying up to date with notifications", comment: "Title of button that asks the users if they'd like to focus on checking their sites stats")

@@ -1,3 +1,4 @@
+import UIKit
 /**
  ImmuTable represents the view model for a static UITableView.
 
@@ -291,6 +292,26 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return viewModel.sections[section].footerText
     }
 
+    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if target.responds(to: #selector(UITableViewDataSource.tableView(_:canEditRowAt:))) {
+            return target.tableView?(tableView, canEditRowAt: indexPath) ?? false
+        }
+
+        return false
+    }
+
+    open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if target.responds(to: #selector(UITableViewDataSource.tableView(_:canMoveRowAt:))) {
+            return target.tableView?(tableView, canMoveRowAt: indexPath) ?? false
+        }
+
+        return false
+    }
+
+    open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        target.tableView?(tableView, moveRowAt: sourceIndexPath, to: destinationIndexPath)
+    }
+
     // MARK: UITableViewDelegate
 
     open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -352,13 +373,26 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return nil
     }
 
-    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if target.responds(to: #selector(UITableViewDataSource.tableView(_:canEditRowAt:))) {
-            return target.tableView?(tableView, canEditRowAt: indexPath) ?? false
+    open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:targetIndexPathForMoveFromRowAt:toProposedIndexPath:))) {
+            return target.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: proposedDestinationIndexPath) ?? proposedDestinationIndexPath
         }
 
-        return false
+        return proposedDestinationIndexPath
     }
+
+    open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:editingStyleForRowAt:))) {
+            return target.tableView?(tableView, editingStyleForRowAt: indexPath)  ?? .none
+        }
+
+        return .none
+    }
+
+    open func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return target.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
+    }
+
 
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:trailingSwipeActionsConfigurationForRowAt:))) {

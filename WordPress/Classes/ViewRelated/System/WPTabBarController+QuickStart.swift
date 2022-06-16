@@ -61,6 +61,9 @@ extension WPTabBarController {
         tabBar.layoutIfNeeded()
         var tabs = tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
         tabs.sort { $0.frame.origin.x < $1.frame.origin.x }
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            tabs.reverse()
+        }
         return tabs[safe: index]
     }
 

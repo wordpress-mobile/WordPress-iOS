@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-04-27 10:59:06+0000 */
+/* Translation-Revision-Date: 2022-05-11 10:31:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sq_AL */
@@ -86,11 +86,17 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Buton %@";
 
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Return to My Site screen when you're ready for the next task." = "%@ Kthim te skena Sajti Im, kur jeni gati për hapin pasues.";
+
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "Etiketë %@";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ Etiketa";
+
+/* Title of the task complete hint for the Quick Start Tour */
+"%@ Tip: get updates faster by enabling push notifications." = "Ndihmëz %@: merrni përditësime më shpejt, duke aktivizuar njoftime push.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliard";
@@ -142,7 +148,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ u rilidh.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -273,8 +280,17 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(pa titull)";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* is now following your site!" = "*Pal Bardhi* tani po ndjek sajtin tuaj!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Johann Brandt* responded to your comment" = "*Xhike Xhiku* iu përgjigj komentit tuaj";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "<b>Durim Cerova<\/b> iu përgjigj postimit tuaj";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"*Madison Ruiz* added a new post to their site" = "*Adil Guri* shtoi një postim të ri te sajti i vet";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "<b>Maqo Senko<\/b> pëlqeu postimin tuaj";
@@ -356,6 +372,9 @@ translators: Block name. %s: The localized block name */
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Një rrugë e re për të krijuar dhe botuar lëndë tërheqëse në sajtin tuaj.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
+"A series of steps helping you to explore the app." = "Një seri hapash për t’ju ndihmuar të eksploroni aplikacionin.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Një varg hapash që ju tregon se si të shtoni një temë, një ikonë sajti, etj.";
@@ -647,6 +666,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Krejt";
 
@@ -1405,6 +1425,9 @@ translators: Block name. %s: The localized block name */
 "Check your network connection and try again. Or draft a post." = "Kontrolloni lidhjen e rrjetit tuaj dhe riprovoni. Ose skiconi një postim.";
 
 /* Title of a Quick Start Tour */
+"Check your notifications" = "Shihni njoftimet tuaja";
+
+/* Title of a Quick Start Tour */
 "Check your site stats" = "Ndiqni statistikat e sajtit tuaj";
 
 /* Title of a Quick Start Tour */
@@ -1412,6 +1435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Po kontrollohen blerjet…";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Parje statistikash";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Pjellë e %@";
@@ -1690,6 +1716,9 @@ translators: Block name. %s: The localized block name */
 "Completed" = "I përfunduar";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your notifications" = "I plotësuar: Shihni njoftimet tuaja";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "E plotësuar: Shihni statistikat e sajtit tuaj";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1700,6 +1729,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "E plotësuar: Zgjidhni një ikonë sajti unike";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Connect with other sites" = "I plotësuar: Lidhuni me sajte të tjerë";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "E plotësuar: Vazhdoni me rregullimin e sajtit";
@@ -1743,14 +1775,14 @@ translators: Block name. %s: The localized block name */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Së pari ripohoni email-in tuaj";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Përgëzime për mbarimin e Nisjes së Shpejtë  🎉";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Përgëzime për plotësimin e listës tuaj. Punë e paqme.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Përgëzime për blerjen tuaj!";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Congratulations! Your site passed *1000 all-time* views!" = "Përgëzime! Sajti juaj kaloi *1000* parje për tërë kohën!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1767,6 +1799,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "Connect with other bloggers by following, liking and commenting on their posts." = "Lidhuni me blogues të tjerë, përmes ndjekjes, pëlqimit dhe komentimit në postimet e tyre.";
+
+/* Title of a Quick Start Tour */
+"Connect with other sites" = "Lidhuni me sajte të tjerë";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Lidhni shërbimet tuaja të parapëlqyera shoqërore për media, që postimet e reja të ndahen vetvetiu me miqtë tuaj.";
@@ -2360,6 +2395,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Zbuloni dhe ndiqni blogjet që keni për zemër";
 
+/* Description of a Quick Start Tour */
+"Discover and follow sites that inspire you." = "Zbuloni dhe ndiqni sajte që ju frymëzojnë.";
+
 /* Title for button that will open up the follow topics screen. */
 "Discover blogs to follow" = "Zbuloni blogje për ndjekje";
 
@@ -2769,6 +2807,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Aktivizoni Publicize-in";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for Existing Site" = "Aktivizo Nisjeje të Shpejtë për Sajtin Ekzistues";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Aktivizo Nisjeje të Shpejtë për Sajtin e Ri";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktivizoni Statistika Sajti";
@@ -3181,6 +3225,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Ndiqe Bisedën";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Ndiqe bisedën";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "Ndiqe sajtin";
 
@@ -3337,6 +3384,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dilni në pah: komentoni në postime që keni lexuar.";
 
+/* Description of a Quick Start Tour */
+"Get real time updates from your pocket." = "Merrni nga xhepi përditësime të atypëratyshme.";
+
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Nisjani duke zgjedhur nga një larmi e madhe skemash të parapërgatitura faqesh. Ose thjesht fillojani me një faqe të zbrazët.";
 
@@ -3345,6 +3395,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Futjuni punës dhe shtoni parjet e postimit tuaj përmes ndarjes së tij me të tjerët.";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Njihuni me aplikacionin WordPress";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Merrni përkatësinë tuaj";
@@ -3366,6 +3419,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Provojeni, duke shtuar ca blloqe te postimi ose faqja juaj!";
+
+/* Title of the Site Name screen. Takes the vertical name as a parameter. */
+"Give your %@ website a name" = "Jepini sajtit tuaj %@ një emër";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Jepini sajtit tuaj një emër që pasqyron personalitetin dhe subjektin e tij. Përshtypja e parë ka vlerë!";
@@ -3414,6 +3470,9 @@ translators: Block name. %s: The localized block name */
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Shtoni Publikun Tuaj";
+
+/* This value is used to set the accessibility hint text for viewing the user's notifications. */
+"Guides you through the process of checking your notifications." = "Ju udhëheq përmes procesit të parjes së njoftimeve tuaja.";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
 "Guides you through the process of choosing a theme for your site." = "Ju udhëheq përmes procesit të të zgjedhjes së një teme për sajtin tuaj.";
@@ -3929,6 +3988,12 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mbajeni të përditësuar funksionimin e sajtit tuaj.";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your favorite authors post new content." = "Kini dijeni se kur postojnë lëndë të re autorët tuaj të parapëlqyer.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Kini dijeni kur sajti juaj po merr më tepër trafik, ndjekës të rinj, ose kur arrin një pikësynim të ri!";
+
 /* Autoapprove only from known users */
 "Known Users" = "Përdorues të Njohur";
 
@@ -4328,6 +4393,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4887,7 +4953,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "I Palidhur";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Jo Tani";
 
 /* Display value for Support email field if there is no user email address. */
@@ -4909,6 +4976,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "S’e shihni email-in? Shihni te dosja juaj Të padëshiruar ose Të pavlerë.";
+
+/* Button that allows users unsure of what selection they'd like */
+"Not sure, show me around" = "S’jam i sigurt, më tregoni si";
 
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Shënim:";
@@ -4941,6 +5011,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Kohë njoftimi";
+
+/* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
+"Notification will include a word or short phrase for inspiration" = "Njoftimi do të përfshijë një fjalë, ose togfjalësh të shkurtër, për frymëzim";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5050,6 +5123,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5647,6 +5721,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Parashihni postimin";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "Bëni një paraparje të sajtit tuaj që të shihni ç’do të shohin vizitorët tuaj.";
+
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Muaji i mëparshëm";
 
@@ -5828,6 +5905,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "URL CSS-je Lexuesi";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Reading posts from other sites" = "Lexim postimesh nga sajte të tjerë";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Prona të Patundshme";
@@ -6390,6 +6470,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Përzgjidhni %@ që të zbuloni tema të reja";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to find other sites." = "Përzgjidhni %@ që të gjenden sajte të tjerë.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Përzgjidhni %@ që të shihni se si po ecën sajti juaj.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6406,6 +6489,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Përzgjidhni %@ që të ngarkoni një të ri.";
+
+/* A step in a guided tour for quick start. %@ will be the site url. */
+"Select %@ to view your site" = "Përzgjidhni %@ që të shihni sajtin tuaj";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Përzgjidhni Vend";
@@ -6439,6 +6525,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Përzgjidhni stil paragrafi";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "Përzgjidhni skedën %@ që të merrni përditësime kudo që të jeni.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Përzgjidhni %@ që të shtoni llogari tuajat prej mediash shoqërore";
@@ -7006,6 +7095,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Jini brenda gjërave";
 
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with like and comment notifications." = "Mbani lidhjet, përmes njoftimesh mbi pëlqime dhe komente.";
+
+/* Subtitle giving the user more context about why to enable notifications. */
+"Stay in touch with your audience with like and comment notifications." = "Mbani lidhjet me publikun tuaj, përmes njoftimesh mbi pëlqime dhe komente.";
+
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Staying up to date with notifications" = "Si të jeni të përditësuar me njoftime";
+
 /* This is the cell title. */
 "Stick post to the front page" = "Ngjite këtë postim te faqja ballore";
 
@@ -7238,6 +7336,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Prekeni që të shihni sajtin tuaj";
+
+/* A hint about the completed guided tour. */
+"Task complete." = "Punë e plotësuar.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klasifikim";
@@ -7878,6 +7979,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Customize Insights button title */
 "Try it now" = "Provojeni tani";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Try selecting %@ to add topics you like." = "Provoni të përzgjidhni %@ që të shtoni tema që doni.";
+
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Provoni Përpunuesin e ri me Blloqe";
 
@@ -8114,6 +8218,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Hiqe ndjekjen e %@";
 
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow Conversation" = "Mos e Ndiq Më Bisedën";
+
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Mos e ndiq më bisedën";
 
@@ -8297,6 +8404,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Përdore";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Use %@ to find sites and tags." = "Përdorni %@ që të gjeni sajte dhe etiketa.";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Përdor Shitore Bankëprovë";
 
@@ -8434,6 +8544,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Parje";
 
@@ -8454,6 +8565,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Për më tepër, vizitoni %@";
 
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Vizitoni Pultin";
+
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitoni sajtin";
 
@@ -8465,6 +8579,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Vizitorë";
 
@@ -8994,6 +9109,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Shkrim & Poezi";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Writing blog posts" = "Shkrim postimesh blogu";
+
 /* No comment provided by engineer. */
 "X-Axis Position" = "Pozicion në boshtin X";
 
@@ -9150,6 +9268,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Lypset të verifikoni llogarinë tuaj përpara se të mund të botoni një postim.\nMos u shqetësoni, postimi juaj është i parrezikuar dhe do të ruhet si një skicë.";
 
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"You received *50 likes* on your comment" = "Patët *50 pëlqime* të komentit tuaj";
+
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Sot në sajtin tuaj patët *50 pëlqime*";
 
@@ -9175,6 +9296,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
 "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Do të merrni një kujtues për të bloguar <strong>një herë<\/strong> në javë në të %1$@ më %2$@.";
+
+/* Message for the action with opt-out revert action.
+   The app successfully subscribed to the comments for the post */
+"You'll get notifications in the app" = "Do të merrni njoftime brenda aplikacionit";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Do të merrni kujtues për të bloguar %1$@ në javë te %2$@.";
@@ -9257,6 +9382,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Adresa e sajtit tuaj shfaqet te shtylla në krye të skenës, kur vizitoni sajtin tuaj nën Safari.";
 
+/* Description for label when the user has a site with VaultPress. */
+"Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Sajti juaj mbrohet tashmë nga VaultPress. Më poshtë mund të gjeni një lidhje për te pulti juaj VaultPress.";
+
+/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
+"Your site appears to be getting *more traffic* than usual!" = "Sajti juaj duket se po ka *më tepër trafik* se sa zakonisht!";
+
+/* Title for label when the user has VaultPress enabled. */
+"Your site has VaultPress" = "Sajti juaj ka VaultPress";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Sajti juaj u krijua!";
 
@@ -9317,8 +9451,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "Këtë e pëlqejnë _%1$d_ blogues.";
 
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"_One blogger_ likes this." = "Këtë e pëlqen një blogues.";
+
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "Këtë e pëlqeni _ju dhe %1$d blogues_.";
+
+/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
+"_You and another blogger_ like this." = "Këtë e pëlqeni _ju dhe një tjetër blogues_.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
 "_You_ like this." = "_Ju_ pëlqen kjo.";
@@ -9349,9 +9489,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
-
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "a s’ju kënaq t’i hiqni vizë gjërave në një listë?";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "që të ndryshoni njësinë, prekeni dy herë";
@@ -9447,6 +9584,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numër telefoni";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Komente";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Pëlqime";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Botuar më %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Parje";
+
+/* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
+"stats.insights.mostPopularCard.title" = "Koha Më Popullore";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% e parjeve";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";
@@ -9574,6 +9729,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Përdorues & Autorë";
 
-/* Title label that indicates the prompt has been answered. */
+/* Label that indicates a blogging prompt has been answered.
+   Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ Me Përgjigje";
 

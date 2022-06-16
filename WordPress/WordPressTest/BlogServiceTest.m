@@ -5,7 +5,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "ContextManagerMock.h"
+#import "WordPressTest-Swift.h"
 
 @interface BlogServiceTest : XCTestCase
 

@@ -43,4 +43,10 @@ class BlogDashboardState {
             return states[dotComID]!
         }
     }
+
+    /// Purge all saved dashboard states.
+    /// Should be called on logout
+    static func resetAllStates() {
+        states.removeAll()
+    }
 }

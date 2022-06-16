@@ -3,15 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-/// This test stuite is clashing with other tests
-/// Specifically:
-/// - [BlogJetpackTest testJetpackSetupDoesntReplaceDotcomAccount]
-/// - CommentServiceTests.testFailingFetchCommentLikesShouldCallFailureBlock()
-///
-/// We weren't able to figure out why but it seems a race condition + Core data
-/// For now, renaming the suite to change the execution order solves the issue.
-class ZBlogDashboardServiceTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
+class BlogDashboardServiceTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     private var service: BlogDashboardService!
@@ -26,7 +18,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        contextManager = ContextManagerMock()
         context = contextManager.newDerivedContext()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
@@ -35,7 +26,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -260,7 +250,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     }
 
     func dictionary(from file: String) -> NSDictionary? {
-        let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
+        let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
@@ -295,7 +285,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
         didCallWithBlogID = blogID
         didRequestCards = cards
 
-        if let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
+        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
         let data: Data = try? Data(contentsOf: fileURL),
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)

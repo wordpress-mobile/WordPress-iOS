@@ -2,16 +2,10 @@ import UIKit
 import XCTest
 @testable import WordPress
 
-class ReaderStreamViewControllerTests: XCTestCase {
-    private var contextManager: ContextManagerMock!
-
-    override func setUp() {
-        contextManager = ContextManagerMock()
-    }
-
+class ReaderStreamViewControllerTests: CoreDataTestCase {
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
-        let context = contextManager.mainContext
+        let context = mainContext
         let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
         topic.path = "foo"
 

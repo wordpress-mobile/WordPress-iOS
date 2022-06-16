@@ -190,12 +190,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
-    /// Load card from cache if view is appearing
+    /// Load card from cache
     @objc private func loadCardsFromCache() {
-        guard view.superview != nil else {
-            return
-        }
-
         viewModel.loadCardsFromCache()
     }
 

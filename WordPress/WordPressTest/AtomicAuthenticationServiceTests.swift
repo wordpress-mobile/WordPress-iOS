@@ -3,14 +3,11 @@ import UIKit
 import XCTest
 @testable import WordPress
 
-class AtomicAuthenticationServiceTests: XCTestCase {
-    var contextManager: ContextManagerMock!
+class AtomicAuthenticationServiceTests: CoreDataTestCase {
     var atomicService: AtomicAuthenticationService!
 
     override func setUp() {
         super.setUp()
-
-        contextManager = ContextManagerMock()
 
         let api = WordPressComRestApi(oAuthToken: "")
         let remote = AtomicAuthenticationServiceRemote(wordPressComRestApi: api)
@@ -20,7 +17,6 @@ class AtomicAuthenticationServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        contextManager = nil
         atomicService = nil
     }
 
