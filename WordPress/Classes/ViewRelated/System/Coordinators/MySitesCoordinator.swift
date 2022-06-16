@@ -134,7 +134,7 @@ class MySitesCoordinator: NSObject {
             UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
         }
 
-        mySiteViewController.showDetailView(for: .stats)
+        mySiteViewController.showBlogDetailsSubsection(.stats)
     }
 
     func showActivityLog(for blog: Blog) {
