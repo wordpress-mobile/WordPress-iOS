@@ -2282,6 +2282,10 @@
 		C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		C7A09A4A28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
+		C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
+		C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
+		C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
 		C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
@@ -7094,6 +7098,8 @@
 		C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingEnableNotificationsViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
+		C7A09A4928401B7B003096ED /* QRLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginService.swift; sourceTree = "<group>"; };
+		C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginURLParser.swift; sourceTree = "<group>"; };
 		C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningCoordinator.swift; sourceTree = "<group>"; };
 		C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinator.swift; sourceTree = "<group>"; };
@@ -12096,6 +12102,7 @@
 				8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */,
 				FAB8AB8A25AFFE7500F9F8A0 /* JetpackRestoreService.swift */,
 				8C6A22E325783D2000A79950 /* JetpackScanService.swift */,
+				C7A09A4928401B7B003096ED /* QRLoginService.swift */,
 				9A2D0B35225E2511009E585F /* JetpackService.swift */,
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
 				9804A096263780B400354097 /* LikeUserHelpers.swift */,
@@ -13870,6 +13877,7 @@
 				C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */,
 				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
 				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
+				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -17850,6 +17858,7 @@
 				F1C197A62670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
+				C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
@@ -18493,6 +18502,7 @@
 				931215E6267F5192008C3B69 /* ReferrerDetailsViewModel.swift in Sources */,
 				FE003F60282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */,
 				9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */,
+				C7A09A4A28401B7B003096ED /* QRLoginService.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				DC772B0928201F5300664C02 /* ViewsVisitorsChartMarker.swift in Sources */,
 				8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */,
@@ -20870,6 +20880,7 @@
 				FABB22ED2602FC2C00C8785C /* EditorFactory.swift in Sources */,
 				FABB22EE2602FC2C00C8785C /* NotificationSiteSubscriptionViewController.swift in Sources */,
 				FABB22EF2602FC2C00C8785C /* PostingActivityDay.swift in Sources */,
+				C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */,
 				FABB22F02602FC2C00C8785C /* ReaderTeamTopic.swift in Sources */,
 				FABB22F12602FC2C00C8785C /* WPAccount+AccountSettings.swift in Sources */,
 				FABB22F22602FC2C00C8785C /* Route.swift in Sources */,
@@ -21745,6 +21756,7 @@
 				FABB25D82602FC2C00C8785C /* ImageCropOverlayView.swift in Sources */,
 				FABB25D92602FC2C00C8785C /* UIView+SpringAnimations.swift in Sources */,
 				FABB25DA2602FC2C00C8785C /* ReaderGapMarkerCell.swift in Sources */,
+				C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				FABB25DB2602FC2C00C8785C /* SupportTableViewController+Activity.swift in Sources */,
 				FABB25DC2602FC2C00C8785C /* ThemeIdHelper.swift in Sources */,
 				FABB25DD2602FC2C00C8785C /* BottomScrollAnalyticsTracker.swift in Sources */,

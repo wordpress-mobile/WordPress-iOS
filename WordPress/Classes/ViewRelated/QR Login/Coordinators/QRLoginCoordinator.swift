@@ -12,24 +12,32 @@ class QRLoginCoordinator {
         navigationController.dismiss(animated: true)
     }
 
-    func didScanCode(_ code: String) {
-        showVerifyAuthorization(loginCode: code)
+    func didScanToken(_ token: QRLoginToken) {
+        showVerifyAuthorization(token: token)
+    }
+
+    func scanAgain() {
+        navigationController.setViewControllers([scanningViewController()], animated: true)
     }
 
     func showCameraScanningView(from source: UIViewController? = nil) {
-        let controller = QRLoginScanningViewController()
-        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
-
-        pushOrPresent(controller, from: source)
+        pushOrPresent(scanningViewController(), from: source)
     }
 
-    func showVerifyAuthorization(loginCode: String, from source: UIViewController? = nil) {
+    func showVerifyAuthorization(token: QRLoginToken, from source: UIViewController? = nil) {
         let controller = QRLoginVerifyAuthorizationViewController()
-        controller.coordinator = QRLoginVerifyCoordinator(loginCode: loginCode,
+        controller.coordinator = QRLoginVerifyCoordinator(token: token,
                                                           view: controller,
                                                           parentCoordinator: self)
 
         pushOrPresent(controller, from: source)
+    }
+
+    private func scanningViewController() -> QRLoginScanningViewController {
+        let controller = QRLoginScanningViewController()
+        controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
+
+        return controller
     }
 }
 
@@ -62,7 +70,7 @@ extension QRLoginCoordinator {
 
     /// Display QR validation flow with a specific code, skipping the scanning step
     /// and going to the validation flow
-    static func present(code: String, from source: UIViewController) {
-        QRLoginCoordinator().showVerifyAuthorization(loginCode: code, from: source)
+    static func present(token: QRLoginToken, from source: UIViewController) {
+        QRLoginCoordinator().showVerifyAuthorization(token: token, from: source)
     }
 }
