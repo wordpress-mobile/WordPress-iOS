@@ -10,7 +10,9 @@ let package = Package(
             targets: ["WordPressFlux"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "BuildkiteTestCollector", url: "https://github.com/buildkite/test-collector-swift", from: "0.1.1"),
+    ],
     targets: [
         .target(
             name: "WordPressFlux",
@@ -18,7 +20,7 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressFluxTests",
-            dependencies: ["WordPressFlux"]
+            dependencies: ["WordPressFlux", "BuildkiteTestCollector"]
         ),
     ]
 )
