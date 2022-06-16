@@ -119,6 +119,11 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        guard !isInitialLoad else {
+            // Until the initial load has been completed, no data should be rendered in the table.
+            return 0
+        }
+
         return resultsController.sections?.count ?? 0
     }
 
