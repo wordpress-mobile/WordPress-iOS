@@ -450,7 +450,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        // We don't show guide text at the detail level
+        data.guideText = nil
+        return data
     }
 
     // MARK: - Refresh Data

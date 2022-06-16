@@ -40,6 +40,8 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
     // MARK: - View Configuration
 
     private func configureView() {
+        selectionStyle = .none
+
         outerStackView = makeOuterStackView()
         contentView.addSubview(outerStackView)
 

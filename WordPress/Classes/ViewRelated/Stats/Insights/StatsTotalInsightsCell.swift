@@ -7,13 +7,13 @@ struct StatsTotalInsightsData {
     var difference: Int? = nil
     var percentage: Int? = nil
     var sparklineData: [Int]? = nil
-    var guideText: String? = nil
+    var guideText: NSAttributedString? = nil
 
     public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodStore: StatsPeriodStore, statsSummaryType: StatsSummaryType, guideText: String? = nil) -> StatsTotalInsightsData {
+    public static func createTotalInsightsData(periodStore: StatsPeriodStore, insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType, guideText: NSAttributedString? = nil) -> StatsTotalInsightsData {
         guard let periodSummary = periodStore.getSummary() else {
             return StatsTotalInsightsData(count: 0)
         }
@@ -32,6 +32,7 @@ struct StatsTotalInsightsData {
 
         let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
         let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
+        let guideText = makeTotalInsightsGuideText(insightsStore: insightsStore, statsSummaryType: statsSummaryType)
 
         return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText)
     }
@@ -52,12 +53,43 @@ struct StatsTotalInsightsData {
         return sparklineData
     }
 
-    public static func makeLikesTotalInsightsGuideText(insightsStore: StatsInsightsStore) -> String? {
-        guard let summary = insightsStore.getLastPostInsight() else {
+    public static func makeTotalInsightsGuideText(insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
+        switch statsSummaryType {
+        case .likes:
+            guard let summary = insightsStore.getLastPostInsight() else {
+                return nil
+            }
+
+            let formattedText: String
+            if summary.likesCount == 1 {
+                formattedText = TextContent.likesTotalGuideTextSingular
+            } else {
+                formattedText = String(format: TextContent.likesTotalGuideTextPlural, summary.title, summary.likesCount)
+            }
+
+            return NSAttributedString.attributedStringWithHTML(formattedText, attributes: StatsTotalInsightsData.guideAttributes)
+        case .comments:
+            return NSAttributedString(string: TextContent.commentsTotalGuideText)
+        default:
             return nil
         }
+    }
 
-        return "Your latest post \(summary.title) has received \(summary.likesCount) likes."
+    private static var guideAttributes: StyledHTMLAttributes = [
+        .BodyAttribute: [
+            .font: UIFont.preferredFont(forTextStyle: .subheadline),
+            .foregroundColor: UIColor.text
+        ],
+            .ATagAttribute: [
+                .foregroundColor: UIColor.primary,
+                .underlineStyle: 0
+            ]
+    ]
+
+    private enum TextContent {
+        static let likesTotalGuideTextSingular = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>one</strong> like.", comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact.")
+        static let likesTotalGuideTextPlural = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>%d</strong> likes.", comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact.")
+        static let commentsTotalGuideText = NSLocalizedString("View your top contributors by tapping \"Week\".", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }
 
@@ -85,7 +117,20 @@ class StatsTotalInsightsCell: StatsBaseCell {
         fatalError()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        countLabel.text = "0"
+        graphView.data = []
+        comparisonLabel.isHidden = true
+
+        guideViewLabel.text = ""
+        guideView.removeFromSuperview()
+    }
+
     private func configureView() {
+        selectionStyle = .none
+        
         configureStackViews()
         configureGraphView()
         configureGuideView()
@@ -113,7 +158,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private func configureGuideView() {
-        guideView.backgroundColor = .systemGray6
+        guideView.backgroundColor = UIColor(light: .systemGray6, dark: .secondarySystemFill)
         guideView.translatesAutoresizingMaskIntoConstraints = false
         guideView.layer.cornerRadius = 10.0
         guideView.layer.masksToBounds = true
@@ -140,6 +185,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         guideViewLabel.font = .preferredFont(forTextStyle: .subheadline)
         guideViewLabel.textColor = .text
         guideViewLabel.numberOfLines = 0
+        guideViewLabel.lineBreakMode = .byWordWrapping
     }
 
     private func configureConstraints() {
@@ -154,10 +200,10 @@ class StatsTotalInsightsCell: StatsBaseCell {
             graphView.heightAnchor.constraint(equalTo: countLabel.heightAnchor)
         ])
 
-        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .defaultHigh)
+        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
     }
 
-    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: String? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: NSAttributedString? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
@@ -167,6 +213,19 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         countLabel.text = count.abbreviatedString()
 
+        if let guideText = guideText,
+           guideText.string.isEmpty == false {
+            outerStackView.addArrangedSubview(guideView)
+
+            guideViewLabel.attributedText = addTipEmojiToGuide(guideText)
+            // Setting this hear appears to help with updating the layout (found via a tip on Stack Overflow)
+            guideViewLabel.lineBreakMode = .byWordWrapping
+            invalidateIntrinsicContentSize()
+
+        } else if guideView.superview != nil {
+            guideView.removeFromSuperview()
+        }
+        
         guard let difference = difference,
               let percentage = percentage else {
                   comparisonLabel.isHidden = true
@@ -179,15 +238,23 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         comparisonLabel.isHidden = false
         comparisonLabel.attributedText = attributedDifferenceString(formattedText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
+    }
 
-        if let guideText = guideText,
-           guideText.isEmpty == false {
-            outerStackView.addArrangedSubview(guideView)
-            guideViewLabel.text = "💡 \(guideText)"
-            guideView.layoutIfNeeded()
-        } else if guideView.superview != nil {
-            guideView.removeFromSuperview()
+    private func addTipEmojiToGuide(_ guideText: NSAttributedString) -> NSAttributedString {
+        let result: NSMutableAttributedString
+
+        switch effectiveUserInterfaceLayoutDirection {
+        case .leftToRight:
+            result = NSMutableAttributedString(string: "💡 ")
+            result.append(guideText)
+        case .rightToLeft:
+            result = NSMutableAttributedString(attributedString: guideText)
+            result.append(NSAttributedString(string: " 💡"))
+        @unknown default:
+            return guideText
         }
+
+        return result
     }
 
     private func differenceTextColor(for difference: Int) -> UIColor {
