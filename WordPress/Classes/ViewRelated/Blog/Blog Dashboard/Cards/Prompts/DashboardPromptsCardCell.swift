@@ -111,7 +111,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        view.pinSubviewToAllEdges(promptLabel, insets: .init(top: Constants.spacing, left: 0, bottom: 0, right: 0))
+        let insets = UIEdgeInsets(top: Constants.spacing, left: Constants.titleMarginSpacing, bottom: 0, right: Constants.titleMarginSpacing)
+        view.pinSubviewToAllEdges(promptLabel, insets: insets)
 
         return view
     }()
@@ -535,6 +536,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let titleMarginSpacing: CGFloat = 16
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)
