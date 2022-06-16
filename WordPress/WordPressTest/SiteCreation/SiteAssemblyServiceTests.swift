@@ -34,7 +34,7 @@ class SiteAssemblyServiceTests: XCTestCase {
             ]
         siteCreator.address = try! DomainSuggestion(json: domainSuggestionPayload)
 
-        creationRequest = try! siteCreator.build()
+        creationRequest = siteCreator.build()
     }
 
     func testSiteAssemblyService_InitialStatus_IsIdle() {
