@@ -264,11 +264,8 @@ extension StatsWidgetsStore {
 
 // MARK: - Login/Logout notifications
 private extension StatsWidgetsStore {
-
-    /**
-     When WPAccountDefaultWordPressComAccountChanged is posted after login
-     the site data is not yet loaded and cannot be cached for widgets.
-     */
+    /// Observes WPAccountDefaultWordPressComAccountChanged notification and reloads widget data based on the state of account.
+    /// The site data is not yet loaded after this notification and widget data cannot be cached for newly signed in account.
     func observeAccountChangesForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
@@ -292,10 +289,8 @@ private extension StatsWidgetsStore {
         }
     }
 
-    /**
-     When WPSigninDidFinishNotification is posted after login
-     the site data data is loaded and widget data can be cached.
-     */
+    /// Observes WPSigninDidFinishNotification notification and initializes the widget.
+    /// The site data is loaded after this notification and widget data can be cached.
     func observeAccountSignInForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
