@@ -751,7 +751,7 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
-    :tag: v1.76.0
+    :tag: v1.76.1
   WordPressKit:
     :branch: feature/qrcode-login-networking
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -769,7 +769,7 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
-    :tag: v1.76.0
+    :tag: v1.76.1
   WordPressKit:
     :commit: 3b2e0454c004f1985c9bf0b254973a8b21fcbf8a
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -874,6 +874,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: dbe6f3ecb1aabcc7e79086d52d5edaeec5138650
+PODFILE CHECKSUM: 3653a268810245999ab2c88ac600d1201cdf858a
 
 COCOAPODS: 1.11.2
