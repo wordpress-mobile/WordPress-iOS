@@ -91,7 +91,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsNewInsights:
             return false
         case .siteName:
-            return true
+            return false
         case .quickStartForExistingUsers:
             return true
         case .betaSiteDesigns:

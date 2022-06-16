@@ -75,24 +75,4 @@ class SiteCreationWizardLauncherTests: XCTestCase {
         try runSiteNameVariantTrackingTest(for: nameTreatment)
         try runSiteNameVariantTrackingTest(for: nameControl)
     }
-
-    private func runSiteNameVariantTrackingTest(for variant: Variation) throws {
-        TestAnalyticsTracker.setup()
-
-        // Given
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameExperiment.value
-        let expectedProperty = variant.tracksProperty
-        let variationEventPropertyKey = "variation"
-
-        // When
-        let _ = SiteCreationWizardLauncher(nameVariant: variant)
-
-        // Then
-        let trackedEvents = try XCTUnwrap(TestAnalyticsTracker.tracked.filter { $0.event == expectedEvent })
-        XCTAssertEqual(trackedEvents.count, 1)
-        let variation = try XCTUnwrap(trackedEvents[0].properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
-
-        TestAnalyticsTracker.tearDown()
-    }
 }
