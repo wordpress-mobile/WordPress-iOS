@@ -2239,6 +2239,16 @@
 		C71AF533281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */; };
 		C71AF534281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */; };
 		C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */; };
+		C7234A3A2832BA240045C63F /* QRLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A392832BA240045C63F /* QRLoginCoordinator.swift */; };
+		C7234A3B2832BA240045C63F /* QRLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A392832BA240045C63F /* QRLoginCoordinator.swift */; };
+		C7234A422832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */; };
+		C7234A432832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */; };
+		C7234A442832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */; };
+		C7234A452832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */; };
+		C7234A4E2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */; };
+		C7234A4F2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */; };
+		C7234A502832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */; };
+		C7234A512832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */; };
 		C72A4F68264088E4009CA633 /* JetpackNotFoundErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F67264088E4009CA633 /* JetpackNotFoundErrorViewModel.swift */; };
 		C72A4F7B26408943009CA633 /* JetpackNotWPErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F7A26408943009CA633 /* JetpackNotWPErrorViewModel.swift */; };
 		C72A4F8E26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */; };
@@ -2272,6 +2282,10 @@
 		C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
+		C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
+		C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
+		C7AFF878283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
 		C7B7CC702812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC7328134347007B9807 /* OnboardingQuestionsPromptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */; };
@@ -7055,6 +7069,11 @@
 		C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsCardCell.xib; sourceTree = "<group>"; };
 		C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsCoordinator.swift; sourceTree = "<group>"; };
 		C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusViewModel.swift; sourceTree = "<group>"; };
+		C7234A392832BA240045C63F /* QRLoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCoordinator.swift; sourceTree = "<group>"; };
+		C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningViewController.swift; sourceTree = "<group>"; };
+		C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QRLoginScanningViewController.xib; sourceTree = "<group>"; };
+		C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyAuthorizationViewController.swift; sourceTree = "<group>"; };
+		C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QRLoginVerifyAuthorizationViewController.xib; sourceTree = "<group>"; };
 		C72A4F67264088E4009CA633 /* JetpackNotFoundErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNotFoundErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A4F7A26408943009CA633 /* JetpackNotWPErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNotWPErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNoSitesErrorViewModel.swift; sourceTree = "<group>"; };
@@ -7073,6 +7092,8 @@
 		C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingEnableNotificationsViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
+		C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
+		C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningCoordinator.swift; sourceTree = "<group>"; };
 		C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+OnboardingPrompt.swift"; sourceTree = "<group>"; };
 		C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptScreen.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
@@ -11507,6 +11528,7 @@
 				E1389AD91C59F78500FB2466 /* Plans */,
 				E14694041F3459A9004052C8 /* Plugins */,
 				AC3439790E11434600E5D79B /* Post */,
+				C7234A382832B55F0045C63F /* QR Login */,
 				8298F38D1EEF2B15008EB7F0 /* Ratings */,
 				CCB3A03814C8DD5100D43C3F /* Reader */,
 				1717139D265FE56A00F3A022 /* Reusable SwiftUI Views */,
@@ -13299,6 +13321,7 @@
 				C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */,
 				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
 				FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */,
+				C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -13834,6 +13857,27 @@
 				C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */,
 			);
 			path = "View Models";
+			sourceTree = "<group>";
+		};
+		C7234A382832B55F0045C63F /* QR Login */ = {
+			isa = PBXGroup;
+			children = (
+				C7234A3C2832C2800045C63F /* Coordinators */,
+				C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */,
+				C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */,
+				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
+				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
+			);
+			path = "QR Login";
+			sourceTree = "<group>";
+		};
+		C7234A3C2832C2800045C63F /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				C7234A392832BA240045C63F /* QRLoginCoordinator.swift */,
+				C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		C72A4F66264088D1009CA633 /* View Models */ = {
@@ -16149,6 +16193,7 @@
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				17222D87261DDDF90047B163 /* celadon-icon-app-76x76@2x.png in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				C7234A442832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */,
 				17222D99261DDDF90047B163 /* black-icon-app-60x60@2x.png in Resources */,
 				9856A389261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
 				98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
@@ -16239,6 +16284,7 @@
 				17222D9C261DDDF90047B163 /* black-icon-app-76x76@2x.png in Resources */,
 				F5A34D0D25DF2F7F00C9654B /* Nunito-Bold.ttf in Resources */,
 				B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */,
+				C7234A502832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib in Resources */,
 				17222D93261DDDF90047B163 /* blue-classic-icon-app-76x76.png in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				C7E5F25B2799C2B0009BC263 /* blue-icon-app-76x76@2x.png in Resources */,
@@ -16626,6 +16672,7 @@
 				FABB1FBA2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				FABB1FBB2602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.xib in Resources */,
 				FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
+				C7234A452832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */,
 				FABB1FBC2602FC2C00C8785C /* PrepublishingHeaderView.xib in Resources */,
 				FABB1FBF2602FC2C00C8785C /* WPTableViewActivityCell.xib in Resources */,
 				FABB1FC12602FC2C00C8785C /* defaultPostTemplate.html in Resources */,
@@ -16761,6 +16808,7 @@
 				FABB20722602FC2C00C8785C /* MyProfileHeaderView.xib in Resources */,
 				FABB20742602FC2C00C8785C /* RestorePageTableViewCell.xib in Resources */,
 				FABB20762602FC2C00C8785C /* WordPressShare.js in Resources */,
+				C7234A512832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib in Resources */,
 				FE3E427926A868EC00C596CE /* ListTableHeaderView.xib in Resources */,
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
@@ -17803,6 +17851,7 @@
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				E161B7EC1F839345000FDF0B /* CookieJar.swift in Sources */,
 				C7F7BDD026262A4C00CE547F /* AppDependency.swift in Sources */,
+				C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */,
 				D853723A21952DAF0076F461 /* WebAddressStep.swift in Sources */,
 				B5F67AC71DB7D81300482C62 /* NotificationSyncMediator.swift in Sources */,
 				FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */,
@@ -17859,6 +17908,7 @@
 				F12FA5D92428FA8F0054DA21 /* AuthenticationService.swift in Sources */,
 				E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
+				C7234A422832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				FAB8F76E25AD73C000D5D54A /* JetpackBackupOptionsViewController.swift in Sources */,
 				175CC17C2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
@@ -18502,6 +18552,7 @@
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
+				C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */,
 				3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */,
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
@@ -19202,6 +19253,7 @@
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
 				7E92A1FB233CB1B7006D281B /* Autosaver.swift in Sources */,
 				9A341E5621997A340036662E /* BlogAuthor.swift in Sources */,
+				C7234A3A2832BA240045C63F /* QRLoginCoordinator.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				469CE06D24BCED75003BDC8B /* CategorySectionTableViewCell.swift in Sources */,
@@ -19291,6 +19343,7 @@
 				738B9A5221B85CF20005062B /* SiteCreationWizardLauncher.swift in Sources */,
 				46F583AF2624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				3234B8E7252FA0930068DA40 /* ReaderSitesCardCell.swift in Sources */,
+				C7234A4E2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */,
@@ -20502,6 +20555,7 @@
 				FABB21F02602FC2C00C8785C /* FancyAlertViewController+CreateButtonAnnouncement.swift in Sources */,
 				FABB21F12602FC2C00C8785C /* GutenbergSettings.swift in Sources */,
 				FABB21F22602FC2C00C8785C /* MediaPickingContext.swift in Sources */,
+				C7234A432832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */,
 				176BA53C268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
 				FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */,
 				FABB21F32602FC2C00C8785C /* ReaderStreamHeader.swift in Sources */,
@@ -20713,6 +20767,7 @@
 				FABB22A22602FC2C00C8785C /* PlanListRow.swift in Sources */,
 				FABB22A32602FC2C00C8785C /* SiteCreationWizard.swift in Sources */,
 				FABB22A42602FC2C00C8785C /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
+				C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */,
 				FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */,
 				FABB22A62602FC2C00C8785C /* TenorPicker.swift in Sources */,
 				FAB985C22697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
@@ -21182,6 +21237,7 @@
 				FABB243A2602FC2C00C8785C /* CircularImageView.swift in Sources */,
 				FABB243B2602FC2C00C8785C /* GravatarButtonView.swift in Sources */,
 				AE2F3126270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
+				C7AFF878283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */,
 				FABB243C2602FC2C00C8785C /* StockPhotosService.swift in Sources */,
 				FABB243D2602FC2C00C8785C /* Blog+Analytics.swift in Sources */,
 				FABB243E2602FC2C00C8785C /* ReaderStreamViewController+Helper.swift in Sources */,
@@ -21438,6 +21494,7 @@
 				FABB250C2602FC2C00C8785C /* MenuItemEditingFooterView.m in Sources */,
 				FABB250D2602FC2C00C8785C /* ReaderCrossPostCell.swift in Sources */,
 				93E6336A272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
+				C7234A4F2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */,
 				FABB250E2602FC2C00C8785C /* Role.swift in Sources */,
 				FABB250F2602FC2C00C8785C /* SuggestionsTableView.swift in Sources */,
 				FABB25102602FC2C00C8785C /* MenuItemSourceResultsViewController.m in Sources */,
@@ -21465,6 +21522,7 @@
 				FABB25232602FC2C00C8785C /* StatsCellHeader.swift in Sources */,
 				FABB25242602FC2C00C8785C /* UIEdgeInsets.swift in Sources */,
 				FABB25252602FC2C00C8785C /* RestorePageTableViewCell.m in Sources */,
+				C7234A3B2832BA240045C63F /* QRLoginCoordinator.swift in Sources */,
 				FABB25262602FC2C00C8785C /* String+RegEx.swift in Sources */,
 				175CC17A27230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */,
 				F1BC842F27035A1800C39993 /* BlogService+Domains.swift in Sources */,

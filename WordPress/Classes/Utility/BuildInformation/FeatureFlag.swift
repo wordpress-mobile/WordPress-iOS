@@ -28,6 +28,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsNewInsights
     case siteName
     case quickStartForExistingUsers
+    case qrLogin
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -92,6 +93,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .quickStartForExistingUsers:
             return true
+        case .qrLogin:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -174,6 +177,8 @@ extension FeatureFlag {
             return "Site Name"
         case .quickStartForExistingUsers:
             return "Quick Start For Existing Users"
+        case .qrLogin:
+            return "QR Code Login"
         }
     }
 
