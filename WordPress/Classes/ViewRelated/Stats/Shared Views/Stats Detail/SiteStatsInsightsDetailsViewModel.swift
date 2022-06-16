@@ -84,7 +84,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     insightsReceipt = insightsStore.query(storeQuery)
                 }
 
-                if let storeQuery = queryForPeriodStatSection(StatSection.periodPostsAndPages) {
+                if queryForPeriodStatSection(StatSection.periodPostsAndPages) != nil {
                     periodChangeReceipt = periodStore.onChange { [weak self] in
                         self?.emitChange()
                     }
