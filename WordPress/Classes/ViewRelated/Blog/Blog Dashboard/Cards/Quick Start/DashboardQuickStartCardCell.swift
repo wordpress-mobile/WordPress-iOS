@@ -8,13 +8,6 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.onEllipsisButtonTap = { [weak self] in
-            guard let viewController = self?.viewController,
-                  let blog = self?.blog else {
-                return
-            }
-            viewController.removeQuickStart(from: blog, sourceView: frameView, sourceRect: frameView.buttonContainerStackView.frame)
-        }
         return frameView
     }()
 
@@ -40,7 +33,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         self.viewController = viewController
         self.blog = blog
 
-        cardFrameView.title = Strings.title(for: blog.quickStartType)
+        configureCardFrameView(for: blog)
 
         let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties:["type": DashboardCard.quickStart.rawValue])
 
@@ -49,6 +42,38 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.quickStart.rawValue],
                           blog: blog)
+    }
+
+    private func configureCardFrameView(for blog: Blog) {
+        switch blog.quickStartType {
+
+        case .newSite:
+            cardFrameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
+            configureOnEllipsisButtonTap(sourceRect: cardFrameView.ellipsisButton.frame)
+            cardFrameView.showHeader()
+
+        case .existingSite:
+            cardFrameView.configureButtonContainerStackView()
+            configureOnEllipsisButtonTap(sourceRect: cardFrameView.buttonContainerStackView.frame)
+            cardFrameView.hideHeader()
+
+        default:
+            break
+
+        }
+
+        cardFrameView.title = Strings.title(for: blog.quickStartType)
+    }
+
+    private func configureOnEllipsisButtonTap(sourceRect: CGRect) {
+        cardFrameView.onEllipsisButtonTap = { [weak self] in
+            guard let self = self,
+                  let viewController = self.viewController,
+                  let blog = self.blog else {
+                return
+            }
+            viewController.removeQuickStart(from: blog, sourceView: self.cardFrameView, sourceRect: sourceRect)
+        }
     }
 }
 
@@ -61,7 +86,6 @@ extension DashboardQuickStartCardCell {
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.constraintPriority)
 
         cardFrameView.add(subview: tourStateView)
-        cardFrameView.hideHeader()
     }
 }
 

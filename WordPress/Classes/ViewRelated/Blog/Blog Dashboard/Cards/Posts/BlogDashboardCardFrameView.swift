@@ -137,7 +137,7 @@ class BlogDashboardCardFrameView: UIView {
 
         layer.cornerRadius = Constants.cornerRadius
 
-        configureStackViews()
+        configureMainStackView()
     }
 
     required init?(coder: NSCoder) {
@@ -173,11 +173,6 @@ class BlogDashboardCardFrameView: UIView {
         mainStackViewTrailingConstraint?.constant = 0
     }
 
-    private func configureStackViews() {
-        configureMainStackView()
-        configureButtonContainerStackView()
-    }
-
     private func configureMainStackView() {
         addSubview(mainStackView)
 
@@ -201,7 +196,7 @@ class BlogDashboardCardFrameView: UIView {
         ])
     }
 
-    private func configureButtonContainerStackView() {
+    func configureButtonContainerStackView() {
         addSubview(buttonContainerStackView)
 
         NSLayoutConstraint.activate([
