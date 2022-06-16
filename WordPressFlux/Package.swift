@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "WordPressFlux",
+    platforms: [.iOS(.v13)],
     products: [
         .library(
             name: "WordPressFlux",
