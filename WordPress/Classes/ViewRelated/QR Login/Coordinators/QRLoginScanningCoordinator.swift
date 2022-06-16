@@ -43,6 +43,7 @@ class QRLoginScanningCoordinator: NSObject {
     }
 }
 
+// MARK: - View Interactions
 extension QRLoginScanningCoordinator {
     func viewDidAppear() {
         startCameraSession()
@@ -57,6 +58,9 @@ extension QRLoginScanningCoordinator {
     }
 
     func didScanCode(_ code: String) {
+        // Give the user a tap to let them know they've successfully scanned the code
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
         // Stop the camera immediately to prevent further scanning
         stopCameraSession()
 

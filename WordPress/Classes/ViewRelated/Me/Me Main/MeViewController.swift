@@ -257,9 +257,10 @@ class MeViewController: UITableViewController {
             self.tableView.deselectSelectedRowWithAnimation(true)
 
             #warning("TODO: Add tracks")
-            #warning("TODO: Present QR Scanning Flow")
 
-            QRLoginCoordinator.present(from: self)
+            // Temporarily directly show the verify flow instead of showing the camera
+//            QRLoginCoordinator.present(from: self)
+            QRLoginCoordinator.present(code: "hello", from: self)
         }
     }
 
