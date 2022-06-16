@@ -130,7 +130,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private func configureView() {
         selectionStyle = .none
-        
+
         configureStackViews()
         configureGraphView()
         configureGuideView()
@@ -225,7 +225,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         } else if guideView.superview != nil {
             guideView.removeFromSuperview()
         }
-        
+
         guard let difference = difference,
               let percentage = percentage else {
                   comparisonLabel.isHidden = true

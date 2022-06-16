@@ -174,7 +174,7 @@ class SiteStatsInsightsViewModel: Observable {
                                            type: .period,
                                            status: periodStore.summaryLikesStatus,
                                            block: {
-                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals,  siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
