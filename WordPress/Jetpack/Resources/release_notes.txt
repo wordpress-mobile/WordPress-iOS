@@ -1,5 +1,7 @@
-* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
-* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
-* [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
-* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
-* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+Need a little writing inspo? We have you covered with brand-new blogging prompts. Get a new prompt each day, write a post about it, and build a writing habit in no time.
+
+Jetpack has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
+
+We made some improvements to the selection screen where you choose your site design during the Site Creation process.
+
+Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.
