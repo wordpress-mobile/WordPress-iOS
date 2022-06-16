@@ -5,7 +5,7 @@ class SiteAssemblyServiceTests: XCTestCase {
 
     private var creationRequest: SiteCreationRequest?
 
-    override func setUp() {
+    override func setUpWithError() throws {
         super.setUp()
 
         let siteCreator = SiteCreator()
@@ -32,7 +32,7 @@ class SiteAssemblyServiceTests: XCTestCase {
             "product_id": 42 as AnyObject,
             "supports_privacy": true as AnyObject,
             ]
-        siteCreator.address = try! DomainSuggestion(json: domainSuggestionPayload)
+        siteCreator.address = try DomainSuggestion(json: domainSuggestionPayload)
 
         creationRequest = siteCreator.build()
     }
