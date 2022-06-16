@@ -1,7 +1,0 @@
-La version 20 fait peau neuve. La carte de démarrage rapide et les guides « Étapes suivantes » correspondent désormais aux nouveaux designs de navigation des sites existants, et comprennent une illustration attrayante. Super nouvelle !
-
-Vous pouvez désormais insérer des images provenant d’autres sites Web grâce à l’option « Insérer à partir de l’URL » dans l’application. Par ici les photos de chats !
-
-Nous avons amélioré l’accessibilité de l’éditeur de blocs, de sorte que le lecteur d’écran communique davantage de contexte utile.
-
-Enfin, le cache de média, l’index de Spotlight et le raccourci Siri dans les réglages de l’application ont également fait peau neuve. Ils sont désormais assortis aux couleurs standard de chaque marque. Dites adieu au rouge anxiogène !

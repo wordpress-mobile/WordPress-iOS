@@ -1,7 +1,0 @@
-Estamos lançando a versão 20 com uma cara nova. O cartão Início rápido e os tours de próximas etapas agora combinam com os novos designs de tour para sites existentes, com uma ilustração estilosa. Eba!
-
-Agora você pode inserir imagens de outros sites usando a opção "Inserir a partir da URL" no aplicativo. Mais fotos de gatos, por favor.
-
-Fizemos algumas melhorias de acessibilidade no editor de blocos para o leitor de tela cobrir mais do conteúdo necessário.
-
-Por fim, repaginamos as funções de atalho da Siri, cache de mídia e índice de destaque nas configurações do aplicativo. Agora elas combinam com as cores da marca e padrão. Sem mais vermelho "cheguei".
