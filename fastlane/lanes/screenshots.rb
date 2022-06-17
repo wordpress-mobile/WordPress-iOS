@@ -28,7 +28,7 @@ platform :ios do
   #
   desc 'Generate localised screenshots'
   lane :screenshots do |options|
-    sh('bundle exec pod install')
+    cocoapods # pod install
     FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
     scheme = options[:scheme] || 'WordPressScreenshotGeneration'
