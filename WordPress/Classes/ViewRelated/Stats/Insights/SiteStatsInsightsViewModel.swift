@@ -248,6 +248,7 @@ class SiteStatsInsightsViewModel: Observable {
                                             return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                                             dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
                                                                             dataRows: createTagsAndCategoriesRows(),
+                                                                            statSection: .insightsTagsAndCategories,
                                                                             siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTopImmutableRow()
@@ -333,6 +334,7 @@ class SiteStatsInsightsViewModel: Observable {
                                             return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
                                                                             dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
                                                                             dataRows: createPublicizeRows(),
+                                                                            statSection: .insightsPublicize,
                                                                             siteStatsInsightsDelegate: nil)
                 }, loading: {
                     return StatsGhostTopImmutableRow()

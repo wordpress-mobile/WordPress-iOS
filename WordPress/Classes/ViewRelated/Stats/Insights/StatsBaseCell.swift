@@ -67,12 +67,6 @@ class StatsBaseCell: UITableViewCell {
         }
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        statSection = nil
-    }
-
     private func configureHeading(with topConstraint: NSLayoutConstraint) {
         guard FeatureFlag.statsNewAppearance.enabled else {
             return
@@ -104,7 +98,7 @@ class StatsBaseCell: UITableViewCell {
             return
         }
 
-        if headingBottomConstraint == nil {
+        if headingBottomConstraint == nil && headingLabel.superview == nil {
             configureHeading(with: topConstraint)
         }
 
