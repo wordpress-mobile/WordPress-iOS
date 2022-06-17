@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
@@ -475,6 +476,11 @@ private extension DashboardPromptsCardCell {
         WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
+        let notice = Notice(title: Strings.promptSkippedTitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+            self?.clearSkippedPromptForSite()
+            self?.presenterViewController?.reloadCardsLocally()
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func removeMenuTapped() {
@@ -521,6 +527,8 @@ private extension DashboardPromptsCardCell {
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
+        static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
+        static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
     }
 
     struct Style {
