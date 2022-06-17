@@ -2,6 +2,19 @@
 
 require 'fileutils'
 
+# Be sure to keep the `fastlane/screenshots.json` and `fastlane/jetpack_screenshots.json` files in sync with that list as well
+#
+# Screen Sizes Reference Charts:
+# - https://size-charts.com/topics/screen-size-charts/apple-iphone-size/
+# - https://size-charts.com/topics/screen-size-charts/apple-ipad-size-chart/
+#
+SCREENSHOT_SIMULATORS = [
+  'iPhone Xs Max', # 6.5in - 2688x1242 @ 458 ppi
+  'iPhone 8 Plus', # 5.5in - 1920x1080 @ 401 ppi -- !!! FIXME: `canvas_size` in `fastlane/screenshots.json` does not match ([1242, 2208])
+  'iPad Pro (12.9-inch) (2nd generation)', # 12.9in - 2732x2048 @ 264 ppi
+  'iPad Pro (12.9-inch) (3rd generation)', # 12.9in - 2732x2048 @ 264 ppi
+].freeze
+
 #################################################
 # Lanes
 #################################################
@@ -29,6 +42,8 @@ platform :ios do
   desc 'Generate localised screenshots'
   lane :screenshots do |options|
     cocoapods # pod install
+    create_missing_simulators_for_screenshots
+
     FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
     scheme = options[:scheme] || 'WordPressScreenshotGeneration'
@@ -69,12 +84,7 @@ platform :ios do
         localize_simulator: true,
         concurrent_simulators: true,
 
-        devices: [
-          'iPhone Xs Max',
-          'iPhone 8 Plus',
-          'iPad Pro (12.9-inch) (2nd generation)',
-          'iPad Pro (12.9-inch) (3rd generation)'
-        ]
+        devices: SCREENSHOT_SIMULATORS
       )
     end
   end
@@ -200,5 +210,25 @@ platform :ios do
       source_locale: 'en-US',
       download_path: options[:download_path]
     )
+  end
+
+  # Create simulators needed for the `screenshots` lane if they don't exist yet
+  #
+  lane :create_missing_simulators_for_screenshots do
+    specs = JSON.parse(`xcrun simctl list -j`)
+    SCREENSHOT_SIMULATORS.each do |device_name|
+      device_spec = specs['devicetypes'].find { |dt| dt['name'] == device_name }
+      UI.user_error!("Could not find device type named `#{device_name}` in `xcrun simctl list`") if device_spec.nil?
+      device_type_id = device_spec['identifier']
+
+      already_exists = specs['devices'].any? { |runtime, dev_list| dev_list.any? { |dev_spec| dev_spec['deviceTypeIdentifier'] == device_type_id } }
+      if already_exists
+        UI.message "A simulator for device type #{device_type_id} already exists"
+      else
+        UI.message "Creating simulator for device type #{device_type_id}"
+        res = sh('xcrun', 'simctl', 'create', device_name, device_type_id)
+        # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
+      end
+    end
   end
 end
