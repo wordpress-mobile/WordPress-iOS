@@ -29,6 +29,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteName
     case quickStartForExistingUsers
     case qrLogin
+    case betaSiteDesigns
+    case featureHighlightTooltip
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -38,7 +40,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
 
         switch self {
         case .bloggingPrompts:
-            return false
+            return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -90,11 +92,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .statsNewInsights:
             return false
         case .siteName:
-            return true
+            return false
         case .quickStartForExistingUsers:
             return true
         case .qrLogin:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .betaSiteDesigns:
+            return false
+        case .featureHighlightTooltip:
+            return true
         }
     }
 
@@ -179,6 +185,10 @@ extension FeatureFlag {
             return "Quick Start For Existing Users"
         case .qrLogin:
             return "QR Code Login"
+        case .betaSiteDesigns:
+            return "Fetch Beta Site Designs"
+        case .featureHighlightTooltip:
+            return "Feature Highlight Tooltip"
         }
     }
 

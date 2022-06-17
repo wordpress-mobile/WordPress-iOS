@@ -40,15 +40,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
 
-    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
-        didSet {
-            if oldValue == nil {
-                guard let mostRecentChartData = mostRecentChartData else {
-                    return
-                }
-            }
-        }
-    }
+    private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
     // MARK: - Constructor
 
@@ -172,6 +164,28 @@ class SiteStatsInsightsViewModel: Observable {
                                             return TwoColumnStatsRow(dataRows: createAllTimeStatsRows(),
                                                                      statSection: .insightsAllTime,
                                                                      siteStatsInsightsDelegate: nil)
+                }, loading: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }, error: errorBlock))
+            case .likesTotals:
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLikesTotals,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(blocks(for: .likesTotals,
+                                           type: .period,
+                                           status: insightsStore.followersTotalsStatus,
+                                           block: {
+                    return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loading: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }, error: errorBlock))
+            case .commentsTotals:
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsTotals,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(blocks(for: .commentsTotals,
+                                           type: .period,
+                                           status: insightsStore.followersTotalsStatus,
+                                           block: {
+                    return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
                 }, error: errorBlock))
@@ -352,6 +366,54 @@ class SiteStatsInsightsViewModel: Observable {
         pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
+    static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
+        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
+            return (0, 0, 0, 0)
+        }
+
+        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData)
+
+        var currentCount: Int = 0
+        var previousCount: Int = 0
+
+        splitSummaryTimeIntervalData.forEach { week in
+            switch week {
+            case .thisWeek(let data):
+                switch summaryType {
+                case .views:
+                    currentCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+                case .visitors:
+                    currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+                case .likes:
+                    currentCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
+                case .comments:
+                    currentCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
+                }
+            case .prevWeek(let data):
+                switch summaryType {
+                case .views:
+                    previousCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+                case .visitors:
+                    previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+                case .likes:
+                    previousCount = data.summaryData.compactMap({$0.likesCount}).reduce(0, +)
+                case .comments:
+                    previousCount = data.summaryData.compactMap({$0.commentsCount}).reduce(0, +)
+                }
+            }
+        }
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, previousCount, difference, roundedPercentage)
+    }
+
     var followTopicsViewController: ReaderSelectInterestsViewController {
         let configuration = ReaderSelectInterestsConfiguration(title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
                                                                subtitle: nil,
@@ -410,69 +472,13 @@ private extension SiteStatsInsightsViewModel {
     // MARK: - Create Table Rows
 
     func overviewTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
-
         let periodSummary = periodStore.getSummary()
-
-        if mostRecentChartData == nil {
-            mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-                  let periodSummary = periodSummary,
-                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
-            self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
-            mostRecentChartData = chartData
-        }
+        updateMostRecentChartData(periodSummary)
 
         let periodDate = self.lastRequestedDate
-        let period = StatsPeriodUnit.week
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData, periodDate: periodDate,
                 statsLineChartViewDelegate: statsLineChartViewDelegate, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-    }
-
-    public static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
-        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
-            return (0, 0, 0, 0)
-        }
-
-        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData)
-
-        var currentCount: Int = 0
-        var previousCount: Int = 0
-
-        splitSummaryTimeIntervalData.forEach { week in
-            switch week {
-            case .thisWeek(let data):
-                switch summaryType {
-                case .views:
-                    currentCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-                case .visitors:
-                    currentCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                default:
-                    break
-                }
-            case .prevWeek(let data):
-                switch summaryType {
-                case .views:
-                    previousCount = data.summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-                case .visitors:
-                    previousCount = data.summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-                default:
-                    break
-                }
-            }
-        }
-
-        let difference = currentCount - previousCount
-        var roundedPercentage = 0
-
-        if previousCount > 0 {
-            let percentage = (Float(difference) / Float(previousCount)) * 100
-            roundedPercentage = Int(round(percentage))
-        }
-
-        return (currentCount, previousCount, difference, roundedPercentage)
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
@@ -566,8 +572,22 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
+    func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
+        let periodSummary = periodStore.getSummary()
+        updateMostRecentChartData(periodSummary)
+
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+    }
+
+    func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
+        let periodSummary = periodStore.getSummary()
+        updateMostRecentChartData(periodSummary)
+
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+    }
+
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount().abbreviatedString())
+        return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
@@ -772,6 +792,18 @@ private extension SiteStatsInsightsViewModel {
                                  data: "",
                                  icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
                                  statSection: .insightsAddInsight)
+    }
+
+    func updateMostRecentChartData(_ periodSummary: StatsSummaryTimeIntervalData?) {
+        if mostRecentChartData == nil {
+            mostRecentChartData = periodSummary
+        } else if let mostRecentChartData = mostRecentChartData,
+                  let periodSummary = periodSummary,
+                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
+            self.mostRecentChartData = periodSummary
+        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
+            mostRecentChartData = chartData
+        }
     }
 }
 

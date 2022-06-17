@@ -37,6 +37,7 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
     }
 
     class func show(for blog: Blog, from presentingViewController: UIViewController) {
+        WPAnalytics.track(.promptsListViewed)
         let controller = BloggingPromptsViewController.controllerWithBlog(blog)
         presentingViewController.navigationController?.pushViewController(controller, animated: true)
     }
@@ -114,7 +115,7 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.listPrompts(success: { [weak self] (prompts) in
+        bloggingPromptsService.fetchListPrompts(success: { [weak self] (prompts) in
             self?.isLoading = false
             self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
         }, failure: { [weak self] (error) in

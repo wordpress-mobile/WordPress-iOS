@@ -9,10 +9,19 @@ class BloggingPromptsService {
     private let maxListPrompts = 11
 
     /// A UTC date formatter that ignores time information.
-    private static var dateFormatter: DateFormatter = {
+    private static var utcDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = .init(identifier: "en_US_POSIX")
         formatter.timeZone = .init(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        return formatter
+    }()
+
+    /// A date formatter using the local timezone that ignores time information.
+    private static var localDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
 
         return formatter
@@ -24,39 +33,40 @@ class BloggingPromptsService {
         loadPrompts(from: Date(), number: 1).first
     }
 
-    /// Convenience computed variable that returns prompts for the prompts list from local store.
+    /// Convenience computed variable that returns prompt settings from the local store.
     ///
-    var localListPrompts: [BloggingPrompt] {
-        loadPrompts(from: listStartDate, number: maxListPrompts)
+    var localSettings: BloggingPromptSettings? {
+        loadSettings(context: contextManager.mainContext)
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
     /// When no parameters are specified, this method will attempt to return prompts from ten days ago and two weeks ahead.
     ///
     /// - Parameters:
-    ///   - date: When specified, only prompts from the specified date will be returned. Defaults to 10 days ago.
+    ///   - startDate: When specified, only prompts after the specified date will be returned. Defaults to 10 days ago.
+    ///   - endDate: When specified, only prompts before the specified date will be returned.
     ///   - number: The amount of prompts to return. Defaults to 25 when unspecified (10 days back, today, 14 days ahead).
     ///   - success: Closure to be called when the fetch process succeeded.
     ///   - failure: Closure to be called when the fetch process failed.
-    func fetchPrompts(from date: Date? = nil,
+    func fetchPrompts(from startDate: Date? = nil,
+                      to endDate: Date? = nil,
                       number: Int = 25,
-                      success: @escaping ([BloggingPrompt]) -> Void,
-                      failure: @escaping (Error?) -> Void) {
-        let fromDate = date ?? defaultStartDate
+                      success: (([BloggingPrompt]) -> Void)? = nil,
+                      failure: ((Error?) -> Void)? = nil) {
+        let fromDate = startDate ?? defaultStartDate
         remote.fetchPrompts(for: siteID, number: number, fromDate: fromDate) { result in
             switch result {
             case .success(let remotePrompts):
                 self.upsert(with: remotePrompts) { innerResult in
                     if case .failure(let error) = innerResult {
-                        failure(error)
+                        failure?(error)
                         return
                     }
 
-                    success(self.loadPrompts(from: fromDate, number: number))
-
+                    success?(self.loadPrompts(from: fromDate, to: endDate, number: number))
                 }
             case .failure(let error):
-                failure(error)
+                failure?(error)
             }
         }
     }
@@ -66,10 +76,10 @@ class BloggingPromptsService {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch process succeeded.
     ///   - failure: Closure to be called when the fetch process failed.
-    func fetchTodaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
-                           failure: @escaping (Error?) -> Void) {
+    func fetchTodaysPrompt(success: ((BloggingPrompt?) -> Void)? = nil,
+                           failure: ((Error?) -> Void)? = nil) {
         fetchPrompts(from: Date(), number: 1, success: { (prompts) in
-            success(prompts.first)
+            success?(prompts.first)
         }, failure: failure)
     }
 
@@ -97,48 +107,70 @@ class BloggingPromptsService {
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchListPrompts(success: @escaping ([BloggingPrompt]) -> Void,
                           failure: @escaping (Error?) -> Void) {
-        fetchPrompts(from: listStartDate, number: maxListPrompts, success: success, failure: failure)
+        fetchPrompts(from: listStartDate, to: Date(), number: maxListPrompts, success: success, failure: failure)
     }
 
-    /// Convenience method to obtain the blogging prompts for the prompts list,
-    /// either from local cache or remote.
+    /// Loads a single prompt with the given `promptID`.
     ///
     /// - Parameters:
-    ///   - success: Closure to be called when the fetch process succeeded.
-    ///   - failure: Closure to be called when the fetch process failed.
-    func listPrompts(success: @escaping ([BloggingPrompt]) -> Void,
-                     failure: @escaping (Error?) -> Void) {
-
-        // If there aren't maxListPrompts cached, need to fetch more.
-        guard localListPrompts.count < maxListPrompts else {
-            success(localListPrompts)
-            return
+    ///   - promptID: The unique ID for the blogging prompt.
+    ///   - blog: The blog associated with the prompt.
+    /// - Returns: The blogging prompt object if it exists, or nil otherwise.
+    func loadPrompt(with promptID: Int, in blog: Blog) -> BloggingPrompt? {
+        guard let siteID = blog.dotComID else {
+            return nil
         }
 
-        fetchListPrompts(success: success, failure: failure)
+        let fetchRequest = BloggingPrompt.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) = %@", siteID, NSNumber(value: promptID))
+        fetchRequest.fetchLimit = 1
+
+        return (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
     }
 
     // MARK: - Settings
 
-    func fetchSettings(success: @escaping () -> Void,
+    /// Fetches the blogging prompt settings for the configured `siteID`.
+    ///
+    /// - Parameters:
+    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object.
+    ///   - failure: Closure to be called on failure with an optional `Error` object.
+    func fetchSettings(success: @escaping (BloggingPromptSettings?) -> Void,
                        failure: @escaping (Error?) -> Void) {
         remote.fetchSettings(for: siteID) { result in
             switch result {
             case .success(let remoteSettings):
-                success()
+                self.saveSettings(remoteSettings) {
+                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    success(settings)
+                }
             case .failure(let error):
                 failure(error)
             }
         }
     }
 
+    /// Updates the blogging prompt settings for the configured `siteID`.
+    ///
+    /// - Parameters:
+    ///   - settings: The new settings to update the remote with
+    ///   - success: Closure to be called on success with an optional `BloggingPromptSettings` object. `nil` is passed
+    ///              when the call is successful but there were no updated settings on the remote.
+    ///   - failure: Closure to be called on failure with an optional `Error` object.
     func updateSettings(settings: RemoteBloggingPromptsSettings,
-                        success: @escaping () -> Void,
+                        success: @escaping (BloggingPromptSettings?) -> Void,
                         failure: @escaping (Error?) -> Void) {
         remote.updateSettings(for: siteID, with: settings) { result in
             switch result {
-            case .success(let updatedSettings):
-                success()
+            case .success(let remoteSettings):
+                guard let updatedSettings = remoteSettings else {
+                    success(nil)
+                    return
+                }
+                self.saveSettings(updatedSettings) {
+                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    success(settings)
+                }
             case .failure(let error):
                 failure(error)
             }
@@ -188,35 +220,48 @@ private extension BloggingPromptsService {
     }
 
     var listStartDate: Date {
-        calendar.date(byAdding: .day, value: -(maxListPrompts - 2), to: Date()) ?? Date()
+        calendar.date(byAdding: .day, value: -(maxListPrompts - 1), to: Date()) ?? Date()
     }
 
-    /// Converts the given date to UTC and ignores the time information.
-    /// Example: Given `2022-05-01 03:00:00 UTC-5`, this should return `2022-05-01 00:00:00 UTC`.
+    /// Converts the given date to UTC preserving the date and ignores the time information.
+    /// Examples:
+    ///   Given `2022-05-01 23:00:00 UTC-4` (`2022-05-02 03:00:00 UTC`), this should return `2022-05-01 00:00:00 UTC`.
+    ///
+    ///   Given `2022-05-02 05:00:00 UTC+9` (`2022-05-01 20:00:00 UTC`), this should return `2022-05-02 00:00:00 UTC`.
     ///
     /// - Parameter date: The date to convert.
     /// - Returns: The UTC date without the time information.
-    func utcDateIgnoringTime(from date: Date) -> Date? {
-        let utcDateString = Self.dateFormatter.string(from: date)
-        return Self.dateFormatter.date(from: utcDateString)
+    func utcDateIgnoringTime(from date: Date?) -> Date? {
+        guard let date = date else {
+            return nil
+        }
+        let dateString = Self.localDateFormatter.string(from: date)
+        return Self.utcDateFormatter.date(from: dateString)
     }
 
     /// Loads local prompts based on the given parameters.
     ///
     /// - Parameters:
-    ///   - date: When specified, only prompts from the specified date will be returned.
+    ///   - startDate: Only prompts after the specified date will be returned.
+    ///   - endDate: When specified, only prompts before the specified date will be returned.
     ///   - number: The amount of prompts to return.
-    /// - Returns: An array of `BloggingPrompt` objects sorted descending by date.
-    func loadPrompts(from date: Date, number: Int) -> [BloggingPrompt] {
-        guard let utcDate = utcDateIgnoringTime(from: date) else {
-            DDLogError("Error converting date to UTC: \(date)")
+    /// - Returns: An array of `BloggingPrompt` objects sorted ascending by date.
+    func loadPrompts(from startDate: Date, to endDate: Date? = nil, number: Int) -> [BloggingPrompt] {
+        guard let utcStartDate = utcDateIgnoringTime(from: startDate) else {
+            DDLogError("Error converting date to UTC: \(startDate)")
             return []
         }
 
         let fetchRequest = BloggingPrompt.fetchRequest()
-        fetchRequest.predicate = .init(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) >= %@", siteID, utcDate as NSDate)
+        if let utcEndDate = utcDateIgnoringTime(from: endDate) {
+            let format = "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) >= %@ AND \(#keyPath(BloggingPrompt.date)) <= %@"
+            fetchRequest.predicate = NSPredicate(format: format, siteID, utcStartDate as NSDate, utcEndDate as NSDate)
+        } else {
+            let format = "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) >= %@"
+            fetchRequest.predicate = NSPredicate(format: format, siteID, utcStartDate as NSDate)
+        }
         fetchRequest.fetchLimit = number
-        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: false)]
+        fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: true)]
 
         return (try? self.contextManager.mainContext.fetch(fetchRequest)) ?? []
     }
@@ -279,4 +324,31 @@ private extension BloggingPromptsService {
             }
         }
     }
+
+    /// Updates existing settings or creates new settings from the remote prompt settings.
+    ///
+    /// - Parameters:
+    ///   - remoteSettings: The blogging prompt settings from the remote.
+    ///   - completion: Closure to be called on completion.
+    func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping () -> Void) {
+        let derivedContext = contextManager.newDerivedContext()
+        derivedContext.perform {
+            let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
+            settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
+
+            self.contextManager.save(derivedContext) {
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+        }
+    }
+
+    func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
+        let fetchRequest = BloggingPromptSettings.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
+        fetchRequest.fetchLimit = 1
+        return (try? context.fetch(fetchRequest))?.first
+    }
+
 }

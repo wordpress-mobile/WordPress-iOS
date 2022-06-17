@@ -55,7 +55,7 @@ ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
   UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?") unless ENV.key?(key)
-  ENV[key]
+  ENV.fetch(key, nil)
 end
 
 

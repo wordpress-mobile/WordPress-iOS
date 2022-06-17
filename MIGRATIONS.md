@@ -3,6 +3,40 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 143
+
+@wargcm 2022-06-01 (@scoutharris 2022-05-24)
+
+- `Post`: added `bloggingPromptID` attribute. (optional, no default, `String`)
+
+## WordPress 142
+
+@dvdchr 2022-05-31
+
+- Updated `BloggingPrompt`:
+    - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
+
+## WordPress 141
+
+@wargcm 2022-05-23
+
+- Created a new entity `BloggingPromptSettings` with:
+    - `isPotentialBloggingSite` (required, default `NO`, `Boolean`)
+    - `promptCardEnabled` (required, default `YES`, `Boolean`)
+    - `promptRemindersEnabled` (required, default `NO`, `Boolean`)
+    - `reminderTime` (required, default empty string, `String`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `reminderDays` one-to-one mapping to `BloggingPromptSettingsReminderDays`
+- Created a new entity `BloggingPromptSettingsReminderDays` with:
+    - `monday` (required, default `NO`, `Boolean`)
+    - `tuesday` (required, default `NO`, `Boolean`)
+    - `wednesday` (required, default `NO`, `Boolean`)
+    - `thursday` (required, default `NO`, `Boolean`)
+    - `friday` (required, default `NO`, `Boolean`)
+    - `saturday` (required, default `NO`, `Boolean`)
+    - `sunday` (required, default `NO`, `Boolean`)
+    - `settings` one-to-one mapping to `BloggingPromptSettings`
+
 ## WordPress 140
 
 @dvdchr 2022-05-13

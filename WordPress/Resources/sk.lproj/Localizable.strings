@@ -703,7 +703,8 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupov";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Vyberte tému";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1186,6 +1187,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Zrušiť";
 
@@ -1892,6 +1894,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Zistiť viac";
 
@@ -2277,7 +2280,8 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nový";
 
 /* IP Address or Range Insertion Title */
@@ -2337,9 +2341,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Žiadne uložené články";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Nie ďakujem";
@@ -2405,7 +2406,7 @@
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "V %@ jazyku nebol nájdený žiadny príspevok.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "V poslednom čase neboli publikované žiadne články";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -2605,7 +2606,8 @@
 "Originally posted on %@" = "Pôvodne uverejnené na %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Iné";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -2881,7 +2883,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -3303,6 +3304,7 @@
 "Scheduling..." = "Plánovanie...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Hľadať";
 
@@ -3569,7 +3571,6 @@
 "Size" = "Veľkosť";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -4552,6 +4553,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";

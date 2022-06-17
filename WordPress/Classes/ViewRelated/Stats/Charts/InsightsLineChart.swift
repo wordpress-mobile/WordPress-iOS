@@ -64,7 +64,7 @@ class InsightsLineChart {
             (thisWeekEntries, prevWeekEntries) = filterData(path: \StatsSummaryData.visitorsCount)
         }
 
-        var chartData = createLineChartData(thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
+        let chartData = createLineChartData(thisWeekEntries: thisWeekEntries, prevWeekEntries: prevWeekEntries)
         let lineChartDataConvertibles = createLineChartDataConvertibles(chartData: chartData)
 
         let chartStyling: [LineChartStyling] = [
@@ -166,7 +166,7 @@ private struct ViewsInsightsLineChartStyling: LineChartStyling {
     let legendColor: UIColor?                       = .primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
     let lineColor: UIColor                          = .neutral(.shade5)
-    let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }
 
 // MARK: - VisitorsInsightsLineChartStyling
@@ -179,5 +179,5 @@ private struct VisitorsInsightsLineChartStyling: LineChartStyling {
     let legendColor: UIColor?                       = .primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "Title for Visitors count in the legend of the Stats Insights views and visitors line chart")
     let lineColor: UIColor                          = .neutral(.shade5)
-    let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

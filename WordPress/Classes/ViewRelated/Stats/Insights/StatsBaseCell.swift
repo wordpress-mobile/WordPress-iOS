@@ -9,7 +9,7 @@ class StatsBaseCell: UITableViewCell {
         return label
     }()
 
-    private let showDetailsButton: UIButton = {
+    private lazy var showDetailsButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = true
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
@@ -61,7 +61,11 @@ class StatsBaseCell: UITableViewCell {
         }
     }
 
-    weak var siteStatsInsightDetailsDelegate: SiteStatsInsightsDelegate?
+    weak var siteStatsInsightDetailsDelegate: SiteStatsInsightsDelegate? {
+        didSet {
+            updateHeader()
+        }
+    }
 
     private func configureHeading(with topConstraint: NSLayoutConstraint) {
         guard FeatureFlag.statsNewAppearance.enabled else {
@@ -106,7 +110,9 @@ class StatsBaseCell: UITableViewCell {
 
             switch statSection {
             case .insightsViewsVisitors:
-                showDetailsButton.setTitle(LocalizedText.buttonTitle, for: .normal)
+                showDetailsButton.setTitle(LocalizedText.buttonTitleThisWeek, for: .normal)
+            case .insightsFollowerTotals:
+                showDetailsButton.setTitle(LocalizedText.buttonTitleViewMore, for: .normal)
             default:
                 showDetailsButton.setTitle("", for: .normal)
             }
@@ -158,7 +164,8 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private enum LocalizedText {
-        static let buttonTitle = NSLocalizedString("This week", comment: "Title of a button. A call to action to view more stats for this week")
+        static let buttonTitleThisWeek = NSLocalizedString("This week", comment: "Title of a button. A call to action to view more stats for this week")
+        static let buttonTitleViewMore = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         static let buttonAccessibilityHint = NSLocalizedString("Tap to view more stats for this week", comment: "VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week")
     }
 }

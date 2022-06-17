@@ -41,7 +41,7 @@ class TimeZoneSelectorViewModelTests: CoreDataTestCase {
         case .ready(let groups):
             // Then viewModel should be ready
             XCTAssertEqual(groups.count, timeZoneGroups.count)
-        case .error(_):
+        case .error:
             XCTFail()
         }
     }

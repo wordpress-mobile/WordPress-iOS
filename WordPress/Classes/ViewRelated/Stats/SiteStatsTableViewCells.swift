@@ -333,7 +333,7 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 
@@ -377,7 +377,7 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         cell.textLabel?.adjustsFontForContentSizeCategory = true
-        cell.textLabel?.textColor = enabled ? .text : .textPlaceholder
+        cell.textLabel?.textColor = FeatureFlag.statsNewAppearance.enabled || enabled ? .text : .textPlaceholder
         cell.selectionStyle = .none
 
         cell.accessibilityLabel = title
@@ -388,8 +388,17 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.accessibilityHint = canTap && enabled ? disabledHint : enabledHint
 
         if FeatureFlag.statsNewAppearance.enabled {
-            cell.accessoryView = canTap ? UIImageView(image: .gridicon(.addOutline)) : nil
+            cell.accessoryView = canTap ? UIImageView(image: UIImage(systemName: Constants.plusIconName)) : nil
+
+            let editingImageView = UIImageView(image: UIImage(systemName: Constants.minusIconName))
+            editingImageView.tintColor = .textSubtle
+            cell.editingAccessoryView = editingImageView
         }
+    }
+
+    private enum Constants {
+        static let plusIconName = "plus.circle"
+        static let minusIconName = "minus.circle"
     }
 }
 
@@ -429,6 +438,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
+    var topAccessoryView: UIView? = nil
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -442,7 +452,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
                        dataRows: dataRows,
                        statSection: statSection,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
-                       siteStatsReferrerDelegate: siteStatsReferrerDelegate)
+                       siteStatsReferrerDelegate: siteStatsReferrerDelegate,
+                       topAccessoryView: topAccessoryView)
     }
 }
 

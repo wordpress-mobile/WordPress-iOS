@@ -325,6 +325,7 @@ private extension CreateButtonCoordinator {
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
+              blog.isAccessibleThroughWPCom(),
               let prompt = prompt else {
             return nil
         }
@@ -332,12 +333,18 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
                 editor.entryPoint = .bloggingPromptsActionSheetHeader
                 self?.viewController?.present(editor, animated: true)
             }
+        }
+
+        promptsHeaderView.infoButtonHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetHelp)
+            self?.viewController?.presentedViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
         }
 
         return promptsHeaderView

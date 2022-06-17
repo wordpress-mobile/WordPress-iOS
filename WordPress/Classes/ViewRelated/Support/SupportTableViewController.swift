@@ -181,15 +181,16 @@ private extension SupportTableViewController {
     }
 
     func contactUsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [weak self] row in
+            guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
                     if identityUpdated {
-                        reloadViewModel()
+                        self?.reloadViewModel()
                     }
                 }
             } else {
@@ -202,16 +203,17 @@ private extension SupportTableViewController {
     }
 
     func myTicketsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [weak self] row in
+            guard let self = self else { return }
             ZendeskUtils.pushNotificationRead()
             self.tableView.deselectSelectedRowWithAnimation(true)
 
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
                 if identityUpdated {
-                    reloadViewModel()
+                    self?.reloadViewModel()
                 }
             }
         }

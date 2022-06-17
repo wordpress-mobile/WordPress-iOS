@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-03 21:58:45+0000 */
+/* Translation-Revision-Date: 2022-05-25 09:41:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: pl */
@@ -191,6 +191,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Odrzuć";
 
@@ -424,7 +425,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -649,7 +649,7 @@
 "View" = "Zobacz";
 
 /* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Zobacz stronę";
+"View Site" = "Zobacz witrynę";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.

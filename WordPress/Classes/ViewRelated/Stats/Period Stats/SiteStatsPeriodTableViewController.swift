@@ -75,8 +75,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableView.register(SiteStatsTableHeaderView.defaultNib,
-                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
     }

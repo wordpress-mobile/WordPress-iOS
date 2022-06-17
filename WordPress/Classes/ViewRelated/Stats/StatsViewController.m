@@ -84,7 +84,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self dismissNotice];
+    [self dismissQuickStartTaskCompleteNotice];
 }
 
 - (void)setBlog:(Blog *)blog

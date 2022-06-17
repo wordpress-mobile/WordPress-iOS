@@ -19,22 +19,25 @@ platform :ios do
       puts "\t#{identifier}"
     end
 
+    team_id = get_required_env('EXT_EXPORT_TEAM_ID')
+
     # Register the user's device
     register_device(
       name: device_name,
       udid: device_id,
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID')
+      team_id: team_id,
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
     # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
     add_development_certificates_to_provisioning_profiles(
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      team_id: team_id,
       app_identifier: all_bundle_ids
     )
 
     # Add all devices to the provisioning profiles
     add_all_devices_to_provisioning_profiles(
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      team_id: team_id,
       app_identifier: all_bundle_ids
     )
   end

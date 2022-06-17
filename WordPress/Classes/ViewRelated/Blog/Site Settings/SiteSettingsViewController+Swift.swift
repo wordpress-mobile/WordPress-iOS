@@ -317,7 +317,7 @@ extension SiteSettingsViewController {
         cell.editable = true
         cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
-        cell.detailTextLabel?.minimumScaleFactor = 0.5
+        cell.detailTextLabel?.minimumScaleFactor = 0.75
         cell.accessoryType = .none
         cell.textValue = schedule(for: blog)
     }
@@ -325,7 +325,7 @@ extension SiteSettingsViewController {
     // MARK: - Schedule Description
 
     private func schedule(for blog: Blog) -> String {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return ""
         }
 

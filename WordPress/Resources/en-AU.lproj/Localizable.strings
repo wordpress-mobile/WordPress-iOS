@@ -18,7 +18,8 @@
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ on %2$@";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d of %2$d completed";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
@@ -275,9 +276,6 @@
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Add Contents to Post";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Add New Stats Card";
-
 /* No comment provided by engineer. */
 "Add URL" = "Add URL";
 
@@ -355,9 +353,6 @@
 
 /* Section title for All Languages */
 "All languages" = "All languages";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "All tasks complete";
 
 /* Insights 'All-Time' header */
 "All-Time" = "All-Time";
@@ -870,7 +865,8 @@
 /* Label for Publish date picker */
 "Choose a date" = "Choose a date";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Choose a theme";
 
 /* Label for Publish time picker */
@@ -933,14 +929,8 @@
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Code";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Collapsed, %i completed tasks, toggling expands the list of these tasks";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Collapsed. Tap to expand.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Collapses the list of completed tasks.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Collect information";
@@ -991,9 +981,6 @@
 /* Setting: WordPress.com Community */
 "Community" = "Community";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Complete (%i)";
-
 /* The action is completed */
 "Completed" = "Completed";
 
@@ -1014,9 +1001,6 @@
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Confirm your email first";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Congratulations on completing your list. A job well done.";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1413,6 +1397,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Dismiss";
 
@@ -1723,14 +1708,8 @@
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Excerpts are optional hand-crafted summaries of your content.";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Expanded, %i completed tasks, toggling collapses the list of these tasks";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Expanded. Tap to collapse.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Expands the list of completed tasks.";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explain what this site is about.";
@@ -1839,9 +1818,6 @@
 /* Label for list of followers.
    User role badge */
 "Follower" = "Follower";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Follower Totals";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -2276,6 +2252,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Learn more";
 
@@ -2703,7 +2680,8 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Needs Update";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "New";
 
 /* IP Address or Range Insertion Title */
@@ -2770,9 +2748,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "No Menu Selected";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "No Saved Posts";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "No Thanks";
@@ -2871,7 +2846,7 @@
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "No posts found matching %@ in your language.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "No posts have been made recently";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -3089,7 +3064,8 @@
 "Originally posted on %@" = "Originally posted on %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Other";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -3446,7 +3422,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -3919,6 +3894,7 @@
 "Scheduling..." = "Scheduling...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Search";
 
@@ -4227,7 +4203,6 @@
 "Size" = "Size";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -5363,6 +5338,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Views";

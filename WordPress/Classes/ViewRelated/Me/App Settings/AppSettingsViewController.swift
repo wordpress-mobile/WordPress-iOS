@@ -32,6 +32,7 @@ class AppSettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
+            BrandedNavigationRow.self,
             DestructiveButtonRow.self,
             TextRow.self,
             ImageSizingRow.self,
@@ -132,17 +133,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    fileprivate func clearMediaCache() {
-        WPAnalytics.track(.appSettingsClearMediaCacheTapped)
-
-        setMediaCacheRowDescription(status: .clearingCache)
-        MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
-            self?.updateMediaCacheSize()
-            }, onError: { [weak self] (error) in
-                self?.updateMediaCacheSize()
-        })
-    }
-
     // MARK: - Actions
 
     @objc func imageSizeChanged() -> (Int) -> Void {
@@ -196,6 +186,13 @@ class AppSettingsViewController: UITableViewController {
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
+
+    func openMediaCacheSettings() -> ImmuTableAction {
+        return { [weak self] _ in
+            let controller = MediaCacheSettingsViewController(style: .insetGrouped)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -427,23 +424,17 @@ private extension AppSettingsViewController {
             detail: MediaSettings().maxVideoSizeSetting.description,
             action: pushVideoResolutionSettings())
 
-        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
-                                    value: mediaCacheRowDescription)
-
-        let mediaClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
-            action: { [weak self] row in
-                self?.clearMediaCache()
-            },
-            accessibilityIdentifier: "mediaClearCacheButton")
+        let mediaCacheRow = NavigationItemRow(
+            title: NSLocalizedString("Media Cache", comment: "Label for the media cache navigation row in the app."),
+            detail: mediaCacheRowDescription,
+            action: openMediaCacheSettings())
 
         return ImmuTableSection(
             headerText: mediaHeader,
             rows: [
                 imageSizingRow,
                 videoSizingRow,
-                mediaCacheRow,
-                mediaClearCacheRow
+                mediaCacheRow
             ],
             footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
@@ -464,7 +455,7 @@ private extension AppSettingsViewController {
             action: openPrivacySettings()
         )
 
-        let spotlightClearCacheRow = DestructiveButtonRow(
+        let spotlightClearCacheRow = BrandedNavigationRow(
             title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
@@ -475,7 +466,7 @@ private extension AppSettingsViewController {
         ]
 
         if #available(iOS 12.0, *) {
-            let siriClearCacheRow = DestructiveButtonRow(
+            let siriClearCacheRow = BrandedNavigationRow(
                 title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")

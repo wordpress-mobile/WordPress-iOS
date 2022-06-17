@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @import WordPressKit;
 
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
@@ -24,49 +26,49 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 + (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
 
 // Create comment
-- (Comment *)createCommentForBlog:(Blog *)blog;
+- (Comment * _Nullable)createCommentForBlog:(Blog *)blog;
 
 // Create reply
-- (Comment *)createReplyForComment:(Comment *)comment;
+- (Comment * _Nullable)createReplyForComment:(Comment *)comment;
 
 // Restore draft reply
-- (Comment *)restoreReplyForComment:(Comment *)comment;
+- (Comment * _Nullable)restoreReplyForComment:(Comment *)comment;
 
 // Find cached comments
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
+- (Comment * _Nullable)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post;
+- (Comment * _Nullable)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(BOOL hasMore))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(BOOL hasMore))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
             filterUnreplied:(BOOL)filterUnreplied
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(BOOL hasMore))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Determine if a recent cache is available
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
 // Load extra comments
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^)(BOOL hasMore))success
-                        failure:(void (^)(NSError *))failure;
+                        success:(void (^ _Nullable)(BOOL hasMore))success
+                        failure:(void (^ _Nullable)(NSError * _Nullable))failure;
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                      withStatus:(CommentStatusFilter)status
-                        success:(void (^)(BOOL hasMore))success
-                        failure:(void (^)(NSError *))failure;
+                        success:(void (^ _Nullable)(BOOL hasMore))success
+                        failure:(void (^ _Nullable)(NSError * _Nullable))failure;
 
 // Load a single comment
 - (void)loadCommentWithID:(NSNumber *_Nonnull)commentID
@@ -81,47 +83,47 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Upload comment
 - (void)uploadComment:(Comment *)comment
-              success:(void (^)(void))success
-              failure:(void (^)(NSError *error))failure;
+              success:(void (^ _Nullable)(void))success
+              failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Approve comment
 - (void)approveComment:(Comment *)comment
-               success:(void (^)(void))success
-               failure:(void (^)(NSError *error))failure;
+               success:(void (^ _Nullable)(void))success
+               failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Unapprove (Pending) comment
 - (void)unapproveComment:(Comment *)comment
-                 success:(void (^)(void))success
-                 failure:(void (^)(NSError *error))failure;
+                 success:(void (^ _Nullable)(void))success
+                 failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Spam comment
 - (void)spamComment:(Comment *)comment
-            success:(void (^)(void))success
-            failure:(void (^)(NSError *error))failure;
+            success:(void (^ _Nullable)(void))success
+            failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Trash comment
 - (void)trashComment:(Comment *)comment
-             success:(void (^)(void))success
-             failure:(void (^)(NSError *error))failure;
+             success:(void (^ _Nullable)(void))success
+             failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Delete comment
 - (void)deleteComment:(Comment *)comment
-              success:(void (^)(void))success
-              failure:(void (^)(NSError *error))failure;
+              success:(void (^ _Nullable)(void))success
+              failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Sync a list of comments sorted by hierarchy, fetched by page number.
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
-                                failure:(void (^)(NSError *error))failure;
+                                success:(void (^ _Nullable)(BOOL hasMore, NSNumber * _Nullable totalComments))success
+                                failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Sync a list of comments sorted by hierarchy, restricted by the specified number of _top level_ comments.
 // This method is intended to get a small number of comments.
 // Therefore it is restricted to page 1 only.
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                        topLevelComments:(NSUInteger)number
-                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
-                                failure:(void (^)(NSError *error))failure;
+                                success:(void (^ _Nullable)(BOOL hasMore, NSNumber * _Nullable totalComments))success
+                                failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Get the specified number of top level comments for the specified post.
 // This method is intended to get a small number of comments.
@@ -145,62 +147,62 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
-                    success:(void (^)(void))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(void))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Replies
 - (void)replyToPost:(ReaderPost *)post
             content:(NSString *)content
-            success:(void (^)(void))success
-            failure:(void (^)(NSError *error))failure;
+            success:(void (^ _Nullable)(void))success
+            failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
                                   post:(ReaderPost *)post
                                  content:(NSString *)content
-                                 success:(void (^)(void))success
-                                 failure:(void (^)(NSError *error))failure;
+                                 success:(void (^ _Nullable)(void))success
+                                 failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
-                     success:(void (^)(void))success
-                     failure:(void (^)(NSError *error))failure;
+                     success:(void (^ _Nullable)(void))success
+                     failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Like comment
 - (void)likeCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)(void))success
-                  failure:(void (^)(NSError *error))failure;
+                  success:(void (^ _Nullable)(void))success
+                  failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Unlike comment
 - (void)unlikeCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)(void))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(void))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Approve comment
 - (void)approveCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
-                     success:(void (^)(void))success
-                     failure:(void (^)(NSError *error))failure;
+                     success:(void (^ _Nullable)(void))success
+                     failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Unapprove comment
 - (void)unapproveCommentWithID:(NSNumber *)commentID
                         siteID:(NSNumber *)siteID
-                       success:(void (^)(void))success
-                       failure:(void (^)(NSError *error))failure;
+                       success:(void (^ _Nullable)(void))success
+                       failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Spam comment
 - (void)spamCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)(void))success
-                  failure:(void (^)(NSError *error))failure;
+                  success:(void (^ _Nullable)(void))success
+                  failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Delete comment
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)(void))success
-                    failure:(void (^)(NSError *error))failure;
+                    success:(void (^ _Nullable)(void))success
+                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 /**
  This method will toggle the like status for a comment and optimistically save it. It will also
@@ -211,8 +213,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  */
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^)(void))success
-                           failure:(void (^)(NSError *error))failure;
+                           success:(void (^ _Nullable)(void))success
+                           failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 /**
  Get a CommentServiceRemoteREST for the given site.
@@ -224,3 +226,5 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

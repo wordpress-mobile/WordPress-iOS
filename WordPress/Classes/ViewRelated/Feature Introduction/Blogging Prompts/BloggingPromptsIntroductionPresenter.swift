@@ -24,7 +24,10 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     private var selectedBlog: Blog?
 
     private lazy var accountSites: [Blog]? = {
-        return AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
+        return AccountService(managedObjectContext: ContextManager.shared.mainContext)
+                .defaultWordPressComAccount()?
+                .visibleBlogs
+                .filter { $0.isAccessibleThroughWPCom() }
     }()
 
     private lazy var accountHasMultipleSites: Bool = {
@@ -42,6 +45,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     // MARK: - Present Feature Introduction
 
     func present(from presentingViewController: UIViewController) {
+        WPAnalytics.track(.promptsIntroductionModalViewed)
 
         // We shouldn't get here, but just in case - verify the account actually has a site.
         // If not, fallback to the non-actionable/informational view.
@@ -94,6 +98,7 @@ private extension BloggingPromptsIntroductionPresenter {
         selectorViewController.displaysOnlyDefaultAccountSites = true
         selectorViewController.dismissOnCompletion = false
         selectorViewController.dismissOnCancellation = true
+        selectorViewController.shouldHideSelfHostedSites = true
 
         let selectorNavigationController = UINavigationController(rootViewController: selectorViewController)
         self.navigationController.present(selectorNavigationController, animated: true)

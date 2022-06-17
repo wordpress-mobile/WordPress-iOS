@@ -114,10 +114,10 @@ private final class PostChartDataTransformer {
             entries.append(entry)
         }
 
-        let chartData = BarChartData(entries: entries)
+        let chartData = BarChartData(dataSet: BarChartDataSet(entries: entries))
         chartData.barWidth = effectiveWidth
 
-        let xAxisFormatter: IAxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
+        let xAxisFormatter: AxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
         let styling = PostChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
                                        primaryHighlightColor: primaryHighlightColor(forType: type, withCount: totalViews),
                                        xAxisValueFormatter: xAxisFormatter)
@@ -146,6 +146,6 @@ private struct PostChartStyling: BarChartStyling {
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = .neutral(.shade5)
-    let xAxisValueFormatter: IAxisValueFormatter
-    let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
+    let xAxisValueFormatter: AxisValueFormatter
+    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }
