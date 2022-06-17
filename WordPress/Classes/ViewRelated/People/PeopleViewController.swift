@@ -43,7 +43,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     ///
     private var isLoadingMore = false
 
-    /// Indicates where we are doing a full refresh, which involves clearing all the data at the start.
+    /// Indicates whether we are doing a full refresh.
     /// This is used to prevent the UI from showing "No Results" between all data being cleared and populated by the API.
     ///
     private var fullRefreshInProgress = true
@@ -173,6 +173,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         WPAppAnalytics.track(.openedPeople, with: blog)
     }
 
+    /// Nuke all existing data and refresh it from the remote API.
     private func refreshRemoteData() {
         fullRefreshInProgress = true
         shouldLoadMore = false
@@ -188,6 +189,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    /// Re-render the table and determine if the "No Results" view should be shown or removed.
     private func refreshView() {
         tableView.reloadData()
 
@@ -375,7 +377,7 @@ private extension PeopleViewController {
 
     // MARK: Sync Helpers
 
-    private func refreshPeople(completionHandler: @escaping (() -> Void)) {
+    func refreshPeople(completionHandler: @escaping (() -> Void)) {
         resetManagedPeople()
 
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
