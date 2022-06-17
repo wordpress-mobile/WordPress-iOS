@@ -331,7 +331,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                         selectedIndex: selectedIndex))
                 let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
                 if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights, statSection: statSection))
                 } else {
                     rows.append(contentsOf: tabbedRowsFrom(dataRows))
                 }

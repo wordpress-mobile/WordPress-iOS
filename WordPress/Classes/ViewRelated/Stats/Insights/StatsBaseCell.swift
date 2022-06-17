@@ -67,6 +67,12 @@ class StatsBaseCell: UITableViewCell {
         }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        statSection = nil
+    }
+
     private func configureHeading(with topConstraint: NSLayoutConstraint) {
         guard FeatureFlag.statsNewAppearance.enabled else {
             return

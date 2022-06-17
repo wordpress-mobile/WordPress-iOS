@@ -768,6 +768,7 @@ struct StatsErrorRow: ImmuTableRow {
     let action: ImmuTableAction? = nil
     let rowStatus: StoreFetchingStatus
     let statType: StatType
+    let statSection: StatSection?
 
     private let noDataRow = StatsNoDataRow.loadFromNib()
 
@@ -778,5 +779,9 @@ struct StatsErrorRow: ImmuTableRow {
 
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
         cell.insert(view: noDataRow)
+
+        if let statSection = statSection {
+           cell.statSection = statSection
+        }
     }
 }
