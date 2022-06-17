@@ -174,6 +174,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     /// Nuke all existing data and refresh it from the remote API.
+    /// Caution: This is currently not debounced, so quick successive calls could cause unintended UI quirks.
     private func refreshRemoteData() {
         fullRefreshInProgress = true
         shouldLoadMore = false
@@ -182,21 +183,21 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         refreshPeople { [weak self] in
             guard let self = self else { return }
 
-            self.fullRefreshInProgress = false
             self.refreshControl?.endRefreshing()
             self.refreshResultsController()
-            self.refreshView()
+            self.refreshView(refreshNoResults: true)
+            self.fullRefreshInProgress = false
         }
     }
 
     /// Re-render the table and determine if the "No Results" view should be shown or removed.
-    private func refreshView() {
+    private func refreshView(refreshNoResults: Bool) {
         tableView.reloadData()
 
         /// If a full refresh is in progress, don't refresh the "No Results" view yet. This prevents showing
         /// a message that there are no results between deleting all the existing objects and reloading them from the API.
         /// This state check could be removed if we did a true sync on the Core Data side by only pruning deleted objects.
-        guard !fullRefreshInProgress else {
+        guard refreshNoResults else {
             return
         }
 
@@ -269,7 +270,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
 extension PeopleViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        refreshView()
+        refreshView(refreshNoResults: !fullRefreshInProgress)
     }
 }
 
