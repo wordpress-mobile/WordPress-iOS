@@ -19,10 +19,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     ///
     private var filter = Filter.users {
         didSet {
-            refreshInterface()
-            refreshResultsController()
-            refreshPeople()
-            refreshNoResultsView()
+            refreshRemoteData()
         }
     }
 
@@ -46,10 +43,10 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     ///
     private var isLoadingMore = false
 
-    /// Indicates when the People in Core Data have been refreshed.
-    /// Used to display the loading view on initial view and refresh.
+    /// Indicates where we are doing a full refresh, which involves clearing all the data at the start.
+    /// This is used to prevent the UI from showing "No Results" between all data being cleared and populated by the API.
     ///
-    private var isInitialLoad = true
+    private var fullRefreshInProgress = true
 
     /// Number of records to skip in the next request
     ///
@@ -119,11 +116,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard !isInitialLoad else {
-            // Until the initial load has been completed, no data should be rendered in the table.
-            return 0
-        }
-
         return resultsController.sections?.count ?? 0
     }
 
@@ -167,19 +159,50 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         super.viewDidLoad()
         setupView()
         observeNetworkStatus()
-        resetManagedPeople()
+        refreshRemoteData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
-        refreshNoResultsView()
 
         guard let blog = blog else {
             return
         }
 
         WPAppAnalytics.track(.openedPeople, with: blog)
+    }
+
+    private func refreshRemoteData() {
+        fullRefreshInProgress = true
+        shouldLoadMore = false
+        displayNoResultsView(isLoading: true)
+
+        refreshPeople { [weak self] in
+            guard let self = self else { return }
+
+            self.fullRefreshInProgress = false
+            self.refreshControl?.endRefreshing()
+            self.refreshResultsController()
+            self.refreshView()
+        }
+    }
+
+    private func refreshView() {
+        tableView.reloadData()
+
+        /// If a full refresh is in progress, don't refresh the "No Results" view yet. This prevents showing
+        /// a message that there are no results between deleting all the existing objects and reloading them from the API.
+        /// This state check could be removed if we did a true sync on the Core Data side by only pruning deleted objects.
+        guard !fullRefreshInProgress else {
+            return
+        }
+
+        if resultsController.fetchedObjects?.count == 0 {
+            displayNoResultsView(isLoading: false)
+        } else {
+            noResultsViewController.removeFromView()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -231,7 +254,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     @IBAction
     func refresh() {
-        refreshPeople()
+        refreshRemoteData()
     }
 
     @IBAction
@@ -244,8 +267,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
 extension PeopleViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        refreshNoResultsView()
-        tableView.reloadData()
+        refreshView()
     }
 }
 
@@ -340,26 +362,12 @@ private extension PeopleViewController {
         return Filter.allCases
     }
 
-    func refreshInterface() {
-        shouldLoadMore = false
-    }
-
     func refreshResultsController() {
         resultsController.fetchRequest.predicate = predicate
         resultsController.fetchRequest.sortDescriptors = sortDescriptors
 
         do {
             try resultsController.performFetch()
-
-            // Failsafe:
-            // This was causing a glitch after State Restoration. Top Section padding was being initially
-            // set with an incorrect value, and subsequent reloads weren't picking up the right value.
-            //
-            if isHorizontalSizeClassUnspecified() {
-                return
-            }
-
-            tableView.reloadData()
         } catch {
             DDLogError("Error fetching People: \(error)")
         }
@@ -367,20 +375,18 @@ private extension PeopleViewController {
 
     // MARK: Sync Helpers
 
-    func refreshPeople() {
+    private func refreshPeople(completionHandler: @escaping (() -> Void)) {
+        resetManagedPeople()
+
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
-            self?.isInitialLoad = false
-            self?.refreshNoResultsView()
-            self?.tableView.reloadData()
-            self?.nextRequestOffset = retrieved
-            self?.shouldLoadMore = shouldLoadMore
-            self?.refreshControl?.endRefreshing()
+            guard let self = self else { return }
+            self.nextRequestOffset = retrieved
+            self.shouldLoadMore = shouldLoadMore
+            completionHandler()
         }
     }
 
     func resetManagedPeople() {
-        isInitialLoad = true
-
         guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
             return
         }
@@ -469,18 +475,9 @@ private extension PeopleViewController {
 
     // MARK: No Results Helpers
 
-    func refreshNoResultsView() {
-        guard resultsController.fetchedObjects?.count == 0 else {
-            noResultsViewController.removeFromView()
-            return
-        }
-
-        displayNoResultsView(isLoading: isInitialLoad)
-    }
-
-    func displayNoResultsView(isLoading: Bool = false) {
+    func displayNoResultsView(isLoading: Bool) {
         let accessoryView = isLoading ? NoResultsViewController.loadingAccessoryView() : nil
-        noResultsViewController.configure(title: noResultsTitle(), accessoryView: accessoryView)
+        noResultsViewController.configure(title: noResultsTitle(isLoading: isLoading), accessoryView: accessoryView)
 
         // Set the NRV top as the filterBar bottom so the NRV
         // adjusts correctly when refreshControl is active.
@@ -496,8 +493,8 @@ private extension PeopleViewController {
         noResultsViewController.didMove(toParent: self)
     }
 
-    func noResultsTitle() -> String {
-        if isInitialLoad {
+    func noResultsTitle(isLoading: Bool) -> String {
+        if isLoading {
             return NSLocalizedString("Loading People...", comment: "Text displayed while loading site People.")
         }
 
@@ -535,9 +532,6 @@ private extension PeopleViewController {
 
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-
-        // By default, let's display the Blog's Users
-        filter = .users
     }
 
     func setupTableView() {
