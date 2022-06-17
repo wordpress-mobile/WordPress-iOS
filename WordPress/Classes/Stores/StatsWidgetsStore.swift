@@ -275,6 +275,8 @@ private extension StatsWidgetsStore {
                                                object: nil,
                                                queue: nil) { notification in
 
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+
             if !AccountHelper.isLoggedIn {
                 HomeWidgetTodayData.delete()
                 HomeWidgetThisWeekData.delete()
@@ -284,8 +286,6 @@ private extension StatsWidgetsStore {
                 WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
                 WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
             }
-
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
         }
     }
 
