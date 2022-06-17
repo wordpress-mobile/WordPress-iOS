@@ -279,13 +279,13 @@ private extension StatsWidgetsStore {
                 HomeWidgetTodayData.delete()
                 HomeWidgetThisWeekData.delete()
                 HomeWidgetAllTimeData.delete()
+
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
             }
 
             UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
-
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
         }
     }
 
