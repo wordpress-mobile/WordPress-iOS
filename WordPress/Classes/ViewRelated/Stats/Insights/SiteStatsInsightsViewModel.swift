@@ -347,7 +347,9 @@ class SiteStatsInsightsViewModel: Observable {
         }
 
         tableRows.append(TableFooterRow())
-        tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        tableRows.append(AddInsightRow(action: { [weak self] _ in
+            self?.siteStatsInsightsDelegate?.showAddInsight?()
+        }))
 
         tableRows.append(TableFooterRow())
 
