@@ -136,6 +136,12 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
             fatalError()
         }
 
+        guard let sections = resultsController.sections, sections[indexPath.section].numberOfObjects > indexPath.row else {
+            DDLogError("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
+            cell.isHidden = true
+            return cell
+        }
+
         let person = personAtIndexPath(indexPath)
         let role = self.role(person: person)
         let viewModel = PeopleCellViewModel(person: person, role: role)
