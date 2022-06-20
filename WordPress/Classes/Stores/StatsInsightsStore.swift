@@ -1196,7 +1196,7 @@ private extension InsightStoreState {
     }
 
     func widgetUsingCurrentSite() -> Bool {
-        // Only store data if the widget is using the current site
+        // Only store data if the widget is using the current site.
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
             let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
