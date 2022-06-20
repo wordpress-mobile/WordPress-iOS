@@ -46,16 +46,10 @@ enum DashboardCard: String, CaseIterable {
         switch self {
         case .quickStart:
             return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
-        case .draftPosts:
-            fallthrough
-        case .scheduledPosts:
-            fallthrough
-        case .nextPost:
-            fallthrough
-        case .createPost:
-            fallthrough
-        case .todaysStats:
-            return self.shouldShowRemoteCard(apiResponse: apiResponse)
+        case .draftPosts, .scheduledPosts, .todaysStats:
+            return shouldShowRemoteCard(apiResponse: apiResponse)
+        case .nextPost, .createPost:
+            return !DashboardPromptsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
