@@ -65,7 +65,7 @@ platform :ios do
       end
     end
 
-    UI.message "Generating screenshots for the following languages: #{languages}"
+    UI.message "--- Generating screenshots for the following languages: #{languages}"
 
     create_missing_simulators_for_screenshots
     [true, false].each do |dark_mode_enabled|
@@ -231,11 +231,11 @@ platform :ios do
       device_type_id = device_spec['identifier']
 
       already_exists = specs['devices'].any? { |runtime, dev_list| dev_list.any? { |dev_spec| dev_spec['deviceTypeIdentifier'] == device_type_id } }
+      step_name = "Creating simulator for device type #{device_name}"
       if already_exists
-        UI.message "A simulator for device type #{device_type_id} already exists"
+        Actions.execute_action(step_name) { UI.message "A simulator for device type #{device_type_id} already exists" }
       else
-        UI.message "Creating simulator for device type #{device_type_id}"
-        res = sh('xcrun', 'simctl', 'create', device_name, device_type_id)
+        res = sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
         # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
       end
     end
