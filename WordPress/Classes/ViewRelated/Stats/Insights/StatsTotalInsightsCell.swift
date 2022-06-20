@@ -61,7 +61,7 @@ struct StatsTotalInsightsData {
             }
 
             let formattedText: String
-            if summary.likesCount == 1 {
+            if summary.likesCount == Constants.singularLikeCount {
                 formattedText = TextContent.likesTotalGuideTextSingular
             } else {
                 formattedText = String(format: TextContent.likesTotalGuideTextPlural, summary.title, summary.likesCount)
@@ -80,11 +80,15 @@ struct StatsTotalInsightsData {
             .font: UIFont.preferredFont(forTextStyle: .subheadline),
             .foregroundColor: UIColor.text
         ],
-            .ATagAttribute: [
-                .foregroundColor: UIColor.primary,
-                .underlineStyle: 0
-            ]
+        .ATagAttribute: [
+            .foregroundColor: UIColor.primary,
+            .underlineStyle: 0
+        ]
     ]
+
+    private enum Constants {
+        static let singularLikeCount = 1
+    }
 
     private enum TextContent {
         static let likesTotalGuideTextSingular = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>one</strong> like.", comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact.")
