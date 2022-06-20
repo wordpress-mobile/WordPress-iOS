@@ -254,8 +254,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
-        guard let statSection = statSection,
-              let detailsDelegate = detailsDelegate else {
+        guard let statSection = statSection else {
             return ImmuTable.Empty
         }
 
@@ -313,6 +312,33 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             return insightsImmuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
                 rows.append(TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: nil))
+
+/*
+                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
+                                                                  emailFollowersCount: 44,
+                                                                  publicizeCount: 16)
+*/
+
+                let dotComFollowersCount = insightsStore.getAllDotComFollowers()?.dotComFollowersCount ?? 0
+                let emailFollowersCount = insightsStore.getAllEmailFollowers()?.emailFollowersCount ?? 0
+                let publicizeCount = insightsStore.getPublicizeCount()
+
+                if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
+                    let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
+                                                                      emailFollowersCount: emailFollowersCount,
+                                                                      publicizeCount: publicizeCount)
+
+                    let chartView: UIView = chartViewModel.makeFollowersChartView()
+
+                    var chartRow = TopTotalsPeriodStatsRow(itemSubtitle: "",
+                            dataSubtitle: "",
+                            dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount, emailFollowersCount: emailFollowersCount, othersCount: 0),
+                            statSection: StatSection.insightsFollowersWordPress,
+                            siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
+                            siteStatsReferrerDelegate: nil)
+                    chartRow.topAccessoryView = chartView
+                    rows.append(chartRow)
+                }
 
                 rows.append(TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                             tabDataForFollowerType(.insightsFollowersEmail)],
@@ -923,6 +949,31 @@ private extension SiteStatsInsightsDetailsViewModel {
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
+    }
+
+    // MARK: - Followers
+    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, othersCount: Int) -> [StatsTotalRowData] {
+        var rowData = [StatsTotalRowData]()
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsFollowersWordPress.tabTitle,
+                        data: dotComFollowersCount.abbreviatedString(),
+                        statSection: .insightsFollowersWordPress)
+        )
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsFollowersEmail.tabTitle,
+                        data: emailFollowersCount.abbreviatedString(),
+                        statSection: .insightsFollowersEmail)
+        )
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsPublicize.tabTitle,
+                        data: othersCount.abbreviatedString(),
+                        statSection: .insightsFollowersWordPress)
+        )
+
+        return rowData
     }
 
     // MARK: - Countries
