@@ -1,0 +1,5 @@
+WordPress ist in den Chat eingestiegen – du siehst jetzt einen Tooltip „Konversation folgen“, der dich auffordert, einem Beitrag zu folgen und Benachrichtigungen über neue Kommentare zu erhalten.
+
+Wir haben den Auswahlbildschirm verbessert, auf dem du während der Erstellung der Website dein Design auswählst.
+
+Und schließlich haben wir einen Fehler beseitigt, der das Scrollen der Benachrichtigungen beeinträchtigte, wenn sich dein Handy im Querformat befindet. Scrolle weiter, Freund.
