@@ -206,9 +206,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         checkAppleIDCredentialState()
 
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
-
-        // TODO: remove when final launching source determine.
-        WPTabBarController.sharedInstance().showBloggingPromptsFeatureIntroduction()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -356,8 +353,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
-
-        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
     // MARK: - Helpers

@@ -1098,10 +1098,8 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish date picker */
 "Choose a date" = "Velg en dato";
 
-/* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Velg en utforming";
-
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Velg et tema";
 
 /* Label for Publish time picker */
@@ -1764,6 +1762,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Ignorer";
 
@@ -2788,6 +2787,7 @@ translators: Block name. %s: The localized block name */
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Lær mer";
 
@@ -3282,7 +3282,8 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Trenger oppdatering";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nye";
 
 /* Blocklist Keyword Insertion Title */
@@ -3713,7 +3714,8 @@ translators: Block name. %s: The localized block name */
 "Originally posted on %@" = "Opprinnelig publisert på %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Andre";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -4111,7 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -4639,6 +4640,7 @@ translators: Block name. %s: The localized block name */
 "Scheduling..." = "Planlegger...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Søk";
 
@@ -6307,6 +6309,7 @@ translators: Block name. %s: The localized block name */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visninger";

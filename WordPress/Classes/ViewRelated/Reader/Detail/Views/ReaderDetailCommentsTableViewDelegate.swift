@@ -9,7 +9,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var post: ReaderPost?
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
-    private var headerView: ReaderDetailCommentsHeader?
+    private(set) var headerView: ReaderDetailCommentsHeader?
+    var followButtonTappedClosure: (() ->Void)?
 
     private var totalRows = 0
     private var hideButton = true
@@ -57,6 +58,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
+    func followButtonMidPoint() -> CGPoint? {
+        headerView?.followButtonMidPoint()
+    }
+
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,7 +104,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        header.configure(
+            post: post,
+            totalComments: totalComments,
+            presentingViewController: presentingViewController,
+            followButtonTappedClosure: followButtonTappedClosure
+        )
         headerView = header
         return header
     }
@@ -111,7 +121,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
     }
-
 }
 
 private extension ReaderDetailCommentsTableViewDelegate {

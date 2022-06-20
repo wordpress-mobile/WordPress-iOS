@@ -57,13 +57,12 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 self.selectedPeriod = .week
 
                 let date = selectedDate ?? StatsDataHelper.currentDateForSite()
-                periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
-                        period: StatsPeriodUnit.day,
-                        forceRefresh: false))
 
                 periodChangeReceipt = periodStore.onChange { [weak self] in
                     self?.emitChange()
                 }
+
+                refreshPeriodOverviewData(date: date, period: StatsPeriodUnit.day, forceRefresh: false)
             case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -75,6 +74,37 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 insightsReceipt = insightsStore.query(storeQuery)
 
                 refreshFollowers()
+            case .insightsLikesTotals:
+                self.selectedPeriod = .week
+                if  let storeQuery = queryForInsightStatSection(statSection) {
+                    insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                        self?.emitChange()
+                    }
+
+                    insightsReceipt = insightsStore.query(storeQuery)
+                }
+
+                if queryForPeriodStatSection(StatSection.periodPostsAndPages) != nil {
+                    periodChangeReceipt = periodStore.onChange { [weak self] in
+                        self?.emitChange()
+                    }
+
+                    let date = selectedDate ?? StatsDataHelper.currentDateForSite()
+
+                    refreshPeriodOverviewData(date: date, period: StatsPeriodUnit.day, forceRefresh: false)
+                    refreshPostsAndPages()
+                }
+            case .insightsCommentsTotals:
+                guard let storeQuery = queryForInsightStatSection(statSection) else {
+                    return
+                }
+
+                insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                    self?.emitChange()
+                }
+                insightsReceipt = insightsStore.query(storeQuery)
+
+                refreshComments()
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -131,6 +161,19 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     return true
                 }
                 return insightsStore.fetchingFailed(for: storeQuery)
+            case .insightsLikesTotals:
+                guard let storeQueryViewsVisitors = queryForPeriodStatSection(.insightsLikesTotals),
+                      let storeQueryPostPages = queryForPeriodStatSection(.periodPostsAndPages) else {
+                    return true
+                }
+
+                return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
+                        periodStore.fetchingFailed(for: storeQueryPostPages)
+            case .insightsCommentsTotals:
+                guard let storeQuery = queryForInsightStatSection(statSection) else {
+                    return true
+                }
+                return insightsStore.fetchingFailed(for: storeQuery)
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
@@ -156,12 +199,14 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             return periodStore.isFetchingReferrers
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return insightsStore.isFetchingAllFollowers
-        case .insightsCommentsAuthors, .insightsCommentsPosts:
+        case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
             return insightsStore.isFetchingComments
         case .insightsTagsAndCategories:
             return insightsStore.isFetchingTagsAndCategories
         case .insightsAnnualSiteStats:
             return insightsStore.isFetchingAnnual
+        case .insightsLikesTotals:
+            return periodStore.isFetchingSummary && periodStore.isFetchingPostsAndPages
         case .periodPostsAndPages:
             return periodStore.isFetchingPostsAndPages
         case .periodSearchTerms:
@@ -223,18 +268,25 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             return periodImmuTable(for: periodStore.topReferrersStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if let periodSummary = periodStore.getSummary() {
+                if let periodSummary = periodStore.getSummary(),
+                   let referrers = periodStore.getTopReferrers() {
+                    let referrersData = referrersRowData()
+                    let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
+                    let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
+
                     // Views Visitors
                     rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!,
                             statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil))
 
                     // Referrers
-                    rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                            dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                            dataRows: referrersRowData(),
-                            statSection: StatSection.periodReferrers,
-                            siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                            siteStatsReferrerDelegate: nil))
+                    var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                               dataSubtitle: StatSection.periodReferrers.dataSubtitle,
+                                                               dataRows: referrersData,
+                                                               statSection: StatSection.periodReferrers,
+                                                               siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
+                                                               siteStatsReferrerDelegate: nil)
+                    referrersRow.topAccessoryView = chartView
+                    rows.append(referrersRow)
 
 
                     // Countries
@@ -269,22 +321,36 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                         showTotalCount: true))
                 return rows
             }
-        case .insightsCommentsAuthors, .insightsCommentsPosts:
+        case .insightsLikesTotals:
+            return periodImmuTable(for: periodStore.summaryStatus) { status in
+                var rows = [ImmuTableRow]()
+
+                rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: statSection, siteStatsInsightsDelegate: nil))
+
+                rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                        dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                        dataRows: postsAndPagesRowData(),
+                        statSection: StatSection.periodPostsAndPages,
+                        siteStatsPeriodDelegate: nil,
+                        siteStatsReferrerDelegate: nil))
+                return rows
+            }
+        case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
             return insightsImmuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
                 var rows = [ImmuTableRow]()
-                let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
+                rows.append(TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: nil))
+
                 let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
+                rows.append(TopTotalsInsightStatsRow(itemSubtitle: "",
+                        dataSubtitle: "",
+                        dataRows: authorsTabData.dataRows,
+                        siteStatsInsightsDelegate: nil))
+
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
-                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
-                        siteStatsDetailsDelegate: detailsDelegate,
-                        showTotalCount: false,
-                        selectedIndex: selectedIndex))
-                let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
-                if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
-                } else {
-                    rows.append(contentsOf: tabbedRowsFrom(dataRows))
-                }
+                rows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.InsightsHeaders.posts,
+                        dataSubtitle: StatSection.InsightsHeaders.comments,
+                        dataRows: postsTabData.dataRows,
+                        siteStatsInsightsDelegate: nil))
                 return rows
             }
         case .insightsTagsAndCategories:
@@ -399,7 +465,21 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
     }
 
+    func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+    }
+
+    func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+    }
+
     // MARK: - Refresh Data
+
+    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit = .week, forceRefresh: Bool = false) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
+                period: period,
+                forceRefresh: forceRefresh))
+    }
 
     func refreshFollowers() {
         ActionDispatcher.dispatch(InsightAction.refreshFollowers)
@@ -509,7 +589,7 @@ private extension SiteStatsInsightsDetailsViewModel {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return .allFollowers
-        case .insightsCommentsAuthors, .insightsCommentsPosts:
+        case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
@@ -546,7 +626,7 @@ private extension SiteStatsInsightsDetailsViewModel {
             return .allPublished(date: selectedDate, period: selectedPeriod)
         case .periodFileDownloads:
             return .allFileDownloads(date: selectedDate, period: selectedPeriod)
-        case .insightsViewsVisitors:
+        case .insightsViewsVisitors, .insightsLikesTotals:
             return .periods(date: selectedDate, period: selectedPeriod)
         default:
             return nil

@@ -68,11 +68,6 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
     }
 
-    static func trackSiteNameExperiment(_ variant: Variation) {
-        let properties = [variationKey: variant.tracksProperty]
-        WPAnalytics.track(.enhancedSiteCreationSiteNameExperiment, properties: properties)
-    }
-
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))

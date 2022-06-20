@@ -18,7 +18,7 @@ import Charts
 /// The workaround employed here (recommended in 2410 above) relies on the time series data being ordered, and simply
 /// transforms the adjusted values by the time interval associated with the first date in the series.
 ///
-class HorizontalAxisFormatter: IAxisValueFormatter {
+class HorizontalAxisFormatter: AxisValueFormatter {
 
     // MARK: Properties
 
@@ -35,7 +35,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
         self.period = period
     }
 
-    // MARK: IAxisValueFormatter
+    // MARK: AxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         updateFormatterTemplate()
@@ -67,13 +67,13 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
 
 // MARK: - VerticalAxisFormatter
 
-class VerticalAxisFormatter: IAxisValueFormatter {
+class VerticalAxisFormatter: AxisValueFormatter {
 
     // MARK: Properties
 
     private let largeValueFormatter = LargeValueFormatter()
 
-    // MARK: IAxisValueFormatter
+    // MARK: AxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         if value <= 0.0 {

@@ -194,6 +194,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         super.viewDidLayoutSubviews()
 
         refreshNavigationBar()
+        adjustLayoutConstraintsIfNeeded()
     }
 
     private func makeRouter() -> NotificationContentRouter {

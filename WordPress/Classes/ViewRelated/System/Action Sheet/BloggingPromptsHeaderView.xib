@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +18,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="349" height="110"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="stO-XN-YJp">
-                            <rect key="frame" x="131" y="0.0" width="87.5" height="24"/>
+                            <rect key="frame" x="120.5" y="0.0" width="108.5" height="24"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-lightbulb-outline" translatesAutoresizingMaskIntoConstraints="NO" id="AiS-VC-l3e">
                                     <rect key="frame" x="0.0" y="3" width="18" height="18"/>
@@ -36,6 +36,18 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yaj-Vs-dvt">
+                                    <rect key="frame" x="92.5" y="4" width="16" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="16" id="JvC-wK-Zk2"/>
+                                        <constraint firstAttribute="height" constant="16" id="U0R-PT-l08"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="help-outline"/>
+                                    <connections>
+                                        <action selector="infoButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="dqn-4o-lCn"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Cast the movie of your life." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rye-vB-0gG">
@@ -132,6 +144,7 @@
                 <outlet property="attributionStackView" destination="Gef-vX-Eh7" id="vqC-5V-Z1L"/>
                 <outlet property="containerStackView" destination="HBh-15-Hby" id="ce7-Wx-TUC"/>
                 <outlet property="dividerView" destination="9KN-UC-IRC" id="Wnd-hZ-yio"/>
+                <outlet property="infoButton" destination="Yaj-Vs-dvt" id="4lv-r9-dhN"/>
                 <outlet property="promptLabel" destination="Rye-vB-0gG" id="VoE-0W-soe"/>
                 <outlet property="shareButton" destination="deu-kl-qJY" id="4ur-ok-U6p"/>
                 <outlet property="titleLabel" destination="BJN-uB-YYG" id="zxX-90-kDD"/>
@@ -141,6 +154,7 @@
         </view>
     </objects>
     <resources>
+        <image name="help-outline" width="24" height="24"/>
         <image name="icon-lightbulb-outline" width="24" height="24"/>
         <systemColor name="separatorColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
@@ -286,10 +287,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         ]
 
         if removeFromDashboardEnabled {
-            return [defaultItems, [.remove(removeMenuTapped)]]
+            return [defaultItems, [.learnMore(learnMoreTapped), .remove(removeMenuTapped)]]
         }
 
-        return [defaultItems]
+        return [defaultItems, [.learnMore(learnMoreTapped)]]
     }
 
     @available(iOS 15.0, *)
@@ -310,6 +311,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        observeManagedObjectsChange()
     }
 
     required init?(coder: NSCoder) {
@@ -336,18 +338,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
               let promptsService = BloggingPromptsService(blog: blog),
-              let settings = promptsService.localSettings,
-              settings.isPotentialBloggingSite,
-              settings.promptCardEnabled else {
+              let settings = promptsService.localSettings else {
             return false
         }
 
+        let shouldDisplayCard = settings.promptRemindersEnabled || settings.isPotentialBloggingSite
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
-            return true
+            return shouldDisplayCard
         }
 
-        return !userSkippedPrompt(todaysPrompt, for: blog)
+        return !userSkippedPrompt(todaysPrompt, for: blog) && shouldDisplayCard
     }
 
 }
@@ -398,6 +399,30 @@ private extension DashboardPromptsCardCell {
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
+        presenterViewController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    // MARK: - Managed object observer
+
+    func observeManagedObjectsChange() {
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleObjectsChange),
+                name: .NSManagedObjectContextObjectsDidChange,
+                object: ContextManager.shared.mainContext
+        )
+    }
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let prompt = prompt else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(prompt) || refreshed.contains(prompt) {
+            refreshStackView()
+        }
     }
 
     // MARK: Prompt Fetching
@@ -430,7 +455,7 @@ private extension DashboardPromptsCardCell {
 
         let editor = EditPostViewController(blog: blog, prompt: prompt)
         editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .dashboard
+        editor.entryPoint = .bloggingPromptsDashboardCard
         presenterViewController?.present(editor, animated: true)
     }
 
@@ -451,11 +476,21 @@ private extension DashboardPromptsCardCell {
         WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
+        let notice = Notice(title: Strings.promptSkippedTitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+            self?.clearSkippedPromptForSite()
+            self?.presenterViewController?.reloadCardsLocally()
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func removeMenuTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuRemove)
         // TODO.
+    }
+
+    func learnMoreTapped() {
+        WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
+        presenterViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
     }
 
     // Fallback context menu implementation for iOS 13.
@@ -492,6 +527,8 @@ private extension DashboardPromptsCardCell {
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
+        static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
+        static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
     }
 
     struct Style {
@@ -519,6 +556,7 @@ private extension DashboardPromptsCardCell {
         case viewMore(_ handler: () -> Void)
         case skip(_ handler: () -> Void)
         case remove(_ handler: () -> Void)
+        case learnMore(_ handler: () -> Void)
 
         var title: String {
             switch self {
@@ -528,6 +566,8 @@ private extension DashboardPromptsCardCell {
                 return NSLocalizedString("Skip this prompt", comment: "Menu title to skip today's prompt.")
             case .remove:
                 return NSLocalizedString("Remove from dashboard", comment: "Destructive menu title to remove the prompt card from the dashboard.")
+            case .learnMore:
+                return NSLocalizedString("Learn more", comment: "Menu title to show the prompts feature introduction modal.")
             }
         }
 
@@ -539,6 +579,8 @@ private extension DashboardPromptsCardCell {
                 return .init(systemName: "xmark.circle")
             case .remove:
                 return .init(systemName: "minus.circle")
+            case .learnMore:
+                return .init(systemName: "info.circle")
             }
         }
 
@@ -554,20 +596,27 @@ private extension DashboardPromptsCardCell {
         var toAction: UIAction {
             switch self {
             case .viewMore(let handler),
-                    .skip(let handler),
-                    .remove(let handler):
-                return .init(title: title, image: image, attributes: menuAttributes, handler: { _ in
+                 .skip(let handler),
+                 .remove(let handler),
+                 .learnMore(let handler):
+                return UIAction(title: title, image: image, attributes: menuAttributes) { _ in
                     handler()
-                })
+                }
             }
         }
 
         var toMenuSheetItem: MenuSheetViewController.MenuItem {
             switch self {
             case .viewMore(let handler),
-                    .skip(let handler),
-                    .remove(let handler):
-                return .init(title: title, image: image, destructive: menuAttributes.contains(.destructive), handler: handler)
+                 .skip(let handler),
+                 .remove(let handler),
+                 .learnMore(let handler):
+                return MenuSheetViewController.MenuItem(
+                        title: title,
+                        image: image,
+                        destructive: menuAttributes.contains(.destructive),
+                        handler: handler
+                )
             }
         }
     }

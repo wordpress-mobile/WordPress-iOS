@@ -5,7 +5,7 @@ excluded:
   - vendor
 
 # Rules
-whitelist_rules:
+only_rules:
   # Colons should be next to the identifier when specifying a type.
   - colon
 
@@ -42,8 +42,8 @@ whitelist_rules:
 
 # Rules configuration
 
-control_statement: 
-  severity: error 
+control_statement:
+  severity: error
 
 custom_rules:
 
