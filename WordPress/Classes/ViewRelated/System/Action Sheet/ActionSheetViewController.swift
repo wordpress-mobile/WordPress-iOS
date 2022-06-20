@@ -64,7 +64,7 @@ class ActionSheetViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var gripButton: UIButton = {
+    private lazy var gripButton: UIButton = {
         let button = GripButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)

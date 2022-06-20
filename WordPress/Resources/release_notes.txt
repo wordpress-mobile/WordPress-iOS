@@ -1,14 +1,5 @@
-Blocks are now drag-and-drop, so you can easily rearrange your content however you like. We like to move it, move it.
+WordPress has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
 
-That’s not the only change in the block editor. We adjusted color contrast so it’s easier to read text when you’re working in dark mode. We also fixed a problem with the Link To setting in Gallery blocks, and we added Image Size settings while we were at it.
+We made some improvements to the selection screen where you choose your site design during the Site Creation process.
 
-The WordPress.com tour banner no longer pops up in the unsupported block editor. Speaking of tours—you’ll now see a different set of Quick Start tasks, depending on whether you’re building a new site or working with an existing one. Learning new tasks, like checking notifications and uploading media, is a piece of cake.
-
-Finally, we squashed some pesky bugs to make the app easier to use.
-
-- Widget text isn’t flipped anymore for devices using right-to-left languages.
-- The app won’t crash when you switch between Stat Insights and other site sections. Phew.
-- In the Posts list, the create button is now visible for iPad users working in split screen.
-- When you change your site title in site settings, it’ll be updated in My Site, too.
-- You’ll see the right message in the media picker when there’s no media available.
-- The navigation buttons in the Site Creation process now scale properly when your device uses large fonts.
+Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.

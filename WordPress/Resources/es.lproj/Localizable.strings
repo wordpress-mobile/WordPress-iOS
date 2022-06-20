@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-17 11:34:14+0000 */
+/* Translation-Revision-Date: 2022-05-31 10:50:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: es */
@@ -62,7 +62,8 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d respuestas";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d de %2$d completos";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -79,6 +80,9 @@
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+
+/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
+"%1$s. Currently selected: %2$s" = "%1$s. Seleccionado actualmente: %2$s";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -279,6 +283,12 @@ translators: Block name. %s: The localized block name */
 
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(sin título)";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"*%@%@ (%@%%)* higher than the previous week" = "*%1$@%2$@ (%3$@%%)* más que la semana anterior";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"*%@%@ (%@%%)* lower than the previous week" = "*%1$@%2$@ (%3$@%%)* menos que la semana anterior";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "¡*Johann Brandt* ahora sigue tu sitio!";
@@ -512,9 +522,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Añadir contenidos a la entrada";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Añadir una nueva tarjeta de estadísticas";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Añadir al principio";
 
@@ -686,8 +693,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "¡Todo configurado!";
 
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Todas las tareas están completas";
+/* Message shown when all Quick Start tasks are complete. */
+"All tasks complete!" = "¡Todas las tareas están completas!";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Siempre";
@@ -926,6 +933,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Organiza tu contenido en columnas, añade botones de llamada a la acción y superpón imágenes con texto.";
+
+/* No comment provided by engineer. */
+"Arrow buttons" = "Botones de flechas";
 
 /* An example tag used in the login prologue screens.
    Art site intent topic */
@@ -1477,9 +1487,6 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish date picker */
 "Choose a date" = "Elige una fecha";
 
-/* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Elige un diseño";
-
 /* Select domain name. Title */
 "Choose a domain" = "Elegir un dominio";
 
@@ -1489,7 +1496,8 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Elige un sitio para abrir.";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Elige un tema";
 
 /* Label for Publish time picker */
@@ -1615,14 +1623,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Código";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Contraída, %i tareas completadas, al cambiar se expande la lista de estas tareas";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Cerrado. Toca para expandir.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Contrae la lista de tareas completadas.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Recopilar información";
@@ -1698,6 +1700,9 @@ translators: Block name. %s: The localized block name */
    Today's Stats 'Comments' label */
 "Comments" = "Comentarios";
 
+/* Insights 'Comments Total' header */
+"Comments Total" = "Total de comentarios";
+
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "Los comentarios están cerrados";
 
@@ -1721,9 +1726,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compacto";
-
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Completo (%i)";
 
 /* The action is completed */
 "Completed" = "Completado";
@@ -1793,9 +1795,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title shown when all tours have been completed. */
 "Congrats! You know your way around" = "Felicidades. Ya sabes lo que tienes que hacer";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Enhorabuena por completar tu lista. Un trabajo bien hecho.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "¡Enhorabuena por tu compra!";
@@ -2447,6 +2446,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Descartar";
 
@@ -2650,6 +2650,12 @@ translators: Block name. %s: The localized block name */
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Borradores";
+
+/* No comment provided by engineer. */
+"Drag & drop" = "Arrastrar y soltar";
+
+/* No comment provided by engineer. */
+"Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "Arrastrar y soltar hace que reordenar bloques sea algo trivial. Presiona y sujeta un bloque, luego arrástralo a su nueva ubicación y suéltalo.";
 
 /* No comment provided by engineer. */
 "Drag to adjust focal point" = "Arrastra para ajustar el punto focal";
@@ -3070,14 +3076,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Ampliado";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Expandida, %i tareas completadas, al cambiar se contrae la lista de estas tareas ";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Expandido. Toca para cerrar.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Expande la lista de tareas completadas.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Amplía para seleccionar un menú diferente";
@@ -3292,13 +3292,13 @@ translators: Block name. %s: The localized block name */
    User role badge */
 "Follower" = "Seguidor";
 
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Total de seguidores";
-
 /* Blog Followers
    Insights 'Followers' header
    Label for number of followers. */
 "Followers" = "Seguidores";
+
+/* Insights 'Followers Total' header */
+"Followers Total" = "Total de seguidores";
 
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
@@ -3442,6 +3442,9 @@ translators: Block name. %s: The localized block name */
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "Familiarízate con la aplicación de WordPress";
 
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
+"Get to know the app" = "Conoce la aplicación";
+
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Consigue tu dominio";
 
@@ -3495,7 +3498,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Fallo en el registro en Google.";
 
-/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title for the follow conversations tooltip.
+   Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Entendido";
 
@@ -3748,6 +3752,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Leyenda de la imagen. %s";
+
+/* No comment provided by engineer. */
+"Image file not found." = "Archivo de imagen no encontrado.";
 
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
@@ -4085,13 +4092,15 @@ translators: Block name. %s: The localized block name */
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Saber más";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Aprende más sobre el formato de fecha y hora.";
 
-/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.
+   Accessibility label for the blogging prompts info button on the prompts header view. */
 "Learn more about prompts" = "Más información sobre los estímulos";
 
 /* Footer text for Invite People role field. */
@@ -4145,6 +4154,9 @@ translators: Block name. %s: The localized block name */
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Me gusta";
+
+/* Insights 'Likes Total' header */
+"Likes Total" = "Total de me gusta";
 
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "Me gusta en mis comentarios";
@@ -4463,6 +4475,10 @@ translators: Block name. %s: The localized block name */
    Title label for the media settings section in the app settings */
 "Media" = "Medios";
 
+/* Label for the media cache navigation row in the app.
+   Media Cache title */
+"Media Cache" = "Caché de medios";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Tamaño de la caché de medios";
 
@@ -4679,6 +4695,9 @@ translators: Block name. %s: The localized block name */
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mis diez mejores cafeterías";
 
+/* No comment provided by engineer. */
+"NEW" = "NUEVO";
+
 /* Title for disclaimer in the dashboard's custom What's New page. */
 "NEW!" = "¡NUEVO!";
 
@@ -4728,7 +4747,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "Nunca caduca";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nuevos";
 
 /* Blocklist Keyword Insertion Title */
@@ -4816,9 +4836,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No hay disponible una vista previa de la URL";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Ninguna entrada guardada";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "No, gracias";
@@ -4962,7 +4979,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "No se encontraron entradas que contengan %@ en tu idioma.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "No se han publicado entradas recientemente";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -4988,6 +5005,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Sin resultados. Prueba con una búsqueda diferente.";
+
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "Ninguna entrada guardada";
 
 /* A message title */
 "No sites found" = "No se ha encontrado ningún sitio";
@@ -5291,7 +5311,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Originally posted on %@" = "Se ha publicado originalmente en %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Otro";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -5457,9 +5478,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Elige un nombre de usuario";
-
-/* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Elige tu diseño favorito para la página de inicio. Puedes editarlo y personalizarlo más tarde.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -5770,7 +5788,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6465,6 +6482,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Menú de bloques desplazable abierto. Selecciona un bloque.";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Buscar";
 
@@ -6869,9 +6887,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Mostrado";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Mostrado en la pestaña del navegador de tu visitante y en otros sitios online.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Se muestra públicamente cuando comentas en blogs.";
 
@@ -7011,7 +7026,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Size" = "Tamaño";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -7400,6 +7414,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Toca para ocultar el teclado";
 
+/* Title for a push notification with fixed content that invites the user to load today's blogging prompt. */
+"Tap to load today's prompt..." = "Toca para cargar el estímulo de hoy…";
+
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as not spam." = "Toca para marcar al referente como no spam.";
 
@@ -7426,6 +7443,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Toca para ver los medios a pantalla completa";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
+"Tap to view more stats for this week" = "Toca para ver más estadísticas de esta semana";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Toca para ver las entradas para esta etiqueta";
@@ -7843,7 +7863,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "No es posible cerrar la cuenta de este usuario porque tiene suscripciones activas.";
 
-/* This week legend label */
+/* This week legend label
+   Title of a button. A call to action to view more stats for this week */
 "This week" = "Esta semana";
 
 /* A description of the twitter sharing setting.
@@ -7963,6 +7984,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Hoy";
+
+/* Title for a push notification showing today's blogging prompt. */
+"Today's Prompt 💡" = "Estímulo de hoy 💡";
 
 /* Insights Management 'Today's Stats' title
    Title for the card displaying today's stats. */
@@ -8530,6 +8554,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use this site" = "Usar este sitio";
 
+/* Description of a Quick Start Tour */
+"Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Utilizado en toda la web: en pestañas del navegador, vistas previas en medios sociales, y en el lector de WordPress.com";
+
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -8658,6 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visitas";
@@ -9281,6 +9309,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Estás cargando multimedia en este momento. Esta acción cancelará las cargas en curso.\n\n¿Estás seguro?";
 
+/* No comment provided by engineer. */
+"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "Puedes reorganizar los bloques tocando un bloque y luego tocando las flechas arriba y abajo que aparecen en la parte inferior izquierda del bloque para moverlo encima o debajo de otros bloques.";
+
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Siempre puedes acceder con un enlace como el que acabas de usar, pero también puedes configurar una contraseña si lo prefieres.";
 
@@ -9304,9 +9335,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Se puede ignorar esta configuración para las entradas individuales.";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Puedes reorganizar los bloques tocando un bloque y luego tocando las flechas arriba y abajo que aparecen en la parte inferior izquierda del bloque para moverlo encima o debajo de otros bloques.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Puedes cambiar los sitios en cualquier momento.";
@@ -9740,6 +9768,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Views count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.views" = "Vistas";
+
+/* Header title indicating which Stats Insights cards the user currently has set to active. */
+"stats.insights.management.activeCards" = "Tarjetas activas";
+
+/* Header title indicating which Stats Insights cards the user currently has disabled. */
+"stats.insights.management.inactiveCards" = "Tarjetas inactivas";
+
+/* Title of button to cancel an alert and take no action. */
+"stats.insights.management.savePrompt.cancelButton" = "Cancelar";
+
+/* Title of button in Stats Insights management, prompting the user to discard changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.discardButton" = "Descartar cambios";
+
+/* Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.message" = "Has realizado cambios en tus tarjetas de estadísticas actuales.";
+
+/* Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.saveButton" = "Guardar cambios";
+
+/* Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards. */
+"stats.insights.management.selectCardsPrompt" = "Selecciona tarjetas de la siguiente lista";
+
+/* Title of the Stats Insights Management screen */
+"stats.insights.management.title" = "Gestionar el estado de las tarjetas";
 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 El momento más popular";

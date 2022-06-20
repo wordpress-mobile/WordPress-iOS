@@ -4,12 +4,12 @@
 # Constants
 #################################################
 
-# URL of the GlotPress project which contains App strings
-GLOTPRESS_APP_STRINGS_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
+# URL of the GlotPress project containing the app's strings
+GLOTPRESS_APP_STRINGS_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
 
-# URL of the GlotPress projects containing AppStore metadata (title, keywords, release notes, …)
-GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
-GLOTPRESS_JETPACK_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
+# URL of the GlotPress projects containing App Store metadata (title, keywords, release notes, …)
+GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/release-notes/'
+GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL = 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/'
 
 # List of locales used for the app strings (GlotPress code => `*.lproj` folder name`)
 #
@@ -77,7 +77,7 @@ GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES = {
   'th' => 'th',
   'tr' => 'tr',
   'zh-cn' => 'zh-Hans',
-  'zh-tw' => 'zh-Hant',
+  'zh-tw' => 'zh-Hant'
 }.freeze
 
 # Locales used in AppStore for WordPress metadata
@@ -228,7 +228,7 @@ platform :ios do
     # Download `Localizable.strings` translations used within the app
     parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
     ios_download_strings_files_from_glotpress(
-      project_url: GLOTPRESS_APP_STRINGS_URL,
+      project_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
       locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,
       download_dir: parent_dir_for_lprojs
     )
@@ -270,7 +270,7 @@ platform :ios do
 
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
-      glotpress_project_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
+      glotpress_project_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
       metadata_directory: metadata_directory,
       locales: WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES,
       commit_message: 'Update WordPress metadata translations'
@@ -292,7 +292,7 @@ platform :ios do
 
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
-      glotpress_project_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      glotpress_project_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
       locales: JETPACK_METADATA_GLOTPRESS_LOCALE_CODES,
       metadata_directory: metadata_directory,
       commit_message: 'Update Jetpack metadata translations'
@@ -302,15 +302,15 @@ platform :ios do
   def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
-    locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)    
+    locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
     target_files = {
-      "v#{ios_get_app_version}-whats-new": { desc: "release_notes.txt", max_size: 4000 },
-      app_store_name: { desc: "name.txt", max_size: 30 },
-      app_store_subtitle: { desc: "subtitle.txt", max_size: 30 },
-      app_store_desc: { desc: "description.txt", max_size: 4000 },
-      app_store_keywords: { desc: "keywords.txt", max_size: 100 },
+      "v#{ios_get_app_version}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
+      app_store_name: { desc: 'name.txt', max_size: 30 },
+      app_store_subtitle: { desc: 'subtitle.txt', max_size: 30 },
+      app_store_desc: { desc: 'description.txt', max_size: 4000 },
+      app_store_keywords: { desc: 'keywords.txt', max_size: 100 }
     }
-  
+
     gp_downloadmetadata(
       project_url: glotpress_project_url,
       target_files: target_files,
@@ -322,14 +322,17 @@ platform :ios do
     # Ensure that none of the `.txt` files in `en-US` would accidentally override our originals in `default`
     target_files.values.map { |h| h[:desc] }.each do |file|
       en_file_path = File.join(metadata_directory, 'en-US', file)
-      UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is the source of truth. " \
-        + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.") if File.exist?(en_file_path)
+      if File.exist?(en_file_path)
+        UI.user_error!("File `#{en_file_path}` would override the same one in `#{metadata_directory}/default`, but `default/` is the source of truth. " \
+          + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.")
+      end
     end
 
     # Ensure even empty locale folders have an empty `.gitkeep` file (in case we don't have any translation at all ready for some locales)
-    locales_map.values.each do |locale|
+    locales_map.each_value do |locale|
       gitkeep = File.join(metadata_directory, locale, '.gitkeep')
       next if File.exist?(gitkeep)
+
       FileUtils.mkdir_p(File.dirname(gitkeep))
       FileUtils.touch(gitkeep)
       files_to_commit.append(gitkeep)
@@ -409,21 +412,21 @@ platform :ios do
 
     UI.message('Checking app strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_APP_STRINGS_URL,
+      glotpress_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
 
     UI.message('Checking WordPress release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_WORDPRESS_METADATA_PROJECT_URL,
+      glotpress_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )
 
     UI.message('Checking Jetpack release notes strings translation status...')
     check_translation_progress(
-      glotpress_url: GLOTPRESS_JETPACK_METADATA_PROJECT_URL,
+      glotpress_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
       abort_on_violations: abort_on_violations,
       skip_confirm: skip_confirm
     )

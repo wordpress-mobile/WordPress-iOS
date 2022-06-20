@@ -244,7 +244,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
     override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
         let yValue = Int(entry.y).description
 
-        guard let data = chartView?.data, data.dataSetCount > 1, let lineChartDataSetPrevWeek = data.getDataSetByIndex(1) as? LineChartDataSet else {
+        guard let data = chartView?.data, data.dataSetCount > 1, let lineChartDataSetPrevWeek = data.dataSet(at: 1) as? LineChartDataSet else {
             return
         }
 

@@ -93,7 +93,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     }()
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "wp-illustration-quickstart-existing-site"))
+        let imageView = UIImageView(image: AppStyleGuide.quickStartExistingSite)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -221,7 +221,7 @@ extension NewQuickStartChecklistView {
 extension NewQuickStartChecklistView {
 
     private enum Metrics {
-        static let mainStackViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16).flippedForRightToLeft
+        static let mainStackViewInsets = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 24).flippedForRightToLeft
         static let verticalStackViewWidthMultiplier = 3.0 / 5.0
         static let verticalStackViewSpacingPortrait = 12.0
         static let verticalStackViewSpacingLandscape = 16.0

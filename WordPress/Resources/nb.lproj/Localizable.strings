@@ -26,7 +26,8 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d likinger";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d fullført";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
@@ -362,9 +363,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Legg til innhold i innlegg";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Legg til nytt statistikk-kort";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Legg til i begynnelsen";
 
@@ -490,9 +488,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for All Languages */
 "All languages" = "Alle språk";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "Alle oppgaver fullført";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Til all tid";
@@ -1103,10 +1098,8 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish date picker */
 "Choose a date" = "Velg en dato";
 
-/* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Velg en utforming";
-
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Velg et tema";
 
 /* Label for Publish time picker */
@@ -1196,14 +1189,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kode";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Skjult, %i fullførte oppgaver, veksling utvider listen over disse oppgavene";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Trukket sammen. Trykk for å utvide.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Skjuler listen over fullførte oppgaver.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Samle inn informasjon";
@@ -1263,9 +1250,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Kompakt";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Fullført (%i)";
-
 /* The action is completed */
 "Completed" = "Fullført";
 
@@ -1286,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Bekreft E-postadressen din først";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Gratulerer, du har fullført listen. Godt jobbet!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1781,6 +1762,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Ignorer";
 
@@ -2180,14 +2162,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Utvidet";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Utvidet, %i fullførte oppgaver, veksling skjuler listen over disse oppgavene";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Utvidet. Trykk for å trekke sammen.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Utvider listen over fullførte oppgaver.";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "Utløper";
@@ -2317,9 +2293,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Følger";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Antall følgere";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -2814,6 +2787,7 @@ translators: Block name. %s: The localized block name */
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Lær mer";
 
@@ -3308,7 +3282,8 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Trenger oppdatering";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nye";
 
 /* Blocklist Keyword Insertion Title */
@@ -3387,9 +3362,6 @@ translators: Block name. %s: The localized block name */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Ingen forhåndsvisnings-URL er tilgjengelig";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Ingen lagrede sider";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Nei takk";
@@ -3494,7 +3466,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Ingen innlegg funnet som matcher %@ på ditt språk.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "Ingen innlegg har blitt laget nylig";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -3742,7 +3714,8 @@ translators: Block name. %s: The localized block name */
 "Originally posted on %@" = "Opprinnelig publisert på %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Andre";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -4140,7 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -4668,6 +4640,7 @@ translators: Block name. %s: The localized block name */
 "Scheduling..." = "Planlegger...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Søk";
 
@@ -5089,7 +5062,6 @@ translators: Block name. %s: The localized block name */
 "Size" = "Størrelse";
 
 /* Button that allows the user to skip the prompt and be brought to the app
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
@@ -6337,6 +6309,7 @@ translators: Block name. %s: The localized block name */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Visninger";

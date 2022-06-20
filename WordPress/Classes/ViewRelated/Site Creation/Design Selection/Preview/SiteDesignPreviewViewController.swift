@@ -4,11 +4,19 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
     private let createsSite: Bool
     let completion: SiteDesignStep.SiteDesignSelection
     let siteDesign: RemoteSiteDesign
+    let sectionType: SiteDesignSectionType
 
-    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDevice?, createsSite: Bool, onDismissWithDeviceSelected: ((PreviewDevice) -> ())?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign,
+         selectedPreviewDevice: PreviewDevice?,
+         createsSite: Bool,
+         sectionType: SiteDesignSectionType,
+         onDismissWithDeviceSelected: ((PreviewDevice) -> ())?,
+         completion: @escaping SiteDesignStep.SiteDesignSelection) {
+
         self.completion = completion
         self.siteDesign = siteDesign
         self.createsSite = createsSite
+        self.sectionType = sectionType
         super.init(demoURL: siteDesign.demoURL, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
         delegate = self
         title = TextContent.previewTitle
@@ -61,7 +69,7 @@ extension SiteDesignPreviewViewController: TemplatePreviewViewDelegate {
     }
 
     func templatePicked() {
-        SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign, sectionType: sectionType)
         completion(siteDesign)
     }
 }

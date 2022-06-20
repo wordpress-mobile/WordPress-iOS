@@ -6,9 +6,6 @@ class SiteCreationWizardLauncherTests: XCTestCase {
 
     private let featureFlags = FeatureFlagOverrideStore()
 
-    private let nameControl = Variation.control
-    private let nameTreatment = Variation.treatment(nil)
-
     /// If Site Intent is disabled, Site Name is also disabled
     func testSiteCreationStepOrderIntentDisabled() throws {
 
@@ -18,7 +15,7 @@ class SiteCreationWizardLauncherTests: XCTestCase {
         let expectedOrder: [SiteCreationStep] = [.design, .address, .siteAssembly]
 
         // When
-        let wizardIntentTreatment = SiteCreationWizardLauncher(nameVariant: nameTreatment)
+        let wizardIntentTreatment = SiteCreationWizardLauncher()
 
         // Then
         XCTAssertEqual(expectedOrder, wizardIntentTreatment.steps)
@@ -34,21 +31,10 @@ class SiteCreationWizardLauncherTests: XCTestCase {
         let expectedOrder: [SiteCreationStep] = [.intent, .design, .address, .siteAssembly]
 
         // When
-        let wizardNameDisabled = SiteCreationWizardLauncher(nameVariant: nameTreatment)
+        let wizardNameDisabled = SiteCreationWizardLauncher()
 
         // Then
         XCTAssertEqual(expectedOrder, wizardNameDisabled.steps)
-
-        /// There should be no change if the Site Name feature flag is enabled but Site Name is in the control group
-
-        // Given
-        try featureFlags.override(FeatureFlag.siteName, withValue: true)
-
-        // When
-        let wizardNameControl = SiteCreationWizardLauncher(nameVariant: nameControl)
-
-        // Then
-        XCTAssertEqual(expectedOrder, wizardNameControl.steps)
     }
 
     func testSiteCreationStepOrderIntentEnabledNameEnabled() throws {
@@ -62,37 +48,9 @@ class SiteCreationWizardLauncherTests: XCTestCase {
         let expectedOrder: [SiteCreationStep] = [.intent, .name, .design, .siteAssembly]
 
         // When
-        let wizardBothEnabled = SiteCreationWizardLauncher(nameVariant: nameTreatment)
+        let wizardBothEnabled = SiteCreationWizardLauncher()
 
         // Then
         XCTAssertEqual(expectedOrder, wizardBothEnabled.steps)
-    }
-
-    func testSiteNameVariantTracking() throws {
-
-        /// When the Site Creation Wizard Launcher starts, it should fire an event for the variant being tracked
-
-        try runSiteNameVariantTrackingTest(for: nameTreatment)
-        try runSiteNameVariantTrackingTest(for: nameControl)
-    }
-
-    private func runSiteNameVariantTrackingTest(for variant: Variation) throws {
-        TestAnalyticsTracker.setup()
-
-        // Given
-        let expectedEvent = WPAnalyticsEvent.enhancedSiteCreationSiteNameExperiment.value
-        let expectedProperty = variant.tracksProperty
-        let variationEventPropertyKey = "variation"
-
-        // When
-        let _ = SiteCreationWizardLauncher(nameVariant: variant)
-
-        // Then
-        let trackedEvents = try XCTUnwrap(TestAnalyticsTracker.tracked.filter { $0.event == expectedEvent })
-        XCTAssertEqual(trackedEvents.count, 1)
-        let variation = try XCTUnwrap(trackedEvents[0].properties[variationEventPropertyKey] as? String)
-        XCTAssertEqual(variation, expectedProperty)
-
-        TestAnalyticsTracker.tearDown()
     }
 }

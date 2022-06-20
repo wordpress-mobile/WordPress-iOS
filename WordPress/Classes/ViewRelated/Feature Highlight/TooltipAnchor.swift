@@ -30,6 +30,7 @@ final class TooltipAnchor: UIControl {
     private lazy var stackView: UIStackView = {
         $0.addArrangedSubviews([highlightLabel, titleLabel])
         $0.spacing = Constants.stackViewSpacing
+        $0.isUserInteractionEnabled = false
         return $0
     }(UIStackView())
 
@@ -38,11 +39,13 @@ final class TooltipAnchor: UIControl {
         commonInit()
     }
 
-    func dismissByFadingOut() {
+    func toggleVisibility(_ isVisible: Bool) {
         UIView.animate(withDuration: 0.2) {
-            self.alpha = 0
-        } completion: { _ in
-            self.removeFromSuperview()
+            if isVisible {
+                self.alpha = 1
+            } else {
+                self.alpha = 0
+            }
         }
     }
 

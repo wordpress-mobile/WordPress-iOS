@@ -12,7 +12,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let accessoryView: UIView?
     let mainTitle: String
     let navigationBarTitle: String?
-    let prompt: String
+    let prompt: String?
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
@@ -34,6 +34,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // If set to false, largeTitleView and promptView labels are hidden in compact height (default behavior).
     //
     var alwaysShowHeaderTitles: Bool {
+        false
+    }
+
+    // Set this property to true to add a custom footerView with custom sizing when scrollableView is UITableView.
+    var allowCustomTableFooterView: Bool {
         false
     }
 
@@ -197,7 +202,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          mainTitle: String,
          navigationBarTitle: String? = nil,
          headerImage: UIImage? = nil,
-         prompt: String,
+         prompt: String? = nil,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
          defaultActionTitle: String? = nil,
@@ -224,6 +229,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewDidLoad()
         insertChildView()
         insertAccessoryView()
+        configureSubtitleToCategoryBarSpacing()
         configureHeaderImageView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
@@ -336,6 +342,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
+        promptView.isHidden = prompt == nil
         promptView.text = prompt
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
@@ -383,6 +390,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func configureHeaderImageView() {
         headerImageView.isHidden = (headerImage == nil)
         headerImageView.image = headerImage
+    }
+
+    private func configureSubtitleToCategoryBarSpacing() {
+        if prompt?.isEmpty ?? true {
+            subtitleToCategoryBarSpacing.constant = 0
+        }
     }
 
     func configureHeaderTitleVisibility() {
@@ -465,6 +478,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
         let newHeight: CGFloat = max(footerHeight, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
+
+            guard !allowCustomTableFooterView else {
+                return
+            }
+
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
             tableView.tableFooterView?.backgroundColor = .clear

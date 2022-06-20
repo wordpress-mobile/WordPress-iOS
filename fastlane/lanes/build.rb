@@ -245,7 +245,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'WordPress Alpha',
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
@@ -298,7 +298,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'Jetpack Alpha',
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
@@ -335,9 +335,9 @@ platform :ios do
   #
   def generate_installable_build_number
     if ENV['BUILDKITE']
-      commit = ENV['BUILDKITE_COMMIT'][0, 7]
-      branch = ENV['BUILDKITE_BRANCH']
-      pr_num = ENV['BUILDKITE_PULL_REQUEST']
+      commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
+      branch = ENV.fetch('BUILDKITE_BRANCH', nil)
+      pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
 
       pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
     else
@@ -377,7 +377,7 @@ platform :ios do
 
     comment_on_pr(
       project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
       reuse_identifier: "installable-build-link--#{url_slug}",
       body: comment_body
     )

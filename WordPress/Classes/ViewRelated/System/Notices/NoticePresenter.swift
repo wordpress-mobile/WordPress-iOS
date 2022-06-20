@@ -137,7 +137,7 @@ class NoticePresenter {
     /// device is rotated.
     private func listenToOrientationChangeEvents() {
         let nc = NotificationCenter.default
-        nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+        nc.addObserver(forName: NSNotification.Name.WPTabBarHeightChanged, object: nil, queue: nil) { [weak self] _ in
             guard let self = self,
                 let containerView = self.currentNoticePresentation?.containerView else {
                     return
@@ -219,6 +219,8 @@ class NoticePresenter {
 
         // At regular width, the notice shouldn't be any wider than 1/2 the app's width
         noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(equalTo: noticeContainerView.widthAnchor, multiplier: 0.5)
+        let isRegularWidth = noticeContainerView.traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .regular))
+        noticeContainerView.noticeWidthConstraint?.isActive = isRegularWidth
 
         NSLayoutConstraint.activate([
             noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

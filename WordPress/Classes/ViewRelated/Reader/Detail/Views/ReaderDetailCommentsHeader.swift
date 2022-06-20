@@ -10,6 +10,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var followButton: UIButton!
     private var post: ReaderPost?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
+    private var followButtonTappedClosure: (() ->Void)?
 
     private var totalComments = 0 {
         didSet {
@@ -34,16 +35,24 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: - Configure
 
-    func configure(post: ReaderPost, totalComments: Int, presentingViewController: UIViewController) {
+    func configure(
+        post: ReaderPost,
+        totalComments: Int,
+        presentingViewController: UIViewController,
+        followButtonTappedClosure: (() -> Void)?
+    ) {
         self.post = post
         self.totalComments = totalComments
         self.followConversationEnabled = post.commentsOpen && post.canSubscribeComments
+        self.followButtonTappedClosure = followButtonTappedClosure
 
         configureButton()
 
-        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(post: post,
-                                                                           delegate: self,
-                                                                           presentingViewController: presentingViewController)
+        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(
+            post: post,
+            delegate: self,
+            presentingViewController: presentingViewController
+        )
     }
 
     func updateFollowButtonState(post: ReaderPost) {
@@ -51,6 +60,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureButton()
     }
 
+    func followButtonMidPoint() -> CGPoint {
+        CGPoint(x: followButton.frame.midX, y: followButton.frame.minY)
+    }
 }
 
 // MARK: - Private Extension
@@ -61,6 +73,7 @@ private extension ReaderDetailCommentsHeader {
         contentView.backgroundColor = .basicBackground
         addBottomBorder(withColor: .divider)
         configureTitle()
+
     }
 
     func configureTitle() {
@@ -115,6 +128,9 @@ private extension ReaderDetailCommentsHeader {
     @objc func followButtonTapped() {
         isSubscribedComments ? readerCommentsFollowPresenter?.showNotificationSheet(sourceView: followButton) :
                                readerCommentsFollowPresenter?.handleFollowConversationButtonTapped()
+        if !isSubscribedComments {
+            followButtonTappedClosure?()
+        }
     }
 
     struct Titles {

@@ -295,6 +295,10 @@ extension PublishingEditor {
             properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
             properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags()
             properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
+
+            if let post = post as? Post, let promptId = post.bloggingPromptID {
+                properties["prompt_id"] = promptId
+            }
         }
 
         WPAppAnalytics.track(stat, withProperties: properties, with: post)
