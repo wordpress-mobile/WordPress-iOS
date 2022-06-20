@@ -313,26 +313,34 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 var rows = [ImmuTableRow]()
                 rows.append(TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: nil))
 
-/*
-                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
-                                                                  emailFollowersCount: 44,
-                                                                  publicizeCount: 16)
-*/
-
                 let dotComFollowersCount = insightsStore.getAllDotComFollowers()?.dotComFollowersCount ?? 0
                 let emailFollowersCount = insightsStore.getAllEmailFollowers()?.emailFollowersCount ?? 0
                 let publicizeCount = insightsStore.getPublicizeCount()
 
                 if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
-                    let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
-                                                                      emailFollowersCount: emailFollowersCount,
-                                                                      publicizeCount: publicizeCount)
+                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
+                                                                  emailFollowersCount: emailFollowersCount,
+                                                                  publicizeCount: publicizeCount)
+
+                //this works and returns 3 segments correctly
+                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
+                                                                  emailFollowersCount: 44,
+
+                                                                  publicizeCount: 16)
+
+                //this doesn't segment correctly
+//                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 632,
+//                                                                  emailFollowersCount: 1,
+//                                                                  publicizeCount: 16)
 
                     let chartView: UIView = chartViewModel.makeFollowersChartView()
 
                     var chartRow = TopTotalsPeriodStatsRow(itemSubtitle: "",
                             dataSubtitle: "",
-                            dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount, emailFollowersCount: emailFollowersCount, othersCount: 0),
+                            dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount,
+                                                                             emailFollowersCount: emailFollowersCount,
+                                                                             othersCount: 0,
+                                                                             totalCount: insightsStore.getTotalFollowerCount()),
                             statSection: StatSection.insightsFollowersWordPress,
                             siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
                             siteStatsReferrerDelegate: nil)
@@ -952,24 +960,24 @@ private extension SiteStatsInsightsDetailsViewModel {
     }
 
     // MARK: - Followers
-    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, othersCount: Int) -> [StatsTotalRowData] {
+    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, othersCount: Int, totalCount: Int) -> [StatsTotalRowData] {
         var rowData = [StatsTotalRowData]()
 
         rowData.append(
                 StatsTotalRowData(name: StatSection.insightsFollowersWordPress.tabTitle,
-                        data: dotComFollowersCount.abbreviatedString(),
+                        data: "\(dotComFollowersCount.abbreviatedString()) (\(roundedPercentage(numerator: dotComFollowersCount, denominator: totalCount))%)",
                         statSection: .insightsFollowersWordPress)
         )
 
         rowData.append(
                 StatsTotalRowData(name: StatSection.insightsFollowersEmail.tabTitle,
-                        data: emailFollowersCount.abbreviatedString(),
+                        data: "\(emailFollowersCount.abbreviatedString()) (\(roundedPercentage(numerator: emailFollowersCount, denominator: totalCount))%)",
                         statSection: .insightsFollowersEmail)
         )
 
         rowData.append(
                 StatsTotalRowData(name: StatSection.insightsPublicize.tabTitle,
-                        data: othersCount.abbreviatedString(),
+                        data: "\(othersCount.abbreviatedString()) (\(roundedPercentage(numerator: othersCount, denominator: totalCount))%)",
                         statSection: .insightsFollowersWordPress)
         )
 
@@ -1290,6 +1298,17 @@ private extension SiteStatsInsightsDetailsViewModel {
                     enableTopPadding: true)
         })
         return rows
+    }
+
+    func roundedPercentage(numerator: Int, denominator: Int) -> Int {
+        var roundedPercentage = 0
+
+        if denominator > 0 {
+            let percentage = (Float(numerator) / Float(denominator)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return roundedPercentage
     }
 
     enum Constants {
