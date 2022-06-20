@@ -110,6 +110,17 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
+            if FeatureFlag.statsNewInsights.enabled {
+                switch self {
+                case .insightsCommentsAuthors:
+                    return InsightsHeaders.topCommenters
+                case .insightsCommentsPosts:
+                    return InsightsHeaders.posts
+                default:
+                    return InsightsHeaders.comments
+                }
+            }
+
             return InsightsHeaders.comments
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return InsightsHeaders.followers
@@ -388,7 +399,9 @@
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let posts = NSLocalizedString("Posts", comment: "Insights 'Posts' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
+        static let topCommenters = NSLocalizedString("Top Commenters", comment: "Insights 'Top Commenters' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
