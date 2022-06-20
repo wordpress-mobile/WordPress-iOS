@@ -1,7 +1,0 @@
-Vamos a lanzar la versión 20, que cuenta con un aspecto totalmente nuevo. La tarjeta de inicio rápido y los recorridos con los próximos pasos ahora se adaptan a los nuevos diseños de recorrido de los sitios web ya existentes, lo que incluye una ilustración elegante. Choca esos cinco.
-
-Ahora puedes insertar imágenes de otros sitios web mediante la opción “Insertar desde una URL” de la aplicación. Más fotos de gatos, por favor.
-
-Hemos aplicado unas cuantas mejoras de accesibilidad en el editor de bloques, así tu lector de pantalla te proporcionará el contexto que necesitas.
-
-Finalmente, le hemos dado un lavado de cara a la caché de los archivos multimedia, al índice de spotlight y a las funciones de accesos directos de Siri en Ajustes de la aplicación. Ahora se adaptan a los colores estándar y de marca; dile adiós al rojo chillón.

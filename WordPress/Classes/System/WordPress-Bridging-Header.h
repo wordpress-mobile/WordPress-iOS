@@ -128,4 +128,3 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPAnalytics.h>
 #import <WordPressUI/UIImage+Util.h>
-#import <React/RCTAnimatedImage.h>
