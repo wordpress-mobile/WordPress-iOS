@@ -955,6 +955,17 @@ extension StatsInsightsStore {
         return state.publicizeFollowers
     }
 
+    /// TODO - refactor other functions to use this however cannot find a valid site where publicize > 0 (yet)
+    func getPublicizeCount() -> Int {
+        var totalPublicize = 0
+        if let publicize = getPublicize(),
+           !publicize.publicizeServices.isEmpty {
+            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
+        }
+
+        return totalPublicize
+    }
+
     func getTopCommentsInsight() -> StatsCommentsInsight? {
         return state.topCommentsInsight
     }
