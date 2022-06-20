@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-16 13:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "匿名";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "回复";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "回复提示";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "最佳时刻";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "最适合 %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "最受欢迎的文章";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "决定不了？ 您可以随时更改主题。";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "关注站点";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "关注对话";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "关注话题";
 
@@ -3420,6 +3432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "敬请注意：评论您已读过的文章。";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "在向此文章添加新评论时接收通知。";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "方便您随时随地实时获取更新。";
@@ -5325,6 +5340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "电话";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "为您精选";
 
 /* No comment provided by engineer. */
 "Padding" = "内边距";

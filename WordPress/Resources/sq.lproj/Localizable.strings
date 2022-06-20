@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-12 11:53:47+0000 */
+/* Translation-Revision-Date: 2022-06-17 10:30:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sq_AL */
@@ -817,6 +817,12 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "I paemër";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Përgjigjuni";
+
+/* Title of answered Blogging Prompts filter. */
+"Answered" = "Me Përgjigje";
+
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
 "App Icon" = "Ikonë Aplikacioni";
@@ -1090,6 +1096,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Ora Më e Mirë";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Më e mira për %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Parjet më të mira ndonjëherë";
@@ -1333,6 +1342,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Po anulohet …";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "S’e ndani dot mendjen? Temën mund ta ndryshoni kurdo.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -2642,6 +2654,9 @@ translators: Block name. %s: The localized block name */
 "Drag & drop" = "Merr & vër";
 
 /* No comment provided by engineer. */
+"Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "“Merr & vër” e bën të rrufeshëm risistemimin e blloqeve. Shtypeni dhe mbajeni të shtypur mbi një bllok, mandej tërhiqeni te vendndodhja e re për të dhe lëshojeni.";
+
+/* No comment provided by engineer. */
 "Drag to adjust focal point" = "Që të rregulloni vatrën, tërhiqeni";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
@@ -3246,6 +3261,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Ndiqe sajtin";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Ndiqeni bisedën";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Ndiqni tema";
 
@@ -3401,6 +3419,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dilni në pah: komentoni në postime që keni lexuar.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Merrni njoftim, kur te ky postim shtohen komente të reja.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Merrni nga xhepi përditësime të atypëratyshme.";
@@ -4138,6 +4159,9 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "U mbërrit në kufi. Mund të riprovoni pas 1 minute. Riprovimi para kësaj vetëm sa do të shtojë kohën që ju duhet të prisni para se të hiqet përzënia. Nëse mendoni se bëhet fjalë për një gabim, lidhuni me asistencën.";
 
+/* This description is used to set the accessibility label for the Insights chart, with Views selected. */
+"Line Chart depicting Views for insights." = "Grafik me vija që tregon Vizitorët sipas prirjesh.";
+
 /* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
 "Line Chart depicting Visitors for insights." = "Grafik me vija që tregon Vizitorët sipas prirjesh.";
 
@@ -4656,6 +4680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Dhjetë Kafehanet e Mia Më të Mira";
+
+/* No comment provided by engineer. */
+"NEW" = "I RI";
 
 /* Title for disclaimer in the dashboard's custom What's New page. */
 "NEW!" = "I RI!";
@@ -5287,6 +5314,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "ZGJEDHUR PËR JU";
 
 /* No comment provided by engineer. */
 "Padding" = "Zbutje";
@@ -8483,6 +8513,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Use this site" = "Përdor këtë sajt";
+
+/* Description of a Quick Start Tour */
+"Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Përdorur nëpër web: në skeda shfletuesi, paraparje mediash shoqërore dhe te WordPress.com Reader.";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
