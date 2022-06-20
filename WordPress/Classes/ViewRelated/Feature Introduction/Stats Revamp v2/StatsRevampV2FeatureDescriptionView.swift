@@ -27,9 +27,6 @@ private extension StatsRevampV2FeatureDescriptionView {
 
     func configureCard() {
         cardImageView.layer.cornerRadius = Style.cardCornerRadius
-        cardImageView.layer.shadowOffset = Style.cardShadowOffset
-        cardImageView.layer.shadowOpacity = Style.cardShadowOpacity
-        cardImageView.layer.shadowRadius = Style.cardShadowRadius
     }
 
     func configureDescription() {
@@ -81,8 +78,5 @@ private extension StatsRevampV2FeatureDescriptionView {
         static let noteBorderWidth: CGFloat = 1
         static let noteBorderColor = UIColor.textQuaternary.cgColor
         static let cardCornerRadius: CGFloat = 10
-        static let cardShadowRadius: CGFloat = 14
-        static let cardShadowOpacity: Float = 0.1
-        static let cardShadowOffset = CGSize(width: 0, height: 10.0)
     }
 }
