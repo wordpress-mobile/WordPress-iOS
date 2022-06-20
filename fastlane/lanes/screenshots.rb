@@ -42,7 +42,6 @@ platform :ios do
   desc 'Generate localised screenshots'
   lane :screenshots do |options|
     cocoapods # pod install
-    create_missing_simulators_for_screenshots
 
     FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
@@ -68,6 +67,7 @@ platform :ios do
 
     UI.message "Generating screenshots for the following languages: #{languages}"
 
+    create_missing_simulators_for_screenshots
     [true, false].each do |dark_mode_enabled|
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
@@ -213,6 +213,15 @@ platform :ios do
   end
 
   # Create simulators needed for the `screenshots` lane if they don't exist yet
+  #
+  # Note: Be sure to call this lane after `xcodebuild` has been invoked at least once in the VM / local machine
+  # because on a fresh VM where Xcode has never launched yet, there might be no simulator at all, but as soon as
+  # Xcode is launched for the first time it will create a set of defaut simulators.
+  #
+  # We only want to create the missing simulators for screenshots if they don't exist in the default set created
+  # after the first `xcodebuild` launch, otherwise if we create a simulator while it will also be created by Xcode
+  # later, we'll end up with `The requested device could not be found because multiple devices matched the request.`
+  # when we try to run `capture_ios_screenshots`
   #
   lane :create_missing_simulators_for_screenshots do
     specs = JSON.parse(`xcrun simctl list -j`)
