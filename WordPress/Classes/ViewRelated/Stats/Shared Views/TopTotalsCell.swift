@@ -87,14 +87,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         prepareForVoiceOver()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        if FeatureFlag.statsNewAppearance.enabled {
-            topConstraint.constant = 0
-        }
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
 
