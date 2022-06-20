@@ -47,6 +47,9 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
     private func configureCardFrameView(for blog: Blog) {
         switch blog.quickStartType {
 
+        case .undefined:
+            fallthrough
+
         case .newSite:
             cardFrameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
             configureOnEllipsisButtonTap(sourceRect: cardFrameView.ellipsisButton.frame)
@@ -56,9 +59,6 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
             cardFrameView.configureButtonContainerStackView()
             configureOnEllipsisButtonTap(sourceRect: cardFrameView.buttonContainerStackView.frame)
             cardFrameView.hideHeader()
-
-        default:
-            break
 
         }
 
@@ -98,9 +98,11 @@ extension DashboardQuickStartCardCell {
 
         static func title(for quickStartType: QuickStartType) -> String? {
             switch quickStartType {
+            case .undefined:
+                fallthrough
             case .newSite:
                 return nextSteps
-            default:
+            case .existingSite:
                 return nil
             }
         }
