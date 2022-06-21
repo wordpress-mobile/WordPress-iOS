@@ -104,5 +104,6 @@ enum StatsWidgetKind {
     case today
     case allTime
     case thisWeek
+    case noSite
     case noStats
 }

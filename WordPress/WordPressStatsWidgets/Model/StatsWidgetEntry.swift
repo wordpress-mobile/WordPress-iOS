@@ -3,13 +3,14 @@ import WidgetKit
 enum StatsWidgetEntry: TimelineEntry {
     case siteSelected(HomeWidgetData, TimelineProviderContext)
     case loggedOut(StatsWidgetKind)
+    case noSite
     case noData
 
     var date: Date {
         switch self {
         case .siteSelected(let widgetData, _):
             return widgetData.date
-        case .loggedOut, .noData:
+        case .loggedOut, .noSite, .noData:
             return Date()
         }
     }

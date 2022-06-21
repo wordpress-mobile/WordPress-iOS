@@ -20,6 +20,8 @@ struct UnconfiguredView: View {
             return LocalizableStrings.unconfiguredViewAllTimeTitle
         case .thisWeek:
             return LocalizableStrings.unconfiguredViewThisWeekTitle
+        case .noSite:
+            return LocalizableStrings.noSiteViewTitle
         case .noStats:
             return LocalizableStrings.noDataViewTitle
         }
