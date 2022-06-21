@@ -57,6 +57,11 @@ enum LocalizableStrings {
                                                     value: "Unable to load site stats.",
                                                     comment: "Title of the nodata view in today widget")
 
+    // No site view
+    static let noSiteViewTitle = AppLocalizedString("widget.today.nosite.view.title",
+                                                    value: "Create or add a site to see the stats.",
+                                                    comment: "Title of the nosite view in home widget")
+
     // Today Widget Preview
     static let todayPreviewDescription = AppLocalizedString("widget.today.preview.description",
                                                             value: "Stay up to date with today's activity on your WordPress site.",
