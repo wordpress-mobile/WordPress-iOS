@@ -371,6 +371,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)updateDefaultBlogIfNeeded:(WPAccount *)account
 {
     if (!account.primaryBlogID || [account.primaryBlogID intValue] == 0) {
+        [[[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName] setValue:nil forKey:WPStatsHomeWidgetsUserDefaultsSiteIdKey];
         return;
     }
 
