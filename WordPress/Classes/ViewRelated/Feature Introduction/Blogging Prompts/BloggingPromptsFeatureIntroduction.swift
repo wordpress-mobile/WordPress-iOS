@@ -9,8 +9,9 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
     private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType
 
     enum InteractionType {
-        // Two buttons are displayed, both perform an action.
-        case actionable
+        // Two buttons are displayed, both perform an action. Shows a site picker
+        // if `blog` is `nil` and user has multiple sites.
+        case actionable(blog: Blog?)
         // One button is displayed, which only dismisses the view.
         case informational
 
@@ -82,7 +83,7 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
 extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
 
     func primaryActionSelected() {
-        guard interactionType == .actionable else {
+        guard case .actionable = interactionType else {
             WPAnalytics.track(.promptsIntroductionModalGotIt)
             super.closeButtonTapped()
             return
@@ -93,7 +94,7 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
     }
 
     func secondaryActionSelected() {
-        guard interactionType == .actionable else {
+        guard case .actionable = interactionType else {
             return
         }
 
