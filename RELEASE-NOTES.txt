@@ -1,6 +1,6 @@
 20.2
 -----
-
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/wordpress-mobile/WordPress-iOS/pull/18919]
 
 20.1
 -----
