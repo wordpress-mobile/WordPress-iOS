@@ -26191,8 +26191,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
+				branch = "UITII-reverse-waitForScreen-with-isLoaded";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
