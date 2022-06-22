@@ -194,7 +194,7 @@ final class TooltipPresenter {
             tooltip.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: extraArrowOffsetX())
         ]
 
-        let verticalExtraSpotlightOffset = 14
+        let verticalExtraSpotlightOffset: CGFloat = 14
 
         switch target {
         case .view(let targetView):
