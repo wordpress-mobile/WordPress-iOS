@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
@@ -91,6 +92,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
+        stackView.layoutMargins = Constants.containerMargins
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
 
@@ -111,7 +114,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        view.pinSubviewToAllEdges(promptLabel, insets: .init(top: Constants.spacing, left: 0, bottom: 0, right: 0))
+        view.pinSubviewToAllEdges(promptLabel, insets: UIEdgeInsets(top: Constants.spacing, left: 0, bottom: 0, right: 0))
 
         return view
     }()
@@ -475,6 +478,11 @@ private extension DashboardPromptsCardCell {
         WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
+        let notice = Notice(title: Strings.promptSkippedTitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+            self?.clearSkippedPromptForSite()
+            self?.presenterViewController?.reloadCardsLocally()
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func removeMenuTapped() {
@@ -521,6 +529,8 @@ private extension DashboardPromptsCardCell {
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
+        static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
+        static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
     }
 
     struct Style {
@@ -535,6 +545,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)

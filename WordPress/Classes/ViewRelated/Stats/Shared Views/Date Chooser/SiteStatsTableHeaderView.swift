@@ -147,6 +147,10 @@ private extension SiteStatsTableHeaderView {
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
+
+        // Required as the Style separator configure method clears all
+        // separators for the Stats Revamp in Insights.
+        bottomSeparatorLine.backgroundColor = .separator
     }
 
     func displayDate() -> String? {

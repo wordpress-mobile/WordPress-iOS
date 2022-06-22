@@ -255,7 +255,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     func tableViewModel() -> ImmuTable {
         guard let statSection = statSection,
-              let detailsDelegate = detailsDelegate else {
+              let _ = detailsDelegate else {
             return ImmuTable.Empty
         }
 
@@ -344,13 +344,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: "",
                         dataSubtitle: "",
                         dataRows: authorsTabData.dataRows,
+                        statSection: .insightsCommentsAuthors,
                         siteStatsInsightsDelegate: nil))
 
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.InsightsHeaders.posts,
                         dataSubtitle: StatSection.InsightsHeaders.comments,
                         dataRows: postsTabData.dataRows,
+                        statSection: .insightsCommentsPosts,
                         siteStatsInsightsDelegate: nil))
+
                 return rows
             }
         case .insightsTagsAndCategories:
@@ -466,11 +469,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        // We don't show guide text at the detail level
+        data.guideText = nil
+        return data
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
+        // We don't show guide text at the detail level
+        data.guideText = nil
+        return data
     }
 
     // MARK: - Refresh Data

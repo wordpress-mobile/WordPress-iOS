@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-16 11:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Аноним";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Ответить";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Подсказка по ответам";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Лучший час";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Лучше всего для %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Максимальное число просмотров";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Отмена...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "Не можете выбрать? Изменить тему можно в любой момент.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Подписаться на сайт";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Подписаться на беседу";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Подписаться на темы";
 
@@ -3423,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Оставайтесь в гуще событий: комментируйте прочитанные записи.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Получайте уведомления, когда появляются новые комментарии к этой записи.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Получайте обновления в реальном времени прямо на мобильное устройство.";
@@ -5331,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "ТЕЛЕФОН";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "РЕКОМЕНДОВАНО ВАМ";
 
 /* No comment provided by engineer. */
 "Padding" = "Отступ";

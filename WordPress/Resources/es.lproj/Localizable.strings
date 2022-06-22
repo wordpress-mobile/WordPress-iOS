@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-31 10:50:33+0000 */
+/* Translation-Revision-Date: 2022-06-16 10:43:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: es */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anónimo";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Respuesta";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Responder estímulo";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Mejor hora";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Ideal para %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Mayor número de visitas";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Cancelando…";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "¿No puedes decidirte? Puedes cambiar el tema en cualquier momento.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Seguir sitio";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Seguir la conversación";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Seguir temáticas";
 
@@ -3423,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Destaca tu presencia: comenta las entradas que hayas leído.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Recibe avisos cuando se añadan nuevos comentarios a esta entrada.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Obtén actualizaciones en tiempo real desde tu bolsillo.";
@@ -5331,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELÉFONO";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "ELEGIDO PARA TI";
 
 /* No comment provided by engineer. */
 "Padding" = "Relleno";
