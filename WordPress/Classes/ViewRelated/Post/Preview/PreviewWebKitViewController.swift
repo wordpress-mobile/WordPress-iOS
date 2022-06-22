@@ -104,17 +104,11 @@ class PreviewWebKitViewController: WebKitViewController {
             showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(onOrientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
-
-    @objc
-    func onOrientationChanged() {
-        setWidth(selectedDevice.width)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setWidth(selectedDevice.width, viewSize: size)
     }
 
     // MARK: Toolbar Items

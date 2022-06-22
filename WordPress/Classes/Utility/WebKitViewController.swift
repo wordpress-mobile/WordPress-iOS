@@ -359,10 +359,20 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     /// Sets the width of the web preview
     /// - Parameter width: The width value to set the webView to
-    func setWidth(_ width: CGFloat?) {
+    func setWidth(_ width: CGFloat?, viewSize: CGSize? = nil) {
         if let width = width {
             let zoomAdjustedWidth = width * (UIScreen.main.scale / UIScreen.main.nativeScale)
-            widthConstraint?.constant = min(zoomAdjustedWidth, view.superview?.frame.width ?? zoomAdjustedWidth)
+
+            var horizontalViewBound: CGFloat
+            if let viewWidth = viewSize?.width {
+                horizontalViewBound = viewWidth
+            } else if let superViewWidth = view.superview?.frame.width {
+                horizontalViewBound = superViewWidth
+            } else {
+                horizontalViewBound = zoomAdjustedWidth
+            }
+
+            widthConstraint?.constant = min(zoomAdjustedWidth, horizontalViewBound)
             widthConstraint?.priority = UILayoutPriority.defaultHigh
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow
