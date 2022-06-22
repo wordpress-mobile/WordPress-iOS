@@ -92,11 +92,11 @@ class SiteStatsPeriodViewModel: Observable {
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
             return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
