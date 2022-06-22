@@ -14,12 +14,16 @@ class DonutChartView: UIView {
 
     // MARK: Configuration
 
-    struct Segment: Identifiable {
+    struct Segment: Identifiable, Equatable {
         // Identifier required to keep track of ordering
         let id = UUID()
         let title: String
         let value: CGFloat
         let color: UIColor
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            return lhs.id == rhs.id
+        }
 
         /// - Returns: A new Segment with the provided value
         func withValue(_ newValue: CGFloat) -> Segment {
@@ -189,7 +193,7 @@ class DonutChartView: UIView {
             if segment.value == Constants.minimumSizeSegment {
                 segmentEndPercentage = segmentStartPercentage + minimumSizePercentage
             } else {
-                segmentStartPercentage + segment.value
+                segmentEndPercentage = segmentStartPercentage + segment.value
             }
 
             currentTotal = segmentEndPercentage
@@ -212,36 +216,18 @@ class DonutChartView: UIView {
         CATransaction.commit()
     }
 
-    /// Updates segments so that
+    /// Updates segments so that any segments below the minimum displayable size have a value of `Constants.minimumSizeSegment`,
+    /// so that they can be displayed at a larger-than-actual size. This method also reduces the size of all the remaining
+    /// segments to account for the inflated display size of the smaller segments.
+    ///
     private func adjustedSegmentsForDisplay(_ segments: [Segment]) -> [Segment] {
-        var totalAdjustment: CGFloat = 0.0
+        // Ignore 0 sized segments and those that we've already marked as minimum size
+        let belowMinimumSegments: [Segment] = segments.filter({ $0.value > 0 && $0.value != Constants.minimumSizeSegment && $0.value < minimumSizePercentage })
+        let otherSegments: [Segment] = segments.filter({ belowMinimumSegments.contains($0) == false })
 
-        var belowMinimumSegments: [Segment] = []
-        var otherSegments: [Segment] = []
-
-        for segment in segments {
-            // Ignore 0 sized segments, as we won't display them
-            guard segment.value > 0 else {
-                continue
-            }
-
-            // If we've already marked this as a minimum size segment
-            guard segment.value != Constants.minimumSizeSegment else {
-                belowMinimumSegments.append(segment)
-                continue
-            }
-
-            guard segment.value < minimumSizePercentage else {
-                otherSegments.append(segment)
-                continue
-            }
-
-            // If a segment is too small to fit on the chart, we'll make a note of how much we
-            // need to adjust it to match the minimum, and add it to the array.
-            let delta = minimumSizePercentage - segment.value
-            totalAdjustment += delta
-            belowMinimumSegments.append(segment)
-        }
+        // If a segment is too small to fit on the chart, we'll make a note of how much we
+        // need to adjust it to match the minimum, and add it to the array.
+        let totalAdjustment: CGFloat = belowMinimumSegments.reduce(0) { $0 + minimumSizePercentage - $1.value }
 
         guard belowMinimumSegments.count > 0 else {
             return segments

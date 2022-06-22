@@ -323,10 +323,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                                   publicizeCount: publicizeCount)
 
                 //this works and returns 3 segments correctly
-                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
-                                                                  emailFollowersCount: 44,
-
-                                                                  publicizeCount: 16)
+//                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
+//                                                                  emailFollowersCount: 44,
+//
+//                                                                  publicizeCount: 16)
 
                 //this doesn't segment correctly
 //                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 632,
