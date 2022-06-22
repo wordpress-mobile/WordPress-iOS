@@ -13983,15 +13983,8 @@
 			isa = PBXGroup;
 			children = (
 				C7234A3C2832C2800045C63F /* Coordinators */,
-				C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */,
-				C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */,
-				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
-				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
-				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
-				C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */,
-				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
-				C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */,
-				C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */,
+				C7BB60212863C89400748FD9 /* Helpers */,
+				C7BB60222863C8B800748FD9 /* View Controllers */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -14056,6 +14049,29 @@
 				C71AF532281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift */,
 			);
 			path = "Onboarding Questions Prompt";
+			sourceTree = "<group>";
+		};
+		C7BB60212863C89400748FD9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
+				C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */,
+				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
+				C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */,
+				C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C7BB60222863C8B800748FD9 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */,
+				C7234A412832C2BA0045C63F /* QRLoginScanningViewController.xib */,
+				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
+				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
+			);
+			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 		C7E5F2422799BB1E009BC263 /* cool-blue */ = {
