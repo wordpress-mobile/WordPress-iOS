@@ -318,20 +318,9 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 let publicizeCount = insightsStore.getPublicizeCount()
 
                 if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
-                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
-                                                                  emailFollowersCount: emailFollowersCount,
-                                                                  publicizeCount: publicizeCount)
-
-                //this works and returns 3 segments correctly
-//                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 88,
-//                                                                  emailFollowersCount: 44,
-//
-//                                                                  publicizeCount: 16)
-
-                //this doesn't segment correctly
-//                let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: 632,
-//                                                                  emailFollowersCount: 1,
-//                                                                  publicizeCount: 16)
+                    let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
+                                                                      emailFollowersCount: emailFollowersCount,
+                                                                      publicizeCount: publicizeCount)
 
                     let chartView: UIView = chartViewModel.makeFollowersChartView()
 
