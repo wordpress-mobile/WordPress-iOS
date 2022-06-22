@@ -2324,6 +2324,8 @@
 		C7B7CC702812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC7328134347007B9807 /* OnboardingQuestionsPromptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */; };
+		C7BB60192863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
+		C7BB601A2863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
 		C7E5F2522799BD54009BC263 /* cool-blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */; };
 		C7E5F2532799BD54009BC263 /* cool-blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */; };
@@ -7153,6 +7155,7 @@
 		C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinator.swift; sourceTree = "<group>"; };
 		C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+OnboardingPrompt.swift"; sourceTree = "<group>"; };
 		C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptScreen.swift; sourceTree = "<group>"; };
+		C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginProtocols.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-76x76.png"; sourceTree = "<group>"; };
 		C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
@@ -13968,6 +13971,7 @@
 				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
 				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
 				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
+				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -20900,6 +20904,7 @@
 				FABB228F2602FC2C00C8785C /* TableViewOffsetCoordinator.swift in Sources */,
 				FABB22902602FC2C00C8785C /* RegisterDomainDetailsViewController.swift in Sources */,
 				1770BD0E267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift in Sources */,
+				C7BB601A2863AF9700748FD9 /* QRLoginProtocols.swift in Sources */,
 				FABB22912602FC2C00C8785C /* FilterProvider.swift in Sources */,
 				FABB22922602FC2C00C8785C /* DomainCreditEligibilityChecker.swift in Sources */,
 				FABB22932602FC2C00C8785C /* SiteSettingsViewController.m in Sources */,
