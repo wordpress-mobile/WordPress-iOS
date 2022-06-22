@@ -344,13 +344,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: "",
                         dataSubtitle: "",
                         dataRows: authorsTabData.dataRows,
+                        statSection: .insightsCommentsAuthors,
                         siteStatsInsightsDelegate: nil))
 
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.InsightsHeaders.posts,
                         dataSubtitle: StatSection.InsightsHeaders.comments,
                         dataRows: postsTabData.dataRows,
+                        statSection: .insightsCommentsPosts,
                         siteStatsInsightsDelegate: nil))
+
                 return rows
             }
         case .insightsTagsAndCategories:
