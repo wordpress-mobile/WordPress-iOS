@@ -2333,6 +2333,8 @@
 		C7BB601A2863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
 		C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */; };
 		C7BB601D2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */; };
+		C7BB601F2863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */; };
+		C7BB60202863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
 		C7E5F2522799BD54009BC263 /* cool-blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */; };
 		C7E5F2532799BD54009BC263 /* cool-blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */; };
@@ -7168,6 +7170,7 @@
 		C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginInternetConnectionChecker.swift; sourceTree = "<group>"; };
 		C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginProtocols.swift; sourceTree = "<group>"; };
 		C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCameraPermissionsHandler.swift; sourceTree = "<group>"; };
+		C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCameraSession.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-76x76.png"; sourceTree = "<group>"; };
 		C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
@@ -13986,6 +13989,7 @@
 				C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */,
 				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
 				C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */,
+				C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -19341,6 +19345,7 @@
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				982DDF96263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
+				C7BB601F2863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */,
 				FFCB9F4B22A125BD0080A45F /* WPException.m in Sources */,
 				9A9E3FAD230E9DD000909BC4 /* StatsGhostCells.swift in Sources */,
 				E14DF70620C922F200959BA9 /* NotificationCenter+ObserveOnce.swift in Sources */,
@@ -20436,6 +20441,7 @@
 				FABB20F32602FC2C00C8785C /* Routes+Mbar.swift in Sources */,
 				FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */,
 				FABB20F42602FC2C00C8785C /* PostListEditorPresenter.swift in Sources */,
+				C7BB60202863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */,
 				FABB20F52602FC2C00C8785C /* PreviewDeviceLabel.swift in Sources */,
 				FABB20F62602FC2C00C8785C /* WPStyleGuide+ReaderComments.swift in Sources */,
 				FABB20F72602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
