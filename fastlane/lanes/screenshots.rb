@@ -53,6 +53,8 @@ platform :ios do
     scan(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
+      # Specify explicit destination to avoid annoying xcodebuild warning. See https://github.com/fastlane/fastlane/issues/19579
+      destination: "name=#{SCREENSHOT_SIMULATORS.first}",
       build_for_testing: true,
       derived_data_path: DERIVED_DATA_PATH
     )
