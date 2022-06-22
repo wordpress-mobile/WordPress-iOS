@@ -1,11 +1,6 @@
 import Foundation
 import AVFoundation
 
-protocol QRLoginScanningView {
-    func showError(_ message: String)
-    func showCameraLayer(_ layer: AVCaptureVideoPreviewLayer)
-}
-
 class QRLoginScanningCoordinator: NSObject {
     let parentCoordinator: QRLoginParentCoordinator
     let view: QRLoginScanningView

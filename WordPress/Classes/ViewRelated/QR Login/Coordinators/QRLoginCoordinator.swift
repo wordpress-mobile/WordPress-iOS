@@ -1,14 +1,5 @@
 import UIKit
 
-protocol QRLoginParentCoordinator {
-    func track(_ event: WPAnalyticsEvent)
-    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]?)
-
-    func scanAgain()
-    func didScanToken(_ token: QRLoginToken)
-    func dismiss()
-}
-
 struct QRLoginCoordinator: QRLoginParentCoordinator {
     enum QRLoginOrigin: String {
         case menu

@@ -1,18 +1,6 @@
 import Foundation
 import WordPressKit
 
-protocol QRLoginVerifyView {
-    func render(response: QRLoginValidationResponse)
-    func renderCompletion()
-
-    func showLoading()
-    func showAuthenticating()
-
-    func showNoConnectionError()
-    func showQRLoginError(error: QRLoginError?)
-    func showAuthenticationFailedError()
-}
-
 class QRLoginVerifyCoordinator {
     private let parentCoordinator: QRLoginParentCoordinator
     private let view: QRLoginVerifyView
