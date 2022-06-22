@@ -48,3 +48,20 @@ protocol CameraPermissionsHandler {
 protocol QRCameraPermissionsHandler: CameraPermissionsHandler {
     func checkCameraPermissions(from source: UIViewController, origin: QRLoginCoordinator.QRLoginOrigin, completion: @escaping () -> Void)
 }
+
+protocol QRCodeScanningDelegate {
+    func validLink(_ stringValue: String) -> Bool
+    func didScanURLString(_ urlString: String)
+}
+
+protocol QRCodeScanningSession {
+    var session: AVCaptureSession? { get }
+    var scanningDelegate: QRCodeScanningDelegate? { get set }
+    var hasCamera: Bool { get }
+
+    func configure()
+
+    func start()
+    func stop()
+}
+
