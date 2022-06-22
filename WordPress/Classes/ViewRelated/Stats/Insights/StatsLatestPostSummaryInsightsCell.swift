@@ -47,6 +47,8 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     // MARK: - View Configuration
 
     private func configureView() {
+        selectionStyle = .none
+
         configureOuterStackView()
         contentView.addSubview(outerStackView)
 

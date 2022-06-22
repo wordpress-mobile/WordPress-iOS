@@ -178,7 +178,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .likesTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: periodStore.summaryLikesStatus,
                                            block: {
                     return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
@@ -191,7 +191,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .commentsTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: periodStore.summaryLikesStatus,
                                            block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
@@ -608,18 +608,24 @@ private extension SiteStatsInsightsViewModel {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+        var data =  StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+        if data.count < Constants.followersGuideLimit {
+            let guideText = NSLocalizedString("You can try leaving a comment as a gesture to encourage blog engagement in return to gain more followers.",
+                                              comment: "A tip displayed to the user in the stats section to help them gain more followers.")
+            data.guideText = NSAttributedString(string: guideText)
+        }
+        return data
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
@@ -904,5 +910,8 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
 
     enum Constants {
         static let fourteenDays = 14
+
+        // The followers guide will be displayed if a user has < 2 users
+        static let followersGuideLimit = 2
     }
 }
