@@ -7321,7 +7321,7 @@
 "stats.insights.latestPostSummary.likes" = "Likes";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "You haven't published any posts yet. Check back later once you've published your first post!";
+"stats.insights.latestPostSummary.noData" = "Check back when you’ve published your first post!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Published %@";

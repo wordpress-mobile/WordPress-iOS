@@ -261,7 +261,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     }
 
     private enum TextContent {
-        static let noData = NSLocalizedString("stats.insights.latestPostSummary.noData", value: "You haven't published any posts yet. Check back later once you've published your first post!", comment: "Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything.")
+        static let noData = NSLocalizedString("stats.insights.latestPostSummary.noData", value: "Check back when you’ve published your first post!", comment: "Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything.")
         static let createPost = NSLocalizedString("stats.insights.latestPostSummary.createPost", value: "Create Post", comment: "Title of button shown in Stats prompting the user to create a post on their site.")
         static let publishDate = NSLocalizedString("stats.insights.latestPostSummary.publishDate", value: "Published %@", comment: "Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago")
         static let views = NSLocalizedString("stats.insights.latestPostSummary.views", value: "Views", comment: "Title for Views count in Latest Post Summary stats card.")
