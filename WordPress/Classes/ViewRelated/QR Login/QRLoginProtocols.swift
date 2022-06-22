@@ -36,3 +36,15 @@ protocol QRLoginVerifyView {
     func showQRLoginError(error: QRLoginError?)
     func showAuthenticationFailedError()
 }
+
+/// Generic camera permissions handler
+protocol CameraPermissionsHandler {
+    func needsCameraAccess() -> Bool
+    func requestCameraAccess(_ completion: @escaping (Bool) -> Void)
+    func showNeedAccessAlert(from source: UIViewController?)
+}
+
+/// QR Login Specific Permissions handler
+protocol QRCameraPermissionsHandler: CameraPermissionsHandler {
+    func checkCameraPermissions(from source: UIViewController, origin: QRLoginCoordinator.QRLoginOrigin, completion: @escaping () -> Void)
+}

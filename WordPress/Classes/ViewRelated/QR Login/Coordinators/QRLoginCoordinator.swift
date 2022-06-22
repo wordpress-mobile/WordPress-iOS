@@ -53,7 +53,7 @@ extension QRLoginCoordinator {
     }
 
     func scanAgain() {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController, origin: origin) {
+        QRLoginCameraPermissionsHandler().checkCameraPermissions(from: navigationController, origin: origin) {
             self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
         }
     }
@@ -104,7 +104,7 @@ private extension QRLoginCoordinator {
 extension QRLoginCoordinator {
     /// Present the QR login flow starting with the scanning step
     static func present(from source: UIViewController, origin: QRLoginOrigin) {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: source, origin: origin) {
+        QRLoginCameraPermissionsHandler().checkCameraPermissions(from: source, origin: origin) {
             QRLoginCoordinator(origin: origin).showCameraScanningView(from: source)
         }
     }

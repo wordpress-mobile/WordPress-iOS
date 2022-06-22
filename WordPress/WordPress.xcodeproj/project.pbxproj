@@ -2331,6 +2331,8 @@
 		C7BB60172863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */; };
 		C7BB60192863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
 		C7BB601A2863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
+		C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */; };
+		C7BB601D2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
 		C7E5F2522799BD54009BC263 /* cool-blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */; };
 		C7E5F2532799BD54009BC263 /* cool-blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */; };
@@ -7165,6 +7167,7 @@
 		C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptScreen.swift; sourceTree = "<group>"; };
 		C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginInternetConnectionChecker.swift; sourceTree = "<group>"; };
 		C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginProtocols.swift; sourceTree = "<group>"; };
+		C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCameraPermissionsHandler.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-76x76.png"; sourceTree = "<group>"; };
 		C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
@@ -13982,6 +13985,7 @@
 				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
 				C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */,
 				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
+				C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */,
 			);
 			path = "QR Login";
 			sourceTree = "<group>";
@@ -19193,6 +19197,7 @@
 				403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */,
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
+				C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */,
 				7E3E7A5320E44B260075D159 /* SubjectContentStyles.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				986C908422319EFF00FC31E1 /* PostStatsTableViewController.swift in Sources */,
@@ -20400,6 +20405,7 @@
 				FABB20D72602FC2C00C8785C /* ZendeskUtils.swift in Sources */,
 				FABB20D82602FC2C00C8785C /* AbstractPost+Dates.swift in Sources */,
 				FABB20D92602FC2C00C8785C /* Blog+HomepageSettings.swift in Sources */,
+				C7BB601D2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */,
 				FABB20DA2602FC2C00C8785C /* GutenbergRollout.swift in Sources */,
 				FABB20DB2602FC2C00C8785C /* Routes+MySites.swift in Sources */,
 				FABB20DC2602FC2C00C8785C /* WPAppAnalytics+Media.swift in Sources */,
