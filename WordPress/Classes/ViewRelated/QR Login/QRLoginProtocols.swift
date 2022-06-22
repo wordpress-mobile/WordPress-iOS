@@ -56,13 +56,14 @@ protocol QRCodeScanningDelegate {
 }
 
 protocol QRCodeScanningSession {
-    var session: AVCaptureSession? { get }
-    var scanningDelegate: QRCodeScanningDelegate? { get set }
     var hasCamera: Bool { get }
+    var session: AVCaptureSession? { get }
+    var previewLayer: CALayer? { get }
+
+    var scanningDelegate: QRCodeScanningDelegate? { get set }
 
     func configure()
 
     func start()
     func stop()
 }
-

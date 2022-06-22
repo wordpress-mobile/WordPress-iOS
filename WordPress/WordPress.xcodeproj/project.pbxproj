@@ -2288,6 +2288,7 @@
 		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
 		C738CB0B28623CED001BE107 /* QRLoginCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */; };
 		C738CB0D28623F07001BE107 /* QRLoginURLParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */; };
+		C738CB0F28626466001BE107 /* QRLoginScanningCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB0E28626466001BE107 /* QRLoginScanningCoordinatorTests.swift */; };
 		C738CB1128626606001BE107 /* QRLoginVerifyCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB1028626606001BE107 /* QRLoginVerifyCoordinatorTests.swift */; };
 		C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
 		C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
@@ -7147,6 +7148,7 @@
 		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
 		C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCoordinatorTests.swift; sourceTree = "<group>"; };
 		C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginURLParserTests.swift; sourceTree = "<group>"; };
+		C738CB0E28626466001BE107 /* QRLoginScanningCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningCoordinatorTests.swift; sourceTree = "<group>"; };
 		C738CB1028626606001BE107 /* QRLoginVerifyCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinatorTests.swift; sourceTree = "<group>"; };
 		C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedGifAttachmentViewProvider.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
@@ -14038,6 +14040,7 @@
 			children = (
 				C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */,
 				C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */,
+				C738CB0E28626466001BE107 /* QRLoginScanningCoordinatorTests.swift */,
 				C738CB1028626606001BE107 /* QRLoginVerifyCoordinatorTests.swift */,
 			);
 			path = QRLogin;
@@ -20264,6 +20267,7 @@
 				46B30B782582C7DD00A25E66 /* SiteAddressServiceTests.swift in Sources */,
 				C81CCD6C243AEFBF00A83E27 /* TenorReponseData.swift in Sources */,
 				570BFD902282418A007859A8 /* PostBuilder.swift in Sources */,
+				C738CB0F28626466001BE107 /* QRLoginScanningCoordinatorTests.swift in Sources */,
 				8B6214E627B1B446001DF7B6 /* BlogDashboardServiceTests.swift in Sources */,
 				C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
