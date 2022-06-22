@@ -1,6 +1,6 @@
 20.2
 -----
-* [*] Preview: Post preview now resizes to account for device orientation change and Display Zoom setting. [#18921]
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 
 20.1
 -----
