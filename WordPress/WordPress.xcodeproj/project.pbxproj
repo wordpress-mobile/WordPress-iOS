@@ -2286,6 +2286,7 @@
 		C737553F27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */; };
 		C737554027C80F1300C6E9A1 /* String+CondenseWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */; };
 		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
+		C738CB0B28623CED001BE107 /* QRLoginCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */; };
 		C738CB0D28623F07001BE107 /* QRLoginURLParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */; };
 		C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
 		C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */; };
@@ -7139,6 +7140,7 @@
 		C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackWindowManager.swift; sourceTree = "<group>"; };
 		C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CondenseWhitespace.swift"; sourceTree = "<group>"; };
 		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
+		C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCoordinatorTests.swift; sourceTree = "<group>"; };
 		C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginURLParserTests.swift; sourceTree = "<group>"; };
 		C743535527BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedGifAttachmentViewProvider.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
@@ -14024,6 +14026,7 @@
 		C738CB0928623CD6001BE107 /* QRLogin */ = {
 			isa = PBXGroup;
 			children = (
+				C738CB0A28623CED001BE107 /* QRLoginCoordinatorTests.swift */,
 				C738CB0C28623F07001BE107 /* QRLoginURLParserTests.swift */,
 			);
 			path = QRLogin;
@@ -20084,6 +20087,7 @@
 				B0A6DEBF2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift in Sources */,
 				4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
+				C738CB0B28623CED001BE107 /* QRLoginCoordinatorTests.swift in Sources */,
 				FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
 				732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */,
