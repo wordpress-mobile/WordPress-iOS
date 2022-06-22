@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-31 14:26:24+0000 */
+/* Translation-Revision-Date: 2022-06-15 15:29:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonym";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Svar";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Svara på förslaget";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Bästa timmen";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Bäst för %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Flest visningar någonsin";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Avbryter...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "Kan du inte bestämma dig? Du kan byta tema när som helst.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Följ webbplats";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Följ konversationen";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Följ ämnen";
 
@@ -3423,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli uppmärksammad: kommentera inlägg du har läst.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Bli meddelad när nya kommentarer läggs till för det här inlägget.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Få uppdateringar i realtid direkt i fickan.";
@@ -5331,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "UTVALT FÖR DIG";
 
 /* No comment provided by engineer. */
 "Padding" = "Padding";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-11 15:14:40+0000 */
+/* Translation-Revision-Date: 2022-06-16 15:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "익명";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "답변";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "답변 프롬프트";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "최고의 시간";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "%@에 가장 적합";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "최고 조회수";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "취소 중...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "결정할 수 없나요? 언제든지 테마를 변경할 수 있습니다.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "사이트 팔로우하기";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "대화 팔로우";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
 
@@ -3423,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "알림: 읽은 글에 댓글이 추가됐습니다.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "새 댓글이 이 글에 추가될 때 알림을 받으세요.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "간편하게 실시간 업데이트를 받으세요.";
@@ -5331,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "전화";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "추천";
 
 /* No comment provided by engineer. */
 "Padding" = "안쪽 여백";
