@@ -7,14 +7,17 @@ class QRLoginVerifyCoordinator {
     private let token: QRLoginToken
     private var state: ViewState = .verifyingCode
     private let service: QRLoginService
+    private let connectionChecker: QRLoginConnectionChecker
 
     init(token: QRLoginToken,
          view: QRLoginVerifyView,
          parentCoordinator: QRLoginParentCoordinator,
+         connectionChecker: QRLoginConnectionChecker = QRLoginInternetConnectionChecker(),
          service: QRLoginService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.token = token
         self.view = view
+        self.connectionChecker = connectionChecker
         self.parentCoordinator = parentCoordinator
         self.service = service ?? QRLoginService(managedObjectContext: context)
     }
@@ -43,12 +46,7 @@ extension QRLoginVerifyCoordinator {
         } failure: { _, qrLoginError in
             self.state = .error
 
-            // Check if we have no connection
-            let appDelegate = WordPressAppDelegate.shared
-
-            guard
-                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
-            else {
+            guard self.connectionChecker.connectionAvailable else {
                 self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
                 self.view.showNoConnectionError()
                 return
@@ -97,12 +95,7 @@ extension QRLoginVerifyCoordinator {
         } failure: { error in
             self.state = .error
 
-            // Check if we have no connection
-            let appDelegate = WordPressAppDelegate.shared
-
-            guard
-                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
-            else {
+            guard self.connectionChecker.connectionAvailable else {
                 self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
                 self.view.showNoConnectionError()
                 return
