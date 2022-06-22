@@ -5,9 +5,10 @@ class QRLoginVerifyCoordinator {
     private let parentCoordinator: QRLoginParentCoordinator
     private let view: QRLoginVerifyView
     private let token: QRLoginToken
-    private var state: ViewState = .verifyingCode
     private let service: QRLoginService
     private let connectionChecker: QRLoginConnectionChecker
+
+    var state: ViewState = .verifyingCode
 
     init(token: QRLoginToken,
          view: QRLoginVerifyView,
