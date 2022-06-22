@@ -9,6 +9,14 @@ class QRLoginCameraSession: NSObject, QRCodeScanningSession {
         return cameraDevice != nil
     }
 
+    var previewLayer: CALayer? {
+        guard let session = session else {
+            return nil
+        }
+
+        return AVCaptureVideoPreviewLayer(session: session)
+    }
+
     var scanningDelegate: QRCodeScanningDelegate?
 
     func configure() {

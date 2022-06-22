@@ -1,4 +1,5 @@
 import Foundation
+import QuartzCore
 
 /// Encapsulates the interactions between the child and parent coordinators
 protocol QRLoginParentCoordinator {
@@ -18,7 +19,7 @@ protocol QRLoginConnectionChecker {
 /// Login camera scanning view
 protocol QRLoginScanningView {
     func showError(_ message: String)
-    func showCameraLayer(_ layer: AVCaptureVideoPreviewLayer)
+    func showCameraLayer(_ layer: CALayer)
 }
 
 /// Login verify view and all its states

@@ -13,6 +13,7 @@ class QRLoginScanningCoordinator: NSObject {
 
     func start() {
         cameraSession.scanningDelegate = self
+
         parentCoordinator.track(.qrLoginScannerDisplayed)
         cameraSession.configure()
 
@@ -69,15 +70,11 @@ private extension QRLoginScanningCoordinator {
     }
 
     func configureCameraPreview() {
-        guard let session = cameraSession.session else {
+        guard let previewLayer = cameraSession.previewLayer else {
             showNoCameraError()
             return
         }
-
-
-        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-
+        
         view.showCameraLayer(previewLayer)
     }
 }
