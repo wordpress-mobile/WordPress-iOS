@@ -2324,6 +2324,8 @@
 		C7B7CC702812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */; };
 		C7B7CC7328134347007B9807 /* OnboardingQuestionsPromptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */; };
+		C7BB60162863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */; };
+		C7BB60172863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */; };
 		C7BB60192863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
 		C7BB601A2863AF9700748FD9 /* QRLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
@@ -7155,6 +7157,7 @@
 		C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinator.swift; sourceTree = "<group>"; };
 		C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+OnboardingPrompt.swift"; sourceTree = "<group>"; };
 		C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsPromptScreen.swift; sourceTree = "<group>"; };
+		C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginInternetConnectionChecker.swift; sourceTree = "<group>"; };
 		C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginProtocols.swift; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-76x76.png"; sourceTree = "<group>"; };
@@ -13971,6 +13974,7 @@
 				C7234A4C2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift */,
 				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
 				C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */,
+				C7BB60152863609C00748FD9 /* QRLoginInternetConnectionChecker.swift */,
 				C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */,
 			);
 			path = "QR Login";
@@ -19078,6 +19082,7 @@
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
 				98F537A722496CF300B334F9 /* SiteStatsTableHeaderView.swift in Sources */,
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
+				C7BB60162863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */,
 				7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */,
 				46E327D124E705C7000944B3 /* PageLayoutService.swift in Sources */,
 				F574416E242569CA00E150A8 /* Route+Page.swift in Sources */,
@@ -19541,6 +19546,7 @@
 				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */,
+				C7BB60192863AF9700748FD9 /* QRLoginProtocols.swift in Sources */,
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
 				4054F4612214F50300D261AB /* StreakStatsRecordValue+CoreDataClass.swift in Sources */,
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,

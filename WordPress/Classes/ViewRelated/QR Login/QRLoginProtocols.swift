@@ -10,6 +10,11 @@ protocol QRLoginParentCoordinator {
     func dismiss()
 }
 
+/// A simplified representation of a way to check whether the internet connection is available
+protocol QRLoginConnectionChecker {
+    var connectionAvailable: Bool { get }
+}
+
 /// Login camera scanning view
 protocol QRLoginScanningView {
     func showError(_ message: String)
