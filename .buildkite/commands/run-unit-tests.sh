@@ -15,6 +15,8 @@ cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/projec
 echo "--- Installing Secrets"
 bundle exec fastlane run configure_apply
 
+echo "--- Installing CocoaPods"
+install_cocoapods
 
 echo "--- 🔬 Testing"
 set +e
