@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/fastlane/fastlane.git
-  revision: 65001f1b1de51ccca6ce10f7ebdc19df9a8bd71a
+  revision: 3a5112750790433431831910d31fd30a40a6af66
   branch: crazymanish-xcodebuild-destination-param-fix
   specs:
     fastlane (2.206.2)
@@ -158,8 +158,8 @@ GEM
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
