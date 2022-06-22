@@ -339,8 +339,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                             dataSubtitle: "",
                             dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount,
                                                                              emailFollowersCount: emailFollowersCount,
-                                                                             othersCount: 0,
-                                                                             totalCount: insightsStore.getTotalFollowerCount()),
+                                                                             othersCount: publicizeCount,
+                                                                             totalCount: dotComFollowersCount + emailFollowersCount + publicizeCount),
                             statSection: StatSection.insightsFollowersWordPress,
                             siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
                             siteStatsReferrerDelegate: nil)

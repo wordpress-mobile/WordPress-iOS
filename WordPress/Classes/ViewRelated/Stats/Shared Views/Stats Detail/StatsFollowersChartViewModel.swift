@@ -13,7 +13,7 @@ struct StatsFollowersChartViewModel {
         // - Social
 
         let chartView = DonutChartView()
-        chartView.configure(title: "", totalCount: Float(totalCount()), segments: segments())
+        chartView.configure(title: "", totalCount: CGFloat(totalCount()), segments: segments())
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.heightAnchor.constraint(equalToConstant: Constants.chartHeight).isActive = true
         return chartView
@@ -34,7 +34,7 @@ struct StatsFollowersChartViewModel {
     internal func segmentWith(title: String, count: Int, color: UIColor) -> DonutChartView.Segment {
         return DonutChartView.Segment(
                 title: title,
-                value: Float(count),
+                value: CGFloat(count),
                 color: color
         )
     }
