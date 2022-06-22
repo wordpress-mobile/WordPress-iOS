@@ -1,29 +1,27 @@
 import Foundation
-import AVFoundation
 
 class QRLoginScanningCoordinator: NSObject {
     let parentCoordinator: QRLoginParentCoordinator
     let view: QRLoginScanningView
+    var cameraSession: QRCodeScanningSession
 
-    // Camera Handling
-    var session: AVCaptureSession?
-    var cameraDevice: AVCaptureDevice?
-
-    init(view: QRLoginScanningView, parentCoordinator: QRLoginParentCoordinator) {
+    init(view: QRLoginScanningView, parentCoordinator: QRLoginParentCoordinator, cameraSession: QRCodeScanningSession = QRLoginCameraSession()) {
         self.view = view
         self.parentCoordinator = parentCoordinator
+        self.cameraSession = cameraSession
     }
 
     func start() {
+        cameraSession.scanningDelegate = self
         parentCoordinator.track(.qrLoginScannerDisplayed)
-
-        configureCamera()
+        cameraSession.configure()
 
         // Check if the camera is not accessible, and display an error if needed
-        guard cameraDevice != nil else {
+        guard cameraSession.hasCamera else {
             showNoCameraError()
             return
         }
+
         configureCameraPreview()
     }
 
@@ -36,11 +34,11 @@ class QRLoginScanningCoordinator: NSObject {
 // MARK: - View Interactions
 extension QRLoginScanningCoordinator {
     func viewDidAppear() {
-        startCameraSession()
+        cameraSession.start()
     }
 
     func viewWillDisappear() {
-        stopCameraSession()
+        cameraSession.stop()
     }
 
     func didTapDismiss() {
@@ -55,7 +53,7 @@ extension QRLoginScanningCoordinator {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         // Stop the camera immediately to prevent further scanning
-        stopCameraSession()
+        cameraSession.stop()
 
         // Show the next step in the flow
         parentCoordinator.didScanToken(token)
@@ -64,67 +62,18 @@ extension QRLoginScanningCoordinator {
 
 // MARK: - Private: Camera Related Code
 private extension QRLoginScanningCoordinator {
-    func startCameraSession() {
-        session?.startRunning()
-    }
-
-    func stopCameraSession() {
-        session?.stopRunning()
-    }
-
-    func configureCamera() {
-        try? configureCaptureDevice()
-        configureCaptureSession()
-    }
-
     func showNoCameraError() {
         QRLoginCameraPermissionsHandler().showNeedAccessAlert(from: nil)
-        
+
         view.showError(Strings.noCameraError)
     }
 
-    /// Attempts to grab the default camera for the device
-    func configureCaptureDevice() throws {
-        guard let camera = AVCaptureDevice.default(for: .video) else {
-            return
-        }
-
-        if camera.isFocusModeSupported(.continuousAutoFocus) {
-            try camera.lockForConfiguration()
-            camera.focusMode = .continuousAutoFocus
-            camera.unlockForConfiguration()
-        }
-
-        cameraDevice = camera
-    }
-
-    func configureCaptureSession() {
-        guard let cameraDevice = cameraDevice, let deviceInput = try? AVCaptureDeviceInput(device: cameraDevice) else {
-            return
-        }
-
-        let session = AVCaptureSession()
-        if session.canAddInput(deviceInput) {
-            session.addInput(deviceInput)
-        }
-
-        let output = AVCaptureMetadataOutput()
-
-        // Add the QR Code scanning
-        if session.canAddOutput(output) {
-            session.addOutput(output)
-            output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            output.metadataObjectTypes = [.qr]
-        }
-
-        self.session = session
-    }
-
     func configureCameraPreview() {
-        guard let session = session else {
+        guard let session = cameraSession.session else {
             showNoCameraError()
             return
         }
+
 
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -134,7 +83,7 @@ private extension QRLoginScanningCoordinator {
 }
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
-extension QRLoginScanningCoordinator: AVCaptureMetadataOutputObjectsDelegate {
+extension QRLoginScanningCoordinator: QRCodeScanningDelegate {
     func validLink(_ stringValue: String) -> Bool {
         guard let url = URL(string: stringValue), QRLoginURLParser.isValidHost(url: url) else {
             return false
@@ -143,17 +92,8 @@ extension QRLoginScanningCoordinator: AVCaptureMetadataOutputObjectsDelegate {
         return true
     }
 
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        // Wait until we have at least 1 scanned object with a URL
-        guard let first = metadataObjects.first as? AVMetadataMachineReadableCodeObject, let string = first.stringValue else {
-            return
-        }
-
-        guard validLink(string) else {
-            return
-        }
-
-        guard let token = QRLoginURLParser(urlString: string).parse() else {
+    func didScanURLString(_ urlString: String) {
+        guard let token = QRLoginURLParser(urlString: urlString).parse() else {
             return
         }
 
