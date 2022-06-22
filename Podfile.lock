@@ -587,7 +587,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 2.0.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/qrcode-login-networking`)
+  - WordPressKit (~> 4.55.0-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
@@ -635,6 +635,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -747,9 +748,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.78.0
-  WordPressKit:
-    :branch: feature/qrcode-login-networking
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.0/third-party-podspecs/Yoga.podspec.json
 
@@ -765,9 +763,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.78.0
-  WordPressKit:
-    :commit: 3b2e0454c004f1985c9bf0b254973a8b21fcbf8a
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -868,6 +863,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: d7c9cac72f5f2dfb49b7028c15a2ff50a15949f9
+PODFILE CHECKSUM: 44983672c70a8e00a86d1ae50fc85b7ba68d6b66
 
 COCOAPODS: 1.11.2
