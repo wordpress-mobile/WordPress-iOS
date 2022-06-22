@@ -6,7 +6,7 @@ class QRLoginScanningCoordinatorTests: XCTestCase {
         let session = QRCodeScanningSessionMock()
         session.hasCamera = true
         session.previewLayer = CALayer()
-        
+
         let view = QRLoginScanningViewMock()
         let parentCoordinator = ParentCoorinatorMock()
         let coordinator = QRLoginScanningCoordinator(view: view,

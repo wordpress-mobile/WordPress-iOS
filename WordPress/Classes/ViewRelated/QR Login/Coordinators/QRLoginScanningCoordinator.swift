@@ -74,7 +74,7 @@ private extension QRLoginScanningCoordinator {
             showNoCameraError()
             return
         }
-        
+
         view.showCameraLayer(previewLayer)
     }
 }
