@@ -14,7 +14,7 @@ protocol QRLoginVerifyView {
 }
 
 class QRLoginVerifyCoordinator {
-    private let parentCoordinator: QRLoginCoordinator
+    private let parentCoordinator: QRLoginParentCoordinator
     private let view: QRLoginVerifyView
     private let token: QRLoginToken
     private var state: ViewState = .verifyingCode
@@ -22,7 +22,7 @@ class QRLoginVerifyCoordinator {
 
     init(token: QRLoginToken,
          view: QRLoginVerifyView,
-         parentCoordinator: QRLoginCoordinator,
+         parentCoordinator: QRLoginParentCoordinator,
          service: QRLoginService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.token = token

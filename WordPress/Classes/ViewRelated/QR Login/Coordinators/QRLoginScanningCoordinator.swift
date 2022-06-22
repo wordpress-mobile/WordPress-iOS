@@ -7,14 +7,14 @@ protocol QRLoginScanningView {
 }
 
 class QRLoginScanningCoordinator: NSObject {
-    let parentCoordinator: QRLoginCoordinator
+    let parentCoordinator: QRLoginParentCoordinator
     let view: QRLoginScanningView
 
     // Camera Handling
     var session: AVCaptureSession?
     var cameraDevice: AVCaptureDevice?
 
-    init(view: QRLoginScanningView, parentCoordinator: QRLoginCoordinator) {
+    init(view: QRLoginScanningView, parentCoordinator: QRLoginParentCoordinator) {
         self.view = view
         self.parentCoordinator = parentCoordinator
     }
