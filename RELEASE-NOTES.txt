@@ -1,6 +1,6 @@
 20.2
 -----
-
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
 
 20.1
 -----
