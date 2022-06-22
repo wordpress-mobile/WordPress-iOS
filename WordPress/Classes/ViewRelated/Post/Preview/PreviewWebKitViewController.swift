@@ -105,7 +105,7 @@ class PreviewWebKitViewController: WebKitViewController {
         }
         setupDeviceLabel()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(orientatedChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onOrientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     deinit {
@@ -113,7 +113,7 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     @objc
-    func orientatedChanged() {
+    func onOrientationChanged() {
         setWidth(selectedDevice.width)
     }
 
