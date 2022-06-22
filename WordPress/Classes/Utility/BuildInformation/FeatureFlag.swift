@@ -96,7 +96,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .quickStartForExistingUsers:
             return true
         case .qrLogin:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .betaSiteDesigns:
             return false
         case .featureHighlightTooltip:
