@@ -1,6 +1,15 @@
 import UIKit
 
-struct QRLoginCoordinator {
+protocol QRLoginParentCoordinator {
+    func track(_ event: WPAnalyticsEvent)
+    func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]?)
+
+    func scanAgain()
+    func didScanToken(_ token: QRLoginToken)
+    func dismiss()
+}
+
+struct QRLoginCoordinator: QRLoginParentCoordinator {
     enum QRLoginOrigin: String {
         case menu
         case deepLink = "deep_link"
@@ -42,7 +51,7 @@ struct QRLoginCoordinator {
     }
 }
 
-// MARK: - Child Coordinator Interactions
+// MARK: - QRLoginParentCoordinator Child Coordinator Interactions
 extension QRLoginCoordinator {
     func dismiss() {
         navigationController.dismiss(animated: true)
@@ -56,6 +65,10 @@ extension QRLoginCoordinator {
         QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController, origin: origin) {
             self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
         }
+    }
+
+    func track(_ event: WPAnalyticsEvent) {
+        self.track(event, properties: nil)
     }
 
     func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
