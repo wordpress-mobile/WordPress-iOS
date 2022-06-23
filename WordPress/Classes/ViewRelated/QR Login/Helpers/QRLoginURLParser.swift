@@ -1,8 +1,12 @@
 import Foundation
 
-struct QRLoginToken {
+struct QRLoginToken: Equatable {
     let token: String
     let data: String
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.token == rhs.token && lhs.data == rhs.data
+    }
 }
 
 struct QRLoginURLParser {

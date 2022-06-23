@@ -1,6 +1,6 @@
 import UIKit
 
-struct QRLoginCoordinator {
+struct QRLoginCoordinator: QRLoginParentCoordinator {
     enum QRLoginOrigin: String {
         case menu
         case deepLink = "deep_link"
@@ -42,7 +42,7 @@ struct QRLoginCoordinator {
     }
 }
 
-// MARK: - Child Coordinator Interactions
+// MARK: - QRLoginParentCoordinator Child Coordinator Interactions
 extension QRLoginCoordinator {
     func dismiss() {
         navigationController.dismiss(animated: true)
@@ -53,9 +53,13 @@ extension QRLoginCoordinator {
     }
 
     func scanAgain() {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: navigationController, origin: origin) {
+        QRLoginCameraPermissionsHandler().checkCameraPermissions(from: navigationController, origin: origin) {
             self.navigationController.setViewControllers([self.scanningViewController()], animated: true)
         }
+    }
+
+    func track(_ event: WPAnalyticsEvent) {
+        self.track(event, properties: nil)
     }
 
     func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
@@ -100,7 +104,7 @@ private extension QRLoginCoordinator {
 extension QRLoginCoordinator {
     /// Present the QR login flow starting with the scanning step
     static func present(from source: UIViewController, origin: QRLoginOrigin) {
-        QRLoginScanningCoordinator.checkCameraPermissions(from: source, origin: origin) {
+        QRLoginCameraPermissionsHandler().checkCameraPermissions(from: source, origin: origin) {
             QRLoginCoordinator(origin: origin).showCameraScanningView(from: source)
         }
     }

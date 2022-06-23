@@ -1,32 +1,24 @@
 import Foundation
 import WordPressKit
 
-protocol QRLoginVerifyView {
-    func render(response: QRLoginValidationResponse)
-    func renderCompletion()
-
-    func showLoading()
-    func showAuthenticating()
-
-    func showNoConnectionError()
-    func showQRLoginError(error: QRLoginError?)
-    func showAuthenticationFailedError()
-}
-
 class QRLoginVerifyCoordinator {
-    private let parentCoordinator: QRLoginCoordinator
+    private let parentCoordinator: QRLoginParentCoordinator
     private let view: QRLoginVerifyView
     private let token: QRLoginToken
-    private var state: ViewState = .verifyingCode
     private let service: QRLoginService
+    private let connectionChecker: QRLoginConnectionChecker
+
+    var state: ViewState = .verifyingCode
 
     init(token: QRLoginToken,
          view: QRLoginVerifyView,
-         parentCoordinator: QRLoginCoordinator,
+         parentCoordinator: QRLoginParentCoordinator,
+         connectionChecker: QRLoginConnectionChecker = QRLoginInternetConnectionChecker(),
          service: QRLoginService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.token = token
         self.view = view
+        self.connectionChecker = connectionChecker
         self.parentCoordinator = parentCoordinator
         self.service = service ?? QRLoginService(managedObjectContext: context)
     }
@@ -55,12 +47,7 @@ extension QRLoginVerifyCoordinator {
         } failure: { _, qrLoginError in
             self.state = .error
 
-            // Check if we have no connection
-            let appDelegate = WordPressAppDelegate.shared
-
-            guard
-                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
-            else {
+            guard self.connectionChecker.connectionAvailable else {
                 self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
                 self.view.showNoConnectionError()
                 return
@@ -109,12 +96,7 @@ extension QRLoginVerifyCoordinator {
         } failure: { error in
             self.state = .error
 
-            // Check if we have no connection
-            let appDelegate = WordPressAppDelegate.shared
-
-            guard
-                let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
-            else {
+            guard self.connectionChecker.connectionAvailable else {
                 self.parentCoordinator.track(.qrLoginVerifyCodeFailed, properties: ["error": "no_internet"])
                 self.view.showNoConnectionError()
                 return

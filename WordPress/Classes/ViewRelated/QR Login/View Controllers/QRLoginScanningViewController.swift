@@ -22,7 +22,11 @@ extension QRLoginScanningViewController: QRLoginScanningView {
         errorLabel.isHidden = false
     }
 
-    func showCameraLayer(_ previewLayer: AVCaptureVideoPreviewLayer) {
+    func showCameraLayer(_ previewLayer: CALayer) {
+        if let cameraLayer = previewLayer as? AVCaptureVideoPreviewLayer {
+            cameraLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        }
+
         previewLayer.frame = view.layer.bounds
 
         // Insert the layer below our scan focus overlay image
