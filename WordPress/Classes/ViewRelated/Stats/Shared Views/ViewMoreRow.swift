@@ -9,6 +9,7 @@ class ViewMoreRow: UIView, NibLoadable, Accessible {
     // MARK: - Properties
 
     @IBOutlet weak var viewMoreLabel: UILabel!
+    @IBOutlet weak var disclosureImageView: UIImageView!
 
     private var statSection: StatSection?
     private weak var delegate: ViewMoreRowDelegate?
@@ -38,6 +39,9 @@ private extension ViewMoreRow {
         backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
+        if FeatureFlag.statsNewAppearance.enabled && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
+            disclosureImageView.isHidden = true
+        }
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
