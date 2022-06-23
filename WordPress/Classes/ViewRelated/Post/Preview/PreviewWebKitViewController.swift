@@ -108,7 +108,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setWidth(selectedDevice.width, viewSize: size)
+        setWidth(selectedDevice.width, viewWidth: size.width)
     }
 
     // MARK: Toolbar Items
