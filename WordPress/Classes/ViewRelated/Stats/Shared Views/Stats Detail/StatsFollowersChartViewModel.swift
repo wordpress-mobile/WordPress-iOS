@@ -7,7 +7,7 @@ struct StatsFollowersChartViewModel {
     public let publicizeCount: Int
 
     func makeFollowersChartView() -> UIView {
-        // The fdllowers chart currently shows 3 segments. If available, it will show:
+        // The followers chart currently shows 3 segments. If available, it will show:
         // - WordPress.com followers
         // - Email followers
         // - Social
