@@ -171,7 +171,8 @@ extension WPStyleGuide {
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
                                           forTabbedCard: Bool = false,
-                                          forOverviewCard: Bool = false) {
+                                          forOverviewCard: Bool = false,
+                                          forNewInsightsCard: Bool = false) {
             WPStyleGuide.configureFilterTabBar(filterTabBar)
 
             // For FilterTabBar on TabbedTotalsCell
@@ -186,6 +187,15 @@ extension WPStyleGuide {
                 filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = defaultFilterTintColor
                 filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
+            }
+
+            // For FilterTabBar on StatsInsights
+            if forNewInsightsCard {
+                filterTabBar.tabSizingStyle = .fitting
+                filterTabBar.tintColor = UIColor.text
+                filterTabBar.selectedTitleColor = UIColor.text
+                filterTabBar.backgroundColor = .listForeground
+                filterTabBar.deselectedTabColor = UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
             }
         }
 
