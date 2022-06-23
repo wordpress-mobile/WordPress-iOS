@@ -231,17 +231,26 @@ class StatsTotalInsightsCell: StatsBaseCell {
         }
 
         guard let difference = difference,
-              let percentage = percentage else {
+              let percentage = percentage,
+              difference > 0 || count > 0 else {
                   comparisonLabel.isHidden = true
                   return
               }
 
-        let differenceText = difference > 0 ? TextContent.differenceHigher : TextContent.differenceLower
-        let differencePrefix = difference < 0 ? "" : "+"
-        let formattedText = String(format: differenceText, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
-
         comparisonLabel.isHidden = false
-        comparisonLabel.attributedText = attributedDifferenceString(formattedText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
+        let differencePrefix = difference < 0 ? "" : "+"
+
+        let differenceText: String = {
+            if difference > 0 {
+                return String(format: TextContent.differenceHigher, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+            } else if difference < 0 {
+                return String(format: TextContent.differenceLower, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+            } else {
+                return TextContent.differenceSame
+            }
+        }()
+
+        comparisonLabel.attributedText = attributedDifferenceString(differenceText, highlightAttributes: [.foregroundColor: differenceTextColor(for: difference)])
     }
 
     private func addTipEmojiToGuide(_ guideText: NSAttributedString) -> NSAttributedString {
@@ -269,13 +278,13 @@ class StatsTotalInsightsCell: StatsBaseCell {
         return difference < 0 ? WPStyleGuide.Stats.neutralColor : WPStyleGuide.Stats.positiveColor
     }
 
-    private func attributedDifferenceString(_ string: String, highlightAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString? {
+    private func attributedDifferenceString(_ string: String, highlightAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
         let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
 
         guard let firstIndex = string.firstIndex(of: TextContent.differenceDelimiter),
               let lastIndex = string.lastIndex(of: TextContent.differenceDelimiter),
               firstIndex != lastIndex else {
-                  return nil
+                  return NSAttributedString(string: string, attributes: defaultAttributes)
               }
 
         let string = string.replacingOccurrences(of: String(TextContent.differenceDelimiter), with: "")
@@ -300,5 +309,6 @@ class StatsTotalInsightsCell: StatsBaseCell {
         static let differenceDelimiter = Character("*")
         static let differenceHigher = NSLocalizedString("*%@%@ (%@%%)* higher than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
         static let differenceLower = NSLocalizedString("*%@%@ (%@%%)* lower than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
+        static let differenceSame = NSLocalizedString("The same as the previous week", comment: "Label shown in Stats Insights when a metric is showing the same level as the previous week")
     }
 }
