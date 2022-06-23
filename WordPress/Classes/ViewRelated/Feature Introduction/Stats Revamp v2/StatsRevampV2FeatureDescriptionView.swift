@@ -40,34 +40,14 @@ private extension StatsRevampV2FeatureDescriptionView {
         noteTextView.layer.cornerRadius = Style.noteCornerRadius
         noteTextView.layer.borderColor = Style.noteBorderColor
         noteTextView.textContainerInset = Style.noteInsets
-        configureNoteText()
-    }
-
-    func configureNoteText() {
-        let attributedString = NSMutableAttributedString()
-
-        // These attributed string styles cannot be stored statically (i.e. in the Style enum).
-        // They must be dynamic to resize correctly when the text size changes.
-
-        attributedString.append(.init(string: Strings.noteLabel,
-                                      attributes: [.foregroundColor: Style.textColor,
-                                                   .font: UIFont.preferredFont(forTextStyle: .caption1).bold()]))
-
-        attributedString.append(.init(string: " " + Strings.noteText,
-                                      attributes: [.foregroundColor: Style.textColor,
-                                                   .font: UIFont.preferredFont(forTextStyle: .caption1)]))
-
-        noteTextView.attributedText = attributedString
-
-        noteTextView.accessibilityElementsHidden = true
-        noteAccessibilityLabel.accessibilityLabel = Strings.noteTextAccessibilityLabel
+        noteTextView.font = UIFont.preferredFont(forTextStyle: .caption1)
+        noteTextView.textColor = Style.textColor
+        noteTextView.text = Strings.noteText
     }
 
     enum Strings {
-        static let featureDescription: String = NSLocalizedString("Insights help you understand how your content resonates with your audience with an overview of how it is performing and guidance to your next steps.", comment: "Description of updated Stats Insights displayed in the Feature Introduction view.")
-        static let noteLabel: String = NSLocalizedString("Note:", comment: "Label for the note displayed in the Feature Introduction view.")
-        static let noteText: String = NSLocalizedString("You can learn more about Insights at any time in My Site > Stats > Insights", comment: "Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
-        static let noteTextAccessibilityLabel: String = NSLocalizedString("You can learn more about Insights at any time in My Site, Stats, Insights.", comment: "Accessibility hint for Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
+        static let featureDescription: String = NSLocalizedString("Insights help you understand how your content is performing and what’s resonating with your audience.", comment: "Description of updated Stats Insights displayed in the Feature Introduction view.")
+        static let noteText: String = NSLocalizedString("Learn more in My Site > Stats > Insights.", comment: "Note displayed in the Feature Introduction view for the updated Stats Insights feature.")
     }
 
     enum Style {

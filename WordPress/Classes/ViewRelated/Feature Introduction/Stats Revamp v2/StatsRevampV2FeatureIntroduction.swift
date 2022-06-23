@@ -10,7 +10,7 @@ class StatsRevampV2FeatureIntroduction: FeatureIntroductionViewController {
 
         let headerImage = UIImage(named: HeaderStyle.imageName)?.withTintColor(.clear)
 
-        super.init(headerTitle: HeaderStrings.title, headerSubtitle: "", headerImage: headerImage, featureDescriptionView: featureDescriptionView, primaryButtonTitle: ButtonStrings.showMe, secondaryButtonTitle: nil)
+        super.init(headerTitle: HeaderStrings.title, headerSubtitle: "", headerImage: headerImage, featureDescriptionView: featureDescriptionView, primaryButtonTitle: ButtonStrings.showMe, secondaryButtonTitle: ButtonStrings.remindMe)
 
         featureIntroductionDelegate = self
     }
@@ -30,6 +30,10 @@ class StatsRevampV2FeatureIntroduction: FeatureIntroductionViewController {
 extension StatsRevampV2FeatureIntroduction: FeatureIntroductionDelegate {
     func primaryActionSelected() {
         presenter?.primaryButtonSelected()
+    }
+
+    func secondaryActionSelected() {
+        presenter?.secondaryButtonSelected()
     }
 }
 
@@ -61,6 +65,7 @@ private extension StatsRevampV2FeatureIntroduction {
 
     enum ButtonStrings {
         static let showMe = NSLocalizedString("Try it now", comment: "Button title to take user to the new Stats Insights screen.")
+        static let remindMe = NSLocalizedString("Remind me later", comment: "Button title dismiss the Stats Insights feature announcement screen.")
     }
 
     enum HeaderStrings {

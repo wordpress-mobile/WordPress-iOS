@@ -9,6 +9,7 @@
 * [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
 * [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
 * [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+* [*] People Management: Fixed a crash that can occur when loading the People view. [#18907]
 
 20.0
 -----

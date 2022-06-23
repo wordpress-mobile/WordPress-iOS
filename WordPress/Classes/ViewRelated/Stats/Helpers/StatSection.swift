@@ -241,6 +241,8 @@
             return TabTitles.overviewLikes
         case .periodOverviewComments:
             return TabTitles.overviewComments
+        case .insightsPublicize:
+            return TabTitles.publicize
         default:
             return ""
         }
@@ -461,6 +463,7 @@
         static let commentsPosts = NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
         static let followersWordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let followersEmail = NSLocalizedString("Email", comment: "Label for email followers")
+        static let publicize = NSLocalizedString("Social", comment: "Label for social followers")
         static let overviewViews = NSLocalizedString("Views", comment: "Label for Period Overview views")
         static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
         static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")

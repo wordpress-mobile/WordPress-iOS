@@ -14,10 +14,21 @@ class DonutChartView: UIView {
 
     // MARK: Configuration
 
-    struct Segment {
+    struct Segment: Identifiable, Equatable {
+        // Identifier required to keep track of ordering
+        let id = UUID()
         let title: String
-        let value: Float
+        let value: CGFloat
         let color: UIColor
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            return lhs.id == rhs.id
+        }
+
+        /// - Returns: A new Segment with the provided value
+        func withValue(_ newValue: CGFloat) -> Segment {
+            return Segment(title: title, value: newValue, color: color)
+        }
     }
 
     var title: String? {
@@ -26,13 +37,20 @@ class DonutChartView: UIView {
         }
     }
 
-    var totalCount: Float = 0 {
+    var totalCount: CGFloat = 0 {
         didSet {
-            totalCountLabel.text = String(Int(totalCount))
+            totalCountLabel.text = Float(totalCount).abbreviatedString()
         }
     }
 
-    var segments: [Segment] = []
+    private var segments: [Segment] = [] {
+        didSet {
+            segmentOrder = segments.map({ $0.id })
+        }
+    }
+
+    // We keep track of segment IDs so we can keep the order consistent if we need to adjust segments later
+    private var segmentOrder: [UUID] = []
 
     // MARK: Initialization
 
@@ -109,22 +127,36 @@ class DonutChartView: UIView {
     ///     - title: Displayed in the center of the chart
     ///     - totalCount: Displayed in the center of the chart and used to calculate segment sizes
     ///     - segments: Used for color, legend titles, and segment size
-    func configure(title: String?, totalCount: Float, segments: [Segment]) {
+    func configure(title: String?, totalCount: CGFloat, segments: [Segment]) {
         if segments.reduce(0.0, { $0 + $1.value }) > totalCount {
-            // DDLogInfo
-            print("DonutChartView: Segment values should total less than 100%.")
+            DDLogInfo("DonutChartView: Segment values should not total greater than 100%.")
         }
 
         self.title = title
         self.totalCount = totalCount
-        self.segments = segments
+        self.segments = normalizedSegments(segments)
 
         segments.forEach({ legendStackView.addArrangedSubview(LegendView(segment: $0)) })
 
         layoutChart()
     }
 
+    // Converts all segment to percentage values between 0 and 1, otherwise
+    // extremely large values can throw things off when calculating segment sizes.
+    private func normalizedSegments(_ segments: [Segment]) -> [Segment] {
+        guard totalCount > 0 else {
+            return segments
+        }
+
+        let filtered = segments.filter({ $0.value > 0 })
+        return filtered.map({ $0.withValue($0.value / totalCount) })
+    }
+
     private func layoutChart() {
+        guard !bounds.isEmpty else {
+            return
+        }
+
         CATransaction.begin()
         CATransaction.setDisableActions(true)
 
@@ -134,29 +166,45 @@ class DonutChartView: UIView {
 
         guard totalCount > 0 else {
             // We must have a total count greater than 0, as we use it to calculate percentages
-            print("DonutChartView: TotalCount must be greater than 0 for chart initialization.")
+            DDLogInfo("DonutChartView: TotalCount must be greater than 0 for chart initialization.")
             return
         }
 
-        var currentTotal: Float = 0.0
+        // Due to the size of the endcaps on segments, if a segment is too small we can't display it.
+        // Here we'll increase the size of small segments if necessary. We loop through segments.count times
+        // to ensure that after each adjustment the remaining segments are still an acceptable size.
+        var displaySegments = adjustedSegmentsForDisplay(segments)
+        for _ in 0..<segments.count-1 {
+            displaySegments = adjustedSegmentsForDisplay(displaySegments)
+        }
 
-        for segment in segments {
+        var currentTotal: CGFloat = 0.0
+        for segment in displaySegments {
             if segment.value == 0 {
                 continue
             }
 
-            let segmentLayer = makeSegmentLayer()
-            segmentLayer.strokeColor = segment.color.cgColor
+            let segmentLayer = makeSegmentLayer(segment)
 
             // Calculate the start and end of the new segment
-            let segmentStartPercentage = CGFloat(currentTotal / totalCount)
-            currentTotal += segment.value
-            let segmentEndPercentage = CGFloat(currentTotal / totalCount)
+            let segmentStartPercentage = currentTotal
+
+            let segmentEndPercentage: CGFloat
+            if segment.value == Constants.minimumSizeSegment {
+                segmentEndPercentage = segmentStartPercentage + minimumSizePercentage
+            } else {
+                segmentEndPercentage = segmentStartPercentage + segment.value
+            }
+
+            currentTotal = segmentEndPercentage
+
+            let startAngle = segmentStartPercentage.radiansFromPercent().radiansRotated(byDegrees: Constants.chartRotationDegrees) + endCapOffset
+            let endAngle =  segmentEndPercentage.radiansFromPercent().radiansRotated(byDegrees: Constants.chartRotationDegrees) - endCapOffset
 
             let path = UIBezierPath(arcCenter: chartCenterPoint,
                                     radius: chartRadius,
-                                    startAngle: radiansFromPercent(segmentStartPercentage) + segmentOffset,
-                                    endAngle: radiansFromPercent(segmentEndPercentage) - segmentOffset,
+                                    startAngle: startAngle,
+                                    endAngle: endAngle,
                                     clockwise: true)
             segmentLayer.path = path.cgPath
 
@@ -168,21 +216,50 @@ class DonutChartView: UIView {
         CATransaction.commit()
     }
 
+    /// Updates segments so that any segments below the minimum displayable size have a value of `Constants.minimumSizeSegment`,
+    /// so that they can be displayed at a larger-than-actual size. This method also reduces the size of all the remaining
+    /// segments to account for the inflated display size of the smaller segments.
+    ///
+    private func adjustedSegmentsForDisplay(_ segments: [Segment]) -> [Segment] {
+        // Ignore 0 sized segments and those that we've already marked as minimum size
+        let belowMinimumSegments: [Segment] = segments.filter({ $0.value > 0 && $0.value != Constants.minimumSizeSegment && $0.value < minimumSizePercentage })
+        let otherSegments: [Segment] = segments.filter({ belowMinimumSegments.contains($0) == false })
+
+        // If a segment is too small to fit on the chart, we'll make a note of how much we
+        // need to adjust it to match the minimum, and add it to the array.
+        let totalAdjustment: CGFloat = belowMinimumSegments.reduce(0) { $0 + minimumSizePercentage - $1.value }
+
+        guard belowMinimumSegments.count > 0 else {
+            return segments
+        }
+
+        // Next we need to adjust the sizes of the other segments to account for the extra we added so that we end up back at 100%
+        let adjustmentPerSegment = totalAdjustment / CGFloat(otherSegments.count)
+        var allSegments: [Segment] = []
+
+        allSegments.append(contentsOf: otherSegments.map({ $0.withValue($0.value - adjustmentPerSegment) }))
+        allSegments.append(contentsOf: belowMinimumSegments.map({ $0.withValue(Constants.minimumSizeSegment) }))
+
+        // Re-sort the new list based on the original ID order passed in when the chart was configured
+        return allSegments.sorted(by: { segmentOrder.firstIndex(of: $0.id) ?? 0 < segmentOrder.firstIndex(of: $1.id) ?? 0 })
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        if !segmentLayers.isEmpty {
+        if !segments.isEmpty {
             layoutChart()
         }
     }
 
     // MARK: Helpers
 
-    private func makeSegmentLayer() -> CAShapeLayer {
+    private func makeSegmentLayer(_ segment: Segment) -> CAShapeLayer {
         let segmentLayer = CAShapeLayer()
         segmentLayer.frame = chartContainer.bounds
         segmentLayer.lineWidth = Constants.lineWidth
         segmentLayer.fillColor = UIColor.clear.cgColor
+        segmentLayer.strokeColor = segment.color.cgColor
         segmentLayer.lineCap = .round
 
         return segmentLayer
@@ -199,12 +276,13 @@ class DonutChartView: UIView {
 
     /// Offset used to adjust the endpoints of each chart segment so that the end caps
     /// don't overlap, as they draw from their center not from the line edge
-    private var segmentOffset: CGFloat {
+    private var endCapOffset: CGFloat {
         return asin(Constants.lineWidth * 0.5 / chartRadius)
     }
 
-    private func radiansFromPercent(_ percent: CGFloat) -> CGFloat {
-        return (percent * 2.0 * CGFloat.pi) - (CGFloat.pi / 2.0)
+    // How many % does a minimum size segment take up? (minimum size is 2 * endcap offset)
+    private var minimumSizePercentage: CGFloat {
+        return (endCapOffset * 2.0).percentFromRadians() + 0.01 // Just needs to be a fraction larger than the endcaps themselves
     }
 
     // MARK: Constants
@@ -215,6 +293,12 @@ class DonutChartView: UIView {
         static let titleStackViewSpacing: CGFloat = 8.0
         static let legendStackViewSpacing: CGFloat = 8.0
         static let chartToLegendSpacing: CGFloat = 32.0
+
+        // We'll rotate the chart back by 90 degrees so it starts at the top rather than the right
+        static let chartRotationDegrees: CGFloat = -90.0
+
+        // Used to denote a segment that is below or at the minimum size we can display
+        static let minimumSizeSegment: CGFloat = -1
     }
 }
 
@@ -258,5 +342,23 @@ private class LegendView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+}
+
+private extension CGFloat {
+    func radiansFromPercent() -> CGFloat {
+        return self * 2.0 * CGFloat.pi
+    }
+
+    func percentFromRadians() -> CGFloat {
+        return self / (CGFloat.pi * 2.0)
+    }
+
+    func radiansRotated(byDegrees rotationDegrees: CGFloat) -> CGFloat {
+        return self + rotationDegrees.degreesToRadians()
+    }
+
+    func degreesToRadians() -> CGFloat {
+        return self * CGFloat.pi / 180.0
     }
 }

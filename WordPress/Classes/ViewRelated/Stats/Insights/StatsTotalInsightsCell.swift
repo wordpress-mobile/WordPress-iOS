@@ -93,7 +93,7 @@ struct StatsTotalInsightsData {
     private enum TextContent {
         static let likesTotalGuideTextSingular = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>one</strong> like.", comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact.")
         static let likesTotalGuideTextPlural = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>%d</strong> likes.", comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact.")
-        static let commentsTotalGuideText = NSLocalizedString("View your top contributors by tapping \"Week\".", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
+        static let commentsTotalGuideText = NSLocalizedString("Tap \"Week\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }
 
