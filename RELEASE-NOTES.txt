@@ -1,5 +1,6 @@
 20.2
 -----
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 * [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
 
 20.1
