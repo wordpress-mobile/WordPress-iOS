@@ -28,15 +28,26 @@ struct StatsSegmentedControlData {
         self.accessibilityHint = accessibilityHint
     }
 
-    var attributedDifference: NSAttributedString? {
+    var attributedDifferenceText: NSAttributedString? {
+        guard difference != 0 || segmentData > 0 else {
+            // No comparison shown if there's no change and 0 data
+            return nil
+        }
+
+        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
+
+        if difference == 0 && segmentData != 0 {
+            return NSAttributedString(string: differenceText, attributes: defaultAttributes)
+        }
+
         let differenceText = String(format: differenceText, differenceLabel)
-        let attributedString = NSMutableAttributedString(string: differenceText)
+        let attributedString = NSMutableAttributedString(string: differenceText, attributes: defaultAttributes)
 
         let str = attributedString.string as NSString
         let range = str.range(of: differenceLabel)
 
         attributedString.addAttributes([.foregroundColor: differenceTextColor,
-                                        .font: UIFont.preferredFont(forTextStyle: .body).bold()],
+                                        .font: UIFont.preferredFont(forTextStyle: .subheadline).bold()],
                 range: NSRange(location: range.location, length: differenceLabel.count))
 
         return attributedString
@@ -68,6 +79,13 @@ struct StatsSegmentedControlData {
 
     var accessibilityValue: String? {
         return segmentDataStub != nil ? "" : "\(segmentData)"
+    }
+
+    enum Constants {
+        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
+        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
+        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
+        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
     }
 }
 
@@ -187,7 +205,7 @@ private extension ViewsVisitorsLineChartCell {
         latestData.text = segmentData.segmentData.abbreviatedString(forHeroNumber: true)
         previousData.text = segmentData.segmentPrevData.abbreviatedString(forHeroNumber: true)
 
-        differenceLabel.attributedText = segmentData.attributedDifference
+        differenceLabel.attributedText = segmentData.attributedDifferenceText
     }
 
     // MARK: Chart support

@@ -13,7 +13,7 @@ class SiteStatsImmuTableRows {
                 segmentData: viewsData.count,
                 segmentPrevData: viewsData.prevCount,
                 difference: viewsData.difference,
-                differenceText: viewsData.difference < 0 ? Constants.viewsLower : Constants.viewsHigher,
+                differenceText: viewsDifferenceText(with: viewsData.count, difference: viewsData.difference),
                 date: periodDate,
                 period: StatsPeriodUnit.week,
                 analyticsStat: .statsOverviewTypeTappedViews,
@@ -25,7 +25,7 @@ class SiteStatsImmuTableRows {
                 segmentData: visitorsData.count,
                 segmentPrevData: visitorsData.prevCount,
                 difference: visitorsData.difference,
-                differenceText: visitorsData.difference < 0 ? Constants.visitorsLower : Constants.visitorsHigher,
+                differenceText: visitorsDifferenceText(with: visitorsData.count, difference: visitorsData.difference),
                 date: periodDate,
                 period: StatsPeriodUnit.week,
                 analyticsStat: .statsOverviewTypeTappedViews,
@@ -69,10 +69,28 @@ class SiteStatsImmuTableRows {
         return tableRows
     }
 
+    private static func viewsDifferenceText(with count: Int, difference: Int) -> String {
+        if difference == 0 && count != 0 {
+            return Constants.viewsNoDifference
+        }
+
+        return difference < 0 ? Constants.viewsLower : Constants.viewsHigher
+    }
+
+    private static func visitorsDifferenceText(with count: Int, difference: Int) -> String {
+        if difference == 0 && count != 0 {
+            return Constants.visitorsNoDifference
+        }
+
+        return difference < 0 ? Constants.visitorsLower : Constants.visitorsHigher
+    }
+
     enum Constants {
         static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
         static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
         static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
         static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
+        static let viewsNoDifference = NSLocalizedString("Your views this week are the same as the previous week.\n", comment: "Stats insights label shown when the user's view count is the same as the previous week.")
+        static let visitorsNoDifference = NSLocalizedString("Your visitors this week are the same as the previous week.\n", comment: "Stats insights label shown when the user's visitor count is the same as the previous week.")
     }
 }

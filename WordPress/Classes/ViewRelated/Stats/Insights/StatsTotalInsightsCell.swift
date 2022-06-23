@@ -232,7 +232,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         guard let difference = difference,
               let percentage = percentage,
-              difference > 0 || count > 0 else {
+              difference != 0 || count > 0 else {
                   comparisonLabel.isHidden = true
                   return
               }
