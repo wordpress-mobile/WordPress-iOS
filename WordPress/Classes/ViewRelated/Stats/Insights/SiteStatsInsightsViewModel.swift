@@ -790,7 +790,7 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                                    showTotalCount: true)
+                                    showTotalCount: FeatureFlag.statsNewAppearance.enabled ? false : true)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -819,8 +819,8 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: followerType.itemSubtitle,
-                       dataSubtitle: followerType.dataSubtitle,
+                       itemSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.itemSubtitle,
+                       dataSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }

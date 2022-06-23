@@ -224,6 +224,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     let tabsData: [TabData]
     let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let showTotalCount: Bool
     let action: ImmuTableAction? = nil
 
@@ -236,6 +237,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
         cell.configure(tabsData: tabsData,
                        statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        showTotalCount: showTotalCount)
     }
 }
