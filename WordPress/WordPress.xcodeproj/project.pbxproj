@@ -2526,6 +2526,8 @@
 		DC8F61F727032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F61F627032B3F0087AC5D /* TimeZoneFormatter.swift */; };
 		DC8F61F827032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F61F627032B3F0087AC5D /* TimeZoneFormatter.swift */; };
 		DC8F61FC2703321F0087AC5D /* TimeZoneFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F61FB2703321F0087AC5D /* TimeZoneFormatterTests.swift */; };
+		DC9AF769285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9AF768285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift */; };
+		DC9AF76A285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9AF768285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift */; };
 		DCC662512810915D00962D0C /* BlogVideoLimitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC662502810915D00962D0C /* BlogVideoLimitsTests.swift */; };
 		DCCDF75B283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCDF75A283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift */; };
 		DCCDF75C283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCDF75A283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift */; };
@@ -7370,6 +7372,7 @@
 		DC772B0728201F5300664C02 /* ViewsVisitorsLineChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsVisitorsLineChartCell.swift; sourceTree = "<group>"; };
 		DC8F61F627032B3F0087AC5D /* TimeZoneFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneFormatter.swift; sourceTree = "<group>"; };
 		DC8F61FB2703321F0087AC5D /* TimeZoneFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneFormatterTests.swift; sourceTree = "<group>"; };
+		DC9AF768285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsFollowersChartViewModel.swift; sourceTree = "<group>"; };
 		DCC662502810915D00962D0C /* BlogVideoLimitsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogVideoLimitsTests.swift; sourceTree = "<group>"; };
 		DCCDF75A283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsDetailsTableViewController.swift; sourceTree = "<group>"; };
 		DCCDF75D283BF02D00AA347E /* SiteStatsInsightsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -12304,6 +12307,7 @@
 				DCCDF75D283BF02D00AA347E /* SiteStatsInsightsDetailsViewModel.swift */,
 				987535612282682D001661B4 /* DetailDataCell.swift */,
 				987535622282682D001661B4 /* DetailDataCell.xib */,
+				DC9AF768285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift */,
 				1762B6DB2845510400F270A5 /* StatsReferrersChartViewModel.swift */,
 			);
 			path = "Stats Detail";
@@ -18642,6 +18646,7 @@
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
+				DC9AF769285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift in Sources */,
 				3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */,
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
@@ -20431,6 +20436,7 @@
 				FABB212B2602FC2C00C8785C /* ReaderTagsTableViewController.swift in Sources */,
 				FABB212C2602FC2C00C8785C /* NotificationsViewController+AppRatings.swift in Sources */,
 				FABB212D2602FC2C00C8785C /* BlogService.m in Sources */,
+				DC9AF76A285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift in Sources */,
 				FABB212E2602FC2C00C8785C /* JetpackSettingsViewController.swift in Sources */,
 				982DDF95263238A6002B3904 /* LikeUserPreferredBlog+CoreDataClass.swift in Sources */,
 				FABB212F2602FC2C00C8785C /* PostingActivityViewController.swift in Sources */,
