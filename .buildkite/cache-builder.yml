@@ -27,8 +27,7 @@ steps:
     command: |
       echo "--- :rubygems: Setting up Gems"
       # See https://github.com/Automattic/bash-cache-buildkite-plugin/issues/16
-      BUNDLER_VERSION=$(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1)
-      gem install bundler:"${BUNDLER_VERSION}"
+      gem install bundler
 
       install_gems
 
