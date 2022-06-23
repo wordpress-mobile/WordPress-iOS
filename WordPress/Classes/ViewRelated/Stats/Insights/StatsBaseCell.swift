@@ -98,7 +98,7 @@ class StatsBaseCell: UITableViewCell {
             return
         }
 
-        if headingBottomConstraint == nil {
+        if headingBottomConstraint == nil && headingLabel.superview == nil {
             configureHeading(with: topConstraint)
         }
 

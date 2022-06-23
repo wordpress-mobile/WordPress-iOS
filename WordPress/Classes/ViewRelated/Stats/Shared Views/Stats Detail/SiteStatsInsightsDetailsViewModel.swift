@@ -255,7 +255,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     func tableViewModel() -> ImmuTable {
         guard let statSection = statSection,
-              let detailsDelegate = detailsDelegate else {
+              let _ = detailsDelegate else {
             return ImmuTable.Empty
         }
 
@@ -314,6 +314,30 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 var rows = [ImmuTableRow]()
                 rows.append(TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: nil))
 
+                let dotComFollowersCount = insightsStore.getAllDotComFollowers()?.dotComFollowersCount ?? 0
+                let emailFollowersCount = insightsStore.getAllEmailFollowers()?.emailFollowersCount ?? 0
+                let publicizeCount = insightsStore.getPublicizeCount()
+
+                if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
+                    let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
+                                                                      emailFollowersCount: emailFollowersCount,
+                                                                      publicizeCount: publicizeCount)
+
+                    let chartView: UIView = chartViewModel.makeFollowersChartView()
+
+                    var chartRow = TopTotalsPeriodStatsRow(itemSubtitle: "",
+                            dataSubtitle: "",
+                            dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount,
+                                                                             emailFollowersCount: emailFollowersCount,
+                                                                             othersCount: publicizeCount,
+                                                                             totalCount: dotComFollowersCount + emailFollowersCount + publicizeCount),
+                            statSection: StatSection.insightsFollowersWordPress,
+                            siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
+                            siteStatsReferrerDelegate: nil)
+                    chartRow.topAccessoryView = chartView
+                    rows.append(chartRow)
+                }
+
                 rows.append(TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                             tabDataForFollowerType(.insightsFollowersEmail)],
                         statSection: .insightsFollowersWordPress,
@@ -344,13 +368,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: "",
                         dataSubtitle: "",
                         dataRows: authorsTabData.dataRows,
+                        statSection: .insightsCommentsAuthors,
                         siteStatsInsightsDelegate: nil))
 
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.InsightsHeaders.posts,
                         dataSubtitle: StatSection.InsightsHeaders.comments,
                         dataRows: postsTabData.dataRows,
+                        statSection: .insightsCommentsPosts,
                         siteStatsInsightsDelegate: nil))
+
                 return rows
             }
         case .insightsTagsAndCategories:
@@ -466,11 +493,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        // We don't show guide text at the detail level
+        data.guideText = nil
+        return data
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
+        // We don't show guide text at the detail level
+        data.guideText = nil
+        return data
     }
 
     // MARK: - Refresh Data
@@ -925,6 +958,31 @@ private extension SiteStatsInsightsDetailsViewModel {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
+    // MARK: - Followers
+    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, othersCount: Int, totalCount: Int) -> [StatsTotalRowData] {
+        var rowData = [StatsTotalRowData]()
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsFollowersWordPress.tabTitle,
+                        data: "\(dotComFollowersCount.abbreviatedString()) (\(roundedPercentage(numerator: dotComFollowersCount, denominator: totalCount))%)",
+                        statSection: .insightsFollowersWordPress)
+        )
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsFollowersEmail.tabTitle,
+                        data: "\(emailFollowersCount.abbreviatedString()) (\(roundedPercentage(numerator: emailFollowersCount, denominator: totalCount))%)",
+                        statSection: .insightsFollowersEmail)
+        )
+
+        rowData.append(
+                StatsTotalRowData(name: StatSection.insightsPublicize.tabTitle,
+                        data: "\(othersCount.abbreviatedString()) (\(roundedPercentage(numerator: othersCount, denominator: totalCount))%)",
+                        statSection: .insightsFollowersWordPress)
+        )
+
+        return rowData
+    }
+
     // MARK: - Countries
 
     func countriesRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
@@ -1239,6 +1297,17 @@ private extension SiteStatsInsightsDetailsViewModel {
                     enableTopPadding: true)
         })
         return rows
+    }
+
+    func roundedPercentage(numerator: Int, denominator: Int) -> Int {
+        var roundedPercentage = 0
+
+        if denominator > 0 {
+            let percentage = (Float(numerator) / Float(denominator)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return roundedPercentage
     }
 
     enum Constants {

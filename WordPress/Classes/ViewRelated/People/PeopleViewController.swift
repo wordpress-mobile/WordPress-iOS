@@ -119,6 +119,11 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        guard !isInitialLoad else {
+            // Until the initial load has been completed, no data should be rendered in the table.
+            return 0
+        }
+
         return resultsController.sections?.count ?? 0
     }
 
@@ -129,6 +134,12 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PeopleCell") as? PeopleCell else {
             fatalError()
+        }
+
+        guard let sections = resultsController.sections, sections[indexPath.section].numberOfObjects > indexPath.row else {
+            DDLogError("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
+            cell.isHidden = true
+            return cell
         }
 
         let person = personAtIndexPath(indexPath)

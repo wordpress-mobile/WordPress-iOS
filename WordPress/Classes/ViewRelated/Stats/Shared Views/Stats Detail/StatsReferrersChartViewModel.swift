@@ -36,7 +36,7 @@ struct StatsReferrersChartViewModel {
         var segments = topReferrers.enumerated().map({ index, item in
             return DonutChartView.Segment(
                 title: Constants.referrersTitlesMap[item.title] ?? item.title,
-                value: Float(item.viewsCount),
+                value: CGFloat(item.viewsCount),
                 color: Constants.referrersSegmentColors[index]
             )
         })
@@ -45,13 +45,13 @@ struct StatsReferrersChartViewModel {
         let otherCount = allReferrers.map({ $0.viewsCount }).reduce(0, +) + referrers.otherReferrerViewsCount
         let otherSegment = DonutChartView.Segment(
             title: Constants.otherReferrerGroupTitle,
-            value: Float(otherCount),
+            value: CGFloat(otherCount),
             color: Constants.referrersSegmentColors.last!
         )
         segments.append(otherSegment)
 
         let chartView = DonutChartView()
-        chartView.configure(title: Constants.chartTitle, totalCount: Float(referrers.totalReferrerViewsCount), segments: segments)
+        chartView.configure(title: Constants.chartTitle, totalCount: CGFloat(referrers.totalReferrerViewsCount), segments: segments)
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.heightAnchor.constraint(equalToConstant: Constants.chartHeight).isActive = true
         return chartView

@@ -11,6 +11,10 @@ import AutomatticTracks
             return true
         }
 
+        if QRLoginCoordinator.didHandle(url: url) {
+            return true
+        }
+
         if UniversalLinkRouter.shared.canHandle(url: url) {
             UniversalLinkRouter.shared.handle(url: url, shouldTrack: true)
             return true
