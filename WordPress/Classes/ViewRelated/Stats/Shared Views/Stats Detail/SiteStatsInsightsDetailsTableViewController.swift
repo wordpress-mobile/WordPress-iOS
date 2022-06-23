@@ -231,7 +231,6 @@ private extension SiteStatsInsightsDetailsTableViewController {
 
     func applyTableUpdates() {
         tableView.performBatchUpdates({
-            updateStatSectionForFilterChange()
         })
     }
 
@@ -267,7 +266,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
 extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate {
 
     func tabbedTotalsCellUpdated() {
-        updateStatSectionForFilterChange()
+        applyTableUpdates()
     }
 
     func displayWebViewWithURL(_ url: URL) {

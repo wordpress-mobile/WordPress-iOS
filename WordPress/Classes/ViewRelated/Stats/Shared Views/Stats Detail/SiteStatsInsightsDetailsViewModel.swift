@@ -342,7 +342,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                             tabDataForFollowerType(.insightsFollowersEmail)],
                         statSection: .insightsFollowersWordPress,
                         siteStatsInsightsDelegate: nil,
-                        showTotalCount: true))
+                        siteStatsDetailsDelegate: detailsDelegate,
+                        showTotalCount: false))
                 return rows
             }
         case .insightsLikesTotals:
@@ -698,8 +699,8 @@ private extension SiteStatsInsightsDetailsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                itemSubtitle: followerType.itemSubtitle,
-                dataSubtitle: followerType.dataSubtitle,
+                itemSubtitle: "",
+                dataSubtitle: "",
                 totalCount: totalCount,
                 dataRows: followersData)
     }
