@@ -25,7 +25,7 @@ class SiteStatsImmuTableRows {
                 segmentData: visitorsData.count,
                 segmentPrevData: visitorsData.prevCount,
                 difference: visitorsData.difference,
-                differenceText: viewsData.difference < 0 ? Constants.viewsLower : Constants.viewsHigher,
+                differenceText: visitorsData.difference < 0 ? Constants.visitorsLower : Constants.visitorsHigher,
                 date: periodDate,
                 period: StatsPeriodUnit.week,
                 analyticsStat: .statsOverviewTypeTappedViews,
