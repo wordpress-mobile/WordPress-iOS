@@ -361,7 +361,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     /// - Parameter width: The width value to set the webView to
     func setWidth(_ width: CGFloat?, viewSize: CGSize? = nil) {
         if let width = width {
-            var horizontalViewBound: CGFloat
+            let horizontalViewBound: CGFloat
             if let viewWidth = viewSize?.width {
                 horizontalViewBound = viewWidth
             } else if let superViewWidth = view.superview?.frame.width {
