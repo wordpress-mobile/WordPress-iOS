@@ -98,7 +98,7 @@ class StatsBaseCell: UITableViewCell {
             return
         }
 
-        if headingBottomConstraint == nil {
+        if headingBottomConstraint == nil && headingLabel.superview == nil {
             configureHeading(with: topConstraint)
         }
 
@@ -109,7 +109,7 @@ class StatsBaseCell: UITableViewCell {
             showDetailsButton.isHidden = false
 
             switch statSection {
-            case .insightsViewsVisitors:
+            case .insightsViewsVisitors, .insightsLikesTotals, .insightsCommentsTotals:
                 showDetailsButton.setTitle(LocalizedText.buttonTitleThisWeek, for: .normal)
             case .insightsFollowerTotals:
                 showDetailsButton.setTitle(LocalizedText.buttonTitleViewMore, for: .normal)
@@ -159,12 +159,12 @@ class StatsBaseCell: UITableViewCell {
     enum Metrics {
         static let padding: CGFloat = 16.0
         static let stackSpacing: CGFloat = 8.0
-        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -12.0, bottom: 0, right: 12.0)
-        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: 12.0, bottom: 0, right: -12.0)
+        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -8.0, bottom: 0, right: 8.0)
+        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: 8.0, bottom: 0, right: -8.0)
     }
 
     private enum LocalizedText {
-        static let buttonTitleThisWeek = NSLocalizedString("This week", comment: "Title of a button. A call to action to view more stats for this week")
+        static let buttonTitleThisWeek = NSLocalizedString("Week", comment: "Title of a button. A call to action to view more stats for this week")
         static let buttonTitleViewMore = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         static let buttonAccessibilityHint = NSLocalizedString("Tap to view more stats for this week", comment: "VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week")
     }

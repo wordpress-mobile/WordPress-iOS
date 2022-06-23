@@ -251,6 +251,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
@@ -265,7 +266,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       statSection: dataRows.first?.statSection,
+                       statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
@@ -333,31 +334,20 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, guideText: dataRow.guideText, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 
 // MARK: - Insights Management
 
 struct AddInsightRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
-    typealias CellType = TopTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let dataRow: StatsTotalRowData
-    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    let action: ImmuTableAction? = nil
+    let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(dataRows: [dataRow], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.textLabel?.text = StatSection.insightsAddInsight.title
+        cell.accessoryView = UIImageView(image: WPStyleGuide.Stats.imageForGridiconType(.plus, withTint: .darkGrey))
     }
 }
 
@@ -768,6 +758,7 @@ struct StatsErrorRow: ImmuTableRow {
     let action: ImmuTableAction? = nil
     let rowStatus: StoreFetchingStatus
     let statType: StatType
+    let statSection: StatSection?
 
     private let noDataRow = StatsNoDataRow.loadFromNib()
 
@@ -778,5 +769,9 @@ struct StatsErrorRow: ImmuTableRow {
 
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
         cell.insert(view: noDataRow)
+
+        if let statSection = statSection {
+           cell.statSection = statSection
+        }
     }
 }

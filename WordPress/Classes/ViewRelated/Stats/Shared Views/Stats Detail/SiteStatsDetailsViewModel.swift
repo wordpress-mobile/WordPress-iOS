@@ -172,7 +172,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                            selectedIndex: selectedIndex))
                 let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
                 if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights, statSection: .insightsFollowersWordPress))
                 } else {
                     rows.append(contentsOf: tabbedRowsFrom(dataRows))
                 }
@@ -190,7 +190,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                            selectedIndex: selectedIndex))
                 let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
                 if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights, statSection: .insightsCommentsAuthors))
                 } else {
                     rows.append(contentsOf: tabbedRowsFrom(dataRows))
                 }

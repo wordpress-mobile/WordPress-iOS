@@ -1,6 +1,8 @@
 20.2
 -----
 * [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/wordpress-mobile/WordPress-iOS/pull/18919]
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
 
 20.1
 -----
@@ -9,6 +11,7 @@
 * [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
 * [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
 * [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+* [*] People Management: Fixed a crash that can occur when loading the People view. [#18907]
 
 20.0
 -----
