@@ -621,7 +621,7 @@ private extension SiteStatsInsightsViewModel {
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
         var data =  StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
         if data.count < Constants.followersGuideLimit {
-            let guideText = NSLocalizedString("You can try leaving a comment as a gesture to encourage blog engagement in return to gain more followers.",
+            let guideText = NSLocalizedString("Commenting on other blogs is a great way to build attention and followers for your new site.",
                                               comment: "A tip displayed to the user in the stats section to help them gain more followers.")
             data.guideText = NSAttributedString(string: guideText)
         }

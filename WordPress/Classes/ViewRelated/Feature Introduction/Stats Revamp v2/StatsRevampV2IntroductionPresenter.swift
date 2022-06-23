@@ -24,4 +24,6 @@ class StatsRevampV2IntroductionPresenter: NSObject {
     // MARK: - Action Handling
 
     func primaryButtonSelected() { }
+
+    func secondaryButtonSelected() { }
 }
