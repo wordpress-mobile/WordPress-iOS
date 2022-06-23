@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -113,12 +113,17 @@
                             <constraint firstAttribute="height" constant="190" id="rjY-cD-mbj"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your last week's views are +8(36%) higher than the previous week." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0W-0V-Nuo" userLabel="Difference Label">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Quw-Zj-bJ3">
                         <rect key="frame" x="16" y="303" width="453" height="17"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                        <color key="textColor" systemColor="secondaryLabelColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Your last week's views are +8(36%) higher than the previous week." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0W-0V-Nuo" userLabel="Difference Label">
+                                <rect key="frame" x="0.0" y="0.0" width="453" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Tfh-Lq-o9J" userLabel="Segmented Bar Stack View">
                         <rect key="frame" x="0.0" y="336" width="485" height="31"/>
                         <subviews>
@@ -136,23 +141,24 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="h0W-0V-Nuo" secondAttribute="trailing" constant="16" id="6fh-P0-moZ"/>
+                    <constraint firstAttribute="trailing" secondItem="Quw-Zj-bJ3" secondAttribute="trailing" constant="16" id="10E-ce-he1"/>
+                    <constraint firstItem="Tfh-Lq-o9J" firstAttribute="top" secondItem="Quw-Zj-bJ3" secondAttribute="bottom" constant="16" id="5Es-9g-Xx5"/>
                     <constraint firstAttribute="trailing" secondItem="Tfh-Lq-o9J" secondAttribute="trailing" id="91Q-a7-m1X"/>
+                    <constraint firstItem="Quw-Zj-bJ3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Epu-xD-Car"/>
                     <constraint firstItem="4jQ-Ow-Etk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Fis-ig-izK"/>
                     <constraint firstItem="x1C-Id-ZI7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="JK8-PX-X8b"/>
                     <constraint firstItem="4jQ-Ow-Etk" firstAttribute="top" secondItem="x1C-Id-ZI7" secondAttribute="bottom" constant="16" id="LFJ-OH-F5u"/>
-                    <constraint firstItem="h0W-0V-Nuo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="T0j-jQ-INl"/>
                     <constraint firstAttribute="trailing" secondItem="x1C-Id-ZI7" secondAttribute="trailing" constant="16" id="VKz-kh-bGa"/>
                     <constraint firstItem="Tfh-Lq-o9J" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="YYL-LK-vKy"/>
                     <constraint firstAttribute="bottom" secondItem="Tfh-Lq-o9J" secondAttribute="bottom" constant="20" symbolic="YES" id="h4i-hl-Sq1"/>
-                    <constraint firstItem="h0W-0V-Nuo" firstAttribute="top" secondItem="4jQ-Ow-Etk" secondAttribute="bottom" constant="16" id="kLP-Da-bDV"/>
                     <constraint firstAttribute="trailing" secondItem="4jQ-Ow-Etk" secondAttribute="trailing" constant="16" id="lco-zt-ZS4"/>
                     <constraint firstItem="x1C-Id-ZI7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="qwW-fg-Wis"/>
-                    <constraint firstItem="Tfh-Lq-o9J" firstAttribute="top" secondItem="h0W-0V-Nuo" secondAttribute="bottom" constant="16" id="ush-xJ-9sB"/>
+                    <constraint firstItem="Quw-Zj-bJ3" firstAttribute="top" secondItem="4jQ-Ow-Etk" secondAttribute="bottom" constant="16" id="yiC-lc-TD5"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bottomStackView" destination="Quw-Zj-bJ3" id="ncc-xx-RvN"/>
                 <outlet property="chartContainerView" destination="4jQ-Ow-Etk" id="snp-Cx-isi"/>
                 <outlet property="differenceLabel" destination="h0W-0V-Nuo" id="kMx-jD-0EQ"/>
                 <outlet property="labelsStackView" destination="x1C-Id-ZI7" id="trE-fV-b3c"/>
