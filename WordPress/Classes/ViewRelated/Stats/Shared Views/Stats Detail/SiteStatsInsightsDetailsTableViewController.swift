@@ -94,11 +94,15 @@ private extension SiteStatsInsightsDetailsTableViewController {
             return
         }
 
-        // When section header is this year, we configure the header so it shows only year
-        if let statSection = statSection,
-              statSection == .insightsAnnualSiteStats,
-              let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
-              let mostRecentYear = allAnnualInsights.last?.year {
+        guard let statSection = statSection else {
+            return
+        }
+
+        if statSection == .insightsFollowerTotals || statSection == .insightsCommentsTotals {
+            return
+        } else if statSection == .insightsAnnualSiteStats, // When section header is this year, we configure the header so it shows only year
+           let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
+           let mostRecentYear = allAnnualInsights.last?.year {
             // Allow the date bar to only go up to the most recent year available.
             var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
             dateComponents.year = mostRecentYear
@@ -114,9 +118,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
             siteStatsTableHeaderView.configure(date: selectedDate, period: StatsPeriodUnit.week, delegate: self)
         }
 
-        if let statSection = statSection {
-            siteStatsTableHeaderView.animateGhostLayers(viewModel?.storeIsFetching(statSection: statSection) == true)
-        }
+        siteStatsTableHeaderView.animateGhostLayers(viewModel?.storeIsFetching(statSection: statSection) == true)
 
         tableView.tableHeaderView = siteStatsTableHeaderView
 
