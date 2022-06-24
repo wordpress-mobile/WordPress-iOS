@@ -46,8 +46,8 @@ struct StatsFollowersChartViewModel {
 
         static let followersMaxGroupCount = 3
 
-        static let wpComColor: UIColor = .muriel(color: .primary, .shade50)
-        static let emailColor: UIColor = .muriel(color: .primary, .shade5)
+        static let wpComColor: UIColor = .muriel(name: .blue, .shade50)
+        static let emailColor: UIColor = .muriel(name: .blue, .shade5)
         static let socialColor: UIColor = .muriel(name: .orange, .shade30)
 
         static let chartHeight: CGFloat = 231.0
