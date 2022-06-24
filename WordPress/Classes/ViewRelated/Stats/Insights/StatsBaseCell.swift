@@ -61,7 +61,7 @@ class StatsBaseCell: UITableViewCell {
         }
     }
 
-    weak var siteStatsInsightDetailsDelegate: SiteStatsInsightsDelegate? {
+    weak var siteStatsInsightsHasDetailsDelegate: SiteStatsInsightsDelegate? {
         didSet {
             updateHeader()
         }
@@ -127,7 +127,7 @@ class StatsBaseCell: UITableViewCell {
     }
 
     func shouldShowDetailsButton () -> Bool {
-        return siteStatsInsightDetailsDelegate != nil
+        return siteStatsInsightsHasDetailsDelegate != nil
     }
 
     @objc private func detailsButtonTapped() {
@@ -136,7 +136,7 @@ class StatsBaseCell: UITableViewCell {
         }
 
         captureAnalyticsEventsFor(statSection)
-        siteStatsInsightDetailsDelegate?.viewMoreSelectedForStatSection?(statSection)
+        siteStatsInsightsHasDetailsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
     private func captureAnalyticsEventsFor(_ statSection: StatSection) {

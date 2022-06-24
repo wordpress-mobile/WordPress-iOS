@@ -57,6 +57,7 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    private weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate?
     private var showTotalCount = false
     private var forDetails = false
 
@@ -66,6 +67,7 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
                    statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+                   siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate? = nil,
                    showTotalCount: Bool,
                    selectedIndex: Int = 0,
                    forDetails: Bool = false) {
@@ -73,6 +75,7 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
+        self.siteStatsInsightsDetailsDelegate = siteStatsInsightsDetailsDelegate
         self.showTotalCount = showTotalCount
         self.forDetails = forDetails
         bottomSeparatorLine.isHidden = forDetails
@@ -203,7 +206,11 @@ extension TabbedTotalsCell: StatsTotalRowDelegate {
 extension TabbedTotalsCell: ViewMoreRowDelegate {
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
-        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
+        if let siteStatsInsightsDelegate = siteStatsInsightsDelegate {
+            siteStatsInsightsDelegate.viewMoreSelectedForStatSection?(statSection)
+        } else if let siteStatsInsightsDetailsDelegate = siteStatsInsightsDetailsDelegate {
+            siteStatsInsightsDetailsDelegate.viewMoreSelectedForStatSection?(statSection)
+        }
     }
 
 }

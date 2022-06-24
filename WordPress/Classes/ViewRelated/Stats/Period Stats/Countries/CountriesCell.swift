@@ -16,6 +16,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet private var topSeparatorLineHeightConstraint: NSLayoutConstraint!
 
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
@@ -26,11 +27,13 @@ class CountriesCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate? = nil,
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.siteStatsInsightsDetailsDelegate = siteStatsInsightsDetailsDelegate
         self.forDetails = forDetails
         bottomSeparatorLine.isHidden = forDetails
 
@@ -83,6 +86,7 @@ extension CountriesCell: ViewMoreRowDelegate {
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
+        siteStatsInsightsDetailsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

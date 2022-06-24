@@ -143,7 +143,7 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
                    delegate: SiteStatsInsightsDelegate? = nil
     ) {
         siteStatsInsightsDelegate = delegate
-        siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
+        siteStatsInsightsHasDetailsDelegate = siteStatsInsightsDelegate
         statSection = .insightsViewsVisitors
 
         self.segmentsData = segmentsData
