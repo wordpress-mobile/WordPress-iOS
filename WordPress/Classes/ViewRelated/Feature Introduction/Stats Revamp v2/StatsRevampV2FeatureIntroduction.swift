@@ -8,7 +8,7 @@ class StatsRevampV2FeatureIntroduction: FeatureIntroductionViewController {
         let featureDescriptionView = StatsRevampV2FeatureDescriptionView.loadFromNib()
         featureDescriptionView.translatesAutoresizingMaskIntoConstraints = false
 
-        let headerImage = UIImage(named: HeaderStyle.imageName)?.withTintColor(.clear)
+        let headerImage = UIImage.gridicon(.statsAlt, size: HeaderStyle.iconSize).withTintColor(.clear)
 
         super.init(headerTitle: HeaderStrings.title, headerSubtitle: "", headerImage: headerImage, featureDescriptionView: featureDescriptionView, primaryButtonTitle: ButtonStrings.showMe, secondaryButtonTitle: ButtonStrings.remindMe)
 
@@ -43,6 +43,8 @@ extension StatsRevampV2FeatureIntroduction: FeatureIntroductionDelegate {
     }
 
     func closeButtonWasTapped() {
+        presenter?.dismissButtonSelected()
+
         captureAnalyticsEvent(.statsInsightsAnnouncementDismissed)
     }
 }
@@ -87,8 +89,8 @@ private extension StatsRevampV2FeatureIntroduction {
     }
 
     enum HeaderStyle {
-        static let imageName = "icon-lightbulb-outline"
-        static let startGradientColor: UIColor = .warning(.shade30)
-        static let endGradientColor: UIColor = .accent(.shade40)
+        static let iconSize = CGSize(width: 40, height: 40)
+        static let startGradientColor: UIColor = .muriel(name: .blue, .shade5)
+        static let endGradientColor: UIColor = .muriel(name: .blue, .shade50)
     }
 }
