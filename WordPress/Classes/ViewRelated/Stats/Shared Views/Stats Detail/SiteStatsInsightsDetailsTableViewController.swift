@@ -136,10 +136,24 @@ private extension SiteStatsInsightsDetailsTableViewController {
     }
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsDetailsViewModel(detailsDelegate: self,
-                referrerDelegate: self)
+        viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: self,
+                                                      detailsDelegate: self,
+                                                      referrerDelegate: self)
 
         guard let statSection = statSection else {
+            return
+        }
+
+        addViewModelListeners()
+
+        viewModel?.fetchDataFor(statSection: statSection,
+                selectedDate: selectedDate,
+                selectedPeriod: selectedPeriod,
+                postID: postID)
+    }
+
+    func addViewModelListeners() {
+        if receipt != nil {
             return
         }
 
@@ -147,11 +161,10 @@ private extension SiteStatsInsightsDetailsTableViewController {
             self?.updateHeader()
             self?.refreshTableView()
         }
+    }
 
-        viewModel?.fetchDataFor(statSection: statSection,
-                selectedDate: selectedDate,
-                selectedPeriod: selectedPeriod,
-                postID: postID)
+    func removeViewModelListeners() {
+        receipt = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -300,6 +313,20 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
         }, failure: { (error) in
             DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
         })
+    }
+}
+
+// MARK: - SiteStatsInsightsDetailsDelegate
+
+extension SiteStatsInsightsDetailsTableViewController: SiteStatsInsightsDetailsThirdLevelDelegate {
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        removeViewModelListeners()
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection,
+                                            selectedDate: selectedDate,
+                                            selectedPeriod: .week)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 }
 
