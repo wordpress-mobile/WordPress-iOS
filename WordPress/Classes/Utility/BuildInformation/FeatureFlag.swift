@@ -88,9 +88,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .landInTheEditor:
             return false
         case .statsNewAppearance:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .statsNewInsights:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .siteName:
             return false
         case .quickStartForExistingUsers:
