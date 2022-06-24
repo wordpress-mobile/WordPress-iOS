@@ -9778,9 +9778,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Suka";
 
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Anda belum menerbitkan satu pos pun. Periksa lagi nanti setelah Anda memposkan pos pertama!";
-
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Diterbitkan %@";
 

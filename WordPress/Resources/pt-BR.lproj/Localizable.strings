@@ -9760,9 +9760,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Curtidas";
 
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Você ainda não publicou nenhum post. Confira mais tarde depois de publicar seu primeiro post!";
-
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Publicado %@";
 

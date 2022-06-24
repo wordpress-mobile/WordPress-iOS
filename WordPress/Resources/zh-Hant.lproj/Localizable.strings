@@ -9757,9 +9757,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "按讚";
 
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "你尚未發表任何文章。 發表第一篇文章之後，請再回來查看！";
-
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "發表時間：%@";
 

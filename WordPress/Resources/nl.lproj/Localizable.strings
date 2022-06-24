@@ -9775,9 +9775,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Likes";
 
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Je hebt nog geen berichten gepubliceerd. Keer nog eens terug wanneer je je eerste bericht hebt gepubliceerd!";
-
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "%@ gepubliceerd";
 
