@@ -100,9 +100,10 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var legendPreviousLabel: UILabel!
     @IBOutlet weak var previousLabel: UILabel!
     @IBOutlet weak var previousData: UILabel!
-    @IBOutlet weak var differenceLabel: UILabel!
+    @IBOutlet var differenceLabel: UILabel!
     @IBOutlet weak var chartContainerView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var bottomStackView: UIStackView!
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -115,6 +116,16 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
     private var period: StatsPeriodUnit?
     private var xAxisDates: [Date] = []
+
+    fileprivate lazy var tipView: DashboardStatsNudgeView = {
+        let tipView = DashboardStatsNudgeView(title: Constants.topTipsText, hint: nil, insets: .zero)
+        tipView.onTap = { [weak self] in
+            if let url = URL(string: Constants.topTipsURLString) {
+                self?.siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+            }
+        }
+        return tipView
+    }()
 
     // MARK: - Configure
 
@@ -206,6 +217,14 @@ private extension ViewsVisitorsLineChartCell {
         previousData.text = segmentData.segmentPrevData.abbreviatedString(forHeroNumber: true)
 
         differenceLabel.attributedText = segmentData.attributedDifferenceText
+
+        if segmentData.segmentData == 0 && segmentData.segmentPrevData == 0 {
+            differenceLabel.removeFromSuperview()
+            bottomStackView.addArrangedSubview(tipView)
+        } else {
+            tipView.removeFromSuperview()
+            bottomStackView.addArrangedSubview(differenceLabel)
+        }
     }
 
     // MARK: Chart support
@@ -255,6 +274,11 @@ private extension ViewsVisitorsLineChartCell {
         } else {
             WPAppAnalytics.track(event, withProperties: properties)
         }
+    }
+
+    enum Constants {
+        static let topTipsText = NSLocalizedString("Check out our top tips to increase your views and traffic", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
+        static let topTipsURLString = "https://wordpress.com/support/getting-more-views-and-traffic/"
     }
 
 }
