@@ -24,16 +24,26 @@ class StatsRevampV2FeatureIntroduction: FeatureIntroductionViewController {
 
         // Add the gradient after the image has been added to the view so the gradient is the correct size.
         addHeaderImageGradient()
+
+        captureAnalyticsEvent(.statsInsightsAnnouncementShown)
     }
 }
 
 extension StatsRevampV2FeatureIntroduction: FeatureIntroductionDelegate {
     func primaryActionSelected() {
         presenter?.primaryButtonSelected()
+
+        captureAnalyticsEvent(.statsInsightsAnnouncementConfirmed)
     }
 
     func secondaryActionSelected() {
         presenter?.secondaryButtonSelected()
+
+        captureAnalyticsEvent(.statsInsightsAnnouncementDismissed)
+    }
+
+    func closeButtonWasTapped() {
+        captureAnalyticsEvent(.statsInsightsAnnouncementDismissed)
     }
 }
 
@@ -61,6 +71,10 @@ private extension StatsRevampV2FeatureIntroduction {
 
         // Add the gradient as a sublayer to the imageView's layer.
         headerImageView.layer.addSublayer(gradient)
+    }
+
+    private func captureAnalyticsEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event)
     }
 
     enum ButtonStrings {

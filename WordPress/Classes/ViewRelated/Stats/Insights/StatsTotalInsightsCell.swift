@@ -320,6 +320,21 @@ class StatsTotalInsightsCell: StatsBaseCell {
         if let guideURL = guideURL {
             siteStatsInsightsDelegate?.displayWebViewWithURL?(guideURL)
         }
+
+        guard let statSection = statSection else {
+            return
+        }
+
+        switch statSection {
+        case .insightsLikesTotals:
+            captureAnalyticsEvent(.statsInsightsTotalLikesGuideTapped)
+        default:
+            break
+        }
+    }
+
+    private func captureAnalyticsEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event)
     }
 
     private enum Metrics {

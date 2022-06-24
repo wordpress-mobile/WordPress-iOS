@@ -364,6 +364,21 @@
         }
     }
 
+    var analyticsProperty: String {
+        switch self {
+        case .insightsViewsVisitors:
+            return "views_and_visitors"
+        case .insightsFollowerTotals:
+            return "total_followers"
+        case .insightsLikesTotals:
+            return "total_likes"
+        case .insightsCommentsTotals:
+            return "total_comments"
+        default:
+            return ""
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)

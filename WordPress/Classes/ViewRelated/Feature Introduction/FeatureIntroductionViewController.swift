@@ -3,6 +3,7 @@ import UIKit
 @objc protocol FeatureIntroductionDelegate: AnyObject {
     func primaryActionSelected()
     @objc optional func secondaryActionSelected()
+    @objc optional func closeButtonWasTapped()
 }
 
 /// This is used to display a modal with information about a new feature.
@@ -93,6 +94,7 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     }
 
     @IBAction func closeButtonTapped() {
+        featureIntroductionDelegate?.closeButtonWasTapped?()
         dismiss(animated: true)
     }
 
