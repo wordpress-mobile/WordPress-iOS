@@ -2,6 +2,7 @@
 -----
 * [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 * [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
 
 20.1
 -----
