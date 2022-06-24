@@ -159,9 +159,8 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     }
 
     @IBAction func selectedSegmentDidChange(_ sender: Any) {
-        if let event = segmentsData[segmentedControl.selectedSegmentIndex].analyticsStat {
-            captureAnalyticsEvent(event)
-        }
+        let selectedSegmentIndex = segmentedControl.selectedSegmentIndex
+        captureAnalyticsEvent(selectedSegmentIndex)
 
         configureChartView()
         updateLabels()
@@ -266,13 +265,16 @@ private extension ViewsVisitorsLineChartCell {
 
     // MARK: - Analytics support
 
-    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
-        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+    func captureAnalyticsEvent(_ selectedSegmentIndex: Int) {
+        let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
 
-        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
-            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        let properties: [String: String] = ["value": statsInsightsFilterDimension.analyticsProperty]
+
+        if let blogId = SiteStatsInformation.sharedInstance.siteID,
+           let blog = Blog.lookup(withID: blogId, in: ContextManager.sharedInstance().mainContext) {
+            WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties, blog: blog)
         } else {
-            WPAppAnalytics.track(event, withProperties: properties)
+            WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties)
         }
     }
 
@@ -280,5 +282,4 @@ private extension ViewsVisitorsLineChartCell {
         static let topTipsText = NSLocalizedString("Check out our top tips to increase your views and traffic", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let topTipsURLString = "https://wordpress.com/support/getting-more-views-and-traffic/"
     }
-
 }

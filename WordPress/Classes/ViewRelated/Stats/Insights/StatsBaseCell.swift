@@ -143,8 +143,13 @@ class StatsBaseCell: UITableViewCell {
         let legacyEvent: WPAnalyticsStat = .statsViewAllAccessed
         captureAnalyticsEvent(legacyEvent)
 
-        if let modernEvent = statSection.analyticsViewMoreEvent {
-            captureAnalyticsEvent(modernEvent)
+        switch statSection {
+        case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
+            captureAnalyticsEvent(.statsInsightsViewMore, statSection: statSection)
+        default:
+            if let modernEvent = statSection.analyticsViewMoreEvent {
+                captureAnalyticsEvent(modernEvent)
+            }
         }
     }
 
@@ -153,6 +158,17 @@ class StatsBaseCell: UITableViewCell {
             WPAppAnalytics.track(event, withBlogID: blogIdentifier)
         } else {
             WPAppAnalytics.track(event)
+        }
+    }
+
+    private func captureAnalyticsEvent(_ event: WPAnalyticsEvent, statSection: StatSection) {
+        let properties: [String: String] = ["type": statSection.analyticsProperty]
+
+        if let blogId = SiteStatsInformation.sharedInstance.siteID,
+           let blog = Blog.lookup(withID: blogId, in: ContextManager.sharedInstance().mainContext) {
+            WPAnalytics.track(event, properties: properties, blog: blog)
+        } else {
+            WPAnalytics.track(event, properties: properties)
         }
     }
 
