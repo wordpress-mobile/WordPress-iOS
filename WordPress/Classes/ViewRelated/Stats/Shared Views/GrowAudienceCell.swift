@@ -120,8 +120,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         guard let hintType = hintType else {
             return
         }
-        captureAnalyticsEvent(.statsInsightsViewsGrowAudienceDismissed)
-
         insightsDelegate?.growAudienceDismissButtonTapped?(hintType)
     }
 
@@ -129,8 +127,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         guard let hintType = hintType else {
             return
         }
-
-        captureAnalyticsEvent(.statsInsightsViewsGrowAudienceConfirmed)
 
         switch hintType {
         case .social:
@@ -140,15 +136,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         case .readerDiscover:
             insightsDelegate?.growAudienceReaderDiscoverButtonTapped?()
         }
-    }
 
-    func captureAnalyticsEvent(_ event: WPAnalyticsEvent) {
-        if let blogId = SiteStatsInformation.sharedInstance.siteID,
-           let blog = Blog.lookup(withID: blogId, in: ContextManager.sharedInstance().mainContext) {
-            WPAnalytics.track(event, properties: [:], blog: blog)
-        } else {
-            WPAnalytics.track(event, properties: [:])
-        }
     }
 
     // MARK: - Localization
