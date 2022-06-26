@@ -14,7 +14,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private typealias Style = WPStyleGuide.Stats
 
     private var statSection: StatSection?
-    private weak var insightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate?
+    private weak var insightsDetailsDelegate: SiteStatsInsightsDelegate?
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
@@ -34,7 +34,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     // MARK: - Init
 
-    init(insightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate,
+    init(insightsDetailsDelegate: SiteStatsInsightsDelegate,
          detailsDelegate: SiteStatsDetailsDelegate,
          referrerDelegate: SiteStatsReferrerDelegate) {
         self.insightsDetailsDelegate = insightsDetailsDelegate
@@ -345,9 +345,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 rows.append(TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                             tabDataForFollowerType(.insightsFollowersEmail)],
                         statSection: .insightsFollowersWordPress,
-                        siteStatsInsightsDelegate: nil,
+                        siteStatsInsightsDelegate: insightsDetailsDelegate,
                         siteStatsDetailsDelegate: detailsDelegate,
-                        siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
                         showTotalCount: false))
                 return rows
             }
@@ -363,7 +362,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                     statSection: StatSection.periodPostsAndPages,
                                                     siteStatsPeriodDelegate: nil,
                                                     siteStatsReferrerDelegate: nil,
-                                                    siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
+                                                    siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
+                                                    siteStatsDetailsDelegate: detailsDelegate))
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
@@ -376,17 +376,14 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                      dataSubtitle: "",
                                                      dataRows: authorsTabData.dataRows,
                                                      statSection: .insightsCommentsAuthors,
-                                                     siteStatsInsightsDelegate: nil,
-                                                     siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
+                                                     siteStatsInsightsDelegate: insightsDetailsDelegate))
 
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
                 rows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.InsightsHeaders.posts,
                                                      dataSubtitle: StatSection.InsightsHeaders.comments,
                                                      dataRows: postsTabData.dataRows,
                                                      statSection: .insightsCommentsPosts,
-                                                     siteStatsInsightsDelegate: nil,
-                                                     siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
-
+                                                     siteStatsInsightsDelegate: insightsDetailsDelegate))
                 return rows
             }
         case .insightsTagsAndCategories:

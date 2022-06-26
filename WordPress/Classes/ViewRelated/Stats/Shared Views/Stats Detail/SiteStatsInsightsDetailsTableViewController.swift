@@ -296,6 +296,7 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
@@ -318,9 +319,10 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
     }
 }
 
-// MARK: - SiteStatsInsightsDetailsDelegate
+// MARK: - SiteStatsInsightsDelegate
 
-extension SiteStatsInsightsDetailsTableViewController: SiteStatsInsightsDetailsThirdLevelDelegate {
+extension SiteStatsInsightsDetailsTableViewController: SiteStatsInsightsDelegate {
+
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         removeViewModelListeners()
 
@@ -330,6 +332,16 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsInsightsDetailsT
                                             selectedPeriod: .week)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
+/*
+
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+*/
 }
 
 // MARK: - SiteStatsReferrerDelegate

@@ -39,7 +39,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    private weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate?
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
@@ -53,7 +52,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
-                   siteStatsInsightsDetailsDelegate: SiteStatsInsightsDetailsThirdLevelDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
                    topAccessoryView: UIView? = nil,
                    limitRowsDisplayed: Bool = true,
@@ -67,7 +65,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.siteStatsReferrerDelegate = siteStatsReferrerDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
-        self.siteStatsInsightsDetailsDelegate = siteStatsInsightsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
         self.topAccessoryView = topAccessoryView
         self.limitRowsDisplayed = limitRowsDisplayed
@@ -358,7 +355,6 @@ extension TopTotalsCell: ViewMoreRowDelegate {
         siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
         postStatsDelegate?.viewMoreSelectedForStatSection?(statSection)
-        siteStatsInsightsDetailsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

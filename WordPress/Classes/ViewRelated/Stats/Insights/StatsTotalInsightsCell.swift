@@ -220,7 +220,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
-        self.siteStatsInsightsHasDetailsDelegate = siteStatsInsightsDelegate
+        self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
         graphView.data = sparklineData ?? []
         graphView.chartColor = chartColor(for: difference ?? 0)
