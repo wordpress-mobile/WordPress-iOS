@@ -430,6 +430,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
+    weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     var topAccessoryView: UIView? = nil
     let action: ImmuTableAction? = nil
 
@@ -443,8 +445,10 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
                        statSection: statSection,
+                       siteStatsInsightsDelegate: siteStatsInsightsDetailsDelegate,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsReferrerDelegate: siteStatsReferrerDelegate,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        topAccessoryView: topAccessoryView)
     }
 }
@@ -483,6 +487,7 @@ struct CountriesStatsRow: ImmuTableRow {
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -494,7 +499,8 @@ struct CountriesStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
+                       siteStatsInsightsDetailsDelegate: siteStatsInsightsDetailsDelegate)
     }
 }
 
