@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-15 15:29:49+0000 */
+/* Translation-Revision-Date: 2022-06-23 17:39:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -9779,7 +9779,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.latestPostSummary.likes" = "Gillamarkeringar";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Du har inte publicerat några inlägg än. Kom tillbaka när du har publicerat ditt första inlägg.";
+"stats.insights.latestPostSummary.noData" = "Kom tillbaka när du har publicerat ditt första inlägg!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Publicerades %@";
