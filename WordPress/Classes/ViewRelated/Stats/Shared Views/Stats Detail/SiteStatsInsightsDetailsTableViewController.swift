@@ -332,16 +332,6 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsInsightsDelegate
                                             selectedPeriod: .week)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
-/*
-
-    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
-        removeViewModelListeners()
-
-        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
-        navigationController?.pushViewController(postStatsTableViewController, animated: true)
-    }
-*/
 }
 
 // MARK: - SiteStatsReferrerDelegate
