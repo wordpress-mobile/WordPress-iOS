@@ -251,9 +251,11 @@ final class TooltipPresenter {
             return nil
         }
 
+        // `leftAnchor` is used because the `arrowOffsetX` is calculated as an absolute point.
+        // So it is required to constraint always to left (or right) to support LTR and RTL languages.
         var constraints = [
-            spotlightView.leadingAnchor.constraint(
-                equalTo: containerView.leadingAnchor,
+            spotlightView.leftAnchor.constraint(
+                equalTo: containerView.leftAnchor,
                 constant: arrowOffsetX() + tooltip.frame.minX - Constants.spotlightViewRadius
             )
         ]
