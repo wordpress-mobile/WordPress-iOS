@@ -70,6 +70,8 @@ final class TooltipPresenter {
         }
     }
 
+    private var previousDeviceOrientation: UIDeviceOrientation?
+
     init(containerView: UIView,
          tooltip: Tooltip,
          target: Target,
@@ -86,6 +88,7 @@ final class TooltipPresenter {
 
         configureDismissal()
 
+        previousDeviceOrientation = UIDevice.current.orientation
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(resetTooltipAndShow),
@@ -93,7 +96,7 @@ final class TooltipPresenter {
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(resetTooltipAndShow),
+            selector: #selector(didDeviceOrientationChange),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
@@ -310,6 +313,23 @@ final class TooltipPresenter {
             }
         }
 
+    /// `orientationDidChangeNotification` is published when the device is at `faceUp` or `faceDown`
+    ///  states too. The sizing won't be affected in these cases so no need to reset the tooltip. Here we filter out changes
+    ///  to and from `faceUp` & `faceDown`.
+    @objc private func didDeviceOrientationChange() {
+        guard let previousDeviceOrientation = previousDeviceOrientation else {
+            return
+        }
+
+        self.previousDeviceOrientation = UIDevice.current.orientation
+
+        switch (previousDeviceOrientation, UIDevice.current.orientation) {
+        case (_, .faceUp), (_, .faceDown), (.faceUp, _), (.faceDown, _):
+            return
+        default:
+            resetTooltipAndShow()
+        }
+    }
 
     @objc private func resetTooltipAndShow() {
         UIView.animate(
