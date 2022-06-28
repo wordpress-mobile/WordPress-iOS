@@ -65,6 +65,33 @@ steps:
           context: "Unit Tests"
 
   #################
+  # UI Tests
+  #################
+  - group: "🔬 UI Tests"
+    steps:
+      - label: "🔬 UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+
+      - label: "🔬 UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+
+  #################
   # Lint Translations
   #################
   - label: "🧹 Lint Translations"
@@ -78,27 +105,3 @@ steps:
       - github_commit_status:
           context: "Lint Translations"
 
-  #################
-  # UI Tests
-  #################
-  - label: "🔬 UI Tests (iPhone)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPhone)"
-
-  - label: "🔬 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPad)"
