@@ -470,7 +470,7 @@ post_install do |installer|
   # RuboCop tells us that this loop could be combined with the one above,
   # because both loop on `installer.pods_project.targets`.
   # But, from a code organzation point of view, it clearer to separate the two operations,
-  # also because of the `next uless` at the start of each loop.
+  # also because of the `next unless` at the start of each loop.
   # We can easily absorb the performance "hit" of repating the same loop twice if it makes the code clearer.
   #
   # rubocop:disable Sytle/CombinableLoops
