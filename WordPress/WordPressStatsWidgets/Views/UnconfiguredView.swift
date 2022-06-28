@@ -32,8 +32,15 @@ struct UnconfiguredView: View {
             case .thisWeek:
                 return LocalizableStrings.noSiteViewThisWeekTitle
             }
-        case .noData:
-            return LocalizableStrings.noDataViewTitle
+        case .noData(let widgetKind):
+            switch widgetKind {
+            case .today:
+                return LocalizableStrings.noDataViewTodayTitle
+            case .allTime:
+                return LocalizableStrings.noDataViewAllTimeTitle
+            case .thisWeek:
+                return LocalizableStrings.noDataViewThisWeekTitle
+            }
         default:
             return LocalizableStrings.noDataViewTitle
         }

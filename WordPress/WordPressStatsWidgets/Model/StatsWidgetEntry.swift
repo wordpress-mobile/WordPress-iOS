@@ -4,7 +4,7 @@ enum StatsWidgetEntry: TimelineEntry {
     case siteSelected(HomeWidgetData, TimelineProviderContext)
     case loggedOut(StatsWidgetKind)
     case noSite(StatsWidgetKind)
-    case noData
+    case noData(StatsWidgetKind)
 
     var date: Date {
         switch self {

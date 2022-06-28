@@ -51,7 +51,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
 
         guard let widgetData = widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
-            completion(Timeline(entries: [.noData], policy: .never))
+            completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
             return
         }
 
