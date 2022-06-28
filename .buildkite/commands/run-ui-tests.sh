@@ -50,7 +50,7 @@ else
 
   JUNIT_REPORT="build/results/report.junit"
   if [ -f "$JUNIT_REPORT" ]; then
-    xsltproc ".buildkite/commands/junit-failures-to-buildkite-annotation.xslt" "$JUNIT_REPORT" | buildkite-agent annotate --context "ui-tests-$TEST_NAME"
+    xsltproc ".buildkite/commands/junit-failures-to-buildkite-annotation.xslt" "$JUNIT_REPORT" | buildkite-agent annotate --style error --context "ui-tests-$TEST_NAME"
   fi
 fi
 exit $TESTS_EXIT_STATUS
