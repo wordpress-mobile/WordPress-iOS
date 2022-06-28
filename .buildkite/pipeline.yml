@@ -53,16 +53,23 @@ steps:
   #################
   # Run Unit Tests
   #################
-  - label: "🔬 Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
+  - group: "🔬 Unit Tests"
+    steps:
+      - label: "🔬 Run Unit Tests"
+        command: ".buildkite/commands/run-unit-tests.sh"
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "Unit Tests"
+      - wait: ~
+        continue_on_failure: true
+      - plugins:
+          - junit-annotate#v2.0.2:
+              artifacts: build/results/report.junit
 
   #################
   # Lint Translations
@@ -81,24 +88,38 @@ steps:
   #################
   # UI Tests
   #################
-  - label: "🔬 UI Tests (iPhone)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPhone)"
+  - group: "🔬 UI Tests (iPhone)"
+    steps:
+      - label: "🔬 Run UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+      - wait: ~
+        continue_on_failure: true
+      - plugins:
+          - junit-annotate#v2.0.2:
+              artifacts: build/results/report.junit
 
-  - label: "🔬 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPad)"
+  - group: "🔬 UI Tests (iPad)"
+    steps:
+      - label: "🔬 Run UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+      - wait: ~
+        continue_on_failure: true
+      - plugins:
+          - junit-annotate#v2.0.2:
+              artifacts: build/results/report.junit
