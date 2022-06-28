@@ -12,7 +12,7 @@ RUBY_REPO_VERSION = File.read('./.ruby-version').strip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
-EXPECTED_XCODE_VERSION = File.read('.xcversion')
+EXPECTED_XCODE_VERSION = File.read('.xcversion').rstrip
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
