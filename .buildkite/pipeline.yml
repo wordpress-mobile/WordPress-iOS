@@ -13,6 +13,14 @@ common_params:
     # `xcode-13.4.1` note: The issue "FIXIT-13.1" addresses is still there in this image.
     # See: https://buildkite.com/automattic/wordpress-ios/builds/8187#01813c28-1c1d-4a25-95c0-0fdd6f2af399
     IMAGE_ID: xcode-13.4.1
+  # Reusable step to use the `junit-annotate` plugin after running UI or Unit tests
+  - &annotate_test_failures_step
+    label: ":buildkite: Annotate Test Failures"
+    plugins:
+      - junit-annotate#v2.0.2:
+          artifacts: build/results/report.junit
+    agents:
+      queue: "default"
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -67,10 +75,7 @@ steps:
               context: "Unit Tests"
       - wait: ~
         continue_on_failure: true
-      - label: ":buildkite: Annotate Test Failures"
-        plugins:
-          - junit-annotate#v2.0.2:
-              artifacts: build/results/report.junit
+      - *annotate_test_failures_step
 
   #################
   # Lint Translations
@@ -103,10 +108,7 @@ steps:
               context: "UI Tests (iPhone)"
       - wait: ~
         continue_on_failure: true
-      - label: ":buildkite: Annotate Test Failures"
-        plugins:
-          - junit-annotate#v2.0.2:
-              artifacts: build/results/report.junit
+      - *annotate_test_failures_step
 
   - group: "🔬 UI Tests (iPad)"
     steps:
@@ -122,7 +124,4 @@ steps:
               context: "UI Tests (iPad)"
       - wait: ~
         continue_on_failure: true
-      - label: ":buildkite: Annotate Test Failures"
-        plugins:
-          - junit-annotate#v2.0.2:
-              artifacts: build/results/report.junit
+      - *annotate_test_failures_step
