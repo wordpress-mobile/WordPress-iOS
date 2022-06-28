@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='WordPressUITests.xctest' tests='17' failures='4'>
+  <testsuite name='WordPressUITests.EditorGutenbergTests' tests='5' failures='1'>
+    <testcase classname='WordPressUITests.EditorGutenbergTests' name='testAddGalleryBlock' time='198.821'/>
+    <testcase classname='WordPressUITests.EditorGutenbergTests' name='testAddRemoveFeaturedImage'>
+      <failure message='Failed to get automation session for org.wordpress:5802: Timed out while requesting automation session for org.wordpress (pid:5802).'>&lt;unknown&gt;:0</failure>
+    </testcase>
+    <testcase classname='WordPressUITests.EditorGutenbergTests' name='testAddRemoveFeaturedImage' time='218.655'/>
+    <testcase classname='WordPressUITests.EditorGutenbergTests' name='testBasicPostPublishWithCategoryAndTag' time='189.868'/>
+    <testcase classname='WordPressUITests.EditorGutenbergTests' name='testTextPostPublish' time='146.726'/>
+  </testsuite>
+  <testsuite name='WordPressUITests.LoginTests' tests='4' failures='0'>
+    <testcase classname='WordPressUITests.LoginTests' name='testAddSelfHostedSiteAfterWPcomLogin' time='137.275'/>
+    <testcase classname='WordPressUITests.LoginTests' name='testSelfHostedLoginLogout' time='58.914'/>
+    <testcase classname='WordPressUITests.LoginTests' name='testWPcomInvalidPassword' time='107.357'/>
+    <testcase classname='WordPressUITests.LoginTests' name='testWPcomLoginLogout' time='81.317'/>
+  </testsuite>
+  <testsuite name='WordPressUITests.MainNavigationTests' tests='1' failures='0'>
+    <testcase classname='WordPressUITests.MainNavigationTests' name='testTabBarNavigation' time='121.987'/>
+  </testsuite>
+  <testsuite name='WordPressUITests.ReaderTests' tests='4' failures='3'>
+    <testcase classname='WordPressUITests.ReaderTests' name='testViewPost'>
+      <failure message='failed - This is a forced failure to test Buildkite annotations.'>WordPress/WordPressUITests/Tests/ReaderTests.swift:28</failure>
+    </testcase>
+    <testcase classname='WordPressUITests.ReaderTests' name='testViewPost'>
+      <failure message='failed - This is a forced failure to test Buildkite annotations.'>WordPress/WordPressUITests/Tests/ReaderTests.swift:28</failure>
+    </testcase>
+    <testcase classname='WordPressUITests.ReaderTests' name='testViewPost'>
+      <failure message='failed - This is a forced failure to test Buildkite annotations.'>WordPress/WordPressUITests/Tests/ReaderTests.swift:28</failure>
+    </testcase>
+    <testcase classname='WordPressUITests.ReaderTests' name='testViewPostInSafari' time='117.148'/>
+  </testsuite>
+  <testsuite name='WordPressUITests.StatsTests' tests='2' failures='0'>
+    <testcase classname='WordPressUITests.StatsTests' name='testInsightsStatsLoadProperly' time='104.517'/>
+    <testcase classname='WordPressUITests.StatsTests' name='testYearsStatsLoadProperly' time='114.517'/>
+  </testsuite>
+  <testsuite name='WordPressUITests.SupportScreenTests' tests='1' failures='0'>
+    <testcase classname='WordPressUITests.SupportScreenTests' name='testContactUsCanBeLoadedDuringLogin' time='49.508'/>
+  </testsuite>
+</testsuites>
