@@ -42,7 +42,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         guard let defaultSiteID = defaultSiteID else {
             let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey) ?? false
             if loggedIn {
-                completion(Timeline(entries: [.noSite], policy: .never))
+                completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
             } else {
                 completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
             }
@@ -119,6 +119,4 @@ enum StatsWidgetKind {
     case today
     case allTime
     case thisWeek
-    case noSite
-    case noStats
 }
