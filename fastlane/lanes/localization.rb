@@ -330,7 +330,6 @@ platform :ios do
           + "Delete the `#{en_file_path}` file, ensure the `default/` one has the expected original copy, and try again.")
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     # Ensure even empty locale folders have an empty `.gitkeep` file (in case we don't have any translation at all ready for some locales)
     locales_map.each_value do |locale|
@@ -350,6 +349,7 @@ platform :ios do
       allow_nothing_to_commit: true
     )
   end
+  # rubocop:enable Metrics/AbcSize
 
 
 
