@@ -3,7 +3,7 @@ import WidgetKit
 enum StatsWidgetEntry: TimelineEntry {
     case siteSelected(HomeWidgetData, TimelineProviderContext)
     case loggedOut(StatsWidgetKind)
-    case noSite
+    case noSite(StatsWidgetKind)
     case noData
 
     var date: Date {
