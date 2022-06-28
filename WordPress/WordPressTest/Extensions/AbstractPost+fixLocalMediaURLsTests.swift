@@ -8,6 +8,7 @@ class AbstractPostFixLocalMediaURLsTests: CoreDataTestCase {
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
 
     func testUpdateLocalMediaPathsInCachesDirectory() {
+        XCTFail("This is a forced failure to test Buildkite annotations.")
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .failed)
             .with(image: "test.jpeg")
