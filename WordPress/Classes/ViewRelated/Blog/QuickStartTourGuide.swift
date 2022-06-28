@@ -238,7 +238,7 @@ open class QuickStartTourGuide: NSObject {
 
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
         guard let tourCount = blog.quickStartTours?.count, tourCount > 0,
-                isTourNotCompleted(tour: tour, for: blog) else {
+              isTourAvailableToComplete(tour: tour, for: blog) else {
             // Tours haven't been set up yet or were skipped.
             // Or tour to be completed has already been completed.
             // No reason to continue.
@@ -421,7 +421,7 @@ private extension QuickStartTourGuide {
     ///   - tour: tour to check
     ///   - blog: blog to check
     /// - Returns: boolean, true if the tour is not completed and is available. False otherwise
-    func isTourNotCompleted(tour: QuickStartTour, for blog: Blog) -> Bool {
+    func isTourAvailableToComplete(tour: QuickStartTour, for blog: Blog) -> Bool {
         let uncompletedTours = uncompletedTours(for: blog)
         return uncompletedTours.contains { element in
             element.key == tour.key
