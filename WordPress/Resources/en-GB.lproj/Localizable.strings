@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-05-31 12:15:23+0000 */
+/* Translation-Revision-Date: 2022-06-23 15:17:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: en_GB */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonymous";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Answer";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Answer Prompt";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Best Hour";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Best for %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Best views ever";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Cancelling...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "Can’t decide? You can change the theme at any time.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Follow site";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Follow the conversation";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Follow topics";
 
@@ -3423,6 +3435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Get noticed: comment on posts you've read.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Get notified when new comments are added to this post.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Get real time updates from your pocket.";
@@ -5331,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "Phone";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "PICKED FOR YOU";
 
 /* No comment provided by engineer. */
 "Padding" = "Padding";
@@ -9761,7 +9779,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.latestPostSummary.likes" = "Likes";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "You haven't published any posts yet. Check back later once you've published your first post!";
+"stats.insights.latestPostSummary.noData" = "Check back when you’ve published your first post!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Published %@";

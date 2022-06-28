@@ -92,6 +92,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
+        stackView.layoutMargins = Constants.containerMargins
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
 
@@ -112,7 +114,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        view.pinSubviewToAllEdges(promptLabel, insets: .init(top: Constants.spacing, left: 0, bottom: 0, right: 0))
+        view.pinSubviewToAllEdges(promptLabel, insets: UIEdgeInsets(top: Constants.spacing, left: 0, bottom: 0, right: 0))
 
         return view
     }()
@@ -490,7 +492,10 @@ private extension DashboardPromptsCardCell {
 
     func learnMoreTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
-        presenterViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
+        guard let presenterViewController = presenterViewController else {
+            return
+        }
+        BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
     }
 
     // Fallback context menu implementation for iOS 13.
@@ -543,6 +548,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)

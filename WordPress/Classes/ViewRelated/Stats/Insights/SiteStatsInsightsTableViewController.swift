@@ -70,6 +70,10 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            tableView.cellLayoutMarginsFollowReadableWidth = true
+        }
+
         displayEmptyViewIfNecessary()
     }
 
@@ -80,6 +84,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
 
     func showAddInsightView(source: String = "table_row") {
         WPAnalytics.track(.statsItemTappedInsightsAddStat, withProperties: ["source": source])
+        tableView.deselectSelectedRowWithAnimation(true)
 
         if displayingEmptyView {
             hideNoResults()
@@ -149,6 +154,7 @@ private extension SiteStatsInsightsTableViewController {
                 TopTotalsInsightStatsRow.self,
                 MostPopularTimeInsightStatsRow.self,
                 TotalInsightStatsRow.self,
+                AddInsightRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostGrowAudienceImmutableRow.self,

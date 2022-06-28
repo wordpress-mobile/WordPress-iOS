@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-01 10:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-16 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonimo";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Risposta";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "Rispondi alla richiesta";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Orario migliore";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "Ideale per %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "Le migliori visualizzazioni di sempre";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Annullamento in corso...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "Non riesci a decidere? Puoi cambiare tema in qualsiasi momento.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "Segui sito";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "Segui la conversazione";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Segui gli argomenti";
 
@@ -3420,6 +3432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Fatti notare: commenta gli articoli che hai letto.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "Ricevi una notifica quando vengono aggiunti nuovi commenti a questo post.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Ottieni aggiornamenti in tempo reale dalla tua tasca.";
@@ -5325,6 +5340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFONO";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "SCELTO PER TE";
 
 /* No comment provided by engineer. */
 "Padding" = "Spaziatura interna";
@@ -9753,9 +9771,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Mi piace";
-
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Non hai ancora pubblicato alcun articolo. Controlla nuovamente più tardi dopo aver pubblicato il tuo primo articolo.";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Pubblicato %@ fa";

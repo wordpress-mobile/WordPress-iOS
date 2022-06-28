@@ -224,6 +224,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     let tabsData: [TabData]
     let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let showTotalCount: Bool
     let action: ImmuTableAction? = nil
 
@@ -236,6 +237,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
         cell.configure(tabsData: tabsData,
                        statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        showTotalCount: showTotalCount)
     }
 }
@@ -251,6 +253,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    let statSection: StatSection
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
@@ -265,7 +268,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       statSection: dataRows.first?.statSection,
+                       statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
@@ -333,31 +336,20 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, guideText: dataRow.guideText, guideURL: dataRow.guideURL, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 
 // MARK: - Insights Management
 
 struct AddInsightRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
-    typealias CellType = TopTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let dataRow: StatsTotalRowData
-    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    let action: ImmuTableAction? = nil
+    let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(dataRows: [dataRow], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.textLabel?.text = StatSection.insightsAddInsight.title
+        cell.accessoryView = UIImageView(image: WPStyleGuide.Stats.imageForGridiconType(.plus, withTint: .darkGrey))
     }
 }
 
@@ -438,6 +430,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
+    weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     var topAccessoryView: UIView? = nil
     let action: ImmuTableAction? = nil
 
@@ -451,8 +445,10 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
                        statSection: statSection,
+                       siteStatsInsightsDelegate: siteStatsInsightsDetailsDelegate,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsReferrerDelegate: siteStatsReferrerDelegate,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        topAccessoryView: topAccessoryView)
     }
 }
@@ -491,6 +487,7 @@ struct CountriesStatsRow: ImmuTableRow {
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -502,7 +499,8 @@ struct CountriesStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
+                       siteStatsInsightsDetailsDelegate: siteStatsInsightsDetailsDelegate)
     }
 }
 
@@ -768,6 +766,7 @@ struct StatsErrorRow: ImmuTableRow {
     let action: ImmuTableAction? = nil
     let rowStatus: StoreFetchingStatus
     let statType: StatType
+    let statSection: StatSection?
 
     private let noDataRow = StatsNoDataRow.loadFromNib()
 
@@ -778,5 +777,9 @@ struct StatsErrorRow: ImmuTableRow {
 
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
         cell.insert(view: noDataRow)
+
+        if let statSection = statSection {
+           cell.statSection = statSection
+        }
     }
 }

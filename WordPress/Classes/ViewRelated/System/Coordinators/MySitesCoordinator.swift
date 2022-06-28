@@ -129,13 +129,12 @@ class MySitesCoordinator: NSObject {
             UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
 
-        guard let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey else {
-            return
+        if let siteID = blog.dotComID?.intValue {
+            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
         }
 
-        UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
-
-        mySiteViewController.showDetailView(for: .stats)
+        mySiteViewController.showBlogDetailsSubsection(.stats)
     }
 
     func showActivityLog(for blog: Blog) {

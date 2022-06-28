@@ -1,7 +1,5 @@
-Need a little writing inspiration? We have you covered with brand-new blogging prompts. Get a new prompt each day, write a post about it, and build a writing habit in no time.
+* [***] [Jetpack-only] The Insights view in Stats has been revamped with a cleaner look and a new set of cards to make it easier than ever to see at a glance how your site's performing. [#18945]
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
 
-Jetpack has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
-
-We made some improvements to the selection screen where you choose your site design during the Site Creation process.
-
-Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.

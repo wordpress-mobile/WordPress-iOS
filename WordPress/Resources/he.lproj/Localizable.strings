@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-02 17:54:08+0000 */
+/* Translation-Revision-Date: 2022-06-16 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: he_IL */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "אנונימי";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "תשובה";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "לענות להצעה";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "השעה הטובה ביותר";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "מומלץ עבור %@";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "כמות הצפיות הגבוהה בכל הזמנים";
@@ -1340,6 +1346,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "מבטל...";
+
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "לא הצלחת להחליט? תהיה לך אפשרות לשנות את ערכת העיצוב בכל עת.";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -3268,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "לעקוב אחרי האתר";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "לעקוב אחר השיחה";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "לעקוב אחר נושאים";
 
@@ -3420,6 +3432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "לבלוט בשטח: הוספת תגובה על פוסטים שקראת.";
+
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "לקבל הודעות כשתגובות חדשות מתווספות לפוסט הזה.";
 
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "לקבל עדכונים בזמן אמת למכשיר הנייד.";
@@ -5325,6 +5340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "טלפון";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "מומלץ בשבילך";
 
 /* No comment provided by engineer. */
 "Padding" = "מרווחים";
@@ -9753,9 +9771,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "לייקים";
-
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "עדיין לא פרסמת אף פוסט. כדאי לחזור לכאן מאוחר יותר לאר שפרסמת את הפוסט הראשון!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "פורסם %@";

@@ -496,6 +496,10 @@ extension WordPressAppDelegate {
                 return
         }
 
+        if QRLoginCoordinator.didHandle(url: url) {
+            return
+        }
+
         trackDeepLink(for: url) { url in
             UniversalLinkRouter.shared.handle(url: url)
         }

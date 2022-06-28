@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-14 09:03:04+0000 */
+/* Translation-Revision-Date: 2022-06-23 12:32:16+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
@@ -9779,7 +9779,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.latestPostSummary.likes" = "Aprecieri";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Nu ai publicat încă niciun articol. Revino mai târziu după ce publici primul articol!";
+"stats.insights.latestPostSummary.noData" = "Mergi înapoi după ce ai publicat primul articol!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Publicat %@";

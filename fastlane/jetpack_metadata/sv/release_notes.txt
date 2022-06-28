@@ -1,0 +1,7 @@
+Behöver du lite inspiration för att komma igång med skrivandet? Våra bloggningsförslag ger dig precis vad du behöver. Du får ett nytt förslag varje dag, kan skriva ett inlägg på temat och bygga upp en skrivrutin på nolltid.
+
+Jetpack har gått med i chatten – verktygstipset "Följ konversation", med vilket du kan följa ett inlägg och få notiser om nya kommentarer, kommer nu att visas.
+
+Vi har gjort ett antal förbättringar av skärmen där du väljer webbplatsdesign under processen för webbplatsskapande.
+
+Slutligen har vi även åtgärdat ett fel som påverkade notisbläddringen på telefoner i liggande läge. Bläddra på, min vän.
