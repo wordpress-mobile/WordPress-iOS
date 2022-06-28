@@ -67,7 +67,8 @@ steps:
               context: "Unit Tests"
       - wait: ~
         continue_on_failure: true
-      - plugins:
+      - label: ":buildkite: Annotate Test Failures"
+        plugins:
           - junit-annotate#v2.0.2:
               artifacts: build/results/report.junit
 
@@ -102,7 +103,8 @@ steps:
               context: "UI Tests (iPhone)"
       - wait: ~
         continue_on_failure: true
-      - plugins:
+      - label: ":buildkite: Annotate Test Failures"
+        plugins:
           - junit-annotate#v2.0.2:
               artifacts: build/results/report.junit
 
@@ -120,6 +122,7 @@ steps:
               context: "UI Tests (iPad)"
       - wait: ~
         continue_on_failure: true
-      - plugins:
+      - label: ":buildkite: Annotate Test Failures"
+        plugins:
           - junit-annotate#v2.0.2:
               artifacts: build/results/report.junit
