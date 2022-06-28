@@ -47,5 +47,10 @@ if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
 else
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
+
+  JUNIT_REPORT="build/results/report.junit"
+  if [ -f "$JUNIT_REPORT" ]; then
+    xsltproc ".buildkite/commands/junit-failures-to-buildkite-annotation.xslt" "$JUNIT_REPORT" | buildkite-agent annotate --context "ui-tests-$TEST_NAME"
+  fi
 fi
 exit $TESTS_EXIT_STATUS
