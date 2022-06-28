@@ -69,6 +69,18 @@ enum LocalizableStrings {
                                                     value: "Unable to load site stats.",
                                                     comment: "Title of the nodata view in today widget")
 
+    static let noDataViewTodayTitle = AppLocalizedString("widget.today.nodata.view.title",
+                                                         value: "Unable to load today's stats.",
+                                                         comment: "Title of the nodata view in today widget")
+
+    static let noDataViewAllTimeTitle = AppLocalizedString("widget.alltime.nodata.view.title",
+                                                           value: "Unable to load all time stats.",
+                                                           comment: "Title of the nodata view in all time widget")
+
+    static let noDataViewThisWeekTitle = AppLocalizedString("widget.thisweek.nodata.view.title",
+                                                            value: "Unable to load this week's stats.",
+                                                            comment: "Title of the nodata view in this week widget")
+
     // No site view
     static let noSiteViewTodayTitle = AppLocalizedString("widget.today.nosite.view.title",
                                                          value: "Create or add a site to see today's stats.",
