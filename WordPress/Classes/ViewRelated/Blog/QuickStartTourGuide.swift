@@ -237,8 +237,11 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
-        guard let tourCount = blog.quickStartTours?.count, tourCount > 0 else {
-            // Tours haven't been set up yet or were skipped. No reason to continue.
+        guard let tourCount = blog.quickStartTours?.count, tourCount > 0,
+              isTourAvailableToComplete(tour: tour, for: blog) else {
+            // Tours haven't been set up yet or were skipped.
+            // Or tour to be completed has already been completed.
+            // No reason to continue.
             return
         }
         completed(tour: tour, for: blog, postNotification: postNotification)
@@ -401,6 +404,28 @@ private extension QuickStartTourGuide {
     func allToursCompleted(for blog: Blog) -> Bool {
         let list = QuickStartFactory.allTours(for: blog)
         return countChecklistCompleted(in: list, for: blog) >= list.count
+    }
+
+    /// Returns a list of all available tours that have not yet been completed
+    /// - Parameter blog: blog to check
+    func uncompletedTours(for blog: Blog) -> [QuickStartTour] {
+        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+        let allTours = QuickStartFactory.allTours(for: blog)
+        let completedIDs = completedTours.map { $0.tourID }
+        let uncompletedTours = allTours.filter { !completedIDs.contains($0.key) }
+        return uncompletedTours
+    }
+
+    /// Check if the provided tour have not yet been completed and is available to complete
+    /// - Parameters:
+    ///   - tour: tour to check
+    ///   - blog: blog to check
+    /// - Returns: boolean, true if the tour is not completed and is available. False otherwise
+    func isTourAvailableToComplete(tour: QuickStartTour, for blog: Blog) -> Bool {
+        let uncompletedTours = uncompletedTours(for: blog)
+        return uncompletedTours.contains { element in
+            element.key == tour.key
+        }
     }
 
     func showCurrentStep() {
