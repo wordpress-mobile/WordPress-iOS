@@ -371,7 +371,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)updateDefaultBlogIfNeeded:(WPAccount *)account
 {
     if (!account.primaryBlogID || [account.primaryBlogID intValue] == 0) {
-        [[[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName] setValue:nil forKey:WPStatsHomeWidgetsUserDefaultsSiteIdKey];
         return;
     }
 
@@ -433,8 +432,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            // set the default site ID for iOS 14 Stats Widgets
-            [sharedDefaults setObject:siteId forKey:AppConfigurationWidgetStats.userDefaultsSiteIdKey];
 
             TodayExtensionService *service = [TodayExtensionService new];
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID

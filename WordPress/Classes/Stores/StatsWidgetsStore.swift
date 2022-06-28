@@ -264,6 +264,7 @@ private extension StatsWidgetsStore {
                 HomeWidgetThisWeekData.delete()
                 HomeWidgetAllTimeData.delete()
 
+                UserDefaults(suiteName: WPAppGroupName)?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
@@ -277,6 +278,9 @@ private extension StatsWidgetsStore {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
                                                object: nil,
                                                queue: nil) { [weak self] _ in
+
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+
             self?.initializeStatsWidgetsIfNeeded()
         }
     }
