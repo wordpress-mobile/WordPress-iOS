@@ -20,23 +20,25 @@ steps:
   #################
   # Create Installable Builds for WP and JP
   #################
-  - label: "🛠 WordPress Installable Build"
-    command: ".buildkite/commands/installable-build-wordpress.sh"
-    env: *common_env
-    plugins: *common_plugins
-    if: "build.pull_request.id != null || build.pull_request.draft"
-    notify:
-      - github_commit_status:
-          context: "WordPress Installable Build"
+  - group: "🛠 Installable Builds"
+    steps:
+      - label: "🛠 WordPress Installable Build"
+        command: ".buildkite/commands/installable-build-wordpress.sh"
+        env: *common_env
+        plugins: *common_plugins
+        if: "build.pull_request.id != null || build.pull_request.draft"
+        notify:
+          - github_commit_status:
+              context: "WordPress Installable Build"
 
-  - label: "🛠 Jetpack Installable Build"
-    command: ".buildkite/commands/installable-build-jetpack.sh"
-    env: *common_env
-    plugins: *common_plugins
-    if: "build.pull_request.id != null || build.pull_request.draft"
-    notify:
-      - github_commit_status:
-          context: "Jetpack Installable Build"
+      - label: "🛠 Jetpack Installable Build"
+        command: ".buildkite/commands/installable-build-jetpack.sh"
+        env: *common_env
+        plugins: *common_plugins
+        if: "build.pull_request.id != null || build.pull_request.draft"
+        notify:
+          - github_commit_status:
+              context: "Jetpack Installable Build"
 
   #################
   # Build the app
