@@ -42,6 +42,13 @@ import Foundation
         return !AccountHelper.isDotcomAvailable()
     }
 
+    static var defaultSiteId: NSNumber? {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return blogService.primaryBlog()?.dotComID
+    }
+
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
