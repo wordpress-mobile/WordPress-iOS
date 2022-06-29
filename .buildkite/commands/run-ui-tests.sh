@@ -6,9 +6,9 @@ IOS_VERSION=$3
 
 echo "Running $TEST_NAME on $DEVICE for iOS $IOS_VERSION"
 
-# echo "--- 📦 Downloading Build Artifacts"
-# download_artifact build-products.tar
-# tar -xf build-products.tar
+echo "--- 📦 Downloading Build Artifacts"
+download_artifact build-products.tar
+tar -xf build-products.tar
 
 echo "--- :wrench: Fixing VM"
 brew install openjdk@11
@@ -25,12 +25,10 @@ echo "--- :cocoapods: Setting up Pods"
 install_cocoapods
 
 echo "--- 🔬 Testing"
-# xcrun simctl list >> /dev/null
-# rake mocks &
+xcrun simctl list >> /dev/null
+rake mocks &
 set +e
-# bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
-mkdir -p "build/results"
-cp ".buildkite/ui-tests-report-sample.junit" "build/results/report.junit" && false
+bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
 TESTS_EXIT_STATUS=$?
 set -e
 
@@ -40,8 +38,8 @@ if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
   echo "UI Tests failed!"
 fi
 
-# echo "--- 📦 Zipping test results"
-# cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+echo "--- 📦 Zipping test results"
+cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
 
 echo "--- 🚦 Report Tests Exit Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then

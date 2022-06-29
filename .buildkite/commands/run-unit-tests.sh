@@ -1,21 +1,19 @@
 #!/bin/bash -eu
 
-# echo "--- 📦 Downloading Build Artifacts"
-# download_artifact build-products.tar
-# tar -xf build-products.tar
+echo "--- 📦 Downloading Build Artifacts"
+download_artifact build-products.tar
+tar -xf build-products.tar
 
 # Temporary fix until we're on the Xcode 13.1 VM
-# echo "--- :rubygems: Fixing Ruby Setup"
-# gem install bundler
+echo "--- :rubygems: Fixing Ruby Setup"
+gem install bundler
 
-# echo "--- :rubygems: Setting up Gems"
-# install_gems
+echo "--- :rubygems: Setting up Gems"
+install_gems
 
 echo "--- 🔬 Testing"
 set +e
-# bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
-mkdir -p "build/results"
-cp ".buildkite/unit-tests-report-sample.junit" "build/results/report.junit" && false
+bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
 TESTS_EXIT_STATUS=$?
 set -e
 
@@ -25,8 +23,8 @@ if [[ $TESTS_EXIT_STATUS -ne 0 ]]; then
   echo "Unit Tests failed!"
 fi
 
-# echo "--- 📦 Zipping test results"
-# cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+echo "--- 📦 Zipping test results"
+cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
 
 echo "--- 🚦 Report Tests Exit Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
