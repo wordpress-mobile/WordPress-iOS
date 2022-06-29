@@ -3117,7 +3117,6 @@
 		FABB1FE92602FC2C00C8785C /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
 		FABB1FEA2602FC2C00C8785C /* SiteStatsDetailTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98467A42221CD74D00DF51AE /* SiteStatsDetailTableViewController.storyboard */; };
 		FABB1FED2602FC2C00C8785C /* InlineEditableNameValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */; };
-		FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */; };
 		FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */; };
@@ -16930,7 +16929,6 @@
 				FABB1FE92602FC2C00C8785C /* TextWithAccessoryButtonCell.xib in Resources */,
 				FABB1FEA2602FC2C00C8785C /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				FABB1FED2602FC2C00C8785C /* InlineEditableNameValueCell.xib in Resources */,
-				FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */,
 				FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */,
 				FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */,
 				FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */,
