@@ -2,7 +2,7 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/bash-cache#2.2.0
+    - automattic/bash-cache#command/annotate-test-failures
     - automattic/git-s3-cache#v1.1.0:
         bucket: "a8c-repo-mirrors"
         repo: "wordpress-mobile/wordpress-ios/"
