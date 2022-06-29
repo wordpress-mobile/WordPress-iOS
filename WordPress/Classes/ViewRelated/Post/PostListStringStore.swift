@@ -9,10 +9,7 @@ enum PostListStringStore {
 
         static let fetchingTitle = NSLocalizedString(
             "Fetching posts...",
-            comment: """
-            A brief prompt shown when the reader is empty,
-            letting the user know the app is currently fetching new posts.
-            """
+            comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts."
         )
 
         static let noMatchesTitle = NSLocalizedString(
