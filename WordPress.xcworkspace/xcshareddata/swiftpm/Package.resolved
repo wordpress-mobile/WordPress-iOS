@@ -23,9 +23,9 @@
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
-          "branch": "UITII-reverse-waitForScreen-with-isLoaded",
-          "revision": "3f57faf033e87dd50f111165286279eece20d1d1",
-          "version": null
+          "branch": null,
+          "revision": "e27405a65672c62e5a055697eafdeaf073ea63ff",
+          "version": "0.2.1"
         }
       },
       {
