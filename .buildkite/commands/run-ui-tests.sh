@@ -39,7 +39,7 @@ if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
 fi
 
 echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult
+cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult && cd -
 
 echo "--- 🚦 Report Tests Exit Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
