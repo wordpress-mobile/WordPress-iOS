@@ -45,6 +45,9 @@ class StatsWidgetsStore {
         guard #available(iOS 14.0, *) else {
             return
         }
+
+        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey)
+
         if HomeWidgetTodayData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
@@ -301,9 +304,6 @@ private extension StatsWidgetsStore {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
                                                object: nil,
                                                queue: nil) { [weak self] _ in
-
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey)
-
             self?.initializeStatsWidgetsIfNeeded()
         }
     }
