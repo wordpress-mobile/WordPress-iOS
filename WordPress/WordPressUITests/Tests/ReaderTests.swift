@@ -25,7 +25,6 @@ class ReaderTests: XCTestCase {
     let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
 
     func testViewPost() {
-        XCTFail("This is a forced failure to test Buildkite annotations.")
         readerScreen.openLastPost()
         XCTAssert(readerScreen.postContentEquals(expectedPostContent))
     }
