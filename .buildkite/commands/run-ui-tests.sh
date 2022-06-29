@@ -47,7 +47,7 @@ if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
 else
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
-
-  annotate_test_failures "build/results/report.junit"
 fi
+annotate_test_failures "build/results/report.junit"
+
 exit $TESTS_EXIT_STATUS
