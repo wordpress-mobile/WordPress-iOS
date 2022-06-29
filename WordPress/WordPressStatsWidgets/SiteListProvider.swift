@@ -45,7 +45,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey), loggedIn == false {
                 completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
             } else {
-                completion(Timeline(entries: [.noData], policy: .never))
+                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
             }
 
             return

@@ -34,6 +34,8 @@ class StatsWidgetsStore {
 
     /// Initialize the local cache for widgets, if it does not exist
     func initializeStatsWidgetsIfNeeded() {
+        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+
         if HomeWidgetTodayData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
@@ -278,9 +280,6 @@ private extension StatsWidgetsStore {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
                                                object: nil,
                                                queue: nil) { [weak self] _ in
-
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
-
             self?.initializeStatsWidgetsIfNeeded()
         }
     }
