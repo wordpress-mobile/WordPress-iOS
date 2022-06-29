@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 require 'English'
-SWIFTLINT_VERSION = '0.47.1'
-XCODE_WORKSPACE = 'WordPress.xcworkspace'
-XCODE_SCHEME = 'WordPress'
-XCODE_CONFIGURATION = 'Debug'
-
 require 'fileutils'
 require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
+
+SWIFTLINT_VERSION = '0.47.1'
+RUBY_REPO_VERSION = File.read('./.ruby-version').strip
+XCODE_WORKSPACE = 'WordPress.xcworkspace'
+XCODE_SCHEME = 'WordPress'
+XCODE_CONFIGURATION = 'Debug'
+EXPECTED_XCODE_VERSION = File.read('.xcversion').rstrip
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
@@ -30,7 +32,7 @@ namespace :dependencies do
         puts '====================================================================================='
         puts 'Warning: Your local Ruby version doesn\'t match .ruby-version'
         puts ''
-        puts ".ruby-version:\t#{get_ruby_repo_version}"
+        puts ".ruby-version:\t#{RUBY_REPO_VERSION}"
         puts "Your Ruby:\t#{RUBY_VERSION}"
         puts ''
         puts 'Refer to the WPiOS docs on setting the exact version with rbenv.'
@@ -43,12 +45,7 @@ namespace :dependencies do
 
     # compare repo Ruby version to local
     def ruby_version_is_match?
-      get_ruby_repo_version == RUBY_VERSION
-    end
-
-    # get Ruby version defined in the repo
-    def get_ruby_repo_version
-      repo_version = File.read('./.ruby-version').strip
+      RUBY_REPO_VERSION == RUBY_VERSION
     end
   end
 
@@ -116,9 +113,9 @@ namespace :dependencies do
       require 'yaml'
 
       deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
-      GBM_POD_REGEX = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
+      gbm_pod_regex = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
       gbm_pods = deps.map do |pod|
-        GBM_POD_REGEX.match(pod)&.captures&.first
+        gbm_pod_regex.match(pod)&.captures&.first
       end.compact
 
       pod ['update', *gbm_pods]
@@ -359,7 +356,7 @@ namespace :install do
         unless xcode_version_is_correct?
           # if xcode is the wrong version, prompt user to install the correct version and terminate rake
           puts 'Not recommended version of Xcode installed'
-          puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
+          puts "It is recommended to use Xcode version #{EXPECTED_XCODE_VERSION}"
           puts 'Please press enter to continue'
           $stdin.gets.strip
           next
@@ -373,7 +370,7 @@ namespace :install do
 
       # compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        if get_xcode_version == get_ci_xcode_version
+        if xcode_version == EXPECTED_XCODE_VERSION
           puts 'Correct version of Xcode installed'
           true
         else
@@ -381,16 +378,11 @@ namespace :install do
         end
       end
 
-      # get xcode version
-      def get_xcode_version
+      def xcode_version
         puts 'Checking installed version of Xcode'
         version = `xcodebuild -version`
 
         version.split[1]
-      end
-
-      def get_ci_xcode_version
-        ci_version = File.read('.xcversion')
       end
     end
 
@@ -545,15 +537,15 @@ namespace :credentials do
 
   # user given app id and secret and create a new wpcom_app_credentials file
   task :set_app_secrets do
-    set_app_secrets(get_client_id, get_client_secret)
+    set_app_secrets(client_id, client_secret)
   end
 
-  def get_client_id
+  def client_id
     $stdout.puts 'Please enter your Client ID'
     $stdin.gets.strip
   end
 
-  def get_client_secret
+  def client_secret
     $stdout.puts 'Please enter your Client Secret'
     $stdin.gets.strip
   end
@@ -595,15 +587,13 @@ namespace :gpg_key do
   # Ask developer if they need to create a new key.
   # If yes, begin process of creating key, if no move on
   task :prompt do
-    if create_gpg_key?
-      if create_default_key?
-        display_default_config_helpers
-        Rake::Task['gpg_key:generate_default'].invoke
-      else
-        Rake::Task['gpg_key:generate_custom'].invoke
-      end
+    next unless create_gpg_key?
+
+    if create_default_key?
+      display_default_config_helpers
+      Rake::Task['gpg_key:generate_default'].invoke
     else
-      next
+      Rake::Task['gpg_key:generate_custom'].invoke
     end
   end
 
@@ -679,14 +669,9 @@ def display_prompt_response
   response == 'Y'
 end
 
-def fold(label)
-  puts "travis_fold:start:#{label}" if is_travis?
+# FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
+def fold(_)
   yield
-  puts "travis_fold:end:#{label}" if is_travis?
-end
-
-def is_travis?
-  ENV['TRAVIS'] != nil
 end
 
 def pod(args)
@@ -765,7 +750,7 @@ def check_dependencies_hook
   ENV['DRY_RUN'] = '1'
   begin
     Rake::Task['dependencies'].invoke
-  rescue Exception => e
+  rescue StandardError => e
     puts e.message
     exit 1
   end

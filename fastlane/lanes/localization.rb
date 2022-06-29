@@ -299,6 +299,9 @@ platform :ios do
     )
   end
 
+  # rubocop:disable Metrics/AbcSize
+  #
+  # Reference: http://wiki.c2.com/?AbcMetric
   def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
@@ -346,6 +349,7 @@ platform :ios do
       allow_nothing_to_commit: true
     )
   end
+  # rubocop:enable Metrics/AbcSize
 
 
 
