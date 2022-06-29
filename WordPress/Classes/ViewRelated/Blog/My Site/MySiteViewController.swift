@@ -287,6 +287,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func setupView() {
         view.backgroundColor = .listBackground
         configureSegmentedControlFont()
+        
+        switch ABTest.abnNativeTest.variation {
+        case .treatment("red_background"):
+            view.backgroundColor = UIColor.red
+        case .treatment("green_background"):
+            view.backgroundColor = UIColor.green
+        case .treatment("blue_background"):
+            view.backgroundColor = UIColor.blue
+        case .control:
+            view.backgroundColor = UIColor.yellow
+        default:
+            view.backgroundColor = UIColor.black // should never be the case
+        }
     }
 
     /// This method builds a layout with the following view hierarchy:
