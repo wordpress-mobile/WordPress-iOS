@@ -100,7 +100,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// If set, when the post list appear it will show the tab for this status
     var initialFilterWithPostStatus: BasePost.Status?
 
-    private var viewModel: PostListViewModel?
+    var viewModel: PostListViewModel?
 
     // MARK: - Convenience constructors
 
