@@ -109,6 +109,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
         controller.blog = blog
+        controller.viewModel = PostListViewModel(blog: blog, postCoordinator: PostCoordinator.shared)
         controller.restorationClass = self
 
         return controller
@@ -118,7 +119,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
-        controller.viewModel = PostListViewModel(blog: blog, postCoordinator: PostCoordinator.shared)
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.blogDetailNavigation)
