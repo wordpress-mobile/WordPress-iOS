@@ -1,5 +1,5 @@
-* [***] [Jetpack-only] The Insights view in Stats has been revamped with a cleaner look and a new set of cards to make it easier than ever to see at a glance how your site's performing. [#18945]
-* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
-* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
-* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+We updated the Insights view in your site’s Stats. See how your site is performing with a quick glance—and comparing performance to previous time periods is just a finger-tap away.
 
+Need to switch over to your browser? You can now sign in by scanning a QR code in the app’s Me menu.
+
+When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
