@@ -10,6 +10,7 @@ class StatsWidgetsStore {
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
         observeApplicationLaunched()
+        observeSiteDeletionForWidgets()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -310,6 +311,14 @@ private extension StatsWidgetsStore {
         userDefaults.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
         userDefaults.setValue(siteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
         initializeStatsWidgetsIfNeeded()
+    }
+
+    func observeSiteDeletionForWidgets() {
+        NotificationCenter.default.addObserver(forName: .WPSiteDeleted,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.refreshStatsWidgetsSiteList()
+        }
     }
 }
 
