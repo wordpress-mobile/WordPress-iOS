@@ -9,6 +9,7 @@ class StatsWidgetsStore {
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
+        observeSiteDeletionForWidgets()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -305,6 +306,18 @@ private extension StatsWidgetsStore {
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.initializeStatsWidgetsIfNeeded()
+        }
+    }
+
+    func observeSiteDeletionForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+        NotificationCenter.default.addObserver(forName: .WPSiteDeleted,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.refreshStatsWidgetsSiteList()
         }
     }
 }
