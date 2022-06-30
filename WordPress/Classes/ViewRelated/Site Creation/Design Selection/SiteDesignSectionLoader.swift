@@ -39,7 +39,7 @@ struct SiteDesignSectionLoader {
         )
 
         let request = SiteDesignRequest(
-            withThumbnailSize: SiteDesignCategoryThumbnailSize.category.value,
+            withThumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value.scaleBy(UIScreen.main.nativeScale),
             withGroups: templateGroups
         )
 
@@ -133,5 +133,12 @@ private extension SiteDesignSectionLoader {
                                                         comment: "Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging.")
         static let recommendedCaption = NSLocalizedString("PICKED FOR YOU",
                                                           comment: "Caption for the recommended sections in site designs.")
+    }
+}
+
+// This is copied from PlansLoadingIndicatorView - maybe this should be extracted to a utility class somewhere
+private extension CGSize {
+    func scaleBy(_ scale: CGFloat) -> CGSize {
+        return self.applying(CGAffineTransform(scaleX: scale, y: scale))
     }
 }
