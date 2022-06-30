@@ -10,7 +10,7 @@ class StatsWidgetsStore {
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
         observeApplicationLaunched()
-        observeSiteDeletionForWidgets()
+        observeSiteUpdatesForWidgets()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -313,12 +313,13 @@ private extension StatsWidgetsStore {
         initializeStatsWidgetsIfNeeded()
     }
 
-    func observeSiteDeletionForWidgets() {
-        NotificationCenter.default.addObserver(forName: .WPSiteDeleted,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.refreshStatsWidgetsSiteList()
+    func observeSiteUpdatesForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteDeleted, object: nil)
     }
 }
 
