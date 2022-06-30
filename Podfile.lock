@@ -766,7 +766,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.78.1
   WordPressMocks:
-    :commit: f359aa4e92a675d30fb50eabaf2870f9eb4d554d
+    :commit: a0f3d0e39ac509cb4be16345c229bdfa581f3fc5
     :git: https://github.com/wordpress-mobile/WordPressMocks.git
 
 SPEC CHECKSUMS:
