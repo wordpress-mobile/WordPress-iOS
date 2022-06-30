@@ -108,6 +108,7 @@
 		08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */; };
 		08A50DED286C80F5003B0195 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A50DEC286C80F5003B0195 /* PostListViewModel.swift */; };
 		08A50DEE286C80F5003B0195 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A50DEC286C80F5003B0195 /* PostListViewModel.swift */; };
+		08AAC954286CC22B0052790A /* PostListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AAC953286CC22B0052790A /* PostListViewModelTests.swift */; };
 		08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
 		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
@@ -5038,6 +5039,7 @@
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
 		08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceTests.m; sourceTree = "<group>"; };
 		08A50DEC286C80F5003B0195 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
+		08AAC953286CC22B0052790A /* PostListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModelTests.swift; sourceTree = "<group>"; };
 		08AAD69D1CBEA47D002B2418 /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08AAD69E1CBEA47D002B2418 /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceTests.m; sourceTree = "<group>"; };
@@ -10547,6 +10549,7 @@
 				59ECF87A1CB7061D00E68F25 /* PostSharingControllerTests.swift */,
 				F18B43771F849F580089B817 /* PostAttachmentTests.swift */,
 				8B6BD54F24293FBE00DB8F28 /* PrepublishingNudgesViewControllerTests.swift */,
+				08AAC953286CC22B0052790A /* PostListViewModelTests.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -20309,6 +20312,7 @@
 				24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */,
 				8B6BD55024293FBE00DB8F28 /* PrepublishingNudgesViewControllerTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
+				08AAC954286CC22B0052790A /* PostListViewModelTests.swift in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				F543AF5723A84E4D0022F595 /* PublishSettingsControllerTests.swift in Sources */,
 				027AC5212278983F0033E56E /* DomainCreditEligibilityTests.swift in Sources */,
