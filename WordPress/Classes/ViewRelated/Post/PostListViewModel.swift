@@ -2,11 +2,13 @@ import Foundation
 
 protocol PostListViewModelOutputs {
     var editingPostUploadFailed: (() -> Void)? { get set }
-    var editingPostUploadSuccess: (() -> Void)? { get set }
+    var editingPostUploadSuccess: ((Post) -> Void)? { get set }
 }
 
 /// Convert to protocol if more inputs are needed.
 typealias PostListViewModelInputs = InteractivePostViewDelegate
+
+typealias PostListViewModelType = PostListViewModelInputs & PostListViewModelOutputs
 
 /// REFACTOR IN PROGRESS: Extracting VM logic from `PostListViewController`
 final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs {
@@ -19,7 +21,7 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
 
     // MARK: - Output Closures
     var editingPostUploadFailed: (() -> Void)?
-    var editingPostUploadSuccess: (() -> Void)?
+    var editingPostUploadSuccess: ((Post) -> Void)?
 
     // MARK: - Internal State
     lazy var filterSettings: PostListFilterSettings = {
@@ -42,14 +44,13 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
             return
         }
         guard !postCoordinator.isUploading(post: post) else {
-//            presentAlertForPostBeingUploaded()
             editingPostUploadFailed?()
             return
         }
 
+        // DI Analytics & test
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
-//        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
-        editingPostUploadSuccess?()
+        editingPostUploadSuccess?(post)
     }
 
     func view(_ post: AbstractPost) {
