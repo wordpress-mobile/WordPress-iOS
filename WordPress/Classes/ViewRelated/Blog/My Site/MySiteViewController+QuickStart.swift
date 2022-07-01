@@ -12,7 +12,6 @@ extension MySiteViewController {
 
                 switch element {
                 case .noSuchElement, .newpost:
-
                     self?.additionalSafeAreaInsets = .zero
 
                 case .siteIcon, .siteTitle, .viewSite:
