@@ -104,7 +104,7 @@ final class PostListViewModelTests: XCTestCase {
         XCTAssertEqual(statsConfiguredCallCount, 0)
     }
 
-    func testStatsDoesInvokesStatsConfiguredWhenAccountIsNotNilAndPostHasID() {
+    func testStatsInvokesStatsConfiguredWhenAccountIsNotNilAndPostHasID() {
         let blog = makeBlog()
 
         let sut = PostListViewModel(
@@ -125,6 +125,32 @@ final class PostListViewModelTests: XCTestCase {
         XCTAssertEqual(statsConfiguredCallCount, 1)
     }
 
+    func testStatsDoesNotInvokeStatsConfiguredWhenRequirementsAreMetButNoReachability() {
+        class _MockReachabilityUtility: PostListReachabilityProvider {
+            func performActionIfConnectionAvailable(_ action: (() -> Void)) {
+                // No reachability so action is not called.
+            }
+        }
+
+        let blog = makeBlog()
+
+        let sut = PostListViewModel(
+            blog: blog,
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: _MockReachabilityUtility()
+        )
+
+        var statsConfiguredCallCount = 0
+        sut.statsConfigured = { (_, _, _) in
+            statsConfiguredCallCount += 1
+        }
+
+        sut.stats(for: PostBuilder(mockContextManager.mainContext, blog: blog)
+            .with(id: 1239)
+            .with(permaLink: "https://wordpress.com")
+            .build())
+        XCTAssertEqual(statsConfiguredCallCount, 0)
+    }
 
     private func makeBlog() -> Blog {
         return BlogBuilder(mockContextManager.mainContext).withAnAccount().withJetpack().build()
