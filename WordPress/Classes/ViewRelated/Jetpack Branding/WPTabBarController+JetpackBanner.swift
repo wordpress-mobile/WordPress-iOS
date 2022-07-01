@@ -38,6 +38,9 @@ extension WPTabBarController {
         jetpackButton.tintColor = .muriel(color: .jetpackGreen, .shade40)
         jetpackButton.setTitleColor(UIColor(light: .black, dark: .white), for: .normal)
         jetpackButton.titleLabel?.font = Appearance.jetpackButtonFont
+        jetpackButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        jetpackButton.titleLabel?.minimumScaleFactor = Appearance.jetpackFontMinimumScaleFactor
+        jetpackButton.titleLabel?.adjustsFontSizeToFitWidth = true
         jetpackButton.setImage(.gridicon(.plans, size: Appearance.jetpackIconSize), for: .normal)
         jetpackButton.imageEdgeInsets = Appearance.jetpackIconInsets
 
@@ -80,7 +83,8 @@ extension WPTabBarController {
                                                           comment: "Title of the Jetpack powered banner.")
         static let jetpackIconSize = CGSize(width: 28, height: 28)
         static let jetpackIconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        static let jetpackButtonFont = UIFont.systemFont(ofSize: 16)
+        static let jetpackButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let jetpackFontMinimumScaleFactor: CGFloat = 0.75
         static let jetpackIconBackgroundSize: CGFloat = 22
     }
 }
