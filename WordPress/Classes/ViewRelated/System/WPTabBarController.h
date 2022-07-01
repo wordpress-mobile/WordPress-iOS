@@ -29,7 +29,6 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong) id<ScenePresenter> whatIsNewScenePresenter;
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;
-@property (nonatomic, strong) UIView *jetpackBannerView;
 
 + (instancetype)sharedInstance;
 

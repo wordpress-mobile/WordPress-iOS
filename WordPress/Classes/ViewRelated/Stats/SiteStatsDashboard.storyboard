@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -41,19 +41,29 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
-                                <rect key="frame" x="0.0" y="90" width="375" height="577"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="557"/>
                                 <connections>
                                     <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zMO-yu-sCx" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="647" width="375" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" placeholder="YES" id="6zA-vi-yQo"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ocg-ig-pQt"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="3Vy-SZ-45b"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="IsW-kc-L5Q" secondAttribute="bottom" id="5Dc-js-I5s"/>
+                            <constraint firstItem="zMO-yu-sCx" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="9yJ-fe-riU"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="Cgj-jO-OfC"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="GXb-KG-d0p"/>
+                            <constraint firstItem="zMO-yu-sCx" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="LIh-TL-d4i"/>
+                            <constraint firstItem="zMO-yu-sCx" firstAttribute="top" secondItem="J6j-x0-sMS" secondAttribute="bottom" id="MMq-nU-HY5"/>
+                            <constraint firstItem="zMO-yu-sCx" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="QSa-di-ngS"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="iem-bg-Jp2"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="irM-hU-WLy"/>

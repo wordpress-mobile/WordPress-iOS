@@ -1,34 +1,30 @@
 import UIKit
 
-extension WPTabBarController {
+class JetpackBannerView: UIView {
 
-    /// Adds a Jetpack powered banner on top of the main tab bar.
-    @objc func addJetpackBanner() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
 
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+
+    func setup() {
         guard AppConfiguration.isWordPress else {
             return
         }
 
-        jetpackBannerView = UIView()
-        jetpackBannerView.translatesAutoresizingMaskIntoConstraints = false
-
-
-        jetpackBannerView.backgroundColor = Appearance.jetpackBackgroundColor
-
-        view.insertSubview(jetpackBannerView, belowSubview: tabBar)
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = Appearance.jetpackBackgroundColor
 
         let jetpackButton = makeJetpackButton()
-        jetpackBannerView.addSubview(jetpackButton)
+        addSubview(jetpackButton)
 
-        NSLayoutConstraint.activate([
-            jetpackBannerView.heightAnchor.constraint(equalToConstant: Appearance.jetpackBannerHeight),
-            jetpackBannerView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
-            jetpackBannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            jetpackBannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        jetpackBannerView.pinSubviewToAllEdges(jetpackButton)
-        NotificationCenter.default.post(name: .jetpackBannerToggled, object: true)
-
+        pinSubviewToAllEdges(jetpackButton, insets: UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0), priority: .required)
     }
 
     private func makeJetpackButton() -> UIButton {
@@ -63,20 +59,7 @@ extension WPTabBarController {
         return jetpackButton
     }
 
-    /// Removes the Jetpack powered banner from the top of the tab bar, if it exists.
-    @objc func removeJetpackBanner() {
-
-        guard AppConfiguration.isWordPress else {
-            return
-        }
-
-        jetpackBannerView?.removeFromSuperview()
-        jetpackBannerView = nil
-        NotificationCenter.default.post(name: .jetpackBannerToggled, object: false)
-    }
-
     private enum Appearance {
-        static let jetpackBannerHeight: CGFloat = 44
         static let jetpackBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                     dark: .muriel(color: .jetpackGreen, .shade90))
         static let jetpackBannerTitle = NSLocalizedString("Jetpack powered",
@@ -87,25 +70,4 @@ extension WPTabBarController {
         static let jetpackFontMinimumScaleFactor: CGFloat = 0.75
         static let jetpackIconBackgroundSize: CGFloat = 22
     }
-}
-
-extension NSNotification.Name {
-    static let jetpackBannerToggled = NSNotification.Name("PoweredByJetpackBannerToggled")
-}
-
-extension UIImage {
-  func withBackground(color: UIColor, opaque: Bool = true) -> UIImage {
-    UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
-
-    guard let ctx = UIGraphicsGetCurrentContext(), let image = cgImage else { return self }
-    defer { UIGraphicsEndImageContext() }
-
-    let rect = CGRect(origin: .zero, size: size)
-    ctx.setFillColor(color.cgColor)
-    ctx.fill(rect)
-    ctx.concatenate(CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height))
-    ctx.draw(image, in: rect)
-
-    return UIGraphicsGetImageFromCurrentImageContext() ?? self
-  }
 }
