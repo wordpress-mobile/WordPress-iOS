@@ -196,6 +196,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         showNoResultsViewIfNeeded()
         selectFirstNotificationIfAppropriate()
+        WPTabBarController.sharedInstance().addJetpackBanner()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -242,6 +243,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
+        WPTabBarController.sharedInstance().removeJetpackBanner()
     }
 
     override func viewDidLayoutSubviews() {
