@@ -9,24 +9,24 @@ extension WPTabBarController {
             return
         }
 
-        bannerView = UIView()
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        jetpackBannerView = UIView()
+        jetpackBannerView.translatesAutoresizingMaskIntoConstraints = false
 
 
-        bannerView.backgroundColor = Appearance.jetpackBackgroundColor
+        jetpackBannerView.backgroundColor = Appearance.jetpackBackgroundColor
 
-        view.insertSubview(bannerView, belowSubview: tabBar)
+        view.insertSubview(jetpackBannerView, belowSubview: tabBar)
 
         let jetpackButton = makeJetpackButton()
-        bannerView.addSubview(jetpackButton)
+        jetpackBannerView.addSubview(jetpackButton)
 
         NSLayoutConstraint.activate([
-            bannerView.heightAnchor.constraint(equalToConstant: Appearance.jetpackBannerHeight),
-            bannerView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
-            bannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            jetpackBannerView.heightAnchor.constraint(equalToConstant: Appearance.jetpackBannerHeight),
+            jetpackBannerView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
+            jetpackBannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            jetpackBannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        bannerView.pinSubviewToAllEdges(jetpackButton)
+        jetpackBannerView.pinSubviewToAllEdges(jetpackButton)
         NotificationCenter.default.post(name: .jetpackBannerToggled, object: true)
 
     }
@@ -67,8 +67,8 @@ extension WPTabBarController {
             return
         }
 
-        bannerView?.removeFromSuperview()
-        bannerView = nil
+        jetpackBannerView?.removeFromSuperview()
+        jetpackBannerView = nil
         NotificationCenter.default.post(name: .jetpackBannerToggled, object: false)
     }
 
