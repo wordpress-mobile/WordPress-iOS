@@ -188,18 +188,36 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func bindViewModelOutputs() {
-        viewModel?.editingPostUploadSuccess = { post in
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        viewModel.editingPostUploadSuccess = { post in
             PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
         }
 
-        viewModel?.editingPostUploadFailed = { [weak self] in
+        viewModel.editingPostUploadFailed = { [weak self] in
             self?.presentAlertForPostBeingUploaded()
         }
 
-        viewModel?.statsConfigured = { [weak self] postID, postTitle, postURL in
+        viewModel.statsConfigured = { [weak self] postID, postTitle, postURL in
             let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
             postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
             self?.navigationController?.pushViewController(postStatsTableViewController, animated: true)
+        }
+
+        viewModel.trashStringsFetched = { [weak self] (post, trashAlertStrings) in
+            let alertController = UIAlertController(
+                title: trashAlertStrings.title,
+                message: trashAlertStrings.message,
+                preferredStyle: .alert
+            )
+
+            alertController.addCancelActionWithTitle(trashAlertStrings.cancel)
+            alertController.addDestructiveActionWithTitle(trashAlertStrings.delete) { [weak self] action in
+                self?.deletePost(post)
+            }
+            alertController.presentFromRootViewController()
         }
     }
 
@@ -701,36 +719,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func trash(_ post: AbstractPost) {
-        guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
-            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
-            return
-        }
-
-        let cancelText: String
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
-        } else {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
-            titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-        }
-        alertController.presentFromRootViewController()
+        viewModel?.trash(post)
     }
 
     func restore(_ post: AbstractPost) {

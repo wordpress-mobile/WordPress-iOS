@@ -4,6 +4,7 @@ protocol PostListViewModelOutputs {
     var editingPostUploadFailed: (() -> Void)? { get set }
     var editingPostUploadSuccess: ((Post) -> Void)? { get set }
     var statsConfigured: ((Int, String?, URL?) -> Void)? { get set }
+    var trashStringsFetched: ((AbstractPost, PostListTrashAlertStrings) -> Void)? { get set }
 }
 
 /// Convert to protocol if more inputs are needed.
@@ -24,6 +25,7 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     var editingPostUploadFailed: (() -> Void)?
     var editingPostUploadSuccess: ((Post) -> Void)?
     var statsConfigured: ((Int, String?, URL?) -> Void)?
+    var trashStringsFetched: ((AbstractPost, PostListTrashAlertStrings) -> Void)?
 
     // MARK: - Internal State
     lazy var filterSettings: PostListFilterSettings = {
@@ -107,7 +109,41 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     }
 
     func trash(_ post: AbstractPost) {
+        guard reachabilityUtility.isInternetReachable() else {
+            let offlineMessage = NSLocalizedString(
+                "Unable to trash posts while offline. Please try again later.",
+                comment: "Message that appears when a user tries to trash a post while their device is offline."
+            )
+            reachabilityUtility.showNoInternetConnectionNotice(message: offlineMessage)
+            return
+        }
 
+        let cancelText: String
+        let deleteText: String
+        let messageText: String
+        let titleText: String
+
+        if post.status == .trash {
+            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
+            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
+            messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
+        } else {
+            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
+            titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
+            messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
+        }
+
+        trashStringsFetched?(
+            post,
+            PostListTrashAlertStrings(
+                title: titleText,
+                message: messageText,
+                cancel: cancelText,
+                delete: deleteText
+            )
+        )
     }
 
     func restore(_ post: AbstractPost) {
