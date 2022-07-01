@@ -548,6 +548,7 @@ import WordPressFlux
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         headerWidthConstraint.priority = UILayoutPriority(999)
+        centerConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             centerConstraint,

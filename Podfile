@@ -244,8 +244,7 @@ abstract_target 'Apps' do
   ## Jetpack App iOS
   ## ===============
   ##
-  target 'Jetpack' do
-  end
+  target 'Jetpack'
 end
 
 ## Share Extension
@@ -467,11 +466,11 @@ post_install do |installer|
 
   # Flag Alpha builds for Tracks
   # ============================
-  installer.pods_project.targets.each do |target|
-    next unless target.name == 'Automattic-Tracks-iOS'
-
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
-    end
+  #
+  tracks_target = installer.pods_project.targets.find { |target| target.name == 'Automattic-Tracks-iOS' }
+  # This will crash if/when we'll remove Tracks.
+  # That's okay because it is a crash we'll only have to address once.
+  tracks_target.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
   end
 end

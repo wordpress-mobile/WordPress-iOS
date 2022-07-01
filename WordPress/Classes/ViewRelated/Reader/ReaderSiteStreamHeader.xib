@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -34,7 +35,7 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jvF-YL-IV0">
                     <rect key="frame" x="132" y="76.666666666666671" width="30" height="34"/>
-                    <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <color key="tintColor" systemColor="systemBackgroundColor"/>
                     <connections>
                         <action selector="didTapFollowButton:" destination="QDT-3t-9yR" eventType="touchUpInside" id="dRK-lH-Zga"/>
                     </connections>
@@ -52,8 +53,8 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <color key="tintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+            <color key="tintColor" systemColor="linkColor"/>
             <constraints>
                 <constraint firstItem="mi7-dO-TOF" firstAttribute="top" secondItem="JHO-IY-cyK" secondAttribute="bottom" constant="16" id="5pv-Dj-zWG"/>
                 <constraint firstItem="w1n-O9-Da1" firstAttribute="leading" secondItem="QDT-3t-9yR" secondAttribute="leadingMargin" id="AIG-RK-eJh"/>
@@ -66,9 +67,9 @@
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="mi7-dO-TOF" secondAttribute="bottom" constant="16" id="Zc9-ns-Y8r"/>
                 <constraint firstItem="JHO-IY-cyK" firstAttribute="leading" secondItem="fq2-Xh-dYx" secondAttribute="leading" id="bkn-wr-ADc"/>
                 <constraint firstAttribute="trailingMargin" secondItem="mi7-dO-TOF" secondAttribute="trailing" id="blt-Tr-kwH"/>
-                <constraint firstItem="mi7-dO-TOF" firstAttribute="leading" secondItem="w1n-O9-Da1" secondAttribute="leading" id="eAG-pR-tpk"/>
+                <constraint firstItem="mi7-dO-TOF" firstAttribute="leading" secondItem="QDT-3t-9yR" secondAttribute="leading" priority="999" constant="16" id="eAG-pR-tpk"/>
                 <constraint firstItem="jvF-YL-IV0" firstAttribute="leading" secondItem="QqV-yA-rBc" secondAttribute="leading" id="nuq-AR-loX"/>
-                <constraint firstAttribute="trailing" secondItem="QqV-yA-rBc" secondAttribute="trailingMargin" constant="16" id="qUa-8H-hSo"/>
+                <constraint firstAttribute="trailing" secondItem="QqV-yA-rBc" secondAttribute="trailingMargin" priority="999" constant="16" id="qUa-8H-hSo"/>
                 <constraint firstItem="w1n-O9-Da1" firstAttribute="top" secondItem="QDT-3t-9yR" secondAttribute="top" constant="16" id="ssc-l7-h6V"/>
                 <constraint firstItem="QqV-yA-rBc" firstAttribute="leading" secondItem="w1n-O9-Da1" secondAttribute="trailing" constant="20" id="uve-ck-hpx"/>
                 <constraint firstItem="jvF-YL-IV0" firstAttribute="top" secondItem="fq2-Xh-dYx" secondAttribute="bottom" constant="16" id="why-cC-543"/>
@@ -86,4 +87,15 @@
             <point key="canvasLocation" x="-108" y="-82"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
