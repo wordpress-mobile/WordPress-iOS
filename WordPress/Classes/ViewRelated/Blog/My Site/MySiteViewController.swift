@@ -162,6 +162,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostPublished()
         startObservingQuickStart()
         startObservingOnboardingPrompt()
+        startObservingJetpackBanner()
     }
 
     override func viewWillAppear(_ animated: Bool) {
