@@ -100,6 +100,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// If set, when the post list appear it will show the tab for this status
     var initialFilterWithPostStatus: BasePost.Status?
 
+    var viewModel: PostListViewModel?
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -107,6 +109,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
         controller.blog = blog
+        controller.viewModel = PostListViewModel(blog: blog, postCoordinator: PostCoordinator.shared)
         controller.restorationClass = self
 
         return controller
@@ -176,7 +179,22 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
 
+        bindViewModel()
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
+    private func bindViewModel() {
+        bindViewModelOutputs()
+    }
+
+    private func bindViewModelOutputs() {
+        viewModel?.editingPostUploadSuccess = { post in
+            PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
+        }
+
+        viewModel?.editingPostUploadFailed = { [weak self] in
+            self?.presentAlertForPostBeingUploaded()
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -531,7 +549,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        editPost(apost: post)
+        viewModel?.edit(post)
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -605,19 +623,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
-    private func editPost(apost: AbstractPost) {
-        guard let post = apost as? Post else {
-            return
-        }
-        guard !PostCoordinator.shared.isUploading(post: post) else {
-            presentAlertForPostBeingUploaded()
-            return
-        }
-
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
-        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
-    }
-
     private func editDuplicatePost(apost: AbstractPost) {
         guard let post = apost as? Post else {
             return
@@ -686,7 +691,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
-        editPost(apost: post)
+        viewModel?.edit(post)
     }
 
     func view(_ post: AbstractPost) {
