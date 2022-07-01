@@ -104,6 +104,8 @@
 		0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */; };
 		088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */; };
 		088CC594282BEC41007B9421 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
+		089EE560286F016C001294B5 /* PostListReachabilityUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089EE55F286F016C001294B5 /* PostListReachabilityUtility.swift */; };
+		089EE561286F016C001294B5 /* PostListReachabilityUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089EE55F286F016C001294B5 /* PostListReachabilityUtility.swift */; };
 		08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */; };
 		08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */; };
 		08A50DED286C80F5003B0195 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A50DEC286C80F5003B0195 /* PostListViewModel.swift */; };
@@ -5036,6 +5038,7 @@
 		0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLIncrementalFilenameTests.swift; sourceTree = "<group>"; };
 		088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardContentLabel.swift; sourceTree = "<group>"; };
 		088CC593282BEC41007B9421 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
+		089EE55F286F016C001294B5 /* PostListReachabilityUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListReachabilityUtility.swift; sourceTree = "<group>"; };
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
 		08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceTests.m; sourceTree = "<group>"; };
 		08A50DEC286C80F5003B0195 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
@@ -10759,9 +10762,10 @@
 			isa = PBXGroup;
 			children = (
 				591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */,
-				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
 				E684383D221F535900752258 /* LoadMoreCounter.swift */,
+				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
 				08A50DEC286C80F5003B0195 /* PostListViewModel.swift */,
+				089EE55F286F016C001294B5 /* PostListReachabilityUtility.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -19338,6 +19342,7 @@
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				E10290741F30615A00DAC588 /* Role.swift in Sources */,
+				089EE560286F016C001294B5 /* PostListReachabilityUtility.swift in Sources */,
 				B0637527253E7CEC00FD45D2 /* SuggestionsTableView.swift in Sources */,
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
 				435B762222973D0600511813 /* UIColor+MurielColors.swift in Sources */,
@@ -21269,6 +21274,7 @@
 				FABB23612602FC2C00C8785C /* ReaderTabItemsStore.swift in Sources */,
 				FABB23622602FC2C00C8785C /* NoResultsViewController+Model.swift in Sources */,
 				FABB23632602FC2C00C8785C /* PostListTableViewHandler.swift in Sources */,
+				089EE561286F016C001294B5 /* PostListReachabilityUtility.swift in Sources */,
 				FABB23642602FC2C00C8785C /* UIAlertController+Helpers.swift in Sources */,
 				FABB23652602FC2C00C8785C /* RevisionDiff+CoreData.swift in Sources */,
 				C79C307F26EA970800E88514 /* ReferrerDetailsSpamActionRow.swift in Sources */,

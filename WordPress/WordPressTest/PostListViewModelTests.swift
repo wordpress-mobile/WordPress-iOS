@@ -4,11 +4,13 @@ import XCTest
 final class PostListViewModelTests: XCTestCase {
     private let mockContextManager = ContextManagerMock()
 
+    // MARK: - FilterSettings
     func testFilterSettingsIsPostType() {
         let sut = PostListViewModel(blog: makeBlog(), postCoordinator: PostCoordinator())
         XCTAssertEqual(sut.filterSettings.postType, .post)
     }
 
+    // MARK: - Edit
     func testEditInvokesFailureWhenPostIsUploading() {
         class MockPostCoordinator: PostCoordinator {
             override func isUploading(post: AbstractPost) -> Bool {
@@ -40,12 +42,97 @@ final class PostListViewModelTests: XCTestCase {
         sut.editingPostUploadFailed = {
             postFailedCounter += 1
         }
-        sut.edit(PostBuilder().build())
+        sut.edit(PostBuilder(mockContextManager.mainContext).build())
 
         XCTAssertEqual(postFailedCounter, 1)
     }
 
-    func makeBlog() -> Blog {
-        return BlogBuilder(mockContextManager.mainContext).isHostedAtWPcom().build()
+    // MARK: - Stats
+    func testStatsDoesNotInvokeStatsConfiguredWhenBlogAccountIsNil() {
+        let blog = BlogBuilder(mockContextManager.mainContext).withJetpack().build()
+        let sut = PostListViewModel(
+            blog: blog,
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: MockReachabilityUtility()
+        )
+
+        var statsConfiguredCallCount = 0
+        sut.statsConfigured = { (_, _, _) in
+            statsConfiguredCallCount += 1
+        }
+
+        sut.stats(for: PostBuilder(mockContextManager.mainContext, blog: blog).build())
+        XCTAssertEqual(statsConfiguredCallCount, 0)
+    }
+
+    func testStatsDoesNotInvokeStatsConfiguredWhenPostHasNoID() {
+        let blog = makeBlog()
+
+        let sut = PostListViewModel(
+            blog: blog,
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: MockReachabilityUtility()
+        )
+
+        var statsConfiguredCallCount = 0
+        sut.statsConfigured = { (_, _, _) in
+            statsConfiguredCallCount += 1
+        }
+
+        sut.stats(for: PostBuilder(mockContextManager.mainContext, blog: blog).with(id: nil).build())
+        XCTAssertEqual(statsConfiguredCallCount, 0)
+    }
+
+    func testStatsDoesNotInvokeStatsConfiguredWhenPostPermaLinkIsNil() {
+        let blog = makeBlog()
+
+        let sut = PostListViewModel(
+            blog: blog,
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: MockReachabilityUtility()
+        )
+
+        var statsConfiguredCallCount = 0
+        sut.statsConfigured = { (_, _, _) in
+            statsConfiguredCallCount += 1
+        }
+
+        sut.stats(for: PostBuilder(mockContextManager.mainContext, blog: blog)
+            .with(id: 1239)
+            .with(permaLink: nil)
+            .build())
+        XCTAssertEqual(statsConfiguredCallCount, 0)
+    }
+
+    func testStatsDoesInvokesStatsConfiguredWhenAccountIsNotNilAndPostHasID() {
+        let blog = makeBlog()
+
+        let sut = PostListViewModel(
+            blog: blog,
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: MockReachabilityUtility()
+        )
+
+        var statsConfiguredCallCount = 0
+        sut.statsConfigured = { (_, _, _) in
+            statsConfiguredCallCount += 1
+        }
+
+        sut.stats(for: PostBuilder(mockContextManager.mainContext, blog: blog)
+            .with(id: 1239)
+            .with(permaLink: "https://wordpress.com")
+            .build())
+        XCTAssertEqual(statsConfiguredCallCount, 1)
+    }
+
+
+    private func makeBlog() -> Blog {
+        return BlogBuilder(mockContextManager.mainContext).withAnAccount().withJetpack().build()
+    }
+}
+
+private class MockReachabilityUtility: PostListReachabilityProvider {
+    func performActionIfConnectionAvailable(_ action: (() -> Void)) {
+        action()
     }
 }

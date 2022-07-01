@@ -15,19 +15,6 @@ class PostBuilder {
         post.blog = blog ?? BlogBuilder(context).build()
     }
 
-    private static func buildPost(context: NSManagedObjectContext) -> Post {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
-        blog.xmlrpc = "http://example.com/xmlrpc.php"
-        blog.url = "http://example.com"
-        blog.username = "test"
-        blog.password = "test"
-
-        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
-        post.blog = blog
-
-        return post
-    }
-
     func published() -> PostBuilder {
         post.status = .publish
         return self
@@ -168,6 +155,16 @@ class PostBuilder {
     func with(autoUploadAttemptsCount: Int) -> PostBuilder {
         post.autoUploadAttemptsCount = NSNumber(value: autoUploadAttemptsCount)
 
+        return self
+    }
+
+    func with(permaLink: String?) -> PostBuilder {
+        post.permaLink = permaLink
+        return self
+    }
+
+    func with(id: NSNumber?) -> PostBuilder {
+        post.postID = id
         return self
     }
 

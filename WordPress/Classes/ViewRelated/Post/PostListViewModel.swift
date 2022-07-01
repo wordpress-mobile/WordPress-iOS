@@ -3,6 +3,7 @@ import Foundation
 protocol PostListViewModelOutputs {
     var editingPostUploadFailed: (() -> Void)? { get set }
     var editingPostUploadSuccess: ((Post) -> Void)? { get set }
+    var statsConfigured: ((Int, String?, URL?) -> Void)? { get set }
 }
 
 /// Convert to protocol if more inputs are needed.
@@ -22,6 +23,7 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     // MARK: - Output Closures
     var editingPostUploadFailed: (() -> Void)?
     var editingPostUploadSuccess: ((Post) -> Void)?
+    var statsConfigured: ((Int, String?, URL?) -> Void)?
 
     // MARK: - Internal State
     lazy var filterSettings: PostListFilterSettings = {
@@ -31,11 +33,17 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     // MARK: - Private State
     private let blog: Blog
     private let postCoordinator: PostCoordinator
+    private let reachabilityUtility: PostListReachabilityProvider
 
     // MARK: - Lifecycle
-    init(blog: Blog, postCoordinator: PostCoordinator) {
+    init(
+        blog: Blog,
+        postCoordinator: PostCoordinator,
+        reachabilityUtility: PostListReachabilityProvider = PostListReachabilityUtility()
+    ) {
         self.blog = blog
         self.postCoordinator = postCoordinator
+        self.reachabilityUtility = reachabilityUtility
     }
 
     // MARK: - Outputs
@@ -58,7 +66,36 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     }
 
     func stats(for post: AbstractPost) {
+        reachabilityUtility.performActionIfConnectionAvailable {
+            viewStatsForPost(post)
+        }
+    }
 
+    private func viewStatsForPost(_ apost: AbstractPost) {
+        // Check the blog
+        let blog = apost.blog
+
+        guard blog.supports(.stats) else {
+            // Needs Jetpack.
+            return
+        }
+
+        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
+
+        // Push the Post Stats ViewController
+        guard let postID = apost.postID as? Int else {
+            return
+        }
+
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
+        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+        guard let permaLink = apost.permaLink else {
+            return
+        }
+        let postURL = URL(string: permaLink as String)
+        statsConfigured?(postID, apost.titleForDisplay(), postURL)
     }
 
     func duplicate(_ post: AbstractPost) {

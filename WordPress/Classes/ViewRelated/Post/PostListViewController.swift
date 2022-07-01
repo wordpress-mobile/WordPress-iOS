@@ -195,6 +195,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         viewModel?.editingPostUploadFailed = { [weak self] in
             self?.presentAlertForPostBeingUploaded()
         }
+
+        viewModel?.statsConfigured = { [weak self] postID, postTitle, postURL in
+            let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+            postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
+            self?.navigationController?.pushViewController(postStatsTableViewController, animated: true)
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -662,32 +668,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func viewStatsForPost(_ apost: AbstractPost) {
-        // Check the blog
-        let blog = apost.blog
-
-        guard blog.supports(.stats) else {
-            // Needs Jetpack.
-            return
-        }
-
-        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
-
-        // Push the Post Stats ViewController
-        guard let postID = apost.postID as? Int else {
-            return
-        }
-
-        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
-        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
-
-        let postURL = URL(string: apost.permaLink! as String)
-        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
-        navigationController?.pushViewController(postStatsTableViewController, animated: true)
-    }
-
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
@@ -699,9 +679,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            viewStatsForPost(post)
-        }
+        viewModel?.stats(for: post)
     }
 
     func duplicate(_ post: AbstractPost) {
