@@ -55,6 +55,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
+@property (nonatomic, strong) UIViewController *notificationsContentViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
@@ -107,7 +108,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
                                                      name:NSNotification.ZendeskPushNotificationReceivedNotification
@@ -248,11 +249,25 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _notificationsSplitViewController;
 }
 
+- (UIViewController *)notificationsContentViewController
+{
+    if (!_notificationsContentViewController) {
+        if ([AppConfiguration isWordPress] == YES) {
+            _notificationsContentViewController = [self makeJetpackContainerViewControllerWithContentController: self.notificationsSplitViewController];
+            _notificationsContentViewController.tabBarItem = self.notificationsSplitViewController.tabBarItem;
+        } else {
+            _notificationsContentViewController = self.notificationsSplitViewController;
+        }
+    }
+    return _notificationsContentViewController;
+}
+
 - (void)reloadSplitViewControllers
 {
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
+    _notificationsContentViewController = nil;
     _mySitesCoordinator = nil;
     
     [self setViewControllers:[self tabViewControllers]];
@@ -296,13 +311,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return @[
             self.mySitesCoordinator.rootViewController,
             self.readerNavigationController,
-            self.notificationsSplitViewController
+            self.notificationsContentViewController
         ];
     }
     
     return @[
         self.mySitesCoordinator.rootViewController,
-        self.notificationsSplitViewController
+        self.notificationsContentViewController
     ];
 }
 
