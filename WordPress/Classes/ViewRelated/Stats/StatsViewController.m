@@ -81,17 +81,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self initStats];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[WPTabBarController sharedInstance] addJetpackBanner];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self dismissQuickStartTaskCompleteNotice];
-    [[WPTabBarController sharedInstance] removeJetpackBanner];
 }
 
 - (void)setBlog:(Blog *)blog
