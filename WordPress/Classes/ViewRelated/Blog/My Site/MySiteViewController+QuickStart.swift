@@ -13,7 +13,7 @@ extension MySiteViewController {
                 switch element {
                 case .noSuchElement, .newpost:
 
-                    self?.additionalSafeAreaInsets = WPTabBarController.sharedInstance().jetpackBannerView == nil ? .zero : Self.jetpackBannerInsets
+                    self?.additionalSafeAreaInsets = .zero
 
                 case .siteIcon, .siteTitle, .viewSite:
                     self?.scrollView.scrollToTop(animated: true)
