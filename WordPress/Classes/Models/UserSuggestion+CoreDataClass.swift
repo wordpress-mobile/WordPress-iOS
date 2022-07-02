@@ -8,8 +8,8 @@ public class UserSuggestion: NSManagedObject {
         let userLoginValue = dictionary["user_login"] as? String
         let displayNameValue = dictionary["display_name"] as? String
 
-        // A user suggestion is only valid when at least one of these is present.
-        guard userLoginValue != nil || displayNameValue != nil else {
+        // A user suggestion is only valid when it has an ID and at least user_login or display_name is present.
+        guard let id = dictionary["ID"] as? UInt, userLoginValue != nil || displayNameValue != nil else {
             return nil
         }
 
@@ -18,8 +18,9 @@ public class UserSuggestion: NSManagedObject {
         }
         self.init(entity: entityDescription, insertInto: context)
 
-        username = userLoginValue
-        displayName = displayNameValue
+        self.id = NSNumber(value: id)
+        self.username = userLoginValue
+        self.displayName = displayNameValue
 
         if let imageURLString = dictionary["image_URL"] as? String {
             imageURL = URL(string: imageURLString)

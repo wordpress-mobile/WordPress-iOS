@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -996,6 +996,7 @@
     </entity>
     <entity name="UserSuggestion" representedClassName="UserSuggestion" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="URI" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="userSuggestions" inverseEntity="Blog" syncable="YES"/>
@@ -1091,7 +1092,7 @@
         <element name="TopViewedAuthorStatsRecordValue" positionX="-637.94921875" positionY="1803.6796875" width="128" height="105"/>
         <element name="TopViewedPostStatsRecordValue" positionX="-638.76953125" positionY="1639.93359375" width="128" height="133"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
-        <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
+        <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="104"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
     </elements>
 </model>

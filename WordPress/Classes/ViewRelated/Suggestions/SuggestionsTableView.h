@@ -13,6 +13,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic, assign) SuggestionType suggestionType;
 @property (nonatomic, nonnull, strong) NSMutableArray *searchResults;
+@property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic, nullable, strong) NSArray *suggestions;
 @property (nonatomic, nonnull, strong) NSString *searchText;
 @property (nonatomic) BOOL useTransparentHeader;
