@@ -13,10 +13,11 @@ class JetpackBannerView: UIView {
         setup()
     }
 
+    override var intrinsicContentSize: CGSize {
+        return isHidden ? CGSize.zero : super.intrinsicContentSize
+    }
+
     func setup() {
-        guard AppConfiguration.isWordPress else {
-            return
-        }
 
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = Appearance.jetpackBackgroundColor
@@ -24,11 +25,13 @@ class JetpackBannerView: UIView {
         let jetpackButton = makeJetpackButton()
         addSubview(jetpackButton)
 
-        pinSubviewToAllEdges(jetpackButton, insets: UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0), priority: .required)
+        pinSubviewToAllEdges(jetpackButton)
+        heightAnchor.constraint(equalToConstant: Appearance.jetpackBannerHeight).isActive = true
     }
 
     private func makeJetpackButton() -> UIButton {
         let jetpackButton = UIButton()
+        jetpackButton.isUserInteractionEnabled = false
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackButton.setTitle(Appearance.jetpackBannerTitle, for: .normal)
         jetpackButton.tintColor = .muriel(color: .jetpackGreen, .shade40)
@@ -60,6 +63,7 @@ class JetpackBannerView: UIView {
     }
 
     private enum Appearance {
+        static let jetpackBannerHeight: CGFloat = 44
         static let jetpackBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                     dark: .muriel(color: .jetpackGreen, .shade90))
         static let jetpackBannerTitle = NSLocalizedString("Jetpack powered",

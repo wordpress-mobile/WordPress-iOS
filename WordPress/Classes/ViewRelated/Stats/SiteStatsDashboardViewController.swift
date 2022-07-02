@@ -63,6 +63,7 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
@@ -88,6 +89,7 @@ class SiteStatsDashboardViewController: UIViewController {
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
+        configureJetpackBanner()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
@@ -97,6 +99,10 @@ class SiteStatsDashboardViewController: UIViewController {
 
     func configureNavBar() {
         parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+    }
+
+    func configureJetpackBanner() {
+        jetpackBannerView.isHidden = AppConfiguration.isJetpack
     }
 
     @objc func manageInsightsButtonTapped() {

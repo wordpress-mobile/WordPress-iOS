@@ -72,6 +72,7 @@
                     <navigationItem key="navigationItem" title="Stats" id="VZj-LS-owu"/>
                     <connections>
                         <outlet property="filterTabBar" destination="R6d-mo-itW" id="fNF-ni-3g1"/>
+                        <outlet property="jetpackBannerView" destination="zMO-yu-sCx" id="B8D-I1-G7G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ixM-JR-6YX" userLabel="First Responder" sceneMemberID="firstResponder"/>
