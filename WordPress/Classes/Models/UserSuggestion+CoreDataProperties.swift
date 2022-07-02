@@ -8,6 +8,7 @@ extension UserSuggestion {
         return NSFetchRequest<UserSuggestion>(entityName: "UserSuggestion")
     }
 
+    @NSManaged public var id: NSNumber?
     @NSManaged public var displayName: String?
     @NSManaged public var imageURL: URL?
     @NSManaged public var username: String?
