@@ -1291,7 +1291,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         }
 
         suggestionsTableView.hideSuggestions()
-        controller.enableSuggestions(with: siteID)
+        controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds)
     }
 }
 

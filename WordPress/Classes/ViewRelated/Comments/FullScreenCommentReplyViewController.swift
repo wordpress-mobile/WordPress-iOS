@@ -59,8 +59,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     /// Enables the @ mention suggestions while editing
     /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
-    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list. Default is nil.
-    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]? = nil) {
+    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list.
+    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]?) {
         self.siteID = siteID
         self.prominentSuggestionsIds = prominentSuggestionsIds
     }
