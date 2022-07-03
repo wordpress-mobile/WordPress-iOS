@@ -725,7 +725,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshProminentSuggestions];
 }
 
--(void)refreshProminentSuggestions
+- (void)refreshProminentSuggestions
 {
     NSMutableArray<NSNumber *> *ids = [[NSMutableArray alloc] init];
     if (self.post) {

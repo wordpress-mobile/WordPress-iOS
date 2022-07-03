@@ -1111,7 +1111,7 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         suggestionsTableView?.hideSuggestions()
 
         if let siteID = siteID {
-            controller.enableSuggestions(with: siteID)
+            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds)
         }
     }
 
