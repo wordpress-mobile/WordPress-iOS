@@ -1070,6 +1070,7 @@ private extension CommentDetailViewController {
 
         let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        suggestionsView.prominentSuggestionsIds = [comment.post?.authorID, NSNumber(value: comment.authorID)].compactMap { $0 }
         view.addSubview(suggestionsView)
 
         NSLayoutConstraint.activate([
