@@ -480,6 +480,7 @@ extension NotificationDetailsViewController {
         }
 
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsTableView?.prominentSuggestionsIds = [note.metaCommentAuthorID].compactMap { $0 }
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
 
