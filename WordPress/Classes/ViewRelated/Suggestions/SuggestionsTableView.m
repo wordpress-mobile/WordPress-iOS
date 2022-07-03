@@ -251,6 +251,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         } else {
             self.searchResults = [self.suggestions mutableCopy];
         }
+        [self moveProminentSuggestionsToTop];
     } else {
         self.searchText = @"";
         [self.searchResults removeAllObjects];

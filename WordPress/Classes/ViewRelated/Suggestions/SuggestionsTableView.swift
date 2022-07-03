@@ -97,6 +97,39 @@ extension SuggestionType {
         }
     }
 
+    func moveProminentSuggestionsToTop() {
+        // This method only works for "mention" suggestion types
+        // And when both "searchResults" and "prominentSuggestionsIds" are not empty
+        guard
+            self.suggestionType == .mention &&
+            self.searchResults.count > 0,
+            let ids = self.prominentSuggestionsIds,
+            !ids.isEmpty
+        else { return }
+
+        // Finds the suggestions to move to the top of the "searchResults" array.
+        //
+        // Also, the order of the prominent suggestions in "searchResults" should be
+        // the same order as "prominentSuggestionsIds".
+        var suggestionsToInsert: [Any?] = Array(repeating: nil, count: ids.count)
+        let indexesToRemove = NSMutableIndexSet()
+        for (index, item) in (searchResults as NSArray).enumerated() {
+            guard
+                let suggestion = item as? UserSuggestion,
+                let position = ids.firstIndex(where: { suggestion.id == $0 })
+            else { continue }
+            suggestionsToInsert[position] = suggestion
+            indexesToRemove.add(index)
+        }
+
+        // Move suggestions to the beginning of the list
+        if !suggestionsToInsert.isEmpty && indexesToRemove.count > 0 {
+            let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+            self.searchResults.removeObjects(at: indexesToRemove as IndexSet)
+            self.searchResults.insert(suggestionsToInsert, at: IndexSet(0..<suggestionsToInsert.count))
+        }
+    }
+
     private func suggestionText(for suggestion: Any) -> String? {
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
