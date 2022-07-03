@@ -519,9 +519,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPathForCommentRepliedTo];
         cell.isReplyHighlighted = YES;
     }
-
+    
     self.highlightedIndexPath = indexPathForCommentRepliedTo;
     _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+    
+    [self refreshProminentSuggestions];
 }
 
 - (UIView *)cachedHeaderView {
@@ -623,6 +625,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     _followCommentsService = [FollowCommentsService createServiceWith:_post];
     _readerCommentsFollowPresenter = [[ReaderCommentsFollowPresenter alloc] initWithPost:_post delegate:self presentingViewController:self];
+    _prominentSuggestionsIds = @[post.authorID];
 }
 
 - (NSNumber *)siteID
@@ -671,7 +674,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
-
 #pragma mark - View Refresh Helpers
 
 - (void)refreshAndSync
@@ -682,7 +684,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
     [self refreshTableViewAndNoResultsView];
-
     [self.syncHelper syncContent];
 }
 
@@ -722,6 +723,17 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshSuggestionsTableView
 {
     self.suggestionsTableView.enabled = self.shouldDisplaySuggestionsTableView;
+    [self refreshProminentSuggestions];
+}
+
+-(void)refreshProminentSuggestions
+{
+    NSMutableArray<NSNumber *> *ids = [[NSMutableArray alloc] initWithArray:@[self.post.authorID]];
+    if (self.indexPathForCommentRepliedTo) {
+        Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
+        [ids addObject:[NSNumber numberWithInt:comment.authorID]];
+    }
+    self.suggestionsTableView.prominentSuggestionsIds = [ids copy];
 }
 
 - (void)refreshReplyTextViewPlaceholder
