@@ -727,7 +727,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 -(void)refreshProminentSuggestions
 {
-    NSMutableArray<NSNumber *> *ids = [[NSMutableArray alloc] initWithArray:@[self.post.authorID]];
+    NSMutableArray<NSNumber *> *ids = [[NSMutableArray alloc] init];
+    if (self.post) {
+        [ids addObject:self.post.authorID];
+    }
     if (self.indexPathForCommentRepliedTo) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
         [ids addObject:[NSNumber numberWithInt:comment.authorID]];
