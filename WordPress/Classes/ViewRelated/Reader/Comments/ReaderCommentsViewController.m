@@ -625,7 +625,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     _followCommentsService = [FollowCommentsService createServiceWith:_post];
     _readerCommentsFollowPresenter = [[ReaderCommentsFollowPresenter alloc] initWithPost:_post delegate:self presentingViewController:self];
-    _prominentSuggestionsIds = @[post.authorID];
 }
 
 - (NSNumber *)siteID
@@ -1369,7 +1368,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
 {
     [self.suggestionsTableView hideSuggestions];
-    
-    [controller enableSuggestionsWith:self.siteID];
+    [controller enableSuggestionsWith:self.siteID prominentSuggestionsIds:self.suggestionsTableView.prominentSuggestionsIds];
 }
 @end
