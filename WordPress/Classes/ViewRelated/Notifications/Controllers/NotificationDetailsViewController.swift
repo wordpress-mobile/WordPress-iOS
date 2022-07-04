@@ -157,6 +157,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupSuggestionsView()
         setupKeyboardManager()
 
+        extendedLayoutIncludesOpaqueBars = true
+
         Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
     }
 
