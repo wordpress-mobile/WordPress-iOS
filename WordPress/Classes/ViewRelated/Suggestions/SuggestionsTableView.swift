@@ -11,6 +11,38 @@ extension SuggestionType {
 
 @objc public extension SuggestionsTableView {
 
+    // MARK: - API
+
+    /// Show suggestions for the given word.
+    /// - Parameter word: Used to find the suggestions that contain this word.
+    /// - Returns: Return true when at least one suggestion is being shown.
+    @discardableResult func showSuggestions(forWord word: String) -> Bool {
+        guard self.enabled else { return false }
+
+        if word.hasPrefix(suggestionTrigger) {
+            self.searchText = word
+            let suggestions = NSMutableArray(array: suggestions ?? [])
+            if self.searchText.count > 1 {
+                let searchQuery = NSString(string: word).substring(from: 1)
+                let predicate = self.predicate(for: searchQuery)
+                self.searchResults = NSMutableArray(array: suggestions.filtered(using: predicate))
+            } else {
+                self.searchResults = suggestions
+            }
+            self.moveProminentSuggestionsToTop()
+        } else {
+            self.searchText = ""
+            self.searchResults.removeAllObjects()
+        }
+
+        self.tableView.reloadData()
+        self.setNeedsUpdateConstraints()
+
+        return self.searchResults.count > 0
+    }
+
+    // MARK: - Internal
+
     func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
         guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
         SuggestionService.shared.suggestions(for: blog, completion: completion)
@@ -55,6 +87,8 @@ extension SuggestionType {
             return nil
         }
     }
+
+    // MARK: - Private
 
     private func imageURLForSuggestion(at indexPath: IndexPath) -> URL? {
         let suggestion = searchResults[indexPath.row]
