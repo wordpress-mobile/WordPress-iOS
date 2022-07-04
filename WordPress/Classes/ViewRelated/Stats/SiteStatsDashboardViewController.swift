@@ -102,7 +102,13 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureJetpackBanner() {
-        jetpackBannerView.isHidden = AppConfiguration.isJetpack
+        if AppConfiguration.isJetpack {
+            // When the banner is removed (along with its constraints), the view above it
+            // will grow to occupy the space. This is because the view above it has a
+            // lower-priority constraint from its bottom edge to the bottom edge of the
+            // screen.
+            jetpackBannerView.removeFromSuperview()
+        }
     }
 
     @objc func manageInsightsButtonTapped() {

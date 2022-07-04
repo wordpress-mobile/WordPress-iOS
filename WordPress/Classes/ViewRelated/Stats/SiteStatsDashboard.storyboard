@@ -67,6 +67,7 @@
                             <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="iem-bg-Jp2"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="irM-hU-WLy"/>
+                            <constraint firstItem="Ocg-ig-pQt" firstAttribute="bottom" secondItem="J6j-x0-sMS" secondAttribute="bottom" priority="750" id="qOT-O1-4F3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Stats" id="VZj-LS-owu"/>
