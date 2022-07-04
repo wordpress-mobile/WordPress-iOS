@@ -99,6 +99,8 @@
 		086F2482284F52DD00032F39 /* TooltipAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E4B4B281C019A0085E89C /* TooltipAnchor.swift */; };
 		086F2483284F52DF00032F39 /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D553652821286300AA1E8D /* Tooltip.swift */; };
 		086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
+		08746DB228730B6E000FAF51 /* PostListStringStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08746DB128730B6E000FAF51 /* PostListStringStore.swift */; };
+		08746DB328730B6E000FAF51 /* PostListStringStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08746DB128730B6E000FAF51 /* PostListStringStore.swift */; };
 		0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0879FC151E9301DD00E1EFC8 /* MediaTests.swift */; };
 		087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */; };
 		0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */; };
@@ -5035,6 +5037,7 @@
 		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
+		08746DB128730B6E000FAF51 /* PostListStringStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListStringStore.swift; sourceTree = "<group>"; };
 		0879FC151E9301DD00E1EFC8 /* MediaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTests.swift; sourceTree = "<group>"; };
 		087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailService.swift; sourceTree = "<group>"; };
 		0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLIncrementalFilenameTests.swift; sourceTree = "<group>"; };
@@ -10769,6 +10772,7 @@
 				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
 				08A50DEC286C80F5003B0195 /* PostListViewModel.swift */,
 				089EE55F286F016C001294B5 /* PostListReachabilityUtility.swift */,
+				08746DB128730B6E000FAF51 /* PostListStringStore.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -18455,6 +18459,7 @@
 				7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */,
 				1E672D95257663CE00421F13 /* GutenbergAudioUploadProcessor.swift in Sources */,
 				9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */,
+				08746DB228730B6E000FAF51 /* PostListStringStore.swift in Sources */,
 				C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
 				D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */,
@@ -21146,6 +21151,7 @@
 				FABB22EB2602FC2C00C8785C /* MediaAssetExporter.swift in Sources */,
 				FABB22EC2602FC2C00C8785C /* SharingButtonsViewController.swift in Sources */,
 				FABB22ED2602FC2C00C8785C /* EditorFactory.swift in Sources */,
+				08746DB328730B6E000FAF51 /* PostListStringStore.swift in Sources */,
 				FABB22EE2602FC2C00C8785C /* NotificationSiteSubscriptionViewController.swift in Sources */,
 				FABB22EF2602FC2C00C8785C /* PostingActivityDay.swift in Sources */,
 				C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */,

@@ -666,23 +666,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
-        var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
-
-        switch filter.filterType {
-        case .published:
-            message = NSLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
-            break
-        case .scheduled:
-            message = NSLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
-            break
-        default:
-            break
-        }
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        let alertController = UIAlertController(
+            title: nil,
+            message: PostListStringStore.PostRestoredPrompt.message(filter: filter), preferredStyle: .alert
+        )
+        alertController.addCancelActionWithTitle(PostListStringStore.PostRestoredPrompt.cancelText(), handler: nil)
         alertController.presentFromRootViewController()
     }
 
