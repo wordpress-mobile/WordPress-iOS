@@ -22,26 +22,20 @@ extension SuggestionType {
             return
         }
 
-        if word.hasPrefix(suggestionTrigger) {
-            self.searchText = word
-            let suggestions = NSMutableArray(array: suggestions ?? [])
-            if self.searchText.count > 1 {
-                let searchQuery = NSString(string: word).substring(from: 1)
-                let predicate = self.predicate(for: searchQuery)
-                self.searchResults = NSMutableArray(array: suggestions.filtered(using: predicate))
-            } else {
-                self.searchResults = suggestions
+        // Cancel previous operation
+        self.searchOperationQueue.cancelAllOperations()
+
+        // Perform search
+        self.searchOperationQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+            self.searchText = word.hasPrefix(self.suggestionTrigger) ? word : ""
+            self.searchResults = self.searchResults(fromWord: word)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.setNeedsUpdateConstraints()
+                completionHandler?(self.searchResults.count > 0)
             }
-            self.moveProminentSuggestionsToTop()
-        } else {
-            self.searchText = ""
-            self.searchResults.removeAllObjects()
         }
-
-        self.tableView.reloadData()
-        self.setNeedsUpdateConstraints()
-
-        completionHandler?(self.searchResults.count > 0)
     }
 
     // MARK: - Internal
@@ -93,6 +87,54 @@ extension SuggestionType {
 
     // MARK: - Private
 
+    private func searchResults(fromWord word: String) -> NSMutableArray {
+        guard word.hasPrefix(self.suggestionTrigger) else { return NSMutableArray() }
+        let suggestions = NSMutableArray(array: self.suggestions ?? [])
+        var searchResults: NSMutableArray
+        if word.count > 1 {
+            let searchQuery = NSString(string: word).substring(from: 1)
+            let predicate = self.predicate(for: searchQuery)
+            searchResults = NSMutableArray(array: suggestions.filtered(using: predicate))
+        } else {
+            searchResults = suggestions
+        }
+        self.moveProminentSuggestionsToTop(searchResults: searchResults)
+        return searchResults
+    }
+
+    private func moveProminentSuggestionsToTop(searchResults: NSMutableArray) {
+        // This method only works for "mention" suggestion types
+        // And when both "searchResults" and "prominentSuggestionsIds" are not empty
+        guard
+            self.suggestionType == .mention &&
+            searchResults.count > 0,
+            let ids = self.prominentSuggestionsIds,
+            !ids.isEmpty
+        else { return }
+
+        // Finds the suggestions to move to the top of the "searchResults" array.
+        //
+        // Also, the order of the prominent suggestions in "searchResults" should be
+        // the same order as "prominentSuggestionsIds".
+        var suggestionsToInsert: [Any?] = Array(repeating: nil, count: ids.count)
+        let indexesToRemove = NSMutableIndexSet()
+        for (index, item) in (searchResults as NSArray).enumerated() {
+            guard
+                let suggestion = item as? UserSuggestion,
+                let position = ids.firstIndex(where: { suggestion.id == $0 })
+            else { continue }
+            suggestionsToInsert[position] = suggestion
+            indexesToRemove.add(index)
+        }
+
+        // Move suggestions to the beginning of the list
+        if !suggestionsToInsert.isEmpty && indexesToRemove.count > 0 {
+            let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+            searchResults.removeObjects(at: indexesToRemove as IndexSet)
+            searchResults.insert(suggestionsToInsert, at: IndexSet(0..<suggestionsToInsert.count))
+        }
+    }
+
     private func imageURLForSuggestion(at indexPath: IndexPath) -> URL? {
         let suggestion = searchResults[indexPath.row]
 
@@ -131,39 +173,6 @@ extension SuggestionType {
                 self.suggestions = siteSuggestions
                 self.showSuggestions(forWord: self.searchText)
             }
-        }
-    }
-
-    func moveProminentSuggestionsToTop() {
-        // This method only works for "mention" suggestion types
-        // And when both "searchResults" and "prominentSuggestionsIds" are not empty
-        guard
-            self.suggestionType == .mention &&
-            self.searchResults.count > 0,
-            let ids = self.prominentSuggestionsIds,
-            !ids.isEmpty
-        else { return }
-
-        // Finds the suggestions to move to the top of the "searchResults" array.
-        //
-        // Also, the order of the prominent suggestions in "searchResults" should be
-        // the same order as "prominentSuggestionsIds".
-        var suggestionsToInsert: [Any?] = Array(repeating: nil, count: ids.count)
-        let indexesToRemove = NSMutableIndexSet()
-        for (index, item) in (searchResults as NSArray).enumerated() {
-            guard
-                let suggestion = item as? UserSuggestion,
-                let position = ids.firstIndex(where: { suggestion.id == $0 })
-            else { continue }
-            suggestionsToInsert[position] = suggestion
-            indexesToRemove.add(index)
-        }
-
-        // Move suggestions to the beginning of the list
-        if !suggestionsToInsert.isEmpty && indexesToRemove.count > 0 {
-            let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
-            self.searchResults.removeObjects(at: indexesToRemove as IndexSet)
-            self.searchResults.insert(suggestionsToInsert, at: IndexSet(0..<suggestionsToInsert.count))
         }
     }
 
