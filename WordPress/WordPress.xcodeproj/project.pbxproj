@@ -26378,7 +26378,7 @@
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
+				minimumVersion = 0.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
