@@ -18,6 +18,40 @@
         }
       ]
     },
+    "environmentVariableEntries" : [
+      {
+        "key" : "BUILDKITE_ANALYTICS_TOKEN",
+        "value" : "$(BUILDKITE_ANALYTICS_TOKEN)"
+      },
+      {
+        "key" : "BUILDKITE_BRANCH",
+        "value" : "$(BUILDKITE_BRANCH)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_ID",
+        "value" : "$(BUILDKITE_BUILD_ID)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_NUMBER",
+        "value" : "$(BUILDKITE_BUILD_NUMBER)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_URL",
+        "value" : "$(BUILDKITE_BUILD_URL)"
+      },
+      {
+        "key" : "BUILDKITE_COMMIT",
+        "value" : "$(BUILDKITE_COMMIT)"
+      },
+      {
+        "key" : "BUILDKITE_JOB_ID",
+        "value" : "$(BUILDKITE_JOB_ID)"
+      },
+      {
+        "key" : "BUILDKITE_MESSAGE",
+        "value" : "$(BUILDKITE_MESSAGE)"
+      }
+    ],
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
