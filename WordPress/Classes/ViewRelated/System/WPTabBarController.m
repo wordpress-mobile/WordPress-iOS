@@ -253,7 +253,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_notificationsContentViewController) {
         if ([AppConfiguration isWordPress] == YES) {
-            _notificationsContentViewController = [self makeJetpackContainerViewControllerWithContentController: self.notificationsSplitViewController];
+            _notificationsContentViewController = [self makeJetpackContainerViewControllerWithContentController: self.notificationsSplitViewController title: NSLocalizedString(@"Notifications", @"Notifications View Controller title")];
             _notificationsContentViewController.tabBarItem = self.notificationsSplitViewController.tabBarItem;
         } else {
             _notificationsContentViewController = self.notificationsSplitViewController;
