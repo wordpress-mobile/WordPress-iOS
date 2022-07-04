@@ -735,11 +735,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func retry(_ post: AbstractPost) {
-        PostCoordinator.shared.save(post)
+        viewModel?.retry(post)
     }
 
     func cancelAutoUpload(_ post: AbstractPost) {
-        PostCoordinator.shared.cancelAutoUploadOf(post)
+        viewModel?.cancelAutoUpload(post)
     }
 
     func share(_ apost: AbstractPost, fromView view: UIView) {

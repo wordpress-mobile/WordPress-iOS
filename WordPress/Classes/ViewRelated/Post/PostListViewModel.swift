@@ -63,10 +63,6 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
         editingPostUploadSuccess?(post)
     }
 
-    func view(_ post: AbstractPost) {
-
-    }
-
     func stats(for post: AbstractPost) {
         reachabilityUtility.performActionIfConnectionAvailable {
             viewStatsForPost(post)
@@ -100,12 +96,12 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
         statsConfigured?(postID, apost.titleForDisplay(), postURL)
     }
 
-    func duplicate(_ post: AbstractPost) {
+    func trash(_ post: AbstractPost) {
 
     }
 
-    func publish(_ post: AbstractPost) {
-
+    func retry(_ post: AbstractPost) {
+        PostCoordinator.shared.save(post)
     }
 
     func trash(_ post: AbstractPost) {
@@ -144,6 +140,27 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
                 delete: deleteText
             )
         )
+    func cancelAutoUpload(_ post: AbstractPost) {
+        PostCoordinator.shared.cancelAutoUploadOf(post)
+    }
+
+    func share(_ post: AbstractPost, fromView view: UIView) {
+        // UI coupled. It should be removed from the protocol.
+    }
+
+    // Functions below need to be extracted from `AbstractPostListViewController`.
+    // If a `AbstractPostListViewModel` is created, this class can subclass that and
+    // call super's functions in these.
+    func view(_ post: AbstractPost) {
+
+    }
+
+    func duplicate(_ post: AbstractPost) {
+
+    }
+
+    func publish(_ post: AbstractPost) {
+
     }
 
     func restore(_ post: AbstractPost) {
@@ -151,18 +168,6 @@ final class PostListViewModel: PostListViewModelInputs, PostListViewModelOutputs
     }
 
     func draft(_ post: AbstractPost) {
-
-    }
-
-    func retry(_ post: AbstractPost) {
-
-    }
-
-    func cancelAutoUpload(_ post: AbstractPost) {
-
-    }
-
-    func share(_ post: AbstractPost, fromView view: UIView) {
 
     }
 
