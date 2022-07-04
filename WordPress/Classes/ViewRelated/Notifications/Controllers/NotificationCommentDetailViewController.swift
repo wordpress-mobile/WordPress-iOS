@@ -93,6 +93,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         configureNavBar()
         view.backgroundColor = .basicBackground
         loadComment()
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewDidLayoutSubviews() {
