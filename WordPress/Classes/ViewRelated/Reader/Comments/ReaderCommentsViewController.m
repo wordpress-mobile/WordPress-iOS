@@ -1257,7 +1257,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
     [self.replyTextView replaceTextAtCaret:text withText:suggestion];
-    [suggestionsTableView showSuggestionsForWord:@""];
+    [suggestionsTableView showSuggestionsForWord:@"" completionHandler:nil];
     self.tapOffKeyboardGesture.enabled = YES;
 }
 
@@ -1364,8 +1364,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     // Disable the gestures recognizer when showing suggestions
-    BOOL showsSuggestions = [self.suggestionsTableView showSuggestionsForWord:word];
-    self.tapOffKeyboardGesture.enabled = !showsSuggestions;
+    __weak __typeof(self) weakSelf = self;
+    [self.suggestionsTableView showSuggestionsForWord:word completionHandler:^(BOOL showsSuggestions) {
+        weakSelf.tapOffKeyboardGesture.enabled = !showsSuggestions;
+    }];
 }
 
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller

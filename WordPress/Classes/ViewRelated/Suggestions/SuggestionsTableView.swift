@@ -16,8 +16,11 @@ extension SuggestionType {
     /// Show suggestions for the given word.
     /// - Parameter word: Used to find the suggestions that contain this word.
     /// - Returns: Return true when at least one suggestion is being shown.
-    @discardableResult func showSuggestions(forWord word: String) -> Bool {
-        guard self.enabled else { return false }
+    func showSuggestions(forWord word: String, completionHandler: ((Bool) -> Void)? = nil) {
+        guard self.enabled else {
+            completionHandler?(false)
+            return
+        }
 
         if word.hasPrefix(suggestionTrigger) {
             self.searchText = word
@@ -38,7 +41,7 @@ extension SuggestionType {
         self.tableView.reloadData()
         self.setNeedsUpdateConstraints()
 
-        return self.searchResults.count > 0
+        completionHandler?(self.searchResults.count > 0)
     }
 
     // MARK: - Internal

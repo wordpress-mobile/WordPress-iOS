@@ -9,7 +9,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 @interface SuggestionsTableView : UIView <UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, readonly, nonnull, strong) UITableView *tableView;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic, assign) SuggestionType suggestionType;
@@ -17,6 +17,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 @property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic, nullable, strong) NSArray *suggestions;
 @property (nonatomic, nonnull, strong) NSString *searchText;
+@property (nonatomic, readonly, nonnull, strong) dispatch_queue_t searchDispatchQueue;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
 @property (nonatomic) BOOL showLoading;
