@@ -350,9 +350,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  # pod 'WordPressMocks', '~> 0.0.15'
+  pod 'WordPressMocks', '~> 0.0.16'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'fix/jetpack-screenshot-generation'
+  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'fix/jetpack-screenshot-generation'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
