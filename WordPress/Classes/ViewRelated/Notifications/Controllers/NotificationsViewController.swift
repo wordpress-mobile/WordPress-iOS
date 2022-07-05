@@ -32,6 +32,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
+    /// Jetpack Banner View
+    /// Only visible in WordPress
+    ///
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
+
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -152,6 +157,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
+        configureJetpackBanner()
 
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
@@ -596,6 +602,10 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func configureJetpackBanner() {
+        jetpackBannerView.isHidden = AppConfiguration.isJetpack
     }
 }
 
