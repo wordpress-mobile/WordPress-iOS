@@ -63,7 +63,7 @@ class JetpackBannerView: UIView {
     }
 
     private enum Appearance {
-        static let jetpackBannerHeight: CGFloat = 44
+        static let jetpackBannerHeight: CGFloat = 50
         static let jetpackBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                     dark: .muriel(color: .jetpackGreen, .shade90))
         static let jetpackBannerTitle = NSLocalizedString("Jetpack powered",
