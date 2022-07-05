@@ -14,8 +14,9 @@ extension SuggestionType {
     // MARK: - API
 
     /// Show suggestions for the given word.
-    /// - Parameter word: Used to find the suggestions that contain this word.
-    /// - Returns: Return true when at least one suggestion is being shown.
+    /// - Parameters:
+    ///   - word: Used to find the suggestions that contain this word.
+    ///   - completionHandler: Completion handler that indicates  whether at least one suggestion is being shown.
     func showSuggestions(forWord word: String, completionHandler: ((Bool) -> Void)? = nil) {
         guard self.enabled else {
             completionHandler?(false)
