@@ -8,7 +8,7 @@ public class JetpackBackupScreen: ScreenObject {
     }
 
     var ellipsisButton: XCUIElement { ellipsisButtonGetter(app) }
-    var downloadBackupButton: XCUIElement { app.sheets.buttons.element(boundBy: 1) }
+    var downloadBackupButton: XCUIElement { app.sheets.buttons["jetpack-download-backup-button"] }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
