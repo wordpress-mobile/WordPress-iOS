@@ -38,7 +38,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         _showLoading = NO;
         _searchOperationQueue = [NSOperationQueue new];
         _searchOperationQueue.maxConcurrentOperationCount = 1;
-        _searchOperationQueue.name = @"ord.wordpress.SearchDispatchQueue";
+        _searchOperationQueue.name = @"org.wordpress.SearchDispatchQueue";
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
