@@ -542,7 +542,6 @@ private extension NotificationsViewController {
 
     func setupConstraints() {
         // Inline prompt is initially hidden!
-        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
