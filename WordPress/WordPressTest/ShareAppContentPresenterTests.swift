@@ -1,21 +1,32 @@
 import XCTest
 import OHHTTPStubs
+import WordPressKit
 
 @testable import WordPress
 
 final class ShareAppContentPresenterTests: CoreDataTestCase {
 
-    private let timeout: TimeInterval = 0.1
     private var account: WPAccount!
     private var presenter: ShareAppContentPresenter!
     private var viewController: MockViewController!
+    private var mockRemote: MockShareAppContentServiceRemote!
+    private lazy var mockContent: RemoteShareAppContent? = {
+        let bundle = Bundle(for: type(of: self))
+        guard let file = bundle.url(forResource: "share-app-link-success", withExtension: "json"),
+              let data = try? Data(contentsOf: file) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        return try? decoder.decode(RemoteShareAppContent.self, from: data)
+    }()
 
     override func setUp() {
         super.setUp()
 
         TestAnalyticsTracker.setup()
         account = AccountBuilder(contextManager).build()
-        presenter = ShareAppContentPresenter(account: account)
+        mockRemote = MockShareAppContentServiceRemote()
+        presenter = ShareAppContentPresenter(remote: mockRemote, account: account)
         viewController = MockViewController()
         presenter.delegate = viewController
     }
@@ -33,122 +44,109 @@ final class ShareAppContentPresenterTests: CoreDataTestCase {
     // MARK: Tests
 
     func test_present_givenValidResponse_presentsShareSheet() {
+        // Given
         stubShareAppLinkResponse(success: true)
 
-        let expectation = expectation(description: "Present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertNotNil(self.viewController.viewControllerToPresent)
-            XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
-            XCTAssertEqual(self.viewController.stateHistory, [true, false])
-            expectation.fulfill()
-        }
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-        wait(for: [expectation], timeout: timeout)
+        // Then
+        XCTAssertNotNil(self.viewController.viewControllerToPresent)
+        XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
+        XCTAssertEqual(self.viewController.stateHistory, [true, false])
     }
 
     func test_present_givenFailedResponse_displaysFailureNotice() {
+        // Given
         stubShareAppLinkResponse(success: false)
 
-        let expectation = expectation(description: "Present failure notice success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertNotNil(self.viewController.noticeTitle)
-            expectation.fulfill()
-        }
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-        wait(for: [expectation], timeout: timeout)
+        // Then
+        XCTAssertNotNil(self.viewController.noticeTitle)
     }
 
     func test_present_givenCachedContent_immediatelyPresentsShareSheet() {
+        // Given
         stubShareAppLinkResponse(success: true)
 
-        let firstExpectation = expectation(description: "Present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            firstExpectation.fulfill()
-        }
-        wait(for: [firstExpectation], timeout: timeout)
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .me)
         viewController.stateHistory = [] // reset state
-
         // present the share sheet again.
-        let secondExpectation = expectation(description: "Second present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertNotNil(self.viewController.viewControllerToPresent)
-            XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
-            XCTAssertTrue(self.viewController.stateHistory.isEmpty) // state should still be empty since there should be no more loading state changes.
-            secondExpectation.fulfill()
-        }
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-        wait(for: [secondExpectation], timeout: timeout)
+        // Then
+        XCTAssertNotNil(self.viewController.viewControllerToPresent)
+        XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
+        XCTAssertTrue(self.viewController.stateHistory.isEmpty) // state should still be empty since there should be no more loading state changes.
     }
 
     // MARK: Tracking
 
     func test_givenValidResponse_tracksEngagement() {
+        // Given
         stubShareAppLinkResponse(success: true)
 
-        let expectation = expectation(description: "Present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 1)
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-            let tracked = TestAnalyticsTracker.tracked.first!
-            XCTAssertEqual(tracked.event, WPAnalyticsEvent.recommendAppEngaged.value)
-            XCTAssertEqual(tracked.properties["source"]! as! String, ShareAppEventSource.me.rawValue)
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: timeout)
+        // Then
+        XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 1)
+        let tracked = TestAnalyticsTracker.tracked.first!
+        XCTAssertEqual(tracked.event, WPAnalyticsEvent.recommendAppEngaged.value)
+        XCTAssertEqual(tracked.properties["source"]! as! String, ShareAppEventSource.me.rawValue)
     }
 
     func test_givenCachedContent_tracksEngagement() {
+        // Given
         stubShareAppLinkResponse(success: true)
         let expectedEvents: [WPAnalyticsEvent] = [.recommendAppEngaged, .recommendAppEngaged]
         let expectedSources: [ShareAppEventSource] = [.about, .me]
 
-        let firstExpectation = expectation(description: "Present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .about) {
-            firstExpectation.fulfill()
-        }
-        wait(for: [firstExpectation], timeout: timeout)
-
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .about)
         // present the share sheet again. the second event should be fired even though cached content is returned.
-        let secondExpectation = expectation(description: "Second present share sheet success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 2)
-            XCTAssertEqual(TestAnalyticsTracker.tracked.map { $0.event }, expectedEvents.map { $0.value })
-            XCTAssertEqual(TestAnalyticsTracker.tracked.compactMap { $0.properties["source"] as? String }, expectedSources.map { $0.rawValue })
-            secondExpectation.fulfill()
-        }
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-        wait(for: [secondExpectation], timeout: timeout)
+        // Then
+        XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 2)
+        XCTAssertEqual(TestAnalyticsTracker.tracked.map { $0.event }, expectedEvents.map { $0.value })
+        XCTAssertEqual(TestAnalyticsTracker.tracked.compactMap { $0.properties["source"] as? String }, expectedSources.map { $0.rawValue })
     }
 
     func test_givenFailedResponse_tracksContentFetchFailure() {
+        // Given
         stubShareAppLinkResponse(success: false)
 
-        let expectation = expectation(description: "Present failure notice success")
-        presenter.present(for: .wordpress, in: viewController, source: .me) {
-            XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 1)
-            let tracked = TestAnalyticsTracker.tracked.first!
-            XCTAssertEqual(tracked.event, WPAnalyticsEvent.recommendAppContentFetchFailed.value)
-            expectation.fulfill()
-        }
+        // When
+        presenter.present(for: .wordpress, in: viewController, source: .me)
 
-        wait(for: [expectation], timeout: timeout)
+        // Then
+        XCTAssertEqual(TestAnalyticsTracker.trackedEventsCount(), 1)
+        let tracked = TestAnalyticsTracker.tracked.first!
+        XCTAssertEqual(tracked.event, WPAnalyticsEvent.recommendAppContentFetchFailed.value)
     }
 }
 
 private extension ShareAppContentPresenterTests {
 
     func stubShareAppLinkResponse(success: Bool) {
-        stub(condition: isMethodGET()) { _ in
-            if success {
-                let stubPath = OHPathForFile("share-app-link-success.json", type(of: self))
-                return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
+        if success {
+            guard let content = mockContent else {
+                XCTFail("Failed to load mock `RemoteShareAppContent`")
+                return
             }
 
-            return HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
+            mockRemote.configure(with: .success(content))
+        } else {
+            mockRemote.configure(with: .failure(NSError()))
         }
     }
 }
+
+// MARK: - MockViewController
 
 private class MockViewController: UIViewController, ShareAppContentPresenterDelegate {
     var noticeTitle: String? = nil
@@ -169,4 +167,24 @@ private class MockViewController: UIViewController, ShareAppContentPresenterDele
     func didUpdateLoadingState(_ loading: Bool) {
         stateHistory.append(loading)
     }
+}
+
+// MARK: - MockShareAppContentServiceRemote
+
+private class MockShareAppContentServiceRemote: ShareAppContentServiceRemote {
+
+    private var result: Result<RemoteShareAppContent, Error>?
+
+    func configure(with result: Result<RemoteShareAppContent, Error>) {
+        self.result = result
+    }
+
+    override func getContent(for appName: ShareAppName, completion: @escaping (Result<RemoteShareAppContent, Error>) -> Void) {
+        guard let result = result else {
+            return
+        }
+
+        completion(result)
+    }
+
 }
