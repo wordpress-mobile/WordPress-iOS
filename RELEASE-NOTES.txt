@@ -1,10 +1,9 @@
 20.3
 -----
-
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
 
 20.2
 -----
-* [***] [Jetpack-only] The Insights view in Stats has been revamped with a cleaner look and a new set of cards to make it easier than ever to see at a glance how your site's performing. [#18945]
 * [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 * [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
 * [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
