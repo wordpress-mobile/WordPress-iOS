@@ -11,6 +11,15 @@ extension SuggestionType {
 
 @objc public extension SuggestionsTableView {
 
+    // MARK: - API
+
+    /// Returns the a list of prominent suggestions excluding the current user.
+    static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorsIds: [NSNumber], defaultAccountId: NSNumber?) -> [NSNumber] {
+        return ([postAuthorId] + commentAuthorsIds).compactMap { $0 != defaultAccountId ? $0 : nil }
+    }
+
+    // MARK: - Internal
+
     func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
         guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
         SuggestionService.shared.suggestions(for: blog, completion: completion)
@@ -129,6 +138,8 @@ extension SuggestionType {
             self.searchResults.insert(suggestionsToInsert, at: IndexSet(0..<suggestionsToInsert.count))
         }
     }
+
+    // MARK: - Private
 
     private func suggestionText(for suggestion: Any) -> String? {
         switch (suggestionType, suggestion) {
