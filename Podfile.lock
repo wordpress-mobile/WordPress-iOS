@@ -535,7 +535,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.78.1`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `c6c78b79beee4daeffa2d6e6f23eae70a01128c8`)
+  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `9dbb644898d6b985d40b528fc3a12cf25b97d206`)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 9.0.0)
@@ -668,7 +668,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.78.1
   Kanvas:
-    :commit: c6c78b79beee4daeffa2d6e6f23eae70a01128c8
+    :commit: 9dbb644898d6b985d40b528fc3a12cf25b97d206
     :git: https://github.com/tumblr/Kanvas-iOS.git
   RCT-Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.78.1/third-party-podspecs/RCT-Folly.podspec.json
@@ -762,7 +762,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.78.1
   Kanvas:
-    :commit: c6c78b79beee4daeffa2d6e6f23eae70a01128c8
+    :commit: 9dbb644898d6b985d40b528fc3a12cf25b97d206
     :git: https://github.com/tumblr/Kanvas-iOS.git
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
@@ -868,6 +868,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 4041486b2068c37efcd010e82da1f41a7c503de4
+PODFILE CHECKSUM: 528f689ba166a24853814b5cc72d9b094a5ec922
 
 COCOAPODS: 1.11.2
