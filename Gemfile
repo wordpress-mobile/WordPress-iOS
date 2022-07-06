@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.11'
 gem 'commonmarker'
+gem 'danger', '~> 8.6'
+gem 'danger-rubocop', '~> 0.10'
 gem 'dotenv'
 gem 'fastlane', '~> 2.174'
 gem 'octokit', '~> 4.0'

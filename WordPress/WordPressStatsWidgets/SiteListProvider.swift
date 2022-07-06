@@ -1,7 +1,6 @@
 import WidgetKit
 import SwiftUI
 
-
 struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
     let service: StatsWidgetsService
@@ -16,15 +15,6 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     private var defaultSiteID: Int? {
 
         UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) as? Int
-    }
-
-    private func widgetData(for siteID: String) -> T? {
-        /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
-        guard let siteID = Int(siteID) else {
-            return nil
-        }
-
-        return T.read()?[siteID]
     }
 
     func placeholder(in context: Context) -> StatsWidgetEntry {
@@ -49,21 +39,15 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
+        guard let defaultSiteID = defaultSiteID,
+              let widgetData = widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
 
-        guard let site = configuration.site,
-              let siteIdentifier = site.identifier,
-              let widgetData = widgetData(for: siteIdentifier) else {
-
-            /// - TODO: TODAYWIDGET - This is here because configuration is not updated when the site list changes. It might be a WidgetKit bug. More to come on a separate issue.
-            if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(Timeline(entries: [.siteSelected(content, context)], policy: .never))
+            if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
+                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
             } else {
-                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
-                    completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
-                } else {
-                    completion(Timeline(entries: [.noData], policy: .never))
-                }
+                completion(Timeline(entries: [.noData], policy: .never))
             }
+
             return
         }
 
@@ -99,6 +83,33 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 }
 
+// MARK: - Widget Data
+
+private extension SiteListProvider {
+    /// Returns cached widget data based on the selected site when editing widget and the default site.
+    /// Configuration.site is nil until IntentHandler is initialized.
+    /// Configuration.site can have old value after logging in with a different account. No way to reset configuration when the user logs out.
+    /// Using defaultSiteID if both of these cases.
+    /// - Parameters:
+    ///   - configuration: Configuration of the Widget Site Selection Intent
+    ///   - defaultSiteID: ID of the default site in the account
+    /// - Returns: Widget data
+    func widgetData(for configuration: SelectSiteIntent, defaultSiteID: Int) -> T? {
+
+        /// If configuration.site.identifier has value but there's no widgetData, it means that this identifier comes from previously logged in account
+        return widgetData(for: configuration.site?.identifier ?? String(defaultSiteID))
+            ?? widgetData(for: String(defaultSiteID))
+    }
+
+    func widgetData(for siteID: String) -> T? {
+        /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
+        guard let siteID = Int(siteID) else {
+            return nil
+        }
+
+        return T.read()?[siteID]
+    }
+}
 
 enum StatsWidgetKind {
     case today

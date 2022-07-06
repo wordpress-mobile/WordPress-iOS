@@ -1,7 +1,5 @@
-20 sürümünü yepyeni bir görünümle başlatıyoruz. Hızlı Başlangıç kartı ve Sonraki Adımlar turları şimdi şık bir illüstrasyon da dahil olmak üzere, mevcut siteler için yeni tur tasarımlarıyla uyum sağlıyor. Çak beşlik.
+WordPress sohbet alanına girdi; artık bir gönderiyi takip etmenizi ve yeni yorumlar hakkında bildirim almanızı sağlayan bir "Sohbeti Takip Et" araç ipucunu göreceksiniz.
 
-Artık uygulamadaki "URL'den Ekle" seçeneğini kullanarak diğer web sitelerinden görsel ekleyebilirsiniz. Daha fazla kedi fotoğrafı lütfen.
+Site Oluşturma sürecinde site tasarımınızı seçtiğiniz seçim ekranında bazı iyileştirmeler yaptık.
 
-Blok düzenleyicide erişilebilirlikle ilgili bazı iyileştirmeler yaptık, böylece ekran okuyucunuz ihtiyacınız olan bağlamda daha fazla şey sunuyor.
-
-Son olarak, Uygulama Ayarları'ndaki medya önbelleği, gündem dizini ve Siri kısayol işlevlerinde rötuş yaptık. Artık standart renklerle ve marka renkleriyle uyumlu; panik kırmızısı yok.
+Son olarak, telefonunuz yatay moddayken bildirim kaydırmayı etkileyen bir hatayı ortadan kaldırdık. Artık istediğiniz gibi kaydırın.

@@ -1,7 +1,5 @@
-Kami meluncurkan versi 20 dengan desain baru yang segar. Sekarang kartu Mulai Cepat dan tur Langkah Selanjutnya sesuai dengan desain tur baru untuk situs-situs yang aktif, juga ditambahkan ilustrasi yang menarik. Tos!
+WordPress telah memiliki fitur komentar — Anda sekarang akan melihat tooltip “Ikuti Komentar” yang meminta Anda untuk mengikuti pos dan mendapatkan pemberitahuan tentang komentar baru.
 
-Anda sekarang dapat menyisipkan gambar dari situs web eksternal dengan menggunakan opsi "Sisipkan dari URL" di aplikasi. Ayo perbanyak foto kucing!
+Kami meningkatkan layar pemilihan desain situs dalam proses Pembuatan Situs.
 
-Kami telah membuat beberapa peningkatan aksesibilitas di editor blok, sehingga pembaca layar Anda menampilkan lebih banyak informasi kontekstual yang Anda butuhkan.
-
-Terakhir, kami membawa kuas ke cache media, indeks sorotan, dan fungsi pintasan Siri di Pengaturan Aplikasi. Mereka sekarang cocok dengan warna standar dan merek—tidak ada lagi warna yang mengganggu.
+Terakhir, kami memperbaiki bug yang memengaruhi pengguliran notifikasi saat ponsel Anda dalam mode lanskap. Gulir saja, teman.

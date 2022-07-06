@@ -1,7 +1,5 @@
-La version 20 fait peau neuve. La carte de démarrage rapide et les guides « Étapes suivantes » correspondent désormais aux nouveaux designs de navigation des sites existants, et comprennent une illustration attrayante. Super nouvelle !
+Découvrez la nouveauté de WordPress : vous verrez désormais une infobulle « Suivre la conversation » qui vous invite à suivre un article et à recevoir des notifications concernant les nouveaux commentaires.
 
-Vous pouvez désormais insérer des images provenant d’autres sites Web grâce à l’option « Insérer à partir de l’URL » dans l’application. Par ici les photos de chats !
+Nous avons apporté quelques améliorations à l’écran de sélection qui permet de choisir le design de votre site pendant son processus de création.
 
-Nous avons amélioré l’accessibilité de l’éditeur de blocs, de sorte que le lecteur d’écran communique davantage de contexte utile.
-
-Enfin, le cache de média, l’index de Spotlight et le raccourci Siri dans les réglages de l’application ont également fait peau neuve. Ils sont désormais assortis aux couleurs standard de chaque marque. Dites adieu au rouge anxiogène !
+Enfin, nous avons corrigé un bogue qui affectait le défilement des notifications lorsque votre téléphone était en mode paysage. Vous pouvez désormais faire défiler en toute fluidité !

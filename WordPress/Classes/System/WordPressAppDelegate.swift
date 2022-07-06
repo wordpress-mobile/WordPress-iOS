@@ -353,8 +353,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
-
-        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
     // MARK: - Helpers
@@ -496,6 +494,10 @@ extension WordPressAppDelegate {
             let url = activity.webpageURL else {
                 FailureNavigationAction().failAndBounce(activity.webpageURL)
                 return
+        }
+
+        if QRLoginCoordinator.didHandle(url: url) {
+            return
         }
 
         trackDeepLink(for: url) { url in

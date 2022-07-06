@@ -1,7 +1,7 @@
-Estamos lançando a versão 20 com uma cara nova. O cartão Início rápido e os tours de próximas etapas agora combinam com os novos designs de tour para sites existentes, com uma ilustração estilosa. Eba!
+Precisa de um pouco de inspiração para escrever? Nós podemos ajudá-lo com as novas sugestões de publicação. Receba uma nova sugestão todos os dias, escreva um post e crie o hábito de escrever.
 
-Agora você pode inserir imagens de outros sites usando a opção "Inserir a partir da URL" no aplicativo. Mais fotos de gatos, por favor.
+O Jetpack entrou no chat. Agora você verá uma dica de ferramenta "Seguir conversa" solicitando que você siga um post e receba notificações sobre novos comentários.
 
-Fizemos algumas melhorias de acessibilidade no editor de blocos para o leitor de tela cobrir mais do conteúdo necessário.
+Fizemos algumas melhorias na tela de seleção onde você escolhe o design do seu site durante o processo de criação.
 
-Por fim, repaginamos as funções de atalho da Siri, cache de mídia e índice de destaque nas configurações do aplicativo. Agora elas combinam com as cores da marca e padrão. Sem mais vermelho "cheguei".
+Por fim, eliminamos um bug que afetava a rolagem de notificações quando o telefone estava no modo paisagem. A rolagem está liberada!

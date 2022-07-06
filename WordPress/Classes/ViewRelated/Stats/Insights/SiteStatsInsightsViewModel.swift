@@ -105,12 +105,12 @@ class SiteStatsInsightsViewModel: Observable {
 
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
             return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
 
         insightsToShow.forEach { insightType in
-            let errorBlock = {
-                return StatsErrorRow(rowStatus: .error, statType: .insights)
+            let errorBlock = { statSection in
+                return StatsErrorRow(rowStatus: .error, statType: .insights, statSection: statSection)
             }
 
             switch insightType {
@@ -140,7 +140,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostGrowAudienceImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(nil)
+                }))
             case .latestPostSummary:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLatestPostSummary,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -153,7 +155,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                                         siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostChartImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsLatestPostSummary)
+                }))
             case .allTimeStats:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsAllTime,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -166,29 +170,35 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      siteStatsInsightsDelegate: nil)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsAllTime)
+                }))
             case .likesTotals:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLikesTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .likesTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: periodStore.summaryLikesStatus,
                                            block: {
                     return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsLikesTotals)
+                }))
             case .commentsTotals:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .commentsTotals,
                                            type: .period,
-                                           status: insightsStore.followersTotalsStatus,
+                                           status: periodStore.summaryLikesStatus,
                                            block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsCommentsTotals)
+                }))
             case .followersTotals:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsFollowerTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -205,7 +215,9 @@ class SiteStatsInsightsViewModel: Observable {
                     }
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsFollowerTotals)
+                }))
             case .mostPopularTime:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsMostPopularTime,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -223,7 +235,9 @@ class SiteStatsInsightsViewModel: Observable {
                     }
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsMostPopularTime)
+                }))
             case .tagsAndCategories:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsTagsAndCategories,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -234,10 +248,13 @@ class SiteStatsInsightsViewModel: Observable {
                                             return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                                             dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
                                                                             dataRows: createTagsAndCategoriesRows(),
+                                                                            statSection: .insightsTagsAndCategories,
                                                                             siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTopImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsTagsAndCategories)
+                }))
             case .annualSiteStats:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsAnnualSiteStats,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -250,7 +267,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsAnnualSiteStats)
+                }))
             case .comments:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsPosts,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -261,7 +280,9 @@ class SiteStatsInsightsViewModel: Observable {
                                             return createCommentsRow()
                 }, loading: {
                     return StatsGhostTabbedImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsCommentsPosts)
+                }))
             case .followers:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsFollowersWordPress,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -272,7 +293,9 @@ class SiteStatsInsightsViewModel: Observable {
                                             return createFollowersRow()
                 }, loading: {
                     return StatsGhostTabbedImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsFollowersWordPress)
+                }))
             case .todaysStats:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsTodaysStats,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -285,7 +308,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                                      siteStatsInsightsDelegate: nil)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsTodaysStats)
+                }))
             case .postingActivity:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsPostingActivity,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -296,7 +321,9 @@ class SiteStatsInsightsViewModel: Observable {
                                             return createPostingActivityRow()
                 }, loading: {
                     return StatsGhostPostingActivitiesImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsPostingActivity)
+                }))
             case .publicize:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsPublicize,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -307,17 +334,22 @@ class SiteStatsInsightsViewModel: Observable {
                                             return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
                                                                             dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
                                                                             dataRows: createPublicizeRows(),
+                                                                            statSection: .insightsPublicize,
                                                                             siteStatsInsightsDelegate: nil)
                 }, loading: {
                     return StatsGhostTopImmutableRow()
-                }, error: errorBlock))
+                }, error: {
+                    errorBlock(.insightsPublicize)
+                }))
             default:
                 break
             }
         }
 
         tableRows.append(TableFooterRow())
-        tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        tableRows.append(AddInsightRow(action: { [weak self] _ in
+            self?.siteStatsInsightsDelegate?.showAddInsight?()
+        }))
 
         tableRows.append(TableFooterRow())
 
@@ -576,18 +608,24 @@ private extension SiteStatsInsightsViewModel {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .likes)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
         let periodSummary = periodStore.getSummary()
         updateMostRecentChartData(periodSummary)
 
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, statsSummaryType: .comments)
+        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+        var data =  StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+        if data.count < Constants.followersGuideLimit {
+            let guideText = NSLocalizedString("Commenting on other blogs is a great way to build attention and followers for your new site.",
+                                              comment: "A tip displayed to the user in the stats section to help them gain more followers.")
+            data.guideText = NSAttributedString(string: guideText)
+        }
+        return data
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
@@ -752,7 +790,7 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                                    showTotalCount: true)
+                                    showTotalCount: FeatureFlag.statsNewAppearance.enabled ? false : true)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -781,8 +819,8 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: followerType.itemSubtitle,
-                       dataSubtitle: followerType.dataSubtitle,
+                       itemSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.itemSubtitle,
+                       dataSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
@@ -872,5 +910,8 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
 
     enum Constants {
         static let fourteenDays = 14
+
+        // The followers guide will be displayed if a user has < 2 users
+        static let followersGuideLimit = 2
     }
 }

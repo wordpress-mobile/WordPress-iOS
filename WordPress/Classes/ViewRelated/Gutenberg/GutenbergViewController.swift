@@ -31,7 +31,11 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return GutenbergSettings()
     }()
 
-    let ghostView = GutenGhostView()
+    lazy var ghostView: GutenGhostView = {
+        let view = GutenGhostView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private var storyEditor: StoryEditor?
 
@@ -554,10 +558,8 @@ extension GutenbergViewController {
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
-        view.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+        view.pinSubviewToAllEdges(gutenberg.rootView)
+        gutenberg.rootView.pinSubviewToAllEdges(ghostView)
     }
 }
 

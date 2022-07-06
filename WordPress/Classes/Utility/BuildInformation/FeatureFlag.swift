@@ -28,6 +28,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsNewInsights
     case siteName
     case quickStartForExistingUsers
+    case qrLogin
     case betaSiteDesigns
     case featureHighlightTooltip
 
@@ -87,12 +88,14 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .landInTheEditor:
             return false
         case .statsNewAppearance:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .statsNewInsights:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .siteName:
-            return true
+            return false
         case .quickStartForExistingUsers:
+            return true
+        case .qrLogin:
             return true
         case .betaSiteDesigns:
             return false
@@ -180,6 +183,8 @@ extension FeatureFlag {
             return "Site Name"
         case .quickStartForExistingUsers:
             return "Quick Start For Existing Users"
+        case .qrLogin:
+            return "QR Code Login"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
         case .featureHighlightTooltip:

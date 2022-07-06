@@ -21,26 +21,18 @@ final class DashboardStatsNudgeView: UIView {
 
     // MARK: - Init
 
-    convenience init(title: String, hint: String) {
+    convenience init(title: String, hint: String?, insets: UIEdgeInsets = Constants.margins) {
         self.init(frame: .zero)
 
+        setup(insets: insets)
         setTitle(title: title, hint: hint)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
     }
 
     // MARK: - View setup
 
-    private func setup() {
+    private func setup(insets: UIEdgeInsets) {
         addSubview(titleLabel)
-        pinSubviewToAllEdges(titleLabel, insets: Constants.margins)
+        pinSubviewToAllEdges(titleLabel, insets: insets)
 
         prepareForVoiceOver()
     }
@@ -49,14 +41,15 @@ final class DashboardStatsNudgeView: UIView {
         onTap?()
     }
 
-    private func setTitle(title: String, hint: String) {
+    private func setTitle(title: String, hint: String?) {
         let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(.primary))
         externalAttachment.bounds = Constants.iconBounds
 
         let attachmentString = NSAttributedString(attachment: externalAttachment)
 
         let titleString = NSMutableAttributedString(string: "\(title) \u{FEFF}")
-        if let subStringRange = title.nsRange(of: hint) {
+        if let hint = hint,
+           let subStringRange = title.nsRange(of: hint) {
             titleString.addAttributes([
                 .foregroundColor: UIColor.primary,
                 .font: WPStyleGuide.fontForTextStyle(.subheadline).bold()

@@ -1,7 +1,7 @@
-Vi inleder version 20 med ett nytt, fräscht utseende. Snabbstartskortet och Nästa steg-rundturerna matchar nu de nya rundtursdesignerna för befintliga webbplatser, inklusive en häftig illustration. High five.
+Behöver du lite inspiration för att komma igång med skrivandet? Våra bloggningsförslag ger dig precis vad du behöver. Du får ett nytt förslag varje dag, kan skriva ett inlägg på temat och bygga upp en skrivrutin på nolltid.
 
-Du kan nu infoga bilder från andra webbplatser med alternativet "Infoga från URL" i appen. Fler kattfoton, tack.
+Jetpack har gått med i chatten – verktygstipset "Följ konversation", med vilket du kan följa ett inlägg och få notiser om nya kommentarer, kommer nu att visas.
 
-Vi har gjort ett antal tillgänglighetsförbättringar i blockredigeraren, så att din skärmläsare visar mer av sammanhanget.
+Vi har gjort ett antal förbättringar av skärmen där du väljer webbplatsdesign under processen för webbplatsskapande.
 
-Slutligen har vi målat om mediacachen, spotlightindexet och Siri-genvägsfunktionerna i appinställningarna. De matchar nu standard- och varumärkesfärgerna – inget mer panikrött.
+Slutligen har vi även åtgärdat ett fel som påverkade notisbläddringen på telefoner i liggande läge. Bläddra på, min vän.

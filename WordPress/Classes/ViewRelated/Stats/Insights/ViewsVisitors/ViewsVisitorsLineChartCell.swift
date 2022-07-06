@@ -28,15 +28,26 @@ struct StatsSegmentedControlData {
         self.accessibilityHint = accessibilityHint
     }
 
-    var attributedDifference: NSAttributedString? {
+    var attributedDifferenceText: NSAttributedString? {
+        guard difference != 0 || segmentData > 0 else {
+            // No comparison shown if there's no change and 0 data
+            return nil
+        }
+
+        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
+
+        if difference == 0 && segmentData != 0 {
+            return NSAttributedString(string: differenceText, attributes: defaultAttributes)
+        }
+
         let differenceText = String(format: differenceText, differenceLabel)
-        let attributedString = NSMutableAttributedString(string: differenceText)
+        let attributedString = NSMutableAttributedString(string: differenceText, attributes: defaultAttributes)
 
         let str = attributedString.string as NSString
         let range = str.range(of: differenceLabel)
 
         attributedString.addAttributes([.foregroundColor: differenceTextColor,
-                                        .font: UIFont.preferredFont(forTextStyle: .body).bold()],
+                                        .font: UIFont.preferredFont(forTextStyle: .subheadline).bold()],
                 range: NSRange(location: range.location, length: differenceLabel.count))
 
         return attributedString
@@ -69,6 +80,13 @@ struct StatsSegmentedControlData {
     var accessibilityValue: String? {
         return segmentDataStub != nil ? "" : "\(segmentData)"
     }
+
+    enum Constants {
+        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
+        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
+        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
+        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
+    }
 }
 
 class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
@@ -82,9 +100,10 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var legendPreviousLabel: UILabel!
     @IBOutlet weak var previousLabel: UILabel!
     @IBOutlet weak var previousData: UILabel!
-    @IBOutlet weak var differenceLabel: UILabel!
+    @IBOutlet var differenceLabel: UILabel!
     @IBOutlet weak var chartContainerView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var bottomStackView: UIStackView!
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -97,6 +116,16 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
     private var period: StatsPeriodUnit?
     private var xAxisDates: [Date] = []
+
+    fileprivate lazy var tipView: DashboardStatsNudgeView = {
+        let tipView = DashboardStatsNudgeView(title: Constants.topTipsText, hint: nil, insets: .zero)
+        tipView.onTap = { [weak self] in
+            if let url = URL(string: Constants.topTipsURLString) {
+                self?.siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+            }
+        }
+        return tipView
+    }()
 
     // MARK: - Configure
 
@@ -130,9 +159,8 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     }
 
     @IBAction func selectedSegmentDidChange(_ sender: Any) {
-        if let event = segmentsData[segmentedControl.selectedSegmentIndex].analyticsStat {
-            captureAnalyticsEvent(event)
-        }
+        let selectedSegmentIndex = segmentedControl.selectedSegmentIndex
+        captureAnalyticsEvent(selectedSegmentIndex)
 
         configureChartView()
         updateLabels()
@@ -187,7 +215,15 @@ private extension ViewsVisitorsLineChartCell {
         latestData.text = segmentData.segmentData.abbreviatedString(forHeroNumber: true)
         previousData.text = segmentData.segmentPrevData.abbreviatedString(forHeroNumber: true)
 
-        differenceLabel.attributedText = segmentData.attributedDifference
+        differenceLabel.attributedText = segmentData.attributedDifferenceText
+
+        if segmentData.segmentData == 0 && segmentData.segmentPrevData == 0 {
+            differenceLabel.removeFromSuperview()
+            bottomStackView.addArrangedSubview(tipView)
+        } else {
+            tipView.removeFromSuperview()
+            bottomStackView.addArrangedSubview(differenceLabel)
+        }
     }
 
     // MARK: Chart support
@@ -229,14 +265,21 @@ private extension ViewsVisitorsLineChartCell {
 
     // MARK: - Analytics support
 
-    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
-        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+    func captureAnalyticsEvent(_ selectedSegmentIndex: Int) {
+        let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
 
-        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
-            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        let properties: [String: String] = ["value": statsInsightsFilterDimension.analyticsProperty]
+
+        if let blogId = SiteStatsInformation.sharedInstance.siteID,
+           let blog = Blog.lookup(withID: blogId, in: ContextManager.sharedInstance().mainContext) {
+            WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties, blog: blog)
         } else {
-            WPAppAnalytics.track(event, withProperties: properties)
+            WPAnalytics.track(.statsInsightsViewsVisitorsToggled, properties: properties)
         }
     }
 
+    enum Constants {
+        static let topTipsText = NSLocalizedString("Check out our top tips to increase your views and traffic", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
+        static let topTipsURLString = "https://wordpress.com/support/getting-more-views-and-traffic/"
+    }
 }

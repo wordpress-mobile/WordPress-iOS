@@ -1,5 +1,5 @@
-* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
-* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
-* [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
-* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
-* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+We updated the Insights view in your site’s Stats. See how your site is performing with a quick glance—and comparing performance to previous time periods is just a finger-tap away.
+
+Need to switch over to your browser? You can now sign in by scanning a QR code in the app’s Me menu.
+
+When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.

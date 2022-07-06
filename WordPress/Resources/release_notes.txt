@@ -1,4 +1,3 @@
-* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
-* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
-* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
-* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
+
+Your WordPress app icon has gone back to its usual cool blue, but not to worry—you can still keep a little color in your life. Just go into your app settings and choose our Pride-themed app icon again.

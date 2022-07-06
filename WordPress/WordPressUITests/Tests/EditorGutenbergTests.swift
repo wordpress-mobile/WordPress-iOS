@@ -83,6 +83,6 @@ class EditorGutenbergTests: XCTestCase {
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImageGallery()
-            .verifyContentStructure(blocks: 5, words: content.components(separatedBy: " ").count, characters: content.count)
+            .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
     }
 }

@@ -1,7 +1,7 @@
-We rollen versie 20 uit met een frisse, nieuwe look. - De snelstartkaart en Volgende stappen-rondleidingen komen nu overeen met de nieuwe ontwerpen van bestaande sites, inclusief een hippe afbeelding. High five.
+Schrijf-inspiratie nodig? Daar zorgen wij voor, met onze gloednieuwe blogideeën. Ontvang elke dag een nieuw idee, schrijf er een bericht over en voor je het weet is schrijven een gewoonte.
 
-Je kunt nu afbeeldingen van andere sites invoegen door middel van de optie “Invoegen via URL” in de app. Meer kattenplaatjes!
+Jetpack is toegevoegd aan de chat – vanaf nu zie je de tooltip 'Conversatie volgen' om een bericht te volgen en meldingen te ontvangen over nieuwe opmerkingen.
 
-We hebben wat verbeteringen aan de toegankelijkheid van de blokeditor aangebracht, zodat je schermreader meer van de context biedt die jij nodig hebt.
+We hebben wat verbeteringen doorgevoerd aan het selectiescherm waar je je site-ontwerp kunt kiezen tijdens het aanmaken van je site.
 
-Ten slotte hebben de mediacache, spotlight index en de Siri-snelkoppelingen een likje verf gegeven in de app-instellingen. Ze komen nu overeen met de merkkleuren, niet meer schreeuwend rood.
+Ten slotte hebben we een probleem verholpen met het scrollen door meldingen wanneer je je telefoon in landschapsmodus gebruikt. Scrol maar door.

@@ -1,7 +1,7 @@
-Wir veröffentlichen Version 20 mit einem frischen neuen Look. Die Schnellstart-Karte und die Touren für die nächsten Schritte passen zu den neuen Designs der bestehenden Websites, einschließlich einer schicken Illustration. Klatsch ab.
+Brauchst du ein wenig Inspiration beim Schreiben? Dann sind unsere brandneuen Blog-Vorschläge genau das Richtige für dich. Du bekommst jeden Tag einen neuen Themenvorschlag. Darüber kannst du dann einen Beitrag verfassen und in Kürze deinen eigenen Schreibstil entwickeln.
 
-Ab sofort kannst du Bilder von anderen Websites über die App-Option „Von URL einfügen“ einfügen. Mehr Katzenbilder, bitte.
+Jetpack hat jetzt eine Chatfunktion – Das neue Tooltip „Unterhaltung folgen“ fordert dich auf, einem Beitrag zu folgen und Benachrichtigungen zu neuen Kommentaren zu erhalten.
 
-Wir haben einige Zugänglichkeitsverbesserungen im Block-Editor vorgenommen. Dadurch findest du in deinem Screenreader nun mehr für dich relevante Inhalte.
+Wir haben zudem einige Verbesserungen am Auswahlbildschirm vorgenommen, bei dem du während der Website-Erstellung dein Website-Design auswählst.
 
-Zu guter Letzt haben wir die Farben der Funktionen für den Medien-Cache, den Spotlight-Index und die Siri-Tastaturkürzel in den App-Einstellungen überarbeitet. Sie passen jetzt zu den Standard- und Markenfarben – kein Panikrot mehr.
+Und schließlich haben wir einen Fehler beim Scrollen zu Benachrichtigungen im Querformat behoben. Viel Spaß beim Scrollen.

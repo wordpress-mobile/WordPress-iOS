@@ -120,6 +120,13 @@ class MeViewController: UITableViewController {
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
+        let qrLogin = NavigationItemRow(
+            title: RowTitles.qrLogin,
+            icon: .gridicon(.camera),
+            accessoryType: accessoryType,
+            action: presentQRLogin(),
+            accessibilityIdentifier: "qrLogin")
+
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
             icon: .gridicon(.cog),
@@ -150,7 +157,12 @@ class MeViewController: UITableViewController {
             .init(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
-                    rows = [myProfile, accountSettings] + rows
+                    var loggedInRows = [myProfile, accountSettings]
+                    if AppConfiguration.qrLoginEnabled && FeatureFlag.qrLogin.enabled {
+                        loggedInRows.append(qrLogin)
+                    }
+
+                    rows = loggedInRows + rows
                 }
                 return rows
             }()),
@@ -233,6 +245,17 @@ class MeViewController: UITableViewController {
                                                               rightBarButton: self.navigationItem.rightBarButtonItem)
 
             }
+        }
+    }
+
+    private func presentQRLogin() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            QRLoginCoordinator.present(from: self, origin: .menu)
         }
     }
 
@@ -495,6 +518,7 @@ private extension MeViewController {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
+        static let qrLogin = NSLocalizedString("Scan Login Code", comment: "Link to opening the QR login scanner")
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")

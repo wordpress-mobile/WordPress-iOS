@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-02 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-06-16 15:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -817,6 +817,9 @@ translators: Block name. %s: The localized block name */
 /* the comment has an anonymous author. */
 "Anonymous" = "익명";
 
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "답변";
+
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
 "Answer Prompt" = "답변 프롬프트";
@@ -1097,6 +1100,9 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "최고의 시간";
 
+/* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
+"Best for %@" = "%@에 가장 적합";
+
 /* All Time Stats 'Best views ever' label
    Stats 'Best views ever' Label */
 "Best views ever" = "최고 조회수";
@@ -1341,6 +1347,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "취소 중...";
 
+/* Helper text that appears at the bottom of the design screen. */
+"Can’t decide? You can change the theme at any time." = "결정할 수 없나요? 언제든지 테마를 변경할 수 있습니다.";
+
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "캡션";
@@ -1487,9 +1496,6 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish date picker */
 "Choose a date" = "날짜 선택";
 
-/* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "디자인 선택하기";
-
 /* Select domain name. Title */
 "Choose a domain" = "도메인 선택하기";
 
@@ -1499,7 +1505,8 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "개설할 사이트 선택";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "테마 선택";
 
 /* Label for Publish time picker */
@@ -2448,6 +2455,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "무시";
 
@@ -3269,6 +3277,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to follow a site. */
 "Follow site" = "사이트 팔로우하기";
 
+/* Title of follow conversations tooltip. */
+"Follow the conversation" = "대화 팔로우";
+
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
 
@@ -3425,6 +3436,9 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "알림: 읽은 글에 댓글이 추가됐습니다.";
 
+/* Message for the follow conversations tooltip. */
+"Get notified when new comments are added to this post." = "새 댓글이 이 글에 추가될 때 알림을 받으세요.";
+
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "간편하게 실시간 업데이트를 받으세요.";
 
@@ -3499,7 +3513,8 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 가입에 실패했습니다.";
 
-/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title for the follow conversations tooltip.
+   Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "알겠습니다";
 
@@ -4092,13 +4107,15 @@ translators: Block name. %s: The localized block name */
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "더 알아보기";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "날짜와 시간 형식에 대해 자세히 알아보세요.";
 
-/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen. */
+/* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.
+   Accessibility label for the blogging prompts info button on the prompts header view. */
 "Learn more about prompts" = "프롬프트 더 알아보기";
 
 /* Footer text for Invite People role field. */
@@ -4745,7 +4762,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "만료 기간 없음";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "신규";
 
 /* Blocklist Keyword Insertion Title */
@@ -5002,6 +5020,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "결과가 없습니다. 다른 검색을 시도해보세요.";
+
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "저장된 글 없음";
 
 /* A message title */
 "No sites found" = "사이트를 찾을 수 없음";
@@ -5305,7 +5326,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Originally posted on %@" = "원래 %@에 게시됨";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "기타";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -5324,6 +5346,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "전화";
+
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "추천";
 
 /* No comment provided by engineer. */
 "Padding" = "안쪽 여백";
@@ -5471,9 +5496,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "사용자명 선택";
-
-/* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "마음에 드는 홈페이지 레이아웃을 선택하세요. 나중에 편집하고 원하는대로 꾸밀 수 있습니다.";
 
 /* The item to select during a guided tour. */
 "Plan" = "요금제";
@@ -5784,7 +5806,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6479,6 +6500,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "스크롤 할 수 있는 블록 메뉴가 열렸습니다. 블록을 선택하세요.";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "검색";
 
@@ -8681,6 +8703,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "뷰";
@@ -9754,9 +9777,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "좋아요";
-
-/* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "아직 글을 발행하지 않았습니다. 나중에 첫 번째 글을 발행하면 다시 확인하세요!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "발행한 %@";
