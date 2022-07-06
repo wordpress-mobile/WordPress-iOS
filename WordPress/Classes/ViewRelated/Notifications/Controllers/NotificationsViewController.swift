@@ -662,6 +662,10 @@ private extension NotificationsViewController {
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
+        guard isViewLoaded == true && view.window != nil else {
+            return
+        }
+
         needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
