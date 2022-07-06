@@ -1,6 +1,6 @@
 20.3
 -----
-
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
 
 20.2
 -----
