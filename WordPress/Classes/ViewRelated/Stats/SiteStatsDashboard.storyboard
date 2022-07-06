@@ -41,16 +41,16 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
-                                <rect key="frame" x="0.0" y="90" width="375" height="557"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="527"/>
                                 <connections>
                                     <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zMO-yu-sCx" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="647" width="375" height="20"/>
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20" placeholder="YES" id="6zA-vi-yQo"/>
+                                    <constraint firstAttribute="height" constant="50" id="AcA-iz-xbe"/>
                                 </constraints>
                             </view>
                         </subviews>
