@@ -329,6 +329,15 @@ class PostCoordinator: NSObject {
             let remoteURLStr = media.remoteURL else {
             return
         }
+        guard var imageURL = media.remoteURL else {
+            return
+        }
+
+        if media.remoteLargeURL != nil {
+            imageURL = media.remoteLargeURL!
+        } else if media.remoteMediumURL != nil {
+            imageURL = media.remoteMediumURL!
+        }
 
         let mediaLink = media.link
         let mediaUploadID = media.uploadID
@@ -344,10 +353,10 @@ class PostCoordinator: NSObject {
         gutenbergProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
-            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
             gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
