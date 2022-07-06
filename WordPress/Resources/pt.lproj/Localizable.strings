@@ -407,6 +407,7 @@
 "Camera" = "Câmara";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -452,6 +453,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -903,6 +905,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -999,7 +1002,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1908,7 +1912,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Abrir Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir definições";
 
 /* Today widget label to launch WP app */
@@ -2127,6 +2132,7 @@
 "Postal Code" = "Código postal";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -2920,7 +2926,7 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Ocorreu um erro ao actualizar @%@";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "WordPress precisa de autorização para aceder à câmara do seu dispositivo para poder adicionar fotos e vídeos aos seus artigos. Por favor, actualize as suas definições de privacidade.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -3107,6 +3113,7 @@
 "Underline" = "Sublinhado";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -3368,6 +3375,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Não será mostrado ao público.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Site WordPress";

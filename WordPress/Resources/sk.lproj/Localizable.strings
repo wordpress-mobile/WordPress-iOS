@@ -566,6 +566,7 @@
 "Can Not Request Link" = "Nieje možné načítať adresu";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -611,6 +612,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1175,6 +1177,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -1277,7 +1280,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -2562,7 +2566,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Otvoriť Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
 
 /* Today widget label to launch WP app */
@@ -2851,6 +2856,7 @@
 "Posting Activity" = "Aktivita prispievania";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -4025,7 +4031,7 @@
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Túto akciu <b> nie je možné <\/b>zrušiť. Odstránením stránky odstránite všetok obsah, užívateľov, domény a aktualizácie zo stránky.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -4302,6 +4308,7 @@
 "Underline" = "Podčiarknuť";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -4685,6 +4692,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Táto adresa nebude zverejnená.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Nastavenia aplikácie WordPress";

@@ -199,6 +199,7 @@ class InsightsManagementViewController: UITableViewController {
         static let activeCardsHeader = NSLocalizedString("stats.insights.management.activeCards", value: "Active Cards", comment: "Header title indicating which Stats Insights cards the user currently has set to active.")
         static let inactiveCardsHeader = NSLocalizedString("stats.insights.management.inactiveCards", value: "Inactive Cards", comment: "Header title indicating which Stats Insights cards the user currently has disabled.")
         static let placeholderRowTitle = NSLocalizedString("stats.insights.management.selectCardsPrompt", value: "Select cards from the list below", comment: "Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards.")
+        static let inactivePlaceholderRowTitle = NSLocalizedString("stats.insights.management.noCardsPrompt", value: "No inactive cards remaining", comment: "Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled.")
 
         static let savePromptMessage = NSLocalizedString("stats.insights.management.savePrompt.message", value: "You've made changes to your active Insights cards.", comment: "Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards.")
         static let savePromptSaveButton = NSLocalizedString("stats.insights.management.savePrompt.saveButton", value: "Save Changes", comment: "Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards.")
@@ -251,8 +252,8 @@ private extension InsightsManagementViewController {
     func inactiveCardsSection() -> ImmuTableSection {
         let rows = InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
 
-        guard insightsShown.count > 0 else {
-            return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [placeholderRow])
+        guard rows.count > 0 else {
+            return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [inactivePlaceholderRow])
         }
 
         return ImmuTableSection(headerText: TextContent.inactiveCardsHeader,
@@ -313,6 +314,12 @@ private extension InsightsManagementViewController {
 
     var placeholderRow: ImmuTableRow {
         return AddInsightStatRow(title: TextContent.placeholderRowTitle,
+                                 enabled: false,
+                                 action: nil)
+    }
+
+    var inactivePlaceholderRow: ImmuTableRow {
+        return AddInsightStatRow(title: TextContent.inactivePlaceholderRowTitle,
                                  enabled: false,
                                  action: nil)
     }
