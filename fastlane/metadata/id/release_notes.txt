@@ -1,5 +1,3 @@
-WordPress telah memiliki fitur komentar — Anda sekarang akan melihat tooltip “Ikuti Komentar” yang meminta Anda untuk mengikuti pos dan mendapatkan pemberitahuan tentang komentar baru.
+Saat mempratinjau artikel, kini Anda dapat beralih orientasi potret maupun lanskap tanpa memangkas konten apa pun. Bagus.
 
-Kami meningkatkan layar pemilihan desain situs dalam proses Pembuatan Situs.
-
-Terakhir, kami memperbaiki bug yang memengaruhi pengguliran notifikasi saat ponsel Anda dalam mode lanskap. Gulir saja, teman.
+Ikon aplikasi WordPress Anda telah kembali ke warna biru dingin biasanya, tetapi jangan khawatir—Anda masih dapat memilih warna yang Anda suka. Cukup masuk ke pengaturan aplikasi Anda dan pilih kembali tema ikon aplikasi kebanggaan kami.
