@@ -40,8 +40,6 @@ msgstr ""
 
 msgctxt "v20.2-whats-new"
 msgid ""
-"We updated the Insights view in your site’s Stats. See how your site is performing with a quick glance—and comparing performance to previous time periods is just a finger-tap away.\n"
-"\n"
 "Need to switch over to your browser? You can now sign in by scanning a QR code in the app’s Me menu.\n"
 "\n"
 "When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.\n"
