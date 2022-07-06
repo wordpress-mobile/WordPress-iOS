@@ -169,6 +169,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         closeButton.layer.cornerRadius = 15
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.accessibilityIdentifier = "close-button"
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         closeButton.addTarget(target, action: action, for: .touchUpInside)
 

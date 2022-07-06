@@ -8,7 +8,7 @@ require 'yaml'
 require 'digest'
 
 SWIFTLINT_VERSION = '0.47.1'
-RUBY_REPO_VERSION = File.read('./.ruby-version').strip
+RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
