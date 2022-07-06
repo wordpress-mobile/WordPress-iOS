@@ -573,7 +573,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        viewModel?.edit(post)
+        viewModel?.didTapEdit(on: post)
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -677,7 +677,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
-        viewModel?.edit(post)
+        viewModel?.didTapEdit(on: post)
     }
 
     func view(_ post: AbstractPost) {
@@ -685,7 +685,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func stats(for post: AbstractPost) {
-        viewModel?.stats(for: post)
+        viewModel?.didTapStats(on: post)
     }
 
     func duplicate(_ post: AbstractPost) {
@@ -707,7 +707,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func trash(_ post: AbstractPost) {
-        viewModel?.trash(post)
+        viewModel?.didTapTrash(on: post)
     }
 
     func restore(_ post: AbstractPost) {
@@ -723,11 +723,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func retry(_ post: AbstractPost) {
-        viewModel?.retry(post)
+        viewModel?.didTapRetry(on: post)
     }
 
     func cancelAutoUpload(_ post: AbstractPost) {
-        viewModel?.cancelAutoUpload(post)
+        viewModel?.didTapCancelAutoUpload(on: post)
     }
 
     func share(_ apost: AbstractPost, fromView view: UIView) {
