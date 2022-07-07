@@ -522,7 +522,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPathForCommentRepliedTo];
         cell.isReplyHighlighted = YES;
     }
-    
+
     self.highlightedIndexPath = indexPathForCommentRepliedTo;
     _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
     
