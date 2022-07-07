@@ -1,50 +1,50 @@
 {
-    "request": {
-        "method": "GET",
-        "urlPathPattern": "/rest/v1.1/sites/([0-9]+)/stats/referrers/",
-        "queryParameters": {
-            "period": {
-                "equalTo": "month"
-            },
-            "max": {
-                "matches": "[0-9]+"
-            },
-            "date": {
-                "matches": "(.*)"
-            },
-            "locale": {
-                "matches": "(.*)"
-            }
-        }
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {
-            "date": "2019-07-31",
-            "days": {
-                "2019-07-01": {
-                    "groups": [
-                        {
-                            "group": "Search Engines",
-                            "name": "Search Engines",
-                            "icon": "https://wordpress.com/i/stats/search-engine.png",
-                            "total": 1,
-                            "follow_data": null,
-                            "results": [
-                                {
-                                    "name": "Google Search",
-                                    "url": "http://www.google.com/",
-                                    "icon": "https://secure.gravatar.com/blavatar/6741a05f4bc6e5b65f504c4f3df388a1?s=48",
-                                    "views": 1
-                                }
-                            ]
-                        }
-                    ],
-                    "other_views": 0,
-                    "total_views": 1
-                }
-            },
-            "period": "month"
-        }
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.1/sites/([0-9]+)/stats/referrers/",
+    "queryParameters": {
+      "period": {
+        "equalTo": "month"
+      },
+      "max": {
+        "matches": "[0-9]+"
+      },
+      "date": {
+        "matches": "(.*)"
+      },
+      "locale": {
+        "matches": "(.*)"
+      }
     }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date": "2019-07-31",
+      "days": {
+        "2019-07-01": {
+          "groups": [
+            {
+              "group": "Search Engines",
+              "name": "Search Engines",
+              "icon": "https://wordpress.com/i/stats/search-engine.png",
+              "total": 1,
+              "follow_data": null,
+              "results": [
+                {
+                  "name": "Google Search",
+                  "url": "http://www.google.com/",
+                  "icon": "https://secure.gravatar.com/blavatar/6741a05f4bc6e5b65f504c4f3df388a1?s=48",
+                  "views": 1
+                }
+              ]
+            }
+          ],
+          "other_views": 0,
+          "total_views": 1
+        }
+      },
+      "period": "month"
+    }
+  }
 }

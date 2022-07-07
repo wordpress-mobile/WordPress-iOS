@@ -1,48 +1,57 @@
 {
-    "request": {
-        "method": "GET",
-        "urlPattern": "/rest/v1.1/notifications(/)?($|\\?.*)",
-        "queryParameters": {
-            "fields": {
-                "equalTo": "id,note_hash"
-            }
-        }
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {
-            "last_seen_time": "1598052184",
-            "number": 9,
-            "notes": [{
-                "id": 4937370391,
-                "note_hash": 1528602550
-            }, {
-                "id": 4937363649,
-                "note_hash": 1391922081
-            }, {
-                "id": 4937363362,
-                "note_hash": 1287359074
-            }, {
-                "id": 4937360549,
-                "note_hash": 638476488
-            }, {
-                "id": 4937354640,
-                "note_hash": 492599271
-            }, {
-                "id": 4937350334,
-                "note_hash": 3590885648
-            }, {
-                "id": 4937367020,
-                "note_hash": 3233821948
-            }, {
-                "id": 4880577651,
-                "note_hash": 2994072417
-            }]
-        },
-        "headers": {
-            "Content-Type": "application/json",
-            "Connection": "keep-alive",
-            "Cache-Control": "no-cache, must-revalidate, max-age=0"
-        }
+  "request": {
+    "method": "GET",
+    "urlPattern": "/rest/v1.1/notifications(/)?($|\\?.*)",
+    "queryParameters": {
+      "fields": {
+        "equalTo": "id,note_hash"
+      }
     }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "last_seen_time": "1598052184",
+      "number": 9,
+      "notes": [
+        {
+          "id": 4937370391,
+          "note_hash": 1528602550
+        },
+        {
+          "id": 4937363649,
+          "note_hash": 1391922081
+        },
+        {
+          "id": 4937363362,
+          "note_hash": 1287359074
+        },
+        {
+          "id": 4937360549,
+          "note_hash": 638476488
+        },
+        {
+          "id": 4937354640,
+          "note_hash": 492599271
+        },
+        {
+          "id": 4937350334,
+          "note_hash": 3590885648
+        },
+        {
+          "id": 4937367020,
+          "note_hash": 3233821948
+        },
+        {
+          "id": 4880577651,
+          "note_hash": 2994072417
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
 }

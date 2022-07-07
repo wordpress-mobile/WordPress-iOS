@@ -1,24 +1,26 @@
 {
-    "request": {
-        "method": "GET",
-        "urlPattern": "/rest/v1.1/sites/.*/stats/streak/.*"
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {
-            "streak": {
-                "long": {
-                    "start": "",
-                    "end": "",
-                    "length": 1
-                },
-                "current": {
-                    "start": "",
-                    "end": "",
-                    "length": 0
-                }
-            },
-            "data": []
+  "request": {
+    "method": "GET",
+    "urlPattern": "/rest/v1.1/sites/.*/stats/streak/.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "streak": {
+        "long": {
+          "start": "",
+          "end": "",
+          "length": 1
+        },
+        "current": {
+          "start": "",
+          "end": "",
+          "length": 0
         }
+      },
+      "data": [
+
+      ]
     }
+  }
 }

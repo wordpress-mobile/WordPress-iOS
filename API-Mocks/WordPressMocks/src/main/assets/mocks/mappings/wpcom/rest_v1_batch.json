@@ -1,10 +1,11 @@
 {
-    "request": {
-        "urlPattern": "/rest/v1.1/batch(.*)",
-        "method": "GET"
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {}
+  "request": {
+    "urlPattern": "/rest/v1.1/batch(.*)",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
     }
+  }
 }

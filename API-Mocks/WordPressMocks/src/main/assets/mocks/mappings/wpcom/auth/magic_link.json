@@ -1,15 +1,15 @@
 {
-    "scenarioName": "auth",
-    "requiredScenarioState": "logged-in",
-    "request": {
-        "method": "GET",
-        "urlPath": "/magic-link"
-    },
-    "response": {
-        "status": 302,
-        "headers": {
-            "Content-Type": "text/html;charset=utf-8",
-            "Location": "{{request.query.scheme}}://magic-login?token=valid_token"
-        }
+  "scenarioName": "auth",
+  "requiredScenarioState": "logged-in",
+  "request": {
+    "method": "GET",
+    "urlPath": "/magic-link"
+  },
+  "response": {
+    "status": 302,
+    "headers": {
+      "Content-Type": "text/html;charset=utf-8",
+      "Location": "{{request.query.scheme}}://magic-login?token=valid_token"
     }
+  }
 }

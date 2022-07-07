@@ -1,17 +1,19 @@
 {
-    "request": {
-        "method": "GET",
-        "urlPattern": "/rest/v1.1/sites/.*/publicize-connections.*",
-        "queryParameters": {
-            "locale": {
-                "matches": "(.*)"
-            }
-        }
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {
-            "connections": []
-        }
+  "request": {
+    "method": "GET",
+    "urlPattern": "/rest/v1.1/sites/.*/publicize-connections.*",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      }
     }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "connections": [
+
+      ]
+    }
+  }
 }

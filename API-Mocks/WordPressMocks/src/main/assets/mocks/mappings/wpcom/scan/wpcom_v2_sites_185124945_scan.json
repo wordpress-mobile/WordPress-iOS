@@ -1,33 +1,35 @@
 {
-    "request": {
-        "urlPattern": "/wpcom/v2/sites/185124945/scan(\\?|/|$).*",
-        "method": "GET"
-    },
-    "response": {
-        "status": 200,
-        "jsonBody": {
-            "state": "idle",
-            "threats": [],
-            "has_cloud": false,
-            "credentials": [
-                {
-                    "still_valid": true,
-                    "type": "managed",
-                    "role": "main"
-                }
-            ],
-            "most_recent": {
-                "is_initial": false,
-                "timestamp": "{{now offset='-2 days' format='yyyy-MM-dd'}}T{{now offset='-2 days' format='HH:mm:ssZ'}}",
-                "duration": 16,
-                "progress": 100,
-                "error": false
-            }
-        },
-        "headers": {
-            "Content-Type": "application/json",
-            "Connection": "keep-alive",
-            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+  "request": {
+    "urlPattern": "/wpcom/v2/sites/185124945/scan(\\?|/|$).*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "state": "idle",
+      "threats": [
+
+      ],
+      "has_cloud": false,
+      "credentials": [
+        {
+          "still_valid": true,
+          "type": "managed",
+          "role": "main"
         }
+      ],
+      "most_recent": {
+        "is_initial": false,
+        "timestamp": "{{now offset='-2 days' format='yyyy-MM-dd'}}T{{now offset='-2 days' format='HH:mm:ssZ'}}",
+        "duration": 16,
+        "progress": 100,
+        "error": false
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
     }
+  }
 }
