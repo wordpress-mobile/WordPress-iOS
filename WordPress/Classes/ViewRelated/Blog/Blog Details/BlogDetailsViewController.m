@@ -762,7 +762,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self removeSiteSectionViewModel]];
     }
     // do not show the badge in the split screen master view
-    if ([[self traitCollection] horizontalSizeClass] == UIUserInterfaceSizeClassCompact) {
+    if ([[self traitCollection] horizontalSizeClass] == UIUserInterfaceSizeClassCompact && [AppConfiguration isWordPress]) {
         [marr addObject:[self jetpackBadgeSectionViewModel]];
     }
 
