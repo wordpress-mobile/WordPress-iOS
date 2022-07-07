@@ -7,7 +7,7 @@ data model as well as any custom migrations.
 
  @salimbraksa 2022-07-07
 
- - `UserSuggestion`: added `userID` attribute. (optional, no default, `NSNumber`)
+ - `UserSuggestion`: added `userID` attribute. (optional, no default, `Int 64`)
 
 ## WordPress 143
 
