@@ -1,0 +1,173 @@
+{
+  "request": {
+    "urlPattern": "/rest/v1.3/sites/.*/plans.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "1": {
+        "formatted_original_price": "£0",
+        "raw_price": 0,
+        "formatted_price": "£0",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "free_plan",
+        "product_name": "WordPress.com Free",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "user_is_owner": null,
+        "current_plan": true,
+        "id": null,
+        "has_domain_credit": false,
+        "interval": -1
+      },
+      "1003": {
+        "formatted_original_price": "£0",
+        "raw_price": 84,
+        "formatted_price": "£84",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "value_bundle",
+        "product_name": "WordPress.com Premium",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 365
+      },
+      "1008": {
+        "formatted_original_price": "£0",
+        "raw_price": 240,
+        "formatted_price": "£240",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "business-bundle",
+        "product_name": "WordPress.com Business",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 365
+      },
+      "1009": {
+        "formatted_original_price": "£0",
+        "raw_price": 48,
+        "formatted_price": "£48",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "personal-bundle",
+        "product_name": "WordPress.com Personal",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 365
+      },
+      "1010": {
+        "formatted_original_price": "£0",
+        "raw_price": 27,
+        "formatted_price": "£27",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "blogger-bundle",
+        "product_name": "WordPress.com Blogger",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 365
+      },
+      "1011": {
+        "formatted_original_price": "£0",
+        "raw_price": 432,
+        "formatted_price": "£432",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "ecommerce-bundle",
+        "product_name": "WordPress.com eCommerce",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 365
+      },
+      "1023": {
+        "formatted_original_price": "£0",
+        "raw_price": 132,
+        "formatted_price": "£132",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "value_bundle-2y",
+        "product_name": "WordPress.com Premium",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 730
+      },
+      "1028": {
+        "formatted_original_price": "£0",
+        "raw_price": 399,
+        "formatted_price": "£399",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "business-bundle-2y",
+        "product_name": "WordPress.com Business",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 730
+      },
+      "1029": {
+        "formatted_original_price": "£0",
+        "raw_price": 84,
+        "formatted_price": "£84",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "personal-bundle-2y",
+        "product_name": "WordPress.com Personal",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 730
+      },
+      "1030": {
+        "formatted_original_price": "£0",
+        "raw_price": 50,
+        "formatted_price": "£50",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "blogger-bundle-2y",
+        "product_name": "WordPress.com Blogger",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 730
+      },
+      "1031": {
+        "formatted_original_price": "£0",
+        "raw_price": 696,
+        "formatted_price": "£696",
+        "raw_discount": 0,
+        "formatted_discount": "£0",
+        "product_slug": "ecommerce-bundle-2y",
+        "product_name": "WordPress.com eCommerce",
+        "discount_reason": null,
+        "is_domain_upgrade": null,
+        "currency_code": "GBP",
+        "can_start_trial": false,
+        "interval": 730
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}
