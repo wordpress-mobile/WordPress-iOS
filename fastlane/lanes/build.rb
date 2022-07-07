@@ -62,11 +62,11 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
+    xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if test_plan_path.nil? || !File.exist?((test_plan_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -75,7 +75,7 @@ platform :ios do
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
       test_without_building: true,
-      xctestrun: test_plan_path,
+      xctestrun: xctestrun_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true
