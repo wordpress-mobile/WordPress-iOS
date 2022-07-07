@@ -1,7 +1,5 @@
-Precisa de um pouco de inspiração para escrever? Nós podemos ajudá-lo com as novas sugestões de publicação. Receba uma nova sugestão todos os dias, escreva um post e crie o hábito de escrever.
+Atualizamos a visualização de informações de estatísticas do seu site. Veja o desempenho do seu site de maneira rápida, e compare o desempenho atual com de períodos anteriores em apenas um toque.
 
-O Jetpack entrou no chat. Agora você verá uma dica de ferramenta "Seguir conversa" solicitando que você siga um post e receba notificações sobre novos comentários.
+Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
 
-Fizemos algumas melhorias na tela de seleção onde você escolhe o design do seu site durante o processo de criação.
-
-Por fim, eliminamos um bug que afetava a rolagem de notificações quando o telefone estava no modo paisagem. A rolagem está liberada!
+Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.

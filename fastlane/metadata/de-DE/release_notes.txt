@@ -1,5 +1,3 @@
-WordPress ist in den Chat eingestiegen – du siehst jetzt einen Tooltip „Konversation folgen“, der dich auffordert, einem Beitrag zu folgen und Benachrichtigungen über neue Kommentare zu erhalten.
+In der Beitragsvorschau kannst du ab sofort zwischen Hoch- und Querformat wechseln, ohne dass Inhalte abgeschnitten werden. Sehr gut.
 
-Wir haben den Auswahlbildschirm verbessert, auf dem du während der Erstellung der Website dein Design auswählst.
-
-Und schließlich haben wir einen Fehler beseitigt, der das Scrollen der Benachrichtigungen beeinträchtigte, wenn sich dein Handy im Querformat befindet. Scrolle weiter, Freund.
+Dein WordPress-App-Icon erscheint wieder im gewohnten Blau, aber keine Sorge – du kannst trotzdem ein wenig Farbe reinbringen Öffne einfach die App-Einstellungen und wähle unser App-Icon in Pride-Farben erneut aus.

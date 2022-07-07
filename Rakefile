@@ -8,7 +8,7 @@ require 'yaml'
 require 'digest'
 
 SWIFTLINT_VERSION = '0.47.1'
-RUBY_REPO_VERSION = File.read('./.ruby-version').strip
+RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
@@ -183,11 +183,7 @@ CLOBBER << 'vendor'
 
 desc 'Mocks'
 task :mocks do
-  wordpress_mocks_path = './Pods/WordPressMocks'
-  # If WordPressMocks is referenced by a local path, use that.
-  wordpress_mocks_path = lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path) unless lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path).nil?
-
-  sh "#{wordpress_mocks_path}/scripts/start.sh 8282"
+  sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
 end
 
 desc "Build #{XCODE_SCHEME}"

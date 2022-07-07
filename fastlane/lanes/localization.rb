@@ -351,8 +351,6 @@ platform :ios do
   end
   # rubocop:enable Metrics/AbcSize
 
-
-
   # Uploads the localized metadata for WordPress and Jetpack (from `fastlane/{metadata,jetpack_metadata}/`) to App Store Connect
   #
   # @option [Boolean] with_screenshots (default: false) If true, will also upload the latest screenshot files to ASC

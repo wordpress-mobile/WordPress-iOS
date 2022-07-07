@@ -12,7 +12,7 @@ import UIKit
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController: UITableViewController, UIViewControllerRestoration {
+class NotificationsViewController: UIViewController, UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate {
 
     @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
@@ -21,6 +21,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     let formatter = FormattableContentFormatter()
 
+    /// Table View
+    ///
+    @IBOutlet weak var tableView: UITableView!
     /// TableHeader
     ///
     @IBOutlet var tableHeaderView: UIView!
@@ -28,6 +31,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
+
+    /// Jetpack Banner View
+    /// Only visible in WordPress
+    ///
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     /// Inline Prompt Header View
     ///
@@ -140,15 +148,16 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidLoad()
 
         setupNavigationBar()
+        setupTableHandler()
         setupTableView()
         setupTableFooterView()
-        setupTableHandler()
         setupRefreshControl()
         setupNoResultsView()
         setupFilterBar()
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
+        configureJetpackBanner()
 
         reloadTableViewPreservingSelection()
         startListeningToCommentDeletedNotifications()
@@ -249,10 +258,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         tableView.layoutHeaderView()
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -336,9 +341,33 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
     }
 
-    // MARK: - UITableView Methods
+    // MARK: - UITableViewDataSource Methods
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tableViewHandler.tableView(tableView, numberOfRowsInSection: section)
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        tableViewHandler.numberOfSections(in: tableView)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
+        configureCell(cell, at: indexPath)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+
+    // MARK: - UITableViewDelegate Methods
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
               let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
             return nil
@@ -348,38 +377,32 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return headerView
     }
 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         // Make sure no SectionFooter is rendered
         return CGFloat.leastNormalMagnitude
     }
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Make sure no SectionFooter is rendered
         return nil
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
-        configureCell(cell, at: indexPath)
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         estimatedRowHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
     }
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if let height = estimatedRowHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
             return height
         }
         return Settings.estimatedRowHeight
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
         guard let note = tableViewHandler.resultsController.managedObject(atUnsafe: indexPath) as? Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -400,11 +423,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     }
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
-    }
-
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
               deletionRequestForNoteWithID(note.objectID) == nil else {
@@ -431,7 +450,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return UISwipeActionsConfiguration(actions: [action])
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
@@ -569,7 +588,7 @@ private extension NotificationsViewController {
     func setupRefreshControl() {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl = control
+        tableView.refreshControl = control
     }
 
     func setupNoResultsView() {
@@ -582,6 +601,10 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func configureJetpackBanner() {
+        jetpackBannerView.isHidden = AppConfiguration.isJetpack
     }
 }
 
@@ -639,6 +662,10 @@ private extension NotificationsViewController {
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
+        guard isViewLoaded == true && view.window != nil else {
+            return
+        }
+
         needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
@@ -1189,7 +1216,7 @@ private extension NotificationsViewController {
 extension NotificationsViewController {
     @objc func refresh() {
         guard let mediator = NotificationSyncMediator() else {
-            refreshControl?.endRefreshing()
+            tableView.refreshControl?.endRefreshing()
             return
         }
 
@@ -1201,7 +1228,7 @@ extension NotificationsViewController {
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
             DispatchQueue.main.asyncAfter(deadline: delay) {
-                self?.refreshControl?.endRefreshing()
+                self?.tableView.refreshControl?.endRefreshing()
                 self?.clearUnreadNotifications()
 
                 if let _ = error {

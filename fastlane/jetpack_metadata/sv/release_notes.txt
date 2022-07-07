@@ -1,7 +1,5 @@
-Behöver du lite inspiration för att komma igång med skrivandet? Våra bloggningsförslag ger dig precis vad du behöver. Du får ett nytt förslag varje dag, kan skriva ett inlägg på temat och bygga upp en skrivrutin på nolltid.
+Vi har uppdaterat vyn Insikter i din webbplatsstatistik. Du kan snabbt se hur din webbplats presterar och med ett klick jämföra resultatet med tidigare perioder.
 
-Jetpack har gått med i chatten – verktygstipset "Följ konversation", med vilket du kan följa ett inlägg och få notiser om nya kommentarer, kommer nu att visas.
+Behöver du växla till din webbläsare? Du kan nu logga in genom att skanna en QR-kod i appmenyn Jag.
 
-Vi har gjort ett antal förbättringar av skärmen där du väljer webbplatsdesign under processen för webbplatsskapande.
-
-Slutligen har vi även åtgärdat ett fel som påverkade notisbläddringen på telefoner i liggande läge. Bläddra på, min vän.
+När du förhandsgranskar ett inlägg kan du nu växla mellan stående och liggande läge utan att något innehåll blir bortskuret. Skönt.

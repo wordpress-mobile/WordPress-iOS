@@ -346,23 +346,11 @@ target 'WordPressNotificationServiceExtension' do
   wordpress_ui
 end
 
-## Mocks
-## ===================
-##
-def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.15'
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'add-organization-id-to-me-sites'
-  # pod 'WordPressMocks', :path => '../WordPressMocks'
-end
-
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 ## UI Tests
@@ -370,8 +358,6 @@ end
 ##
 target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 # Static Frameworks:
