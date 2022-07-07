@@ -36,6 +36,9 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
     }
 
+    @IBOutlet weak var jetpackBadgeView: UIView!
+
+
     //TODO: remove!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
@@ -65,6 +68,14 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         hideRestoreIfNeeded()
         showWarningIfNeeded()
         WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
+
+        let jetpackBadgeButton = JetpackButton.makeDefaultBadge()
+        jetpackBadgeView.addSubview(jetpackBadgeButton)
+        NSLayoutConstraint.activate([
+            jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
+            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor, constant: 14)
+        ])
+        jetpackBadgeView.backgroundColor = .listBackground
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
