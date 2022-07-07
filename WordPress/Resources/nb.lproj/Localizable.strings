@@ -923,6 +923,7 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Kan ikke publisere et tomt innlegg";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -968,6 +969,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1750,6 +1752,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -1948,7 +1951,8 @@ translators: Block name. %s: The localized block name */
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-post";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -3652,7 +3656,8 @@ translators: Block name. %s: The localized block name */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Åpne Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åpne innstillinger";
 
 /* Today widget label to launch WP app */
@@ -4072,6 +4077,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Innleggsaktivitet";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -5070,7 +5076,9 @@ translators: Block name. %s: The localized block name */
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalenke";
 
-/* Follower Totals label for social media followers */
+/* Follower Totals label for social media followers
+   Label for social followers
+   Title of Stats section that shows social followers. */
 "Social" = "Sosialt";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
@@ -5653,7 +5661,7 @@ translators: Block name. %s: The localized block name */
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Denne handlingen <b>kan ikke<\/b> angres. Sletting av siden vil fjerne alt innhold, alle bidragsytere, alle domener og alle oppgraderinger fra siden.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Denne appen trenger tilgang til kameraet for å ta bilder og video, vennligst endre personverninnstillingene hvis du ønsker dette.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -5873,6 +5881,7 @@ translators: Block name. %s: The localized block name */
 "Try another search term" = "Prøv et annet søkeord";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Button title to take user to the new Stats Insights screen.
    Customize Insights button title */
 "Try it now" = "Prøv nå";
 
@@ -6009,6 +6018,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Understrek";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -6597,6 +6607,9 @@ translators: Block name. %s: The localized block name */
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Vil ikke vises offentlig.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Innstillinger for WorfPress-appen";

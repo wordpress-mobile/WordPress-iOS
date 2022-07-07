@@ -96,7 +96,11 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
 private extension TabbedTotalsCell {
 
     func setupFilterBar(selectedIndex: Int) {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
+        if FeatureFlag.statsNewAppearance.enabled && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
+            WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forNewInsightsCard: true)
+        } else {
+            WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
+        }
         filterTabBar.items = tabsData
         filterTabBar.setSelectedIndex(selectedIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)

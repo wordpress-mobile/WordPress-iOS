@@ -1,5 +1,3 @@
-WordPress se ha metido en el chat —ahora verás un mensaje emergente de «Seguir conversación» animándote a seguir una entrada y a recibir avisos cuando haya nuevos comentarios.
+Ahora, al previsualizar una entrada, puedes cambiar entre la orientación vertical y la horizontal sin cortar el contenido. Perfecto.
 
-Hemos realizado algunas mejoras en la pantalla de selección en la que eliges el diseño de tu sitio durante el proceso de creación del sitio.
-
-Para finalizar, hemos , hemos eliminado un error que afectaba al scroll en los avisos cuando tu teléfono está en modo apaisado. Haz scroll amigo.
+El icono de la aplicación de WordPress vuelve a tener un tono azul apagado, pero no te preocupes, puedes poner un poco de color en tu vida. Ve a los ajustes de la aplicación y vuelve a seleccionar el icono del Orgullo.

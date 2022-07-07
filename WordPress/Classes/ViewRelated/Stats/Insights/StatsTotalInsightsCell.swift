@@ -9,6 +9,9 @@ struct StatsTotalInsightsData {
     var sparklineData: [Int]? = nil
     var guideText: NSAttributedString? = nil
 
+    // Used to allow a URL to be displayed in response to a guide being tapped
+    var guideURL: URL? = nil
+
     public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
@@ -33,8 +36,9 @@ struct StatsTotalInsightsData {
         let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
         let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
         let guideText = makeTotalInsightsGuideText(insightsStore: insightsStore, statsSummaryType: statsSummaryType)
+        let guideURL: URL? = statsSummaryType == .likes ? insightsStore.getLastPostInsight()?.url : nil
 
-        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText)
+        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText, guideURL: guideURL)
     }
 
     static func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>, splitSummaryTimeIntervalData: [StatsSummaryTimeIntervalDataAsAWeek]) -> [Int] {
@@ -62,7 +66,7 @@ struct StatsTotalInsightsData {
 
             let formattedText: String
             if summary.likesCount == Constants.singularLikeCount {
-                formattedText = TextContent.likesTotalGuideTextSingular
+                formattedText = String(format: TextContent.likesTotalGuideTextSingular, summary.title)
             } else {
                 formattedText = String(format: TextContent.likesTotalGuideTextPlural, summary.title, summary.likesCount)
             }
@@ -100,6 +104,7 @@ struct StatsTotalInsightsData {
 class StatsTotalInsightsCell: StatsBaseCell {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var lastPostInsight: StatsLastPostInsight?
+    private var guideURL: URL? = nil
 
     private let outerStackView = UIStackView()
     private let topInnerStackView = UIStackView()
@@ -172,6 +177,9 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         guideViewLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         guideView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(guideTapped))
+        guideView.addGestureRecognizer(gestureRecognizer)
     }
 
     private func configureLabels() {
@@ -207,7 +215,9 @@ class StatsTotalInsightsCell: StatsBaseCell {
         guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
     }
 
-    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: NSAttributedString? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: NSAttributedString? = nil, guideURL: URL? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+        self.guideURL = guideURL
+
         self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
@@ -217,25 +227,32 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         countLabel.text = count.abbreviatedString()
 
+        updateGuideView(withGuideText: guideText)
+        updateComparisonLabel(withCount: count, difference: difference, percentage: percentage)
+    }
+
+    private func updateGuideView(withGuideText guideText: NSAttributedString?) {
         if let guideText = guideText,
            guideText.string.isEmpty == false {
             outerStackView.addArrangedSubview(guideView)
 
             guideViewLabel.attributedText = addTipEmojiToGuide(guideText)
-            // Setting this hear appears to help with updating the layout (found via a tip on Stack Overflow)
+            // Setting this here appears to help with updating the layout
             guideViewLabel.lineBreakMode = .byWordWrapping
             invalidateIntrinsicContentSize()
 
         } else if guideView.superview != nil {
             guideView.removeFromSuperview()
         }
+    }
 
+    private func updateComparisonLabel(withCount count: Int, difference: Int?, percentage: Int?) {
         guard let difference = difference,
               let percentage = percentage,
               difference != 0 || count > 0 else {
-                  comparisonLabel.isHidden = true
-                  return
-              }
+            comparisonLabel.isHidden = true
+            return
+        }
 
         comparisonLabel.isHidden = false
         let differencePrefix = difference < 0 ? "" : "+"
@@ -297,6 +314,27 @@ class StatsTotalInsightsCell: StatsBaseCell {
         mutableString.addAttributes(highlightAttributes, range: nsRange)
 
         return NSAttributedString(attributedString: mutableString)
+    }
+
+    @objc private func guideTapped() {
+        if let guideURL = guideURL {
+            siteStatsInsightsDelegate?.displayWebViewWithURL?(guideURL)
+        }
+
+        guard let statSection = statSection else {
+            return
+        }
+
+        switch statSection {
+        case .insightsLikesTotals:
+            captureAnalyticsEvent(.statsInsightsTotalLikesGuideTapped)
+        default:
+            break
+        }
+    }
+
+    private func captureAnalyticsEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event)
     }
 
     private enum Metrics {

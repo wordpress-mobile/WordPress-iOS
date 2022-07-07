@@ -1,8 +1,16 @@
+20.3
+-----
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
+
 20.2
 -----
 * [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/wordpress-mobile/WordPress-iOS/pull/18919]
 * [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 * [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
 
 20.1
 -----

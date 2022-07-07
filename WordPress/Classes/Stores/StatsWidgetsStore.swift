@@ -1,10 +1,14 @@
 import WidgetKit
-
+import WordPressAuthenticator
 
 class StatsWidgetsStore {
+    private let blogService: BlogService
 
-    init() {
+    init(blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
+        self.blogService = blogService
+
         observeAccountChangesForWidgets()
+        observeAccountSignInForWidgets()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -143,7 +147,6 @@ private extension StatsWidgetsStore {
         guard let currentData = T.read() else {
             return nil
         }
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         let updatedSiteList = blogService.visibleBlogsForWPComAccounts()
 
         let newData = updatedSiteList.reduce(into: [Int: T]()) { sitesList, site in
@@ -200,8 +203,6 @@ private extension StatsWidgetsStore {
     }
 
     func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
         return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
@@ -263,7 +264,8 @@ extension StatsWidgetsStore {
 
 // MARK: - Login/Logout notifications
 private extension StatsWidgetsStore {
-
+    /// Observes WPAccountDefaultWordPressComAccountChanged notification and reloads widget data based on the state of account.
+    /// The site data is not yet loaded after this notification and widget data cannot be cached for newly signed in account.
     func observeAccountChangesForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
@@ -273,17 +275,31 @@ private extension StatsWidgetsStore {
                                                object: nil,
                                                queue: nil) { notification in
 
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+
             if !AccountHelper.isLoggedIn {
                 HomeWidgetTodayData.delete()
                 HomeWidgetThisWeekData.delete()
                 HomeWidgetAllTimeData.delete()
+
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
             }
+        }
+    }
 
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+    /// Observes WPSigninDidFinishNotification notification and initializes the widget.
+    /// The site data is loaded after this notification and widget data can be cached.
+    func observeAccountSignInForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
 
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.initializeStatsWidgetsIfNeeded()
         }
     }
 }

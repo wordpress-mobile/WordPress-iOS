@@ -117,6 +117,14 @@ import Foundation
     case statsCustomizeInsightsShown
     case statsInsightsManagementSaved
     case statsInsightsManagementDismissed
+    case statsInsightsViewMore
+    case statsInsightsViewsVisitorsToggled
+    case statsInsightsViewsGrowAudienceDismissed
+    case statsInsightsViewsGrowAudienceConfirmed
+    case statsInsightsAnnouncementShown
+    case statsInsightsAnnouncementConfirmed
+    case statsInsightsAnnouncementDismissed
+    case statsInsightsTotalLikesGuideTapped
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -599,6 +607,22 @@ import Foundation
             return "stats_insights_management_saved"
         case .statsInsightsManagementDismissed:
             return "stats_insights_management_dismissed"
+        case .statsInsightsViewMore:
+            return "stats_insights_view_more"
+        case .statsInsightsViewsVisitorsToggled:
+            return "stats_insights_views_visitors_toggled"
+        case .statsInsightsViewsGrowAudienceDismissed:
+            return "stats_insights_views_grow_audience_dismissed"
+        case .statsInsightsViewsGrowAudienceConfirmed:
+            return "stats_insights_views_grow_audience_confirmed"
+        case .statsInsightsAnnouncementShown:
+            return "stats_insights_announcement_shown"
+        case .statsInsightsAnnouncementConfirmed:
+            return "stats_insights_announcement_confirmed"
+        case .statsInsightsAnnouncementDismissed:
+            return "stats_insights_announcement_dismissed"
+        case .statsInsightsTotalLikesGuideTapped:
+            return "stats_insights_total_likes_guide_tapped"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:

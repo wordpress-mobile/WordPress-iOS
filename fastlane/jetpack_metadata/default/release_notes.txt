@@ -1,7 +1,3 @@
-Need a little writing inspiration? We have you covered with brand-new blogging prompts. Get a new prompt each day, write a post about it, and build a writing habit in no time.
+Need to switch over to your browser? You can now sign in by scanning a QR code in the app’s Me menu.
 
-Jetpack has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
-
-We made some improvements to the selection screen where you choose your site design during the Site Creation process.
-
-Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.
+When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.

@@ -43,6 +43,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
+		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
 		02761EC222700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */; };
 		02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */; };
@@ -226,6 +228,11 @@
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
 		172E27D31FD98135003EA321 /* NoticePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172E27D21FD98135003EA321 /* NoticePresenter.swift */; };
+		172F06B92865C04F00C78FD4 /* spectrum-'22-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B42865C04E00C78FD4 /* spectrum-'22-icon-app-76x76.png */; };
+		172F06BA2865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B52865C04E00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png */; };
+		172F06BB2865C04F00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B62865C04E00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png */; };
+		172F06BC2865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B72865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png */; };
+		172F06BD2865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B82865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png */; };
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
 		173B215527875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */; };
 		173B215627875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */; };
@@ -2059,11 +2066,6 @@
 		B0088A95283D6F55008C9676 /* StatsRevampV2FeatureDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0088A93283D6F55008C9676 /* StatsRevampV2FeatureDescriptionView.swift */; };
 		B0088A97283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0088A96283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib */; };
 		B0088A98283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0088A96283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib */; };
-		B02D1EC72835348900F20359 /* pride-'22-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B02D1EC22835348900F20359 /* pride-'22-icon-app-60x60@3x.png */; };
-		B02D1EC92835348900F20359 /* pride-'22-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B02D1EC32835348900F20359 /* pride-'22-icon-app-60x60@2x.png */; };
-		B02D1ECB2835348900F20359 /* pride-'22-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B02D1EC42835348900F20359 /* pride-'22-icon-app-83.5x83.5@2x.png */; };
-		B02D1ECD2835348900F20359 /* pride-'22-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = B02D1EC52835348900F20359 /* pride-'22-icon-app-76x76.png */; };
-		B02D1ECF2835348900F20359 /* pride-'22-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B02D1EC62835348900F20359 /* pride-'22-icon-app-76x76@2x.png */; };
 		B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
 		B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9235250BC5FD000A40AF /* Suggestion.swift */; };
@@ -2081,6 +2083,8 @@
 		B0AC50DD251E96270039E022 /* ReaderCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */; };
 		B0B68A9C252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */; };
 		B0B68A9D252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */; };
+		B0CD27CF286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
+		B0CD27D0286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
 		B0F2EFBF259378E600C7EB6D /* SiteSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */; };
 		B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */; };
 		B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
@@ -3045,6 +3049,7 @@
 		FA8E2FE627C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */; };
 		FA90EFEF262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
+		FA9276AD286C951200C323BB /* FeatureIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */; };
 		FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A24E2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A2502833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */; };
@@ -4949,6 +4954,8 @@
 /* Begin PBXFileReference section */
 		0075A07B739C4EDB5EC613B8 /* Pods_WordPressAllTimeWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressAllTimeWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
+		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
+		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+SectionHelpers.swift"; sourceTree = "<group>"; };
 		02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSubsectionToSectionCategoryTests.swift; sourceTree = "<group>"; };
 		02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSectionIndexTests.swift; sourceTree = "<group>"; };
@@ -5199,6 +5206,11 @@
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
 		172E27D21FD98135003EA321 /* NoticePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticePresenter.swift; sourceTree = "<group>"; };
+		172F06B42865C04E00C78FD4 /* spectrum-'22-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spectrum-'22-icon-app-76x76.png"; sourceTree = "<group>"; };
+		172F06B52865C04E00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spectrum-'22-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		172F06B62865C04E00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spectrum-'22-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		172F06B72865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spectrum-'22-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		172F06B82865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spectrum-'22-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
 		173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMediaPermissionsHeader.swift; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
@@ -6901,11 +6913,6 @@
 		B0088A90283D6AE8008C9676 /* StatsRevampV2FeatureIntroduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampV2FeatureIntroduction.swift; sourceTree = "<group>"; };
 		B0088A93283D6F55008C9676 /* StatsRevampV2FeatureDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampV2FeatureDescriptionView.swift; sourceTree = "<group>"; };
 		B0088A96283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsRevampV2FeatureDescriptionView.xib; sourceTree = "<group>"; };
-		B02D1EC22835348900F20359 /* pride-'22-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-'22-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
-		B02D1EC32835348900F20359 /* pride-'22-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-'22-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
-		B02D1EC42835348900F20359 /* pride-'22-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-'22-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
-		B02D1EC52835348900F20359 /* pride-'22-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-'22-icon-app-76x76.png"; sourceTree = "<group>"; };
-		B02D1EC62835348900F20359 /* pride-'22-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-'22-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
 		B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationIntentTracksEventTests.swift; sourceTree = "<group>"; };
 		B03B9233250BC593000A40AF /* SuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionService.swift; sourceTree = "<group>"; };
 		B03B9235250BC5FD000A40AF /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
@@ -6921,6 +6928,7 @@
 		B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsViewController.swift; sourceTree = "<group>"; };
 		B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B0CD27CE286F8858009500BF /* JetpackBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerView.swift; sourceTree = "<group>"; };
 		B0DDC2EB252F7C4F002BAFB3 /* WordPress 100.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 100.xcdatamodel"; sourceTree = "<group>"; };
 		B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSuggestionService.swift; sourceTree = "<group>"; };
 		B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationActionsService.swift; sourceTree = "<group>"; };
@@ -7962,6 +7970,7 @@
 		FA8E2FDF27C6377000DA0982 /* DashboardQuickStartCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickStartCardCell.swift; sourceTree = "<group>"; };
 		FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackWebViewControllerFactory.swift; path = Classes/Services/JetpackWebViewControllerFactory.swift; sourceTree = SOURCE_ROOT; };
+		FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIntroductionScreen.swift; sourceTree = "<group>"; };
 		FA978DDA26CEB37E009FB14F /* WordPress 132.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 132.xcdatamodel"; sourceTree = "<group>"; };
 		FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistConfigurable.swift; sourceTree = "<group>"; };
@@ -9661,6 +9670,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3F3656E9286CA4B400AA26DD /* Jetpack Branding */ = {
+			isa = PBXGroup;
+			children = (
+				B0CD27CE286F8858009500BF /* JetpackBannerView.swift */,
+			);
+			path = "Jetpack Branding";
+			sourceTree = "<group>";
+		};
 		3F37609B23FD803300F0D87F /* Blog + Me */ = {
 			isa = PBXGroup;
 			children = (
@@ -10464,6 +10481,7 @@
 				8B69F0FF255C4870006B1CEF /* ActivityStoreTests.swift */,
 				572FB400223A806000933C76 /* NoticeStoreTests.swift */,
 				937250ED267A492D0086075F /* StatsPeriodStoreTests.swift */,
+				0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -11622,6 +11640,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				3F3656E9286CA4B400AA26DD /* Jetpack Branding */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
 				B50C0C441EF429D500372C65 /* Aztec */,
@@ -13044,11 +13063,11 @@
 		B02D1EC12835348900F20359 /* spectrum-2022 */ = {
 			isa = PBXGroup;
 			children = (
-				B02D1EC22835348900F20359 /* pride-'22-icon-app-60x60@3x.png */,
-				B02D1EC32835348900F20359 /* pride-'22-icon-app-60x60@2x.png */,
-				B02D1EC42835348900F20359 /* pride-'22-icon-app-83.5x83.5@2x.png */,
-				B02D1EC52835348900F20359 /* pride-'22-icon-app-76x76.png */,
-				B02D1EC62835348900F20359 /* pride-'22-icon-app-76x76@2x.png */,
+				172F06B82865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png */,
+				172F06B52865C04E00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png */,
+				172F06B42865C04E00C78FD4 /* spectrum-'22-icon-app-76x76.png */,
+				172F06B62865C04E00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png */,
+				172F06B72865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png */,
 			);
 			path = "spectrum-2022";
 			sourceTree = "<group>";
@@ -13902,6 +13921,7 @@
 				BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */,
 				FA612DDE274E9F730002B03A /* QuickStartPromptScreen.swift */,
 				C7B7CC7228134347007B9807 /* OnboardingQuestionsPromptScreen.swift */,
+				FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -14595,6 +14615,7 @@
 				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
 				D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */,
 				8BE7C84023466927006EDE70 /* I18n.swift */,
+				0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -16373,7 +16394,6 @@
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				3236F77624ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib in Resources */,
 				9A19D441236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib in Resources */,
-				B02D1ECF2835348900F20359 /* pride-'22-icon-app-76x76@2x.png in Resources */,
 				436D562A2117312700CEAA33 /* RegisterDomainDetailsFooterView.xib in Resources */,
 				98579BC8203DD86F004086E4 /* EpilogueSectionHeaderFooter.xib in Resources */,
 				8B64B4B2247EC3A2009A1229 /* reader.css in Resources */,
@@ -16392,7 +16412,6 @@
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
 				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
-				B02D1EC72835348900F20359 /* pride-'22-icon-app-60x60@3x.png in Resources */,
 				1761F17926209AEE000815EF /* wordpress-dark-icon-app-60x60@2x.png in Resources */,
 				98906508237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */,
 				F5A34D0F25DF2F7F00C9654B /* oswald_upper.ttf in Resources */,
@@ -16400,6 +16419,7 @@
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
 				8BB185CC24B6058600A4CCE8 /* reader-cards-success.json in Resources */,
 				17222D8C261DDDF90047B163 /* black-classic-icon-app-83.5x83.5@2x.png in Resources */,
+				172F06BA2865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png in Resources */,
 				FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */,
 				9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */,
 				9822A8552624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
@@ -16424,7 +16444,6 @@
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
 				1761F17F26209AEE000815EF /* open-source-icon-app-76x76@2x.png in Resources */,
 				17222DA7261DDDF90047B163 /* spectrum-icon-app-60x60@2x.png in Resources */,
-				B02D1ECB2835348900F20359 /* pride-'22-icon-app-83.5x83.5@2x.png in Resources */,
 				1761F18C26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png in Resources */,
 				4349B0B0218A477F0034118A /* RevisionsTableViewCell.xib in Resources */,
 				17222D97261DDDF90047B163 /* pink-icon-app-60x60@2x.png in Resources */,
@@ -16504,7 +16523,6 @@
 				982D9A0026F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */,
 				C7E5F2522799BD54009BC263 /* cool-blue-icon-app-76x76.png in Resources */,
 				FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */,
-				B02D1ECD2835348900F20359 /* pride-'22-icon-app-76x76.png in Resources */,
 				C7E5F2542799BD54009BC263 /* cool-blue-icon-app-60x60@2x.png in Resources */,
 				17222DAF261DDDF90047B163 /* spectrum-classic-icon-app-60x60@3x.png in Resources */,
 				1761F17D26209AEE000815EF /* open-source-icon-app-83.5x83.5@2x.png in Resources */,
@@ -16512,6 +16530,7 @@
 				9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */,
 				FA347AEF26EB6E300096604B /* GrowAudienceCell.xib in Resources */,
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
+				172F06BC2865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png in Resources */,
 				17222D82261DDDF90047B163 /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */,
 				C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */,
@@ -16559,7 +16578,6 @@
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				8BE6F92A27EE26D30008BDC7 /* BlogDashboardPostCardGhostCell.xib in Resources */,
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
-				B02D1EC92835348900F20359 /* pride-'22-icon-app-60x60@2x.png in Resources */,
 				FEC3B81926C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				98BC522D27F62B6300D6E8C2 /* BloggingPromptsFeatureDescriptionView.xib in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
@@ -16568,6 +16586,7 @@
 				9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */,
 				17222DAC261DDDF90047B163 /* blue-icon-app-60x60@2x.png in Resources */,
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
+				172F06BD2865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png in Resources */,
 				98E55019265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				FF37F90922385CA000AFA3DB /* RELEASE-NOTES.txt in Resources */,
 				C3234F4C27EB96A3004ADB29 /* IntentCell.xib in Resources */,
@@ -16607,6 +16626,7 @@
 				1761F17C26209AEE000815EF /* open-source-icon-app-60x60@3x.png in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
 				1E5D00142493E8C90004B708 /* GutenGhostView.xib in Resources */,
+				172F06BB2865C04F00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png in Resources */,
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
 				98517E5C28220475001FFD45 /* BloggingPromptTableViewCell.xib in Resources */,
 				08216FAA1CDBF95100304BA7 /* MenuItemEditing.storyboard in Resources */,
@@ -16650,6 +16670,7 @@
 				1761F17626209AEE000815EF /* wordpress-dark-icon-app-76x76@2x.png in Resources */,
 				9A9E3FAE230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib in Resources */,
 				17222D95261DDDF90047B163 /* pink-icon-app-76x76.png in Resources */,
+				172F06B92865C04F00C78FD4 /* spectrum-'22-icon-app-76x76.png in Resources */,
 				8F2281EE1C11E49A2B1FE337 /* TimeZoneSearchHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -19192,6 +19213,7 @@
 				8B8E50B627A4692000C89979 /* DashboardPostListErrorCell.swift in Sources */,
 				FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
+				B0CD27CF286F8858009500BF /* JetpackBannerView.swift in Sources */,
 				8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
 				171096CB270F01EA001BCDD6 /* DomainSuggestionsTableViewController.swift in Sources */,
@@ -19725,6 +19747,7 @@
 				EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */,
 				3F2F855626FAF227000FCDA5 /* LoginEmailScreen.swift in Sources */,
 				3FE39A3926F837E1006E2B3A /* ActivityLogScreen.swift in Sources */,
+				FA9276AD286C951200C323BB /* FeatureIntroductionScreen.swift in Sources */,
 				3F2F855B26FAF227000FCDA5 /* LoginPasswordScreen.swift in Sources */,
 				3F2F854A26FAF132000FCDA5 /* FeaturedImageScreen.swift in Sources */,
 				3F762E9B26784D2A0088CD45 /* XCUIElement+Utils.swift in Sources */,
@@ -20121,6 +20144,7 @@
 				C38C5D8127F61D2C002F517E /* MenuItemTests.swift in Sources */,
 				E18549DB230FBFEF003C620E /* BlogServiceDeduplicationTests.swift in Sources */,
 				400A2C8F2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift in Sources */,
+				0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */,
 				7320C8BD2190C9FC0082FED5 /* UITextView+SummaryTests.swift in Sources */,
 				24A2948325D602710000A51E /* BlogTimeZoneTests.m in Sources */,
 				80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */,
@@ -20190,6 +20214,7 @@
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
 				40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */,
+				0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				40C403EE2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift in Sources */,
@@ -21497,6 +21522,7 @@
 				FABB24392602FC2C00C8785C /* JetpackBackupStatusFailedViewController.swift in Sources */,
 				FABB243A2602FC2C00C8785C /* CircularImageView.swift in Sources */,
 				FABB243B2602FC2C00C8785C /* GravatarButtonView.swift in Sources */,
+				B0CD27D0286F8858009500BF /* JetpackBannerView.swift in Sources */,
 				AE2F3126270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
 				C7AFF878283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */,
 				FABB243C2602FC2C00C8785C /* StockPhotosService.swift in Sources */,
@@ -22420,7 +22446,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -22489,7 +22515,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -23818,7 +23844,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -24314,7 +24340,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -25418,7 +25444,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconJetpackSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -25490,7 +25516,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconJetpackSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -25558,7 +25584,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconJetpackSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -25627,7 +25653,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconJetpackSpectrum2022;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -26370,7 +26396,7 @@
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
+				minimumVersion = 0.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

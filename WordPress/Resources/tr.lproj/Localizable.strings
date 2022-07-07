@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-16 09:54:25+0000 */
+/* Translation-Revision-Date: 2022-06-28 13:38:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: tr */
@@ -756,6 +756,9 @@ translators: Block name. %s: The localized block name */
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Etkin bir internet bağlantısı gerekli";
 
+/* Error message shown when trying to scan a log in code without an active internet connection. */
+"An active internet connection is required to scan log in codes" = "Oturum açma kodlarını taramak için etkin bir internet bağlantısı gereklidir";
+
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "Jetpack Scan'i görüntülemek için etkin bir internet bağlantısı gereklidir";
 
@@ -934,6 +937,12 @@ translators: Block name. %s: The localized block name */
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Güncellemek istediğinizden emin misiniz?";
 
+/* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
+"Are you trying to log in to %1$@ near %2$@?" = "%1$@ için %2$@ yakınından giriş yapmaya mı çalışıyorsunuz?";
+
+/* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
+"Are you trying to log in to your web browser near %1$@?" = "%1$@ yakınından web tarayıcınız ile giriş yapmaya mı çalışıyorsunuz?";
+
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "İçeriğinizi sütunlar halinde düzenleyin, Harekete Geçirici Mesaj düğmeleri ekleyin ve görselleri metinle kaplayın.";
 
@@ -964,6 +973,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Authenticating" = "Doğrulanıyor";
+
+/* Title for the error view when the authentication failed for any reason */
+"Authentication Failed" = "Doğrulama başarısız";
 
 /* Accessibility label for the 2FA text field.
    Placeholder for the 2FA code textfield. */
@@ -1260,6 +1272,9 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the camera tile in the collection view */
 "Camera" = "Kamera";
 
+/* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
+"Camera access needed to scan login codes" = "Giriş kodlarını taramak için kamera erişimi gerekir";
+
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "Bağlantı istenemiyor";
 
@@ -1270,6 +1285,7 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Boş bir yazı yayınlanamaz";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1315,6 +1331,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1430,6 +1447,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Satın alım kontrol hatası";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Check out our top tips to increase your views and traffic" = "Görüntülemelerinizi ve trafiğinizi artırmak için en iyi ipuçlarımıza göz atın";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "E-postanızı bu cihazda kontrol edin ve WordPress.com’dan gelen e-postadaki bağlantıya tıklayın.";
@@ -1693,6 +1713,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Bağlantı kurmaya başlamak için yorum yapın.";
+
+/* A tip displayed to the user in the stats section to help them gain more followers. */
+"Commenting on other blogs is a great way to build attention and followers for your new site." = "Diğer bloglara yorum yapmak, yeni siteniz için dikkat çekmenin ve takipçi oluşturmanın harika bir yoludur.";
 
 /* Comments table header label.
    Filters Comments Notifications
@@ -1977,6 +2000,9 @@ translators: Block name. %s: The localized block name */
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Belirtilen adresteki site takip edilemedi.";
 
+/* Error message shown when the user scanned an expired log in code. */
+"Could not log you in using this log in code. Please tap the Scan Again button to rescan the code." = "Bu oturum açma kodunu kullanarak oturum açılamadı. Lütfen Yeniden tara düğmesine tıklayarak kodu tekrar taratın.";
+
 /* Title of a prompt. */
 "Could not remove post from Saved for Later" = "Yazı, Sonrası için kaydet'ten kaldırılamadı";
 
@@ -2003,6 +2029,9 @@ translators: Block name. %s: The localized block name */
 
 /* The app failed to unsubscribe from the comments for the post */
 "Could not unsubscribe from comments" = "Yorum aboneliğinden çıkılamadı";
+
+/* Title for the error view when the user scanned an invalid log in code */
+"Could not validate the log in code" = "Oturum açma kodu doğrulanamadı";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Bize nasıl daha iyi olabileceğimizi belirtir misiniz?";
@@ -2443,6 +2472,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -2781,7 +2811,8 @@ translators: Block name. %s: The localized block name */
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-posta";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -3096,6 +3127,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label indicating that a domain name registration has expired. */
 "Expired" = "Süresi doldu";
+
+/* Title for the error view when the user scanned an expired log in code */
+"Expired log in code" = "Süresi dolmuş oturum açma kodu";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "Sona erme tarihi:";
@@ -3869,6 +3903,12 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "Yönelimler";
 
+/* Description of updated Stats Insights displayed in the Feature Introduction view. */
+"Insights help you understand how your content is performing and what’s resonating with your audience." = "İçgörüler, içeriğinizin nasıl performans gösterdiğini ve hedef kitlenizde nelerin yankı uyandırdığını anlamanıza yardımcı olur.";
+
+/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
+"Insights update" = "İçgörüler güncellemesi";
+
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "Kur";
@@ -4120,6 +4160,9 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Roller hakkında daha fazla bilgi edinin";
+
+/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
+"Learn more in My Site > Stats > Insights." = "Sitem > İstatistikler > İçgörüler bölümünde daha fazla bilgi edinin.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Daha fazlasını öğrenin...";
@@ -5021,6 +5064,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Sonuç yok. Lütfen daha farklı bir arama deneyin.";
 
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "Kaydedilen yazı yok";
+
 /* A message title */
 "No sites found" = "Hiçbir site bulunamadı";
 
@@ -5213,6 +5259,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "One" = "Bir";
 
+/* Warning label that informs the user to only scan login codes that they generated. */
+"Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else." = "Yalnızca doğrudan web tarayıcınızdan alınan QR kodlarını tarayın. Size başkaları tarafından gönderilen bir kodu asla taramayın.";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Sadece en alakalı istatistikleri görün. İhtiyaçlarınıza uygun yönelimler ekleyin.";
 
@@ -5249,7 +5298,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Postayı aç";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Ayarları aç";
 
 /* Today widget label to launch WP app */
@@ -5753,6 +5803,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posting regularly helps build your audience!" = "Düzenli olarak paylaşım yapmak, hedef kitlenizi oluşturmanıza yardımcı olur!";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -5899,6 +5950,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projeler";
+
+/* Title of the notification presented when a prompt is skipped */
+"Prompt skipped" = "İstem atlandı";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
    Title label for the Prompts card in My Sites tab.
@@ -6101,6 +6155,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Bana hatırlat";
+
+/* Button title dismiss the Stats Insights feature announcement screen. */
+"Remind me later" = "Daha sonra hatırlat";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Hatırlatıcılar kaldırıldı";
@@ -6456,7 +6513,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the view */
 "Scan" = "Tarama";
 
-/* Button title that triggers a scan */
+/* Button label that prompts the user to scan the log in code again
+   Button title that triggers a scan */
 "Scan Again" = "Yeniden tara";
 
 /* Title for a notice informing the user their scan has completed */
@@ -6464,6 +6522,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the view */
 "Scan History" = "Tarama Geçmişi";
+
+/* Link to opening the QR login scanner */
+"Scan Login Code" = "Giriş kodunu tara";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Şimdi tara";
@@ -7061,7 +7122,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Şimdiye kadar sitenize yönelik göz ardı edilmiş bir tehdit olmadı.";
 
-/* Follower Totals label for social media followers */
+/* Follower Totals label for social media followers
+   Label for social followers
+   Title of Stats section that shows social followers. */
 "Social" = "Sosyal";
 
 /* Title of a Quick Start Tour */
@@ -7392,8 +7455,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Take a Video" = "Video Çek";
 
+/* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
+"Tap \"Week\" to see your top commenters." = "En iyi yorumcularınızı görmek için \"Hafta\"ya dokunun.";
+
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "[bookmark-outline] üzerine dokunarak yazıyı listenize kaydedin.";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
+"Tap dismiss and head back to your web browser to continue." = "Kapat'a dokunun ve devam etmek için web tarayıcınıza geri dönün.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Daha fazla detay için dokunun.";
@@ -7603,6 +7672,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description that informs for label when there are no threats on a users site */
 "The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Son jetpack taramasında hiçbir risk bulunmadı.\n\nSitenizi yeniden gözden geçirmek için manuel bir tarama yapın veya Jetpack'in sitenizi bugün daha sonra taramasını bekleyin.";
 
+/* Error message shown when trying to scan an invalid log in code. */
+"The log in code that was scanned could not be validated. Please tap the Scan Again button to rescan the code." = "Taranan oturum açma kodu doğrulanamadı. Lütfen Yeniden tara düğmesine tıklayarak kodu tekrar taratın.";
+
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Giriş isteğinin süresi doldu. Yeniden denemek için WordPress.com'a giriş yapın.";
 
@@ -7617,6 +7689,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Kopyalamaya çalıştığınız gönderinin çakışan iki sürümü var veya yakın zamanda değişiklik yaptığınız ancak bunları kaydetmediniz.\nHerhangi bir çakışmayı çözmek için önce gönderiyi düzenleyin veya sürümü bu uygulamadan kopyalayarak devam edin.";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
+"The same as the previous week" = "Bir önceki haftayla aynı";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "İsteğin serileştirilmesi başarısız oldu.";
@@ -7818,8 +7893,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Bu eylem geri <b>alınamaz<\/b>. Siteyi silmek tüm içeriği, katılımcıları, alan adlarını ve yükseltmeleri silecektir.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Bu uygulama yeni görsel yakalamak için Kamera’ya erişim izni istiyor, buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
+
+/* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
+"This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Bu uygulamanın giriş kodlarını taramak için Kameraya erişmek için izne ihtiyacı vardır, etkinleştirmek için Ayarları Aç düğmesine dokunun.";
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Bu uygulama yazılarınıza fotoğraf ve\/veya video eklemek için cihazınızın görsel kitaplığa erişim izni istiyor. Buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
@@ -7851,6 +7929,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Bu, bugüne ait blog yazma hatırlatıcınızdır ✍️";
 
+/* Error message shown when the user scanned an expired log in code. */
+"This log in code has expired. Please tap the Scan Again button to rescan the code." = "Bu oturum açma kodunun süresi doldu. Lütfen Yeniden tara düğmesine tıklayarak kodu tekrar taratın.";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Bu ortam öğesi silindi.";
 
@@ -7878,8 +7959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Aktif abonelikleri olduğundan, kullanıcı hesabı kapatılamadı.";
 
-/* This week legend label
-   Title of a button. A call to action to view more stats for this week */
+/* This week legend label */
 "This week" = "Bu hafta";
 
 /* A description of the twitter sharing setting.
@@ -8019,6 +8099,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Araçlar";
 
+/* Insights 'Top Commenters' header */
+"Top Commenters" = "En iyi yorumcular";
+
 /* Cell title for the Top Level option case
    Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "En üst seviye";
@@ -8123,6 +8206,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Try another search term" = "Başka bir arama terimi deneyin";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Button title to take user to the new Stats Insights screen.
    Customize Insights button title */
 "Try it now" = "Şimdi deneyin";
 
@@ -8349,6 +8433,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "Altı çizili";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -9022,6 +9107,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes the web address section in the comment detail screen. */
 "Web address" = "Web adresi";
 
+/* Title of a button. A call to action to view more stats for this week */
+"Week" = "Hafta";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Haftanın başlangıcı";
 
@@ -9156,6 +9244,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "With this powerful editor you can post on the go." = "Bu güçlü düzenleyici ile hareket halindeyken yazı gönderebilirsiniz.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress uygulama ayarları";
@@ -9298,6 +9389,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Evet";
+
+/* Button label that confirms the user wants to log in and will authenticate them via the browser */
+"Yes, log me in" = "Evet, oturum aç";
 
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Evet, göster";
@@ -9476,6 +9570,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Tamamen güncelsiniz!";
 
+/* Title for the success view when the user has successfully logged in */
+"You're logged in!" = "Giriş yaptınız!";
+
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Hesabı kapatma yetkiniz yok.";
 
@@ -9520,6 +9617,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Ücretsiz WordPress.com adresiniz";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "En son yazınız <a href=\"\">%1$@<\/a> <strong>%2$d<\/strong> beğeni aldı.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "En son yazınız <a href=\"\">%@<\/a> <strong>bir<\/strong> beğeni aldı.";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Medyanız dışa aktarılamadı. If the problem persists you can contact us via the Me > Yardım ve Destek ekranı.";
@@ -9602,11 +9705,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Stats insights views lower than previous week */
 "Your views this week are %@ lower than the previous week.\n" = "Bu haftaki görüntülemeleriniz bir önceki haftaya göre %@ daha düşük.\n";
 
+/* Stats insights label shown when the user's view count is the same as the previous week. */
+"Your views this week are the same as the previous week.\n" = "Bu haftaki görüntülemeleriniz bir önceki haftayla aynı.\n";
+
 /* Stats insights visitors higher than previous week */
 "Your visitors this week are %@ higher than the previous week.\n" = "Bu haftaki ziyaretçileriniz bir önceki haftaya göre %@ daha yüksek.\n";
 
 /* Stats insights visitors lower than previous week */
 "Your visitors this week are %@ lower than the previous week.\n" = "Bu haftaki ziyaretçileriniz bir önceki haftaya göre %@ daha düşük.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous week. */
+"Your visitors this week are the same as the previous week.\n" = "Bu haftaki ziyaretçileriniz bir önceki haftayla aynı.\n";
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Web sitenizin kimlik bilgileri depolanmayacak ve yalnızca Jetpack’i güvenli bir şekilde yüklemek amacıyla kullanılacaktır.";
@@ -9776,7 +9885,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.latestPostSummary.likes" = "Beğeniler";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
-"stats.insights.latestPostSummary.noData" = "Henüz herhangi bir yazı yayınlamadınız. İlk yazınızı yayınladıktan sonra tekrar kontrol edin!";
+"stats.insights.latestPostSummary.noData" = "İlk yazınızı yayınladıktan sonra tekrar kontrol edin!";
 
 /* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
 "stats.insights.latestPostSummary.publishDate" = "Yayımlanma tarihi: %@";

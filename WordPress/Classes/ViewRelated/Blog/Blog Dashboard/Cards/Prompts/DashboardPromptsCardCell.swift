@@ -492,7 +492,10 @@ private extension DashboardPromptsCardCell {
 
     func learnMoreTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
-        presenterViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
+        guard let presenterViewController = presenterViewController else {
+            return
+        }
+        BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
     }
 
     // Fallback context menu implementation for iOS 13.

@@ -7,8 +7,9 @@ class SiteStatsInsightsDetailsViewModelTests: XCTestCase {
     var viewModel: SiteStatsInsightsDetailsViewModel!
 
     override func setUpWithError() throws {
-        viewModel = SiteStatsInsightsDetailsViewModel(detailsDelegate: MockDetailsDelegate(),
-                                              referrerDelegate: MockReferrerDeletage())
+        viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: MockInsightsDelegate(),
+                                                      detailsDelegate: MockDetailsDelegate(),
+                                                      referrerDelegate: MockReferrerDeletage())
 
         viewModel.fetchDataFor(statSection: StatSection.insightsAddInsight)
     }
@@ -62,17 +63,9 @@ class SiteStatsInsightsDetailsViewModelTests: XCTestCase {
 }
 
 private extension SiteStatsInsightsDetailsViewModelTests {
-    class MockDetailsDelegate: SiteStatsDetailsDelegate {
-        func tabbedTotalsCellUpdated() { }
+    class MockInsightsDelegate: SiteStatsInsightsDelegate { }
 
-        func displayWebViewWithURL(_ url: URL) { }
-
-        func toggleChildRowsForRow(_ row: StatsTotalRow) { }
-
-        func showPostStats(postID: Int, postTitle: String?, postURL: URL?) { }
-
-        func displayMediaWithID(_ mediaID: NSNumber) { }
-    }
+    class MockDetailsDelegate: SiteStatsDetailsDelegate { }
 
     class MockReferrerDeletage: SiteStatsReferrerDelegate {
         func showReferrerDetails(_ data: StatsTotalRowData) { }

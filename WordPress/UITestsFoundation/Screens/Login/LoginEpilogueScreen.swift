@@ -23,6 +23,7 @@ public class LoginEpilogueScreen: ScreenObject {
 
         try dismissQuickStartPromptIfNeeded()
         try dismissOnboardingQuestionsPromptIfNeeded()
+        try dismissFeatureIntroductionIfNeeded()
         return try MySiteScreen()
     }
 
@@ -75,6 +76,15 @@ public class LoginEpilogueScreen: ScreenObject {
 
             Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
             _ = try OnboardingQuestionsPromptScreen().selectSkip()
+        }
+    }
+
+    private func dismissFeatureIntroductionIfNeeded() throws {
+        try XCTContext.runActivity(named: "Dismiss feature introduction screen if needed.") { _ in
+            guard FeatureIntroductionScreen.isLoaded() else { return }
+
+            Logger.log(message: "Dismissing feature introduction screen...", event: .i)
+            _ = try FeatureIntroductionScreen().dismiss()
         }
     }
 }

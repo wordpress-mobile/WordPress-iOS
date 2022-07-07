@@ -52,10 +52,9 @@ fileprivate extension StatsPeriodType {
 
 class SiteStatsDashboardViewController: UIViewController {
 
-    static var lastSelectedStatsPeriodTypeKey: String? {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
-            return nil
-        }
+    // MARK: - Keys
+
+    static func lastSelectedStatsPeriodTypeKey(forSiteID siteID: Int) -> String {
         return "LastSelectedStatsPeriodType-\(siteID)"
     }
 
@@ -64,6 +63,7 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
@@ -89,6 +89,7 @@ class SiteStatsDashboardViewController: UIViewController {
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
+        configureJetpackBanner()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
@@ -98,6 +99,16 @@ class SiteStatsDashboardViewController: UIViewController {
 
     func configureNavBar() {
         parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+    }
+
+    func configureJetpackBanner() {
+        if AppConfiguration.isJetpack {
+            // When the banner is removed (along with its constraints), the view above it
+            // will grow to occupy the space. This is because the view above it has a
+            // lower-priority constraint from its bottom edge to the bottom edge of the
+            // screen.
+            jetpackBannerView.removeFromSuperview()
+        }
     }
 
     @objc func manageInsightsButtonTapped() {
@@ -180,19 +191,19 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-
-        guard let key = Self.lastSelectedStatsPeriodTypeKey,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
               !insightsTableViewController.isGrowAudienceShowing else {
             return
         }
 
+        let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: key)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
 
-        guard let key = Self.lastSelectedStatsPeriodTypeKey,
-              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: key)) else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
+              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
             return .insights
         }
 
