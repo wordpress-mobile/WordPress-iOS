@@ -1,0 +1,59 @@
+{
+  "request": {
+    "urlPattern": "/rest/v1.1/me/settings.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "enable_translator": false,
+      "surprise_me": false,
+      "post_post_flag": false,
+      "holidaysnow": false,
+      "user_login": "e2eflowtestingmobile",
+      "password": "",
+      "display_name": "e2eflowtestingmobile",
+      "first_name": "",
+      "last_name": "",
+      "description": "",
+      "user_email": "e2eflowtestingmobile@example.com",
+      "user_email_change_pending": false,
+      "new_user_email": "",
+      "user_URL": "https://infocusphotographers.com",
+      "language": "en",
+      "avatar_URL": "https://en.gravatar.com/avatar/35029b2103460109f574c38dfeea5f3f?s=200&amp;d=mm",
+      "primary_site_ID": 106707880,
+      "comment_like_notification": true,
+      "mentions_notification": true,
+      "subscription_delivery_email_default": "instantly",
+      "subscription_delivery_jabber_default": false,
+      "subscription_delivery_mail_option": "html",
+      "subscription_delivery_day": 4,
+      "subscription_delivery_hour": 8,
+      "subscription_delivery_email_blocked": false,
+      "two_step_enabled": false,
+      "two_step_sms_enabled": false,
+      "two_step_backup_codes_printed": false,
+      "two_step_sms_country": "",
+      "two_step_sms_phone_number": "",
+      "user_login_can_be_changed": true,
+      "calypso_preferences": {
+        "is_new_reader": true,
+        "recentSites": [
+          1
+        ]
+      },
+      "jetpack_connect": [
+
+      ],
+      "is_desktop_app_user": false,
+      "locale_variant": false,
+      "tracks_opt_out": false
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

@@ -1,5 +1,3 @@
-WordPress is toegevoegd aan de chat – vanaf nu zie je de tooltip 'Conversatie volgen' om een bericht te volgen en meldingen te ontvangen over nieuwe opmerkingen.
+Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
 
-We hebben wat verbeteringen doorgevoerd aan het selectiescherm waar je je site-ontwerp kunt kiezen tijdens het aanmaken van je site.
-
-Ten slotte hebben we een probleem verholpen met het scrollen door meldingen wanneer je je telefoon in landschapsmodus gebruikt. Scrol maar door.
+Het pictogram van de WordPress-app is weer als vanouds blauw. Maar wil je nou toch wat meer kleur in je leven, dan kun je in de app-instellingen het app-pictogram weer het regenboogthema geven.

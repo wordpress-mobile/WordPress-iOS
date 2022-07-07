@@ -1,7 +1,5 @@
-Schrijf-inspiratie nodig? Daar zorgen wij voor, met onze gloednieuwe blogideeën. Ontvang elke dag een nieuw idee, schrijf er een bericht over en voor je het weet is schrijven een gewoonte.
+We hebben de weergave van Inzichten bij de Statistieken van je site bijgewerkt. Zie in een oogopslag hoe je site presteert en vergelijk met slechts één tik de prestaties van verschillende periodes.
 
-Jetpack is toegevoegd aan de chat – vanaf nu zie je de tooltip 'Conversatie volgen' om een bericht te volgen en meldingen te ontvangen over nieuwe opmerkingen.
+Wil je verdergaan in de browser? Je kunt nu een QR-code in het menu Ik in de app scannen om je aan te melden.
 
-We hebben wat verbeteringen doorgevoerd aan het selectiescherm waar je je site-ontwerp kunt kiezen tijdens het aanmaken van je site.
-
-Ten slotte hebben we een probleem verholpen met het scrollen door meldingen wanneer je je telefoon in landschapsmodus gebruikt. Scrol maar door.
+Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
