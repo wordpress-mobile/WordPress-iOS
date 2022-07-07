@@ -1,6 +1,4 @@
-# WordPressMocks
-
-Network mocking for testing the WordPress mobile apps based on [WireMock](https://wiremock.org/)
+Network mocking for testing the WordPress mobile apps based on [WireMock](https://wiremock.org/).
 
 ## Usage
 
