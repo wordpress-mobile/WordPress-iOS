@@ -163,7 +163,7 @@ extension SuggestionType {
         for (index, item) in searchResults.enumerated() {
             guard
                 let suggestion = item as? UserSuggestion,
-                let position = ids.firstIndex(where: { suggestion.id == $0 })
+                let position = ids.firstIndex(where: { suggestion.userID == $0 })
             else { continue }
             suggestionIndexesToRemove.append(index)
             suggestionsToInsert[position] = suggestion

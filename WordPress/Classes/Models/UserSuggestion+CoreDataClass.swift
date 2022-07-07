@@ -18,7 +18,7 @@ public class UserSuggestion: NSManagedObject {
         }
         self.init(entity: entityDescription, insertInto: context)
 
-        self.id = NSNumber(value: id)
+        self.userID = NSNumber(value: id)
         self.username = userLoginValue
         self.displayName = displayNameValue
 
