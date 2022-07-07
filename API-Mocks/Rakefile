@@ -5,18 +5,19 @@ require 'jsonlint'
 require 'git'
 
 desc 'Re-format all JSON files to be pretty-printed'
-task :format do
+task :format, [:silent] do |_, args|
+  args.with_defaults(silent: false)
+
   for_each_mock_file do |file|
-    puts "Formatting #{file}..."
+    puts "Formatting #{file}..." unless args[:silent]
     json = JSON.parse(File.read(file))
     File.write(file, JSON.pretty_generate(json))
-    puts "#{file} formatted."
-  rescue StandardError
+  rescue StandardError => e
     linter = JsonLint::Linter.new
     linter.check(file)
     linter.display_errors
 
-    abort('Invalid JSON. See errors above.')
+    abort("Invalid JSON. See errors above. (#{e})")
   end
 end
 
@@ -25,7 +26,7 @@ task :checkformat do
   repo = Git.open('../.')
 
   abort('Repo is dirty – unable to verify JSON files are correctly formatted') unless repo.diff.lines.zero?
-  Rake::Task['format'].execute
+  Rake::Task['format'].invoke(true)
 
   if repo.diff.lines.positive?
     repo.reset_hard
