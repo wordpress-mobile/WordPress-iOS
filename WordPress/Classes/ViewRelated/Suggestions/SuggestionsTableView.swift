@@ -141,13 +141,13 @@ extension SuggestionType {
         } else {
             searchResults = suggestions
         }
-        if suggestionType == .mention {
-            searchResults = self.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds ?? [])
+        if suggestionType == .mention, let userSuggestionsResult = searchResults as? [UserSuggestion] {
+            searchResults = self.moveProminentSuggestionsToTop(searchResults: userSuggestionsResult, prominentSuggestionsIds: prominentSuggestionsIds ?? [])
         }
         return searchResults
     }
 
-    private func moveProminentSuggestionsToTop(searchResults: [Any], prominentSuggestionsIds ids: [NSNumber]) -> [Any] {
+    private func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
         // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
         guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
 
@@ -160,11 +160,8 @@ extension SuggestionType {
         //
         var suggestionIndexesToRemove = [Int]()
         var suggestionsToInsert: [UserSuggestion?] = Array(repeating: nil, count: ids.count)
-        for (index, item) in searchResults.enumerated() {
-            guard
-                let suggestion = item as? UserSuggestion,
-                let position = ids.firstIndex(where: { suggestion.userID == $0 })
-            else { continue }
+        for (index, suggestion) in searchResults.enumerated() {
+            guard let position = ids.firstIndex(where: { suggestion.userID == $0 }) else { continue }
             suggestionIndexesToRemove.append(index)
             suggestionsToInsert[position] = suggestion
         }
