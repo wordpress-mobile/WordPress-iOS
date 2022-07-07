@@ -5,9 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 144
 
-@salimbraksa 2022-07-07
+ @salimbraksa 2022-07-07
 
-- `UserSuggestion`: added `userID` attribute. (optional, no default, `NSNumber`)
+ - `UserSuggestion`: added `userID` attribute. (optional, no default, `NSNumber`)
 
 ## WordPress 143
 
@@ -20,44 +20,44 @@ data model as well as any custom migrations.
 @dvdchr 2022-05-31
 
 - Updated `BloggingPrompt`:
-  - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
+    - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
 
 ## WordPress 141
 
 @wargcm 2022-05-23
 
 - Created a new entity `BloggingPromptSettings` with:
-  - `isPotentialBloggingSite` (required, default `NO`, `Boolean`)
-  - `promptCardEnabled` (required, default `YES`, `Boolean`)
-  - `promptRemindersEnabled` (required, default `NO`, `Boolean`)
-  - `reminderTime` (required, default empty string, `String`)
-  - `siteID` (required, default `0`, `Int 32`)
-  - `reminderDays` one-to-one mapping to `BloggingPromptSettingsReminderDays`
+    - `isPotentialBloggingSite` (required, default `NO`, `Boolean`)
+    - `promptCardEnabled` (required, default `YES`, `Boolean`)
+    - `promptRemindersEnabled` (required, default `NO`, `Boolean`)
+    - `reminderTime` (required, default empty string, `String`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `reminderDays` one-to-one mapping to `BloggingPromptSettingsReminderDays`
 - Created a new entity `BloggingPromptSettingsReminderDays` with:
-  - `monday` (required, default `NO`, `Boolean`)
-  - `tuesday` (required, default `NO`, `Boolean`)
-  - `wednesday` (required, default `NO`, `Boolean`)
-  - `thursday` (required, default `NO`, `Boolean`)
-  - `friday` (required, default `NO`, `Boolean`)
-  - `saturday` (required, default `NO`, `Boolean`)
-  - `sunday` (required, default `NO`, `Boolean`)
-  - `settings` one-to-one mapping to `BloggingPromptSettings`
+    - `monday` (required, default `NO`, `Boolean`)
+    - `tuesday` (required, default `NO`, `Boolean`)
+    - `wednesday` (required, default `NO`, `Boolean`)
+    - `thursday` (required, default `NO`, `Boolean`)
+    - `friday` (required, default `NO`, `Boolean`)
+    - `saturday` (required, default `NO`, `Boolean`)
+    - `sunday` (required, default `NO`, `Boolean`)
+    - `settings` one-to-one mapping to `BloggingPromptSettings`
 
 ## WordPress 140
 
 @dvdchr 2022-05-13
 
 - Created a new entity `BloggingPrompt` with:
-  - `promptID` (required, default `0`, `Int 32`)
-  - `siteID` (required, default `0`, `Int 32`)
-  - `text` (required, default empty string, `String`)
-  - `title` (required, default empty string, `String`)
-  - `content` (required, default empty string, `String`)
-  - `attribution` (required, default empty string, `String`)
-  - `date` (optional, no default, `Date`)
-  - `answered` (required, default `NO`, `Boolean`)
-  - `answerCount` (required, default `0`, `Int 32`)
-  - `displayAvatarURLs` (optional, no default, `Transformable` with type `[URL]`)
+    - `promptID` (required, default `0`, `Int 32`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `text` (required, default empty string, `String`)
+    - `title` (required, default empty string, `String`)
+    - `content` (required, default empty string, `String`)
+    - `attribution` (required, default empty string, `String`)
+    - `date` (optional, no default, `Date`)
+    - `answered` (required, default `NO`, `Boolean`)
+    - `answerCount` (required, default `0`, `Int 32`)
+    - `displayAvatarURLs` (optional, no default, `Transformable` with type `[URL]`)
 
 ## WordPress 138
 
@@ -128,29 +128,30 @@ data model as well as any custom migrations.
 @chipsnyder 2021-07-1
 
 - `BlockEditorSettings`: added the attribute
-  - `rawStyles` (optional, no default, `String`)
-  - `rawFeatures` (optional, no default, `String`)
+    - `rawStyles` (optional, no default, `String`)
+    - `rawFeatures` (optional, no default, `String`)
+    
 - `BlockEditorSettingElement`: added the attribute
-  - `order` (required, 0, `Int`)
+    - `order` (required, 0, `Int`)
 
 ## WordPress 126
 
 @scoutharris 2021-06-28
 
-- `Comment`: added `canModerate` attribute. (required, default `false`, `Boolean`)
+- `Comment`: added  `canModerate` attribute. (required, default `false`, `Boolean`)
 
 ## WordPress 125
 
 @aerych 2021-06-04
 
-- `ReaderPost`: added `canSubscribeComments` attribute. (required, default `false`, `Boolean`)
-- `ReaderPost`: added `isSubscribedComments` attribute. (required, default `false`, `Boolean`)
+- `ReaderPost`: added  `canSubscribeComments` attribute. (required, default `false`, `Boolean`)
+- `ReaderPost`: added  `isSubscribedComments` attribute. (required, default `false`, `Boolean`)
 
 ## WordPress 124
 
 @scoutharris 2021-05-07
 
-- `LikeUser`: added `dateFetched` attribute.
+- `LikeUser`: added  `dateFetched` attribute.
 
 ## WordPress 123
 
@@ -160,7 +161,7 @@ data model as well as any custom migrations.
   - `likedSiteID`
   - `likedPostID`
   - `likedCommentID`
-- Corrected spelling of `dateLikedString`
+- Corrected spelling of  `dateLikedString`  
 
 ## WordPress 122
 
@@ -176,26 +177,23 @@ data model as well as any custom migrations.
 @twstokes 2021-04-21
 
 - `BlogAuthor`: added the attribute
-  - `deletedFromBlog` (required, default `NO`, `Boolean`)
+    - `deletedFromBlog` (required, default `NO`, `Boolean`)
 
 ## WordPress 120
 
 @chipsnyder 2021-04-12
 
 - Created a new entity `BlockEditorSettings` with:
-
   - `isFSETheme` (required, default `false`, `Boolean`) FSE = "Full Site Editing"
   - `lastUpdated` (required, no default, `Date`)
 
 - Created a new entity `BlockEditorSettingElement` with:
-
   - `type` (required, no default, `String`)
   - `value` (required, no default, `String`)
   - `slug` (required, no default, `String`)
   - `name` ( required, no default, `String`)
 
 - Created one-to-many relationship between `BlockEditorSettings` and `BlockEditorSettingElement`
-
   - `BlockEditorSettings`
     - `elements` (optional, to-many, cascade on delete)
   - `BlockEditorSettingElement`
@@ -212,25 +210,25 @@ data model as well as any custom migrations.
 @mkevins 2021-03-31
 
 - `PageTemplateCategory`: added the attribute
-  - `ordinal` as Int64 (non-optional)
+    - `ordinal` as Int64 (non-optional)
 
 ## WordPress 118
 
 @chipsnyder 2021-03-26
 
 - `PageTemplateLayout`: set default values on:
-  - `demoUrl` to Empty String
-  - `previewTablet` to Empty String
-  - `previewMobile` to Empty String
+    - `demoUrl` to Empty String
+    - `previewTablet` to Empty String
+    - `previewMobile` to Empty String
 
 ## WordPress 117
 
 @mkevins 2021-03-17
 
 - `PageTemplateLayout`: added the attributes
-  - `demoUrl` as string
-  - `previewTablet` as string
-  - `previewMobile` as string
+    - `demoUrl` as string
+    - `previewTablet` as string
+    - `previewMobile` as string
 
 ## WordPress 116
 
@@ -262,14 +260,14 @@ data model as well as any custom migrations.
 
 @scoutharris 2021-01-29
 
-- `ReaderPost`: added `isSeenSupported` attribute.
-- `ReaderPost`: changed default value of `isSeen` to `true`.
+- `ReaderPost`: added  `isSeenSupported` attribute.
+- `ReaderPost`: changed default value of  `isSeen` to `true`.
 
 ## WordPress 111
 
 @scoutharris 2021-01-14
 
-- Added `isSeen` attribute to `ReaderPost` entity.
+- Added `isSeen` attribute to  `ReaderPost` entity.
 
 ## WordPress 110
 
@@ -281,22 +279,22 @@ data model as well as any custom migrations.
 
 @mindgraffiti 2020-12-15
 
-- Added `unseenCount` attribute to `ReaderSiteTopic` entity
+- Added `unseenCount` attribute to  `ReaderSiteTopic` entity
 
 ## WordPress 108
 
 @scoutharris 2020-12-14
 
 - `ReaderTeamTopic`: added `organizationID`.
-- `ReaderSiteTopic`: made `organizationID` non-optional.
-- `ReaderPost`: made `organizationID` non-optional.
+- `ReaderSiteTopic`: made  `organizationID` non-optional.
+- `ReaderPost`: made  `organizationID` non-optional.  
 
 ## WordPress 107
 
 @scoutharris 2020-12-09
 
 - `ReaderSiteTopic`: removed `isWPForTeams`, added `organizationID`.
-- `ReaderPost`: removed `isWPForTeams`, added `organizationID`.
+- `ReaderPost`: removed `isWPForTeams`, added `organizationID`.  
 
 ## WordPress 106
 
@@ -308,7 +306,7 @@ data model as well as any custom migrations.
 
 @scoutharris 2020-12-04
 
-- Added `isWPForTeams` property to `ReaderPost`.
+- Added `isWPForTeams` property to  `ReaderPost`.
 
 ## WordPress 104
 
@@ -345,7 +343,6 @@ data model as well as any custom migrations.
 @chipsnyder 2020-10-20
 
 - Added one-to-many relationship between `Blog` and `PageTemplateCategory`
-
   - `Blog`
     - `pageTemplateCategories` (optional, to-many, cascade on delete)
   - `PageTemplateCategory`
@@ -355,12 +352,11 @@ data model as well as any custom migrations.
   - `PageTemplateLayout`
     - `categories` (optional, to-many, nullify on delete)
   - `PageTemplateCategory`
-  - `layouts` (optional, to-many, **_cascade_** on delete)
+  - `layouts` (optional, to-many, ***cascade*** on delete)
 
 ## WordPress 101
 
 @emilylaguna 2020-10-09
-
 - Add a relationship between `ReaderCard` and `ReaderSiteTopic`
 
 ## WordPress 100
@@ -380,7 +376,6 @@ data model as well as any custom migrations.
   - `slug` (required, no default, `String`)
   - `title` ( required, no default, `String`)
 - Created a new entity `PageTemplateLayout` with:
-
   - `content` (required, no default, `String`)
   - `preview` (required, no default, `String`)
   - `slug` (required, no default, `String`)
@@ -435,7 +430,7 @@ data model as well as any custom migrations.
 
 @jklausa 2019-08-19
 
-- `AbstractPost`: Addded a `confirmedChangesHash` (`nullable` `String`) and `confirmedChangesTimestamp` (`nullable` `Date`) properties.
+- `AbstractPost`: Addded a  `confirmedChangesHash` (`nullable` `String`)  and  `confirmedChangesTimestamp` (`nullable` `Date`)  properties.
 
 @leandroalonso 2019-09-27
 
@@ -444,31 +439,26 @@ data model as well as any custom migrations.
 @shiki 2019-10-04
 
 -`AbstractPost`: Added `statusAfterSync` property (`nullable`, `String`).
-
 - Adds a custom migration for both `Post` and `Page` entities. The migration copies the values of `status` to `statusAfterSync`. This is done via the `WordPress-91-92.xcmappingmodel`.
 
 ## WordPress 91
 
 @aerych 2019-10-15
-
 - `WPAccount` added `primaryBlogID` property.
 
 ## WordPress 90
 
 @diegoreymendez 2019-08-28
-
 - `Media` added `autoUploadFailureCount` property.
 
 ## WordPress 89
 
 @scoutharris 2019-08-xx
-
 - Added `FileDownloadsStatsRecordValue` entity.
 
 ## WordPress 88
 
 @danielebogo 2019-07-24
-
 - `AccountSettings` added `usernameCanBeChanged` property to store a bool value.
 
 @etoledo 2019-07-19
@@ -476,7 +466,6 @@ data model as well as any custom migrations.
 - `Blog`: Added `mobileEditor` and `webEditor` properties
 
 ## WordPress 87
-
 @klausa 2019-02-15
 
 - Added following entities:
@@ -504,67 +493,51 @@ data model as well as any custom migrations.
 * `VisitsSummaryStatsRecordValue`
 
 ## WordPress 86
-
 @aerych 2018-12-08
-
 - Added `Plan`, `PlanGroup`, and `PlanFeature` entities and properties.
 
 ## WordPress 85
-
 @danielebogo 2018-11-12
-
-- Added `BlogAuthor` to store the data of a _blog author_.
+- Added `BlogAuthor` to store the data of a *blog author*.
 - `Blog` added `authors` property to store a set of `BlogAuthor`.
 
 ## WordPress 84
-
 @jklausa / @pinarol 2018-11-01
-
 - `Blog` added a `hasDomainCredit` property to see whether user can redeem their credit for a free domain.
 
 ## WordPress 83
-
 @danielebogo 2018-10-30
-
 - Renamed `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue` to `DiffAbstractValue`, `DiffContentValue`, `DiffTitleValue`.
 - Set `DiffAbstractValue` as abstract entity which was omitted from model 82.
-- Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from _relationship_ to _revisionDiff_.
+- Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from *relationship* to *revisionDiff*.
 - Set `DiffAbstractValue` as parent entity of `DiffContentValue` which was omitted from model 82.
-- Replaced properties name on `DiffAbstractValue` from _operation_ to _diffOperation_ and _type_ to _diffType_.
-- Added property _index_ on `DiffAbstractValue` to store the right index position within the set.
+- Replaced properties name on `DiffAbstractValue` from *operation* to *diffOperation* and *type* to *diffType*.
+- Added property *index* on `DiffAbstractValue` to store the right index position within the set.
 
 ## WordPress 82
-
 @danielebogo 2018-10-26
-
 - `AbstractPost` added `revisions` property to store the revisions IDs.
-- Added `Revision`, to store the data of a _post_ revision, like title, content, date.
-- Added `RevisionDiff` to store the data for a _revision diff_, like the amount of additions or deletions and the revision id it refers to.
+- Added `Revision`,  to store the data of a *post* revision, like title, content, date.
+- Added `RevisionDiff` to store the data for a *revision diff*, like the amount of additions or deletions and the revision id it refers to.
 - Added `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue`: these will store the type of change and the operation type.
 
 ## WordPress 81
-
 @nheagy 2018-09-26
-
 - Replaced `QuickStartCompletedTour` with `QuickStartTourState` with `completed` and `skipped` attributes
 
 ## WordPress 80
-
 - @danielebogo 2018-08-31
 - `Post` added `isStickyPost` property to mark posts as sticky.
 
 ## WordPress 79
-
 - @frosty 2018-08-15
 - Re-added `PublicizeService.externalUsersOnly` property from model 77, which was omitted from model 78.
 
 ## WordPress 78
-
 - @nheagy 2018-07-25
 - Added `QuickStartCompletedTour` for tracking completed Quick Start tours
 
 ## WordPress 77
-
 - @aerych 2018-07-27
 - `PublicizeService` added `externalUsersOnly` (bool) property. A new field returned by the API.
 
@@ -588,7 +561,7 @@ data model as well as any custom migrations.
 ## WordPress 74
 
 - @sergioestevao 2018-04-18
-- `AbstractPost` added `featuredImage` a relationship to Media for the media featured in a post and removed 'post_thumbnail' that used to store a Int with the mediaID information.
+- `AbstractPost` added `featuredImage` a relationship to Media for the media featured in a post  and removed 'post_thumbnail' that used to store a Int with the mediaID information.
 
 ## WordPress 73
 
@@ -611,47 +584,39 @@ data model as well as any custom migrations.
 - `BlogSettings` added `gmtOffset` Decimal property, and `timeZoneString` String property. Store the timezone settings.
 
 ## WordPress 69
-
 - @ctarda 2017-11-27
-- `PostTag` added `tagDescription` string property and `postCount` integer property. Store an optional description and the number of posts a tag has been used in.
+- `PostTag` added `tagDescription`  string property and `postCount` integer property. Store an optional description and the number of posts a tag has been used in.
 
 ## WordPress 68
-
 - @elibud 2017-12-12
 - `BlogSettings` added the following string properties: `dateFormat`, `timeFormat`, `startOfWeek`, the following boolean properties `ampSupported`, `ampEnabled` and an int_32 `postsPerPage` property.
 
 ## WordPress 67
-
 - @3vangelos 2017-09-26
 - `Media` added `alt` string property. Stores the information for an html alt tag for images.
 
 ## WordPress 66
-
 - @elibud 2017-08-17
 - `BlogSettings` added the following Jetpack security settings properties:
-  `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`,
-  `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`,
-  `jetpackSSORequireTwoStepAuthentication` boolean, default `NO` and
-  `jetpackLoginWhiteListedIPAddresses` string set property.
+    `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`,
+    `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`,
+    `jetpackSSORequireTwoStepAuthentication` boolean, default `NO` and
+    `jetpackLoginWhiteListedIPAddresses` string set property.
 
 ## WordPress 65
-
 - @elibud 2017-08-02
 - `Theme` added `themeUrl` string property.
 
 ## WordPress 64
-
 - @elibud 2017-08-02
 - `Theme` added `custom` boolean property. Default `NO`.
 
 ## WordPress 63
-
 - @koke 2017-07-31
 - `Role` added with `slug`, `name`, `blog`.
 - `Blog` added `roles` relationship.
 
 ## WordPress 62
-
 - @koke 2017-07-21
 - `Blog` removed `jetpackAccount`
 - `WPAccount` removed `jetpackBlogs`
@@ -659,35 +624,29 @@ data model as well as any custom migrations.
 - `Blog` added `userID` Int64 property. Stores the current user ID.
 
 ## WordPress 61
-
 - @kurzee 2017-06-16
 - `Media` added `localThumbnailIdentifier` string property. Stores the locally generated thumbnail identifier.
 
 ## WordPress 60
-
 - @elibud 2017-05-31
 - `BlogSettings` added `iconMediaID` int_32 property. Stores the mediaID of the site's icon.
 
 ## WordPress 59
-
 - @kurzee 2017-05-04
 - `MenuItem` added `classes` property.
 - @elibud 2017-04-26
 - `BasePost` added `suggested_slug` property.
 
 ## WordPress 58
-
 - @elibud 2017-04-06
 - `Blog` added `hasPaidPlan` boolean property. Default `NO`. Not optional.
 
 ## WordPress 57
-
 - @kurzee 2017-03-16
 - `Media` removed `orientation` property.
 - `Media` removed `progress` property.
 
 ## WordPress 56
-
 - @jleandroperez 2017-02-22
 - `BasePost` removed `mt_text_more` property
 - @koke 2017-02-10
@@ -697,18 +656,15 @@ data model as well as any custom migrations.
 - `Post` added optional `publicizeMessage` and `publicizeMessageID` string properties.
 
 ## WordPress 55
-
 - @aerych 2016-12-21
 - `ReaderPost` renamed `preserveForRestoration` to "inUse"
 - `ReaderAbstractTopic` renamed `preserveForRestoration` to "inUse"
 
 ## WordPress 54
-
 - @aerych 2016-12-08
 - `ReaderPost` added `preserveForRestoration` boolean. Indexed. Default `NO`. Not optional.
 
 ## WordPress 53
-
 - @jleandroperez 2016-10-27
 - `Notification` added `notificationHash` property.
 - @jleandroperez 2016-10-19
@@ -723,7 +679,6 @@ data model as well as any custom migrations.
 - Added `ReaderTeamTopic` entity.
 
 ## WordPress 51
-
 - @aerych 2016-08-12
 - Added `algorithm` optional string field to `ReaderAbstractTopic`.
 - Added `railcar` optional NSData field to `ReaderPost`.
@@ -765,21 +720,21 @@ data model as well as any custom migrations.
 - @aerych 2016-05-12
 - Added `ReaderSearchTopic` entity. Represents a search in the reader.
 - @jleandroperez 2016-05-04
-- `Person` added Int64 `linkedUserID`.
+ - `Person` added Int64 `linkedUserID`.
 - @jleandroperez 2016-04-22
-- `Blog` added transformable `capabilities`.
+ - `Blog` added transformable `capabilities`.
 
 ## WordPress 48
 
 - @sergioestevao 2016-04-05
-- `Media` added new integer attribute `postID` to store the post to where the media is attached to.
+ - `Media` added new integer attribute `postID` to store the post to where the media is attached to.
 - @kurzee 2016-04-08
-- `Menu` changing `menuId` attribute to `menuID` as a int_32 number instead of string.
-- `MenuItem` changing `itemId` attribute to `itemID` as an int_32 number instead of string.
-- `MenuItem` changing `contentId` attribute to `contentID` as an int_64 number instead of string.
+ - `Menu` changing `menuId` attribute to `menuID` as a int_32 number instead of string.
+ - `MenuItem` changing `itemId` attribute to `itemID` as an int_32 number instead of string.
+ - `MenuItem` changing `contentId` attribute to `contentID` as an int_64 number instead of string.
 - @jleandroperez 2016-04-11
-- `AccountSettings` added new string `emailPendingAddress`. Whenever it's not nil, contains the new User's Email Address.
-- `AccountSettings` added new bool `emailPendingChange`. Indicates whether there's a pending Email change, or not.
+ - `AccountSettings` added new string `emailPendingAddress`. Whenever it's not nil, contains the new User's Email Address.
+ - `AccountSettings` added new bool `emailPendingChange`. Indicates whether there's a pending Email change, or not.
 
 ## WordPress 47 (@kurzee 2016-03-07)
 
@@ -793,7 +748,7 @@ data model as well as any custom migrations.
 - `BlogSettings` added string `sharingLabel`. Stores the text to show in the sharing label.
 - `BlogSettings` added string `sharingTwitterName`. Stores the username used when sharing to Twitter.
 - `BlogSettings` added bool `sharingCommentLikesEnabled`. Whether comments display a like button.
-- `BlogSettings` added bool `sharingDisabledLikes`. Whether posts display a like button.
+- `BlogSettings` added bool `sharingDisabledLikes`.  Whether posts display a like button.
 - `BlogSettings` added bool `sharingDisabledReblogs`. Whether posts display a reblog button.
 - `BlogSettings` added integer `languageID`. Stores the Blog's Language ID.
 - Added `SharingButton` entity. Represents a buton for sharing content to a third-party service.
@@ -828,15 +783,14 @@ data model as well as any custom migrations.
 
 #### (@alexcurylo 2015-11-26)
 
-- `Theme` added new string attributes `author` and `authorUrl` to store a theme's author information
+- `Theme` added new string attributes `author` and `authorUrl` to store a theme's author information  
 - `Theme` added new boolean attribute `purchased` to store a premium theme's purchased status
 
 ## WordPress 42 (@jleandroperez 2015-11-06)
 
 Changes to the data model:
-
 - Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings
-- `Blog` has now a new one-to-one relationship mapping to `BlogSettings`
+- `Blog` has now a new one-to-one relationship mapping to  `BlogSettings`
 - Migrated the attribute `Blog.blogName` over to `BlogSettings.name`
 - Migrated the attribute `Blog.blogTagline` over to `BlogSettings.tagline`
 - Migrated the attribute `Blog.defaultCategoryID` over to `BlogSettings.defaultCategoryID`
@@ -863,9 +817,9 @@ Changes to the data model:
 - Added new entity `Person`
 
 ## (@aerych 2015-11-09)
-
 - Added new entity `ReaderCrossPostMeta`
 - `ReaderPost` added new relationship called `crossPostMeta` to store the source post ID of a cross-post.
+
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
 
