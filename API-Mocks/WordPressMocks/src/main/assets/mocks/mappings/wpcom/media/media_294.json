@@ -1,0 +1,62 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/wp/v2/sites/106707880/media/294",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 294,
+            "URL": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg",
+            "guid": "http://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg",
+            "date": "2019-05-08T09:49:00+00:00",
+            "post_ID": 295,
+            "author_ID": 152748359,
+            "file": "img_0111-14.jpg",
+            "mime_type": "image/jpeg",
+            "extension": "jpg",
+            "title": "img_0111",
+            "caption": "",
+            "description": "",
+            "alt": "",
+            "icon": "https://s1.wp.com/wp-includes/images/media/default.png",
+            "thumbnails": {
+                "thumbnail": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=150",
+                "medium": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=300",
+                "large": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=1024",
+                "post-thumbnail": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=740&h=430&crop=1",
+                "independent-publisher-2-banner": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=1440&h=600&crop=1",
+                "independent-publisher-2-full-width": "https://e2eflowtestingmobile.files.wordpress.com/2019/05/img_0111-14.jpg?w=1100"
+            },
+            "height": 3024,
+            "width": 4032,
+            "exif": {
+                "aperture": "2.4",
+                "credit": "",
+                "camera": "iPhone X",
+                "caption": "",
+                "created_timestamp": "1522412059",
+                "copyright": "",
+                "focal_length": "6",
+                "iso": "16",
+                "shutter_speed": "0.0047846889952153",
+                "title": "",
+                "orientation": "1",
+                "keywords": []
+            },
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/294",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/294/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "parent": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/295"
+                }
+            }
+        }
+    }
+}

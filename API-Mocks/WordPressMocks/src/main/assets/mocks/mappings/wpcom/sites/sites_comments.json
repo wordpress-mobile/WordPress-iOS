@@ -1,0 +1,31 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/comments.*",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "context": {
+                "equalTo": "edit"
+            },
+            "force": {
+                "equalTo": "wpcom"
+            },
+            "number": {
+                "equalTo": "100"
+            },
+            "status": {
+                "equalTo": "all"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 0,
+            "site_ID": 106707880,
+            "comments": []
+        }
+    }
+}

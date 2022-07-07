@@ -1,0 +1,15 @@
+{
+  "request": {
+    "urlPattern": "/wp/v2/sites/.*/blocks.*",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": [],
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

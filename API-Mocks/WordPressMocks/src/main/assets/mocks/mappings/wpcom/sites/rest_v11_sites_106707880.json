@@ -1,0 +1,293 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 106707880,
+            "name": "Tri-County Real Estate",
+            "description": "",
+            "URL": "http://tricountyrealestate.wordpress.com",
+            "capabilities": {
+                "edit_pages": true,
+                "edit_posts": true,
+                "edit_others_posts": true,
+                "edit_others_pages": true,
+                "delete_posts": true,
+                "delete_others_posts": true,
+                "edit_theme_options": true,
+                "edit_users": false,
+                "list_users": true,
+                "manage_categories": true,
+                "manage_options": true,
+                "moderate_comments": true,
+                "activate_wordads": false,
+                "promote_users": true,
+                "publish_posts": true,
+                "upload_files": true,
+                "delete_users": false,
+                "remove_users": true,
+                "view_stats": true
+            },
+            "jetpack": false,
+            "icon": {
+                "img": "https://tricountyrealestate.files.wordpress.com/2020/08/image-1.jpg?w=96",
+                "ico": "https://tricountyrealestate.files.wordpress.com/2020/08/image-1.jpg?w=96"
+            },
+            "visible": true,
+            "is_private": false,
+            "options": {
+                "timezone": "",
+                "gmt_offset": 0,
+                "blog_public": 1,
+                "videopress_enabled": false,
+                "upgraded_filetypes_enabled": true,
+                "login_url": "https://infocusphotographers.wordpress.com/wp-login.php",
+                "admin_url": "https://infocusphotographers.wordpress.com/wp-admin/",
+                "is_mapped_domain": true,
+                "is_redirect": false,
+                "unmapped_url": "https://infocusphotographers.wordpress.com",
+                "featured_images_enabled": false,
+                "theme_slug": "pub/edin",
+                "header_image": false,
+                "background_color": "ffffff",
+                "image_default_link_type": "none",
+                "image_thumbnail_width": 150,
+                "image_thumbnail_height": 150,
+                "image_thumbnail_crop": 0,
+                "image_medium_width": 300,
+                "image_medium_height": 300,
+                "image_large_width": 1024,
+                "image_large_height": 1024,
+                "permalink_structure": "/%year%/%monthnum%/%day%/%postname%/",
+                "post_formats": [],
+                "default_post_format": "0",
+                "default_category": 1,
+                "allowed_file_types": [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "pdf",
+                    "doc",
+                    "ppt",
+                    "odt",
+                    "pptx",
+                    "docx",
+                    "pps",
+                    "ppsx",
+                    "xls",
+                    "xlsx",
+                    "key",
+                    "asc",
+                    "mp3",
+                    "m4a",
+                    "wav",
+                    "ogg",
+                    "zip"
+                ],
+                "show_on_front": "page",
+                "default_likes_enabled": true,
+                "default_sharing_status": true,
+                "default_comment_status": true,
+                "default_ping_status": true,
+                "software_version": "5.2.2",
+                "created_at": "2016-02-09T16:07:34+00:00",
+                "wordads": false,
+                "publicize_permanently_disabled": false,
+                "frame_nonce": "847b221e56",
+                "jetpack_frame_nonce": "847b221e56",
+                "page_on_front": 1,
+                "page_for_posts": 0,
+                "headstart": false,
+                "headstart_is_fresh": false,
+                "ak_vp_bundle_enabled": null,
+                "advanced_seo_front_page_description": "",
+                "advanced_seo_title_formats": [],
+                "verification_services_codes": null,
+                "podcasting_archive": null,
+                "is_domain_only": false,
+                "is_automated_transfer": false,
+                "is_wpcom_atomic": false,
+                "is_wpcom_store": false,
+                "woocommerce_is_active": false,
+                "design_type": null,
+                "site_goals": null,
+                "site_segment": null
+            },
+            "plan": {
+                "product_id": 1029,
+                "product_slug": "personal-bundle-2y",
+                "product_name": "WordPress.com Personal",
+                "product_name_short": "Personal",
+                "expired": false,
+                "user_is_owner": false,
+                "is_free": false,
+                "features": {
+                    "active": [
+                        "free-blog",
+                        "custom-domain",
+                        "space",
+                        "support",
+                        "wordads-jetpack"
+                    ],
+                    "available": {
+                        "free-blog": [
+                            "free_plan",
+                            "personal-bundle",
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "blogger-bundle",
+                            "blogger-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "space": [
+                            "free_plan",
+                            "personal-bundle",
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "blogger-bundle",
+                            "blogger-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "support": [
+                            "free_plan",
+                            "personal-bundle",
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "blogger-bundle",
+                            "blogger-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "custom-domain": [
+                            "personal-bundle",
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "blogger-bundle",
+                            "blogger-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "no-adverts/no-adverts.php": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "custom-design": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "videopress": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "unlimited_themes": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "live_support": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "simple-payments": [
+                            "value_bundle",
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "value_bundle-2y",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "premium-themes": [
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ],
+                        "google-analytics": [
+                            "business-bundle",
+                            "ecommerce-bundle",
+                            "business-bundle-2y",
+                            "ecommerce-bundle",
+                            "ecommerce-bundle-2y",
+                            "business-bundle-monthly"
+                        ]
+                    }
+                }
+            },
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/help",
+                    "posts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/",
+                    "comments": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/",
+                    "xmlrpc": "https://infocusphotographers.wordpress.com/xmlrpc.php"
+                }
+            },
+            "quota": {
+                "space_allowed": 6442450944,
+                "space_used": 442302007,
+                "percent_used": 6.865430731947224,
+                "space_available": 6000148937
+            }
+        }
+    }
+}

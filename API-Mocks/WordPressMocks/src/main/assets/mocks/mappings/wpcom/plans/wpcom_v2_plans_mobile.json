@@ -1,0 +1,377 @@
+{
+    "request": {
+        "urlPath": "/wpcom/v2/plans/mobile",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "groups": [
+                {
+                    "slug": "personal",
+                    "name": "Personal"
+                },
+                {
+                    "slug": "business",
+                    "name": "Business"
+                }
+            ],
+            "plans": [
+                {
+                    "groups": [
+                        "personal"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1
+                        }
+                    ],
+                    "name": "WordPress.com Free",
+                    "short_name": "Free",
+                    "tagline": "Best for getting started",
+                    "description": "If you just want to start creating, get a free site and be on your way to publishing in less than five minutes.",
+                    "features": [
+                        "subdomain",
+                        "jetpack-essentials",
+                        "support-forums",
+                        "themes-free",
+                        "design-basic",
+                        "space-3G",
+                        "banner-ads"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-free.png"
+                },
+                {
+                    "groups": [
+                        "personal"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1010
+                        },
+                        {
+                            "plan_id": 1030
+                        }
+                    ],
+                    "name": "WordPress.com Blogger",
+                    "short_name": "Blogger",
+                    "tagline": "Best for bloggers",
+                    "description": "Brand your blog with a custom .blog domain name, and remove all WordPress.com advertising. Receive additional storage space and email support.",
+                    "features": [
+                        "blog-domain",
+                        "jetpack-essentials",
+                        "support-email",
+                        "themes-free",
+                        "design-basic",
+                        "space-6G",
+                        "no-ads"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-blogger.png"
+                },
+                {
+                    "groups": [
+                        "personal"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1009
+                        },
+                        {
+                            "plan_id": 1029
+                        }
+                    ],
+                    "name": "WordPress.com Personal",
+                    "short_name": "Personal",
+                    "tagline": "Best for personal use",
+                    "description": "Boost your website with a custom domain name, and remove all WordPress.com advertising. Get access to high quality email and live chat support.",
+                    "features": [
+                        "custom-domain",
+                        "jetpack-essentials",
+                        "support-live",
+                        "themes-free",
+                        "design-basic",
+                        "space-6G",
+                        "no-ads"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-personal.png"
+                },
+                {
+                    "groups": [
+                        "business"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1003
+                        },
+                        {
+                            "plan_id": 1023
+                        }
+                    ],
+                    "name": "WordPress.com Premium",
+                    "short_name": "Premium",
+                    "tagline": "Best for freelancers",
+                    "description": "Build a unique website with advanced design tools, CSS editing, lots of space for audio and video, and the ability to monetize your site with ads.",
+                    "features": [
+                        "custom-domain",
+                        "jetpack-essentials",
+                        "support-live",
+                        "themes-premium",
+                        "design-custom",
+                        "space-13G",
+                        "no-ads",
+                        "social-media",
+                        "simple-payments",
+                        "monitization",
+                        "videopress"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-premium.png"
+                },
+                {
+                    "groups": [
+                        "business"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1008
+                        },
+                        {
+                            "plan_id": 1028
+                        }
+                    ],
+                    "name": "WordPress.com Business",
+                    "short_name": "Business",
+                    "tagline": "Best for small business.",
+                    "description": "Power your business website with unlimited premium and business theme templates, Google Analytics support, unlimited storage, and the ability to remove WordPress.com branding.",
+                    "features": [
+                        "custom-domain",
+                        "jetpack-essentials",
+                        "support-live",
+                        "themes-premium",
+                        "design-custom",
+                        "space-unlimited",
+                        "no-ads",
+                        "social-media",
+                        "simple-payments",
+                        "monitization",
+                        "videopress",
+                        "personalized-help",
+                        "seo",
+                        "plugins",
+                        "upload-themes",
+                        "google-analytics",
+                        "no-branding"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-business.png"
+                },
+                {
+                    "groups": [
+                        "business"
+                    ],
+                    "products": [
+                        {
+                            "plan_id": 1011
+                        },
+                        {
+                            "plan_id": 1031
+                        }
+                    ],
+                    "name": "WordPress.com E-commerce",
+                    "short_name": "E-commerce",
+                    "tagline": "Best for online stores",
+                    "description": "Sell products or services with this powerful, all-in-one online store experience. This plan includes premium integrations and is extendable, so it’ll grow with you as your business grows.",
+                    "features": [
+                        "custom-domain",
+                        "jetpack-essentials",
+                        "support-live",
+                        "themes-premium",
+                        "design-custom",
+                        "space-unlimited",
+                        "no-ads",
+                        "simple-payments",
+                        "monitization",
+                        "videopress",
+                        "personalized-help",
+                        "seo",
+                        "plugins",
+                        "upload-themes",
+                        "google-analytics",
+                        "no-branding",
+                        "payments-processing",
+                        "shipping-rates",
+                        "unlimited-products",
+                        "ecommerce-tools",
+                        "store-theme"
+                    ],
+                    "icon": "https://s0.wordpress.com/i/store/mobile/plans-ecommerce.png"
+                }
+            ],
+            "features": [
+                {
+                    "id": "subdomain",
+                    "name": "WordPress.com Subdomain",
+                    "description": "Your site address will use a WordPress.com subdomain (sitename.wordpress.com)."
+                },
+                {
+                    "id": "jetpack-essentials",
+                    "name": "Jetpack Essential Features",
+                    "description": "Speed up your site’s performance and protect it from spammers. Access detailed records of all activity on your site. While you’re at it, improve your SEO and automate social media sharing."
+                },
+                {
+                    "id": "support-forums",
+                    "name": "Community Support",
+                    "description": "Get support through our user community forums."
+                },
+                {
+                    "id": "support-email",
+                    "name": "Email Support",
+                    "description": "High quality email support to help you get your website up and running and working how you want it."
+                },
+                {
+                    "id": "themes-free",
+                    "name": "Dozens of Free Themes",
+                    "description": "Access to a wide range of professional theme templates for your website so you can find the exact design you're looking for."
+                },
+                {
+                    "id": "design-basic",
+                    "name": "Basic Design Customization",
+                    "description": "Customize your selected theme template with pre-set color schemes, background designs, and font styles."
+                },
+                {
+                    "id": "space-3G",
+                    "name": "3GB Storage Space",
+                    "description": "Ample storage space to upload images and documents to your website."
+                },
+                {
+                    "id": "banner-ads",
+                    "name": "WordPress.com Advertising and Banners",
+                    "description": "On our free plan, we sometimes display advertisements on your blog to help pay the bills. This keeps free features free!"
+                },
+                {
+                    "id": "custom-domain",
+                    "name": "Free Domain for One Year",
+                    "description": "Get a free domain for one year. Premium domains not included. Your domain will renew at its regular price."
+                },
+                {
+                    "id": "support-live",
+                    "name": "Email & Live Chat Support",
+                    "description": "High quality support to help you get your website up and running and working how you want it."
+                },
+                {
+                    "id": "space-6G",
+                    "name": "6GB Storage Space",
+                    "description": "With increased storage space you'll be able to upload more images, audio, and documents to your website."
+                },
+                {
+                    "id": "no-ads",
+                    "name": "Remove WordPress.com Ads",
+                    "description": "Allow your visitors to visit and read your website without seeing any WordPress.com advertising."
+                },
+                {
+                    "id": "themes-premium",
+                    "name": "Unlimited Premium Themes",
+                    "description": "Unlimited access to all of our advanced premium theme templates, including templates specifically tailored for businesses."
+                },
+                {
+                    "id": "design-custom",
+                    "name": "Advanced Design Customization",
+                    "description": "Customize your selected theme template with extended color schemes, background designs, and complete control over website CSS."
+                },
+                {
+                    "id": "space-13G",
+                    "name": "13GB Storage Space",
+                    "description": "With increased storage space you'll be able to upload more images, videos, audio, and documents to your website."
+                },
+                {
+                    "id": "social-media",
+                    "name": "Advanced Social Media",
+                    "description": "Schedule your social media updates in advance and promote your posts when it's best for you."
+                },
+                {
+                    "id": "simple-payments",
+                    "name": "Simple Payments",
+                    "description": "Sell anything with a simple PayPal button."
+                },
+                {
+                    "id": "monitization",
+                    "name": "Site Monetization",
+                    "description": "Put your site to work and earn through ad revenue, easy-to-add PayPal buttons, and more."
+                },
+                {
+                    "id": "videopress",
+                    "name": "VideoPress Support",
+                    "description": "The easiest way to upload videos to your website and display them using a fast, unbranded, customizable player with rich stats."
+                },
+                {
+                    "id": "space-unlimited",
+                    "name": "Unlimited Storage Space",
+                    "description": "With increased storage space you'll be able to upload more images, videos, audio, and documents to your website."
+                },
+                {
+                    "id": "personalized-help",
+                    "name": "Get Personalized Help",
+                    "description": "Schedule a one-on-one orientation with a Happiness Engineer to set up your site and learn more about WordPress.com."
+                },
+                {
+                    "id": "seo",
+                    "name": "SEO Tools",
+                    "description": "Adds tools to enhance your site's content for better results on search engines and social media."
+                },
+                {
+                    "id": "plugins",
+                    "name": "Install Plugins",
+                    "description": "Install custom plugins on your site."
+                },
+                {
+                    "id": "upload-themes",
+                    "name": "Upload Themes",
+                    "description": "Upload custom themes on your site."
+                },
+                {
+                    "id": "google-analytics",
+                    "name": "Google Analytics Integration",
+                    "description": "Track website statistics with Google Analytics for a deeper understanding of your website visitors and customers."
+                },
+                {
+                    "id": "no-branding",
+                    "name": "Remove WordPress.com Branding",
+                    "description": "Keep the focus on your site's brand by removing the WordPress.com footer branding."
+                },
+                {
+                    "id": "blog-domain",
+                    "name": "Free .blog Domain for One Year",
+                    "description": "Get a free custom .blog domain for one year. Premium domains not included. Your domain will renew at its regular price."
+                },
+                {
+                    "id": "unlimited-products",
+                    "name": "Unlimited Products or Services",
+                    "description": "Grow your store as big as you want with the ability to add and sell unlimited products and services."
+                },
+                {
+                    "id": "payments-processing",
+                    "name": "Accept Payments in 60+ Countries",
+                    "description": "Built-in payment processing from leading providers like Stripe, PayPal, and more. Accept payments from customers all over the world."
+                },
+                {
+                    "id": "shipping-rates",
+                    "name": "Integrations with Top Shipping Carriers",
+                    "description": "Ship physical products in a snap - show live rates from shipping carriers like UPS and other shipping options"
+                },
+                {
+                    "id": "ecommerce-tools",
+                    "name": "eCommerce Marketing Tools",
+                    "description": "Optimize your store for sales by adding in email and social integrations with Facebook and Mailchimp, and more."
+                },
+                {
+                    "id": "store-theme",
+                    "name": "Premium Customizable Starter Themes",
+                    "description": "Quickly get up and running with a beautiful store theme and additional design options that you can easily make your own."
+                }
+            ]
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

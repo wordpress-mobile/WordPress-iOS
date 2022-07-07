@@ -1,0 +1,19 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/stats/comments/.*"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "authors": [],
+            "posts": [],
+            "monthly_comments": 0,
+            "total_comments": 0,
+            "most_active_day": null,
+            "most_active_time": "N/A",
+            "most_commented_post": false
+        }
+    }
+}

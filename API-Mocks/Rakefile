@@ -1,0 +1,80 @@
+# frozen_string_literal: true
+
+require 'json'
+require 'jsonlint'
+require 'git'
+
+desc 'Re-format all JSON files to be pretty-printed'
+task :format do
+  for_each_mock_file do |file|
+    puts "Formatting #{file}..."
+    json = JSON.parse(File.read(file))
+    File.write(file, JSON.pretty_generate(json))
+    puts "#{file} formatted."
+  rescue StandardError
+    linter = JsonLint::Linter.new
+    linter.check(file)
+    linter.display_errors
+
+    abort('Invalid JSON. See errors above.')
+  end
+end
+
+desc 'Check that all files are properly formatted in CI'
+task :checkformat do
+  repo = Git.open('../.')
+
+  abort('Repo is dirty – unable to verify JSON files are correctly formatted') unless repo.diff.lines.zero?
+  Rake::Task['format'].execute
+
+  if repo.diff.lines.positive?
+    repo.reset_hard
+    abort('Repo contains unformatted JSON files – run `rake format` then commit your changes.')
+  end
+end
+
+desc "Ensure all JSON files are valid and don't contain common mistakes"
+task :lint do
+  file_errors = {}
+
+  for_each_mock_file do |file|
+    # Ensure the file is valid JSON
+    linter = JsonLint::Linter.new
+    linter.check(file)
+    if linter.errors_count.positive?
+      linter.errors.map { |_key, value| value }.each do |error|
+        append_error(file, file_errors, "Invalid JSON: #{error}}")
+      end
+    end
+
+    ## Ensure there are no references to the actual API location – we should use the mocks
+    # base URL – this ensures that any requests made based on the contents of other
+    # requests won't fail.
+    if File.open(file).each_line.any? { |line| line.include?('public-api.wordpress.com') }
+      append_error(file, file_errors, 'Contains references to `https://public-api.wordpress.com`. Replace them with `{{request.requestLine.baseUrl}}`.')
+    end
+  end
+
+  # Output file errors in a pretty way
+  puts "There are errors in #{file_errors.count} files:\n" unless file_errors.empty?
+  file_errors.each do |file, errors|
+    puts "=== #{file}"
+    errors.each do |e|
+      puts "    #{e}"
+    end
+  end
+
+  abort unless file_errors.empty?
+  puts 'Lint Complete. Everything looks good.'
+end
+
+def for_each_mock_file
+  Dir.glob('WordPressMocks/**/*.json').each do |file|
+    yield(File.expand_path(file))
+  end
+end
+
+def append_error(file, errors, message)
+  errors[file] = [] if errors[file].nil?
+  errors[file].append(message)
+end

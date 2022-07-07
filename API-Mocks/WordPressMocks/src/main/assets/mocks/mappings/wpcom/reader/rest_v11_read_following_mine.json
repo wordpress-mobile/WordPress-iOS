@@ -1,0 +1,20 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.(1|2)/read/following/mine.*"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "subscriptions": [],
+            "page": 1,
+            "number": 0,
+            "total_subscriptions": 0
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

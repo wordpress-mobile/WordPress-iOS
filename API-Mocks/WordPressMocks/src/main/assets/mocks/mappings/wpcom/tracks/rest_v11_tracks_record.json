@@ -1,0 +1,19 @@
+{
+    "id": "2ad4ffca-6254-4b1e-b005-982ac3b4f8f6",
+    "name": "rest_v11_tracks_record",
+    "request": {
+        "urlPath": "/rest/v1.1/tracks/record",
+        "method": "POST"
+    },
+    "response": {
+        "status": 202,
+        "body": "\"Accepted\"",
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    },
+    "uuid": "2ad4ffca-6254-4b1e-b005-982ac3b4f8f6",
+    "persistent": true
+}

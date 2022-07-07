@@ -1,0 +1,86 @@
+{
+    "request": {
+        "urlPattern": "/rest/v1.2/read/sites/53424024(/)?($|\\?.*)",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 53424024,
+            "name": "Discover",
+            "description": "A daily selection of the best content published on WordPress, collected for you by humans who love to read.",
+            "URL": "https://discover.wordpress.com",
+            "jetpack": false,
+            "post_count": 3620,
+            "subscribers_count": 35560543,
+            "lang": "en",
+            "icon": {
+                "img": "https://secure.gravatar.com/blavatar/c9e4e04719c81ca4936a63ea2dce6ace",
+                "ico": "https://secure.gravatar.com/blavatar/c9e4e04719c81ca4936a63ea2dce6ace"
+            },
+            "logo": {
+                "id": 0,
+                "sizes": [],
+                "url": ""
+            },
+            "visible": true,
+            "is_private": false,
+            "is_following": true,
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/53424024",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/53424024/help",
+                    "posts": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/53424024/posts/",
+                    "comments": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/53424024/comments/",
+                    "xmlrpc": "https://discover.wordpress.com/xmlrpc.php",
+                    "featured": "{{request.requestLine.baseUrl}}/rest/v1.2/read/sites/53424024/featured"
+                }
+            },
+            "launch_status": false,
+            "capabilities": {
+                "edit_pages": false,
+                "edit_posts": false,
+                "edit_others_posts": false,
+                "edit_theme_options": false,
+                "list_users": false,
+                "manage_categories": false,
+                "manage_options": false,
+                "publish_posts": false,
+                "upload_files": false,
+                "view_stats": false
+            },
+            "is_multi_author": true,
+            "feed_ID": 41325786,
+            "feed_URL": "http://discover.wordpress.com",
+            "header_image": false,
+            "owner": {
+                "ID": 26957695,
+                "login": "a8cuser",
+                "name": "Automattic",
+                "first_name": "Automattic",
+                "last_name": "",
+                "nice_name": "a8cuser",
+                "URL": "",
+                "avatar_URL": "https://1.gravatar.com/avatar/a64c4a50f3f38f02cd27a9bfb3f11b62?s=96&d=identicon&r=G",
+                "profile_URL": "https://en.gravatar.com/a8cuser",
+                "ip_address": false,
+                "site_visible": true,
+                "has_avatar": true
+            },
+            "subscription": {
+                "delivery_methods": {
+                    "email": null,
+                    "notification": {
+                        "send_posts": false
+                    }
+                }
+            },
+            "is_blocked": false
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

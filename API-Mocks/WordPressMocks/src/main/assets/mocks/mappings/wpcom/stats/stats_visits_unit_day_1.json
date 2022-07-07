@@ -1,0 +1,47 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/visits/",
+        "queryParameters": {
+            "unit": {
+                "equalTo": "day"
+            },
+            "quantity": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "unit": "day",
+            "fields": [
+                "period",
+                "views",
+                "visitors",
+                "likes",
+                "reblogs",
+                "comments",
+                "posts"
+            ],
+            "data": [
+                [
+                    "{{now format='yyyy-MM-dd'}}",
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            ]
+        }
+    }
+}

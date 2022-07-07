@@ -1,0 +1,71 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/post/215/diffs/",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "diffs": [
+                {
+                    "from": 0,
+                    "to": 216,
+                    "diff": {
+                        "post_title": [
+                            {
+                                "op": "del",
+                                "value": ""
+                            },
+                            {
+                                "op": "add",
+                                "value": "Ideas"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n"
+                            }
+                        ],
+                        "post_content": [
+                            {
+                                "op": "add",
+                                "value": "Returning client special - Offer a discount to clients who have left a review."
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n\n"
+                            },
+                            {
+                                "op": "add",
+                                "value": "Photography classes at the local"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n"
+                            }
+                        ],
+                        "totals": {
+                            "del": 0,
+                            "add": 20
+                        }
+                    }
+                }
+            ],
+            "revisions": {
+                "216": {
+                    "post_date_gmt": "2019-02-15 23:27:13Z",
+                    "post_modified_gmt": "2019-02-15 23:27:13Z",
+                    "post_author": "68646169",
+                    "id": 216,
+                    "post_content": "Returning client special - Offer a discount to clients who have left a review.\n\nPhotography classes at the local",
+                    "post_excerpt": "",
+                    "post_title": "Ideas"
+                }
+            }
+        }
+    }
+}

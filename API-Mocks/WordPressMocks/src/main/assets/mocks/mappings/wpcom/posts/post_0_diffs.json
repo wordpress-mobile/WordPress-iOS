@@ -1,0 +1,18 @@
+{
+    "request": {
+        "urlPattern": "/rest/v1.1/sites/.*/post/[0-9]+/diffs.*",
+        "method": "GET"
+    },
+    "response": {
+        "status": 400,
+        "jsonBody": {
+            "error": "User cannot edit this post",
+            "message": 403
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

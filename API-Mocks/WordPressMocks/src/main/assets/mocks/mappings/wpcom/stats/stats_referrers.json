@@ -1,0 +1,25 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/referrers/"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "groups": [],
+                    "other_views": 0,
+                    "total_views": 0
+                }
+            },
+            "period": "day"
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

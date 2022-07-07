@@ -1,0 +1,17 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/users/.*/auth-options.*"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "passwordless": false,
+            "email_verified": true
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive"
+        }
+    }
+}

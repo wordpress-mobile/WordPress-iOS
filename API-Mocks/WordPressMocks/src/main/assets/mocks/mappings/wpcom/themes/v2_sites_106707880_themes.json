@@ -1,0 +1,79 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/wp/v2/sites/.*/themes.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": [{
+      "stylesheet": "pub\/edin",
+      "template": "pub\/edin",
+      "requires_php": "",
+      "requires_wp": "",
+      "textdomain": "edin",
+      "version": "1.3.2-wpcom",
+      "screenshot": "https:\/\/s0.wp.com\/wp-content\/themes\/pub\/edin\/screenshot.png",
+      "author": {
+        "raw": "Automattic",
+        "rendered": "<a href=\"https:\/\/wordpress.com\/themes\/\">Automattic<\/a>"
+      },
+      "author_uri": {
+        "raw": "https:\/\/wordpress.com\/themes\/",
+        "rendered": "https:\/\/wordpress.com\/themes\/"
+      },
+      "description": {
+        "raw": "Edin is a modern responsive business and corporate theme that helps you to create a strong--yet beautiful--online presence for your business.",
+        "rendered": "Edin is a modern responsive business and corporate theme that helps you to create a strong&#8211;yet beautiful&#8211;online presence for your business."
+      },
+      "name": {
+        "raw": "Edin",
+        "rendered": "Edin"
+      },
+      "tags": {
+        "raw": ["Blog", "Blue", "breadcrumb-navigation", "bright", "business", "classic-menu", "clean", "collaboration", "conservative", "Custom Background", "Custom Colors", "Custom Header", "custom-menu", "design", "Editor Style", "elegant", "Featured Images", "flexible-header", "food", "formal", "Full Width Template", "Gray", "hotel", "Infinite Scroll", "Left Sidebar", "Light", "Light", "minimal", "modern", "multiple-menus", "Post Formats", "professional", "real-estate", "Responsive Layout", "Right Sidebar", "RTL Language Support", "school", "simple", "site-logo", "sophisticated", "Sticky Post", "testimonials", "Theme Options", "traditional", "Translation Ready", "Two Columns", "White"],
+        "rendered": "Blog, Blue, breadcrumb-navigation, bright, business, classic-menu, clean, collaboration, conservative, Custom Background, Custom Colors, Custom Header, custom-menu, design, Editor Style, elegant, Featured Images, flexible-header, food, formal, Full Width Template, Gray, hotel, Infinite Scroll, Left Sidebar, Light, Light, minimal, modern, multiple-menus, Post Formats, professional, real-estate, Responsive Layout, Right Sidebar, RTL Language Support, school, simple, site-logo, sophisticated, Sticky Post, testimonials, Theme Options, traditional, Translation Ready, Two Columns, White"
+      },
+      "theme_uri": {
+        "raw": "https:\/\/wordpress.com\/themes\/edin\/",
+        "rendered": "https:\/\/wordpress.com\/themes\/edin\/"
+      },
+      "theme_supports": {
+        "align-wide": false,
+        "automatic-feed-links": true,
+        "custom-background": {
+          "default-color": "ffffff",
+          "default-image": ""
+        },
+        "custom-header": {
+          "default-image": "",
+          "default-text-color": "303030",
+          "width": 1230,
+          "height": 100,
+          "flex-width": true,
+          "flex-height": true
+        },
+        "custom-logo": false,
+        "customize-selective-refresh-widgets": false,
+        "dark-editor-style": false,
+        "disable-custom-colors": false,
+        "disable-custom-font-sizes": false,
+        "disable-custom-gradients": false,
+        "editor-color-palette": false,
+        "editor-font-sizes": false,
+        "editor-gradient-presets": false,
+        "editor-styles": false,
+        "html5": ["search-form", "comment-form", "comment-list", "gallery", "caption"],
+        "formats": ["standard", "aside", "image", "video", "quote", "link", "status", "gallery"],
+        "post-thumbnails": true,
+        "responsive-embeds": false,
+        "title-tag": false,
+        "wp-block-styles": false
+      }
+    }],
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

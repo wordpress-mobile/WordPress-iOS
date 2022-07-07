@@ -1,0 +1,42 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/",
+        "queryParameters": {
+            "number": {
+                "equalTo": "60"
+            },
+            "context": {
+                "equalTo": "edit"
+            },
+            "order_by": {
+                "equalTo": "date"
+            },
+            "fields": {
+                "matches": "ID,modified,status(,meta)?(,date)?"
+            },
+            "order": {
+                "equalTo": "DESC"
+            },
+            "status": {
+                "equalTo": "future"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 0,
+            "posts": [],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/post-counts/post"
+                },
+                "wpcom": true
+            }
+        }
+    }
+}

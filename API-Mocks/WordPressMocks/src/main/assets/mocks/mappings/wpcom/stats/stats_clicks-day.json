@@ -1,0 +1,20 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/clicks/"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "clicks": [],
+                    "other_clicks": 0,
+                    "total_clicks": 0
+                }
+            },
+            "period": "day"
+        }
+    }
+}

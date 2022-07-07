@@ -1,0 +1,64 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/media/151/",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 151,
+            "URL": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg",
+            "guid": "http://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg",
+            "date": "2019-02-06T21:59:35+00:00",
+            "post_ID": 0,
+            "author_ID": 742098,
+            "file": "adult-band-concert-995301.jpg",
+            "mime_type": "image/jpeg",
+            "extension": "jpg",
+            "title": "adult-band-concert-995301",
+            "caption": "",
+            "description": "",
+            "alt": "",
+            "icon": "https://s1.wp.com/wp-includes/images/media/default.png",
+            "thumbnails": {
+                "thumbnail": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=150",
+                "medium": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=300",
+                "large": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=1024",
+                "edin-thumbnail-landscape": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=330&h=240&crop=1",
+                "edin-thumbnail-square": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=330&h=330&crop=1",
+                "edin-thumbnail-avatar": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=96&h=96&crop=1",
+                "edin-featured-image": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=648",
+                "edin-hero": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=1230&h=1230&crop=1",
+                "edin-logo": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg?w=288"
+            },
+            "height": 3456,
+            "width": 5184,
+            "exif": {
+                "aperture": "0",
+                "credit": "",
+                "camera": "",
+                "caption": "",
+                "created_timestamp": "0",
+                "copyright": "",
+                "focal_length": "0",
+                "iso": "0",
+                "shutter_speed": "0",
+                "title": "",
+                "orientation": "0",
+                "keywords": []
+            },
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/151",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/151/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                }
+            }
+        }
+    }
+}

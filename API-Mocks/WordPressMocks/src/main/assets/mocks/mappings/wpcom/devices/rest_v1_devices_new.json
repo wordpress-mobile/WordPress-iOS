@@ -1,0 +1,65 @@
+{
+    "request": {
+        "urlPath": "/rest/v1/devices/new",
+        "method": "POST"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": "123",
+            "settings": {
+                "comments": {
+                    "desc": "Comments",
+                    "long_desc": "Someone comments one of my posts",
+                    "value": "1"
+                },
+                "reblogs": {
+                    "desc": "Reblogs",
+                    "value": "1",
+                    "long_desc": "Someone reblogs one of my posts"
+                },
+                "follows": {
+                    "desc": "Follows",
+                    "long_desc": "Someone follows my blog",
+                    "value": "1"
+                },
+                "post_likes": {
+                    "desc": "Likes",
+                    "long_desc": "Someone likes one of my posts",
+                    "value": "1"
+                },
+                "achievements": {
+                    "desc": "Achievements",
+                    "long_desc": "I've reached an achievement on my blog",
+                    "value": "1"
+                },
+                "muted_blogs": {
+                    "desc": "Muted Blogs",
+                    "long_desc": "Blogs I don't want receive push notifications",
+                    "value": [
+                        {
+                            "value": 0,
+                            "blog_id": "1",
+                            "url": "https://infocusphotographers.com/",
+                            "blog_name": "Mobile E2E Testing"
+                        }
+                    ]
+                },
+                "mute_until": {
+                    "desc": "Mute Push Notifications",
+                    "value": "0"
+                },
+                "other": {
+                    "desc": "Other",
+                    "long_desc": "Other Notifications!",
+                    "value": "1"
+                }
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

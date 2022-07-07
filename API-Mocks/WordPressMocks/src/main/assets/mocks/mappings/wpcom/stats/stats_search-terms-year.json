@@ -1,0 +1,40 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/search-terms/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "period": "year",
+            "days": {
+                "2019-01-01": {
+                    "search_terms": [
+                        {
+                            "term": "+http:/infocusphotographers.com|",
+                            "views": 1
+                        }
+                    ],
+                    "encrypted_search_terms": 3,
+                    "other_search_terms": 0,
+                    "total_search_terms": 4
+                }
+            }
+        }
+    }
+}

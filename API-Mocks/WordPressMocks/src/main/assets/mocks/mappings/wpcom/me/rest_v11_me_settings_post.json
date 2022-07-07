@@ -1,0 +1,19 @@
+{
+    "request": {
+        "urlPattern": "/rest/v1.1/me/settings.*",
+        "method": "POST"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "password": "",
+            "user_login": "e2eflowsignuptestingmobile",
+            "display_name": "Eeflowsignuptestingmobile"
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

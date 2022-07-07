@@ -1,0 +1,24 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/is-available/email(/)?($|\\?.*)",
+        "queryParameters": {
+            "format": {
+                "equalTo": "json"
+            },
+            "q": {
+                "matches": "^e2eflowsignuptestingmobile@example.com$"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "available": true
+        },
+        "headers": {
+            "Content-Type": "text/javascript",
+            "Connection": "keep-alive"
+        }
+    }
+}

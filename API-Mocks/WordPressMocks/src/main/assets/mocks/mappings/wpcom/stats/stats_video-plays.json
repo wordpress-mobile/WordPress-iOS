@@ -1,0 +1,25 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/video-plays/"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "period": "day",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "plays": [],
+                    "other_plays": 0,
+                    "total_plays": 0
+                }
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

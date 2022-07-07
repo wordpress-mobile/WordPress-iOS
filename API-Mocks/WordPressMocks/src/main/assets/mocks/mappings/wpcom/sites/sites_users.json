@@ -1,0 +1,25 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/users.*",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "authors_only": {
+                "equalTo": "1"
+            },
+            "number": {
+                "equalTo": "100"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 0,
+            "site_ID": 106707880,
+            "comments": []
+        }
+    }
+}

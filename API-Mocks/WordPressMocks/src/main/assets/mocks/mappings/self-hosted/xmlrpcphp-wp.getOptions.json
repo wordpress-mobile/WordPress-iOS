@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getOptions</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <struct>\n  <member><name>software_version</name><value><struct>\n  <member><name>desc</name><value><string>Software Version</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><string>5.1.1</string></value></member>\n</struct></value></member>\n  <member><name>post_thumbnail</name><value><struct>\n  <member><name>desc</name><value><string>Post Thumbnail</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><boolean>1</boolean></value></member>\n</struct></value></member>\n  <member><name>default_comment_status</name><value><struct>\n  <member><name>desc</name><value><string>Allow people to post comments on new articles</string></value></member>\n  <member><name>readonly</name><value><boolean>0</boolean></value></member>\n  <member><name>value</name><value><string>open</string></value></member>\n</struct></value></member>\n  <member><name>jetpack_client_id</name><value><struct>\n  <member><name>desc</name><value><string>The Client ID/WP.com Blog ID of this site</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><boolean>0</boolean></value></member>\n</struct></value></member>\n  <member><name>home_url</name><value><struct>\n  <member><name>desc</name><value><string>Site Address (URL)</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><string>{{request.requestLine.baseUrl}}</string></value></member>\n</struct></value></member>\n  <member><name>admin_url</name><value><struct>\n  <member><name>desc</name><value><string>The URL to the admin area</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><string>{{request.requestLine.baseUrl}}/wp-admin/</string></value></member>\n</struct></value></member>\n  <member><name>login_url</name><value><struct>\n  <member><name>desc</name><value><string>Login Address (URL)</string></value></member>\n  <member><name>readonly</name><value><boolean>1</boolean></value></member>\n  <member><name>value</name><value><string>{{request.requestLine.baseUrl}}/wp-login.php</string></value></member>\n</struct></value></member>\n  <member><name>blog_title</name><value><struct>\n  <member><name>desc</name><value><string>Site Title</string></value></member>\n  <member><name>readonly</name><value><boolean>0</boolean></value></member>\n  <member><name>value</name><value><string>e2eflowtestingmobile.mystagingwebsite.com at Pressable</string></value></member>\n</struct></value></member>\n  <member><name>time_zone</name><value><struct>\n  <member><name>desc</name><value><string>Time Zone</string></value></member>\n  <member><name>readonly</name><value><boolean>0</boolean></value></member>\n  <member><name>value</name><value><string>0</string></value></member>\n</struct></value></member>\n</struct>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

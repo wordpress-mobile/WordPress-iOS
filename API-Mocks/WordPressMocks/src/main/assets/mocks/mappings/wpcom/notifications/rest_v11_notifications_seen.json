@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/rest/v1.1/notifications/seen"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "last_seen_time": "1550137757",
+            "success": true
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

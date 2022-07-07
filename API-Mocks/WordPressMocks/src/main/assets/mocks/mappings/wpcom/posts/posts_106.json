@@ -1,0 +1,152 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/106/",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 106,
+            "site_ID": 106707880,
+            "author": {
+                "ID": 100907762,
+                "login": "leahelainerand",
+                "email": "andreazoellner+leahrand@gmail.com",
+                "name": "Leah Elaine Rand",
+                "first_name": "Leah",
+                "last_name": "Rand",
+                "nice_name": "leahelainerand",
+                "URL": "",
+                "avatar_URL": "https://0.gravatar.com/avatar/62937c26a2a79bae5921ca9e85be8040?s=96&d=identicon&r=G",
+                "profile_URL": "http://en.gravatar.com/leahelainerand",
+                "site_ID": 106523982
+            },
+            "date": "2016-04-19T21:28:27+00:00",
+            "modified": "2018-03-23T00:20:36+00:00",
+            "title": "Some News to Share",
+            "URL": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+            "short_URL": "https://wp.me/p7dJAQ-1I",
+            "content": "John was shortlisted for the World Press Photo competition, an international celebration of the best photojournalism of the year.\n\nhttps://twitter.com/wordpressdotcom/status/702181837079187456",
+            "excerpt": "",
+            "slug": "some-news-to-share",
+            "guid": "https://infocusphotographers.wordpress.com/?p=106",
+            "status": "publish",
+            "sticky": false,
+            "password": "",
+            "parent": false,
+            "type": "post",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 0,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": false,
+            "global_ID": "3a10a002b4f389596205c24992732a3e",
+            "featured_image": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg",
+            "post_thumbnail": {
+                "ID": 62,
+                "URL": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg",
+                "guid": "http://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg",
+                "mime_type": "image/jpeg",
+                "width": 1080,
+                "height": 720
+            },
+            "format": "standard",
+            "geo": false,
+            "menu_order": 0,
+            "page_template": "",
+            "publicize_URLs": [],
+            "terms": {
+                "category": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                                "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                            }
+                        }
+                    }
+                },
+                "post_tag": {},
+                "post_format": {},
+                "mentions": {}
+            },
+            "tags": {},
+            "categories": {
+                "Uncategorized": {
+                    "ID": 1,
+                    "name": "Uncategorized",
+                    "slug": "uncategorized",
+                    "description": "",
+                    "post_count": 1,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [
+                {
+                    "id": "254",
+                    "key": "jabber_published",
+                    "value": "1461101308"
+                },
+                {
+                    "id": "266",
+                    "key": "_thumbnail_id",
+                    "value": "62"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/106",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/106/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/106/replies/",
+                    "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/106/likes/",
+                    "autosave": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/106/autosave"
+                }
+            },
+            "capabilities": {
+                "publish_post": true,
+                "delete_post": true,
+                "edit_post": true
+            },
+            "revisions": [
+                262,
+                109,
+                108,
+                107
+            ],
+            "other_URLs": {}
+        }
+    }
+}

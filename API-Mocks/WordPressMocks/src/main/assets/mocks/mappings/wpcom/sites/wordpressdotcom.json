@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/wordpress.com/",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 403,
+        "jsonBody": {
+            "error": "unauthorized",
+            "message": "User cannot access this restricted blog"
+        }
+    }
+}

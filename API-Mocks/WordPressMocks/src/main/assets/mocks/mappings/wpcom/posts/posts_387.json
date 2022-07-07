@@ -1,0 +1,133 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/387/",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 387,
+            "site_ID": 106707880,
+            "author": {
+                "ID": 68646169,
+                "login": "thenomadicwordsmith",
+                "email": "thenomadicwordsmith@wordpress.com",
+                "name": "thenomadicwordsmith",
+                "first_name": "Nomadic",
+                "last_name": "Wordsmith",
+                "nice_name": "thenomadicwordsmith",
+                "URL": "http://thenomadicwordsmith.wordpress.com",
+                "avatar_URL": "https://0.gravatar.com/avatar/9ba48385fc40dfd9a55a3348d8e7f4d9?s=96&d=identicon&r=G",
+                "profile_URL": "http://en.gravatar.com/thenomadicwordsmith",
+                "site_ID": 71769073
+            },
+            "date": "2019-05-28T21:03:22+00:00",
+            "modified": "2019-05-28T21:03:22+00:00",
+            "title": "Time to Book Summer Sessions",
+            "URL": "http://infocusphotographers.com/?p=387",
+            "short_URL": "https://wp.me/p7dJAQ-6f",
+            "content": "Blue skies and warm weather, what's not to love about summer?\n\nIt's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of family portrait packages and for a limited time are offering 15% off packages booked before May 1.\n\n<img class=\"alignnone size-full wp-image-366\" src=\"https://infocusphotographers.files.wordpress.com/2019/02/beach-clouds-daytime-994605.jpg\" alt=\"beach-clouds-daytime-994605\" width=\"2726\" height=\"2047\">\n\n<strong>How to book\n</strong>Email us to set up a time to visit our studio.",
+            "excerpt": "",
+            "slug": "",
+            "guid": "http://infocusphotographers.com/?p=387",
+            "status": "draft",
+            "sticky": false,
+            "password": "",
+            "parent": false,
+            "type": "post",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 0,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": false,
+            "global_ID": "a9037bde04073835b078a1b1bb48b7de",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "geo": false,
+            "menu_order": 0,
+            "page_template": "",
+            "publicize_URLs": [],
+            "terms": {
+                "category": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                                "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                            }
+                        }
+                    }
+                },
+                "post_tag": {},
+                "post_format": {},
+                "mentions": {}
+            },
+            "tags": {},
+            "categories": {
+                "Uncategorized": {
+                    "ID": 1,
+                    "name": "Uncategorized",
+                    "slug": "uncategorized",
+                    "description": "",
+                    "post_count": 1,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": false,
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/387",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/387/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/387/replies/",
+                    "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/387/likes/"
+                }
+            },
+            "capabilities": {
+                "publish_post": true,
+                "delete_post": true,
+                "edit_post": true
+            },
+            "revisions": [
+                390
+            ],
+            "other_URLs": {
+                "permalink_URL": "http://infocusphotographers.com/2019/05/28/%postname%/",
+                "suggested_slug": "time-to-book-summer-sessions"
+            }
+        }
+    }
+}

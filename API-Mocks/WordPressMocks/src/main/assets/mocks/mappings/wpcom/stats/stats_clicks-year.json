@@ -1,0 +1,72 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/clicks/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "days": {
+                "2019-01-01": {
+                    "clicks": [
+                        {
+                            "icon": null,
+                            "url": "https://yourgroovysite.wordpress.com/about/",
+                            "name": "yourgroovysite.wordpress.com/about/",
+                            "views": 5,
+                            "children": null
+                        },
+                        {
+                            "icon": null,
+                            "url": null,
+                            "name": "WordPress.com Media ",
+                            "views": 3,
+                            "children": [
+                                {
+                                    "url": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1443745029291-d5c27bc0b562.jpeg",
+                                    "name": "infocusphotographers.files.wordpress.com/2016/02/photo-1443745029291-d5c27bc0b562.jpeg",
+                                    "views": 1
+                                },
+                                {
+                                    "url": "https://infocusphotographers.files.wordpress.com/2016/02/unsplash_5252bb51404f8_1.jpeg",
+                                    "name": "infocusphotographers.files.wordpress.com/2016/02/unsplash_5252bb51404f8_1.jpeg",
+                                    "views": 1
+                                },
+                                {
+                                    "url": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1447940334172-44e027c1f71c.jpeg",
+                                    "name": "infocusphotographers.files.wordpress.com/2016/02/photo-1447940334172-44e027c1f71c.jpeg",
+                                    "views": 1
+                                }
+                            ]
+                        },
+                        {
+                            "icon": "https://secure.gravatar.com/blavatar/653166773dc88127bd3afe0b6dfe5ea7?s=48",
+                            "url": "https://wordpress.com/?ref=footer_blog",
+                            "name": "wordpress.com/?ref=footer_blog",
+                            "views": 2,
+                            "children": null
+                        }
+                    ],
+                    "other_clicks": 0,
+                    "total_clicks": 10
+                }
+            },
+            "period": "year"
+        }
+    }
+}

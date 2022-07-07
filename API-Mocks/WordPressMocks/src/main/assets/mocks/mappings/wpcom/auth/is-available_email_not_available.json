@@ -1,0 +1,23 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/is-available/email(/)?($|\\?.*)",
+        "queryParameters": {
+            "q": {
+                "matches": "^(?!e2eflowsignuptestingmobile@example.com).*$"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "error": "taken",
+            "message": "Choose a different email address. This one is not available.",
+            "status": "error"
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive"
+        }
+    }
+}

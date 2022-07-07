@@ -1,0 +1,56 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/106707880/posts(/)\\?($|\\?.*)",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "status": {
+                "equalTo": "publish,private"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 4,
+            "posts": [
+                {
+                    "ID": 5,
+                    "modified": "2019-03-12T15:00:53+00:00",
+                    "status": "publish"
+                },
+                {
+                    "ID": 237,
+                    "modified": "2019-03-21T17:19:25+00:00",
+                    "status": "private"
+                },
+                {
+                    "ID": 106,
+                    "modified": "2018-03-23T00:20:36+00:00",
+                    "status": "publish"
+                },
+                {
+                    "ID": 90,
+                    "modified": "2016-03-16T02:01:50+00:00",
+                    "status": "publish"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/post-counts/post"
+                },
+                "next_page": "value=&id=29",
+                "wpcom": true
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    },
+    "scenarioName": "new-post",
+    "requiredScenarioState": "Post Published"
+}

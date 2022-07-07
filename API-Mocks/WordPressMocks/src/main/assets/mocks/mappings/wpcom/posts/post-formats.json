@@ -1,0 +1,20 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/[0-9]+/post-formats(.*)"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "formats": {
+                "aside": "Aside",
+                "image": "Image",
+                "video": "Video",
+                "quote": "Quote",
+                "link": "Link",
+                "status": "Status",
+                "gallery": "Gallery"
+            }
+        }
+    }
+}

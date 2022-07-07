@@ -1,0 +1,145 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/396/",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 396,
+            "site_ID": 106707880,
+            "author": {
+                "ID": 742098,
+                "login": "jkmassel",
+                "email": "jeremy.massel@gmail.com",
+                "name": "Jeremy Massel",
+                "first_name": "Jeremy",
+                "last_name": "Massel",
+                "nice_name": "jkmassel",
+                "URL": "https://jkmassel.wordpress.com",
+                "avatar_URL": "https://2.gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?s=96&d=identicon&r=G",
+                "profile_URL": "http://en.gravatar.com/jkmassel",
+                "site_ID": 1562023
+            },
+            "date": "2019-05-28T21:06:45+00:00",
+            "modified": "2019-05-28T21:08:03+00:00",
+            "title": "Now Booking Summer Sessions",
+            "URL": "http://infocusphotographers.com/?p=396",
+            "short_URL": "https://wp.me/p7dJAQ-6o",
+            "content": "<blockquote>&#x201C;One must maintain a little bit of summer, even in the middle of winter.&#x201D;\n\n&#x2013; Henry David Thoreau</blockquote>\nBlue skies and warm weather, what's not to love about summer? It's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of <a href=\"https://infocusphotographers.com/services/\">family portrait packages</a> and for a limited time are offering 15% off packages booked before April 1.\n\n<strong>How to book</strong>\n\n<a href=\"mailto:hello@infocusphotographers.com\">Email us</a> to set up a time to visit our studio.",
+            "excerpt": "",
+            "slug": "",
+            "guid": "http://infocusphotographers.com/?p=396",
+            "status": "draft",
+            "sticky": false,
+            "password": "",
+            "parent": false,
+            "type": "post",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": false,
+            "like_count": 0,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": false,
+            "global_ID": "276e4cea0342ec68e69a0ca537acfce1",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "geo": false,
+            "menu_order": 0,
+            "page_template": "",
+            "publicize_URLs": [],
+            "terms": {
+                "category": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                                "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                            }
+                        }
+                    }
+                },
+                "post_tag": {},
+                "post_format": {},
+                "mentions": {}
+            },
+            "tags": {},
+            "categories": {
+                "Uncategorized": {
+                    "ID": 1,
+                    "name": "Uncategorized",
+                    "slug": "uncategorized",
+                    "description": "",
+                    "post_count": 1,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [
+                {
+                    "id": "742",
+                    "key": "sharing_disabled",
+                    "value": []
+                },
+                {
+                    "id": "741",
+                    "key": "switch_like_status",
+                    "value": ""
+                }
+            ],
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/396",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/396/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/396/replies/",
+                    "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/396/likes/"
+                }
+            },
+            "capabilities": {
+                "publish_post": true,
+                "delete_post": true,
+                "edit_post": true
+            },
+            "revisions": [
+                399,
+                398
+            ],
+            "other_URLs": {
+                "permalink_URL": "http://infocusphotographers.com/2019/05/28/%postname%/",
+                "suggested_slug": "now-booking-summer-sessions-2"
+            }
+        }
+    }
+}

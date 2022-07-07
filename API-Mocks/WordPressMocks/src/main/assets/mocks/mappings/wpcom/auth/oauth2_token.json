@@ -1,0 +1,31 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/oauth2/token",
+        "bodyPatterns": [
+            {
+                "matches": ".*username=[^&]+.*"
+            },
+            {
+                "matches": ".*password=((?!invalidPswd)[^&])+(&.*|$)"
+            },
+            {
+                "matches": ".*client_secret=.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "access_token": "valid_token",
+            "token_type": "bearer",
+            "blog_id": "0",
+            "blog_url": null,
+            "scope": "global"
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive"
+        }
+    }
+}

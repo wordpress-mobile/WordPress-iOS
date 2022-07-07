@@ -1,0 +1,64 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/file-downloads/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "day"
+            },
+            "num": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-07-31",
+            "period": "month",
+            "days": {
+                "{{now offset='-1 days' format='yyyy-MM-dd'}}": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-06-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-05-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-04-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-03-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-02-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                },
+                "2019-01-01": {
+                    "files": [],
+                    "other_downloads": 0,
+                    "total_downloads": 0
+                }
+            }
+        }
+    }
+}

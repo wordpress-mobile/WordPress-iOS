@@ -1,0 +1,40 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/stats/followers/.*",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "max": {
+                "matches": "(.*)"
+            },
+            "type": {
+                "equalTo": "email"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "page": 1,
+            "pages": 1,
+            "total": 1,
+            "total_email": 1,
+            "total_wpcom": 0,
+            "subscribers": [{
+                "avatar": "https://0.gravatar.com/avatar/69a6814a8e85942fee3e846b17554972?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                "label": "follower@example.com",
+                "ID": "12345",
+                "url": null,
+                "follow_data": null,
+                "date_subscribed": "2018-02-21T03:10:54+00:00"
+            }]
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

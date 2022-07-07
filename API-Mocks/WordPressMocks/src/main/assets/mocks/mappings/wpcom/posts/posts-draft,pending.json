@@ -1,0 +1,78 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/",
+        "queryParameters": {
+            "number": {
+                "equalTo": "60"
+            },
+            "context": {
+                "equalTo": "edit"
+            },
+            "order_by": {
+                "equalTo": "date"
+            },
+            "fields": {
+                "equalTo": "ID,modified,status,meta,date"
+            },
+            "order": {
+                "equalTo": "DESC"
+            },
+            "status": {
+                "equalTo": "draft,pending"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 7,
+            "posts": [
+                {
+                    "ID": 213,
+                    "modified": "2019-07-16T02:39:45+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 396,
+                    "modified": "2019-05-28T21:08:03+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 387,
+                    "modified": "2019-05-28T21:03:22+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 265,
+                    "modified": "2019-04-17T10:41:03+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 134,
+                    "modified": "2019-05-27T21:39:08+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 215,
+                    "modified": "2019-02-15T23:27:13+00:00",
+                    "status": "draft"
+                },
+                {
+                    "ID": 225,
+                    "modified": "2019-03-21T17:20:44+00:00",
+                    "status": "draft"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/post-counts/post"
+                },
+                "wpcom": true
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/media/62/",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 62,
+            "URL": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg",
+            "guid": "http://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg",
+            "date": "2016-02-11T00:18:19+00:00",
+            "post_ID": 24,
+            "author_ID": 64766782,
+            "file": "photo-1449761485030-c9bf16154670.jpg",
+            "mime_type": "image/jpeg",
+            "extension": "jpg",
+            "title": "photo-1449761485030-c9bf16154670",
+            "caption": "",
+            "description": "",
+            "alt": "",
+            "icon": "https://s1.wp.com/wp-includes/images/media/default.png",
+            "thumbnails": {
+                "thumbnail": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=150",
+                "medium": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=300",
+                "large": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=1024",
+                "edin-thumbnail-landscape": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=330&h=240&crop=1",
+                "edin-thumbnail-square": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=330&h=330&crop=1",
+                "edin-thumbnail-avatar": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=96&h=96&crop=1",
+                "edin-featured-image": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=648",
+                "edin-hero": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=1080&h=720&crop=1",
+                "edin-logo": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1449761485030-c9bf16154670.jpg?w=288"
+            },
+            "height": 720,
+            "width": 1080,
+            "exif": {
+                "aperture": 0,
+                "credit": "",
+                "camera": "",
+                "caption": "",
+                "created_timestamp": 0,
+                "copyright": "",
+                "focal_length": 0,
+                "iso": 0,
+                "shutter_speed": 0,
+                "title": "",
+                "orientation": 0,
+                "keywords": []
+            },
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/62",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/62/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "parent": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/24"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,162 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/top-posts/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "days": {
+                "2019-01-01": {
+                    "postviews": [
+                        {
+                            "id": 1,
+                            "href": "http://infocusphotographers.com/about/",
+                            "date": "2016-02-09 16:07:34",
+                            "title": "Home",
+                            "type": "page",
+                            "views": 190,
+                            "children": [
+                                {
+                                    "title": "dpzdukjrthb71yla1ezf_img_4098",
+                                    "link": "http://infocusphotographers.com/about/dpzdukjrthb71yla1ezf_img_4098/",
+                                    "views": 4,
+                                    "type": "attachment"
+                                }
+                            ],
+                            "video_play": false
+                        },
+                        {
+                            "id": 22,
+                            "href": "http://infocusphotographers.com/our-story/",
+                            "date": "2016-02-09 17:32:50",
+                            "title": "Our Story",
+                            "type": "page",
+                            "views": 26,
+                            "video_play": false
+                        },
+                        {
+                            "id": 24,
+                            "href": "http://infocusphotographers.com/portfolio/",
+                            "date": "2016-02-09 17:33:03",
+                            "title": "Portfolio",
+                            "type": "page",
+                            "views": 19,
+                            "children": [
+                                {
+                                    "title": "photo-1432250767374-ee19cba37b52",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1432250767374-ee19cba37b52/",
+                                    "views": 4,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "unsplash_5252bb51404f8_1",
+                                    "link": "http://infocusphotographers.com/portfolio/unsplash_5252bb51404f8_1/",
+                                    "views": 4,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1423110041833-0d5dfcc552e1",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1423110041833-0d5dfcc552e1/",
+                                    "views": 4,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1443745029291-d5c27bc0b562",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1443745029291-d5c27bc0b562/",
+                                    "views": 4,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1447940334172-44e027c1f71c",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1447940334172-44e027c1f71c/",
+                                    "views": 3,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1439539698758-ba2680ecadb9",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1439539698758-ba2680ecadb9/",
+                                    "views": 2,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1453857271477-4f9a4081966e-2",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1453857271477-4f9a4081966e-2/",
+                                    "views": 2,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1453857122308-5e78881d7acc",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1453857122308-5e78881d7acc/",
+                                    "views": 2,
+                                    "type": "attachment"
+                                },
+                                {
+                                    "title": "photo-1452629135160-cf2a685e1f09",
+                                    "link": "http://infocusphotographers.com/portfolio/photo-1452629135160-cf2a685e1f09/",
+                                    "views": 2,
+                                    "type": "attachment"
+                                }
+                            ],
+                            "video_play": false
+                        },
+                        {
+                            "id": 0,
+                            "href": "http://infocusphotographers.com/",
+                            "date": null,
+                            "title": "Home page / Archives",
+                            "type": "homepage",
+                            "views": 17,
+                            "video_play": false
+                        },
+                        {
+                            "id": 90,
+                            "href": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+                            "date": "2016-03-07 18:32:11",
+                            "title": "Martin and Amy's Wedding",
+                            "type": "post",
+                            "views": 13,
+                            "video_play": false
+                        },
+                        {
+                            "id": 13,
+                            "href": "http://infocusphotographers.com/services/",
+                            "date": "2016-02-09 17:16:04",
+                            "title": "Services",
+                            "type": "page",
+                            "views": 12,
+                            "video_play": false
+                        },
+                        {
+                            "id": 106,
+                            "href": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+                            "date": "2016-04-19 21:28:27",
+                            "title": "Some News to Share",
+                            "type": "post",
+                            "views": 3,
+                            "video_play": false
+                        }
+                    ],
+                    "total_views": 313,
+                    "other_views": 33
+                }
+            },
+            "period": "year"
+        }
+    }
+}

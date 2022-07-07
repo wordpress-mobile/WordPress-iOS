@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getPostFormats</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <struct>\n  <member><name>standard</name><value><string>Standard</string></value></member>\n  <member><name>aside</name><value><string>Aside</string></value></member>\n  <member><name>chat</name><value><string>Chat</string></value></member>\n  <member><name>gallery</name><value><string>Gallery</string></value></member>\n  <member><name>link</name><value><string>Link</string></value></member>\n  <member><name>image</name><value><string>Image</string></value></member>\n  <member><name>quote</name><value><string>Quote</string></value></member>\n  <member><name>status</name><value><string>Status</string></value></member>\n  <member><name>video</name><value><string>Video</string></value></member>\n  <member><name>audio</name><value><string>Audio</string></value></member>\n</struct>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getUsers</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <array><data>\n</data></array>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

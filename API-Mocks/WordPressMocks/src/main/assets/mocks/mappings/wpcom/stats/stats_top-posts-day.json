@@ -1,0 +1,52 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/top-posts/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "day"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "postviews": [
+                        {
+                            "id": 1,
+                            "href": "http://infocusphotographers.com/about/",
+                            "date": "2016-02-09 16:07:34",
+                            "title": "Home",
+                            "type": "page",
+                            "views": 2,
+                            "video_play": false
+                        },
+                        {
+                            "id": 22,
+                            "href": "http://infocusphotographers.com/our-story/",
+                            "date": "2016-02-09 17:32:50",
+                            "title": "Our Story",
+                            "type": "page",
+                            "views": 1,
+                            "video_play": false
+                        }
+                    ],
+                    "total_views": "3"
+                }
+            },
+            "period": "day"
+        }
+    }
+}

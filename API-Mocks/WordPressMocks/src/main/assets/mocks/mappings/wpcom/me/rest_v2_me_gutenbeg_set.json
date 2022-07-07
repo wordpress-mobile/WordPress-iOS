@@ -1,0 +1,15 @@
+{
+    "request": {
+        "urlPath": "/wpcom/v2/me/gutenberg",
+        "method": "POST"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": [],
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

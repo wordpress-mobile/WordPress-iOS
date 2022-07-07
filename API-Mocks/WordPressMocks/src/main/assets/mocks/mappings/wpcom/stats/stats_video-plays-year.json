@@ -1,0 +1,34 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/video-plays/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "period": "year",
+            "days": {
+                "2019-01-01": {
+                    "plays": [],
+                    "other_plays": 0,
+                    "total_plays": 0
+                }
+            }
+        }
+    }
+}

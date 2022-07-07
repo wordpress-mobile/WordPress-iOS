@@ -1,0 +1,163 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/90/",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 90,
+            "site_ID": 106707880,
+            "author": {
+                "ID": 100907762,
+                "login": "leahelainerand",
+                "email": "andreazoellner+leahrand@gmail.com",
+                "name": "Leah Elaine Rand",
+                "first_name": "Leah",
+                "last_name": "Rand",
+                "nice_name": "leahelainerand",
+                "URL": "",
+                "avatar_URL": "https://0.gravatar.com/avatar/62937c26a2a79bae5921ca9e85be8040?s=96&d=identicon&r=G",
+                "profile_URL": "http://en.gravatar.com/leahelainerand",
+                "site_ID": 106523982
+            },
+            "date": "2016-03-07T18:32:11+00:00",
+            "modified": "2016-03-16T02:01:50+00:00",
+            "title": "Martin and Amy's Wedding",
+            "URL": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+            "short_URL": "https://wp.me/p7dJAQ-1s",
+            "content": "Martin and Amy are a wonderful couple that John and I were lucky to photograph. The theme for their wedding was sophisticated but warm and everything had a clearly personal touch.\n\nThey decided they wanted the bulk of their wedding photos to be black and white. While some couples like personal, goofy photos, Amy and Martin found a perfect balance between classic elegance and shots with personality.\n\n&nbsp;\n\nhttps://www.instagram.com/p/BCF4Z6UjRjE/?taken-by=photomatt\n\n&nbsp;\n\nhttps://www.instagram.com/p/8qwIAWDRum/?taken-by=photomatt\n\n&nbsp;",
+            "excerpt": "",
+            "slug": "martin-and-amys-wedding",
+            "guid": "https://infocusphotographers.wordpress.com/?p=90",
+            "status": "publish",
+            "sticky": false,
+            "password": "",
+            "parent": false,
+            "type": "post",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 0,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": false,
+            "global_ID": "8ffbda2c616a90c6b92efe4fb016fe95",
+            "featured_image": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1453857271477-4f9a4081966e1.jpeg",
+            "post_thumbnail": {
+                "ID": 82,
+                "URL": "https://infocusphotographers.files.wordpress.com/2016/02/photo-1453857271477-4f9a4081966e1.jpeg",
+                "guid": "http://infocusphotographers.files.wordpress.com/2016/02/photo-1453857271477-4f9a4081966e1.jpeg",
+                "mime_type": "image/jpeg",
+                "width": 3853,
+                "height": 2384
+            },
+            "format": "standard",
+            "geo": false,
+            "menu_order": 0,
+            "page_template": "",
+            "publicize_URLs": [],
+            "terms": {
+                "category": {
+                    "Wedding": {
+                        "ID": 1674,
+                        "name": "Wedding",
+                        "slug": "wedding",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:wedding",
+                                "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:wedding/help",
+                                "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                            }
+                        }
+                    }
+                },
+                "post_tag": {},
+                "post_format": {},
+                "mentions": {}
+            },
+            "tags": {},
+            "categories": {
+                "Wedding": {
+                    "ID": 1674,
+                    "name": "Wedding",
+                    "slug": "wedding",
+                    "description": "",
+                    "post_count": 1,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:wedding",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:wedding/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [
+                {
+                    "id": "201",
+                    "key": "jabber_published",
+                    "value": "1457375532"
+                },
+                {
+                    "id": "198",
+                    "key": "_thumbnail_id",
+                    "value": "82"
+                },
+                {
+                    "id": "234",
+                    "key": "_wpas_done_13895248",
+                    "value": "1"
+                },
+                {
+                    "id": "231",
+                    "key": "_wpas_mess",
+                    "value": "An amazing weekend, a wonderful couple, and beautiful photos to match! Check it out!"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/90",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/90/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/90/replies/",
+                    "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/90/likes/"
+                }
+            },
+            "capabilities": {
+                "publish_post": true,
+                "delete_post": true,
+                "edit_post": true
+            },
+            "revisions": [
+                102,
+                101,
+                100,
+                93,
+                92,
+                91
+            ],
+            "other_URLs": {}
+        }
+    }
+}

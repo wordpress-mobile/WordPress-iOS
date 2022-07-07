@@ -1,0 +1,33 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/stats/followers/.*",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "max": {
+                "matches": "(.*)"
+            },
+            "type": {
+                "equalTo": "wpcom"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "page": 1,
+            "pages": 0,
+            "total": 0,
+            "total_email": 1,
+            "total_wpcom": 0,
+            "subscribers": []
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

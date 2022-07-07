@@ -1,0 +1,160 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.2/sites/181977606/posts",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "context": {
+                "equalTo": "edit"
+            },
+            "meta": {
+                "equalTo": "autosave"
+            },
+            "number": {
+                "equalTo": "40"
+            },
+            "status": {
+                "equalTo": "draft,pending"
+            },
+            "type": {
+                "equalTo": "post"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 1,
+            "posts": [{
+                "ID": 14,
+                "site_ID": 181977606,
+                "author": {
+                    "ID": 191794483,
+                    "login": "appstorescreens",
+                    "email": "test@example.com",
+                    "name": "appstorescreens",
+                    "first_name": "",
+                    "last_name": "",
+                    "nice_name": "appstorescreens",
+                    "URL": "http:\/\/tricountyrealestate.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/35029b2103460109f574c38dfeea5f3f?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/appstorescreens",
+                    "site_ID": 181851541
+                },
+                "date": "2020-10-05T15:03:30+00:00",
+                "modified": "2020-10-05T15:04:51+00:00",
+                "title": "Easy Blueberry Muffins",
+                "URL": "https:\/\/weekendbakesblog.wordpress.com\/easy-blueberry-muffins\/",
+                "short_URL": "https:\/\/wp.me\/pcjyGG-e",
+                "content": "<!-- wp:gallery {\"ids\":[29,31,35]} -->\n<figure class=\"wp-block-gallery columns-3 is-cropped\"><ul class=\"blocks-gallery-grid\"><li class=\"blocks-gallery-item\"><figure><img src=\"https:\/\/appscreens.files.wordpress.com\/2020\/08\/sarah-gualtieri-tohjvyg65n0-unsplash.jpg?w=683\" alt=\"\" data-id=\"29\" data-link=\"https:\/\/appscreens.wordpress.com\/sarah-gualtieri-tohjvyg65n0-unsplash\/\" class=\"wp-image-29\" \/><\/figure><\/li><li class=\"blocks-gallery-item\"><figure><img src=\"https:\/\/appscreens.files.wordpress.com\/2020\/08\/sarah-gualtieri-o3mdjpy3qdo-unsplash.jpg?w=683\" alt=\"\" data-id=\"31\" data-link=\"https:\/\/appscreens.wordpress.com\/sarah-gualtieri-o3mdjpy3qdo-unsplash\/\" class=\"wp-image-31\" \/><\/figure><\/li><li class=\"blocks-gallery-item\"><figure><img src=\"https:\/\/appscreens.files.wordpress.com\/2020\/08\/yulia-khlebnikova-oh5mxkl9oho-unsplash.jpg?w=1024\" alt=\"\" data-id=\"35\" data-link=\"https:\/\/appscreens.wordpress.com\/yulia-khlebnikova-oh5mxkl9oho-unsplash\/\" class=\"wp-image-35\" \/><\/figure><\/li><\/ul><\/figure>\n<!-- \/wp:gallery -->\n\n<!-- wp:heading {\"level\":4} -->\n<h4>Ingredients<\/h4>\n<!-- \/wp:heading -->\n\n<!-- wp:list -->\n<ul><li>1 cup fresh or frozen blueberries<\/li><li>1 3\/4 cup flour<\/li><li>2 tsp baking powder<\/li><li>3\/4 cups sugar<\/li><li>1\/4 cup canola oil<\/li><li>1 egg<\/li><\/ul>\n<!-- \/wp:list -->",
+                "excerpt": "",
+                "slug": "easy-blueberry-muffins",
+                "guid": "https:\/\/weekendbakesblog.wordpress.com\/?p=14",
+                "status": "draft",
+                "sticky": false,
+                "password": "",
+                "parent": false,
+                "type": "post",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 0,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": true,
+                "global_ID": "33b4a6f0603d5c065b2e54737b34899c",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "geo": false,
+                "menu_order": 0,
+                "page_template": "",
+                "publicize_URLs": [],
+                "terms": {
+                    "category": {
+                        "Uncategorized": {
+                            "ID": 1,
+                            "name": "Uncategorized",
+                            "slug": "uncategorized",
+                            "description": "",
+                            "post_count": 3,
+                            "parent": 0,
+                            "meta": {
+                                "links": {
+                                    "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181977606\/categories\/slug:uncategorized",
+                                    "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606\/categories\/slug:uncategorized\/help",
+                                    "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606"
+                                }
+                            }
+                        }
+                    },
+                    "post_tag": {},
+                    "post_format": {},
+                    "mentions": {}
+                },
+                "tags": {},
+                "categories": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181977606\/categories\/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606\/categories\/slug:uncategorized\/help",
+                                "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": [{
+                    "id": "142",
+                    "key": "jabber_published",
+                    "value": "1601910212"
+                }, {
+                    "id": "148",
+                    "key": "timeline_notification",
+                    "value": "1601910213"
+                }],
+                "meta": {
+                    "links": {
+                        "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181977606\/posts\/14",
+                        "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606\/posts\/14\/help",
+                        "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606",
+                        "replies": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181977606\/posts\/14\/replies\/",
+                        "likes": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181977606\/posts\/14\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": true,
+                    "delete_post": true,
+                    "edit_post": true
+                },
+                "revisions": [15],
+                "other_URLs": {
+                    "permalink_URL": "https:\/\/weekendbakesblog.wordpress.com\/2020\/10\/05\/%postname%\/",
+                    "suggested_slug": "easy-blueberry-muffins"
+                }
+            }],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181977606\/post-counts\/post"
+                },
+                "wpcom": true
+            }
+        }
+    }
+}

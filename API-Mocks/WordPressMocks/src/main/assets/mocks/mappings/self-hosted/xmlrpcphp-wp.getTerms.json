@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getTerms</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <array><data>\n  <value><struct>\n  <member><name>term_id</name><value><string>1</string></value></member>\n  <member><name>name</name><value><string>Uncategorized</string></value></member>\n  <member><name>slug</name><value><string>uncategorized</string></value></member>\n  <member><name>term_group</name><value><string>0</string></value></member>\n  <member><name>term_taxonomy_id</name><value><string>1</string></value></member>\n  <member><name>taxonomy</name><value><string>category</string></value></member>\n  <member><name>description</name><value><string></string></value></member>\n  <member><name>parent</name><value><string>0</string></value></member>\n  <member><name>count</name><value><int>1</int></value></member>\n  <member><name>filter</name><value><string>raw</string></value></member>\n  <member><name>custom_fields</name><value><array><data>\n</data></array></value></member>\n</struct></value>\n</data></array>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

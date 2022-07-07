@@ -1,0 +1,17 @@
+{
+    "request": {
+        "urlPattern": "/rest/v1/devices/[0-9]+/delete.*",
+        "method": "POST"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "success": true
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

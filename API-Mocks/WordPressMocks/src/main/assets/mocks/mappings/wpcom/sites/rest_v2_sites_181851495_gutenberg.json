@@ -1,0 +1,19 @@
+{
+    "request": {
+        "urlPath": "/wpcom/v2/sites/181851495/gutenberg",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "editor_mobile": "gutenberg",
+            "editor_web": "gutenberg",
+            "opt_in": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/181851495/gutenberg?editor=gutenberg&platform=mobile"
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

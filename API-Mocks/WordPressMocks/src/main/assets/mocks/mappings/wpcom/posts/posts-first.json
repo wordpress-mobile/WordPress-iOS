@@ -1,0 +1,60 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/posts/.*",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "fields": {
+                "equalTo": "ID, title, URL, discussion, like_count, date"
+            },
+            "number": {
+                "matches": "1"
+            },
+            "order_by": {
+                "equalTo": "date"
+            },
+             "type": {
+                "equalTo": "post"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "fixedDelayMilliseconds": 1000,
+        "jsonBody": {
+            "found": 2,
+            "posts": [
+                {
+                    "ID": 106,
+                    "date": "2016-04-19T21:28:27+00:00",
+                    "title": "Some News to Share",
+                    "URL": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+                    "discussion": {
+                        "comments_open": true,
+                        "comment_status": "open",
+                        "pings_open": true,
+                        "ping_status": "open",
+                        "comment_count": 0
+                    },
+                    "like_count": 0
+                }
+            ],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/post-counts/post"
+                },
+                "next_page": "value=2016-04-19T21%3A28%3A27%2B00%3A00&id=106",
+                "wpcom": true
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    },
+    "scenarioName": "new-post",
+    "newScenarioState": "Post Published"
+}

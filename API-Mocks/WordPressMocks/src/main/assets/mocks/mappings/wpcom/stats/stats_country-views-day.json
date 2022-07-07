@@ -1,0 +1,64 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/country-views/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "day"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "views": [
+                        {
+                            "country_code": "IN",
+                            "views": 3
+                        }
+                    ],
+                    "other_views": 0,
+                    "total_views": 3
+                }
+            },
+            "country-info": {
+                "CA": {
+                    "flag_icon": "https://secure.gravatar.com/blavatar/7f3085b2665ac78346be5923724ba4c6?s=48",
+                    "flat_flag_icon": "https://secure.gravatar.com/blavatar/685ac009247bf3378158ee41c3f8f250?s=48",
+                    "country_full": "Canada",
+                    "map_region": "021"
+                },
+                "IN": {
+                    "flag_icon": "https://secure.gravatar.com/blavatar/217b6ac82c316e3a176351cef1d2d0b6?s=48",
+                    "flat_flag_icon": "https://secure.gravatar.com/blavatar/d449a857f065ec5ddf1e7a086001a541?s=48",
+                    "country_full": "India",
+                    "map_region": "034"
+                },
+                "FR": {
+                    "flag_icon": "https://secure.gravatar.com/blavatar/bff4fa191e38bc0a316410b8fd2958fd?s=48",
+                    "flat_flag_icon": "https://secure.gravatar.com/blavatar/8139b3de98c828078f8a0f7deec0c79b?s=48",
+                    "country_full": "France",
+                    "map_region": "155"
+                },
+                "CO": {
+                    "flag_icon": "https://secure.gravatar.com/blavatar/f9951a3a717913a4cb99ce128cd42ef6?s=48",
+                    "flat_flag_icon": "https://secure.gravatar.com/blavatar/30142281e988bbfd084a1c4a9eaef1f9?s=48",
+                    "country_full": "Colombia",
+                    "map_region": "005"
+                }
+            }
+        }
+    }
+}

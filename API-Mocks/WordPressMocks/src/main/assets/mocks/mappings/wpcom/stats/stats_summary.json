@@ -1,0 +1,24 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/stats/summary/.*"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "period": "day",
+            "views": 0,
+            "visitors": 0,
+            "likes": 0,
+            "reblogs": 0,
+            "comments": 0,
+            "followers": 1
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

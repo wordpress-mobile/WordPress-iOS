@@ -1,0 +1,208 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/posts/237/",
+        "queryParameters": {
+            "context": {
+                "equalTo": "edit"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 237,
+            "site_ID": 106707880,
+            "author": {
+                "ID": 68646169,
+                "login": "thenomadicwordsmith",
+                "email": "thenomadicwordsmith@wordpress.com",
+                "name": "thenomadicwordsmith",
+                "first_name": "Nomadic",
+                "last_name": "Wordsmith",
+                "nice_name": "thenomadicwordsmith",
+                "URL": "http://thenomadicwordsmith.wordpress.com",
+                "avatar_URL": "https://0.gravatar.com/avatar/9ba48385fc40dfd9a55a3348d8e7f4d9?s=96&d=identicon&r=G",
+                "profile_URL": "http://en.gravatar.com/thenomadicwordsmith",
+                "site_ID": 71769073
+            },
+            "date": "2019-03-13T23:48:58+00:00",
+            "modified": "2019-03-21T17:19:25+00:00",
+            "title": "Photo Contest",
+            "URL": "http://infocusphotographers.com/2019/03/13/some-news-to-share-2/",
+            "short_URL": "https://wp.me/p7dJAQ-3P",
+            "content": "<!-- wp:paragraph -->\n<p>In Focus Photography was nominated for an international photo award!</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p><a href=\"http://google.com\">Please vote for us!</a></p>\n<!-- /wp:paragraph -->",
+            "excerpt": "",
+            "slug": "some-news-to-share-2",
+            "guid": "http://infocusphotographers.com/?p=237",
+            "status": "private",
+            "sticky": false,
+            "password": "",
+            "parent": false,
+            "type": "post",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 0,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": false,
+            "global_ID": "9dc6f7941b6a68fc2323b652c4e9516b",
+            "featured_image": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg",
+            "post_thumbnail": {
+                "ID": 238,
+                "URL": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg",
+                "guid": "http://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg",
+                "mime_type": "image/jpeg",
+                "width": 4256,
+                "height": 2628
+            },
+            "format": "standard",
+            "geo": false,
+            "menu_order": 0,
+            "page_template": "",
+            "publicize_URLs": [],
+            "terms": {
+                "category": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                                "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                            }
+                        }
+                    }
+                },
+                "post_tag": {},
+                "post_format": {},
+                "mentions": {}
+            },
+            "tags": {},
+            "categories": {
+                "Uncategorized": {
+                    "ID": 1,
+                    "name": "Uncategorized",
+                    "slug": "uncategorized",
+                    "description": "",
+                    "post_count": 1,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/categories/slug:uncategorized/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            },
+            "attachments": {
+                "238": {
+                    "ID": 238,
+                    "URL": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg",
+                    "guid": "http://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg",
+                    "date": "2019-03-20T23:44:49+00:00",
+                    "post_ID": 237,
+                    "author_ID": 14151046,
+                    "file": "art-bright-celebration-1313817.jpg",
+                    "mime_type": "image/jpeg",
+                    "extension": "jpg",
+                    "title": "art-bright-celebration-1313817",
+                    "caption": "",
+                    "description": "",
+                    "alt": "",
+                    "thumbnails": {
+                        "thumbnail": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg?w=150",
+                        "medium": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg?w=300",
+                        "large": "https://infocusphotographers.files.wordpress.com/2019/03/art-bright-celebration-1313817.jpg?w=1024"
+                    },
+                    "height": 2628,
+                    "width": 4256,
+                    "exif": {
+                        "aperture": "0",
+                        "credit": "",
+                        "camera": "",
+                        "caption": "",
+                        "created_timestamp": "0",
+                        "copyright": "",
+                        "focal_length": "0",
+                        "iso": "0",
+                        "shutter_speed": "0",
+                        "title": "",
+                        "orientation": "0",
+                        "keywords": []
+                    },
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/238",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/media/238/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                            "parent": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/237"
+                        }
+                    }
+                }
+            },
+            "attachment_count": 1,
+            "metadata": [
+                {
+                    "id": "493",
+                    "key": "email_notification",
+                    "value": "1553125740"
+                },
+                {
+                    "id": "486",
+                    "key": "jabber_published",
+                    "value": "1553125739"
+                },
+                {
+                    "id": "491",
+                    "key": "timeline_notification",
+                    "value": "1553125810"
+                },
+                {
+                    "id": "484",
+                    "key": "_thumbnail_id",
+                    "value": "238"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/237",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/237/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/237/replies/",
+                    "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/237/likes/"
+                }
+            },
+            "capabilities": {
+                "publish_post": true,
+                "delete_post": true,
+                "edit_post": true
+            },
+            "revisions": [
+                269,
+                263,
+                239
+            ],
+            "other_URLs": {
+                "permalink_URL": "http://infocusphotographers.com/2019/03/13/%postname%/",
+                "suggested_slug": "some-news-to-share-2"
+            }
+        }
+    }
+}

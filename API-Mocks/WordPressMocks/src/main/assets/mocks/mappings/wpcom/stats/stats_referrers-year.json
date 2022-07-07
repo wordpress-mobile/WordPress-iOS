@@ -1,0 +1,97 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/referrers/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "days": {
+                "2019-01-01": {
+                    "groups": [
+                        {
+                            "group": "Search Engines",
+                            "name": "Search Engines",
+                            "icon": "https://wordpress.com/i/stats/search-engine.png",
+                            "total": 28,
+                            "follow_data": null,
+                            "results": [
+                                {
+                                    "name": "Google Search",
+                                    "icon": "https://secure.gravatar.com/blavatar/6741a05f4bc6e5b65f504c4f3df388a1?s=48",
+                                    "views": 26,
+                                    "children": [
+                                        {
+                                            "name": "google.com",
+                                            "url": "http://www.google.com/",
+                                            "icon": null,
+                                            "views": 23
+                                        },
+                                        {
+                                            "name": "google.co.in",
+                                            "url": "http://www.google.co.in",
+                                            "icon": "https://secure.gravatar.com/blavatar/b8b1615bdc37f756888332cc17e0a5bf?s=48",
+                                            "views": 3
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Yahoo Search",
+                                    "url": "https://search.yahoo.com/",
+                                    "icon": "https://secure.gravatar.com/blavatar/5029a4a8e7da221ae517ddaa0dd5422b?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "Bing",
+                                    "url": "http://www.bing.com",
+                                    "icon": "https://secure.gravatar.com/blavatar/112a7e096595d1c32c4ecdfd9e56b66c?s=48",
+                                    "views": 1
+                                }
+                            ]
+                        },
+                        {
+                            "group": "facebook.com",
+                            "name": "Facebook",
+                            "url": "http://facebook.com/",
+                            "icon": "https://secure.gravatar.com/blavatar/2343ec78a04c6ea9d80806345d31fd78?s=48",
+                            "total": 9,
+                            "follow_data": null,
+                            "results": {
+                                "views": 9
+                            }
+                        },
+                        {
+                            "group": "instagram.com",
+                            "name": "Instagram",
+                            "url": "http://l.instagram.com/?u=http%3A%2F%2Finfocusphotographers.com%2F&e=AT3BNF8FeF67OPMIY3HP5Jeb7nbdGNsihf8RKdPUQh1TX6CKkSeszZiAm8E3-newXBc2VLtbKKQML1BwLFOKvCJ4maub2TNd_oVhDT2_JVebheBgL4v6J3SSa_s",
+                            "icon": "https://secure.gravatar.com/blavatar/8dc6460bbbb088757ed67ed8fb316b1b?s=48",
+                            "total": 1,
+                            "follow_data": null,
+                            "results": {
+                                "views": 1
+                            }
+                        }
+                    ],
+                    "other_views": 0,
+                    "total_views": 38
+                }
+            },
+            "period": "year"
+        }
+    }
+}

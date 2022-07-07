@@ -1,0 +1,28 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/oauth2/token",
+        "bodyPatterns": [
+            {
+                "matches": ".*username=[^&]+.*"
+            },
+            {
+                "matches": ".*password=invalidPswd(&.*|$)"
+            },
+            {
+                "matches": ".*client_secret=.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 400,
+        "jsonBody": {
+            "error": "invalid_request",
+            "error_description": "Incorrect username or password."
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/connect/site-info",
+        "queryParameters": {
+            "url": {
+                "matches": "^http(s)?://((?!wordpress.com).)*$"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "urlAfterRedirects": "{{request.query.url}}",
+            "exists": true,
+            "isWordPress": true,
+            "hasJetpack": true,
+            "jetpackVersion": "7.3.1",
+            "isJetpackActive": true,
+            "isJetpackConnected": false,
+            "isWordPressDotCom": false
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

@@ -1,0 +1,130 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/post/396/diffs/",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "diffs": [
+                {
+                    "from": 398,
+                    "to": 399,
+                    "diff": {
+                        "post_title": [
+                            {
+                                "op": "copy",
+                                "value": "Now Booking Summer Sessions"
+                            }
+                        ],
+                        "post_content": [
+                            {
+                                "op": "copy",
+                                "value": "<blockquote>“One must maintain a little bit of summer, even in the middle of winter.”\n\n– Henry David Thoreau</blockquote>\n"
+                            },
+                            {
+                                "op": "add",
+                                "value": "\n"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\nBlue skies and warm weather, what's not to love about summer? It's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of <a href=\"https://infocusphotographers.com/services/\">family portrait packages</a> and for a limited time are offering 15% off packages booked before April 1.\n\n<strong>How to book"
+                            },
+                            {
+                                "op": "del",
+                                "value": "\n<"
+                            },
+                            {
+                                "op": "add",
+                                "value": "<"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "/strong>"
+                            },
+                            {
+                                "op": "add",
+                                "value": "\n\n\n"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "<a href=&quot;mailto:hello@infocusphotographers.com&quot;>Email us</a> to set up a time to visit our studio.\n"
+                            }
+                        ],
+                        "totals": {
+                            "add": 0,
+                            "del": 0
+                        }
+                    }
+                },
+                {
+                    "from": 0,
+                    "to": 398,
+                    "diff": {
+                        "post_title": [
+                            {
+                                "op": "del",
+                                "value": ""
+                            },
+                            {
+                                "op": "add",
+                                "value": "Now Booking Summer Sessions"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n"
+                            }
+                        ],
+                        "post_content": [
+                            {
+                                "op": "add",
+                                "value": "<blockquote>“One must maintain a little bit of summer, even in the middle of winter.”"
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n\n"
+                            },
+                            {
+                                "op": "add",
+                                "value": "– Henry David Thoreau</blockquote>\nBlue skies and warm weather, what's not to love about summer? It's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of <a href=\"https://infocusphotographers.com/services/\">family portrait packages</a> and for a limited time are offering 15% off packages booked before April 1.\n\n<strong>How to book\n</strong><a href=\"mailto:hello@infocusphotographers.com\">Email us</a> to set up a time to visit our studio."
+                            },
+                            {
+                                "op": "copy",
+                                "value": "\n"
+                            }
+                        ],
+                        "totals": {
+                            "del": 0,
+                            "add": 101
+                        }
+                    }
+                }
+            ],
+            "revisions": {
+                "399": {
+                    "post_date_gmt": "2019-05-28 21:06:50Z",
+                    "post_modified_gmt": "2019-05-28 21:06:50Z",
+                    "post_author": "742098",
+                    "id": 399,
+                    "post_content": "<blockquote>“One must maintain a little bit of summer, even in the middle of winter.”\n\n– Henry David Thoreau</blockquote>\n\n\nBlue skies and warm weather, what's not to love about summer? It's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of <a href=\"https://infocusphotographers.com/services/\">family portrait packages</a> and for a limited time are offering 15% off packages booked before April 1.\n\n<strong>How to book</strong>\n\n\n<a href=\"mailto:hello@infocusphotographers.com\">Email us</a> to set up a time to visit our studio.",
+                    "post_excerpt": "",
+                    "post_title": "Now Booking Summer Sessions"
+                },
+                "398": {
+                    "post_date_gmt": "2019-05-28 21:05:17Z",
+                    "post_modified_gmt": "2019-05-28 21:05:17Z",
+                    "post_author": "742098",
+                    "id": 398,
+                    "post_content": "<blockquote>“One must maintain a little bit of summer, even in the middle of winter.”\n\n– Henry David Thoreau</blockquote>\nBlue skies and warm weather, what's not to love about summer? It's a great season for outdoor family portrait sessions and now is the time to book them!\n\nWe offer a number of <a href=\"https://infocusphotographers.com/services/\">family portrait packages</a> and for a limited time are offering 15% off packages booked before April 1.\n\n<strong>How to book\n</strong><a href=\"mailto:hello@infocusphotographers.com\">Email us</a> to set up a time to visit our studio.",
+                    "post_excerpt": "",
+                    "post_title": "Now Booking Summer Sessions"
+                }
+            }
+        }
+    }
+}

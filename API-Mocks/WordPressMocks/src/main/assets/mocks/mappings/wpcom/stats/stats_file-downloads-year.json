@@ -1,0 +1,64 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/file-downloads/",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "num": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "period": "year",
+            "days": {
+                "2019-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2018-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2017-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2016-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2015-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2014-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                },
+                "2013-01-01": {
+                  "files": [],
+                  "other_downloads": 0,
+                  "total_downloads": 0
+                }
+            }
+        }
+    }
+}

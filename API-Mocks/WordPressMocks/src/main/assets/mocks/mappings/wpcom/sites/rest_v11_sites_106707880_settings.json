@@ -1,0 +1,119 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/settings",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 106707880,
+            "name": "In Focus Photography",
+            "description": "",
+            "URL": "http://infocusphotographers.com",
+            "lang": "en",
+            "settings": {
+                "admin_url": "https://infocusphotographers.wordpress.com/wp-admin/",
+                "default_ping_status": true,
+                "default_comment_status": true,
+                "blog_public": 1,
+                "jetpack_sync_non_public_post_stati": false,
+                "jetpack_relatedposts_allowed": true,
+                "jetpack_relatedposts_enabled": false,
+                "jetpack_relatedposts_show_headline": "",
+                "jetpack_relatedposts_show_thumbnails": "",
+                "jetpack_search_enabled": false,
+                "jetpack_search_supported": false,
+                "default_category": 1,
+                "post_categories": [
+                    {
+                        "value": 1,
+                        "name": "Uncategorized"
+                    },
+                    {
+                        "value": 1674,
+                        "name": "Wedding"
+                    }
+                ],
+                "default_post_format": "0",
+                "default_pingback_flag": true,
+                "require_name_email": true,
+                "comment_registration": false,
+                "close_comments_for_old_posts": false,
+                "close_comments_days_old": 14,
+                "thread_comments": true,
+                "thread_comments_depth": 3,
+                "page_comments": true,
+                "comments_per_page": 50,
+                "default_comments_page": "newest",
+                "comment_order": "asc",
+                "comments_notify": true,
+                "moderation_notify": true,
+                "social_notifications_like": false,
+                "social_notifications_reblog": false,
+                "social_notifications_subscribe": false,
+                "comment_moderation": false,
+                "comment_whitelist": true,
+                "comment_max_links": 2,
+                "moderation_keys": "",
+                "blacklist_keys": "",
+                "lang_id": 1,
+                "wga": false,
+                "disabled_likes": false,
+                "disabled_reblogs": false,
+                "jetpack_comment_likes_enabled": true,
+                "twitter_via": "",
+                "jetpack-twitter-cards-site-tag": "",
+                "eventbrite_api_token": null,
+                "gmt_offset": "0",
+                "timezone_string": "",
+                "date_format": "F j, Y",
+                "time_format": "g:i a",
+                "start_of_week": "1",
+                "jetpack_testimonial": true,
+                "jetpack_testimonial_posts_per_page": 10,
+                "jetpack_portfolio": false,
+                "jetpack_portfolio_posts_per_page": 10,
+                "markdown_supported": true,
+                "site_icon": 0,
+                "advanced_seo_front_page_description": "",
+                "advanced_seo_title_formats": [],
+                "amp_is_supported": true,
+                "amp_is_enabled": true,
+                "api_cache": true,
+                "posts_per_page": 10,
+                "posts_per_rss": 10,
+                "rss_use_excerpt": false,
+                "wpcom_publish_posts_with_markdown": false,
+                "wpcom_publish_comments_with_markdown": false,
+                "infinite_scroll": false,
+                "infinite_scroll_blocked": "footer",
+                "podcasting_category_id": 0,
+                "podcasting_title": "",
+                "podcasting_subtitle": "",
+                "podcasting_talent_name": "",
+                "podcasting_summary": "",
+                "podcasting_copyright": "",
+                "podcasting_explicit": "no",
+                "podcasting_image": "",
+                "podcasting_keywords": "",
+                "podcasting_category_1": "",
+                "podcasting_category_2": "",
+                "podcasting_category_3": "",
+                "podcasting_email": "",
+                "podcasting_image_id": 0,
+                "sharing_button_style": "icon-text",
+                "sharing_label": "Share this:",
+                "sharing_show": [
+                    "post",
+                    "page"
+                ],
+                "sharing_open_links": "same"
+            }
+        }
+    }
+}

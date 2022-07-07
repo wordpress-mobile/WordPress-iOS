@@ -1,0 +1,46 @@
+{
+    "id": "5b687fe3-831a-489c-b1c6-e91c6af36c42",
+    "name": "rest_v11_sites_e2eflowtestingmobilewordpresscom",
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/e2eflowtestingmobile.wordpress.com(/)?($|\\?.*)"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "ID": 106707880,
+            "name": "Mobile E2E Testing",
+            "description": "",
+            "URL": "https://e2eflowtestingmobile.wordpress.com",
+            "jetpack": false,
+            "subscribers_count": 1,
+            "lang": false,
+            "logo": {
+                "id": 0,
+                "sizes": [],
+                "url": ""
+            },
+            "visible": null,
+            "is_private": false,
+            "is_following": false,
+            "meta": {
+                "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/help",
+                    "posts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/",
+                    "comments": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/comments/",
+                    "xmlrpc": "https://e2eflowtestingmobile.wordpress.com/xmlrpc.php"
+                }
+            },
+            "launch_status": false
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    },
+    "uuid": "5b687fe3-831a-489c-b1c6-e91c6af36c42",
+    "persistent": true,
+    "insertionIndex": 24
+}

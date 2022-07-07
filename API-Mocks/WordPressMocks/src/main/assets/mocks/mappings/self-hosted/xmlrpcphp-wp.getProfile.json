@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getProfile</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <struct>\n  <member><name>user_id</name><value><string>1</string></value></member>\n  <member><name>username</name><value><string>e2eflowtestingmobile</string></value></member>\n  <member><name>first_name</name><value><string></string></value></member>\n  <member><name>last_name</name><value><string></string></value></member>\n  <member><name>registered</name><value><dateTime.iso8601>20190215T11:23:34</dateTime.iso8601></value></member>\n  <member><name>bio</name><value><string></string></value></member>\n  <member><name>email</name><value><string>e2eflowtestingmobile@example.com</string></value></member>\n  <member><name>nickname</name><value><string>e2eflowtestingmobile</string></value></member>\n  <member><name>nicename</name><value><string>e2eflowtestingmobile</string></value></member>\n  <member><name>url</name><value><string></string></value></member>\n  <member><name>display_name</name><value><string>e2eflowtestingmobile</string></value></member>\n  <member><name>roles</name><value><array><data>\n  <value><string>administrator</string></value>\n</data></array></value></member>\n</struct>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

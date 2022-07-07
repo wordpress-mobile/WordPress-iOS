@@ -1,0 +1,42 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/taxonomies/post_tag/terms/",
+        "queryParameters": {
+            "number": {
+                "equalTo": "1000"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 1,
+            "terms": [
+                {
+                    "ID": 2500,
+                    "name": "tag",
+                    "slug": "tag",
+                    "description": "",
+                    "post_count": 1,
+                    "feed_url": "https://infocusphotographers.com/tag/tag/feed/",
+                    "meta": {
+                        "links": {
+                            "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/tags/slug:tag",
+                            "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/tags/slug:tag/help",
+                            "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
+                        }
+                    }
+                }
+            ]
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

@@ -1,0 +1,152 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.2/sites/181851495/posts",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            },
+            "context": {
+                "equalTo": "edit"
+            },
+            "meta": {
+                "equalTo": "autosave"
+            },
+            "number": {
+                "equalTo": "40"
+            },
+            "status": {
+                "equalTo": "draft,pending"
+            },
+            "type": {
+                "equalTo": "post"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "found": 1,
+            "posts": [{
+                "ID": 67,
+                "site_ID": 181851495,
+                "author": {
+                    "ID": 152748359,
+                    "login": "appstorescreens",
+                    "email": "main.ee0zglcj@mailosaur.io",
+                    "name": "appstorescreens",
+                    "first_name": "",
+                    "last_name": "",
+                    "nice_name": "appstorescreens",
+                    "URL": "http:\/\/tricountyrealestate.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/35029b2103460109f574c38dfeea5f3f?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/appstorescreens",
+                    "site_ID": 181851541
+                },
+                "date": "2020-10-05T05:10:17-07:00",
+                "modified": "2020-10-05T05:12:29-07:00",
+                "title": "Our Services",
+                "URL": "https:\/\/fourpawsdoggrooming.wordpress.com\/our-services\/",
+                "short_URL": "https:\/\/wp.me\/pcj1SD-15",
+                "content": "<!-- wp:cover {\"url\":\"https:\\\/\\\/fourpawsdoggrooming.files.wordpress.com\\\/2020\\\/08\\\/alvan-nee-1vgfqdcux-4-unsplash.jpg\",\"id\":49,\"focalPoint\":{\"x\":\"0.45\",\"y\":\"0.60\"},\"minHeight\":260,\"minHeightUnit\":\"px\",\"align\":\"center\"} -->\n<div class=\"wp-block-cover aligncenter has-background-dim\" style=\"background-image:url('https:\/\/fourpawsdoggrooming.files.wordpress.com\/2020\/08\/alvan-nee-1vgfqdcux-4-unsplash.jpg');min-height:260px;background-position:45% 60%;\"><div class=\"wp-block-cover__inner-container\"><!-- wp:heading {\"align\":\"center\"} -->\n<h2 class=\"has-text-align-center\">Mobile grooming salon for cats and dogs.<\/h2>\n<!-- \/wp:heading -->\n\n<!-- wp:buttons {\"align\":\"center\"} -->\n<div class=\"wp-block-buttons aligncenter\"><!-- wp:button {\"borderRadius\":50,\"backgroundColor\":\"background\",\"textColor\":\"foreground-dark\",\"className\":\"is-style-outline\"} -->\n<div class=\"wp-block-button is-style-outline\"><a class=\"wp-block-button__link has-foreground-dark-color has-background-background-color has-text-color has-background\" href=\"\" style=\"border-radius:50px;\" rel=\"\">Book Appointment<\/a><\/div>\n<!-- \/wp:button --><\/div>\n<!-- \/wp:buttons --><\/div><\/div>\n<!-- \/wp:cover -->\n\n<!-- wp:heading -->\n<h2><strong>Dog grooming<\/strong><\/h2>\n<!-- \/wp:heading -->\n\n<!-- wp:columns -->\n<div class=\"wp-block-columns\"><!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:paragraph -->\n<p><strong>Our deluxe grooming service includes:<\/strong><\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:list -->\n<ul><li>Nail clip<\/li><li>Ear cleaning<\/li><li>1st shampoo<\/li><li>2nd shampoo<\/li><li>Conditioning rinse<\/li><li>Towel dry<\/li><li>Blow dry<\/li><li>Brush out<\/li><li>And a treat!<\/li><\/ul>\n<!-- \/wp:list --><\/div>\n<!-- \/wp:column -->\n\n<!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:image {\"id\":65,\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"https:\/\/fourpawsdoggrooming.files.wordpress.com\/2020\/08\/image-1.jpg?w=731\" alt=\"\" class=\"wp-image-65\" \/><\/figure>\n<!-- \/wp:image --><\/div>\n<!-- \/wp:column --><\/div>\n<!-- \/wp:columns -->\n\n<!-- wp:paragraph -->\n<p><strong>Deluxe Cut and Groom<\/strong><\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Our deluxe cut and groom package includes everything in the deluxe groom plus a haircut.<\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p><strong>Add on services<\/strong><\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Pamper your pup even more with one of our signature add on services:<\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:list -->\n<ul><li>Aloe conditioning treatment<\/li><li>Soothing medicated shampoos<\/li><li>Tooth brushing<\/li><li>Creative styling with temporary color <\/li><li>Nail polish application<\/li><li>Coat braiding<\/li><li>Bows and other accessories <\/li><\/ul>\n<!-- \/wp:list -->\n\n<!-- wp:cover {\"url\":\"https:\\\/\\\/fourpawsdoggrooming.files.wordpress.com\\\/2020\\\/08\\\/boney-dhirbh9en6i-unsplash.jpg\",\"id\":47,\"focalPoint\":{\"x\":\"0.48\",\"y\":\"1.00\"},\"minHeight\":344,\"minHeightUnit\":\"px\"} -->\n<div class=\"wp-block-cover has-background-dim\" style=\"background-image:url('https:\/\/fourpawsdoggrooming.files.wordpress.com\/2020\/08\/boney-dhirbh9en6i-unsplash.jpg');min-height:344px;background-position:48% 100%;\"><div class=\"wp-block-cover__inner-container\"><!-- wp:paragraph {\"align\":\"center\",\"placeholder\":\"Write title\\u2026\",\"fontSize\":\"large\"} -->\n<p class=\"has-text-align-center has-large-font-size\"><\/p>\n<!-- \/wp:paragraph --><\/div><\/div>\n<!-- \/wp:cover -->\n\n<!-- wp:paragraph -->\n<p><\/p>\n<!-- \/wp:paragraph -->",
+                "excerpt": "",
+                "slug": "our-services",
+                "guid": "https:\/\/fourpawsdoggrooming.wordpress.com\/?p=67",
+                "status": "draft",
+                "sticky": false,
+                "password": "",
+                "parent": false,
+                "type": "post",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 0,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "8baa5f9a6478573f6869e88704679280",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "geo": false,
+                "menu_order": 0,
+                "page_template": "",
+                "publicize_URLs": [],
+                "terms": {
+                    "category": {
+                        "Uncategorized": {
+                            "ID": 1,
+                            "name": "Uncategorized",
+                            "slug": "uncategorized",
+                            "description": "",
+                            "post_count": 3,
+                            "parent": 0,
+                            "meta": {
+                                "links": {
+                                    "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181851495\/categories\/slug:uncategorized",
+                                    "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495\/categories\/slug:uncategorized\/help",
+                                    "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495"
+                                }
+                            }
+                        }
+                    },
+                    "post_tag": {},
+                    "post_format": {},
+                    "mentions": {}
+                },
+                "tags": {},
+                "categories": {
+                    "Uncategorized": {
+                        "ID": 1,
+                        "name": "Uncategorized",
+                        "slug": "uncategorized",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181851495\/categories\/slug:uncategorized",
+                                "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495\/categories\/slug:uncategorized\/help",
+                                "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": false,
+                "meta": {
+                    "links": {
+                        "self": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181851495\/posts\/67",
+                        "help": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495\/posts\/67\/help",
+                        "site": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495",
+                        "replies": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181851495\/posts\/67\/replies\/",
+                        "likes": "{{request.requestLine.baseUrl}}\/rest\/v1.1\/sites\/181851495\/posts\/67\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": true,
+                    "delete_post": true,
+                    "edit_post": true
+                },
+                "revisions": [68],
+                "other_URLs": {
+                    "permalink_URL": "https:\/\/fourpawsdoggrooming.wordpress.com\/2020\/10\/05\/%postname%\/",
+                    "suggested_slug": "our-services"
+                }
+            }],
+            "meta": {
+                "links": {
+                    "counts": "{{request.requestLine.baseUrl}}\/rest\/v1.2\/sites\/181851495\/post-counts\/post"
+                },
+                "wpcom": true
+            }
+        }
+    }
+}

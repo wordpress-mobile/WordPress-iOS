@@ -1,0 +1,155 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPathPattern": "\/rest\/v1.1\/sites\/106707880\/stats\/top-authors\/*",
+        "queryParameters": {
+            "period": {
+                "equalTo": "year"
+            },
+            "max": {
+                "matches": "[0-9]+"
+            },
+            "date": {
+                "matches": "(.*)"
+            },
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "2019-12-31",
+            "days": {
+                "2019-01-01": {
+                    "authors": [
+                        {
+                            "name": "Leah Elaine Rand",
+                            "avatar": "https://0.gravatar.com/avatar/62937c26a2a79bae5921ca9e85be8040?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                            "views": 218,
+                            "posts": [
+                                {
+                                    "id": 1,
+                                    "title": "Home",
+                                    "url": "http://infocusphotographers.com/about/",
+                                    "views": 190,
+                                    "video": false
+                                },
+                                {
+                                    "id": 90,
+                                    "title": "Martin and Amy's Wedding",
+                                    "url": "http://infocusphotographers.com/2016/03/07/martin-and-amys-wedding/",
+                                    "views": 13,
+                                    "video": false
+                                },
+                                {
+                                    "id": 13,
+                                    "title": "Services",
+                                    "url": "http://infocusphotographers.com/services/",
+                                    "views": 12,
+                                    "video": false
+                                },
+                                {
+                                    "id": 106,
+                                    "title": "Some News to Share",
+                                    "url": "http://infocusphotographers.com/2016/04/19/some-news-to-share/",
+                                    "views": 3,
+                                    "video": false
+                                }
+                            ],
+                            "follow_data": {
+                                "params": {
+                                    "stat-source": "stats_author",
+                                    "follow-text": "Follow",
+                                    "following-text": "Following",
+                                    "following-hover-text": "Unfollow",
+                                    "blog_domain": "leahinfocus.wordpress.com",
+                                    "blog_url": "http://leahinfocus.wordpress.com",
+                                    "blog_id": 106523982,
+                                    "site_id": 106523982,
+                                    "blog_title": "Leah in Focus",
+                                    "is_following": false
+                                },
+                                "type": "follow"
+                            }
+                        },
+                        {
+                            "name": "Andrea Zoellner",
+                            "avatar": "https://0.gravatar.com/avatar/c294f0a8bad2d33f62dd1c2d81b38f99?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                            "views": 78,
+                            "posts": [
+                                {
+                                    "id": 22,
+                                    "title": "Our Story",
+                                    "url": "http://infocusphotographers.com/our-story/",
+                                    "views": 26,
+                                    "video": false
+                                },
+                                {
+                                    "id": 24,
+                                    "title": "Portfolio",
+                                    "url": "http://infocusphotographers.com/portfolio/",
+                                    "views": 19,
+                                    "video": false
+                                },
+                                {
+                                    "id": 85,
+                                    "title": "photo-1432250767374-ee19cba37b52",
+                                    "url": "http://infocusphotographers.com/portfolio/photo-1432250767374-ee19cba37b52/",
+                                    "views": 4,
+                                    "video": false
+                                },
+                                {
+                                    "id": 84,
+                                    "title": "unsplash_5252bb51404f8_1",
+                                    "url": "http://infocusphotographers.com/portfolio/unsplash_5252bb51404f8_1/",
+                                    "views": 4,
+                                    "video": false
+                                },
+                                {
+                                    "id": 28,
+                                    "title": "photo-1423110041833-0d5dfcc552e1",
+                                    "url": "http://infocusphotographers.com/portfolio/photo-1423110041833-0d5dfcc552e1/",
+                                    "views": 4,
+                                    "video": false
+                                },
+                                {
+                                    "id": 5,
+                                    "title": "dpzDUkJrTHb71Yla1EzF_IMG_4098",
+                                    "url": "http://infocusphotographers.com/about/dpzdukjrthb71yla1ezf_img_4098/",
+                                    "views": 4,
+                                    "video": false
+                                },
+                                {
+                                    "id": 83,
+                                    "title": "photo-1443745029291-d5c27bc0b562",
+                                    "url": "http://infocusphotographers.com/portfolio/photo-1443745029291-d5c27bc0b562/",
+                                    "views": 4,
+                                    "video": false
+                                }
+                            ],
+                            "follow_data": {
+                                "params": {
+                                    "stat-source": "stats_author",
+                                    "follow-text": "Follow",
+                                    "following-text": "Following",
+                                    "following-hover-text": "Unfollow",
+                                    "blog_domain": "andreazoellner.wordpress.com",
+                                    "blog_url": "http://andreazoellner.wordpress.com",
+                                    "blog_id": 67702148,
+                                    "site_id": 67702148,
+                                    "blog_title": "Andrea Zoellner",
+                                    "is_following": false
+                                },
+                                "type": "follow"
+                            }
+                        }
+                    ],
+                    "other_views": 0
+                }
+            },
+            "period": "year"
+        }
+    }
+}

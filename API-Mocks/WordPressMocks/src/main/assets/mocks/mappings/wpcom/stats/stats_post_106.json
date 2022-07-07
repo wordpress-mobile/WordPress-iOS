@@ -1,0 +1,17 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPathPattern": "/rest/v1.1/sites/.*/stats/post/(.*)(/?)"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "views": 35
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}

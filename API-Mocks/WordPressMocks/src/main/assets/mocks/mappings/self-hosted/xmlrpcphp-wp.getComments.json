@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getComments</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <array><data>\n  <value><struct>\n  <member><name>date_created_gmt</name><value><dateTime.iso8601>20190215T11:23:34</dateTime.iso8601></value></member>\n  <member><name>user_id</name><value><string>0</string></value></member>\n  <member><name>comment_id</name><value><string>1</string></value></member>\n  <member><name>parent</name><value><string>0</string></value></member>\n  <member><name>status</name><value><string>approve</string></value></member>\n  <member><name>content</name><value><string>Hi, this is a comment.\nTo get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.\nCommenter avatars come from &lt;a href=&quot;https://gravatar.com&quot;&gt;Gravatar&lt;/a&gt;.</string></value></member>\n  <member><name>link</name><value><string>{{request.requestLine.baseUrl}}/2019/02/hello-world/#comment-1</string></value></member>\n  <member><name>post_id</name><value><string>1</string></value></member>\n  <member><name>post_title</name><value><string>Hello world!</string></value></member>\n  <member><name>author</name><value><string>A WordPress Commenter</string></value></member>\n  <member><name>author_url</name><value><string>https://wordpress.org/</string></value></member>\n  <member><name>author_email</name><value><string>wapuu@wordpress.example</string></value></member>\n  <member><name>author_ip</name><value><string></string></value></member>\n  <member><name>type</name><value><string></string></value></member>\n</struct></value>\n</data></array>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

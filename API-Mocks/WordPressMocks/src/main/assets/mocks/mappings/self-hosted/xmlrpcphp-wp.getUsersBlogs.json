@@ -1,0 +1,22 @@
+{
+    "request": {
+        "url": "/xmlrpc.php",
+        "method": "POST",
+        "bodyPatterns": [
+            {
+                "matches": ".*<methodName>wp.getUsersBlogs</methodName>.*"
+            },
+            {
+                "matches": ".*<param><value><string>e2eflowtestingmobile</string></value></param>.*"
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<methodResponse>\n  <params>\n    <param>\n      <value>\n      <array><data>\n  <value><struct>\n  <member><name>isAdmin</name><value><boolean>1</boolean></value></member>\n  <member><name>url</name><value><string>{{request.requestLine.baseUrl}}/</string></value></member>\n  <member><name>blogid</name><value><string>1</string></value></member>\n  <member><name>blogName</name><value><string>e2eflowtestingmobile.mystagingwebsite.com at Pressable</string></value></member>\n  <member><name>xmlrpc</name><value><string>{{request.requestLine.baseUrl}}/xmlrpc.php</string></value></member>\n</struct></value>\n</data></array>\n      </value>\n    </param>\n  </params>\n</methodResponse>\n",
+        "headers": {
+            "Content-Type": "text/xml; charset=UTF-8",
+            "Connection": "keep-alive"
+        }
+    }
+}

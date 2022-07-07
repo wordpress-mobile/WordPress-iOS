@@ -1,0 +1,201 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/rest/v1.1/sites/.*/stats(/+)\\?(.*)",
+        "queryParameters": {
+            "locale": {
+                "matches": "(.*)"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "stats": {
+                "visitors_today": 0,
+                "visitors_yesterday": 1,
+                "visitors": 1201,
+                "views_today": 0,
+                "views_yesterday": 1,
+                "views_best_day": "2018-01-15",
+                "views_best_day_total": 48,
+                "views": 2243,
+                "comments": 0,
+                "posts": 2,
+                "followers_blog": 1,
+                "followers_comments": 0,
+                "comments_per_month": 0,
+                "comments_most_active_recent_day": "",
+                "comments_most_active_time": "N/A",
+                "comments_spam": 3,
+                "categories": 2,
+                "tags": 0,
+                "shares": 57,
+                "shares_facebook": 23,
+                "shares_twitter": 14,
+                "shares_press-this": 1
+            },
+            "visits": {
+                "unit": "day",
+                "fields": [
+                    "period",
+                    "views",
+                    "visitors"
+                ],
+                "data": [
+                    [
+                        "{{now offset='-23 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-22 days' format='yyyy-MM-dd'}}",
+                        1,
+                        1
+                    ],
+                    [
+                        "{{now offset='-21 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-20 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-19 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-18 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-17 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        1,
+                        1
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        24,
+                        3
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        6,
+                        4
+                    ],
+                    [
+                        "{{now offset='-16 days' format='yyyy-MM-dd'}}",
+                        3,
+                        3
+                    ],
+                    [
+                        "{{now offset='-15 days' format='yyyy-MM-dd'}}",
+                        9,
+                        2
+                    ],
+                    [
+                        "{{now offset='-14 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-13 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-12 days' format='yyyy-MM-dd'}}",
+                        2,
+                        2
+                    ],
+                    [
+                        "{{now offset='-11 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-10 days' format='yyyy-MM-dd'}}",
+                        3,
+                        2
+                    ],
+                    [
+                        "{{now offset='-9 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-8 days' format='yyyy-MM-dd'}}",
+                        6,
+                        3
+                    ],
+                    [
+                        "{{now offset='-7 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-6 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-5 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-4 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-3 days' format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ],
+                    [
+                        "{{now offset='-2 days' format='yyyy-MM-dd'}}",
+                        1,
+                        1
+                    ],
+                    [
+                        "{{now offset='-1 days' format='yyyy-MM-dd'}}",
+                        1,
+                        1
+                    ],
+                    [
+                        "{{now format='yyyy-MM-dd'}}",
+                        0,
+                        0
+                    ]
+                ]
+            }
+        }
+    }
+}

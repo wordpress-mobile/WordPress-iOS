@@ -1,0 +1,26 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/rest/v1.1/sites/106707880/stats/search-terms/"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "date": "{{now format='yyyy-MM-dd'}}",
+            "period": "day",
+            "days": {
+                "{{now format='yyyy-MM-dd'}}": {
+                    "search_terms": [],
+                    "encrypted_search_terms": 0,
+                    "other_search_terms": 0,
+                    "total_search_terms": 0
+                }
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache, must-revalidate, max-age=0"
+        }
+    }
+}
