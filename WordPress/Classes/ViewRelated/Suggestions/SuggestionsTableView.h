@@ -9,10 +9,11 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 @interface SuggestionsTableView : UIView <UITableViewDataSource>
 
+@property (nonatomic, readonly, nonnull, strong) UITableView *tableView;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic, assign) SuggestionType suggestionType;
-@property (nonatomic, nonnull, strong) NSMutableArray *searchResults;
+@property (nonatomic, nonnull, strong) NSArray *searchResults;
 @property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic, nullable, strong) NSArray *suggestions;
 @property (nonatomic, nonnull, strong) NSString *searchText;
@@ -33,11 +34,6 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
   Whether the SuggestionsTableView header subview should have a clear background
  */
 - (void)setUseTransparentHeader:(BOOL)useTransparentHeader;
-
-/**
-  Show suggestions for the given word - returns YES if at least one suggestion is being shown
-*/
-- (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
 
 - (void)hideSuggestions;
 

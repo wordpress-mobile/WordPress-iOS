@@ -18,6 +18,31 @@ extension SuggestionType {
         return ([postAuthorId] + commentAuthorsIds).compactMap { $0 != defaultAccountId ? $0 : nil }
     }
 
+    /// Show suggestions for the given word.
+    /// - Parameters:
+    ///   - word: Used to find the suggestions that contain this word.
+    /// - Returns: True when at least one suggestion is being shown.
+    @discardableResult func showSuggestions(forWord word: String) -> Bool {
+        guard self.enabled else { return false }
+
+        if word.hasPrefix(suggestionTrigger) {
+            let searchQuery = NSString(string: word).substring(from: suggestionTrigger.count)
+            self.searchText = word
+            self.searchResults = self.searchResults(
+                searchQuery: searchQuery,
+                suggestions: suggestions ?? [],
+                suggestionType: suggestionType
+            )
+        } else {
+            self.searchText = ""
+            self.searchResults = []
+        }
+
+        self.tableView.reloadData()
+        self.setNeedsUpdateConstraints()
+        return searchResults.count > 0
+    }
+
     // MARK: - Internal
 
     func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
@@ -106,40 +131,53 @@ extension SuggestionType {
         }
     }
 
-    func moveProminentSuggestionsToTop() {
-        // This method only works for "mention" suggestion types
-        // And when both "searchResults" and "prominentSuggestionsIds" are not empty
-        guard
-            self.suggestionType == .mention &&
-            self.searchResults.count > 0,
-            let ids = self.prominentSuggestionsIds,
-            !ids.isEmpty
-        else { return }
+    // MARK: - Private
 
-        // Finds the suggestions to move to the top of the "searchResults" array.
+    private func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
+        var searchResults: [Any]
+        if !searchQuery.isEmpty {
+            let predicate = self.predicate(for: searchQuery)
+            searchResults = NSMutableArray(array: suggestions).filtered(using: predicate)
+        } else {
+            searchResults = suggestions
+        }
+        if suggestionType == .mention {
+            searchResults = self.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds ?? [])
+        }
+        return searchResults
+    }
+
+    private func moveProminentSuggestionsToTop(searchResults: [Any], prominentSuggestionsIds ids: [NSNumber]) -> [Any] {
+        // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
+        guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
+
+        // Loop through `searchResults` and find the following data:
         //
-        // Also, the order of the prominent suggestions in "searchResults" should be
-        // the same order as "prominentSuggestionsIds".
-        var suggestionsToInsert: [Any?] = Array(repeating: nil, count: ids.count)
-        let indexesToRemove = NSMutableIndexSet()
-        for (index, item) in (searchResults as NSArray).enumerated() {
+        // 1. suggestionIndexesToRemove: User Suggestions should be removed from their old position.
+        //
+        // 2. suggestionsToInsert: User Suggestions to insert at the beginning of `searchResults`
+        //                         while maintaining their order from `prominentSuggestionsIds`.
+        //
+        var suggestionIndexesToRemove = [Int]()
+        var suggestionsToInsert: [UserSuggestion?] = Array(repeating: nil, count: ids.count)
+        for (index, item) in searchResults.enumerated() {
             guard
                 let suggestion = item as? UserSuggestion,
                 let position = ids.firstIndex(where: { suggestion.id == $0 })
             else { continue }
+            suggestionIndexesToRemove.append(index)
             suggestionsToInsert[position] = suggestion
-            indexesToRemove.add(index)
         }
 
-        // Move suggestions to the beginning of the list
-        if !suggestionsToInsert.isEmpty && indexesToRemove.count > 0 {
+        // Move suggestions to the beginning of `searchResults` array.
+        var searchResults = searchResults
+        if !suggestionsToInsert.isEmpty && suggestionIndexesToRemove.count > 0 {
             let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
-            self.searchResults.removeObjects(at: indexesToRemove as IndexSet)
-            self.searchResults.insert(suggestionsToInsert, at: IndexSet(0..<suggestionsToInsert.count))
+            suggestionIndexesToRemove.forEach { searchResults.remove(at: $0) }
+            searchResults = suggestionsToInsert + searchResults
         }
+        return searchResults
     }
-
-    // MARK: - Private
 
     private func suggestionText(for suggestion: Any) -> String? {
         switch (suggestionType, suggestion) {
