@@ -14,8 +14,8 @@ extension SuggestionType {
     // MARK: - API
 
     /// Returns the a list of prominent suggestions excluding the current user.
-    static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorsIds: [NSNumber], defaultAccountId: NSNumber?) -> [NSNumber] {
-        return ([postAuthorId] + commentAuthorsIds).compactMap { $0 != defaultAccountId ? $0 : nil }
+    static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorId: NSNumber?, defaultAccountId: NSNumber?) -> [NSNumber] {
+        return [postAuthorId, commentAuthorId].compactMap { $0 != defaultAccountId ? $0 : nil }
     }
 
     /// Show suggestions for the given word.

@@ -1076,7 +1076,7 @@ private extension CommentDetailViewController {
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
         suggestionsView.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
             fromPostAuthorId: comment.post?.authorID,
-            commentAuthorsIds: [NSNumber(value: comment.authorID)],
+            commentAuthorId: NSNumber(value: comment.authorID),
             defaultAccountId: accountService.defaultWordPressComAccount()?.userID
         )
         view.addSubview(suggestionsView)

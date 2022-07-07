@@ -488,7 +488,7 @@ extension NotificationDetailsViewController {
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsTableView?.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
             fromPostAuthorId: nil,
-            commentAuthorsIds: [note.metaCommentAuthorID].compactMap { $0 },
+            commentAuthorId: note.metaCommentAuthorID,
             defaultAccountId: accountService.defaultWordPressComAccount()?.userID
         )
 
