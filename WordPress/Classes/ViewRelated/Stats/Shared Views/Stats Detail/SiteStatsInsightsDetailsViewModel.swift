@@ -107,6 +107,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 }
                 insightsReceipt = insightsStore.query(storeQuery)
 
+                let date = selectedDate ?? StatsDataHelper.currentDateForSite()
+                refreshPeriodOverviewData(date: date, period: StatsPeriodUnit.day, forceRefresh: false)
                 refreshComments()
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
