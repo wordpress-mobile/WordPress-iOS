@@ -68,14 +68,6 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         hideRestoreIfNeeded()
         showWarningIfNeeded()
         WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
-
-        let jetpackBadgeButton = JetpackButton.makeDefaultBadge()
-        jetpackBadgeView.addSubview(jetpackBadgeButton)
-        NSLayoutConstraint.activate([
-            jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
-            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor, constant: 14)
-        ])
-        jetpackBadgeView.backgroundColor = .listBackground
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
@@ -164,6 +156,21 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
         warningButton.naturalContentHorizontalAlignment = .leading
         warningButton.backgroundColor = view.backgroundColor
+        setupJetpackBadge()
+    }
+
+    private func setupJetpackBadge() {
+        guard AppConfiguration.isWordPress else {
+            jetpackBadgeView.isHidden = true
+            return
+        }
+        let jetpackBadgeButton = JetpackButton.makeDefaultBadge()
+        jetpackBadgeView.addSubview(jetpackBadgeButton)
+        NSLayoutConstraint.activate([
+            jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
+            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor, constant: 14)
+        ])
+        jetpackBadgeView.backgroundColor = .listBackground
     }
 
     private func setupText() {
