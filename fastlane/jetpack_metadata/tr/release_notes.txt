@@ -1,5 +1,3 @@
-Sitenizin İstatistikler bölümündeki Tek Bakışta görünümünü güncelledik. Sitenizin performansına hızlı bir şekilde göz atın ve sadece bir dokunuşla performansı önceki dönemlerle karşılaştırın.
-
 Tarayıcınıza geçmeniz mi gerekiyor? Artık uygulamanın Ben menüsünde bir QR kodunu taratarak oturum açabilirsiniz.
 
 Bir gönderiyi önizlerken, artık içeriğin hiçbir bir kısmını engellemeden dikey ve yatay yön arasında geçiş yapabilirsiniz. Güzel.

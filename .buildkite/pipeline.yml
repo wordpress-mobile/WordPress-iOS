@@ -96,7 +96,7 @@ steps:
   #################
   # Linters
   #################
-  - group: " Linters"
+  - group: "Linters"
     steps:
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"

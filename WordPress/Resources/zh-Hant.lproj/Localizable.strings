@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 11:54:09+0000 */
+/* Translation-Revision-Date: 2022-07-06 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_TW */
@@ -3390,6 +3390,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "刪除暫存媒體檔案，即可釋放此裝置的儲存空間。這不會影響你網站上的媒體。";
+
+/* Title of section that contains plugins' FAQ */
+"Frequently Asked Questions" = "常見問題";
 
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "從%1$@";

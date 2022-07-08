@@ -1,5 +1,7 @@
 20.3
 -----
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
 * [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
 * [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
 * [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
