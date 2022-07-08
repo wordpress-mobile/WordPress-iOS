@@ -100,6 +100,74 @@ class SuggestionsTableViewTests: CoreDataTestCase {
         XCTAssertEqual(expectedResult, result)
     }
 
+    // MARK: - Test showSuggestions(forWord:) -> Bool
+
+    /// Tests that the seach result is empty when an empty word is provided
+    func testShowSuggestionsWithEmptyWord() {
+        // Given
+        let word = ""
+
+        // When
+        let result = self.suggestionsTableView.showSuggestions(forWord: word)
+
+        // Then
+        XCTAssertTrue(suggestionsTableView.searchResults.isEmpty)
+        XCTAssertFalse(result)
+    }
+
+    /// Tests that the seach result has an exact match
+    func testShowSuggestionsWithExactMatch() throws {
+        // Given
+        let word = "@glegrandx"
+        let expectedSuggestion = suggestions[33]
+
+        // When
+        let result = self.suggestionsTableView.showSuggestions(forWord: word)
+
+        // Then
+        XCTAssertTrue(suggestionsTableView.searchResults.count == 1)
+        let userSuggestion = try XCTUnwrap(suggestionsTableView.searchResults[0] as? UserSuggestion)
+        XCTAssertEqual(userSuggestion, expectedSuggestion)
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the seach result has a few matches
+    func testShowSuggestionsWithPartialMatch() throws {
+        // Given
+        let word = "@ca"
+        let expectedSuggestions = [17, 22, 38, 44, 71, 80, 81, 88, 91].compactMap { id -> UserSuggestion? in
+            return suggestions.first(where: { $0.userID == id })
+        }
+
+        // When
+        let result = self.suggestionsTableView.showSuggestions(forWord: word)
+
+        // Then
+        XCTAssertTrue(suggestionsTableView.searchResults.count == 9)
+        let searchResults = try XCTUnwrap(suggestionsTableView.searchResults as? [UserSuggestion])
+        XCTAssertEqual(searchResults, expectedSuggestions)
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the seach result has a few matches with prominent suggestions at the top
+    func testShowSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
+        // Given
+        let word = "@ca"
+        let expectedSuggestions = [88, 17, 22, 38, 44, 71, 80, 81, 91].compactMap { id -> UserSuggestion? in
+            return suggestions.first(where: { $0.userID == id })
+        }
+        self.suggestionsTableView.prominentSuggestionsIds = [88]
+
+        // When
+        let result = self.suggestionsTableView.showSuggestions(forWord: word)
+
+        // Then
+        XCTAssertTrue(suggestionsTableView.searchResults.count == 9)
+        let searchResults = try XCTUnwrap(suggestionsTableView.searchResults as? [UserSuggestion])
+        XCTAssertEqual(searchResults, expectedSuggestions)
+        XCTAssertTrue(result)
+    }
+
     // MARK: - Helpers
 
     private func loadUserSuggestions() throws -> [UserSuggestion] {
