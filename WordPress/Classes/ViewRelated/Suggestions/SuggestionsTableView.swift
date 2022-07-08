@@ -28,14 +28,14 @@ extension SuggestionType {
             completionHandler?(false)
             return
         }
-        
+
         // Cancel previous search operation
         self.searchOperationQueue.cancelAllOperations()
 
         // Perform search in a background thread
         self.searchOperationQueue.addOperation { [weak self] in
             guard let self = self else { return }
-            
+
             if word.hasPrefix(self.suggestionTrigger) {
                 let searchQuery = NSString(string: word).substring(from: self.suggestionTrigger.count)
                 self.searchText = word
@@ -48,7 +48,7 @@ extension SuggestionType {
                 self.searchText = ""
                 self.searchResults = []
             }
-            
+
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.setNeedsUpdateConstraints()
@@ -230,11 +230,11 @@ extension SuggestionType {
             success(nil)
         }
     }
-    
+
     // MARK: - Types
-    
+
     typealias ShowSuggestionsCompletionHandler = (Bool) -> Void
-    
+
 }
 
 extension SuggestionsTableView {
