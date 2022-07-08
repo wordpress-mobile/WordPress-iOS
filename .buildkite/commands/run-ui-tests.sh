@@ -18,6 +18,12 @@ sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVir
 echo "--- :rubygems: Fixing Ruby Setup"
 gem install bundler
 
+echo "--- :test-analytics: Leave note about missing analytics for UI tests"
+buildkite-agent annotate \
+  'Test Analytics for UI tests are currently unavailable' \
+  --style 'info' \
+  --context 'ctx-ui-tests-notice'
+
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
