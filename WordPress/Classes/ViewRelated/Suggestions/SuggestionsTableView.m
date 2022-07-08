@@ -36,6 +36,9 @@ CGFloat const STVSeparatorHeight = 1.f;
         _useTransparentHeader = NO;
         _animateWithKeyboard = YES;
         _showLoading = NO;
+        _searchOperationQueue = [NSOperationQueue new];
+        _searchOperationQueue.maxConcurrentOperationCount = 1;
+        _searchOperationQueue.name = @"org.wordpress.SearchDispatchQueue";
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
@@ -237,7 +240,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)hideSuggestions
 {
-    [self showSuggestionsForWord:@""];
+    [self showSuggestionsForWord:@"" completionHandler:nil];
 }
 
 - (NSInteger)numberOfSuggestions {

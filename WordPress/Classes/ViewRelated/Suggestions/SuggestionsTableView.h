@@ -17,6 +17,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 @property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic, nullable, strong) NSArray *suggestions;
 @property (nonatomic, nonnull, strong) NSString *searchText;
+@property (nonatomic, readonly, nonnull, strong) NSOperationQueue *searchOperationQueue;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
 @property (nonatomic) BOOL showLoading;

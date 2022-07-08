@@ -21,26 +21,40 @@ extension SuggestionType {
     /// Show suggestions for the given word.
     /// - Parameters:
     ///   - word: Used to find the suggestions that contain this word.
+    ///   - completionHandler: The completion handler takes a boolean that's true when at least one suggestion is being shown.
     /// - Returns: True when at least one suggestion is being shown.
-    @discardableResult func showSuggestions(forWord word: String) -> Bool {
-        guard self.enabled else { return false }
-
-        if word.hasPrefix(suggestionTrigger) {
-            let searchQuery = NSString(string: word).substring(from: suggestionTrigger.count)
-            self.searchText = word
-            self.searchResults = self.searchResults(
-                searchQuery: searchQuery,
-                suggestions: suggestions ?? [],
-                suggestionType: suggestionType
-            )
-        } else {
-            self.searchText = ""
-            self.searchResults = []
+    func showSuggestions(forWord word: String, completionHandler: ShowSuggestionsCompletionHandler? = nil) {
+        guard self.enabled else {
+            completionHandler?(false)
+            return
         }
+        
+        // Cancel previous search operation
+        self.searchOperationQueue.cancelAllOperations()
 
-        self.tableView.reloadData()
-        self.setNeedsUpdateConstraints()
-        return searchResults.count > 0
+        // Perform search in a background thread
+        self.searchOperationQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+            
+            if word.hasPrefix(self.suggestionTrigger) {
+                let searchQuery = NSString(string: word).substring(from: self.suggestionTrigger.count)
+                self.searchText = word
+                self.searchResults = self.searchResults(
+                    searchQuery: searchQuery,
+                    suggestions: self.suggestions ?? [],
+                    suggestionType: self.suggestionType
+                )
+            } else {
+                self.searchText = ""
+                self.searchResults = []
+            }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.setNeedsUpdateConstraints()
+                completionHandler?(self.searchResults.count > 0)
+            }
+        }
     }
 
     // MARK: - Internal
@@ -90,6 +104,8 @@ extension SuggestionType {
         }
     }
 
+    // MARK: - Private
+
     private func imageURLForSuggestion(at indexPath: IndexPath) -> URL? {
         let suggestion = searchResults[indexPath.row]
 
@@ -130,8 +146,6 @@ extension SuggestionType {
             }
         }
     }
-
-    // MARK: - Private
 
     private func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
         var searchResults: [Any]
@@ -216,6 +230,11 @@ extension SuggestionType {
             success(nil)
         }
     }
+    
+    // MARK: - Types
+    
+    typealias ShowSuggestionsCompletionHandler = (Bool) -> Void
+    
 }
 
 extension SuggestionsTableView {
