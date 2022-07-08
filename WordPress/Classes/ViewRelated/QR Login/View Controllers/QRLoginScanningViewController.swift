@@ -39,6 +39,8 @@ extension QRLoginScanningViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.delegate = self
+
         errorLabel.isHidden = true
         coordinator?.start()
     }
@@ -63,6 +65,17 @@ extension QRLoginScanningViewController {
 
     @IBAction func didTapCloseButton(_ sender: Any) {
         coordinator?.didTapDismiss()
+    }
+}
+
+// MARK: - UINavigation Controller Delegate
+extension QRLoginScanningViewController: UINavigationControllerDelegate {
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
     }
 }
 

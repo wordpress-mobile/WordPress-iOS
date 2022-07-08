@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 13:54:10+0000 */
+/* Translation-Revision-Date: 2022-07-08 05:09:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -7456,7 +7456,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap [bookmark-outline] to save a post to your list." = "Tocca [bookmark-outline] per salvare un articolo nel tuo elenco.";
 
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "Tocca Ignora e torna al tuo browser web per continuare.";
+"Tap dismiss and head back to your web browser to continue." = "Tocca Respinto e torna al tuo browser web per continuare.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Tocca per ulteriori dettagli.";

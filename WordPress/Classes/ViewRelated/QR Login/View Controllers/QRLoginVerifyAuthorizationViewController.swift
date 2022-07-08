@@ -19,6 +19,8 @@ extension QRLoginVerifyAuthorizationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.delegate = self
+
         coordinator?.start()
 
         applyStyles()
@@ -34,6 +36,17 @@ extension QRLoginVerifyAuthorizationViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
        return [.portrait, .portraitUpsideDown]
+    }
+}
+
+// MARK: - UINavigation Controller Delegate
+extension QRLoginVerifyAuthorizationViewController: UINavigationControllerDelegate {
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
     }
 }
 

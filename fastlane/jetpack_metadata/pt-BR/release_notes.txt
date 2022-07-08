@@ -1,5 +1,3 @@
-Atualizamos a visualização de informações de estatísticas do seu site. Veja o desempenho do seu site de maneira rápida, e compare o desempenho atual com de períodos anteriores em apenas um toque.
-
 Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
 
 Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.
