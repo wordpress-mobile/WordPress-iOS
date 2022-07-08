@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  pod 'Kanvas', '~> 1.4.3'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -169,7 +169,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.78.1'
+  gutenberg tag: 'v1.79.0'
 
   ## Third party libraries
   ## =====================

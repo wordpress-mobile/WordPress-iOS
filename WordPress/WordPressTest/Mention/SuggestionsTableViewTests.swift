@@ -29,38 +29,75 @@ class SuggestionsTableViewTests: CoreDataTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    // MARK: - Tests
+    // MARK: - Test suggestions array
 
-    /// Test to make sure that `suggestions` are loaded.
+    /// Tests that suggestions array is loaded.
     func testSuggestionsCount() {
         XCTAssertEqual(suggestions.count, 100)
     }
 
-    func test_moveProminentSuggestionsToTop() {
-        let input = suggestions
+    // MARK: - Test moveProminentSuggestionsToTop(searchResults:prominentSuggestionsIds:)
 
-        // Case #1
-        let expectedResult1 = input
-        let result1 = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: input, prominentSuggestionsIds: [])
+    /// Tests that suggestions search result remain the same when no prominent suggestions are provided
+    func testMoveSuggestionsWithZeroProminentSuggestions() {
+        // Given
+        let searchResults = suggestions
+        let prominentSuggestionsIds: [NSNumber] = []
+        let expectedResult = searchResults
 
-        // Case #2
-        var expectedResult2 = input
-        var element = expectedResult2.remove(at: 49)
-        expectedResult2.insert(element, at: 0)
-        let result2 = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: input, prominentSuggestionsIds: [50])
+        // When
+        let result = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds)
 
-        // Case #3
-        var expectedResult3 = input
-        element = expectedResult3.remove(at: 9)
-        expectedResult3.insert(element, at: 0)
-        element = expectedResult3.remove(at: 14)
-        expectedResult3.insert(element, at: 1)
-        let result3 = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: input, prominentSuggestionsIds: [10, 15])
+        // Then
+        XCTAssertEqual(expectedResult, result)
+    }
 
-        // Assertions
-        XCTAssertTrue(result1.elementsEqual(expectedResult1))
-        XCTAssertTrue(result2.elementsEqual(expectedResult2))
-        XCTAssertTrue(result3.elementsEqual(expectedResult3))
+    /// Tests that suggestions search result remain the same when non-existing prominent suggestions are provided
+    func testMoveSuggestionsWithNonExistingProminentSuggestions() {
+        // Given
+        let searchResults = suggestions
+        let prominentSuggestionsIds: [NSNumber] = [1000, 10002]
+        let expectedResult = searchResults
+
+        // When
+        let result = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds)
+
+        // Then
+        XCTAssertEqual(expectedResult, result)
+    }
+
+    /// Tests that the provided prominent suggestion is moved to the top of the search result
+    func testMoveSuggestionsWithOneProminentSuggestion() {
+        // Given
+        let searchResults = suggestions
+        let prominentSuggestionsIds: [NSNumber] = [50]
+        var expectedResult = searchResults
+        let element = expectedResult.remove(at: 49)
+        expectedResult.insert(element, at: 0)
+
+        // When
+        let result = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds)
+
+        // Then
+        XCTAssertEqual(expectedResult, result)
+    }
+
+    /// Tests that the provided prominent suggestions are moved to the top of the search result
+    func testMoveSuggestionsWithTwoProminentSuggestions() {
+        // Given
+        let searchResults = suggestions
+        let prominentSuggestionsIds: [NSNumber] = [10, 15]
+        var expectedResult = searchResults
+        var element = expectedResult.remove(at: 9)
+        expectedResult.insert(element, at: 0)
+        element = expectedResult.remove(at: 14)
+        expectedResult.insert(element, at: 1)
+
+        // When
+        let result = self.suggestionsTableView.moveProminentSuggestionsToTop(searchResults: searchResults, prominentSuggestionsIds: prominentSuggestionsIds)
+
+        // Then
+        XCTAssertEqual(expectedResult, result)
     }
 
     // MARK: - Helpers

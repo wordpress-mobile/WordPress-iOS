@@ -133,7 +133,7 @@ extension SuggestionType {
 
     // MARK: - Private
 
-    private func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
+    func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
         var searchResults: [Any]
         if !searchQuery.isEmpty {
             let predicate = self.predicate(for: searchQuery)
@@ -170,6 +170,7 @@ extension SuggestionType {
         var searchResults = searchResults
         if !suggestionsToInsert.isEmpty && suggestionIndexesToRemove.count > 0 {
             let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+            suggestionIndexesToRemove = suggestionIndexesToRemove.sorted(by: >)
             suggestionIndexesToRemove.forEach { searchResults.remove(at: $0) }
             searchResults = suggestionsToInsert + searchResults
         }
