@@ -52,8 +52,8 @@ class SuggestionsTableViewTests: CoreDataTestCase {
         XCTAssertEqual(expectedResult, result)
     }
 
-    /// Tests that  search result remain the same when non-existing prominent suggestions are provided
-    func testMoveSuggestionsWithNonExistingProminentSuggestions() {
+    /// Tests that  search result remain the same when non-existent prominent suggestions are provided
+    func testMoveSuggestionsWithNonExistentProminentSuggestions() {
         // Given
         let searchResults = suggestions
         let prominentSuggestionsIds: [NSNumber] = [1000, 10002]
@@ -211,6 +211,35 @@ class SuggestionsTableViewTests: CoreDataTestCase {
         let searchResults = try XCTUnwrap(suggestionsTableView.searchResults as? [UserSuggestion])
         XCTAssertEqual(searchResults, expectedSuggestions)
         XCTAssertTrue(result)
+    }
+
+    // MARK: - Test prominentSuggestions(fromPostAuthorId:commentAuthorId:defaultAccountId:)
+
+    /// Tests that a prominent suggestions array is created with a post author id and comment author id
+    func testProminentSuggestionsWithPostAuthorAndCommentAuthor() {
+        // Given
+        let postAuthorId = NSNumber(value: 1)
+        let commentAuthorId = NSNumber(value: 2)
+
+        // When
+        let result = SuggestionsTableView.prominentSuggestions(fromPostAuthorId: postAuthorId, commentAuthorId: commentAuthorId, defaultAccountId: nil)
+
+        // Then
+        XCTAssertEqual(result, [1, 2])
+    }
+
+    /// Tests that a default account is excluded from the prominent suggestions array
+    func testDefaultAccountExcludedFromProminentSuggestions() {
+        // Given
+        let postAuthorId = NSNumber(value: 1)
+        let commentAuthorId = NSNumber(value: 2)
+        let accountId = NSNumber(value: 1)
+
+        // When
+        let result = SuggestionsTableView.prominentSuggestions(fromPostAuthorId: postAuthorId, commentAuthorId: commentAuthorId, defaultAccountId: accountId)
+
+        // Then
+        XCTAssertEqual(result, [2])
     }
 
     // MARK: - Helpers
