@@ -1,5 +1,3 @@
-Découvrez la nouveauté de WordPress : vous verrez désormais une infobulle « Suivre la conversation » qui vous invite à suivre un article et à recevoir des notifications concernant les nouveaux commentaires.
+Lorsque vous prévisualisez un article, vous pouvez maintenant passer de la vue Portrait à la vue Paysage et inversement, sans que cela masque une partie du contenu. Intéressant, non ?
 
-Nous avons apporté quelques améliorations à l’écran de sélection qui permet de choisir le design de votre site pendant son processus de création.
-
-Enfin, nous avons corrigé un bogue qui affectait le défilement des notifications lorsque votre téléphone était en mode paysage. Vous pouvez désormais faire défiler en toute fluidité !
+L’icône de votre application WordPress a repris sa couleur bleue habituelle, mais pas d’inquiétude : vous pouvez toujours mettre un peu de couleur dans votre vie. Il vous suffit de vous rendre dans les réglages de votre application et de sélectionner notre icône spéciale Mois des fiertés.

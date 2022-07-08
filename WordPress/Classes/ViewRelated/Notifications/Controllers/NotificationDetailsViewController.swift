@@ -112,6 +112,12 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
+    /// Service to access the currently authenticated user
+    ///
+    lazy var accountService: AccountService = {
+        return AccountService(managedObjectContext: mainContext)
+    }()
+
     lazy var router: NotificationContentRouter = {
         return makeRouter()
     }()
@@ -480,6 +486,12 @@ extension NotificationDetailsViewController {
         }
 
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsTableView?.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
+            fromPostAuthorId: nil,
+            commentAuthorId: note.metaCommentAuthorID,
+            defaultAccountId: accountService.defaultWordPressComAccount()?.userID
+        )
+
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -1290,7 +1302,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         }
 
         suggestionsTableView.hideSuggestions()
-        controller.enableSuggestions(with: siteID)
+        controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds)
     }
 }
 

@@ -1,7 +1,3 @@
-Yazmak için biraz ilhama mı ihtiyacınız var? Yepyeni blog yazma istemleriyle karşınızdayız. Her gün yeni bir bilgi istemi alın, bununla ilgili bir yazı yazın ve kısa sürede yazma alışkanlığı kazanın.
+Tarayıcınıza geçmeniz mi gerekiyor? Artık uygulamanın Ben menüsünde bir QR kodunu taratarak oturum açabilirsiniz.
 
-Jetpack sohbet alanına girdi; artık bir gönderiyi takip etmenizi ve yeni yorumlar hakkında bildirim almanızı sağlayan bir "Sohbeti Takip Et" araç ipucunu göreceksiniz.
-
-Site Oluşturma sürecinde site tasarımınızı seçtiğiniz seçim ekranında bazı iyileştirmeler yaptık.
-
-Son olarak, telefonunuz yatay moddayken bildirim kaydırmayı etkileyen bir hatayı ortadan kaldırdık. Artık istediğiniz gibi kaydırın.
+Bir gönderiyi önizlerken, artık içeriğin hiçbir bir kısmını engellemeden dikey ve yatay yön arasında geçiş yapabilirsiniz. Güzel.

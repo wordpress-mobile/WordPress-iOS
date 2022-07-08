@@ -1,7 +1,3 @@
-Brauchst du ein wenig Inspiration beim Schreiben? Dann sind unsere brandneuen Blog-Vorschläge genau das Richtige für dich. Du bekommst jeden Tag einen neuen Themenvorschlag. Darüber kannst du dann einen Beitrag verfassen und in Kürze deinen eigenen Schreibstil entwickeln.
+Du willst zu deinem Browser wechseln? Dann scanne einfach einen QR-Code im App-Menü „Ich“, um dich anzumelden.
 
-Jetpack hat jetzt eine Chatfunktion – Das neue Tooltip „Unterhaltung folgen“ fordert dich auf, einem Beitrag zu folgen und Benachrichtigungen zu neuen Kommentaren zu erhalten.
-
-Wir haben zudem einige Verbesserungen am Auswahlbildschirm vorgenommen, bei dem du während der Website-Erstellung dein Website-Design auswählst.
-
-Und schließlich haben wir einen Fehler beim Scrollen zu Benachrichtigungen im Querformat behoben. Viel Spaß beim Scrollen.
+In der Beitragsvorschau kannst du ab sofort zwischen Hoch- und Querformat wechseln, ohne dass Inhalte abgeschnitten werden. Sehr gut.

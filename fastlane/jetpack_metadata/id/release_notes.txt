@@ -1,7 +1,3 @@
-Butuh inspirasi menulis? Kami siap membantu dengan ide tulisan blog yang baru Dapatkan ide tulisan baru setiap harinya, tulis pos blog seputar ide tersebut, dan bangun kebiasaan menulis dalam waktu singkat.
+Ingin beralih ke browser? Anda dapat login dengan memindai kode QR di menu Me aplikasi.
 
-Jetpack telah memasuki obrolan—Anda sekarang akan melihat tooltip “Ikuti Percakapan” yang mengajak Anda untuk mengikuti pos dan mendapatkan pemberitahuan tentang komentar baru.
-
-Kami membuat beberapa perbaikan pada layar pemilihan yang Anda gunakan untuk memilih desain situs selama proses Pembuatan Situs.
-
-Terakhir, kami telah mengatasi bug yang menganggu pengguliran pemberitahuan ketika ponsel dalam mode lanskap. Selamat menggulir, Teman.
+Anda dapat beralih ke orientasi potret atau lanskap tanpa ada konten terpotong saat mempratinjau pos. Bagus.

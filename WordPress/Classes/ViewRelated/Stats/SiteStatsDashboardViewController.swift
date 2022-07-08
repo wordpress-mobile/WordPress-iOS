@@ -63,6 +63,7 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
@@ -88,6 +89,7 @@ class SiteStatsDashboardViewController: UIViewController {
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
+        configureJetpackBanner()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
@@ -97,6 +99,16 @@ class SiteStatsDashboardViewController: UIViewController {
 
     func configureNavBar() {
         parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+    }
+
+    func configureJetpackBanner() {
+        if AppConfiguration.isJetpack {
+            // When the banner is removed (along with its constraints), the view above it
+            // will grow to occupy the space. This is because the view above it has a
+            // lower-priority constraint from its bottom edge to the bottom edge of the
+            // screen.
+            jetpackBannerView.removeFromSuperview()
+        }
     }
 
     @objc func manageInsightsButtonTapped() {

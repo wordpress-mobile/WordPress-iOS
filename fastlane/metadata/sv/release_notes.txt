@@ -1,5 +1,3 @@
-Nu är WordPress med i chatteran – verktyget ”Följ konversationen” låter dig följa ett inlägg och få aviseringar om nya kommentarer.
+När du förhandsgranskar ett inlägg kan du nu växla mellan horisontellt och vertikalt orienterad enhet utan att något innehåll tappas bort – det är väl trevligt!
 
-Vi har genomfört några förbättringar på skärmen där du väljer design för din webbplats i flödet där du skapar webbplatsen.
-
-Slutligen har vi rättat ett fel som störde skrollning av aviseringar med telefonen i horisontellt läge. Nu ska det gå bra att skrolla igen.
+Ikonen för din WordPress-app har nu återgått till sin tuffa blå nyans. Men om du vill fortsätta att leva färgrikt kan du helt enkelt gå in i appens inställningar och där välja att appens ikon ska vara Pride-mönstrad.
