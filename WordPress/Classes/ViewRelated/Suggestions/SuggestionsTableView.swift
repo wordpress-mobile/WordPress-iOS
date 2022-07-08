@@ -147,7 +147,7 @@ extension SuggestionType {
         return searchResults
     }
 
-    private func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
+    func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
         // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
         guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
 
