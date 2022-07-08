@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 145
+
+@geriux 2022-07-08
+
+- `Media`: added `remoteLargeURL` attribute. (optional, no default, `String`)
+- `Media`: added `remoteMediumURL` attribute. (optional, no default, `String`)
+
 ## WordPress 144
 
  @salimbraksa 2022-07-07
