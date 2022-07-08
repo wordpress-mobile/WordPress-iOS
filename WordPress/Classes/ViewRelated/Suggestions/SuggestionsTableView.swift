@@ -170,6 +170,7 @@ extension SuggestionType {
         var searchResults = searchResults
         if !suggestionsToInsert.isEmpty && suggestionIndexesToRemove.count > 0 {
             let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+            suggestionIndexesToRemove = suggestionIndexesToRemove.sorted(by: >)
             suggestionIndexesToRemove.forEach { searchResults.remove(at: $0) }
             searchResults = suggestionsToInsert + searchResults
         }
