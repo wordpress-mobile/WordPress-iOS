@@ -38,7 +38,7 @@ class SuggestionsTableViewTests: CoreDataTestCase {
 
     // MARK: - Test moveProminentSuggestionsToTop(searchResults:prominentSuggestionsIds:)
 
-    /// Tests that suggestions search result remain the same when no prominent suggestions are provided
+    /// Tests that  search result remain the same when no prominent suggestions are provided
     func testMoveSuggestionsWithZeroProminentSuggestions() {
         // Given
         let searchResults = suggestions
@@ -52,7 +52,7 @@ class SuggestionsTableViewTests: CoreDataTestCase {
         XCTAssertEqual(expectedResult, result)
     }
 
-    /// Tests that suggestions search result remain the same when non-existing prominent suggestions are provided
+    /// Tests that  search result remain the same when non-existing prominent suggestions are provided
     func testMoveSuggestionsWithNonExistingProminentSuggestions() {
         // Given
         let searchResults = suggestions
@@ -98,6 +98,51 @@ class SuggestionsTableViewTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(expectedResult, result)
+    }
+
+    // MARK: - Test searchResults(searchQuery:suggestions:suggestionType) -> [Any]
+
+    /// Tests that the search result has an exact match
+    func testSearchResultsWithExactMatch() throws {
+        // Given
+        let searchQuery = "lvlahos2k"
+        let expectedSuggestion = suggestions[92]
+
+        // When
+        let result = self.suggestionsTableView.searchResults(searchQuery: searchQuery, suggestions: suggestions, suggestionType: .mention)
+
+        // Then
+        let userSuggestion = try XCTUnwrap(result[0] as? UserSuggestion)
+        XCTAssertEqual(userSuggestion, expectedSuggestion)
+    }
+
+    /// Tests that the search result has a few matches
+    func testSearchResultsWithPartialQuery() throws {
+        // Given
+        let searchQuery = "lv"
+        let expectedSuggestions = [11, 93].compactMap { id -> UserSuggestion? in
+            return suggestions.first(where: { $0.userID == id })
+        }
+
+        // When
+        let result = self.suggestionsTableView.searchResults(searchQuery: searchQuery, suggestions: suggestions, suggestionType: .mention)
+
+        // Then
+        let userSuggestions = try XCTUnwrap(result as? [UserSuggestion])
+        XCTAssertEqual(userSuggestions, expectedSuggestions)
+    }
+
+    /// Tests that the search result is the same as suggestions when the search query is empty
+    func testSearchResultsWithEmptyQuery() throws {
+        // Given
+        let searchQuery = ""
+
+        // When
+        let result = self.suggestionsTableView.searchResults(searchQuery: searchQuery, suggestions: suggestions, suggestionType: .mention)
+
+        // Then
+        let userSuggestions = try XCTUnwrap(result as? [UserSuggestion])
+        XCTAssertEqual(userSuggestions, suggestions)
     }
 
     // MARK: - Test showSuggestions(forWord:) -> Bool
