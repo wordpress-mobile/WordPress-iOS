@@ -133,7 +133,7 @@ extension SuggestionType {
 
     // MARK: - Private
 
-    private func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
+    func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
         var searchResults: [Any]
         if !searchQuery.isEmpty {
             let predicate = self.predicate(for: searchQuery)
@@ -147,7 +147,7 @@ extension SuggestionType {
         return searchResults
     }
 
-    private func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
+    func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
         // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
         guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
 
