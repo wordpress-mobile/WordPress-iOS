@@ -1,11 +1,3 @@
-//
-//  SuggestionsTableViewTests.swift
-//  WordPressTest
-//
-//  Created by Salim Braksa on 8/7/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import XCTest
 
 @testable import WordPress
