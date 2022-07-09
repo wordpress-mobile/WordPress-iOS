@@ -10,7 +10,6 @@ struct SiteDesignSection: CategorySection {
     var emoji: String?
     var description: String?
     var thumbnails: [Thumbnail] { designs }
-    var scrollOffset: CGPoint = .zero
 
     var sectionType: SiteDesignSectionType = .standard
 }

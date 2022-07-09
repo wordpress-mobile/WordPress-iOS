@@ -19,6 +19,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         }
     }
 
+    /// Dictionary to store horizontal scroll position of sections, keyed by category slug
+    private var sectionHorizontalOffsets: [String: CGFloat] = [:]
+
     private var isLoading: Bool = true {
         didSet {
             if isLoading {
@@ -294,18 +297,28 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = isLoading ? nil : sections[indexPath.row]
-        cell.isGhostCell = isLoading
+
         if isLoading {
+            cell.section = nil
+            cell.isGhostCell = true
             cell.ghostThumbnailSize = ghostThumbnailSize
+            cell.collectionView.allowsSelection = false
+        } else {
+            let section = sections[indexPath.row]
+            cell.section = section
+            cell.isGhostCell = false
+            cell.collectionView.allowsSelection = true
+            cell.horizontalScrollOffset = sectionHorizontalOffsets[section.categorySlug] ?? .zero
         }
+
         cell.showsCheckMarkWhenSelected = false
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
-        cell.collectionView.allowsSelection = !isLoading
         cell.categoryTitleFont = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
         return cell
     }
+
+
 }
 
 // MARK: - CategorySectionTableViewCellDelegate
@@ -342,5 +355,13 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+    }
+
+    func saveHorizontalScrollPosition(forCell cell: CategorySectionTableViewCell, xPosition: CGFloat) {
+        guard let cellSection = cell.section else {
+            return
+        }
+
+        sectionHorizontalOffsets[cellSection.categorySlug] = xPosition
     }
 }
