@@ -5,8 +5,8 @@ extension PostEditor {
 
     func displayPostSettings() {
         let settingsViewController: PostSettingsViewController
-        if post is Page {
-            settingsViewController = PageSettingsViewController(post: post)
+        if let page = post as? Page {
+            settingsViewController = PageSettingsViewController(page: page)
         } else {
             settingsViewController = PostSettingsViewController(post: post)
         }
