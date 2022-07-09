@@ -42,10 +42,13 @@ extension Row: Equatable {
 
 
 class ParentPageSettingsViewController: UIViewController {
+
+    @objc var uploadChangesOnSave = true
+    @objc var dismissOnItemSelected = false
+
     var onClose: (() -> Void)?
     var onSuccess: (() -> Void)?
 
-    @IBOutlet private var cancelButton: UIBarButtonItem!
     @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var searchBar: UISearchBar!
@@ -68,7 +71,6 @@ class ParentPageSettingsViewController: UIViewController {
             doneButton.isEnabled = selectedRow != originalRow
         }
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,13 +110,17 @@ class ParentPageSettingsViewController: UIViewController {
     private func setupUI() {
         navigationItem.title = NSLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
 
-        cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
+        if navigationController?.isBeingPresented == true || isBeingPresented {
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
+            cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
+            WPStyleGuide.setLeftBarButtonItemWithCorrectSpacing(cancelButton, for: navigationItem)
+        }
+
         doneButton.title = NSLocalizedString("Done", comment: "Text displayed by the right navigation button title")
 
         searchBar.delegate = self
 
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(doneButton, for: navigationItem)
-        WPStyleGuide.setLeftBarButtonItemWithCorrectSpacing(cancelButton, for: navigationItem)
         WPStyleGuide.configureSearchBar(searchBar)
 
         setupTableView()
@@ -222,20 +228,29 @@ class ParentPageSettingsViewController: UIViewController {
 
     private func dismiss() {
         onClose?()
-        dismiss(animated: true)
+        if self.navigationController?.popViewController(animated: true) == nil {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
+    private func finishEditing() {
+        self.dismiss()
+        self.onSuccess?()
+    }
 
-    // MARK: IBAction
+    private func save() {
+        let parentId: NSNumber? = selectedPage.parentID
+        selectedPage.parentID = selectedRow?.page?.postID
 
-    @IBAction func doneAction(_ sender: UIBarButtonItem) {
-        WPAnalytics.track(.pageSetParentDonePressed)
+        guard uploadChangesOnSave else {
+            self.finishEditing()
+            return
+        }
 
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
                                                          comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
-        let parentId: NSNumber? = selectedPage.parentID
-        selectedPage.parentID = selectedRow?.page?.postID
+
         updatePage { [weak self] (_, error) in
             SVProgressHUD.dismiss()
 
@@ -245,15 +260,22 @@ class ParentPageSettingsViewController: UIViewController {
                                                                                  comment: "Text displayed in HUD after attempting to save a draft post and an error occurred."))
                 self?.selectedPage.parentID = parentId
             } else {
-                self?.dismiss()
-                self?.onSuccess?()
+                self?.finishEditing()
             }
         }
     }
 
-    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
+    // MARK: User Interaction
+
+    @IBAction func doneAction(_ sender: UIBarButtonItem) {
+        WPAnalytics.track(.pageSetParentDonePressed)
+        self.save()
+    }
+
+    @objc private func cancelAction(_ sender: UIBarButtonItem) {
         dismiss()
     }
+
 }
 
 
@@ -299,6 +321,10 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 
         selectedRow = row
         tableView.reloadData()
+
+        if dismissOnItemSelected {
+            self.save()
+        }
     }
 }
 
@@ -306,7 +332,14 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 /// ParentPageSettingsViewController class constructor
 //
 extension ParentPageSettingsViewController {
-    class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) -> UINavigationController {
+    @objc class func fromStoryboard(with pages: [Page], selectedPage: Page) -> ParentPageSettingsViewController {
+        let storyboard = UIStoryboard(name: "Pages", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "\(ParentPageSettingsViewController.self)") as! ParentPageSettingsViewController
+        controller.set(pages: pages, for: selectedPage)
+        return controller
+    }
+
+    @objc class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) -> UINavigationController {
         let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
             fatalError("A navigation view controller is required for Parent Page Settings")
