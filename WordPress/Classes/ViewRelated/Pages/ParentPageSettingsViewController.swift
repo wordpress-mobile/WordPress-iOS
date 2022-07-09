@@ -1,6 +1,5 @@
 import UIKit
 
-
 private struct Row: ImmuTableRow {
     static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)
 
@@ -40,37 +39,60 @@ extension Row: Equatable {
     }
 }
 
-
+/// Allows the user to edit a page's parent.
+///
 class ParentPageSettingsViewController: UIViewController {
-
+    
+    // MARK: - Properties: Dependencies
+    
+    private let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    
+    // MARK: - Properties: Configuration
+    
+    /// Boolean indicating whether the changes are saved remotely. Default is true.
+    ///
     @objc var uploadChangesOnSave = true
+    
+    /// Boolean indicating whether the view controller is dismissed automatically when a parent is selected.
+    ///
     @objc var dismissOnItemSelected = false
+    
+    // MARK: - Properties: Callbacks
 
     var onClose: (() -> Void)?
     var onSuccess: (() -> Void)?
+    
+    // MARK: - Properties: Views
 
     @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var searchBar: UISearchBar!
+    
+    // MARK: - Properties: State
 
-    private let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private lazy var noResultsViewController = NoResultsViewController.controller()
+    
     private var isSearching = false
+    
     private var sections: [ImmuTableSection] {
         guard let text = searchBar.text else {
             return rows
         }
         return isSearching && !text.isEmpty ? filteredRows : rows
     }
+    
     private var rows: [ImmuTableSection]!
     private var filteredRows: [ImmuTableSection]!
     private var selectedPage: Page!
     private var originalRow: Row?
+    
     private var selectedRow: Row? {
         didSet {
             doneButton.isEnabled = selectedRow != originalRow
         }
     }
+    
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +113,8 @@ class ParentPageSettingsViewController: UIViewController {
         WPAnalytics.track(.pageSetParentViewed)
     }
 
-
+    // MARK: - Set Input
+    
     func set(pages: [Page], for page: Page) {
         selectedPage = page
         originalRow = originalRow(with: pages)
@@ -330,7 +353,7 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 
 
 /// ParentPageSettingsViewController class constructor
-//
+///
 extension ParentPageSettingsViewController {
     @objc class func fromStoryboard(with pages: [Page], selectedPage: Page) -> ParentPageSettingsViewController {
         let storyboard = UIStoryboard(name: "Pages", bundle: Bundle.main)
