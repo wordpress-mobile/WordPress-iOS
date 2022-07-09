@@ -43,6 +43,14 @@ class Page: AbstractPost {
         return date.longUTCStringWithoutTime()
     }
 
+    /// Boolean indicating whether the page has changes that weren't uploaded yet.
+    override func hasLocalChanges() -> Bool {
+        if let originalPage = original as? Page, parentID != originalPage.parentID {
+            return true
+        }
+        return super.hasLocalChanges()
+    }
+
     /// Returns the selector string to use as a sectionNameKeyPath, depending on the given keyPath.
     ///
     @objc static func sectionIdentifier(dateKeyPath: String) -> String {
