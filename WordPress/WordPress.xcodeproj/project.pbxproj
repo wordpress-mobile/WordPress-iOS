@@ -2913,6 +2913,10 @@
 		F1F083F6241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F083F5241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift */; };
 		F1F163C125658B4D003DC13B /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F163C025658B4D003DC13B /* IntentHandler.swift */; };
 		F1F163D625658B4D003DC13B /* WordPressIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1F163BE25658B4D003DC13B /* WordPressIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F41E32FB2879E2A600F89082 /* PageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E32FA2879E2A600F89082 /* PageSettingsViewController.swift */; };
+		F41E32FC2879E2A600F89082 /* PageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E32FA2879E2A600F89082 /* PageSettingsViewController.swift */; };
+		F44EA2472879AB0E00C02AC0 /* ParentPagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44EA2462879AB0E00C02AC0 /* ParentPagesController.swift */; };
+		F44EA2482879B2D000C02AC0 /* ParentPagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44EA2462879AB0E00C02AC0 /* ParentPagesController.swift */; };
 		F44FB6CB287895AF0001E3CE /* SuggestionsTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsTableViewTests.swift */; };
 		F44FB6CD287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CC287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
@@ -7849,7 +7853,9 @@
 		F1F163C225658B4D003DC13B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1F163C825658B4D003DC13B /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		F373612EEEEF10E500093FF3 /* Pods-Apps-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		F41E32FA2879E2A600F89082 /* PageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSettingsViewController.swift; sourceTree = "<group>"; };
 		F432964A287752690089C4F7 /* WordPress 144.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 144.xcdatamodel"; sourceTree = "<group>"; };
+		F44EA2462879AB0E00C02AC0 /* ParentPagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPagesController.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewTests.swift; sourceTree = "<group>"; };
 		F44FB6CC287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewMockDelegate.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
@@ -12781,6 +12787,7 @@
 		9A22D9BE214A6B9800BAEAF2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F44EA2462879AB0E00C02AC0 /* ParentPagesController.swift */,
 				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
 				F16C35D523F33DE400C81331 /* PageAutoUploadMessageProvider.swift */,
 			);
@@ -15077,6 +15084,7 @@
 				5DFA7EBE1AF7CB3A0072023B /* Views */,
 				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
 				5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */,
+				F41E32FA2879E2A600F89082 /* PageSettingsViewController.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -18140,6 +18148,7 @@
 				82FC61251FA8ADAD00A1757E /* BaseActivityListViewController.swift in Sources */,
 				F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */,
 				E66E2A651FE4311300788F22 /* SettingsTitleSubtitleController.swift in Sources */,
+				F44EA2472879AB0E00C02AC0 /* ParentPagesController.swift in Sources */,
 				E1222B671F878E4700D23173 /* WebViewControllerFactory.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
 				9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */,
@@ -18345,6 +18354,7 @@
 				98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */,
 				7E40713A2372AD54003627FA /* GutenbergFilesAppMediaSource.swift in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
+				F41E32FB2879E2A600F89082 /* PageSettingsViewController.swift in Sources */,
 				8B15CDAB27EB89AD00A75749 /* BlogDashboardPostsParser.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				464688D8255C71D200ECA61C /* SiteDesignPreviewViewController.swift in Sources */,
@@ -20906,6 +20916,7 @@
 				FABB220C2602FC2C00C8785C /* Blog.m in Sources */,
 				FABB220D2602FC2C00C8785C /* JetpackRemoteInstallStateView.swift in Sources */,
 				FABB220E2602FC2C00C8785C /* PublishSettingsViewController.swift in Sources */,
+				F41E32FC2879E2A600F89082 /* PageSettingsViewController.swift in Sources */,
 				FABB220F2602FC2C00C8785C /* MediaHost+AbstractPost.swift in Sources */,
 				FABB22102602FC2C00C8785C /* PageTemplateCategory+CoreDataProperties.swift in Sources */,
 				FABB22112602FC2C00C8785C /* MyProfileHeaderView.swift in Sources */,
@@ -21581,6 +21592,7 @@
 				FABB24472602FC2C00C8785C /* SignupEpilogueTableViewController.swift in Sources */,
 				FABB24482602FC2C00C8785C /* MyProfileViewController.swift in Sources */,
 				3FE3D1FF26A6F56700F3CD10 /* Comment+Interface.swift in Sources */,
+				F44EA2482879B2D000C02AC0 /* ParentPagesController.swift in Sources */,
 				FABB24492602FC2C00C8785C /* CreateButtonActionSheet.swift in Sources */,
 				FABB244A2602FC2C00C8785C /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11942624C78900346EC6 /* Routes+Start.swift in Sources */,
