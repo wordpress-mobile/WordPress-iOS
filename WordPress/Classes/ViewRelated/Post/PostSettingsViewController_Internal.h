@@ -11,10 +11,32 @@ typedef enum {
     PostSettingsSectionMoreOptions
 } PostSettingsSection;
 
+typedef NS_ENUM(NSInteger, PostSettingsRow) {
+    PostSettingsRowCategories = 0,
+    PostSettingsRowTags,
+    PostSettingsRowAuthor,
+    PostSettingsRowPublishDate,
+    PostSettingsRowStatus,
+    PostSettingsRowVisibility,
+    PostSettingsRowPassword,
+    PostSettingsRowFormat,
+    PostSettingsRowFeaturedImage,
+    PostSettingsRowFeaturedImageAdd,
+    PostSettingsRowFeaturedImageRemove,
+    PostSettingsRowFeaturedLoading,
+    PostSettingsRowShareConnection,
+    PostSettingsRowShareMessage,
+    PostSettingsRowSlug,
+    PostSettingsRowExcerpt,
+    PostSettingsRowParent
+};
+
 
 @class WPProgressTableViewCell;
 
 @interface PostSettingsViewController ()
+
+@property (nonatomic, nonnull, strong) NSArray *postMetaSectionRows;
 
 @property (nonnull, nonatomic, strong) NSArray *sections;
 
@@ -25,5 +47,9 @@ typedef enum {
 @property (nullable, nonatomic, strong) NSUUID *mediaObserverReceipt;
 
 @property (nullable, nonatomic, strong) WPProgressTableViewCell *progressCell;
+
+- (nonnull WPTableViewCell *)getWPTableViewDisclosureCell;
+- (void)configureMetaSectionRows;
+- (nonnull UITableViewCell *)configureMetaPostMetaCellForIndexPath:(nonnull NSIndexPath *)indexPath;
 
 @end

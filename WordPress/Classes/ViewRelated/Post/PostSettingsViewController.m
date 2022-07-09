@@ -24,25 +24,6 @@
 @import WordPressKit;
 @import WordPressUI;
 
-typedef NS_ENUM(NSInteger, PostSettingsRow) {
-    PostSettingsRowCategories = 0,
-    PostSettingsRowTags,
-    PostSettingsRowAuthor,
-    PostSettingsRowPublishDate,
-    PostSettingsRowStatus,
-    PostSettingsRowVisibility,
-    PostSettingsRowPassword,
-    PostSettingsRowFormat,
-    PostSettingsRowFeaturedImage,
-    PostSettingsRowFeaturedImageAdd,
-    PostSettingsRowFeaturedImageRemove,
-    PostSettingsRowFeaturedLoading,
-    PostSettingsRowShareConnection,
-    PostSettingsRowShareMessage,
-    PostSettingsRowSlug,
-    PostSettingsRowExcerpt
-};
-
 static CGFloat CellHeight = 44.0f;
 static CGFloat LoadingIndicatorHeight = 28.0f;
 
@@ -61,7 +42,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
-@property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
