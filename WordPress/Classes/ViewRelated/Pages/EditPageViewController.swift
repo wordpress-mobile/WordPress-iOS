@@ -7,7 +7,8 @@ class EditPageViewController: UIViewController {
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
     fileprivate var isHomePageEditor = false
-    private var homepageEditorCompletion: HomepageEditorCompletion?
+
+    var homepageEditorCompletion: HomepageEditorCompletion?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)

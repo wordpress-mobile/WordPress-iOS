@@ -522,6 +522,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
 
         let editorViewController = EditPageViewController(page: page)
+        editorViewController.homepageEditorCompletion = { [weak self] in
+            self?._tableViewHandler.refreshTableView()
+        }
+
         present(editorViewController, animated: false)
     }
 
