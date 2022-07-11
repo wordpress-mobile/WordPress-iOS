@@ -126,8 +126,8 @@ final class PostListViewModelTests: XCTestCase {
     }
 
     func testStatsDoesNotInvokeStatsConfiguredWhenRequirementsAreMetButNoReachability() {
-        class _MockReachabilityUtility: PostListReachabilityProvider {
-            func performActionIfConnectionAvailable(_ action: (() -> Void)) {
+        class _MockReachabilityUtility: MockReachabilityUtility {
+            override func performActionIfConnectionAvailable(_ action: (() -> Void)) {
                 // No reachability so action is not called.
             }
         }
@@ -152,6 +152,30 @@ final class PostListViewModelTests: XCTestCase {
         XCTAssertEqual(statsConfiguredCallCount, 0)
     }
 
+    // MARK: - Trash
+
+    func testTrashDoesNotInvokeTrashStringsFetchedWhenNoReachability() {
+        class _MockReachabilityUtility: MockReachabilityUtility {
+            override func isInternetReachable() -> Bool {
+                false
+            }
+        }
+
+        let sut = PostListViewModel(
+            blog: makeBlog(),
+            postCoordinator: PostCoordinator(),
+            reachabilityUtility: _MockReachabilityUtility()
+        )
+
+        var trashStringsFetchedCallCount = 0
+        sut.trashStringsFetched = { (_, _) in
+            trashStringsFetchedCallCount += 1
+        }
+
+        sut.trash( PostBuilder(mockContextManager.mainContext, blog: makeBlog()).build())
+        XCTAssertEqual(trashStringsFetchedCallCount, 0)
+    }
+
     private func makeBlog() -> Blog {
         return BlogBuilder(mockContextManager.mainContext).withAnAccount().withJetpack().build()
     }
@@ -160,5 +184,13 @@ final class PostListViewModelTests: XCTestCase {
 private class MockReachabilityUtility: PostListReachabilityProvider {
     func performActionIfConnectionAvailable(_ action: (() -> Void)) {
         action()
+    }
+
+    func isInternetReachable() -> Bool {
+        true
+    }
+
+    func showNoInternetConnectionNotice(message: String) {
+
     }
 }

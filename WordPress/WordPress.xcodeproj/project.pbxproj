@@ -113,6 +113,8 @@
 		08AAC954286CC22B0052790A /* PostListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AAC953286CC22B0052790A /* PostListViewModelTests.swift */; };
 		08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
 		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
+		08B41628286F4531005FF321 /* PostListTrashAlertStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B41627286F4531005FF321 /* PostListTrashAlertStrings.swift */; };
+		08B41629286F4531005FF321 /* PostListTrashAlertStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B41627286F4531005FF321 /* PostListTrashAlertStrings.swift */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
 		08B6E51A1F036CAD00268F57 /* MediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6E5191F036CAD00268F57 /* MediaFileManager.swift */; };
 		08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6E51B1F037ADD00268F57 /* MediaFileManagerTests.swift */; };
@@ -5046,6 +5048,7 @@
 		08AAD69D1CBEA47D002B2418 /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08AAD69E1CBEA47D002B2418 /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceTests.m; sourceTree = "<group>"; };
+		08B41627286F4531005FF321 /* PostListTrashAlertStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTrashAlertStrings.swift; sourceTree = "<group>"; };
 		08B6D6F01C8F7DCE0052C52B /* PostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostType.h; sourceTree = "<group>"; };
 		08B6D6F11C8F7DCE0052C52B /* PostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostType.m; sourceTree = "<group>"; };
 		08B6E5191F036CAD00268F57 /* MediaFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFileManager.swift; sourceTree = "<group>"; };
@@ -13019,6 +13022,7 @@
 				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
 				C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */,
+				08B41627286F4531005FF321 /* PostListTrashAlertStrings.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -18316,6 +18320,7 @@
 				7E3E7A5520E44B4B0075D159 /* SnippetsContentStyles.swift in Sources */,
 				8B7F25A724E6EDB4007D82CC /* TopicsCollectionView.swift in Sources */,
 				D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */,
+				08B41628286F4531005FF321 /* PostListTrashAlertStrings.swift in Sources */,
 				E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */,
 				1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */,
 				8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */,
@@ -21875,6 +21880,7 @@
 				FABB25582602FC2C00C8785C /* PostCategoriesViewController.swift in Sources */,
 				FABB25592602FC2C00C8785C /* NSManagedObject+Lookup.swift in Sources */,
 				FABB255A2602FC2C00C8785C /* StatsPeriodHelper.swift in Sources */,
+				08B41629286F4531005FF321 /* PostListTrashAlertStrings.swift in Sources */,
 				FABB255B2602FC2C00C8785C /* FooterContentStyles.swift in Sources */,
 				FABB255C2602FC2C00C8785C /* TenorMedia.swift in Sources */,
 				FABB255D2602FC2C00C8785C /* AbstractPost.swift in Sources */,
