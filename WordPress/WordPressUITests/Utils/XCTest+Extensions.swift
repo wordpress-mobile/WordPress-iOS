@@ -90,7 +90,7 @@ extension XCTestCase {
     }
 
     public func waitAndTap( _ element: XCUIElement) {
-        if (element.waitForExistence(timeout: 5)) {
+        if element.waitForExistence(timeout: 5) {
             element.tap()
         }
     }
