@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  pod 'Kanvas', '~> 1.4.3'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -143,6 +143,7 @@ def gutenberg_dependencies(options)
     RNGestureHandler
     RNCMaskedView
     RNCClipboard
+    RNFastImage
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -169,7 +170,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg commit: '65a44076f09845b13c4e2ffd3fe6a0bd2cde10e6'
+  gutenberg commit: 'bc0954f1fe15f5790cb52acf320afbebbe37938d'
 
   ## Third party libraries
   ## =====================
