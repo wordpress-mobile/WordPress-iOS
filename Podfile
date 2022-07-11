@@ -143,6 +143,7 @@ def gutenberg_dependencies(options)
     RNGestureHandler
     RNCMaskedView
     RNCClipboard
+    RNFastImage
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -169,7 +170,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.79.0'
+  gutenberg tag: 'v1.80.0-alpha1'
 
   ## Third party libraries
   ## =====================
