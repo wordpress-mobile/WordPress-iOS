@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-05 18:53:28+0000 */
+/* Translation-Revision-Date: 2022-07-08 04:05:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: de */
@@ -7462,7 +7462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap [bookmark-outline] to save a post to your list." = "Tippe auf [bookmark-outline], um einen Beitrag in deiner Liste zu speichern.";
 
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "Tippe auf „Dismiss“ (Verwerfen) und navigiere zu deinem Webbrowser zurück, um fortzufahren.";
+"Tap dismiss and head back to your web browser to continue." = "Tippe auf Überspringen und navigiere zu deinem Webbrowser zurück, um fortzufahren.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Antippen für mehr Details.";
