@@ -77,4 +77,21 @@ extension XCTestCase {
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
     }
+
+    public func removeApp() {
+        let app = XCUIApplication()
+        app.terminate()
+
+        let home = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        home.icons["WordPress"].press(forDuration: 1)
+        waitAndTap(home.buttons["Remove App"])
+        waitAndTap(home.alerts.buttons["Delete App"])
+        waitAndTap(home.alerts.buttons["Delete"])
+    }
+
+    public func waitAndTap( _ element: XCUIElement) {
+        if (element.waitForExistence(timeout: 5)) {
+            element.tap()
+        }
+    }
 }
