@@ -1,3 +1,7 @@
-When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
 
-Your WordPress app icon has gone back to its usual cool blue, but not to worry—you can still keep a little color in your life. Just go into your app settings and choose our Pride-themed app icon again.
