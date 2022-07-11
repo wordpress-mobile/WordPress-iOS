@@ -4,7 +4,7 @@ import Foundation
     var suggestionType: SuggestionType { get set }
     var prominentSuggestionsIds: [NSNumber]? { get set }
 
-    var stateUpdated: ((SuggestionsListViewModelType) -> Void)? { get set }
+    var searchResultUpdated: ((SuggestionsListViewModelType) -> Void)? { get set }
 
     var isLoading: Bool { get }
     var searchText: String { get }
@@ -58,7 +58,7 @@ import Foundation
     // MARK: - Callback
 
     /// Called when the search result is updated.
-    @objc var stateUpdated: StateUpdatedHandler?
+    @objc var searchResultUpdated: StateUpdatedHandler?
 
     // MARK: - Init
 
@@ -120,7 +120,7 @@ import Foundation
         case .sites(let sites):  self.items = sites.map { SuggestionViewModel(suggestion: $0) }
         }
 
-        self.stateUpdated?(self)
+        self.searchResultUpdated?(self)
 
         return items.count > 0
     }
