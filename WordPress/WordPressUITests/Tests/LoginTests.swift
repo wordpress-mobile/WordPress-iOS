@@ -12,9 +12,8 @@ class LoginTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try? MySitesScreen().closeModalIfNeeded()
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+
+        removeApp()
     }
 
     // Unified email login/out

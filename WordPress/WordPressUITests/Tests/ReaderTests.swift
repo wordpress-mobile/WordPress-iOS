@@ -15,11 +15,8 @@ class ReaderTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        if readerScreen != nil && !TabNavComponent.isVisible() {
-            readerScreen.dismissPost()
-        }
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+
+        removeApp()
     }
 
     let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
