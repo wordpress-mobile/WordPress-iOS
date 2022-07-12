@@ -100,7 +100,7 @@ class JetpackButton: UIButton {
     }
 
     private enum Appearance {
-        static let title = NSLocalizedString("Jetpack powered",
+        static let title = NSLocalizedString("jetpack.branding.badge_banner.title", value: "Jetpack powered",
                                              comment: "Title of the Jetpack powered badge.")
         static let minimumScaleFactor: CGFloat = 0.6
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
