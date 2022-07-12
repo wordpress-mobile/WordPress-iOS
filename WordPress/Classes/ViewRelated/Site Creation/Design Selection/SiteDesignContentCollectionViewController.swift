@@ -318,8 +318,6 @@ extension SiteDesignContentCollectionViewController: UITableViewDataSource {
         cell.categoryTitleFont = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
         return cell
     }
-
-
 }
 
 // MARK: - CategorySectionTableViewCellDelegate
@@ -362,7 +360,6 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
         guard let cellSection = cell.section else {
             return
         }
-
         sectionHorizontalOffsets[cellSection.categorySlug] = xPosition
     }
 }
