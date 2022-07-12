@@ -16,6 +16,7 @@ import UIKit
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             jetpackBadgeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+        selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
