@@ -1225,6 +1225,9 @@
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Blogging Reminders";
 
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dismiss";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Bold";
@@ -2520,7 +2523,6 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Dismiss";
 
@@ -4662,6 +4664,9 @@
 
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media Uploads";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Dimiss";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -9281,6 +9286,9 @@
 
 /* Example Reader feed title */
 "Web News" = "Web News";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Dismiss";
 
 /* Title of a button. A call to action to view more stats for this week */
 "Week" = "Week";
