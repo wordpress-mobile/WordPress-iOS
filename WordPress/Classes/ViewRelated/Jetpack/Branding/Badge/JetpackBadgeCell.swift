@@ -2,13 +2,23 @@ import UIKit
 
 @objc class JetpackBadgeCell: UITableViewCell {
 
-    @objc func configure() {
-        let jetpackBadgeButton = JetpackButton.makeDefaultBadge()
-        contentView.addSubview(jetpackBadgeButton)
+    private lazy var jetpackBadgeButton: JetpackButton = {
+        let jetpackBadgeButton = JetpackButton(style: .badge)
+        jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
+        return jetpackBadgeButton
+    }()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .listBackground
+        contentView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             jetpackBadgeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
