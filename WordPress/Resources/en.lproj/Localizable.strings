@@ -1993,9 +1993,6 @@
 "Copied block" = "Copied block";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copy block";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
 
 /* Copy the post url and paste anywhere in phone
@@ -5373,6 +5370,9 @@
 "Oops!" = "Oops!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Opacity";
+
+/* No comment provided by engineer. */
 "OPEN" = "OPEN";
 
 /* No comment provided by engineer. */
@@ -8738,6 +8738,12 @@
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Upgrade Focus: VideoPress For Weddings";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Upgrade your plan to upload audio";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Upgrade your plan to use video covers";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
