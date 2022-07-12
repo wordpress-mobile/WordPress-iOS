@@ -164,7 +164,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             jetpackBadgeView.isHidden = true
             return
         }
-        let jetpackBadgeButton = JetpackButton.makeDefaultBadge()
+        let jetpackBadgeButton = JetpackButton(style: .badge)
+        jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackBadgeView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
