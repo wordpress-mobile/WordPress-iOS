@@ -1,11 +1,3 @@
-//
-//  SuggestionsViewModel.swift
-//  WordPress
-//
-//  Created by Salim Braksa on 10/7/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import Foundation
 
 @objc final class SuggestionViewModel: NSObject {
