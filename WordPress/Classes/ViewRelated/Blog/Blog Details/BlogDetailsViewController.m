@@ -1161,7 +1161,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (section.category == BlogDetailsSectionCategoryJetpackBadge) {
         JetpackBadgeCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBadgeCellIdentifier];
-        [cell configure];
         return cell;
     }
 
