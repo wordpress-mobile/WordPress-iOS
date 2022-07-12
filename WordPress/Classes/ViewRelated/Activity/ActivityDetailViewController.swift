@@ -169,7 +169,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         jetpackBadgeView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
-            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor, constant: 14)
+            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor)
         ])
         jetpackBadgeView.backgroundColor = .listBackground
     }
