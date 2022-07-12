@@ -28,8 +28,6 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
-TESTS_EXIT_STATUS=$?
 RUN=10
 TESTS_EXIT_STATUS=0
 for i in $(seq $RUN); do
