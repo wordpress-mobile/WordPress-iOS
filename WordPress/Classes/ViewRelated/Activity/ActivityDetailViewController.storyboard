@@ -158,7 +158,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BXA-iq-lC2">
-                                <rect key="frame" x="16" y="330.5" width="343" height="48"/>
+                                <rect key="frame" x="16" y="330.5" width="343" height="0.0"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xW5-sj-AVr" customClass="MultilineButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
@@ -170,7 +170,7 @@
                                             <action selector="warningTapped:" destination="yav-nF-cx7" eventType="touchUpInside" id="XPM-6H-44L"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vfz-Oz-LdY">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vfz-Oz-LdY">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="48"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>

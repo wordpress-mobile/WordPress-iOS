@@ -161,9 +161,9 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
     private func setupJetpackBadge() {
         guard AppConfiguration.isWordPress else {
-            jetpackBadgeView.isHidden = true
             return
         }
+        jetpackBadgeView.isHidden = false
         let jetpackBadgeButton = JetpackButton(style: .badge)
         jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackBadgeView.addSubview(jetpackBadgeButton)
