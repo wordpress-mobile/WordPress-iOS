@@ -78,15 +78,15 @@ class JetpackButton: UIButton {
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.minimumScaleFactor = Appearance.minimumScaleFactor
         titleLabel?.adjustsFontSizeToFitWidth = true
-        setImage(.gridicon(.plans, size: CGSize(width: 24, height: 24)), for: .normal)
+        setImage(.gridicon(.plans), for: .normal)
         contentVerticalAlignment = .fill
-        contentHorizontalAlignment = .fill
-        contentMode = .scaleAspectFill
+        contentHorizontalAlignment = .center
+        contentMode = .scaleAspectFit
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
 
         // sets the background of the jp logo to white
-        if let imageView = imageView, !traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+        if let imageView = imageView {
             imageView.contentMode = .scaleAspectFit
             insertSubview(imageBackgroundView, belowSubview: imageView)
             imageBackgroundView.clipsToBounds = true
@@ -119,11 +119,6 @@ class JetpackButton: UIButton {
         if style == .badge {
             layer.cornerRadius = frame.height / 2
             layer.cornerCurve = .continuous
-        }
-        // TODO: this has an issue with accessibility sizes, still WIP
-        if let imageView = imageView {
-            let newFrame = CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y, width: imageView.frame.height, height: imageView.frame.height)
-            imageView.frame = newFrame
         }
     }
 }
