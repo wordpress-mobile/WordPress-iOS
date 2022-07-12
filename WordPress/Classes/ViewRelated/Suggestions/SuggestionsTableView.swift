@@ -13,10 +13,6 @@ extension SuggestionType {
 
     // MARK: - API
 
-    @objc convenience init(viewModel: SuggestionsListViewModelType, delegate: SuggestionsTableViewDelegate) {
-        self.init(anyViewModel: viewModel, delegate: delegate)
-    }
-
     /// Returns the a list of prominent suggestions excluding the current user.
     static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorId: NSNumber?, defaultAccountId: NSNumber?) -> [NSNumber] {
         return [postAuthorId, commentAuthorId].compactMap { $0 != defaultAccountId ? $0 : nil }

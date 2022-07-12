@@ -5,10 +5,12 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
     SuggestionTypeXpost
 };
 
+@protocol SuggestionsListViewModelType;
 @protocol SuggestionsTableViewDelegate;
 
 @interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, nonnull, strong, readonly) id <SuggestionsListViewModelType> viewModel;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic) BOOL useTransparentHeader;
@@ -16,12 +18,11 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 @property (nonatomic) BOOL showLoading;
 
 - (nonnull instancetype)initWithSiteID:(NSNumber *_Nullable)siteID
-                         suggestionType:(SuggestionType)suggestionType
-                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
+                        suggestionType:(SuggestionType)suggestionType
+                              delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
 
-/// Don't use this initializer, it was created to workaround an ObjC / Swift Interoperability issue.
-- (nonnull instancetype) initWithAnyViewModel:(id _Nonnull)viewModel
-                                     delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
+- (nonnull instancetype) initWithViewModel:(id <SuggestionsListViewModelType>_Nonnull)viewModel
+                                  delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
 
 /**
   Enables or disables the SuggestionsTableView component.

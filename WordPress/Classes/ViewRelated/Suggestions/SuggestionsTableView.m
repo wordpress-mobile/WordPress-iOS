@@ -15,7 +15,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 @property (nonatomic, strong) UIView *separatorView;
 @property (nonatomic, strong) NSLayoutConstraint *headerMinimumHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
-@property (nonatomic, nonnull, strong) id<SuggestionsListViewModelType> viewModel;
 
 @end
 
@@ -30,11 +29,11 @@ CGFloat const STVSeparatorHeight = 1.f;
     NSManagedObjectContext *contextManager = [ContextManager sharedInstance].mainContext;
     SuggestionsListViewModel *viewModel = [[SuggestionsListViewModel alloc] initWithSiteID:siteID context:contextManager];
     viewModel.suggestionType = suggestionType;
-    return [self initWithAnyViewModel:viewModel delegate:suggestionsDelegate];
+    return [self initWithViewModel:viewModel delegate:suggestionsDelegate];
 }
 
-- (instancetype)initWithAnyViewModel:(id)viewModel
-                            delegate:(id<SuggestionsTableViewDelegate>)suggestionsDelegate
+- (nonnull instancetype) initWithViewModel:(id <SuggestionsListViewModelType>)viewModel
+                                  delegate:(id <SuggestionsTableViewDelegate>)suggestionsDelegate
 {
     self = [super initWithFrame:CGRectZero];
     if (self) {
