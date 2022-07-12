@@ -11,6 +11,13 @@ class JetpackButton: UIButton {
 
     private let style: ButtonStyle
 
+    private lazy var imageBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = imageBackgroundColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     init(style: ButtonStyle) {
         self.style = style
         super.init(frame: .zero)
@@ -27,7 +34,7 @@ class JetpackButton: UIButton {
             return UIColor(light: .muriel(color: .jetpackGreen, .shade40),
                            dark: .muriel(color: .jetpackGreen, .shade90))
         case .banner:
-                return .clear
+            return .clear
         }
     }
 
@@ -63,62 +70,60 @@ class JetpackButton: UIButton {
     private func configureButton() {
         // TODO: Remove this when the modal presentation is added
         isUserInteractionEnabled = false
-        setTitle(Appearance.jetpackBadgeTitle, for: .normal)
+        setTitle(Appearance.title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
         setTitleColor(buttonTitleColor, for: .normal)
-        titleLabel?.font = Appearance.jetpackBadgeFont
+        titleLabel?.font = Appearance.titleFont
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.minimumScaleFactor = Appearance.minimumScaleFactor
         titleLabel?.adjustsFontSizeToFitWidth = true
-        setImage(.gridicon(.plans, size: Appearance.jetpackIconSize), for: .normal)
-        imageEdgeInsets = Appearance.jetpackIconInsets
+        setImage(.gridicon(.plans, size: CGSize(width: 24, height: 24)), for: .normal)
+        contentVerticalAlignment = .fill
+        contentHorizontalAlignment = .fill
+        contentMode = .scaleAspectFill
+        imageEdgeInsets = Appearance.iconInsets
+        contentEdgeInsets = Appearance.contentInsets
 
         // sets the background of the jp logo to white
-        if let imageView = imageView {
-            let view = UIView()
-            view.backgroundColor = imageBackgroundColor
-            view.translatesAutoresizingMaskIntoConstraints = false
-            insertSubview(view, belowSubview: imageView)
-            view.layer.cornerRadius = Appearance.jetpackIconBackgroundSize.width / 2
-            view.clipsToBounds = true
+        if let imageView = imageView, !traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            imageView.contentMode = .scaleAspectFit
+            insertSubview(imageBackgroundView, belowSubview: imageView)
+            imageBackgroundView.clipsToBounds = true
             NSLayoutConstraint.activate([
-                view.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-                view.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-                view.heightAnchor.constraint(equalToConstant: Appearance.jetpackIconBackgroundSize.height),
-                view.widthAnchor.constraint(equalToConstant: Appearance.jetpackIconBackgroundSize.width)
+                imageBackgroundView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+                imageBackgroundView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+                imageBackgroundView.heightAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
+                imageBackgroundView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
             ])
         }
     }
 
     private enum Appearance {
-        static let jetpackBadgeTitle = NSLocalizedString("Jetpack powered",
-                                                         comment: "Title of the Jetpack powered badge.")
-        static let defaultButtonHeight: CGFloat = 34
-        static let defaultButtonWidth: CGFloat = 180
-        static let jetpackBadgeFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let title = NSLocalizedString("Jetpack powered",
+                                             comment: "Title of the Jetpack powered badge.")
         static let minimumScaleFactor: CGFloat = 0.6
-        static let jetpackIconSize = CGSize(width: 24, height: 24)
-        static let jetpackIconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        static let jetpackIconBackgroundSize = CGSize(width: 20, height: 20)
+        static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
+        static let maximumFontPointSize: CGFloat = 30
+        static let imageBackgroundViewMultiplier: CGFloat = 0.8
+        static var titleFont: UIFont {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            return UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+        }
     }
-}
 
-/// Default "Jetpack powered" badge
-extension JetpackButton {
-
-    /// Instantiates the default, fixed size "Jetpack powered" badge (`width: 180`, `height: 34`).
-    /// You should not set width or height constraints on this instance.
-    /// If you need to do so, create your own `JetpackButton` instance, instead.
-    /// - Returns: an instance of JetpackButton of with `.badge` style and fixed size and rounded corners.
-    static func makeDefaultBadge() -> JetpackButton {
-        let button = JetpackButton(style: .badge)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Appearance.defaultButtonHeight / 2
-        NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(equalToConstant: Appearance.defaultButtonHeight),
-            button.widthAnchor.constraint(equalToConstant: Appearance.defaultButtonWidth)
-        ])
-        return button
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageBackgroundView.layer.cornerRadius = imageBackgroundView.frame.height / 2
+        if style == .badge {
+            layer.cornerRadius = frame.height / 2
+            layer.cornerCurve = .continuous
+        }
+        // TODO: this has an issue with accessibility sizes, still WIP
+        if let imageView = imageView {
+            let newFrame = CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y, width: imageView.frame.height, height: imageView.frame.height)
+            imageView.frame = newFrame
+        }
     }
 }
