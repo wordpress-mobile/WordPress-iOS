@@ -232,6 +232,12 @@ extension Notification {
         return metaIds?[MetaKeys.Comment] as? NSNumber
     }
 
+    /// Comment Author ID, if any.
+    ///
+    @objc var metaCommentAuthorID: NSNumber? {
+        return metaIds?[MetaKeys.User] as? NSNumber
+    }
+
     /// Comment Parent ID, if any.
     ///
     @objc var metaParentID: NSNumber? {
@@ -392,6 +398,7 @@ extension Notification {
         static let Site     = "site"
         static let Post     = "post"
         static let Comment  = "comment"
+        static let User     = "user"
         static let Parent   = "parent_comment"
         static let Reply    = "reply_comment"
         static let Home     = "home"
