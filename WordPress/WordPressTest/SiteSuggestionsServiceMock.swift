@@ -1,11 +1,3 @@
-//
-//  SiteSuggestionServiceMock.swift
-//  WordPressTest
-//
-//  Created by Salim Braksa on 13/7/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import Foundation
 
 @testable import WordPress
