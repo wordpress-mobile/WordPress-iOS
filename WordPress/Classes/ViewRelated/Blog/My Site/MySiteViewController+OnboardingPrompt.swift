@@ -17,7 +17,7 @@ extension MySiteViewController {
         case .stats:
             // Show the stats view for the current blog
             if let blog = blog {
-                StatsViewController.show(for: blog, from: self)
+                WPTabBarController.sharedInstance().mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
             }
         case .writing:
             // Open the editor
