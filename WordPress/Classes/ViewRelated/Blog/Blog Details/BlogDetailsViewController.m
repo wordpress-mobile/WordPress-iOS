@@ -28,7 +28,6 @@ static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSec
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
-static NSString *const BlogDetailsJetpackBadgeCellIdentifier = @"BlogDetailsJetpackBadgeCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -353,7 +352,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
-    [self.tableView registerClass:[JetpackBadgeCell class] forCellReuseIdentifier:BlogDetailsJetpackBadgeCellIdentifier];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
@@ -761,10 +759,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self.blog supports:BlogFeatureRemovable]) {
         [marr addObject:[self removeSiteSectionViewModel]];
     }
-    // do not show the badge in the split screen master view
-    if ([[self traitCollection] horizontalSizeClass] == UIUserInterfaceSizeClassCompact && [AppConfiguration isWordPress] && [self.blog isHostedAtWPcom]) {
-        [marr addObject:[self jetpackBadgeSectionViewModel]];
-    }
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
@@ -1156,11 +1150,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (section.category == BlogDetailsSectionCategoryQuickStart) {
         QuickStartCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickStartCellIdentifier];
         [cell configureWithBlog:self.blog viewController:self];
-        return cell;
-    }
-
-    if (section.category == BlogDetailsSectionCategoryJetpackBadge) {
-        JetpackBadgeCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBadgeCellIdentifier];
         return cell;
     }
 

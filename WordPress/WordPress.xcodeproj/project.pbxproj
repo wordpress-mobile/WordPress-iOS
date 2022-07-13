@@ -552,7 +552,6 @@
 		3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */; };
 		3F3B23C42858A1D800CACE60 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C32858A1D800CACE60 /* BuildkiteTestCollector */; };
-		3F3BA3CB2874F90700744958 /* JetpackBadgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BA3CA2874F90700744958 /* JetpackBadgeCell.swift */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
 		3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */; };
 		3F3DD0AF26FCDA3100F5F121 /* PresentationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */; };
@@ -579,8 +578,6 @@
 		3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A1E254213B60048A9E4 /* VerticalCard.swift */; };
 		3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A2E254216550048A9E4 /* FlexibleCard.swift */; };
 		3F5AAC242877791900AEF5DD /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
-		3F5AAC252877791E00AEF5DD /* BlogDetailsViewController+JetpackBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED4287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift */; };
-		3F5AAC262877792100AEF5DD /* JetpackBadgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BA3CA2874F90700744958 /* JetpackBadgeCell.swift */; };
 		3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */; };
 		3F5B3EB123A851480060FF1F /* ReaderReblogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */; };
 		3F5C861A25C9EA2500BABE64 /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
@@ -704,7 +701,6 @@
 		3FEC241525D73E8B007AFE63 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEC241425D73E8B007AFE63 /* ConfettiView.swift */; };
 		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		3FFA5ED22876152E00830E28 /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
-		3FFA5ED5287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED4287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
 		400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */; };
@@ -5536,7 +5532,6 @@
 		3F3087C324EDB7040087B548 /* AnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementCell.swift; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
 		3F39C93427A09927001EC300 /* TracksLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksLogger.swift; sourceTree = "<group>"; };
-		3F3BA3CA2874F90700744958 /* JetpackBadgeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBadgeCell.swift; sourceTree = "<group>"; };
 		3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStore.swift; sourceTree = "<group>"; };
 		3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataStoreTests.swift; sourceTree = "<group>"; };
 		3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationButton.swift; sourceTree = "<group>"; };
@@ -5628,7 +5623,6 @@
 		3FEC241425D73E8B007AFE63 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ReaderTabNavigation.swift"; sourceTree = "<group>"; };
 		3FFA5ED12876152E00830E28 /* JetpackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackButton.swift; sourceTree = "<group>"; };
-		3FFA5ED4287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+JetpackBadge.swift"; sourceTree = "<group>"; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitsSummaryStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -9695,8 +9689,6 @@
 		3F3BA3C72874CCD200744958 /* Badge */ = {
 			isa = PBXGroup;
 			children = (
-				3FFA5ED4287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift */,
-				3F3BA3CA2874F90700744958 /* JetpackBadgeCell.swift */,
 			);
 			path = Badge;
 			sourceTree = "<group>";
@@ -18696,7 +18688,6 @@
 				FE3E83E526A58646008CE851 /* ListSimpleOverlayView.swift in Sources */,
 				98B88452261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */,
 				E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */,
-				3F3BA3CB2874F90700744958 /* JetpackBadgeCell.swift in Sources */,
 				8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */,
 				3F8CBE0B24EEB0EA00F71234 /* AnnouncementsDataSource.swift in Sources */,
 				7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */,
@@ -19313,7 +19304,6 @@
 				FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */,
-				3FFA5ED5287752B500830E28 /* BlogDetailsViewController+JetpackBadge.swift in Sources */,
 				17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				98DCF4A5275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
 				176E194725C465F70058F1C5 /* UnifiedPrologueViewController.swift in Sources */,
@@ -20868,7 +20858,6 @@
 				086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */,
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
 				17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
-				3F5AAC252877791E00AEF5DD /* BlogDetailsViewController+JetpackBadge.swift in Sources */,
 				FABB21E82602FC2C00C8785C /* FormattableContentRange.swift in Sources */,
 				FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */,
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
@@ -21311,7 +21300,6 @@
 				FABB234E2602FC2C00C8785C /* ReaderMenuAction.swift in Sources */,
 				FABB234F2602FC2C00C8785C /* PostSharingController.swift in Sources */,
 				FABB23502602FC2C00C8785C /* LongPressGestureLabel.swift in Sources */,
-				3F5AAC262877792100AEF5DD /* JetpackBadgeCell.swift in Sources */,
 				FABB23512602FC2C00C8785C /* NoResultsStockPhotosConfiguration.swift in Sources */,
 				FABB23522602FC2C00C8785C /* String+Files.swift in Sources */,
 				FABB23532602FC2C00C8785C /* UIImage+Export.swift in Sources */,
