@@ -2248,6 +2248,10 @@
 		C352870627FDD35C004E2E51 /* SiteNameStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352870427FDD35C004E2E51 /* SiteNameStep.swift */; };
 		C35D4FF1280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
 		C35D4FF2280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
+		C36B60A2287F8B55004A050C /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
+		C36B60A3287F8B96004A050C /* SuggestionServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */; };
+		C36B60A4287F8BA0004A050C /* SiteSuggestionsServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */; };
+		C36B60A5287F8BAD004A050C /* site-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F4426FDA287F066400218003 /* site-suggestions.json */; };
 		C373D6E728045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6EA280452F6008F8C26 /* SiteIntentDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */; };
@@ -17050,6 +17054,7 @@
 				FABB202B2602FC2C00C8785C /* CollapsableHeaderViewController.xib in Resources */,
 				FABB202C2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.xib in Resources */,
 				C77FC90C28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */,
+				C36B60A5287F8BAD004A050C /* site-suggestions.json in Resources */,
 				FABB202D2602FC2C00C8785C /* PostingActivityMonth.xib in Resources */,
 				FABB202E2602FC2C00C8785C /* Menus.storyboard in Resources */,
 				FABB202F2602FC2C00C8785C /* CountriesMapView.xib in Resources */,
@@ -20615,6 +20620,7 @@
 				FABB210D2602FC2C00C8785C /* PersonHeaderCell.swift in Sources */,
 				FABB210E2602FC2C00C8785C /* SuggestionService.swift in Sources */,
 				FABB210F2602FC2C00C8785C /* WordPress-41-42.xcmappingmodel in Sources */,
+				C36B60A4287F8BA0004A050C /* SiteSuggestionsServiceMock.swift in Sources */,
 				24351255264DCA08009BB2B6 /* Secrets.swift in Sources */,
 				98A047732821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */,
 				FABB21102602FC2C00C8785C /* MySiteViewController+FAB.swift in Sources */,
@@ -21604,6 +21610,7 @@
 				FABB24472602FC2C00C8785C /* SignupEpilogueTableViewController.swift in Sources */,
 				FABB24482602FC2C00C8785C /* MyProfileViewController.swift in Sources */,
 				3FE3D1FF26A6F56700F3CD10 /* Comment+Interface.swift in Sources */,
+				C36B60A2287F8B55004A050C /* SuggestionsListViewModelTests.swift in Sources */,
 				FABB24492602FC2C00C8785C /* CreateButtonActionSheet.swift in Sources */,
 				FABB244A2602FC2C00C8785C /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11942624C78900346EC6 /* Routes+Start.swift in Sources */,
@@ -22116,6 +22123,7 @@
 				FABB25E32602FC2C00C8785C /* RouteMatcher.swift in Sources */,
 				FABB25E42602FC2C00C8785C /* WPGUIConstants.m in Sources */,
 				FABB25E52602FC2C00C8785C /* UIColor+Notice.swift in Sources */,
+				C36B60A3287F8B96004A050C /* SuggestionServiceMock.swift in Sources */,
 				FABB25E62602FC2C00C8785C /* JetpackBackupOptionsCoordinator.swift in Sources */,
 				FABB25E72602FC2C00C8785C /* PluginStore.swift in Sources */,
 				FABB25E82602FC2C00C8785C /* JetpackBackupStatusViewController.swift in Sources */,
