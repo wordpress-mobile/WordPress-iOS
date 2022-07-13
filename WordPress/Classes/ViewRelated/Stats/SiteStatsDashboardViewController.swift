@@ -84,6 +84,7 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureInsightsTableView()
+        configurePeriodTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
@@ -95,6 +96,11 @@ class SiteStatsDashboardViewController: UIViewController {
 
     func configureInsightsTableView() {
         insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
+        insightsTableViewController.bannerView = jetpackBannerView
+    }
+
+    private func configurePeriodTableViewController() {
+        periodTableViewController.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
