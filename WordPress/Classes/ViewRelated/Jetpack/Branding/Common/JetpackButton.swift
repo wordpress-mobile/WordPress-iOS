@@ -84,16 +84,20 @@ class JetpackButton: UIButton {
         contentMode = .scaleAspectFit
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
+        imageView?.contentMode = .scaleAspectFit
+        // banners are tipycally constrained in height, so we don't want the image to grow freely
+        if style == .badge {
+            adjustsImageSizeForAccessibilityContentSizeCategory = true
+        }
 
         // sets the background of the jp logo to white
         if let imageView = imageView {
-            imageView.contentMode = .scaleAspectFit
             insertSubview(imageBackgroundView, belowSubview: imageView)
             imageBackgroundView.clipsToBounds = true
             NSLayoutConstraint.activate([
                 imageBackgroundView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
                 imageBackgroundView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-                imageBackgroundView.heightAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
+                imageBackgroundView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
                 imageBackgroundView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
             ])
         }
@@ -106,7 +110,7 @@ class JetpackButton: UIButton {
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
         static let maximumFontPointSize: CGFloat = 30
-        static let imageBackgroundViewMultiplier: CGFloat = 0.8
+        static let imageBackgroundViewMultiplier: CGFloat = 0.75
         static var titleFont: UIFont {
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
             return UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
