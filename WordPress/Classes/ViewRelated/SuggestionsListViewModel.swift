@@ -46,7 +46,8 @@ import Foundation
     @objc private(set) var isLoading = false
     @objc private(set) var items = [SuggestionViewModel]()
 
-    private var suggestions = Suggestions.users([])
+    private(set) var suggestions = Suggestions.users([])
+
     private var searchResult = Suggestions.users([])
 
     var suggestionTrigger: String {
@@ -191,6 +192,13 @@ extension SuggestionsListViewModel {
     enum Suggestions {
         case users([UserSuggestion])
         case sites([SiteSuggestion])
+
+        var users: [UserSuggestion] {
+            switch self {
+            case .users(let suggestions): return suggestions
+            default: return []
+            }
+        }
 
         var array: [Any] {
             switch self {
