@@ -14,6 +14,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         let blog = Blog(context: context)
         let viewModel = SuggestionsListViewModel(blog: blog)
         viewModel.context = context
+        viewModel.suggestionType = .mention
         viewModel.userSuggestionService = SuggestionsServiceMock()
         viewModel.reloadData()
         self.userSuggestions = viewModel.suggestions.users
@@ -23,11 +24,11 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     // MARK: - Test suggestions array
 
     /// Tests that suggestions array is loaded.
-    func testSuggestionsCount() {
+    func testUserSuggestionsCount() {
         XCTAssertEqual(userSuggestions.count, 100)
     }
 
-    // MARK: - Test showSuggestions(forWord:) -> Bool
+    // MARK: - Test searchSuggestions(forWord:) -> Bool
 
     /// Tests that the seach result is empty when an empty word is provided
     func testSearchSuggestionsWithEmptyWord() {
@@ -87,7 +88,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     }
 
     /// Tests that the seach result has a few matches with one prominent suggestion at the top
-    func testShowSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
+    func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
         let expectedSuggestions = suggestionViewModels(fromIds: [88, 17, 22, 38, 44, 71, 80, 81, 91], in: userSuggestions)
@@ -103,7 +104,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     }
 
     /// Tests that the seach result has a few matches with two prominent suggestions at the top
-    func testShowSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
+    func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
         let expectedSuggestions = suggestionViewModels(fromIds: [91, 88, 17, 22, 38, 44, 71, 80, 81], in: userSuggestions)

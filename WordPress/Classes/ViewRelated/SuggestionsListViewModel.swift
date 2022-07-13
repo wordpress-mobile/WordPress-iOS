@@ -200,6 +200,13 @@ extension SuggestionsListViewModel {
             }
         }
 
+        var sites: [SiteSuggestion] {
+            switch self {
+            case .sites(let suggestions): return suggestions
+            default: return []
+            }
+        }
+
         var array: [Any] {
             switch self {
             case .users(let array): return array
