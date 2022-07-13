@@ -12,7 +12,6 @@ class LoginTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-
         removeApp()
     }
 

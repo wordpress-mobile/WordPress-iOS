@@ -16,7 +16,6 @@ class EditorGutenbergTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-
         removeApp()
     }
 
