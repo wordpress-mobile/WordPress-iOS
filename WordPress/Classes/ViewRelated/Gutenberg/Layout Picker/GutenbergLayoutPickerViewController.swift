@@ -13,7 +13,6 @@ class GutenbergLayoutSection: CategorySection {
 
     var section: PageTemplateCategory
     var layouts: [PageTemplateLayout]
-    var scrollOffset: CGPoint
     var thumbnailSize: CGSize
 
     var title: String { section.title }
@@ -26,7 +25,6 @@ class GutenbergLayoutSection: CategorySection {
         let layouts = Array(section.layouts ?? []).sorted()
         self.section = section
         self.layouts = layouts
-        self.scrollOffset = .zero
         self.thumbnailSize = thumbnailSize
     }
 }
