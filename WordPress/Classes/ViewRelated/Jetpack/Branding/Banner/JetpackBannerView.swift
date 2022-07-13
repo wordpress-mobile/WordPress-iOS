@@ -5,7 +5,6 @@ class JetpackBannerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -18,7 +17,6 @@ class JetpackBannerView: UIView {
     }
 
     func setup() {
-
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)

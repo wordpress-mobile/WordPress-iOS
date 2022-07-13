@@ -38,7 +38,6 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
     @IBOutlet weak var jetpackBadgeView: UIView!
 
-
     //TODO: remove!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
@@ -169,7 +168,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         jetpackBadgeView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
-            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor)
+            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor),
+            jetpackBadgeButton.widthAnchor.constraint(lessThanOrEqualTo: jetpackBadgeView.widthAnchor)
         ])
         jetpackBadgeView.backgroundColor = .listBackground
     }

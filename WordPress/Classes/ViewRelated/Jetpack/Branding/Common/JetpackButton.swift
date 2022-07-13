@@ -80,7 +80,6 @@ class JetpackButton: UIButton {
         titleLabel?.adjustsFontSizeToFitWidth = true
         setImage(.gridicon(.plans), for: .normal)
         contentVerticalAlignment = .fill
-        contentHorizontalAlignment = .center
         contentMode = .scaleAspectFit
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
