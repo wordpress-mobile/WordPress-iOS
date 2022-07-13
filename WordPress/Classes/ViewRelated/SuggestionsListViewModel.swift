@@ -207,13 +207,6 @@ extension SuggestionsListViewModel {
             }
         }
 
-        var array: [Any] {
-            switch self {
-            case .users(let array): return array
-            case .sites(let array): return array
-            }
-        }
-
         var count: Int {
             return array.count
         }
@@ -231,6 +224,13 @@ extension SuggestionsListViewModel {
                 return .users(NSMutableArray(array: array).filtered(using: predicate) as! [UserSuggestion])
             case .sites(let array):
                 return .sites(NSMutableArray(array: array).filtered(using: predicate) as! [SiteSuggestion])
+            }
+        }
+
+        private var array: [Any] {
+            switch self {
+            case .users(let array): return array
+            case .sites(let array): return array
             }
         }
     }

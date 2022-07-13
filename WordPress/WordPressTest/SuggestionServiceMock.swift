@@ -1,16 +1,8 @@
-//
-//  SuggestionsServiceMock.swift
-//  WordPressTest
-//
-//  Created by Salim Braksa on 12/7/2022.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import Foundation
 
 @testable import WordPress
 
-final class SuggestionsServiceMock: SuggestionService {
+final class SuggestionServiceMock: SuggestionService {
 
     override func suggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
         do {

@@ -15,7 +15,8 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         let viewModel = SuggestionsListViewModel(blog: blog)
         viewModel.context = context
         viewModel.suggestionType = .mention
-        viewModel.userSuggestionService = SuggestionsServiceMock()
+        viewModel.userSuggestionService = SuggestionServiceMock()
+        viewModel.siteSuggestionService = SiteSuggestionServiceMock()
         viewModel.reloadData()
         self.userSuggestions = viewModel.suggestions.users
         self.viewModel = viewModel
@@ -23,12 +24,51 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     // MARK: - Test suggestions array
 
-    /// Tests that suggestions array is loaded.
+    /// Tests that the site suggestions array is loaded.
+    func testSiteSuggestionsCount() {
+        self.viewModel.suggestionType = .xpost
+        self.viewModel.reloadData()
+        XCTAssertEqual(viewModel.suggestions.sites.count, 5)
+    }
+
+    /// Tests that the user suggestions array is loaded.
     func testUserSuggestionsCount() {
         XCTAssertEqual(userSuggestions.count, 100)
     }
 
     // MARK: - Test searchSuggestions(forWord:) -> Bool
+
+    /// Tests that the search result for site suggestions returns all suggestions when +  sign is provided
+    func testSearchSiteSuggestionsWithPlusSign() {
+        // Given
+        let word = "+"
+        self.viewModel.suggestionType = .xpost
+        self.viewModel.reloadData()
+        let expectedResult = viewModel.suggestions.sites.map { SuggestionViewModel(suggestion: $0) }
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.items))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the search result for site suggestions returns an exact match
+    func testSearchSiteSuggestionsWithExactMatch() {
+        // Given
+        let word = "+bitwolf"
+        self.viewModel.suggestionType = .xpost
+        self.viewModel.reloadData()
+        let expectedResult = SuggestionViewModel(suggestion: viewModel.suggestions.sites[2])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.items[0]))
+        XCTAssertTrue(result)
+    }
 
     /// Tests that the seach result is empty when an empty word is provided
     func testSearchSuggestionsWithEmptyWord() {
