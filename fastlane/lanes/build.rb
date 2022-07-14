@@ -96,47 +96,7 @@ platform :ios do
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
 
-    sentry_check_cli_installed
-    appstore_code_signing
-
-    gym(
-      scheme: 'WordPress',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      export_options: { method: 'app-store' }
-    )
-
-    testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    next unless options[:create_release]
-
-    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
-    zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
-
-    version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
-    create_release(
-      repository: GHHELPER_REPO,
-      version: version,
-      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-      release_assets: archive_zip_path.to_s,
-      prerelease: options[:beta_release]
-    )
-
-    FileUtils.rm_rf(archive_zip_path)
+    UI.success 'There should be no logs from `ios_build_preflight` or `ios_build_prechecks` above this line in CI'
   end
 
   # Builds the Jetpack app and uploads it to TestFlight, for beta-testing or final release
@@ -185,38 +145,7 @@ platform :ios do
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
 
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
-    )
-
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    UI.success 'There should be no logs from `ios_build_preflight` or `ios_build_prechecks` above this line in CI'
   end
 
   # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to App Center
