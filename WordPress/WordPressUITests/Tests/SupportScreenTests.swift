@@ -4,7 +4,6 @@ import XCTest
 class SupportScreenTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
-        try LoginFlow.logoutIfNeeded()
     }
 
     override func tearDownWithError() throws {

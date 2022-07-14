@@ -6,8 +6,6 @@ class LoginTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()
-
-        try LoginFlow.logoutIfNeeded()
     }
 
     override func tearDownWithError() throws {
