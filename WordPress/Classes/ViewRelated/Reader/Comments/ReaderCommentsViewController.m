@@ -735,8 +735,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     NSNumber *defaultAccountId = defaultAccount ? defaultAccount.userID : nil;
     NSNumber *postAuthorId = self.post ? self.post.authorID : nil;
     Comment *comment = commentIndexPath ? [self.tableViewHandler.resultsController objectAtIndexPath:commentIndexPath] : nil;
+    NSNumber *commentAuthorId = comment ? [NSNumber numberWithInt:comment.authorID] : nil;
     self.suggestionsTableView.prominentSuggestionsIds = [SuggestionsTableView prominentSuggestionsFromPostAuthorId:postAuthorId
-                                                                                                 commentAuthorId:[NSNumber numberWithInt:comment.authorID]
+                                                                                                 commentAuthorId:commentAuthorId
                                                                                                   defaultAccountId:defaultAccountId];
 }
 
