@@ -56,6 +56,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)setProminentSuggestionsIds:(NSArray<NSNumber *> *)prominentSuggestionsIds
 {
+    _prominentSuggestionsIds = prominentSuggestionsIds;
     self.viewModel.prominentSuggestionsIds = prominentSuggestionsIds;
 }
 
