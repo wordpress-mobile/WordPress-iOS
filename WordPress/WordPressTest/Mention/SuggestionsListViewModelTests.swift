@@ -10,13 +10,13 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     // MARK: - Lifecycle
 
     override func setUpWithError() throws {
-        let context = ContextManagerMock.shared.mainContext
+        let context = self.contextManager.mainContext
         let blog = Blog(context: context)
         let viewModel = SuggestionsListViewModel(blog: blog)
         viewModel.context = context
         viewModel.suggestionType = .mention
-        viewModel.userSuggestionService = SuggestionServiceMock()
-        viewModel.siteSuggestionService = SiteSuggestionServiceMock()
+        viewModel.userSuggestionService = SuggestionServiceMock(context: context)
+        viewModel.siteSuggestionService = SiteSuggestionServiceMock(context: context)
         viewModel.reloadData()
         self.userSuggestions = viewModel.suggestions.users
         self.viewModel = viewModel

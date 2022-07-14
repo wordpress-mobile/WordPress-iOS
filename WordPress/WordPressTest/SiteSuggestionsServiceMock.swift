@@ -4,9 +4,14 @@ import Foundation
 
 final class SiteSuggestionServiceMock: SiteSuggestionService {
 
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
     override func suggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
         do {
-            let context = ContextManagerMock.shared.mainContext
             let bundle = Bundle(for: SuggestionsListViewModelTests.self)
             guard let url = bundle.url(forResource: "site-suggestions", withExtension: "json") else {
                 completion([])

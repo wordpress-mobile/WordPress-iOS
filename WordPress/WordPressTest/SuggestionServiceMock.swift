@@ -1,12 +1,18 @@
 import Foundation
+import CoreData
 
 @testable import WordPress
 
 final class SuggestionServiceMock: SuggestionService {
 
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
     override func suggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
         do {
-            let context = ContextManagerMock.shared.mainContext
             let bundle = Bundle(for: SuggestionsListViewModelTests.self)
             guard let url = bundle.url(forResource: "user-suggestions", withExtension: "json") else {
                 completion([])
