@@ -48,6 +48,12 @@ import Gridicons
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
+    private lazy var bannerView: JetpackBannerView = {
+        let bannerView = JetpackBannerView()
+        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        return bannerView
+    }()
+
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
@@ -169,13 +175,29 @@ import Gridicons
     // MARK: - Configuration
 
 
-    @objc func setupSearchBar() {
+    private func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
 
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
+        searchBar.inputAccessoryView = bannerView
+        hideBannerViewIfNeeded()
+    }
+
+    /// hides the Jetpack powered banner on iPhone landscape
+    private func hideBannerViewIfNeeded() {
+        let height = UIApplication.shared.mainWindow?.frame.size.height ?? 0
+        // maximum height of any iPhone in landscape. iPads and portrait orientations
+        // all have heights greater than this one.
+        let maximumLandscapeHeight: CGFloat = 428
+        bannerView.isHidden = height <= maximumLandscapeHeight
+    }
+
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        hideBannerViewIfNeeded()
     }
 
     func configureFilterBar() {
