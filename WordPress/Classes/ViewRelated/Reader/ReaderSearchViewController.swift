@@ -180,12 +180,18 @@ import Gridicons
 
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
+        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+            return
+        }
         searchBar.inputAccessoryView = bannerView
         hideBannerViewIfNeeded()
     }
 
     /// hides the Jetpack powered banner on iPhone landscape
     private func hideBannerViewIfNeeded() {
+        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+            return
+        }
         let height = UIApplication.shared.mainWindow?.frame.size.height ?? 0
         // maximum height of any iPhone in landscape. iPads and portrait orientations
         // all have heights greater than this one.
