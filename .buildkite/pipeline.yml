@@ -16,105 +16,18 @@ common_params:
 
 # This is the default pipeline – it will build and test the app
 steps:
-
-  #################
-  # Create Installable Builds for WP and JP
-  #################
-  - group: "🛠 Installable Builds"
-    steps:
-      - label: "🛠 WordPress Installable Build"
-        command: ".buildkite/commands/installable-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Installable Build"
-
-      - label: "🛠 Jetpack Installable Build"
-        command: ".buildkite/commands/installable-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Installable Build"
-
-  #################
-  # Build the app
-  #################
-  - label: "🛠 Build for Testing"
-    key: "build"
-    command: ".buildkite/commands/build-for-testing.sh"
+  - label: ":wordpress::testflight: WordPress Release Build (App Store Connect)"
+    command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
     env: *common_env
     plugins: *common_plugins
-    notify:
-      - github_commit_status:
-          context: "Build for Testing"
 
-  #################
-  # Run Unit Tests
-  #################
-  - label: "🔬 Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build"
+  # There is no App Center emojiy
+  - label: ":wordpress::hockeyapp: WordPress Release Build (App Center)"
+    command: ".buildkite/commands/release-build-wordpress-internal.sh"
     env: *common_env
     plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
 
-  #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    steps:
-      - label: "🔬 UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
-
-      - label: "🔬 UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-
-  #################
-  # Linters
-  #################
-  - group: "Linters"
-    steps:
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-      # TODO: This ought to be run on a Docker or Ubuntu agent as there's nothing that requires macOS.
-      # It's currently in the stock setup because... it was faster to build a proof of concept for it this way;
-      # I don't know how to pass the `DANGER_GITHUB_API_TOKEN` secret that we need to a Docker agent.
-      #
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        env: *common_env
-        plugins: *common_plugins
+  - label: ":jetpack::testflight: Jetpack Release Build (App Store Connect)"
+    command: ".buildkite/commands/release-build-jetpack.sh"
+    env: *common_env
+    plugins: *common_plugins
