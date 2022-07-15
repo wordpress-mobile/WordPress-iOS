@@ -38,7 +38,6 @@ import Gridicons
 
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var filterBar: FilterTabBar!
-    @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
@@ -122,7 +121,6 @@ import Gridicons
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
-        configureLabel()
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
@@ -209,15 +207,6 @@ import Gridicons
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 
-    @objc func configureLabel() {
-        let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
-        let rawAttributes = WPNUXUtility.titleAttributes(with: .neutral(.shade50)) as! [String: Any]
-        let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
-        label.numberOfLines = 2
-        label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
-    }
-
-
     @objc func configureBackgroundTapRecognizer() {
         backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
         backgroundTapRecognizer.cancelsTouchesInView = true
@@ -231,7 +220,6 @@ import Gridicons
         guard let topic = restoredSearchTopic else {
             return
         }
-        label.isHidden = true
         searchBar.text = topic.title
         streamController?.readerTopic = topic
     }
@@ -302,8 +290,6 @@ import Gridicons
         let topic = service.searchTopic(forSearchPhrase: phrase)
         streamController.readerTopic = topic
 
-        // Hide the starting label now that a topic has been set.
-        label.isHidden = true
         endSearch()
 
         if let previousTopic = previousTopic {
