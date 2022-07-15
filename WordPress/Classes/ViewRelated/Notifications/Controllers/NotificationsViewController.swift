@@ -604,7 +604,7 @@ private extension NotificationsViewController {
     }
 
     func configureJetpackBanner() {
-        jetpackBannerView.isHidden = AppConfiguration.isJetpack
+        jetpackBannerView.isHidden = AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled
     }
 }
 
