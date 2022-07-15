@@ -9707,13 +9707,6 @@
 			path = "Blog + Me";
 			sourceTree = "<group>";
 		};
-		3F3BA3C72874CCD200744958 /* Badge */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Badge;
-			sourceTree = "<group>";
-		};
 		3F3D8548251E63DF001CA4D2 /* What's New */ = {
 			isa = PBXGroup;
 			children = (
@@ -10089,7 +10082,6 @@
 			isa = PBXGroup;
 			children = (
 				3FFA5ED32876216700830E28 /* Common */,
-				3F3BA3C72874CCD200744958 /* Badge */,
 				3FFA5ED0287612AD00830E28 /* Banner */,
 			);
 			path = Branding;
