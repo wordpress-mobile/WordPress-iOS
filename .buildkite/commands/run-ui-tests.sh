@@ -28,18 +28,23 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
-TESTS_EXIT_STATUS=$?
+RUN=20
+TESTS_EXIT_STATUS=0
+for i in $(seq $RUN); do
+    echo "--- RUN $i"
+    bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+    INDIVIDUAL_EXIT_STATUS=$?
+
+    echo "--- 📦 Zipping test results Run: $i Status: $INDIVIDUAL_EXIT_STATUS"
+    cd build/results/ && zip -rq WordPress-run-"$i"-status-"$INDIVIDUAL_EXIT_STATUS".xcresult.zip WordPress.xcresult
+    rm -rf WordPress.xcresult
+    cd ../../
+
+    if [ $INDIVIDUAL_EXIT_STATUS != 0 ]; then
+        TESTS_EXIT_STATUS=$INDIVIDUAL_EXIT_STATUS
+    fi
+done
 set -e
-
-if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
-  # Keep the (otherwise collapsed) current "Testing" section open in Buildkite logs on error. See https://buildkite.com/docs/pipelines/managing-log-output#collapsing-output
-  echo "^^^ +++"
-  echo "UI Tests failed!"
-fi
-
-echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult && cd -
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
