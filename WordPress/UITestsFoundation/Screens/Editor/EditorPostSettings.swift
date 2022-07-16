@@ -71,11 +71,22 @@ public class EditorPostSettings: ScreenObject {
         let imageCount = settingsTable.images.count
         if hasImage {
             XCTAssertTrue(imageCount == 1, "Featured image not set")
+            XCTAssertTrue(isFeaturedImageLoaded(), "Featured image is not displayed")
         } else {
             XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }
 
         return try EditorPostSettings()
+    }
+
+    private func isFeaturedImageLoaded() -> Bool {
+        var loopCount = 0
+        while changeFeaturedImageButton.frame.height.isEqual(to: 58) && loopCount < 30 {
+            sleep(1)
+            loopCount += 1
+        }
+
+        return changeFeaturedImageButton.frame.height.isEqual(to: 58) == false
     }
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
