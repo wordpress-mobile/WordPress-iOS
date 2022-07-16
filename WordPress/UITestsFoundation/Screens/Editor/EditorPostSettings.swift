@@ -85,7 +85,7 @@ public class EditorPostSettings: ScreenObject {
             sleep(1)
             loopCount += 1
         }
-
+        print("###############  loopCount: \(loopCount)  ###############")
         return changeFeaturedImageButton.frame.height.isEqual(to: 58) == false
     }
 
