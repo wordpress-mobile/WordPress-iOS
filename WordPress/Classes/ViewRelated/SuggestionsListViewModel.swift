@@ -1,18 +1,9 @@
 import Foundation
+import UIKit
 
-@objc protocol SuggestionsListViewModelType: AnyObject {
-    var suggestionType: SuggestionType { get set }
-    var prominentSuggestionsIds: [NSNumber]? { get set }
-
-    var searchResultUpdated: ((SuggestionsListViewModelType) -> Void)? { get set }
-
-    var isLoading: Bool { get }
-    var searchText: String { get }
-
-    var items: [SuggestionViewModel] { get }
-
-    func reloadData()
-    func searchSuggestions(withWord word: String) -> Bool
+@objc final class SuggestionsListSection: NSObject {
+    @objc var title: String?
+    @objc var rows: [SuggestionViewModel] = []
 }
 
 @objc final class SuggestionsListViewModel: NSObject, SuggestionsListViewModelType {
@@ -44,11 +35,11 @@ import Foundation
     // MARK: - State
 
     @objc private(set) var isLoading = false
-    @objc private(set) var items = [SuggestionViewModel]()
+    @objc private(set) var sections = [SuggestionsListSection]()
 
     private(set) var suggestions = Suggestions.users([])
 
-    private var searchResult = Suggestions.users([])
+    private var searchResult: SearchResult?
 
     var suggestionTrigger: String {
         return suggestionType.trigger
@@ -113,36 +104,37 @@ import Foundation
             )
         } else {
             self.searchText = ""
-            self.searchResult = searchResult.cleared()
+            self.searchResult = nil
         }
 
-        switch self.searchResult {
-        case .users(let users): self.items = users.map { SuggestionViewModel(suggestion: $0) }
-        case .sites(let sites):  self.items = sites.map { SuggestionViewModel(suggestion: $0) }
-        }
+        // Map searchResult to sections
+        self.sections = Self.sectionsFromSearchResult(searchResult)
 
+        // Call callback and return result
         self.searchResultUpdated?(self)
-
-        return items.count > 0
+        return sections.count > 0
     }
 
-    private static func searchResult(searchQuery: String, suggestions: Suggestions, suggestionType: SuggestionType, prominentSuggestionsIds: [NSNumber]) -> Suggestions {
-        var searchResult: Suggestions
+    private static func searchResult(searchQuery: String, suggestions: Suggestions, suggestionType: SuggestionType, prominentSuggestionsIds: [NSNumber]) -> SearchResult {
+        var suggestions = suggestions
         if !searchQuery.isEmpty {
             let predicate = Self.predicate(for: searchQuery, suggestionType: suggestionType)
-            searchResult = suggestions.filtered(using: predicate)
-        } else {
-            searchResult = suggestions
+            suggestions = suggestions.filtered(using: predicate)
         }
-        if case let .users(userSuggestions) = searchResult {
-            searchResult = .users(Self.moveProminentSuggestionsToTop(searchResults: userSuggestions, prominentSuggestionsIds: prominentSuggestionsIds))
+        switch suggestions {
+        case .users(let userSuggestions):
+            return Self.searchResultByMovingProminentSuggestionsToTop(
+                userSuggestions: userSuggestions,
+                prominentSuggestionsIds: prominentSuggestionsIds
+            )
+        case .sites(let siteSuggestions):
+            return .sites(siteSuggestions)
         }
-        return searchResult
     }
 
-    private static func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
+    private static func searchResultByMovingProminentSuggestionsToTop(userSuggestions: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> SearchResult {
         // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
-        guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
+        guard !(userSuggestions.isEmpty || ids.isEmpty) else { return .users(prominent: [], regular: userSuggestions) }
 
         // Loop through `searchResults` and find the following data:
         //
@@ -152,22 +144,49 @@ import Foundation
         //                         while maintaining their order from `prominentSuggestionsIds`.
         //
         var suggestionIndexesToRemove = [Int]()
-        var suggestionsToInsert: [UserSuggestion?] = Array(repeating: nil, count: ids.count)
-        for (index, suggestion) in searchResults.enumerated() {
+        var prominentSuggestions: [UserSuggestion?] = Array(repeating: nil, count: ids.count)
+        for (index, suggestion) in userSuggestions.enumerated() {
             guard let position = ids.firstIndex(where: { suggestion.userID == $0 }) else { continue }
             suggestionIndexesToRemove.append(index)
-            suggestionsToInsert[position] = suggestion
+            prominentSuggestions[position] = suggestion
         }
 
         // Move suggestions to the beginning of `searchResults` array.
-        var searchResults = searchResults
-        if !suggestionsToInsert.isEmpty && suggestionIndexesToRemove.count > 0 {
-            let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+        var userSuggestions = userSuggestions
+        if !prominentSuggestions.isEmpty && suggestionIndexesToRemove.count > 0 {
+            let prominentSuggestions = prominentSuggestions.compactMap { $0 }
             suggestionIndexesToRemove = suggestionIndexesToRemove.sorted(by: >)
-            suggestionIndexesToRemove.forEach { searchResults.remove(at: $0) }
-            searchResults = suggestionsToInsert + searchResults
+            suggestionIndexesToRemove.forEach { userSuggestions.remove(at: $0) }
+            return .users(prominent: prominentSuggestions, regular: userSuggestions)
+        } else {
+            return .users(prominent: [], regular: userSuggestions)
         }
-        return searchResults
+    }
+
+    private static func sectionsFromSearchResult(_ searchResult: SearchResult?) -> [Section] {
+        guard let searchResult = searchResult else { return [] }
+        switch searchResult {
+        case .users(let prominent, let regular):
+            let shouldShowSectionTitle = !prominent.isEmpty && !regular.isEmpty
+            var sections = [Section]()
+            if !prominent.isEmpty {
+                let section = Section()
+                section.title = shouldShowSectionTitle ? "In the conversation" : nil
+                section.rows = prominent.map { SuggestionViewModel(suggestion: $0) }
+                sections.append(section)
+            }
+            if !regular.isEmpty {
+                let section = Section()
+                section.title = shouldShowSectionTitle ? "Site members" : nil
+                section.rows = regular.map { SuggestionViewModel(suggestion: $0) }
+                sections.append(section)
+            }
+            return sections
+        case .sites(let sites):
+            let section = Section()
+            section.rows = sites.map { SuggestionViewModel(suggestion: $0) }
+            return [section]
+        }
     }
 
     private static func predicate(for searchQuery: String, suggestionType: SuggestionType) -> NSPredicate {
@@ -189,6 +208,13 @@ import Foundation
 
 extension SuggestionsListViewModel {
 
+    typealias Section = SuggestionsListSection
+
+    enum SearchResult {
+        case users(prominent: [UserSuggestion], regular: [UserSuggestion])
+        case sites([SiteSuggestion])
+    }
+
     enum Suggestions {
         case users([UserSuggestion])
         case sites([SiteSuggestion])
@@ -207,17 +233,6 @@ extension SuggestionsListViewModel {
             }
         }
 
-        var count: Int {
-            return array.count
-        }
-
-        func cleared() -> Suggestions {
-            switch self {
-            case .sites: return Suggestions.sites([])
-            case .users: return Suggestions.users([])
-            }
-        }
-
         func filtered(using predicate: NSPredicate) -> Suggestions {
             switch self {
             case .users(let array):
@@ -226,13 +241,5 @@ extension SuggestionsListViewModel {
                 return .sites(NSMutableArray(array: array).filtered(using: predicate) as! [SiteSuggestion])
             }
         }
-
-        private var array: [Any] {
-            switch self {
-            case .users(let array): return array
-            case .sites(let array): return array
-            }
-        }
     }
-
 }
