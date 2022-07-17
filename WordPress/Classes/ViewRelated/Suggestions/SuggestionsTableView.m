@@ -6,7 +6,7 @@
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 CGFloat const STVRowHeight = 44.f;
-CGFloat const STVSeparatorHeight = 0.f;
+CGFloat const STVSeparatorHeight = 1.f;
 
 @interface SuggestionsTableView ()
 

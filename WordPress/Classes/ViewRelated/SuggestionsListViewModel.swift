@@ -171,13 +171,13 @@ import UIKit
             var sections = [Section]()
             if !prominent.isEmpty {
                 let section = Section()
-                section.title = shouldShowSectionTitle ? "In the conversation" : nil
+                section.title = shouldShowSectionTitle ? NSLocalizedString("suggestions.section.prominent", comment: "Section title for prominent suggestions") : nil
                 section.rows = prominent.map { SuggestionViewModel(suggestion: $0) }
                 sections.append(section)
             }
             if !regular.isEmpty {
                 let section = Section()
-                section.title = shouldShowSectionTitle ? "Site members" : nil
+                section.title = shouldShowSectionTitle ? NSLocalizedString("suggestions.section.regular", comment: "Section title for regular suggestions") : nil
                 section.rows = regular.map { SuggestionViewModel(suggestion: $0) }
                 sections.append(section)
             }
