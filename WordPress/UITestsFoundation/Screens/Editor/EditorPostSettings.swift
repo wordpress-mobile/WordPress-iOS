@@ -80,13 +80,14 @@ public class EditorPostSettings: ScreenObject {
     }
 
     private func isFeaturedImageLoaded() -> Bool {
+        let noImageLoadedButtonHeight = CGFloat.init(integerLiteral: 58)
         var loopCount = 0
-        while changeFeaturedImageButton.frame.height.isEqual(to: 58) && loopCount < 30 {
+        while changeFeaturedImageButton.frame.height.isEqual(to: noImageLoadedButtonHeight) && loopCount < 30 {
             sleep(1)
             loopCount += 1
         }
 
-        return changeFeaturedImageButton.frame.height.isEqual(to: 58) == false
+        return changeFeaturedImageButton.frame.height.isEqual(to: noImageLoadedButtonHeight) == false
     }
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
