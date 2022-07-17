@@ -4,6 +4,7 @@ import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import UIKit
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -317,7 +318,7 @@ import WordPressFlux
         refreshImageRequestAuthToken()
 
         configureCloseButtonIfNeeded()
-        setupTableView()
+        setupStackView()
         setupFooterView()
         setupContentHandler()
         setupResultsStatusView()
@@ -483,26 +484,40 @@ import WordPressFlux
 
     // MARK: - Setup
 
-    private func setupTableView() {
+    private func setupStackView() {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        setupTableView(stackView: stackView)
+        setupJetpackBanner(stackView: stackView)
+
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+    }
+
+    private func setupJetpackBanner(stackView: UIStackView) {
+        guard AppConfiguration.isWordPress && FeatureFlag.jetpackPowered.enabled else {
+            return
+        }
+
+        let jetpackBannerView = JetpackBannerView()
+        jetpackBannerView.setup()
+        stackView.addArrangedSubview(jetpackBannerView)
+        jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+    }
+
+    private func setupTableView(stackView: UIStackView) {
         configureRefreshControl()
-        add(tableViewController)
-        layoutTableView()
+
+        stackView.addArrangedSubview(tableViewController.view)
+        tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-    }
-
-    private func layoutTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
     }
 
     private func setupContentHandler() {
