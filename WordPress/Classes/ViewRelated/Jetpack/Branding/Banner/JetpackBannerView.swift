@@ -13,7 +13,7 @@ class JetpackBannerView: UIView {
         setup()
     }
 
-    func setup() {
+    private func setup() {
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)

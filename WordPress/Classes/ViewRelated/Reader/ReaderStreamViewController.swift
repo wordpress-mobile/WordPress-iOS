@@ -504,7 +504,6 @@ import Combine
         }
 
         let jetpackBannerView = JetpackBannerView()
-        jetpackBannerView.setup()
         addTranslationObserver(jetpackBannerView)
         stackView.addArrangedSubview(jetpackBannerView)
         jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
