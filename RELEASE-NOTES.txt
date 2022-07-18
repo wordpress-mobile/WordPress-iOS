@@ -1,5 +1,6 @@
 20.4
 -----
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
 
 
 20.3

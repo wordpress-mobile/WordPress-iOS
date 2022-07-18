@@ -83,18 +83,24 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureJetpackBanner()
         configureInsightsTableView()
+        configurePeriodTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
-        configureJetpackBanner()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
     func configureInsightsTableView() {
         insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
+        insightsTableViewController.bannerView = jetpackBannerView
+    }
+
+    private func configurePeriodTableViewController() {
+        periodTableViewController.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
@@ -102,11 +108,7 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureJetpackBanner() {
-        if AppConfiguration.isJetpack {
-            // When the banner is removed (along with its constraints), the view above it
-            // will grow to occupy the space. This is because the view above it has a
-            // lower-priority constraint from its bottom edge to the bottom edge of the
-            // screen.
+        if AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled {
             jetpackBannerView.removeFromSuperview()
         }
     }
