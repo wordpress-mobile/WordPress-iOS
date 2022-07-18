@@ -74,7 +74,7 @@ class JetpackButton: UIButton {
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
         setTitleColor(buttonTitleColor, for: .normal)
-        titleLabel?.font = UIFontMetrics.default.scaledFont(for: Appearance.titleFont, maximumPointSize: 22)
+        titleLabel?.font = Appearance.titleFont
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.minimumScaleFactor = Appearance.minimumScaleFactor
         titleLabel?.adjustsFontSizeToFitWidth = true
@@ -104,11 +104,12 @@ class JetpackButton: UIButton {
         static let minimumScaleFactor: CGFloat = 0.6
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
-        static let maximumFontPointSize: CGFloat = 30
+        static let maximumFontPointSize: CGFloat = 22
         static let imageBackgroundViewMultiplier: CGFloat = 0.75
         static var titleFont: UIFont {
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-            return UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
         }
     }
 
