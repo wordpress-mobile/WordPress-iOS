@@ -57,9 +57,11 @@ extension SuggestionType {
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let sliceIndex = viewModel.suggestionType.trigger.endIndex
         let suggestion = viewModel.item(at: indexPath)
-        let searchText = NSString(string: viewModel.searchText).substring(from: 1)
-        self.suggestionsDelegate?.suggestionsTableView?(self, didSelectSuggestion: suggestion.title, forSearchText: searchText)
+        let searchText = String(viewModel.searchText[sliceIndex...])
+        let suggestionTitle = suggestion.title == nil ? nil : String(suggestion.title![sliceIndex...])
+        self.suggestionsDelegate?.suggestionsTableView?(self, didSelectSuggestion: suggestionTitle, forSearchText: searchText)
     }
 
     // MARK: - Layout

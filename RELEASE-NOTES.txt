@@ -1,7 +1,7 @@
 20.4
 -----
 * [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
-* [*] User Mention: Split the suggestions list to a prominent suggestions section and a regular suggestions section. [#19064]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
 
 20.3
 -----
