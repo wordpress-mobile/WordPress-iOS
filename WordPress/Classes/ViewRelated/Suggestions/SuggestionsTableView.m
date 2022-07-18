@@ -230,8 +230,8 @@ CGFloat const STVSeparatorHeight = 1.f;
     // Get the number of max rows from the delegate.
     NSNumber *maxRows = nil;
     if([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewMaxDisplayedRows:)]){
-        int delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
-        maxRows = [NSNumber numberWithInt:delegateMaxRows];
+        NSUInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
+        maxRows = [NSNumber numberWithUnsignedInteger:delegateMaxRows];
     }
 
     // Set height constraint

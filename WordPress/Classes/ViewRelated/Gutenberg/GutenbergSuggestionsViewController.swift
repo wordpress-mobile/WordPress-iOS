@@ -163,7 +163,7 @@ extension GutenbergSuggestionsViewController: SuggestionsTableViewDelegate {
 
     }
 
-    public func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int32 {
+    public func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int {
         return 7
     }
 

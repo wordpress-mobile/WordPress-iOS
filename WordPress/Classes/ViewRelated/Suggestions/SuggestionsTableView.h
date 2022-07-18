@@ -68,7 +68,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
   When the suggestionsTableView has completed subview layout, the SuggestionsTableView
   will call this method to let the UIViewController know
  */
-- (int)suggestionsTableViewMaxDisplayedRows:(nonnull SuggestionsTableView *)suggestionsTableView;
+- (NSInteger)suggestionsTableViewMaxDisplayedRows:(nonnull SuggestionsTableView *)suggestionsTableView;
 
 /// This method is called every the header view above the suggestion is tapped.
 /// @param suggestionsTableView the suggestion view.

@@ -12,6 +12,10 @@ extension SuggestionType {
 
 @objc extension SuggestionsTableView: UITableViewDataSource, UITableViewDelegate {
 
+    // MARK: - Static Properties
+
+    private static let nonEmptyString = "_"
+
     // MARK: - UITableViewDataSource & UITableViewDelegate
 
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -43,8 +47,13 @@ extension SuggestionType {
     }
 
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard !viewModel.isLoading else { return "-" }
-        return viewModel.sections[section].title ?? "-"
+        // Ideally, we should be returning `nil` instead of `Self.nonEmptyString`.
+        // But doing that doesn't hide the table section headers and footers.
+        //
+        // N.B: We hide the table section headers and footers by mutating
+        //      `tableView.sectionHeaderHeight` and `tableView.sectionFooterHeight`.
+        guard !viewModel.isLoading else { return Self.nonEmptyString }
+        return viewModel.sections[section].title ?? Self.nonEmptyString
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
