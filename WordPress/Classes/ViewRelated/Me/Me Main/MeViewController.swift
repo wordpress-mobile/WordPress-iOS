@@ -37,7 +37,8 @@ class MeViewController: UITableViewController {
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
-            DestructiveButtonRow.self
+            DestructiveButtonRow.self,
+            JetpackBadgeRow.self
         ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -192,7 +193,11 @@ class MeViewController: UITableViewController {
 
             // last section
             .init(headerText: wordPressComAccount, rows: {
-                return [loggedIn ? logOut : logIn]
+                var rows: [ImmuTableRow] = [loggedIn ? logOut : logIn]
+                if AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled {
+                    rows.append(JetpackBadgeRow())
+                }
+                return rows
             }())
         ])
     }
