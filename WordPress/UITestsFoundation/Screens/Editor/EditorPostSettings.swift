@@ -80,14 +80,15 @@ public class EditorPostSettings: ScreenObject {
     }
 
     private func isFeaturedImageLoaded() -> Bool {
-        let noImageLoadedButtonHeight = CGFloat.init(integerLiteral: 58)
-        var loopCount = 0
-        while changeFeaturedImageButton.frame.height.isEqual(to: noImageLoadedButtonHeight) && loopCount < 30 {
-            sleep(1)
-            loopCount += 1
-        }
+        return waitForLoadingIconToDisappear()
+    }
 
-        return changeFeaturedImageButton.frame.height.isEqual(to: noImageLoadedButtonHeight) == false
+    private func waitForLoadingIconToDisappear() -> Bool {
+        let loadingIconDisappearedPredicate = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == false"),
+            object: changeFeaturedImageButton.images.descendants(matching: .other).element)
+
+        return XCTWaiter.wait(for: [loadingIconDisappearedPredicate], timeout: 30) == .completed
     }
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
