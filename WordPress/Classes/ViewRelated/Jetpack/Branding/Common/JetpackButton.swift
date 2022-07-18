@@ -84,10 +84,7 @@ class JetpackButton: UIButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
-        // banners are tipycally constrained in height, so we don't want the image to grow freely
-        if style == .badge {
-            adjustsImageSizeForAccessibilityContentSizeCategory = true
-        }
+        adjustsImageSizeForAccessibilityContentSizeCategory = true
 
         // sets the background of the jp logo to white
         if let imageView = imageView {
