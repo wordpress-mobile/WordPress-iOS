@@ -37,7 +37,8 @@ class AppSettingsViewController: UITableViewController {
             TextRow.self,
             ImageSizingRow.self,
             SwitchRow.self,
-            NavigationItemRow.self
+            NavigationItemRow.self,
+            JetpackBadgeRow.self
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -541,6 +542,10 @@ private extension AppSettingsViewController {
         let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
 
         rows.insert(appearanceRow, at: 0)
+
+        if AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled {
+            rows.append(JetpackBadgeRow())
+        }
 
         return ImmuTableSection(
             headerText: otherHeader,
