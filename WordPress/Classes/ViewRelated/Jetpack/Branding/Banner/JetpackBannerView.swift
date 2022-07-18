@@ -47,9 +47,7 @@ extension JetpackBannerView: Subscriber {
 
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
             self?.isHidden = isHidden
-        }, completion: { _ in
-
-        })
+        }, completion: nil)
         return .unlimited
     }
 
