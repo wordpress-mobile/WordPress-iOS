@@ -588,6 +588,8 @@
 		3F5C86C025CA197500BABE64 /* WordPressHomeWidgetAllTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C86BF25CA197500BABE64 /* WordPressHomeWidgetAllTime.swift */; };
 		3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */; };
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
+		3F668CE62885C32F00F9D0D2 /* JetpackBadgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F668CE52885C32F00F9D0D2 /* JetpackBadgeCell.swift */; };
+		3F668CE82885CAAD00F9D0D2 /* JetpackBadgeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F668CE72885CAAD00F9D0D2 /* JetpackBadgeRow.swift */; };
 		3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
 		3F6A7E92251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */; };
@@ -5573,6 +5575,8 @@
 		3F5C86BF25CA197500BABE64 /* WordPressHomeWidgetAllTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetAllTime.swift; sourceTree = "<group>"; };
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
+		3F668CE52885C32F00F9D0D2 /* JetpackBadgeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBadgeCell.swift; sourceTree = "<group>"; };
+		3F668CE72885CAAD00F9D0D2 /* JetpackBadgeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBadgeRow.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
 		3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
@@ -9902,6 +9906,15 @@
 			path = "What's New";
 			sourceTree = "<group>";
 		};
+		3F668CE42885C31800F9D0D2 /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				3F668CE52885C32F00F9D0D2 /* JetpackBadgeCell.swift */,
+				3F668CE72885CAAD00F9D0D2 /* JetpackBadgeRow.swift */,
+			);
+			path = Badge;
+			sourceTree = "<group>";
+		};
 		3F6A7E90251BC1C4005B6A61 /* Dependency container */ = {
 			isa = PBXGroup;
 			children = (
@@ -10084,6 +10097,7 @@
 		3FFA5ECF2876129900830E28 /* Branding */ = {
 			isa = PBXGroup;
 			children = (
+				3F668CE42885C31800F9D0D2 /* Badge */,
 				3FFA5ED32876216700830E28 /* Button */,
 				3FFA5ED0287612AD00830E28 /* Banner */,
 			);
@@ -19277,6 +19291,7 @@
 				931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */,
 				FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */,
 				82B67B361FC726CD006FB593 /* Memoize.swift in Sources */,
+				3F668CE82885CAAD00F9D0D2 /* JetpackBadgeRow.swift in Sources */,
 				9AA0ADB3235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
@@ -19534,6 +19549,7 @@
 				93E6336C272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */,
 				3F73BE5D24EB38E200BE99FF /* WhatIsNewScenePresenter.swift in Sources */,
 				8B69F19F255D67E7006B1CEF /* CalendarViewController.swift in Sources */,
+				3F668CE62885C32F00F9D0D2 /* JetpackBadgeCell.swift in Sources */,
 				DC76668526FD9AC9009254DD /* TimeZoneTableViewCell.swift in Sources */,
 				912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */,
 				D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */,
