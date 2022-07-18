@@ -4,6 +4,8 @@ import WordPressFlux
 class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
+    weak var bannerView: JetpackBannerView?
+
     var isGrowAudienceShowing: Bool {
         return insightsToShow.contains(.growAudience)
     }
@@ -67,6 +69,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadPinnedCards()
         initViewModel()
+        sendScrollEventsToBanner()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
@@ -746,6 +749,17 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
         case .readerDiscover:
             trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
+        }
+    }
+}
+
+// MARK: Jetpack powered banner
+
+private extension SiteStatsInsightsTableViewController {
+
+    func sendScrollEventsToBanner() {
+        if let bannerView = bannerView {
+            analyticsTracker.addTranslationObserver(bannerView)
         }
     }
 }
