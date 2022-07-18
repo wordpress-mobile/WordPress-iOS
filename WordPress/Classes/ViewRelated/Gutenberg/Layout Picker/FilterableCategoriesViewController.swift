@@ -31,6 +31,9 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     private var filteredSections: [CategorySection]?
     private var visibleSections: [CategorySection] { filteredSections ?? categorySections }
 
+    /// Dictionary to store horizontal scroll position of sections, keyed by category slug
+    private var sectionHorizontalOffsets: [String: CGFloat] = [:]
+
     /// Should be overidden if a subclass uses different sized thumbnails.
     var ghostThumbnailSize: CGSize {
         return CategorySectionTableViewCell.defaultThumbnailSize
@@ -137,14 +140,22 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = isLoading ? nil : visibleSections[indexPath.row]
-        cell.isGhostCell = isLoading
+
         if isLoading {
+            cell.section = nil
+            cell.isGhostCell = true
             cell.ghostThumbnailSize = ghostThumbnailSize
+            cell.collectionView.allowsSelection = false
+        } else {
+            let section = visibleSections[indexPath.row]
+            cell.section = section
+            cell.isGhostCell = false
+            cell.collectionView.allowsSelection = true
+            cell.horizontalScrollOffset = sectionHorizontalOffsets[section.categorySlug] ?? .zero
         }
+
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
-        cell.collectionView.allowsSelection = !isLoading
         if let selectedItem = selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
             cell.selectItemAt(selectedItem.item)
         }
@@ -179,6 +190,14 @@ extension FilterableCategoriesViewController: CategorySectionTableViewCellDelega
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+    }
+
+    func saveHorizontalScrollPosition(forCell cell: CategorySectionTableViewCell, xPosition: CGFloat) {
+        guard let cellSection = cell.section else {
+            return
+        }
+
+        sectionHorizontalOffsets[cellSection.categorySlug] = xPosition
     }
 
     private func deselectCurrentLayout() {

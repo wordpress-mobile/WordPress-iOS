@@ -5,6 +5,7 @@ protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)
     func didDeselectItem(forCell cell: CategorySectionTableViewCell)
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
+    func saveHorizontalScrollPosition(forCell cell: CategorySectionTableViewCell, xPosition: CGFloat)
     var selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice { get }
 }
 
@@ -22,7 +23,6 @@ protocol CategorySection {
     var emoji: String? { get }
     var description: String? { get }
     var thumbnails: [Thumbnail] { get }
-    var scrollOffset: CGPoint { get set }
     var thumbnailSize: CGSize { get }
 }
 
@@ -50,7 +50,6 @@ class CategorySectionTableViewCell: UITableViewCell {
         didSet {
             thumbnails = section?.thumbnails ?? []
             categoryTitle.text = section?.title
-            collectionView.contentOffset = section?.scrollOffset ?? .zero
             setCaption()
 
             if let section = section {
@@ -84,9 +83,13 @@ class CategorySectionTableViewCell: UITableViewCell {
         }
     }
     var showsCheckMarkWhenSelected = true
+    var horizontalScrollOffset: CGFloat = .zero {
+        didSet {
+            collectionView.contentOffset.x = horizontalScrollOffset
+        }
+    }
 
     override func prepareForReuse() {
-        section?.scrollOffset = collectionView.contentOffset
         delegate = nil
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
@@ -137,6 +140,10 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         delegate?.didDeselectItem(forCell: self)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        delegate?.saveHorizontalScrollPosition(forCell: self, xPosition: scrollView.contentOffset.x)
     }
 }
 

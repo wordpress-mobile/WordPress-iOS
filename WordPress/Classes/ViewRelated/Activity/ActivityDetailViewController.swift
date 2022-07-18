@@ -159,7 +159,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupJetpackBadge() {
-        guard AppConfiguration.isWordPress else {
+        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
             return
         }
         jetpackBadgeView.isHidden = false
