@@ -23,6 +23,8 @@ class JetpackBannerView: UIView {
         pinSubviewToAllEdges(jetpackButton)
     }
 
+    /// Preferred minimum height to be used for constraints
+    static let minimumHeight: CGFloat = 50
     private static let jetpackBannerBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                               dark: .muriel(color: .jetpackGreen, .shade90))
 }

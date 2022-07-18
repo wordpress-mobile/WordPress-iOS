@@ -506,7 +506,7 @@ import Combine
         let jetpackBannerView = JetpackBannerView()
         addTranslationObserver(jetpackBannerView)
         stackView.addArrangedSubview(jetpackBannerView)
-        jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     private func setupTableView(stackView: UIStackView) {
