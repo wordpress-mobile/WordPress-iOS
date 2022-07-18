@@ -1,9 +1,11 @@
-//
-//  JetpackBadgeRow.swift
-//  WordPress
-//
-//  Created by Giorgio Ruscigno on 7/18/22.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
+import UIKit
 
-import Foundation
+class JetpackBadgeRow: ImmuTableRow {
+    // TODO: either the action or the configure method could be used to add the presenting action when needed
+    var action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+
+    }
+    static let cell = ImmuTableCell.class(JetpackBadgeCell.self)
+}
