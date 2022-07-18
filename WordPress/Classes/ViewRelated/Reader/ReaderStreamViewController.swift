@@ -5,6 +5,7 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 import UIKit
+import Combine
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -98,6 +99,7 @@ import UIKit
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     /// Content management
     let content = ReaderTableContent()
@@ -503,6 +505,7 @@ import UIKit
 
         let jetpackBannerView = JetpackBannerView()
         jetpackBannerView.setup()
+        addTranslationObserver(jetpackBannerView)
         stackView.addArrangedSubview(jetpackBannerView)
         jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
     }
@@ -513,6 +516,7 @@ import UIKit
         stackView.addArrangedSubview(tableViewController.view)
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
+        tableView.delegate = self
         setupUndoCell(tableView)
     }
 
@@ -1993,5 +1997,13 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     func didSelect(topic: String) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+
+extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }
