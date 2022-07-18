@@ -74,7 +74,7 @@ class JetpackButton: UIButton {
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
         setTitleColor(buttonTitleColor, for: .normal)
-        titleLabel?.font = Appearance.titleFont
+        titleLabel?.font = UIFontMetrics.default.scaledFont(for: Appearance.titleFont, maximumPointSize: 22)
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.minimumScaleFactor = Appearance.minimumScaleFactor
         titleLabel?.adjustsFontSizeToFitWidth = true
@@ -84,7 +84,6 @@ class JetpackButton: UIButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
-        adjustsImageSizeForAccessibilityContentSizeCategory = true
 
         // sets the background of the jp logo to white
         if let imageView = imageView {
