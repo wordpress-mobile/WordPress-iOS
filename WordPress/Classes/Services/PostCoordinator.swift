@@ -329,14 +329,12 @@ class PostCoordinator: NSObject {
             let remoteURLStr = media.remoteURL else {
             return
         }
-        guard var imageURL = media.remoteURL else {
-            return
-        }
+        var imageURL = remoteURLStr
 
-        if media.remoteLargeURL != nil {
-            imageURL = media.remoteLargeURL!
-        } else if media.remoteMediumURL != nil {
-            imageURL = media.remoteMediumURL!
+        if let remoteLargeURL = media.remoteLargeURL {
+            imageURL = remoteLargeURL
+        } else if let remoteMediumURL = media.remoteMediumURL {
+            imageURL = remoteMediumURL
         }
 
         let mediaLink = media.link
