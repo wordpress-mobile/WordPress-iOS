@@ -386,6 +386,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="IO9-Kh-IaO" id="OSc-f6-l2a"/>
+                        <outlet property="jetpackBannerView" destination="gSt-mx-ni1" id="r9h-ZZ-Ghd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpk-Ud-H5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
