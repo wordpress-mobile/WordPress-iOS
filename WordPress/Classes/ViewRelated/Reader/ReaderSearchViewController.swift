@@ -49,7 +49,7 @@ import Gridicons
 
     private lazy var bannerView: JetpackBannerView = {
         let bannerView = JetpackBannerView()
-        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
         return bannerView
     }()
 
@@ -124,6 +124,9 @@ import Gridicons
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
+        // hide the parent viewController's banner, if it exists
+        // because this viewController has its own.
+        streamController?.jetpackBannerView?.isHidden = true
     }
 
 
