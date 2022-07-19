@@ -1,3 +1,4 @@
+import Nimble
 import ScreenObject
 import XCTest
 
@@ -71,7 +72,7 @@ public class EditorPostSettings: ScreenObject {
         let imageCount = settingsTable.images.count
         if hasImage {
             XCTAssertTrue(imageCount == 1, "Featured image not set")
-            XCTAssertTrue(isFeaturedImageLoaded(), "Featured image is not displayed")
+            waitForLoadingIconToDisappear(failureMessage: "Featured image is not displayed")
         } else {
             XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }
@@ -79,16 +80,10 @@ public class EditorPostSettings: ScreenObject {
         return try EditorPostSettings()
     }
 
-    private func isFeaturedImageLoaded() -> Bool {
-        return waitForLoadingIconToDisappear()
-    }
-
-    private func waitForLoadingIconToDisappear() -> Bool {
-        let loadingIconDisappearedPredicate = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "exists == false"),
-            object: changeFeaturedImageButton.images.descendants(matching: .other).element)
-
-        return XCTWaiter.wait(for: [loadingIconDisappearedPredicate], timeout: 30) == .completed
+    /// - Note: A `.nil` `failureMessage` lets Nimble use its default value for the failure message.
+    private func waitForLoadingIconToDisappear(failureMessage: String? = .nil) {
+        expect(changeFeaturedImageButton.images.descendants(matching: .other).element.exists)
+            .toEventually(beFalse(), timeout: .seconds(30), description: failureMessage)
     }
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
