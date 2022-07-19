@@ -13,7 +13,7 @@ class JetpackBannerView: UIView {
         setup()
     }
 
-    func setup() {
+    private func setup() {
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)
@@ -23,6 +23,8 @@ class JetpackBannerView: UIView {
         pinSubviewToAllEdges(jetpackButton)
     }
 
+    /// Preferred minimum height to be used for constraints
+    static let minimumHeight: CGFloat = 50
     private static let jetpackBannerBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                               dark: .muriel(color: .jetpackGreen, .shade90))
 }
@@ -47,6 +49,7 @@ extension JetpackBannerView: Subscriber {
 
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
             self?.isHidden = isHidden
+            self?.superview?.layoutIfNeeded()
         }, completion: nil)
         return .unlimited
     }

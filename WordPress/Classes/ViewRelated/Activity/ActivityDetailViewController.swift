@@ -168,8 +168,9 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         jetpackBadgeView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
-            jetpackBadgeButton.centerYAnchor.constraint(equalTo: jetpackBadgeView.centerYAnchor),
-            jetpackBadgeButton.widthAnchor.constraint(lessThanOrEqualTo: jetpackBadgeView.widthAnchor)
+            jetpackBadgeButton.widthAnchor.constraint(lessThanOrEqualTo: jetpackBadgeView.widthAnchor),
+            jetpackBadgeButton.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Constants.jetpackBadgeTopInset),
+            jetpackBadgeButton.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor)
         ])
         jetpackBadgeView.backgroundColor = .listBackground
     }
@@ -287,6 +288,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
         static let supportUrl = "https://jetpack.com/support/backup/"
+        // the distance ought to be 30, and the stackView spacing is 16, thus the top inset is 14.
+        static let jetpackBadgeTopInset: CGFloat = 14
     }
 }
 
