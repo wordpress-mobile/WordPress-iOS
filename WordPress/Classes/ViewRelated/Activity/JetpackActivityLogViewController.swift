@@ -1,6 +1,8 @@
 import UIKit
 
 class JetpackActivityLogViewController: BaseActivityListViewController {
+    private let jetpackBannerView = JetpackBannerView()
+
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
             identifier: "activity_log",
@@ -17,6 +19,7 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         )
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)
+        configureBanner()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -31,5 +34,17 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         extendedLayoutIncludesOpaqueBars = true
 
         WPAnalytics.track(.activityLogViewed)
+    }
+
+    private func configureBanner() {
+        jetpackBannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(jetpackBannerView)
+
+        NSLayoutConstraint.activate([
+            jetpackBannerView.heightAnchor.constraint(equalToConstant: 50),
+            jetpackBannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            jetpackBannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            jetpackBannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
 }
