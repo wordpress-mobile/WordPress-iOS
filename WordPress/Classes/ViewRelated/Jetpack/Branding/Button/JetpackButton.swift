@@ -84,10 +84,6 @@ class JetpackButton: UIButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
-        // banners are tipycally constrained in height, so we don't want the image to grow freely
-        if style == .badge {
-            adjustsImageSizeForAccessibilityContentSizeCategory = true
-        }
 
         // sets the background of the jp logo to white
         if let imageView = imageView {
@@ -108,11 +104,12 @@ class JetpackButton: UIButton {
         static let minimumScaleFactor: CGFloat = 0.6
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
-        static let maximumFontPointSize: CGFloat = 30
+        static let maximumFontPointSize: CGFloat = 22
         static let imageBackgroundViewMultiplier: CGFloat = 0.75
         static var titleFont: UIFont {
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-            return UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
         }
     }
 
