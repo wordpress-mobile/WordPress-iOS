@@ -125,3 +125,23 @@ class JetpackButton: UIButton {
         }
     }
 }
+
+// MARK: Badge view
+extension JetpackButton {
+
+    /// Instantiates a view containing a Jetpack powered badge
+    /// - Parameter padding: top and bottom padding, defaults to 30 pt
+    /// - Returns: the view containing the badge
+    static func makeBadgeView(padding: CGFloat = 30) -> UIView {
+        let view = UIView()
+        let banner = JetpackButton(style: .badge)
+        banner.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(banner)
+        view.pinSubviewAtCenter(banner)
+        NSLayoutConstraint.activate([
+            banner.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
+            banner.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding)
+        ])
+        return view
+    }
+}
