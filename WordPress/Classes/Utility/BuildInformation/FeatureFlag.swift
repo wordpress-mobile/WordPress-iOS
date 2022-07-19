@@ -31,6 +31,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case qrLogin
     case betaSiteDesigns
     case featureHighlightTooltip
+    case jetpackPowered
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -100,6 +101,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .betaSiteDesigns:
             return false
         case .featureHighlightTooltip:
+            return true
+        case .jetpackPowered:
             return true
         }
     }
@@ -189,6 +192,8 @@ extension FeatureFlag {
             return "Fetch Beta Site Designs"
         case .featureHighlightTooltip:
             return "Feature Highlight Tooltip"
+        case .jetpackPowered:
+            return "Jetpack powered banners and badges"
         }
     }
 

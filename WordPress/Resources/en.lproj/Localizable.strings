@@ -4108,6 +4108,9 @@
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installed";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Jetpack powered";
+
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.";
 
@@ -6024,7 +6027,7 @@
 "Private" = "Private";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problem displaying block";
+"Problem displaying block. \nTap to attempt block recovery." = "Problem displaying block. \nTap to attempt block recovery.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
@@ -7394,6 +7397,9 @@
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Inactive Cards";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "No inactive cards remaining";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Cancel";
