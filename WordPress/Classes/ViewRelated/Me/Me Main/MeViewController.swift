@@ -37,7 +37,7 @@ class MeViewController: UITableViewController {
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
-            DestructiveButtonRow.self,
+            DestructiveButtonRow.self
         ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
