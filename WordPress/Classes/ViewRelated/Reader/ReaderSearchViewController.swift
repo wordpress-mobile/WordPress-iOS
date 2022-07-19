@@ -192,11 +192,8 @@ import Gridicons
         guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
             return
         }
-        let height = UIApplication.shared.mainWindow?.frame.size.height ?? 0
-        // maximum height of any iPhone in landscape. iPads and portrait orientations
-        // all have heights greater than this one.
-        let maximumLandscapeHeight: CGFloat = 428
-        bannerView.isHidden = height <= maximumLandscapeHeight
+        // hide the banner on iPhone landscape
+        bannerView.isHidden = traitCollection.verticalSizeClass == .compact
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
