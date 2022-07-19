@@ -1,7 +1,9 @@
 import UIKit
+import Combine
 
 class JetpackActivityLogViewController: BaseActivityListViewController {
     private let jetpackBannerView = JetpackBannerView()
+    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
@@ -37,14 +39,18 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
     }
 
     private func configureBanner() {
-        jetpackBannerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(jetpackBannerView)
+        containerStackView.addArrangedSubview(jetpackBannerView)
 
         NSLayoutConstraint.activate([
-            jetpackBannerView.heightAnchor.constraint(equalToConstant: 50),
-            jetpackBannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            jetpackBannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            jetpackBannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            jetpackBannerView.heightAnchor.constraint(equalToConstant: 50)
         ])
+        addTranslationObserver(jetpackBannerView)
+    }
+}
+
+extension JetpackActivityLogViewController: JPScrollViewDelegate {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }
