@@ -1,6 +1,6 @@
 import Foundation
 
-@objc protocol InteractivePostView {
+protocol InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate)
-    @objc optional func setActionSheetDelegate(_ delegate: PostActionSheetDelegate)
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate)
 }
