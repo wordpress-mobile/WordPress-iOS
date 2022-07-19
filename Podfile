@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  pod 'Kanvas', '~> 1.4.3'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -169,7 +169,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.78.1'
+  gutenberg tag: 'v1.79.0'
 
   ## Third party libraries
   ## =====================
@@ -244,8 +244,7 @@ abstract_target 'Apps' do
   ## Jetpack App iOS
   ## ===============
   ##
-  target 'Jetpack' do
-  end
+  target 'Jetpack'
 end
 
 ## Share Extension
@@ -347,23 +346,11 @@ target 'WordPressNotificationServiceExtension' do
   wordpress_ui
 end
 
-## Mocks
-## ===================
-##
-def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.15'
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'add-organization-id-to-me-sites'
-  # pod 'WordPressMocks', :path => '../WordPressMocks'
-end
-
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 ## UI Tests
@@ -371,8 +358,6 @@ end
 ##
 target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 # Static Frameworks:
@@ -467,11 +452,11 @@ post_install do |installer|
 
   # Flag Alpha builds for Tracks
   # ============================
-  installer.pods_project.targets.each do |target|
-    next unless target.name == 'Automattic-Tracks-iOS'
-
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
-    end
+  #
+  tracks_target = installer.pods_project.targets.find { |target| target.name == 'Automattic-Tracks-iOS' }
+  # This will crash if/when we'll remove Tracks.
+  # That's okay because it is a crash we'll only have to address once.
+  tracks_target.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
   end
 end

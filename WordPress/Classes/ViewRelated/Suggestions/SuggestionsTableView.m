@@ -12,7 +12,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIView *separatorView;
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSLayoutConstraint *headerMinimumHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
@@ -235,32 +234,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 }
 
 #pragma mark - Public methods
-
-- (BOOL)showSuggestionsForWord:(NSString *)word
-{
-    if (!self.enabled) {
-        return NO;
-    }
-    
-    if ([word hasPrefix:[self suggestionTrigger]]) {
-        self.searchText = word;
-        if (self.searchText.length > 1) {
-            NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *predicate = [self predicateFor: searchQuery];
-            self.searchResults = [[self.suggestions filteredArrayUsingPredicate:predicate] mutableCopy];
-        } else {
-            self.searchResults = [self.suggestions mutableCopy];
-        }
-    } else {
-        self.searchText = @"";
-        [self.searchResults removeAllObjects];
-    }
-    
-    [self.tableView reloadData];
-    [self setNeedsUpdateConstraints];
-    
-    return ([self.searchResults count] > 0);
-}
 
 - (void)hideSuggestions
 {

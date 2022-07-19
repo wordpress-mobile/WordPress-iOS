@@ -26,7 +26,6 @@ class JetpackBannerView: UIView {
         addSubview(jetpackButton)
 
         pinSubviewToAllEdges(jetpackButton)
-        heightAnchor.constraint(equalToConstant: Appearance.jetpackBannerHeight).isActive = true
     }
 
     private func makeJetpackButton() -> UIButton {
@@ -63,7 +62,6 @@ class JetpackBannerView: UIView {
     }
 
     private enum Appearance {
-        static let jetpackBannerHeight: CGFloat = 44
         static let jetpackBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                     dark: .muriel(color: .jetpackGreen, .shade90))
         static let jetpackBannerTitle = NSLocalizedString("Jetpack powered",

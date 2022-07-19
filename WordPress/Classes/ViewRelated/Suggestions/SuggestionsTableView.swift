@@ -11,6 +11,40 @@ extension SuggestionType {
 
 @objc public extension SuggestionsTableView {
 
+    // MARK: - API
+
+    /// Returns the a list of prominent suggestions excluding the current user.
+    static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorId: NSNumber?, defaultAccountId: NSNumber?) -> [NSNumber] {
+        return [postAuthorId, commentAuthorId].compactMap { $0 != defaultAccountId ? $0 : nil }
+    }
+
+    /// Show suggestions for the given word.
+    /// - Parameters:
+    ///   - word: Used to find the suggestions that contain this word.
+    /// - Returns: True when at least one suggestion is being shown.
+    @discardableResult func showSuggestions(forWord word: String) -> Bool {
+        guard self.enabled else { return false }
+
+        if word.hasPrefix(suggestionTrigger) {
+            let searchQuery = NSString(string: word).substring(from: suggestionTrigger.count)
+            self.searchText = word
+            self.searchResults = self.searchResults(
+                searchQuery: searchQuery,
+                suggestions: suggestions ?? [],
+                suggestionType: suggestionType
+            )
+        } else {
+            self.searchText = ""
+            self.searchResults = []
+        }
+
+        self.tableView.reloadData()
+        self.setNeedsUpdateConstraints()
+        return searchResults.count > 0
+    }
+
+    // MARK: - Internal
+
     func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
         guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
         SuggestionService.shared.suggestions(for: blog, completion: completion)
@@ -95,6 +129,52 @@ extension SuggestionType {
                 self.showSuggestions(forWord: self.searchText)
             }
         }
+    }
+
+    // MARK: - Private
+
+    func searchResults(searchQuery: String, suggestions: [Any], suggestionType: SuggestionType) -> [Any] {
+        var searchResults: [Any]
+        if !searchQuery.isEmpty {
+            let predicate = self.predicate(for: searchQuery)
+            searchResults = NSMutableArray(array: suggestions).filtered(using: predicate)
+        } else {
+            searchResults = suggestions
+        }
+        if suggestionType == .mention, let userSuggestionsResult = searchResults as? [UserSuggestion] {
+            searchResults = self.moveProminentSuggestionsToTop(searchResults: userSuggestionsResult, prominentSuggestionsIds: prominentSuggestionsIds ?? [])
+        }
+        return searchResults
+    }
+
+    func moveProminentSuggestionsToTop(searchResults: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> [UserSuggestion] {
+        // Do not proceed if `searchResults` or `prominentSuggestionsIds` is empty.
+        guard !(searchResults.isEmpty || ids.isEmpty) else { return searchResults }
+
+        // Loop through `searchResults` and find the following data:
+        //
+        // 1. suggestionIndexesToRemove: User Suggestions should be removed from their old position.
+        //
+        // 2. suggestionsToInsert: User Suggestions to insert at the beginning of `searchResults`
+        //                         while maintaining their order from `prominentSuggestionsIds`.
+        //
+        var suggestionIndexesToRemove = [Int]()
+        var suggestionsToInsert: [UserSuggestion?] = Array(repeating: nil, count: ids.count)
+        for (index, suggestion) in searchResults.enumerated() {
+            guard let position = ids.firstIndex(where: { suggestion.userID == $0 }) else { continue }
+            suggestionIndexesToRemove.append(index)
+            suggestionsToInsert[position] = suggestion
+        }
+
+        // Move suggestions to the beginning of `searchResults` array.
+        var searchResults = searchResults
+        if !suggestionsToInsert.isEmpty && suggestionIndexesToRemove.count > 0 {
+            let suggestionsToInsert = suggestionsToInsert.compactMap { $0 }
+            suggestionIndexesToRemove = suggestionIndexesToRemove.sorted(by: >)
+            suggestionIndexesToRemove.forEach { searchResults.remove(at: $0) }
+            searchResults = suggestionsToInsert + searchResults
+        }
+        return searchResults
     }
 
     private func suggestionText(for suggestion: Any) -> String? {
