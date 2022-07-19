@@ -37,8 +37,7 @@ class AppSettingsViewController: UITableViewController {
             TextRow.self,
             ImageSizingRow.self,
             SwitchRow.self,
-            NavigationItemRow.self,
-            JetpackBadgeRow.self
+            NavigationItemRow.self
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -543,13 +542,22 @@ private extension AppSettingsViewController {
 
         rows.insert(appearanceRow, at: 0)
 
-        if AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled {
-            rows.append(JetpackBadgeRow())
-        }
-
         return ImmuTableSection(
             headerText: otherHeader,
             rows: rows,
             footerText: nil)
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension AppSettingsViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+                AppConfiguration.isWordPress,
+                FeatureFlag.jetpackPowered.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView()
     }
 }
