@@ -38,7 +38,6 @@ class MeViewController: UITableViewController {
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self,
-            JetpackBadgeRow.self
         ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -193,11 +192,7 @@ class MeViewController: UITableViewController {
 
             // last section
             .init(headerText: wordPressComAccount, rows: {
-                var rows: [ImmuTableRow] = [loggedIn ? logOut : logIn]
-                if AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled {
-                    rows.append(JetpackBadgeRow())
-                }
-                return rows
+                return [loggedIn ? logOut : logIn]
             }())
         ])
     }
@@ -563,5 +558,18 @@ extension MeViewController: ShareAppContentPresenterDelegate {
          }
 
         reloadViewModel()
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension MeViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+                AppConfiguration.isWordPress,
+                FeatureFlag.jetpackPowered.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView()
     }
 }
