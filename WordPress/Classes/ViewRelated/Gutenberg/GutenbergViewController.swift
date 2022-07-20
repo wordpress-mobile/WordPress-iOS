@@ -1158,6 +1158,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post is Page ? "page" : "post"
     }
 
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
