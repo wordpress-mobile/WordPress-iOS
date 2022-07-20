@@ -26,91 +26,106 @@
         "period",
         "views",
         "visitors",
-        "comments"
+        "comments",
+        "likes"
       ],
       "data": [
         [
           "{{now offset='-13 months' format='yyyy-MM-dd'}}",
           1443,
           678,
+          0,
           0
         ],
         [
           "{{now offset='-12 months' format='yyyy-MM-dd'}}",
           1371,
           647,
+          0,
           0
         ],
         [
           "{{now offset='-11 months' format='yyyy-MM-dd'}}",
           1444,
           678,
+          0,
           0
         ],
         [
           "{{now offset='-10 months' format='yyyy-MM-dd'}}",
           1361,
           634,
-          1
+          1,
+          0
         ],
         [
           "{{now offset='-9 months' format='yyyy-MM-dd'}}",
           1195,
           560,
+          0,
           0
         ],
         [
           "{{now offset='-8 months' format='yyyy-MM-dd'}}",
           1391,
           644,
+          0,
           0
         ],
         [
           "{{now offset='-7 months' format='yyyy-MM-dd'}}",
           1257,
           588,
+          0,
           0
         ],
         [
           "{{now offset='-6 months' format='yyyy-MM-dd'}}",
           1458,
           686,
+          0,
           0
         ],
         [
           "{{now offset='-5 months' format='yyyy-MM-dd'}}",
           1716,
           808,
+          0,
           0
         ],
         [
           "{{now offset='-4 months' format='yyyy-MM-dd'}}",
           1586,
           746,
+          0,
           0
         ],
         [
           "{{now offset='-3 months' format='yyyy-MM-dd'}}",
           1342,
           659,
+          0,
           0
         ],
         [
           "{{now offset='-2 months' format='yyyy-MM-dd'}}",
           1280,
           643,
+          0,
           0
         ],
         [
           "{{now offset='-1 months' format='yyyy-MM-dd'}}",
           1218,
           623,
+          0,
           0
         ],
         [
           "{{now format='yyyy-MM-dd'}}",
           1233,
           655,
+          0,
           0
         ]
       ]
