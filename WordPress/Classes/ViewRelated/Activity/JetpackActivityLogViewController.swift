@@ -45,7 +45,7 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         containerStackView.addArrangedSubview(jetpackBannerView)
 
         NSLayoutConstraint.activate([
-            jetpackBannerView.heightAnchor.constraint(equalToConstant: 50)
+            jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight)
         ])
         addTranslationObserver(jetpackBannerView)
     }
