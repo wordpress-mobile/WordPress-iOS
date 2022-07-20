@@ -269,7 +269,7 @@ namespace :git do
   end
 
   def hook_target(hook)
-    hoos_dir = %x[git rev-parse --git-path hooks].chomp
+    hoos_dir = `git rev-parse --git-path hooks`.chomp
     File.join(hoos_dir, hook)
   end
 
