@@ -200,6 +200,11 @@ class NotificationSettingsViewController: UIViewController {
         } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.append(.followedSites)
         }
+        if showBadgeInCell,
+           AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled,
+           let followedSitesIndex = section.firstIndex(of: .followedSites) {
+            section.insert(.jetpackBadge, at: followedSitesIndex)
+        }
 
         tableSections = section
     }
@@ -309,13 +314,61 @@ extension NotificationSettingsViewController: UITableViewDelegate {
         }
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard showBadgeInFooter, self.section(at: section) == .blog else {
+            return nil
+        }
+        return makeFooterView(showJetpackBadge: true,
+                              text: NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
+                                                                              comment: "Notification Settings for your own blogs"))
+    }
 
-    // MARK: - UITableView Helpers
 
+    private func makeFooterLabelView(text: String) -> UIView {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = WPStyleGuide.fontForTextStyle(.footnote)
+        label.numberOfLines = 0
+        label.text = text
+        label.textColor = .secondaryLabel
+        let labelView = UIView()
+        //labelView.translatesAutoresizingMaskIntoConstraints = false
+        labelView.addSubview(label)
+        labelView.pinSubviewToAllEdges(label, insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+        return labelView
+    }
+
+    private func makeFooterWithBadgeView(text: String) -> UIView {
+        let badgeView = JetpackButton.makeBadgeView(topPadding: 22, bottomPadding: 8)
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+        let view = UIView()
+        let labelView = makeFooterLabelView(text: text)
+        labelView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView(arrangedSubviews: [labelView, badgeView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+        stackView.layoutIfNeeded()
+        stackView.setNeedsLayout()
+        view.setNeedsUpdateConstraints()
+        return view
+    }
+
+    private func makeFooterView(showJetpackBadge: Bool, text: String) -> UIView {
+        showJetpackBadge ? makeFooterWithBadgeView(text: text) : makeFooterLabelView(text: text)
+    }
+}
+
+
+// MARK: - UITableView Helpers
+extension NotificationSettingsViewController {
     fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
         switch section(at: indexPath.section) {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
+        case .jetpackBadge:
+            return JetpackBadgeCell.reuseIdentifier
         default:
             return defaultReuseIdentifier
         }
