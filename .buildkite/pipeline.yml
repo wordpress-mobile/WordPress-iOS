@@ -85,7 +85,8 @@ steps:
               channels:
                 - "#jos-testing-notif"
               message: "UI Test Failed! Please check and investigate [build](build/results/report.html)"
-              if: build.state == "failed"
+            if: build.state == "failed"
+
 
       # - label: "🔬 UI Tests (iPad)"
       #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
