@@ -10,9 +10,6 @@ import WordPressShared
 class NotificationSettingsViewController: UIViewController {
 
     // MARK: - Properties
-    // TODO: these are temporary properties to view the badge either in an ad-hoc section/cell or in the footer of the first section. Remove when finalized
-    var showBadgeInCell = false
-    var showBadgeInFooter = true
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -102,7 +99,6 @@ class NotificationSettingsViewController: UIViewController {
         // Register the cells
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
-        tableView.register(JetpackBadgeCell.self, forCellReuseIdentifier: JetpackBadgeCell.reuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -200,12 +196,6 @@ class NotificationSettingsViewController: UIViewController {
         } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.append(.followedSites)
         }
-        if showBadgeInCell,
-           AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled,
-           let followedSitesIndex = section.firstIndex(of: .followedSites) {
-            section.insert(.jetpackBadge, at: followedSitesIndex)
-        }
-
         tableSections = section
     }
 
@@ -253,19 +243,13 @@ extension NotificationSettingsViewController: UITableViewDataSource {
             return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
             return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : min(loadMoreRowCount, rowCountForFollowedSite)
-        case .jetpackBadge:
-            return 1
         default:
             return groupedSettings[section]?.count ?? 0
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier  = reusableIdentifierForIndexPath(indexPath)
-
-        if section(at: indexPath.section) == .jetpackBadge, let jetpackBadgeCell = tableView.dequeueReusableCell(withIdentifier: identifier) as? JetpackBadgeCell {
-            return jetpackBadgeCell
-        }
+        let identifier = reusableIdentifierForIndexPath(indexPath)
 
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
 
@@ -576,7 +560,6 @@ extension NotificationSettingsViewController {
         default:
             return
         }
-
         // And refresh the section
         let sections = IndexSet(integer: index.section)
         tableView.reloadSections(sections, with: .fade)
