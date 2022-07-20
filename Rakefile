@@ -269,11 +269,12 @@ namespace :git do
   end
 
   def hook_target(hook)
-    ".git/hooks/#{hook}"
+    hoos_dir = %x[git rev-parse --git-path hooks].chomp
+    File.join(hoos_dir, hook)
   end
 
   def hook_source(hook)
-    "../../Scripts/hooks/#{hook}"
+    File.absolute_path(File.join(PROJECT_DIR, 'Scripts', 'hooks', hook))
   end
 
   def hook_backup(hook)
