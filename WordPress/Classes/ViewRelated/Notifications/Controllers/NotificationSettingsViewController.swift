@@ -152,14 +152,14 @@ class NotificationSettingsViewController: UIViewController {
 
     fileprivate func groupSettings(_ settings: [NotificationSettings]) -> [Section: [NotificationSettings]] {
         // Find the Default Blog ID
-        let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let defaultAccount  = service.defaultWordPressComAccount()
-        let primaryBlogId   = defaultAccount?.defaultBlog?.dotComID as? Int
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let defaultAccount = service.defaultWordPressComAccount()
+        let primaryBlogId = defaultAccount?.defaultBlog?.dotComID as? Int
 
         // Proceed Grouping
-        var blogSettings    = [NotificationSettings]()
-        var otherSettings   = [NotificationSettings]()
-        var wpcomSettings   = [NotificationSettings]()
+        var blogSettings = [NotificationSettings]()
+        var otherSettings = [NotificationSettings]()
+        var wpcomSettings = [NotificationSettings]()
 
         for setting in settings {
             switch setting.channel {
@@ -209,11 +209,11 @@ class NotificationSettingsViewController: UIViewController {
     // MARK: - Error Handling
 
     fileprivate func handleLoadError() {
-        let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
-        let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
+        let title = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
+        let message = NSLocalizedString("There has been a problem while loading your Notification Settings",
                                             comment: "Displayed after Notification Settings failed to load")
-        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
-        let retryText   = NSLocalizedString("Try Again", comment: "Try Again. Action")
+        let cancelText = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText = NSLocalizedString("Try Again", comment: "Try Again. Action")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -299,66 +299,72 @@ extension NotificationSettingsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard showBadgeInFooter, self.section(at: section) == .blog else {
+        let currentSection = self.section(at: section)
+
+        guard !isSectionEmpty(section), let text = currentSection.footerText() else {
             return nil
         }
-        return makeFooterView(showJetpackBadge: true,
-                              text: NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
-                                                                              comment: "Notification Settings for your own blogs"))
+        return makeFooterView(showBadge: currentSection.showBadge, text: text)
     }
+}
 
+// MARK: - UITableView Helpers
+private extension NotificationSettingsViewController {
 
-    private func makeFooterLabelView(text: String) -> UIView {
+    /// Creates a label to be inserted in the sites section footer
+    /// - Parameter text: the text of the label
+    /// - Returns: the label
+    func makeFooterLabelView(text: String) -> UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
         label.numberOfLines = 0
         label.text = text
         label.textColor = .secondaryLabel
+
         let labelView = UIView()
-        //labelView.translatesAutoresizingMaskIntoConstraints = false
         labelView.addSubview(label)
-        labelView.pinSubviewToAllEdges(label, insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+        labelView.pinSubviewToAllEdges(label, insets: FooterMetrics.footerLabelInsets)
         return labelView
     }
 
-    private func makeFooterWithBadgeView(text: String) -> UIView {
-        let badgeView = JetpackButton.makeBadgeView(topPadding: 22, bottomPadding: 8)
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
-        let view = UIView()
+
+    /// Creates the footer for the my sites section
+    /// - Parameter text: the text to be used in the label
+    /// - Returns: the footer view
+    func makeFooterView(showBadge: Bool = false, text: String) -> UIView {
         let labelView = makeFooterLabelView(text: text)
+
+        guard showBadge else {
+            return labelView
+        }
+
         labelView.translatesAutoresizingMaskIntoConstraints = false
+
+        let badgeView = JetpackButton.makeBadgeView(topPadding: FooterMetrics.jetpackBadgeTopPadding,
+                                                    bottomPadding: FooterMetrics.jetpackBadgeBottomPatting)
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+
         let stackView = UIStackView(arrangedSubviews: [labelView, badgeView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+
+        let view = UIView()
         view.addSubview(stackView)
         view.pinSubviewToAllEdges(stackView)
-        stackView.layoutIfNeeded()
-        stackView.setNeedsLayout()
-        view.setNeedsUpdateConstraints()
         return view
     }
 
-    private func makeFooterView(showJetpackBadge: Bool, text: String) -> UIView {
-        showJetpackBadge ? makeFooterWithBadgeView(text: text) : makeFooterLabelView(text: text)
-    }
-}
-
-
-// MARK: - UITableView Helpers
-extension NotificationSettingsViewController {
-    fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
+    func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
         switch section(at: indexPath.section) {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
-        case .jetpackBadge:
-            return JetpackBadgeCell.reuseIdentifier
         default:
             return defaultReuseIdentifier
         }
     }
 
-    fileprivate func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         // Pagination Rows don't really have a Settings entity
         if isPaginationRow(indexPath) {
             cell.textLabel?.text = paginationRowDescription(indexPath)
@@ -410,7 +416,7 @@ extension NotificationSettingsViewController {
         }
     }
 
-    fileprivate func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
+    func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
         guard !followedSites.isEmpty,
               index.row <= (followedSites.count - 1) else {
             return nil
@@ -425,7 +431,7 @@ extension NotificationSettingsViewController {
         }
     }
 
-    fileprivate func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
+    func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
         let section = self.section(at: indexPath.section)
         guard let settings = groupedSettings[section] else {
             return nil
@@ -434,7 +440,7 @@ extension NotificationSettingsViewController {
         return settings[indexPath.row]
     }
 
-    fileprivate func isSectionEmpty(_ sectionIndex: Int) -> Bool {
+    func isSectionEmpty(_ sectionIndex: Int) -> Bool {
         let section = self.section(at: sectionIndex)
         switch section {
         case .followedSites:
@@ -568,6 +574,7 @@ extension NotificationSettingsViewController {
 
 // MARK: - Navigation
 private extension NotificationSettingsViewController {
+
     func displayDetails(for siteId: Int) {
         let siteSubscriptionsViewController = NotificationSiteSubscriptionViewController(siteId: siteId)
         navigationController?.pushViewController(siteSubscriptionsViewController, animated: true)
@@ -589,6 +596,7 @@ private extension NotificationSettingsViewController {
 
 // MARK: - SearchableActivity Conformance
 extension NotificationSettingsViewController: SearchableActivityConvertable {
+
     var activityType: String {
         return WPActivityType.notificationSettings.rawValue
     }
@@ -605,7 +613,6 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
         guard !keywordArray.isEmpty else {
             return nil
         }
-
         return Set(keywordArray)
     }
 }
