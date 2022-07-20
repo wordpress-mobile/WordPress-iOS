@@ -7,7 +7,7 @@ class EditorGutenbergTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = try EditorFlow
             .goToMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
@@ -16,16 +16,7 @@ class EditorGutenbergTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-
-        if editorScreen == nil {
-            BlockEditorScreen.closeEditorDiscardingChanges()
-        } else if TabNavComponent.isVisible() == false {
-            editorScreen.dismissBlocksPickerIfNeeded()
-            EditorFlow.returnToMainEditorScreen()
-            editorScreen.closeEditor()
-        }
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     let title = "Rich post title"

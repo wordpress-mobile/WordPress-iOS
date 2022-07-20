@@ -14,8 +14,7 @@ class MainNavigationTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     func testTabBarNavigation() throws {
