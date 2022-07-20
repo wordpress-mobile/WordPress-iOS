@@ -2,6 +2,8 @@ import UIKit
 
 class JetpackBadgeCell: UITableViewCell {
 
+    static let reuseIdentifier = "JetpackBadgeCell"
+
     private static let jetpackButtonTopInset: CGFloat = 30
 
     private lazy var badge: JetpackButton = {
@@ -18,11 +20,7 @@ class JetpackBadgeCell: UITableViewCell {
         separatorInset = UIEdgeInsets(top: 0, left: contentView.frame.width, bottom: 0, right: 0)
         backgroundColor = .listBackground
         contentView.addSubview(badge)
-        NSLayoutConstraint.activate([
-            badge.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            badge.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Self.jetpackButtonTopInset),
-            badge.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        contentView.pinSubviewAtCenter(badge)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
