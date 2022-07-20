@@ -82,7 +82,7 @@ steps:
           - github_commit_status:
               context: "UI Tests (iPhone)"
           - slack:
-          if: build.state == "failed"
+              if: build.state == "failed"
               channels:
                 - "#jos-testing-notif"
               message: "UI Test Failed! Please check and investigate [build](build/results/report.html)"
