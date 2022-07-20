@@ -11,8 +11,8 @@ class NotificationSettingsViewController: UIViewController {
 
     // MARK: - Properties
     // TODO: these are temporary properties to view the badge either in an ad-hoc section/cell or in the footer of the first section. Remove when finalized
-    var showBadgeInCell = true
-    var showBadgeInFooter = false
+    var showBadgeInCell = false
+    var showBadgeInFooter = true
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
