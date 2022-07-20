@@ -1,4 +1,4 @@
-etpack for WordPress
+Jetpack for WordPress
 
 Put the power of web publishing in your pocket. Jetpack is a website creator and so much more!
 
