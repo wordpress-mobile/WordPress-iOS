@@ -58,7 +58,7 @@ class LoginTests: XCTestCase {
             .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
 
-        XCTAssert(prologueScreen.isLoaded)
+        XCTAssert(prologueScreen.isLoaded == false)
     }
 
     // Unified WordPress.com email login failure due to incorrect password
