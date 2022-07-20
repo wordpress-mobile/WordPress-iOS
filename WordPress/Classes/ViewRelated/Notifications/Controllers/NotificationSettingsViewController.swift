@@ -265,21 +265,7 @@ extension NotificationSettingsViewController: UITableViewDataSource {
         }
 
         let theSection = self.section(at: section)
-        if showBadgeInFooter, theSection == .blog {
-            return nil
-        }
-
         return theSection.headerText()
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return nil
-        }
-
-        let theSection = self.section(at: section)
-        return theSection.footerText(showBadgeInFooter)
     }
 }
 
@@ -451,12 +437,11 @@ private extension NotificationSettingsViewController {
         }
     }
 
-    fileprivate enum Section: Int {
+    enum Section: Int {
         case blog
         case followedSites
         case other
         case wordPressCom
-        case jetpackBadge
 
         func headerText() -> String? {
             switch self {
@@ -466,21 +451,20 @@ private extension NotificationSettingsViewController {
                 return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
             case .other:
                 return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
-            case .wordPressCom, .jetpackBadge:
+            case .wordPressCom:
                 return nil
             }
         }
 
-        func footerText(_ showBadgeInFooter: Bool) -> String? {
+        func footerText() -> String? {
             switch self {
             case .blog:
-                let title = NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
-                                              comment: "Notification Settings for your own blogs")
-                return showBadgeInFooter ? nil : title
+                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
+                                         comment: "Notification Settings for your own blogs")
             case .followedSites:
                 return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
                                          comment: "Notification Settings for your followed sites")
-            case .other, .jetpackBadge:
+            case .other:
                 return nil
             case .wordPressCom:
                 return NSLocalizedString("We’ll always send important emails regarding your account, " +
@@ -488,6 +472,21 @@ private extension NotificationSettingsViewController {
                                          comment: "Title displayed in the Notification Settings for WordPress.com")
             }
         }
+
+        var showBadge: Bool {
+            switch self {
+            case .blog:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+
+    enum FooterMetrics {
+        static let footerLabelInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        static let jetpackBadgeTopPadding: CGFloat = 22
+        static let jetpackBadgeBottomPatting: CGFloat = 8
     }
 }
 
