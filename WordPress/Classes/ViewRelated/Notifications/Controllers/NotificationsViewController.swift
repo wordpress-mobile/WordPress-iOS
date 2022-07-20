@@ -614,7 +614,7 @@ private extension NotificationsViewController {
     }
 
     func configureJetpackBanner() {
-        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled, AccountHelper.isDotcomAvailable() else {
             return
         }
 
