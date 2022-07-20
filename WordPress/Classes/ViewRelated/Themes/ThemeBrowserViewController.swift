@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import CocoaLumberjack
 import WordPressShared.WPAnalytics
 import WordPressShared.WPStyleGuide
@@ -97,6 +98,9 @@ public protocol ThemePresenter: AnyObject {
     // MARK: - Properties
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
+
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     fileprivate lazy var customizerNavigationDelegate: ThemeWebNavigationDelegate = {
         return ThemeWebNavigationDelegate()
@@ -300,6 +304,7 @@ public protocol ThemePresenter: AnyObject {
                                                                 [.search, .info, .customThemes, .themes]
 
         configureSearchController()
+        configureJetpackBanner()
 
         updateActiveTheme()
         setupThemesSyncHelper()
@@ -332,6 +337,15 @@ public protocol ThemePresenter: AnyObject {
                                 withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
 
         WPStyleGuide.configureSearchBar(searchController.searchBar)
+    }
+
+    private func configureJetpackBanner() {
+        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+            return
+        }
+
+        jetpackBannerView.isHidden = false
+        addTranslationObserver(jetpackBannerView)
     }
 
     fileprivate var searchBarHeight: CGFloat {
@@ -978,4 +992,12 @@ private extension ThemeBrowserViewController {
         }
     }
 
+}
+
+// MARK: - Jetpack banner delegate
+
+extension ThemeBrowserViewController: JPScrollViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+    }
 }
