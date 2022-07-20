@@ -83,7 +83,7 @@ steps:
               context: "UI Tests (iPhone)"
           - slack:
               channels:
-                - "jos-testing"
+                - "#jos-testing"
               message: "message from ui test step"
 
       - label: "🔬 UI Tests (iPad)"
