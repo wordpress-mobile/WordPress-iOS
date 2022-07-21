@@ -17,145 +17,73 @@ common_params:
 # Test to see how many of our agents fail to load the VMs as well as how
 # many can get jobs at the same time
 steps:
-  - label: "1 / 24"
+  - label: "1 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "2 / 24"
+  - label: "2 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "3 / 24"
+  - label: "3 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "4 / 24"
+  - label: "4 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "5 / 24"
+  - label: "5 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "6 / 24"
+  - label: "6 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "7 / 24"
+  - label: "7 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "8 / 24"
+  - label: "8 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "9 / 24"
+  - label: "9 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "10 / 24"
+  - label: "10 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "11 / 24"
+  - label: "11 / 14"
     command: |
       echo 'hello world'
     env: *common_env
     plugins: *common_plugins
 
-  - label: "12 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "13 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "14 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "15 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "16 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "17 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "18 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "19 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "20 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "21 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "22 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "23 / 24"
-    command: |
-      echo 'hello world'
-    env: *common_env
-    plugins: *common_plugins
-
-  - label: "24 / 24"
+  - label: "12 / 14"
     command: |
       echo 'hello world'
     env: *common_env
