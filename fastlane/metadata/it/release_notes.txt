@@ -1,3 +1,0 @@
-Durante la visualizzazione in anteprima di un articolo, ora puoi passare dall'orientamento verticale a quello orizzontale e viceversa senza tagliare alcun contenuto. Ottimo.
-
-L'icona dell'app WordPress è tornata al consueto azzurro ghiaccio, ma non preoccuparti: puoi ancora portare un po' di colore nella tua vita. È sufficiente andare alle impostazioni dell'app e selezionare nuovamente l'icona dell'app a tema Pride.

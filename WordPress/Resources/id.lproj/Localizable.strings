@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-03 00:54:40+0000 */
+/* Translation-Revision-Date: 2022-07-19 14:31:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: id */
@@ -2681,7 +2681,7 @@ translators: Block name. %s: The localized block name */
 "Downloads" = "Unduhan";
 
 /* Name for the status of a draft post. */
-"Draft" = "Naskah";
+"Draft" = "Draf";
 
 /* Description of a Quick Start Tour */
 "Draft and publish a post." = "Buat draf dan publikasikan artikel.";
@@ -4068,6 +4068,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack sudah diinstal";
+
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Didukung Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack akan memperbaiki semua ancaman aktif yang terdeteksi.";
@@ -5928,7 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Terjadi masalah saat menampilkan blok";
+"Problem displaying block. \nTap to attempt block recovery." = "Terjadi masalah saat menampilkan blok \nTap to attempt block recovery.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Masalah pemuatan konten";
@@ -9898,6 +9901,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Kartu yang Tidak Aktif";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "No inactive cards remaining";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Batal";
