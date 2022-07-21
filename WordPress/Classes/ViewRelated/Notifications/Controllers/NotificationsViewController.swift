@@ -621,7 +621,7 @@ extension NotificationsViewController {
     /// Called on view load to determine whether the Jetpack banner should be shown on the view
     /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
     func configureJetpackBanner() {
-        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled, AccountHelper.isDotcomAvailable() else {
+        guard JetpackBrandingVisibility.all.enabled else {
             return
         }
 
