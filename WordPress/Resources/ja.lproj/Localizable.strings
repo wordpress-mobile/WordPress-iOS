@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-07-15 09:54:20+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ja_JP */
@@ -4069,6 +4069,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack がインストールされています";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Jetpack 提供";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack は検出されたアクティブな脅威をすべて修正します。";
 
@@ -5925,7 +5928,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "プライベート";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "ブロックの表示中に問題が発生しました";
+"Problem displaying block. \nTap to attempt block recovery." = "ブロックの表示中に問題が発生しました。 \nタップしてブロックの回復を試みます。";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "コンテンツ読み込みに問題がありました";
@@ -9889,6 +9892,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "無効なカード";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "無効なカードは残っていません";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "キャンセル";

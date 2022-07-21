@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-26 10:21:50+0000 */
+/* Translation-Revision-Date: 2022-07-19 09:10:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sq_AL */
@@ -756,6 +756,9 @@ translators: Block name. %s: The localized block name */
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Lypse një lidhje internet aktive";
 
+/* Error message shown when trying to scan a log in code without an active internet connection. */
+"An active internet connection is required to scan log in codes" = "Për të skanuar regjistër në kode, lypset një lidhje internet aktive";
+
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "Që të shihni Jetpack Scan, lypset një lidhje internet aktive";
 
@@ -934,6 +937,12 @@ translators: Block name. %s: The localized block name */
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
 
+/* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
+"Are you trying to log in to %1$@ near %2$@?" = "A po provoni të hyni te %1$@ pranë %2$@?";
+
+/* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
+"Are you trying to log in to your web browser near %1$@?" = "Po provoni të hyni në shfletuesin tuaj pranë %1$@?";
+
 /* No comment provided by engineer. */
 "Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Sistemojeni lëndën tuaj në shtylla, shtoni butona “Thirrje për Veprim”, dhe tekst përmbi figura.";
 
@@ -964,6 +973,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Authenticating" = "Po bëhet mirëfilltësimi";
+
+/* Title for the error view when the authentication failed for any reason */
+"Authentication Failed" = "Mirëfilltësimi Dështoi";
 
 /* Accessibility label for the 2FA text field.
    Placeholder for the 2FA code textfield. */
@@ -1260,6 +1272,9 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the camera tile in the collection view */
 "Camera" = "Kamerë";
 
+/* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
+"Camera access needed to scan login codes" = "Për skanim kode hyrjesh lypsen leje mbi kamerën";
+
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "S’Kërkohet Dot Lidhje";
 
@@ -1432,6 +1447,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Kontrolloni për Gabim Blerjesh";
+
+/* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
+"Check out our top tips to increase your views and traffic" = "Shihni ndihmëzat tona kryesuese për shtim të parjeve dhe trafikut";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kontrolloni email-in tuaj te kjo pajisje dhe prekni lidhjen te email-i që merrni prej WordPress.com-i.";
@@ -1695,6 +1713,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Që të filloni të krijoni lidhje, komentoni.";
+
+/* A tip displayed to the user in the stats section to help them gain more followers. */
+"Commenting on other blogs is a great way to build attention and followers for your new site." = "Komentimi në blogje të tjerë është një mënyrë e goditur për të shtuar vëmendjen dhe ndjekësit për sajtin tuaj të ri.";
 
 /* Comments table header label.
    Filters Comments Notifications
@@ -1979,6 +2000,9 @@ translators: Block name. %s: The localized block name */
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "S’u ndoq dot sajti te adresa e dhënë.";
 
+/* Error message shown when the user scanned an expired log in code. */
+"Could not log you in using this log in code. Please tap the Scan Again button to rescan the code." = "S’u bë dot futja juaj duke përdorur këtë kod hyrjeje. Ju lutemi, prekni butonin “Riskanoje” që të riskanohet kodi.";
+
 /* Title of a prompt. */
 "Could not remove post from Saved for Later" = "S’u hoq dot postimi prej Ruajtur për Më vonë";
 
@@ -2005,6 +2029,9 @@ translators: Block name. %s: The localized block name */
 
 /* The app failed to unsubscribe from the comments for the post */
 "Could not unsubscribe from comments" = "S’u shpajtua dot nga komentet";
+
+/* Title for the error view when the user scanned an invalid log in code */
+"Could not validate the log in code" = "S’u bë dot vleftësimi i kodit të hyrjes";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Mund të na tregoni si ta përmirësojmë?";
@@ -3098,6 +3125,9 @@ translators: Block name. %s: The localized block name */
 /* Label indicating that a domain name registration has expired. */
 "Expired" = "I skaduar";
 
+/* Title for the error view when the user scanned an expired log in code */
+"Expired log in code" = "Kod hyrjeje i skaduar";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Skadon më";
 
@@ -3867,6 +3897,12 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "Tendenca";
 
+/* Description of updated Stats Insights displayed in the Feature Introduction view. */
+"Insights help you understand how your content is performing and what’s resonating with your audience." = "Tendencat ju ndihmojnë të kuptoni se si ecën lënda juaj dhe se ç’ka rezonancë me publikun tuaj.";
+
+/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
+"Insights update" = "Përditësim tendencash";
+
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "Instaloje";
@@ -4027,6 +4063,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack-u u instalua";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Bazuar në Jetpack";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack-u do të ndreqë krejt kërcënimet aktive të pikasura.";
 
@@ -4118,6 +4157,9 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Mësoni më tepër rreth rolesh";
+
+/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
+"Learn more in My Site > Stats > Insights." = "Mësoni më tepër te Sajti Im > Statistika > Tendenca.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Mësoni më tepër…";
@@ -5214,6 +5256,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "One" = "Një";
 
+/* Warning label that informs the user to only scan login codes that they generated. */
+"Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else." = "Skanoni vetëm kode QR të marrë drejt e nga shfletuesi juaj. Mos skanoni kurrë një kod të dërguar për ju nga dikush tjetër.";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Shihni vetëm statistikat më me peshë. Shtoni prirje sipas nevojave tuaja.";
 
@@ -5877,7 +5922,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problem me shfaqjen e bllokut";
+"Problem displaying block. \nTap to attempt block recovery." = "Problem me shfaqje blloku. \nPrekeni që të provohet rikthim blloku.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem me ngarkimin e lëndës";
@@ -6101,6 +6146,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Kujtoma";
+
+/* Button title dismiss the Stats Insights feature announcement screen. */
+"Remind me later" = "Kujtoma më vonë";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Kujtuesit u hoqën";
@@ -6465,6 +6513,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of the view */
 "Scan History" = "Historik Kontrollesh";
+
+/* Link to opening the QR login scanner */
+"Scan Login Code" = "Skanoni Kod Hyrje";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Skanoje Tani";
@@ -7392,8 +7443,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Take a Video" = "Bëni një Video";
 
+/* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
+"Tap \"Week\" to see your top commenters." = "Prekni “Javë”, që të shihni komentuesit tuaj kryesues.";
+
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Prekeni [bookmark-outline] që të ruani një postim te lista juaj.";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
+"Tap dismiss and head back to your web browser to continue." = "Prekni mbi “mos e merr parasysh” dhe kthehuni te shfletuesi juaj që të vazhdoni.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Prekeni për më tepër hollësi.";
@@ -7603,6 +7660,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description that informs for label when there are no threats on a users site */
 "The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Kontrolli i fundit nga Jetpack s’gjeti ndonjë rrezik.\n\nQë të shqyrtoni sajtin tuaj sërish bëni një kontroll dorazi, ose prisni që Jetpack-u të skanojë sajtin tuaj më vonë sot.";
 
+/* Error message shown when trying to scan an invalid log in code. */
+"The log in code that was scanned could not be validated. Please tap the Scan Again button to rescan the code." = "Kodi i hyrjes që u skanua, s’u vlerësua dot. Ju lutemi, prekni butonin “Riskanoje” që të riskanohet kodi.";
+
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Kërkesa për hyrje skadoi. Hyni te WordPress.com që të riprovoni.";
 
@@ -7617,6 +7677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Postimi që po rrekeni të kopjoni, ka dy versione që kanë përplasje, ose keni bërë ndryshime tani afër, por nuk i ruajtët ato.\nSë pari përpunoni postimin, që të zgjidhet çfarëdo përplasje ose që të vazhdohet kopjimi i versionit prej këtij aplikacioni.";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
+"The same as the previous week" = "Po aq sa javën e shkuar";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serializimi i kërkesës dështoi.";
@@ -7821,6 +7884,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Ky aplikacion lyp leje përdorimi të Kamerës që të krijojë media të re, nëse doni ta lejoni këtë, ju lutemi, ndryshoni rregullimet mbi privatësinë.";
 
+/* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
+"This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Këtij aplikacioni i duhen leje për të përdorur Kamerën, që të skanojë kode hyrjeje, prekni mbi butonin Hap Rregullimet për ta lejuar.";
+
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Që të mund të shtojë foto dhe\/ose video në postimet tuaja, ky aplikacion lyp leje hyrjeje në mediatekën e pajisjes tuaj. Nëse doni ta lejoni këtë, ju lutemi, ndryshoni rregullimet mbi privatësinë.";
 
@@ -7850,6 +7916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Ky është kujtuesi juaj për të bloguar sot ✍️";
+
+/* Error message shown when the user scanned an expired log in code. */
+"This log in code has expired. Please tap the Scan Again button to rescan the code." = "Ky kod hyrjeje ka skaduar. Ju lutemi, prekni butonin “Riskanoje” që të riskanohet kodi.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ky objekt media është fshirë.";
@@ -8017,6 +8086,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Mjete";
+
+/* Insights 'Top Commenters' header */
+"Top Commenters" = "Komentuesit Kryesues";
 
 /* Cell title for the Top Level option case
    Screen reader text expressing the menu item is at the top level and has no parent. */
@@ -9023,6 +9095,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes the web address section in the comment detail screen. */
 "Web address" = "Adresë Web";
 
+/* Title of a button. A call to action to view more stats for this week */
+"Week" = "Javë";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Java nis me";
 
@@ -9303,6 +9378,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Yes */
 "Yes" = "Po";
 
+/* Button label that confirms the user wants to log in and will authenticate them via the browser */
+"Yes, log me in" = "Po, futmë";
+
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Po, tregoma";
 
@@ -9480,6 +9558,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Gjithçka e përditësuar!";
 
+/* Title for the success view when the user has successfully logged in */
+"You're logged in!" = "Jeni i futur!";
+
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "S’jeni i autorizuar të mbyllni llogarinë.";
 
@@ -9524,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Adresa juaj falas WordPress.com është";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Postimi juaj më i ri <a href=\"\">%1$@<\/a> ka marrë <strong>%2$d<\/strong> pëlqime.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Postimi juaj më i ri <a href=\"\">%@<\/a> ka marrë <strong>një<\/strong> pëlqim.";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media juaj s’u eksportua dot. Nëse problemi vazhdon, mund të lidheni me ne që nga skena Unë > Ndihmë & Asistencë.";
@@ -9606,11 +9693,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Stats insights views lower than previous week */
 "Your views this week are %@ lower than the previous week.\n" = "Parjet tuaja këtë javë janë %@ më poshtë se sa javën e kaluar.\n";
 
+/* Stats insights label shown when the user's view count is the same as the previous week. */
+"Your views this week are the same as the previous week.\n" = "Parjet tuaja këtë javë janë po aq sa javën e kaluar.\n";
+
 /* Stats insights visitors higher than previous week */
 "Your visitors this week are %@ higher than the previous week.\n" = "Vizitorët tuaj këtë javë janë %@ më sipër se sa javën e kaluar.\n";
 
 /* Stats insights visitors lower than previous week */
 "Your visitors this week are %@ lower than the previous week.\n" = "Vizitorët tuaj këtë javë janë %@ më poshtë se sa javën e kaluar.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous week. */
+"Your visitors this week are the same as the previous week.\n" = "Vizitorët tuaj këtë javë janë po aq sa javën e kaluar.\n";
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Kredencialet tuaja për në sajt nuk do të depozitohen dhe përdoren vetëm për qëllimin e instalimit të Jetpack-ut.";
@@ -9793,6 +9886,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Skeda Jo Aktive";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "S’kanë mbetur karta joaktive";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Anuloje";

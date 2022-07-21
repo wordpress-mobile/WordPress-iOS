@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-28 21:15:33+0000 */
+/* Translation-Revision-Date: 2022-07-16 19:39:25+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
@@ -2948,7 +2948,7 @@ translators: Block name. %s: The localized block name */
 "Enter the password for your WordPress.com account." = "Introdu parola pentru contul tău WordPress.com.";
 
 /* (placeholder) Help enter WordPress username */
-"Enter username" = "Introdu un nume utilizator";
+"Enter username" = "Introdu numele de utilizator";
 
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "Introdu informațiile contului pentru %@.";
@@ -4068,6 +4068,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack a fost instalat";
+
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Propulsat de Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack va elimina toate amenințările active detectate.";
@@ -5928,7 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problemă la afișarea blocului";
+"Problem displaying block. \nTap to attempt block recovery." = "Este o problemă la afișarea blocului. \nAtinge pentru a încerca recuperarea blocului.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problemă la încărcarea conținutului";
@@ -9898,6 +9901,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Carduri inactive";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "Nu mai sunt cartușe inactive";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Anulează";
