@@ -3067,6 +3067,7 @@
 		FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA9276AD286C951200C323BB /* FeatureIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */; };
 		FA9276AF2888557500C323BB /* SiteIntentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276AE2888557500C323BB /* SiteIntentScreen.swift */; };
+		FA9276B12889550E00C323BB /* ChooseLayoutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */; };
 		FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A24E2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A2502833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */; };
@@ -8001,6 +8002,7 @@
 		FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackWebViewControllerFactory.swift; path = Classes/Services/JetpackWebViewControllerFactory.swift; sourceTree = SOURCE_ROOT; };
 		FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIntroductionScreen.swift; sourceTree = "<group>"; };
 		FA9276AE2888557500C323BB /* SiteIntentScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentScreen.swift; sourceTree = "<group>"; };
+		FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLayoutScreen.swift; sourceTree = "<group>"; };
 		FA978DDA26CEB37E009FB14F /* WordPress 132.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 132.xcdatamodel"; sourceTree = "<group>"; };
 		FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistConfigurable.swift; sourceTree = "<group>"; };
@@ -9685,6 +9687,7 @@
 				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
 				CC8498CF2241473400DB490A /* EditorSettingsComponents */,
 				FFD47BDE2474228C00F00660 /* FeaturedImageScreen.swift */,
+				FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -19848,6 +19851,7 @@
 				3F2F855526FAF227000FCDA5 /* TagsComponent.swift in Sources */,
 				3F2F855426FAF227000FCDA5 /* AztecEditorScreen.swift in Sources */,
 				3FE39A3326F836D7006E2B3A /* GetStartedScreen.swift in Sources */,
+				FA9276B12889550E00C323BB /* ChooseLayoutScreen.swift in Sources */,
 				3FE39A3426F836E9006E2B3A /* PasswordScreen.swift in Sources */,
 				3F2F855926FAF227000FCDA5 /* CategoriesComponent.swift in Sources */,
 				3FE39A4126F8388E006E2B3A /* TabNavComponent.swift in Sources */,
