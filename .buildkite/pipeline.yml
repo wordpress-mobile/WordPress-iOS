@@ -14,13 +14,6 @@ common_params:
     # See: https://buildkite.com/automattic/wordpress-ios/builds/8187#01813c28-1c1d-4a25-95c0-0fdd6f2af399
     IMAGE_ID: xcode-13.4.1
 
-notify:
-  - slack:
-      channels:
-        - "#jos-testing-notif"
-      message: "Build Failed!"
-    if: build.state == "failed"
-
 # This is the default pipeline – it will build and test the app
 steps:
 
