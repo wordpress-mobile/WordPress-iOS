@@ -77,12 +77,12 @@ extension XCTestCase {
         static let tag = "tag \(Date().toString())"
     }
 
-    public func removeApp() {
+    public func removeApp(_ appName: String = "WordPress") {
         let app = XCUIApplication()
         app.terminate()
 
         let home = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        home.icons["WordPress"].firstMatch.press(forDuration: 1)
+        home.icons[appName].firstMatch.press(forDuration: 1)
         waitAndTap(home.buttons["Remove App"])
         waitAndTap(home.alerts.buttons["Delete App"])
         waitAndTap(home.alerts.buttons["Delete"])
