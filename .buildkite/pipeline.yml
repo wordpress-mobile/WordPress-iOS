@@ -68,7 +68,7 @@ steps:
       - slack:
           channels:
             - "#jos-testing-notif"
-          message: "Unit Tests failed! Please investigate 🕵️"
+          message: "Unit Tests failed! Please investigate 🧐"
         if: build.state == "failed"
 
 
@@ -90,7 +90,7 @@ steps:
           - slack:
               channels:
                 - "#jos-testing-notif"
-              message: "UI Tests failed on iPhone! Please investigate 🕵️"
+              message: "UI Tests failed on iPhone! Please investigate 🧐"
             if: build.state == "failed"
 
 
@@ -107,7 +107,7 @@ steps:
           - slack:
               channels:
                 - "#jos-testing-notif"
-              message: "UI Tests failed on iPad! Please investigate 🕵️"
+              message: "UI Tests failed on iPad! Please investigate 🧐"
             if: build.state == "failed"
 
   #################
