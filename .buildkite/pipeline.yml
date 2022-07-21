@@ -91,7 +91,7 @@ steps:
           - slack:
               channels:
                 - "#jos-testing-notif"
-              message: "UI Test Failed! Please investigate."
+              message: "UI Test Failed! Please investigate 🕵️‍♂️"
             if: build.state == "failed"
 
 
