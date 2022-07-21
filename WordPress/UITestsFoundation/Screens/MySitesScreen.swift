@@ -5,7 +5,7 @@ import XCTest
 /// tapping the down arrow next to the site title.
 public class MySitesScreen: ScreenObject {
     let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["cancel-button"]
+        $0.buttons["my-sites-cancel-button"]
     }
 
     let plusButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -35,6 +35,13 @@ public class MySitesScreen: ScreenObject {
         return try LoginSiteAddressScreen()
     }
 
+    @discardableResult
+    public func tapPlusButton() throws -> SiteIntentScreen {
+        plusButtonGetter(app).tap()
+        return try SiteIntentScreen()
+    }
+
+    @discardableResult
     public func closeModal() throws -> MySiteScreen {
         cancelButtonGetter(app).tap()
         return try MySiteScreen()
