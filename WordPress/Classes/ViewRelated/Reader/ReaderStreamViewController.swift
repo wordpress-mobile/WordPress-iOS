@@ -501,7 +501,7 @@ import Combine
     }
 
     private func setupJetpackBanner(stackView: UIStackView) {
-        guard AppConfiguration.isWordPress && FeatureFlag.jetpackPowered.enabled else {
+        guard JetpackBrandingVisibility.all.enabled else {
             return
         }
         let bannerView = JetpackBannerView()

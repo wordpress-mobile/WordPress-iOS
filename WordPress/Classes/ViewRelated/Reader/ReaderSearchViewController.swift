@@ -183,7 +183,7 @@ import Gridicons
 
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
-        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+        guard JetpackBrandingVisibility.all.enabled else {
             return
         }
         searchBar.inputAccessoryView = bannerView
@@ -192,7 +192,7 @@ import Gridicons
 
     /// hides the Jetpack powered banner on iPhone landscape
     private func hideBannerViewIfNeeded() {
-        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+        guard JetpackBrandingVisibility.all.enabled else {
             return
         }
         // hide the banner on iPhone landscape
