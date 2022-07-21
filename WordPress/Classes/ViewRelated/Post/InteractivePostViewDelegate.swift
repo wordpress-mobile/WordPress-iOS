@@ -1,6 +1,6 @@
 import Foundation
 
-@objc protocol InteractivePostViewDelegate {
+protocol InteractivePostViewDelegate: AnyObject {
     func edit(_ post: AbstractPost)
     func view(_ post: AbstractPost)
     func stats(for post: AbstractPost)
