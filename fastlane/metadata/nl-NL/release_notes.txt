@@ -1,3 +1,9 @@
-Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
+We hebben de blokeditor iets bijgewerkt, zodat het publiceren nog beter verloopt.
 
-Het pictogram van de WordPress-app is weer als vanouds blauw. Maar wil je nou toch wat meer kleur in je leven, dan kun je in de app-instellingen het app-pictogram weer het regenboogthema geven.
+- Je hoeft alt. tekst niet meer te kopiëren en plakken. Als je een item in de mediabibliotheek toevoegt aan een afbeeldingblok, wordt de alt. tekst meegenomen.
+- Je kunt media per URL invoegen in videoblokken.
+- Als een blok onverwachte of ongeldige inhoud bevat, kun je de optie voor blokherstel gebruiken om de content correct weer te geven zonder alles van begin af opnieuw te moeten toevoegen.
+
+En reacties op berichten zijn nu gebruiksvriendelijker. Als je op het @-teken tikt om een andere gebruiker in je reactie te vermelden, is de eerste persoon bij de voorgestelde gebruikers de auteur van het bericht of de reactie. Handig, toch?
+
+Ten slotte hebben we een probleem met de mediakiezer in de editor verholpen, waarbij je zoekopdrachten zelfs na het sluiten en opnieuw openen van het venster bleven staan. We hebben tevens een bug verholpen waardoor de app crashte als je meerdere items aan een verhaalbericht toevoegde.

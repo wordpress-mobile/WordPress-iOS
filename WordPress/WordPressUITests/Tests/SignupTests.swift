@@ -6,14 +6,11 @@ class SignupTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()
-
-        try LoginFlow.logoutIfNeeded()
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     func testEmailSignup() throws {

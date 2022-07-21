@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-07-14 12:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -4066,6 +4066,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack 安装成功";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "由 Jetpack 提供支持";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack将修复检测到的活跃威胁。";
 
@@ -5922,7 +5925,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "私密";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "显示区块时出现问题";
+"Problem displaying block. \nTap to attempt block recovery." = "显示区块时出现问题。 \n点击尝试恢复区块。";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "内容加载出现问题";
@@ -9886,6 +9889,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "非活跃的卡片";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "没有剩余未启用的卡";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "取消";

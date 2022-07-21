@@ -5867,9 +5867,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the Private Badge */
 "Private" = "Privado";
 
-/* No comment provided by engineer. */
-"Problem displaying block" = "Problema ao exibir o bloco";
-
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problema ao carregar conteúdo";
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 13:54:10+0000 */
+/* Translation-Revision-Date: 2022-07-14 16:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -4069,6 +4069,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "젯팩이 설치됨";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "젯팩 제공";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "젯팩은 감지된 모든 활성 위협을 해결할 것입니다.";
 
@@ -5928,7 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "개인용";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "블록 표시 문제";
+"Problem displaying block. \nTap to attempt block recovery." = "블록 표시 중 문제가 발생했습니다. \n눌러서 블록 복구를 시도하세요.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "콘텐츠 로드 중 문제 발생";
@@ -9895,6 +9898,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "비활성화된 카드";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "남은 비활성 카드 없음";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "취소";

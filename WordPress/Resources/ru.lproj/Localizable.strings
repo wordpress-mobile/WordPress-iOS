@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-30 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-07-13 15:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
@@ -4069,6 +4069,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack установлен";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "На базе Jetpack";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack устранит все обнаруженные активные угрозы.";
 
@@ -5928,7 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Личное";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Проблема отображения блока";
+"Problem displaying block. \nTap to attempt block recovery." = "Проблема с отображением блока. \nНажмите, чтобы попытаться восстановить блок.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Проблема при загрузке содержимого";
@@ -9618,6 +9621,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Адрес вашего сайта (бесплатный) на WordPress.com -";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Ваша последняя запись <a href=\"\">%1$@<\/a> получила <strong>%2$d<\/strong> отметок \"нравится\".";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Последняя запись <a href=\"\">%@<\/a> получила <strong>одну<\/strong> отметку \"Нравится\".";
 
@@ -9895,6 +9901,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Неактивные карточки";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "Не осталось неактивных карт";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Отмена";

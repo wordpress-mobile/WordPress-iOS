@@ -830,6 +830,8 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
+    remoteMedia.largeURL = [NSURL URLWithString:media.remoteLargeURL];
+    remoteMedia.mediumURL = [NSURL URLWithString:media.remoteMediumURL];
     remoteMedia.date = media.creationDate;
     remoteMedia.file = media.filename;
     remoteMedia.extension = [media fileExtension] ?: @"unknown";

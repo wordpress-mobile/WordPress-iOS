@@ -1,3 +1,0 @@
-Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
-
-Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.

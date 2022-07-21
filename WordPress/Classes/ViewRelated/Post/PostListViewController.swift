@@ -559,7 +559,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate?(self)
+        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
 
