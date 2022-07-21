@@ -54,10 +54,10 @@ PODS:
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - Gridicons (1.1.0)
-  - GTMAppAuth (1.2.2):
+  - GTMAppAuth (1.3.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.7.0)
+  - GTMSessionFetcher/Core (1.7.2)
   - Gutenberg (1.79.0):
     - React (= 0.66.2)
     - React-CoreModules (= 0.66.2)
@@ -493,7 +493,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (2.0.0):
+  - WordPressAuthenticator (2.1.0-beta.1):
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 6.0.1)
@@ -605,7 +605,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 2.0.0)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/woo-store-cred-sign-in`)
   - WordPressKit (~> 4.56.0-beta.1)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
@@ -616,7 +616,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
     - WordPressKit
   trunk:
     - Alamofire
@@ -770,6 +769,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.80.0-alpha3
+  WordPressAuthenticator:
+    :branch: feature/woo-store-cred-sign-in
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.80.0-alpha3/third-party-podspecs/Yoga.podspec.json
 
@@ -785,6 +787,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.80.0-alpha3
+  WordPressAuthenticator:
+    :commit: e54f738e00f0cae7951c3d86d7b246e2ddfa4800
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -809,8 +814,8 @@ SPEC CHECKSUMS:
   glog: 67060cb66a7ea4b1e8947dc9936d7fce11b100b0
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: 67ff454c8bc0de4862502d06363086d60ed65b38
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 6355398addfc9856c27cc780cbf54df7cd822ab1
@@ -872,7 +877,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
+  WordPressAuthenticator: a91bf954b2c3acdc01e810c7849675e0d55309e6
   WordPressKit: 32d7b6fbe39fb0e5d0ac32d98853454347661afe
   WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
@@ -888,6 +893,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: bd1edf90e24e58d1a6f1676cec4bfaa6587c9dd1
+PODFILE CHECKSUM: c4a58d25ea204f538529a13205bfcdf3d936b1b1
 
 COCOAPODS: 1.11.2
