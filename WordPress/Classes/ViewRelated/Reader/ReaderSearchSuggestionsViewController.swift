@@ -31,17 +31,26 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     var delegate: ReaderSearchSuggestionsDelegate?
     @objc let cellIdentifier = "CellIdentifier"
     @objc let rowAndButtonHeight = CGFloat(44.0)
+
+    private var height: CGFloat {
+        UIApplication.shared.mainWindow?.frame.size.height ?? 0
+    }
+
+    private var isLargeAccessibilitySize: Bool {
+        [
+            UIContentSizeCategory.accessibilityExtraLarge,
+            UIContentSizeCategory.accessibilityExtraExtraLarge,
+            UIContentSizeCategory.accessibilityExtraExtraExtraLarge
+        ].contains(traitCollection.preferredContentSizeCategory)
+    }
+
     @objc var maxTableViewRows: Int {
-        let height = UIApplication.shared.mainWindow?.frame.size.height ?? 0
-        if height == 320 {
-            // iPhone 4s, 5, 5s, in landscape orientation
+        if height <= 428 {
+            // Any iPhone landscape
             return 1
-        } else if height <= 480 {
-            // iPhone 4s in portrait orientation
-            return 2
-        } else if height <= 568 {
-            // iPhone 5, 5s in portrait orientation
-            return 4
+        } else if height <= 834 {
+            // iPhone 6s/SE2nd/7/8 in portrait orientation, iPad landscape
+            return isLargeAccessibilitySize ? 3 : 4
         }
         // Everything else
         return 5
@@ -86,6 +95,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
         coordinator.animate(alongsideTransition: { (_) in
             self.updateHeightConstraint()
             })

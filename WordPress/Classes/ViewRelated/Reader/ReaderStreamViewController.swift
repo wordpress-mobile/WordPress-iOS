@@ -32,6 +32,8 @@ import Combine
         return tableViewController.tableView
     }
 
+    var jetpackBannerView: JetpackBannerView?
+
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
 
     private var syncHelper: WPContentSyncHelper? {
@@ -502,11 +504,11 @@ import Combine
         guard AppConfiguration.isWordPress && FeatureFlag.jetpackPowered.enabled else {
             return
         }
-
-        let jetpackBannerView = JetpackBannerView()
-        addTranslationObserver(jetpackBannerView)
-        stackView.addArrangedSubview(jetpackBannerView)
-        jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
+        let bannerView = JetpackBannerView()
+        jetpackBannerView = bannerView
+        addTranslationObserver(bannerView)
+        stackView.addArrangedSubview(bannerView)
+        bannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     private func setupTableView(stackView: UIStackView) {
