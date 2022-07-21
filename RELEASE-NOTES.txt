@@ -1,7 +1,7 @@
 20.4
 -----
 * [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
-* [*] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
 * [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
 * [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
 * [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
