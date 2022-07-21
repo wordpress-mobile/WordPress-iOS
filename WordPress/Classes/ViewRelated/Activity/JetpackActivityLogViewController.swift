@@ -22,7 +22,7 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)
 
-        if FeatureFlag.jetpackPowered.enabled && !AppConfiguration.isJetpack {
+        if JetpackBrandingVisibility.all.enabled {
             configureBanner()
         }
     }
