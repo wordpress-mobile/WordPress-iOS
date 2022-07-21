@@ -5,7 +5,11 @@ import WordPressShared
 
 // MARK: - PeopleViewController
 
-class PeopleViewController: UITableViewController, UIViewControllerRestoration {
+class PeopleViewController: UIViewController, UIViewControllerRestoration {
+
+    // MARK: Outlets
+
+    @IBOutlet var tableView: UITableView!
 
     // MARK: Properties
 
@@ -116,57 +120,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     @IBOutlet
     private var footerActivityIndicator: UIActivityIndicatorView!
 
-    // MARK: UITableViewDataSource
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        guard !isInitialLoad else {
-            // Until the initial load has been completed, no data should be rendered in the table.
-            return 0
-        }
-
-        return resultsController.sections?.count ?? 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsController.sections?[section].numberOfObjects ?? 0
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PeopleCell") as? PeopleCell else {
-            fatalError()
-        }
-
-        guard let sections = resultsController.sections, sections[indexPath.section].numberOfObjects > indexPath.row else {
-            DDLogError("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
-            cell.isHidden = true
-            return cell
-        }
-
-        let person = personAtIndexPath(indexPath)
-        let role = self.role(person: person)
-        let viewModel = PeopleCellViewModel(person: person, role: role)
-
-        cell.bindViewModel(viewModel)
-
-        return cell
-    }
-
-    // MARK: UITableViewDelegate
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Refresh only when we reach the last 3 rows in the last section!
-        let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        guard (indexPath.row + PeopleViewController.refreshRowPadding) >= numberOfRowsInSection else {
-            return
-        }
-
-        loadMorePeopleIfNeeded()
-    }
-
     // MARK: UIViewController
 
     override func viewDidLoad() {
@@ -243,6 +196,63 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     @IBAction
     func invitePersonWasPressed() {
         performSegue(withIdentifier: Storyboard.inviteSegueIdentifier, sender: self)
+    }
+}
+
+// MARK: UITableViewDataSource
+
+extension PeopleViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard !isInitialLoad else {
+            // Until the initial load has been completed, no data should be rendered in the table.
+            return 0
+        }
+
+        return resultsController.sections?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultsController.sections?[section].numberOfObjects ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PeopleCell") as? PeopleCell else {
+            fatalError()
+        }
+
+        guard let sections = resultsController.sections, sections[indexPath.section].numberOfObjects > indexPath.row else {
+            DDLogError("Error: PeopleViewController table tried to render a cell that didn't exist in Core Data")
+            cell.isHidden = true
+            return cell
+        }
+
+        let person = personAtIndexPath(indexPath)
+        let role = self.role(person: person)
+        let viewModel = PeopleCellViewModel(person: person, role: role)
+
+        cell.bindViewModel(viewModel)
+
+        return cell
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension PeopleViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Refresh only when we reach the last 3 rows in the last section!
+        let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        guard (indexPath.row + PeopleViewController.refreshRowPadding) >= numberOfRowsInSection else {
+            return
+        }
+
+        loadMorePeopleIfNeeded()
     }
 }
 
@@ -380,7 +390,7 @@ private extension PeopleViewController {
             self?.tableView.reloadData()
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
-            self?.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
     }
 
@@ -515,7 +525,7 @@ private extension PeopleViewController {
 
     func handleLoadError(_ forError: Error) {
         let _ = DispatchDelayedAction(delay: .milliseconds(250)) { [weak self] in
-            self?.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
 
         handleConnectionError()
