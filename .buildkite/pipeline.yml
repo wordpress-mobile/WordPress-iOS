@@ -89,6 +89,9 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "Slack notification"
+        depends_on: "test1"
+        env: *common_env
+        plugins: *common_plugins
         command: |
           if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
             notify:
