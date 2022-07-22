@@ -190,7 +190,6 @@ abstract_target 'Apps' do
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries
