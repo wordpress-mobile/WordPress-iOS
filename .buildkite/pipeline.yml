@@ -75,7 +75,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 UI Tests (iPhone)"
-        key: "ui-tests-iphone"
+        key: "ui-tests"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPhone 11" 15.0
         depends_on: "build"
         env: *common_env
@@ -85,14 +85,11 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
-          # - slack:
-          #     channels:
-          #       - "#jos-testing-notif"
 
       - label: "Slack notification"
-        depends_on: "ui-tests-iphone"
+        depends_on: "ui-tests"
         allow_dependency_failure: true
-        env: 
+        env:
           IMAGE_ID: xcode-13.4.1
           UI_STATUS: "status"
         plugins: *common_plugins
@@ -107,6 +104,7 @@ steps:
           - slack:
               channels:
                 - "#jos-testing-notif"
+              message: "UI Tests failed! Please investigate!"
         if: build.env("UI_STATUS") == "failed"
 
       # - label: "🔬 UI Tests (iPad)"
