@@ -75,7 +75,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 UI Tests (iPhone)"
-        key: ui-tests-iphone
+        key: "ui-tests-iphone"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPhone 11" 15.0
         depends_on: "build"
         env: *common_env
