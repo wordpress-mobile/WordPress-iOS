@@ -476,7 +476,7 @@ private extension NotificationSettingsViewController {
         var showBadge: Bool {
             switch self {
             case .blog:
-                return true
+                return JetpackBrandingVisibility.all.enabled
             default:
                 return false
             }
