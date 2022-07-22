@@ -18,7 +18,6 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
     weak var delegate: BorderedButtonTableViewCellDelegate?
 
-    //private var button = UIButton()
     private var buttonTitle = String()
     private var buttonInsets = Defaults.buttonInsets
     private var titleFont = Defaults.titleFont
