@@ -96,7 +96,7 @@ steps:
           - slack:
               channels:
                 - "#jos-testing-notif"
-              message: "$(buildkite-agent step get "outcome" --step "ui-tests-iphone") UI Tests iPhone"
+              message: "$$(buildkite-agent step get "outcome" --step "ui-tests-iphone") UI Tests iPhone"
 
       # - label: "🔬 UI Tests (iPad)"
       #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
