@@ -88,7 +88,7 @@ steps:
 
       - label: "Slack notification"
         command: |
-          if [ $$(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
+          if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
             echo build.env("UI_TESTS_STATUS")
             build.env("UI_TESTS_STATUS") = "failed"
@@ -100,6 +100,8 @@ steps:
           IMAGE_ID: xcode-13.4.1
           UI_TESTS_STATUS: "status"
         plugins: *common_plugins
+        agents:
+          queue: "default"
         notify:
           - slack:
               channels:
