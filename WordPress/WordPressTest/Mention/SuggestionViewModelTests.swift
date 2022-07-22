@@ -3,7 +3,7 @@ import XCTest
 
 @testable import WordPress
 
-//final class SuggestionViewModelTests: CoreDataTestCase {
+final class SuggestionViewModelTests: CoreDataTestCase {
 
     /// Tests that the user suggestion view model properties are properly formatted.
     func testUserSuggestionViewModel() throws {
