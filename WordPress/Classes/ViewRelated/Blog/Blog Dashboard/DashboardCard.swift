@@ -14,6 +14,7 @@ enum DashboardCard: String, CaseIterable {
     case scheduledPosts
     case nextPost = "create_next"
     case createPost = "create_first"
+    case jetpackBadge
 
     // Card placeholder for when loading data
     case ghost
@@ -39,6 +40,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardGhostCardCell.self
         case .failure:
             return DashboardFailureCardCell.self
+        case .jetpackBadge:
+            return DashboardBadgeCell.self
         }
     }
 
@@ -56,6 +59,8 @@ enum DashboardCard: String, CaseIterable {
             return blog.dashboardState.isFirstLoad
         case .failure:
             return blog.dashboardState.isFirstLoadFailure
+        case .jetpackBadge:
+            return true
         }
     }
 
