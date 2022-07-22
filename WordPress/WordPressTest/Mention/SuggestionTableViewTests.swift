@@ -1,7 +1,7 @@
 import Foundation
+import XCTest
 
 @testable import WordPress
-import XCTest
 
 final class SuggestionTableViewTests: CoreDataTestCase {
 

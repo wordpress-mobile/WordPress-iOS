@@ -11,5 +11,4 @@ final class SuggestionsTableViewDelegateMock: NSObject, SuggestionsTableViewDele
         self.selectedSuggestion = suggestion
         self.searchText = text
     }
-
 }
