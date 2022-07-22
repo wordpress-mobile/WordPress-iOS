@@ -12,7 +12,6 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;

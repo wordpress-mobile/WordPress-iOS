@@ -1,3 +1,0 @@
-Vuoi passare al browser? Ora puoi accedere scansionando un codice QR dal menu Io dell'app.
-
-Durante la visualizzazione in anteprima di un articolo, ora puoi passare dall'orientamento verticale a quello orizzontale e viceversa senza tagliare alcun contenuto. Ottimo.

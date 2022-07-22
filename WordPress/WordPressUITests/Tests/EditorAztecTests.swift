@@ -7,7 +7,7 @@ class EditorAztecTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
@@ -17,12 +17,7 @@ class EditorAztecTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        if editorScreen != nil && !TabNavComponent.isVisible() {
-            EditorFlow.returnToMainEditorScreen()
-            editorScreen.closeEditor()
-        }
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     // TODO: Re-enable Aztec tests but for editing an existing Aztec post.

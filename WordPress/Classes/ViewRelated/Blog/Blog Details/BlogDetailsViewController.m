@@ -1450,7 +1450,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    PeopleViewController *peopleVC = [PeopleViewController controllerWithBlog:self.blog];
+    JetpackBannerWrapperViewController *controller = [[JetpackBannerWrapperViewController alloc] initWithChildVC:peopleVC];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
