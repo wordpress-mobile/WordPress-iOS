@@ -88,7 +88,7 @@ steps:
 
       - label: "Slack notification"
         depends_on: "ui-tests-iphone"
-        allow_dependency_failure: true
+        # allow_dependency_failure: true
         env: *common_env
         plugins: *common_plugins
         command: |
