@@ -76,7 +76,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 UI Tests (iPhone)"
-        key: test1
+        key: ui-tests-iphone
         command: | 
             .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 15.0
         depends_on: "build"
@@ -89,7 +89,8 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "Slack notification"
-        depends_on: "test1"
+        depends_on: "ui-tests-iphone"
+        allow_dependency_failure: true
         env: *common_env
         plugins: *common_plugins
         command: |
