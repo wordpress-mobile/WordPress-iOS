@@ -10,7 +10,6 @@ extension XCTestCase {
         continueAfterFailure = false
 
         let app = XCUIApplication()
-        app.terminate()
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
         app.activate()
 
@@ -76,5 +75,22 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
+    }
+
+    public func removeApp() {
+        let app = XCUIApplication()
+        app.terminate()
+
+        let home = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        home.icons["WordPress"].firstMatch.press(forDuration: 1)
+        waitAndTap(home.buttons["Remove App"])
+        waitAndTap(home.alerts.buttons["Delete App"])
+        waitAndTap(home.alerts.buttons["Delete"])
+    }
+
+    public func waitAndTap( _ element: XCUIElement) {
+        if element.waitForExistence(timeout: 5) {
+            element.tap()
+        }
     }
 }

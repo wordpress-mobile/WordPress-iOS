@@ -1,3 +1,0 @@
-¿Quieres cambiar a tu navegador? Ahora puedes acceder al escanear un código QR en el menú "Yo" de la aplicación.
-
-Ahora, al previsualizar una entrada, puedes cambiar entre la orientación vertical y la horizontal sin cortar el contenido. Perfecto.

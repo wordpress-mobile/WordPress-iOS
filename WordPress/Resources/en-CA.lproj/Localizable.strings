@@ -5551,9 +5551,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the Private Badge */
 "Private" = "Private";
 
-/* No comment provided by engineer. */
-"Problem displaying block" = "Problem displaying block";
-
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
 

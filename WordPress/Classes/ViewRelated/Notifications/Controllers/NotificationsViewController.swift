@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import CoreData
 import CocoaLumberjack
 import WordPressShared
@@ -132,6 +133,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         )
         return markButton
     }()
+
+    /// Used by JPScrollViewDelegate to send scroll position
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     // MARK: - View Lifecycle
 
@@ -545,10 +549,16 @@ private extension NotificationsViewController {
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
+        let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
+        let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+
+        leading.priority = UILayoutPriority(999)
+        trailing.priority = UILayoutPriority(999)
+
         NSLayoutConstraint.activate([
             tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
-            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
-            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+            leading,
+            trailing
         ])
     }
 
@@ -602,12 +612,23 @@ private extension NotificationsViewController {
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
-
-    func configureJetpackBanner() {
-        jetpackBannerView.isHidden = AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled
-    }
 }
 
+// MARK: - Jetpack banner UI Initialization
+//
+extension NotificationsViewController {
+
+    /// Called on view load to determine whether the Jetpack banner should be shown on the view
+    /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
+    func configureJetpackBanner() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+
+        jetpackBannerView.isHidden = false
+        addTranslationObserver(jetpackBannerView)
+    }
+}
 
 
 // MARK: - Notifications
@@ -2046,5 +2067,13 @@ extension NotificationsViewController: WPScrollableViewController {
     // Used to scroll view to top when tapping on tab bar item when VC is already visible.
     func scrollViewToTop() {
         tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+//
+extension NotificationsViewController: JPScrollViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }

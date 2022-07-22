@@ -1,6 +1,10 @@
 import UIKit
+import Combine
 
 class JetpackActivityLogViewController: BaseActivityListViewController {
+    private let jetpackBannerView = JetpackBannerView()
+    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
             identifier: "activity_log",
@@ -17,6 +21,10 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         )
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)
+
+        if JetpackBrandingVisibility.all.enabled {
+            configureBanner()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -31,5 +39,21 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         extendedLayoutIncludesOpaqueBars = true
 
         WPAnalytics.track(.activityLogViewed)
+    }
+
+    private func configureBanner() {
+        containerStackView.addArrangedSubview(jetpackBannerView)
+
+        NSLayoutConstraint.activate([
+            jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight)
+        ])
+        addTranslationObserver(jetpackBannerView)
+    }
+}
+
+extension JetpackActivityLogViewController: JPScrollViewDelegate {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }

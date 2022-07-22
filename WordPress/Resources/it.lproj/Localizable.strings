@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-08 05:09:44+0000 */
+/* Translation-Revision-Date: 2022-07-14 08:54:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -4066,6 +4066,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installato";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Con tecnologia Jetpack";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack risolverà tutte le minacce attive rilevate.";
 
@@ -5922,7 +5925,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Privato";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problema durante la visualizzazione del blocco";
+"Problem displaying block. \nTap to attempt block recovery." = "Problema durante la visualizzazione del blocco. \nTocca per tentare il ripristino del blocco.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problema con il caricamento del contenuto";
@@ -7456,7 +7459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap [bookmark-outline] to save a post to your list." = "Tocca [bookmark-outline] per salvare un articolo nel tuo elenco.";
 
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "Tocca Respinto e torna al tuo browser web per continuare.";
+"Tap dismiss and head back to your web browser to continue." = "Tocca Ignora e torna al tuo browser web per continuare.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Tocca per ulteriori dettagli.";
@@ -9889,6 +9892,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Schede inattive";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "Nessuna scheda inattiva rimanente";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Annulla";

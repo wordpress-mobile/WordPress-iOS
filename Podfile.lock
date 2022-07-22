@@ -4,7 +4,6 @@ PODS:
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
-  - AMScrollingNavbar (5.6.0)
   - AppAuth (1.5.0):
     - AppAuth/Core (= 1.5.0)
     - AppAuth/ExternalUserAgent (= 1.5.0)
@@ -503,7 +502,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.55.0):
+  - WordPressKit (4.56.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -536,7 +535,6 @@ DEPENDENCIES:
   - Alamofire (= 4.8.0)
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
-  - AMScrollingNavbar (= 5.6.0)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
   - Automattic-Tracks-iOS (~> 0.11.1)
@@ -606,7 +604,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 2.0.0)
-  - WordPressKit (~> 4.55.0)
+  - WordPressKit (~> 4.56.0-beta.1)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.4)
@@ -617,11 +615,11 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
-    - AMScrollingNavbar
     - AppAuth
     - AppCenter
     - Automattic-Tracks-iOS
@@ -656,7 +654,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -790,7 +787,6 @@ SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
-  AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
@@ -873,7 +869,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5163f732e4e529781f931f158f54b1a1545bc536
-  WordPressKit: eb0949165ec479f2ec1c205f141fd62c72c5047a
+  WordPressKit: 32d7b6fbe39fb0e5d0ac32d98853454347661afe
   WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 9533160e5587939876aeeb1461a441a4e5dc4c4d
