@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 import CocoaLumberjack
 import WordPressShared
@@ -10,6 +11,7 @@ class PeopleViewController: UIViewController, UIViewControllerRestoration {
     // MARK: Outlets
 
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     // MARK: Properties
 
@@ -106,6 +108,9 @@ class PeopleViewController: UIViewController, UIViewControllerRestoration {
         return frc
     }()
 
+    /// Used by JPScrollViewDelegate to send scroll position
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterBar: FilterTabBar!
@@ -125,6 +130,7 @@ class PeopleViewController: UIViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        configureJetpackBanner()
         observeNetworkStatus()
         resetManagedPeople()
     }
@@ -196,6 +202,19 @@ class PeopleViewController: UIViewController, UIViewControllerRestoration {
     @IBAction
     func invitePersonWasPressed() {
         performSegue(withIdentifier: Storyboard.inviteSegueIdentifier, sender: self)
+    }
+
+    // MARK: - Jetpack banner UI Initialization
+
+    /// Called on view load to determine whether the Jetpack banner should be shown on the view
+    /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
+    func configureJetpackBanner() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+
+        jetpackBannerView.isHidden = false
+        addTranslationObserver(jetpackBannerView)
     }
 }
 
@@ -611,5 +630,13 @@ extension PeopleViewController {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+
+extension PeopleViewController: JPScrollViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }
