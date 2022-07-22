@@ -87,12 +87,6 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "Slack notification"
-        depends_on: "ui-tests-iphone"
-        allow_dependency_failure: true
-        env:
-          IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS: "status"
-        plugins: *common_plugins
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
@@ -100,26 +94,32 @@ steps:
             build.env("UI_TESTS_STATUS") = "failed"
             echo build.env("UI_TESTS_STATUS")
           fi
+        depends_on: "ui-tests-iphone"
+        allow_dependency_failure: true
+        env:
+          IMAGE_ID: xcode-13.4.1
+          UI_TESTS_STATUS: "status"
+        plugins: *common_plugins
         notify:
           - slack:
               channels:
                 - "#jos-testing-notif"
               message: "UI Tests failed! Please investigate!"
-          if: build.env("UI_TESTS_STATUS") == "failed"
+            if: build.env("UI_TESTS_STATUS") == "failed"
 
-      # - label: "🔬 UI Tests (iPad)"
-      #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
-      #   depends_on: "build"
-      #   env: *common_env
-      #   plugins: *common_plugins
-      #   artifact_paths:
-      #     - "build/results/*"
-      #   notify:
-      #     - github_commit_status:
-      #         context: "UI Tests (iPad)"
-      #     - slack:
-      #         channels:
-      #           - "#jos-testing-notif"
+      - label: "🔬 UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#jos-testing-notif"
 
   #################
   # Linters
