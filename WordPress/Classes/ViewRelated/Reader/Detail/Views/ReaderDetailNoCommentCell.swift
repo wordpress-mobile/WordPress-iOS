@@ -15,8 +15,6 @@ class ReaderDetailNoCommentCell: UITableViewCell, NibReusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(jetpackBadge)
-
-
         return view
     }()
 
