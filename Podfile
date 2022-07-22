@@ -99,6 +99,11 @@ def gutenberg(options)
 end
 
 def gutenberg_dependencies(options)
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
   dependencies = %w[
     FBLazyVector
     React
