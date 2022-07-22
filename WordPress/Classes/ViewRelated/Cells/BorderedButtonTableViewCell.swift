@@ -157,7 +157,7 @@ private extension BorderedButtonTableViewCell {
         }
         NSLayoutConstraint.activate([
             jetpackBadge.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Defaults.jetpackBadgeTopInset),
-            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor),
+            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor, constant: Defaults.jetpackBadgeBottomInset),
             jetpackBadge.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor)
         ])
     }
@@ -173,6 +173,7 @@ private extension BorderedButtonTableViewCell {
         static let normalColor: UIColor = .text
         static let highlightedColor: UIColor = .textInverted
         static let jetpackBadgeTopInset: CGFloat = 30
+        static let jetpackBadgeBottomInset: CGFloat = 6
     }
 
     func toggleLoading(_ loading: Bool) {
