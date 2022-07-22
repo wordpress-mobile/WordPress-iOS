@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 
 import CocoaLumberjack
@@ -101,6 +102,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         frc.delegate = self
         return frc
     }()
+
+    /// Used by JPScrollViewDelegate to send scroll position
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     /// Filtering Tab Bar
     ///
@@ -599,5 +603,13 @@ extension PeopleViewController {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+
+extension PeopleViewController: JPScrollViewDelegate {
+    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }
