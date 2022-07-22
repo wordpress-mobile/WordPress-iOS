@@ -93,20 +93,19 @@ steps:
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env: 
-          UI_STATUS: "false"
+          UI_STATUS: ""
         command: |
           if [ $$(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
-            echo $$UI_STATUS
-            echo $UI_STATUS
-            $$UI_STATUS = "true"
-            echo $$UI_STATUS
+            echo build.env("UI_STATUS")
+            build.env("UI_STATUS") = "failed"
+            echo build.env("UI_STATUS")
           fi
         notify:
           - slack:
               channels:
                 - "#jos-testing-notif"
-        if: "build.env().UI_STATUS == true"
+        if: build.env("UI_STATUS") == "failed"
 
       # - label: "🔬 UI Tests (iPad)"
       #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
