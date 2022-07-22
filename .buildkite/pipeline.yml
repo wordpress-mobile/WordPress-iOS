@@ -65,10 +65,10 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
-      - slack:
-          channels:
-            - "#jos-testing-notif"
-          message: "Unit Tests failed! Please investigate."
+      # - slack:
+      #     channels:
+      #       - "#jos-testing-notif"
+      #     message: "Unit Tests failed! Please investigate."
 
   #################
   # UI Tests
@@ -76,7 +76,16 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 15.0
+        key: test1
+        command: | 
+            .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 15.0
+            if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
+              notify:
+                - slack:
+                    channels:
+                      - "#jos-testing-notif"
+                    message: "UI Tests failed on iPhone! Please investigate."
+            fi
         depends_on: "build"
         env: *common_env
         plugins: *common_plugins
@@ -85,25 +94,33 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
-          - slack:
-              channels:
-                - "#jos-testing-notif"
-              message: "UI Tests failed on iPhone! Please investigate."
+          # - slack:
+          #     channels:
+          #       - "#jos-testing-notif"
+          #     message: "UI Tests failed on iPhone! Please investigate."
+        # command: |
+        #   if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
+        #         notify:
+        #           - slack:
+        #               channels:
+        #                 - "#jos-testing-notif"
+        #               message: "UI Tests failed on iPhone! Please investigate."
+        #   fi
 
-      - label: "🔬 UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-          - slack:
-              channels:
-                - "#jos-testing-notif"
-              message: "UI Tests failed on iPad! Please investigate."
+      # - label: "🔬 UI Tests (iPad)"
+      #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
+      #   depends_on: "build"
+      #   env: *common_env
+      #   plugins: *common_plugins
+      #   artifact_paths:
+      #     - "build/results/*"
+      #   notify:
+      #     - github_commit_status:
+      #         context: "UI Tests (iPad)"
+      #     - slack:
+      #         channels:
+      #           - "#jos-testing-notif"
+      #         message: "UI Tests failed on iPad! Please investigate."
 
   #################
   # Linters
