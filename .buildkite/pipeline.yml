@@ -98,9 +98,7 @@ steps:
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
             echo $$UI_STATUS
-            echo build.env().UI_STATUS
-            echo env().UI_STATUS
-            echo env.UI_STATUS
+            echo $UI_STATUS
             $$UI_STATUS = "true"
             echo $$UI_STATUS
           fi
