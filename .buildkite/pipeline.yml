@@ -85,9 +85,9 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
-          - slack:
-              channels:
-                - "#jos-testing-notif"
+          # - slack:
+          #     channels:
+          #       - "#jos-testing-notif"
 
       - label: "Slack notification"
         depends_on: "ui-tests-iphone"
@@ -106,8 +106,8 @@ steps:
           fi
         notify:
           - slack:
-            channels:
-              - "#jos-testing-notif"
+              channels:
+                - "#jos-testing-notif"
         if: "build.env().UI_STATUS == true"
 
       # - label: "🔬 UI Tests (iPad)"
