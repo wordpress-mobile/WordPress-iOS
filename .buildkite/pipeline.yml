@@ -77,8 +77,7 @@ steps:
     steps:
       - label: "🔬 UI Tests (iPhone)"
         key: ui-tests-iphone
-        command: | 
-            .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 15.0
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPhone 11" 15.0
         depends_on: "build"
         env: *common_env
         plugins: *common_plugins
@@ -93,23 +92,12 @@ steps:
         allow_dependency_failure: true
         env: *common_env
         plugins: *common_plugins
-        command: |
-          if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
-            notify:
-              - slack:
-                  channels:
-                    - "#jos-testing-notif"
-                  message: "UI Tests failed on iPhone! Please investigate."
-          fi
-
-        # command: |
-        #   if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
-        #         notify:
-        #           - slack:
-        #               channels:
-        #                 - "#jos-testing-notif"
-        #               message: "UI Tests failed on iPhone! Please investigate."
-        #   fi
+        notify:
+          - slack:
+              channels:
+                - "#jos-testing-notif"
+              message: |
+                ${{ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") }} UI Tests iPhone
 
       # - label: "🔬 UI Tests (iPad)"
       #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
