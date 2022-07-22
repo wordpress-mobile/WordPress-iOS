@@ -188,7 +188,7 @@ class PeopleViewController: UIViewController, UIViewControllerRestoration {
 
     // MARK: Action Handlers
 
-    @IBAction
+    @objc
     func refresh() {
         refreshPeople()
     }
@@ -560,6 +560,8 @@ private extension PeopleViewController {
         filterBar.translatesAutoresizingMaskIntoConstraints = false
 
         tableView.tableHeaderView = filterBar
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 
         NSLayoutConstraint.activate([
             filterBar.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
