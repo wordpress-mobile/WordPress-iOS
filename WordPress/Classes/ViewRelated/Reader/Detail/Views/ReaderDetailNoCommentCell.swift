@@ -30,9 +30,10 @@ class ReaderDetailNoCommentCell: UITableViewCell, NibReusable {
         stackView.addArrangedSubview(jetpackBadgeView)
         NSLayoutConstraint.activate([
             jetpackBadge.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Self.jetpackBadgeTopInset),
-            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor),
+            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor, constant: -Self.jetpackBadgeBottomInset),
             jetpackBadge.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor)
         ])
     }
     static let jetpackBadgeTopInset: CGFloat = 30
+    static let jetpackBadgeBottomInset: CGFloat = 6
 }

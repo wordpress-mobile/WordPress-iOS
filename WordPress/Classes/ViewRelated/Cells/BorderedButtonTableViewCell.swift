@@ -157,7 +157,7 @@ private extension BorderedButtonTableViewCell {
         }
         NSLayoutConstraint.activate([
             jetpackBadge.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Defaults.jetpackBadgeTopInset),
-            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor, constant: Defaults.jetpackBadgeBottomInset),
+            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor, constant: -Defaults.jetpackBadgeBottomInset),
             jetpackBadge.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor)
         ])
     }
