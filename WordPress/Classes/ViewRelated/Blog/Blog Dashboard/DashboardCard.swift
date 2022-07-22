@@ -60,7 +60,7 @@ enum DashboardCard: String, CaseIterable {
         case .failure:
             return blog.dashboardState.isFirstLoadFailure
         case .jetpackBadge:
-            return true
+            return JetpackBrandingVisibility.all.enabled
         }
     }
 
