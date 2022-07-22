@@ -29,6 +29,7 @@ extension NotificationsViewController {
                 controller?.view.removeFromSuperview()
                 controller?.removeFromParent()
                 self?.jetpackLoginViewController = nil
+                self?.configureJetpackBanner()
                 self?.tableView.reloadData()
             } else {
                 self?.activityIndicator.stopAnimating()

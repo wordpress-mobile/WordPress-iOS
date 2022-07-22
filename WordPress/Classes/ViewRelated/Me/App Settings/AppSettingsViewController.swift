@@ -554,8 +554,7 @@ extension AppSettingsViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section == handler.viewModel.sections.count - 1,
-                AppConfiguration.isWordPress,
-                FeatureFlag.jetpackPowered.enabled else {
+              JetpackBrandingVisibility.all.enabled else {
             return nil
         }
         return JetpackButton.makeBadgeView()

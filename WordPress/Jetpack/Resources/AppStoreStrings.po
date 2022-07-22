@@ -13,6 +13,11 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 
+#. translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
+msgctxt "app_store_name"
+msgid "Jetpack"
+msgstr ""
+
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
 msgid "Faster, safer WordPress"

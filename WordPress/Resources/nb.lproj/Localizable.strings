@@ -4174,9 +4174,6 @@ translators: Block name. %s: The localized block name */
    Title of the Private Badge */
 "Private" = "Privat";
 
-/* No comment provided by engineer. */
-"Problem displaying block" = "Problem under visning av blokk";
-
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem med å laste innhold";
 

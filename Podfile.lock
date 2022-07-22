@@ -4,7 +4,6 @@ PODS:
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
-  - AMScrollingNavbar (5.6.0)
   - AppAuth (1.5.0):
     - AppAuth/Core (= 1.5.0)
     - AppAuth/ExternalUserAgent (= 1.5.0)
@@ -536,7 +535,6 @@ DEPENDENCIES:
   - Alamofire (= 4.8.0)
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
-  - AMScrollingNavbar (= 5.6.0)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
   - Automattic-Tracks-iOS (~> 0.11.1)
@@ -622,7 +620,6 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
-    - AMScrollingNavbar
     - AppAuth
     - AppCenter
     - Automattic-Tracks-iOS
@@ -790,7 +787,6 @@ SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
-  AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
@@ -888,6 +884,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 44fc949fa1ba5f153224dc6491c86dd3fe2065f0
+PODFILE CHECKSUM: 15c2321519062415e80a0ff65491fe567dedcdf7
 
 COCOAPODS: 1.11.2

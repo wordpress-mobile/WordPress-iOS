@@ -340,7 +340,7 @@ public protocol ThemePresenter: AnyObject {
     }
 
     private func configureJetpackBanner() {
-        guard AppConfiguration.isWordPress, FeatureFlag.jetpackPowered.enabled else {
+        guard JetpackBrandingVisibility.all.enabled else {
             return
         }
 
