@@ -68,7 +68,6 @@ steps:
       # - slack:
       #     channels:
       #       - "#jos-testing-notif"
-      #     message: "Unit Tests failed! Please investigate."
 
   #################
   # UI Tests
@@ -86,17 +85,30 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#jos-testing-notif"
 
       - label: "Slack notification"
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
-        env: *common_env
-        plugins: *common_plugins
+        env: 
+          UI_STATUS: "false"
+        command: |
+          if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
+            echo "UI Test failed!"
+            echo $$UI_STATUS
+            echo build.env().UI_STATUS
+            echo env().UI_STATUS
+            echo env.UI_STATUS
+            $$UI_STATUS = "true"
+            echo $$UI_STATUS
+          fi
         notify:
           - slack:
-              channels:
-                - "#jos-testing-notif"
-              message: "$$(buildkite-agent step get "outcome" --step "ui-tests-iphone") UI Tests iPhone"
+            channels:
+              - "#jos-testing-notif"
+        if: "build.env().UI_STATUS == true"
 
       # - label: "🔬 UI Tests (iPad)"
       #   command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
@@ -111,7 +123,6 @@ steps:
       #     - slack:
       #         channels:
       #           - "#jos-testing-notif"
-      #         message: "UI Tests failed on iPad! Please investigate."
 
   #################
   # Linters
