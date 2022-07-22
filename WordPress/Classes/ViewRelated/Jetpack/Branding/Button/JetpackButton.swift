@@ -84,6 +84,7 @@ class JetpackButton: UIButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
+        flipInsetsForRightToLeftLayoutDirection()
 
         // sets the background of the jp logo to white
         if let imageView = imageView {
