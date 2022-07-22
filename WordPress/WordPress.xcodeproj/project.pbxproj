@@ -2257,6 +2257,8 @@
 		C373D6E728045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6EA280452F6008F8C26 /* SiteIntentDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */; };
+		C3835559288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */; };
+		C383555A288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */; };
 		C387B7A22638D66F00BDEF86 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
 		C38C5D8127F61D2C002F517E /* MenuItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38C5D8027F61D2C002F517E /* MenuItemTests.swift */; };
 		C395FB232821FE4400AE7C11 /* SiteDesignSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395FB222821FE4400AE7C11 /* SiteDesignSection.swift */; };
@@ -7150,6 +7152,7 @@
 		C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationStep.swift; sourceTree = "<group>"; };
 		C373D6E628045281008F8C26 /* SiteIntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentData.swift; sourceTree = "<group>"; };
 		C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentDataTests.swift; sourceTree = "<group>"; };
+		C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerWrapperViewController.swift; sourceTree = "<group>"; };
 		C38C5D8027F61D2C002F517E /* MenuItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuItemTests.swift; path = Menus/MenuItemTests.swift; sourceTree = "<group>"; };
 		C395FB222821FE4400AE7C11 /* SiteDesignSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignSection.swift; sourceTree = "<group>"; };
 		C395FB252821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteSiteDesign+Thumbnail.swift"; sourceTree = "<group>"; };
@@ -10099,6 +10102,7 @@
 			isa = PBXGroup;
 			children = (
 				B0CD27CE286F8858009500BF /* JetpackBannerView.swift */,
+				C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */,
 				3FAE0651287C8FC500F46508 /* JPScrollViewDelegate.swift */,
 			);
 			path = Banner;
@@ -18248,6 +18252,7 @@
 				981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */,
 				FAD2538F26116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */,
+				C3835559288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */,
 				E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */,
 				98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
@@ -20747,6 +20752,7 @@
 				FABB215D2602FC2C00C8785C /* ValueTransformers.swift in Sources */,
 				FABB215E2602FC2C00C8785C /* ABTest.swift in Sources */,
 				FABB215F2602FC2C00C8785C /* ContextManager+ErrorHandling.swift in Sources */,
+				C383555A288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */,
 				FABB21602602FC2C00C8785C /* EmptyActionView.swift in Sources */,
 				FABB21612602FC2C00C8785C /* ReaderShowAttributionAction.swift in Sources */,
 				FABB21622602FC2C00C8785C /* LinkSettingsViewController.swift in Sources */,
