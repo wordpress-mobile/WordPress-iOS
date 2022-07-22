@@ -79,13 +79,6 @@ steps:
         key: test1
         command: | 
             .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 15.0
-            if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
-              notify:
-                - slack:
-                    channels:
-                      - "#jos-testing-notif"
-                    message: "UI Tests failed on iPhone! Please investigate."
-            fi
         depends_on: "build"
         env: *common_env
         plugins: *common_plugins
@@ -94,10 +87,17 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
-          # - slack:
-          #     channels:
-          #       - "#jos-testing-notif"
-          #     message: "UI Tests failed on iPhone! Please investigate."
+
+      - label: "Slack notification"
+        command: |
+          if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
+            notify:
+              - slack:
+                  channels:
+                    - "#jos-testing-notif"
+                  message: "UI Tests failed on iPhone! Please investigate."
+          fi
+
         # command: |
         #   if [ $(buildkite-agent step get "outcome" --step "test1") == "hard_failed" ]; then
         #         notify:
