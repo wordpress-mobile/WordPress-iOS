@@ -93,7 +93,7 @@ steps:
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env: 
-          *common_env
+          IMAGE_ID: xcode-13.4.1
           UI_STATUS: "status"
         plugins: *common_plugins
         command: |
