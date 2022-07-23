@@ -473,8 +473,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        let controller: UIViewController = SharingViewController(blog: blog, delegate: self)
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return
+        }
 
+        let controller: UIViewController = JetpackBannerWrapperViewController(childVC: sharingVC)
         let navigationController = UINavigationController(rootViewController: controller)
 
         present(navigationController, animated: true)

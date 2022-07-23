@@ -48,6 +48,11 @@ import UIKit
 
     /// Note: This could be improved to be delegated to the wrapped view.
     private func shouldShowBanner() -> Bool {
+        /// Presenting as a modal currently isn't supported due to Safe Area overlap
+        guard !isModal() else {
+            return false
+        }
+
         return JetpackBrandingVisibility.all.enabled
     }
 }

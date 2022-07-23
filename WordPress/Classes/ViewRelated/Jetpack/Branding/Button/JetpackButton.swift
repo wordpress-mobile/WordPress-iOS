@@ -130,15 +130,15 @@ extension JetpackButton {
     /// Instantiates a view containing a Jetpack powered badge
     /// - Parameter padding: top and bottom padding, defaults to 30 pt
     /// - Returns: the view containing the badge
-    static func makeBadgeView(padding: CGFloat = 30) -> UIView {
+    static func makeBadgeView(topPadding: CGFloat = 30, bottomPadding: CGFloat = 30) -> UIView {
         let view = UIView()
-        let banner = JetpackButton(style: .badge)
-        banner.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(banner)
-        view.pinSubviewAtCenter(banner)
+        let badge = JetpackButton(style: .badge)
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(badge)
         NSLayoutConstraint.activate([
-            banner.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
-            banner.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding)
+            badge.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            badge.topAnchor.constraint(equalTo: view.topAnchor, constant: topPadding),
+            badge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding)
         ])
         return view
     }

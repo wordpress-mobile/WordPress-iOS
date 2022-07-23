@@ -1450,8 +1450,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    PeopleViewController *peopleVC = [PeopleViewController controllerWithBlog:self.blog];
-    JetpackBannerWrapperViewController *controller = [[JetpackBannerWrapperViewController alloc] initWithChildVC:peopleVC];
+    PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
@@ -1514,7 +1513,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate: nil];
+        SharingViewController *sharingVC = [[SharingViewController alloc] initWithBlog:self.blog delegate:nil];
+        controller = [[JetpackBannerWrapperViewController alloc] initWithChildVC: sharingVC];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];
