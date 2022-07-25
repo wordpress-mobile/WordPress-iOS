@@ -1,5 +1,6 @@
 20.5
 -----
+* [*] [Jetpack-only] Block Editor: Makes some small changes to the cursor and highlight colours for consistency. [#19113]
 
 
 20.4
