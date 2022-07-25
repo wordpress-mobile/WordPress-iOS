@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-29 12:54:09+0000 */
+/* Translation-Revision-Date: 2022-07-13 13:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -4066,6 +4066,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "تمّ تنصيب Jetpack";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "مدعوم بواسطة Jetpack";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "سيقوم Jetpack بإصلاح جميع التهديدات النشطة المكتشفة.";
 
@@ -5925,7 +5928,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "خاص";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "ثمَّة مشكلة أثناء عرض المكوِّن";
+"Problem displaying block. \nTap to attempt block recovery." = "ثمَّة مشكلة في أثناء عرض المكوِّن. \nانقر لمحاولة استعادة المكوِّن.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "مشكلة في تحميل المحتوى";
@@ -9892,6 +9895,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "البطاقات غير النشطة";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "لا توجد أي بطاقات غير نشطة متبقية";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "إلغاء";

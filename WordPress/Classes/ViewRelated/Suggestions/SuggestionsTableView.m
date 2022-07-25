@@ -327,8 +327,9 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     SuggestionViewModel *suggestion = [self.viewModel.items objectAtIndex:indexPath.row];
     NSString *currentSearchText = [self.viewModel.searchText substringFromIndex:1];
+    NSString *suggestionTitle = [suggestion.title substringFromIndex:1];
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didSelectSuggestion:forSearchText:)]) {
-        [self.suggestionsDelegate suggestionsTableView:self didSelectSuggestion:suggestion.title forSearchText:currentSearchText];
+        [self.suggestionsDelegate suggestionsTableView:self didSelectSuggestion:suggestionTitle forSearchText:currentSearchText];
     }
 }
 

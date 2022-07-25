@@ -1,3 +1,9 @@
-Tarayıcınıza geçmeniz mi gerekiyor? Artık uygulamanın Ben menüsünde bir QR kodunu taratarak oturum açabilirsiniz.
+Yayınlama deneyiminizi daha da iyi hale getirmek için blok düzenleyicide bazı değişiklikler ekledik.
 
-Bir gönderiyi önizlerken, artık içeriğin hiçbir bir kısmını engellemeden dikey ve yatay yön arasında geçiş yapabilirsiniz. Güzel.
+- Alternatif metin kopyalayıp yapıştırmaya gerek yok - Ortam kütüphanenizdeki bir öğeyi bir Görsel blokuna eklediğinizde, öğenin alternatif metni de onunla birlikte taşınır.
+- Video bloklarına bir URL'den ortam ekleyebilirsiniz.
+- Bir blok beklenmedik veya geçersiz içerik barındırıyorsa, içeriği sıfırdan yeniden eklemeden düzgün şekilde görüntülemek için blok kurtarma seçeneğini kullanabilirsiniz.
+
+Gönderi yorumları da kullanıcı açısından iyileştirilmiştir. Yorumunuzda başka bir kullanıcıdan bahsetmek için @ sembolüne bastığınızda, gönderi veya yorum yazarı önerilen kullanıcılar listesinde ilk sırada gelir. Çok hoş.
+
+Son olarak, düzenleyicinin ortam seçicisinde, pencereyi kapatıp yeniden açtıktan sonra bile arama sorgularının takılıp kalmasına neden olan bir sorunu düzelttik. Ayrıca, bir Öykü gönderisine birden fazla öğe eklerken uygulamanın kilitlenmesine neden olan hatayı da ortadan kaldırdık.

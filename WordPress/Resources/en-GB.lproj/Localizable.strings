@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-06-27 11:52:16+0000 */
+/* Translation-Revision-Date: 2022-07-11 17:43:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: en_GB */
@@ -4069,6 +4069,9 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installed";
 
+/* Title of the Jetpack powered banner. */
+"Jetpack powered" = "Jetpack powered";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
 
@@ -5928,7 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Private";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problem displaying block";
+"Problem displaying block. \nTap to attempt block recovery." = "Problem displaying block. \nTap to attempt block recovery.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
@@ -9898,6 +9901,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Inactive Cards";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "No inactive cards remaining";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Cancel";
