@@ -85,6 +85,7 @@ class SiteStatsDashboardViewController: UIViewController {
         super.viewDidLoad()
         configureJetpackBanner()
         configureInsightsTableView()
+        configurePeriodTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
@@ -95,6 +96,11 @@ class SiteStatsDashboardViewController: UIViewController {
 
     func configureInsightsTableView() {
         insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
+        insightsTableViewController.bannerView = jetpackBannerView
+    }
+
+    private func configurePeriodTableViewController() {
+        periodTableViewController.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
@@ -102,8 +108,9 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureJetpackBanner() {
-        if AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled {
+        guard JetpackBrandingVisibility.all.enabled else {
             jetpackBannerView.removeFromSuperview()
+            return
         }
     }
 

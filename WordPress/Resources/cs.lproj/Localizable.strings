@@ -5715,9 +5715,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the Private Badge */
 "Private" = "Soukromé";
 
-/* No comment provided by engineer. */
-"Problem displaying block" = "Blok se zobrazením problému";
-
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problém s načítáním obsahu";
 

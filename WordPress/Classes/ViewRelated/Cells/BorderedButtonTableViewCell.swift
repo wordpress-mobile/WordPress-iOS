@@ -18,7 +18,6 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
     weak var delegate: BorderedButtonTableViewCellDelegate?
 
-    private var button = UIButton()
     private var buttonTitle = String()
     private var buttonInsets = Defaults.buttonInsets
     private var titleFont = Defaults.titleFont
@@ -64,6 +63,41 @@ class BorderedButtonTableViewCell: UITableViewCell {
         return view
     }()
 
+    private lazy var button: UIButton = {
+        let button = UIButton()
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(buttonTitle, for: .normal)
+
+        button.setTitleColor(normalColor, for: .normal)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+
+        button.titleLabel?.font = titleFont
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.numberOfLines = 0
+        return button
+    }()
+
+    private lazy var jetpackBadge: JetpackButton = {
+        let button = JetpackButton(style: .badge)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var jetpackBadgeView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(jetpackBadge)
+        return view
+    }()
+
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [button, jetpackBadgeView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
     // MARK: - Configure
 
     func configure(buttonTitle: String,
@@ -99,23 +133,12 @@ private extension BorderedButtonTableViewCell {
         accessibilityTraits = .button
 
         configureButton()
-        contentView.addSubview(button)
-        contentView.pinSubviewToAllEdges(button, insets: buttonInsets)
+        configureJetpackBadge()
+        contentView.addSubview(mainStackView)
+        contentView.pinSubviewToAllEdges(mainStackView, insets: buttonInsets)
     }
 
     func configureButton() {
-        let button = UIButton()
-
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(buttonTitle, for: .normal)
-
-        button.setTitleColor(normalColor, for: .normal)
-        button.setTitleColor(highlightedColor, for: .highlighted)
-
-        button.titleLabel?.font = titleFont
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.numberOfLines = 0
-
         // Add constraints to the title label, so the button can contain it properly in multi-line cases.
         if let label = button.titleLabel {
             button.pinSubviewToAllEdgeMargins(label)
@@ -124,9 +147,19 @@ private extension BorderedButtonTableViewCell {
         button.on(.touchUpInside) { [weak self] _ in
             self?.delegate?.buttonTapped()
         }
-
-        self.button = button
         updateButtonBorderColors()
+    }
+
+    func configureJetpackBadge() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            jetpackBadgeView.isHidden = true
+            return
+        }
+        NSLayoutConstraint.activate([
+            jetpackBadge.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Defaults.jetpackBadgeTopInset),
+            jetpackBadge.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor, constant: -Defaults.jetpackBadgeBottomInset),
+            jetpackBadge.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor)
+        ])
     }
 
     func updateButtonBorderColors() {
@@ -139,6 +172,8 @@ private extension BorderedButtonTableViewCell {
         static let titleFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let normalColor: UIColor = .text
         static let highlightedColor: UIColor = .textInverted
+        static let jetpackBadgeTopInset: CGFloat = 30
+        static let jetpackBadgeBottomInset: CGFloat = 6
     }
 
     func toggleLoading(_ loading: Bool) {

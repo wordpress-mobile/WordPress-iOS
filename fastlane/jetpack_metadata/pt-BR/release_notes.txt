@@ -1,3 +1,9 @@
-Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
+Fizemos algumas alterações no editor de blocos para tornar sua experiência de publicação ainda melhor.
 
-Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.
+- Chega de copiar e colar os textos alternativos: ao adicionar um item da biblioteca de mídia a um bloco de imagem, ele já vem com um texto alternativo.
+- É possível inserir mídia usando uma URL nos blocos de vídeos.
+- Se houver conteúdo inesperado ou incorreto em um bloco, você poderá usar a opção de recuperação de bloco para exibir o conteúdo corretamente, sem precisar adicionar tudo do zero mais uma vez.
+
+Além disso, agora ficou mais fácil comentar em posts. Ao clicar no símbolo "@" para mencionar outro usuário em seu comentário, o autor do post ou do comentário vem primeiro na lista de usuários sugeridos. Maneiro.
+
+Por fim, corrigimos um problema no seletor de mídia do editor em que as consultas de pesquisa continuavam aparecendo mesmo depois de fechar e reabrir a janela. Também eliminamos um bug que fazia o aplicativo travar quando vários itens eram adicionados a um story.

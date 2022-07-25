@@ -147,7 +147,7 @@ platform :ios do
 
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
@@ -157,12 +157,13 @@ platform :ios do
 
   # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
+    version = options.fetch(:version, ios_get_app_version)
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
@@ -186,18 +187,19 @@ platform :ios do
     ios_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: options[:version]
+      release_version: version
     )
   end
 
   # Updates the `AppStoreStrings.po` file for Jetpack, with the latest content from the `release_notes.txt` file and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
   lane :update_jetpack_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+    version = options.fetch(:version, ios_get_app_version)
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
@@ -216,7 +218,7 @@ platform :ios do
     ios_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: options[:version]
+      release_version: version
     )
   end
 

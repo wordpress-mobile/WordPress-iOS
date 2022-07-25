@@ -246,7 +246,15 @@ class GutenbergMediaInserterHelper: NSObject {
         case .uploading:
             break
         case .ended:
-            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
+            var currentURL = media.remoteURL
+
+            if media.remoteLargeURL != nil {
+                currentURL = media.remoteLargeURL
+            } else if media.remoteMediumURL != nil {
+                currentURL = media.remoteMediumURL
+            }
+
+            guard let urlString = currentURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
             switch media.mediaType {

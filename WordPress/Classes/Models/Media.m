@@ -7,6 +7,8 @@
 @dynamic alt;
 @dynamic mediaID;
 @dynamic remoteURL;
+@dynamic remoteLargeURL;
+@dynamic remoteMediumURL;
 @dynamic localURL;
 @dynamic shortcode;
 @dynamic width;

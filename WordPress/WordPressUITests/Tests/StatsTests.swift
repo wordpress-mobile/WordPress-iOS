@@ -6,7 +6,7 @@ class StatsTests: XCTestCase {
 
     override func setUpWithError() throws {
         setUpTestSuite()
-        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         statsScreen = try MySiteScreen()
             .goToStatsScreen()
             .switchTo(mode: .insights)
@@ -16,8 +16,7 @@ class StatsTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     let insightsStats: [String] = [

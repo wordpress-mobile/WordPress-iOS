@@ -1,3 +1,9 @@
-Lorsque vous prévisualisez un article, vous pouvez maintenant passer de la vue Portrait à la vue Paysage et inversement, sans que cela masque une partie du contenu. Intéressant, non ?
+Nous avons apporté quelques modifications à l’éditeur de blocs afin de rendre votre expérience de publication encore meilleure.
 
-L’icône de votre application WordPress a repris sa couleur bleue habituelle, mais pas d’inquiétude : vous pouvez toujours mettre un peu de couleur dans votre vie. Il vous suffit de vous rendre dans les réglages de votre application et de sélectionner notre icône spéciale Mois des fiertés.
+- Vous n’avez plus besoin de copier-coller le texte alternatif : lorsque vous ajoutez un élément de la bibliothèque de médias à un bloc Image, le texte alternatif accompagnant cet élément est également copié.
+- Vous pouvez insérer un média depuis une URL dans le bloc vidéo.
+- Si un bloc contient un contenu inattendu ou non valide, vous pouvez utiliser l’option de récupération du bloc pour afficher le contenu correctement, sans devoir tout réinsérer.
+
+- L’insertion de commentaires sous un article est également plus conviviale. Lorsque vous appuyez sur le symbole @ pour mentionner un autre utilisateur dans votre commentaire, l’auteur de l’article ou du commentaire apparaît en premier dans la liste des utilisateurs suggérés. Génial !
+
+Enfin, nous avons corrigé un problème concernant le sélecteur de médias de l’éditeur, lors duquel les requêtes de recherche ne s’effaçaient pas, même après avoir fermé et rouvert la fenêtre. Nous avons également corrigé un bug qui provoquait le plantage de l’application lors de l’ajout de plusieurs éléments à une story.

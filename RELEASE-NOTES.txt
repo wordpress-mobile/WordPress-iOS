@@ -2,6 +2,12 @@
 -----
 * [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
 * [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
 
 20.3
 -----

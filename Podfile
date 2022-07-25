@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.55.0'
+  pod 'WordPressKit', '~> 4.56.0-beta.1'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -99,6 +99,11 @@ def gutenberg(options)
 end
 
 def gutenberg_dependencies(options)
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
   dependencies = %w[
     FBLazyVector
     React
@@ -170,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.80.0-alpha1'
+  gutenberg tag: 'v1.80.0'
 
   ## Third party libraries
   ## =====================
@@ -190,7 +195,6 @@ abstract_target 'Apps' do
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries

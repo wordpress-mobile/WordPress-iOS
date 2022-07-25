@@ -1,3 +1,9 @@
-Saat mempratinjau artikel, kini Anda dapat beralih orientasi potret maupun lanskap tanpa memangkas konten apa pun. Bagus.
+Kami menambahkan beberapa perubahan di editor blok agar pengalaman publikasi Anda makin baik.
 
-Ikon aplikasi WordPress Anda telah kembali ke warna biru dingin biasanya, tetapi jangan khawatir—Anda masih dapat memilih warna yang Anda suka. Cukup masuk ke pengaturan aplikasi Anda dan pilih kembali tema ikon aplikasi kebanggaan kami.
+- Salin dan tempel teks alt sudah tidak perlu lagi. Ketika Anda menambahkan item di media pustaka ke blok Gambar, teks alt item tersebut sudah disertakan.
+- Anda dapat memasukkan media dari URL di blok Video.
+- Jika blok mengandung konten yang tidak valid atau tidak terduga, Anda dapat menggunakan pilihan pemulihan blok agar konten ditampilkan dengan benar, tidak perlu menambahkan lagi dari nol.
+
+Komentar pos juga sedikit lebih ramah pengguna. Ketika Anda menekan simbol @ untuk menyebut pengguna lain di komentar, penulis pos atau penulis komentar akan muncul di urutan teratas dalam daftar pengguna yang disarankan. Bagus.
+
+Terakhir, kami memperbaiki masalah pada pemilih media editor, yaitu permintaan informasi pencarian yang terus ditampilkan sekalipun jendela telah ditutup dan dibuka kembali. Kami juga membasmi bug yang membuat aplikasi mengalami crash ketika menambahkan beberapa item ke pos Cerita.
