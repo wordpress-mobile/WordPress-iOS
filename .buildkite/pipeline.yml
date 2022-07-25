@@ -91,14 +91,13 @@ steps:
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
             echo "1 --- $$UI_TESTS_STATUS"
-            $${UI_TESTS_STATUS}="1"
+            $${UI_TESTS_STATUS-1}
             echo "2 --- $$UI_TESTS_STATUS"
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env:
           IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS: "0"
         plugins: *common_plugins
         agents:
           queue: "default"
