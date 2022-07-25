@@ -87,7 +87,7 @@ namespace :dependencies do
     task :apply do
       next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
 
-     # The string is indented all the way to the left to avoid padding when printed in the terminal 
+      # The string is indented all the way to the left to avoid padding when printed in the terminal
       command = %(
 FASTLANE_SKIP_UPDATE_CHECK=1 \
 FASTLANE_HIDE_CHANGELOG=1 \
