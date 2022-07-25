@@ -91,14 +91,20 @@ steps:
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
             echo "$$UI_TESTS_STATUS"
-            $$UI_TESTS_STATUS = "failed"
+            build.env("UI_TESTS_STATUS") = "1"
+            echo "$$UI_TESTS_STATUS"
+            $$UI_TESTS_STATUS = "1"
+            echo "$$UI_TESTS_STATUS"
+            $UI_TESTS_STATUS = "1"
+            echo "$$UI_TESTS_STATUS"
+            UI_TESTS_STATUS = "1"
             echo "$$UI_TESTS_STATUS"
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env:
           IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS: "status"
+          UI_TESTS_STATUS: "0"
         plugins: *common_plugins
         agents:
           queue: "default"
@@ -107,7 +113,7 @@ steps:
               channels:
                 - "#jos-testing-notif"
               message: "UI Tests failed! Please investigate!"
-            if: build.env("UI_TESTS_STATUS") == "failed"
+            if: build.env("UI_TESTS_STATUS") == "1"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
