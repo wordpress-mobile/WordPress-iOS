@@ -90,9 +90,7 @@ steps:
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
-            echo build.env("UI_TESTS_STATUS")
             build.env("UI_TESTS_STATUS") = "failed"
-            echo build.env("UI_TESTS_STATUS")
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
