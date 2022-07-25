@@ -87,17 +87,18 @@ namespace :dependencies do
     task :apply do
       next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
 
-      command_compontents = %w[
-        FASTLANE_SKIP_UPDATE_CHECK=1
-        FASTLANE_HIDE_CHANGELOG=1
-        FASTLANE_HIDE_PLUGINS_TABLE=1
-        FASTLANE_ENV_PRINTER=1
-        FASTLANE_SKIP_ACTION_SUMMARY=1
-        FASTLANE_HIDE_TIMESTAMP=1
-        bundle exec fastlane run configure_apply force:true
-      ]
+     # The string is indented all the way to the left to avoid padding when printed in the terminal 
+      command = %(
+FASTLANE_SKIP_UPDATE_CHECK=1 \
+FASTLANE_HIDE_CHANGELOG=1 \
+FASTLANE_HIDE_PLUGINS_TABLE=1 \
+FASTLANE_ENV_PRINTER=1 \
+FASTLANE_SKIP_ACTION_SUMMARY=1 \
+FASTLANE_HIDE_TIMESTAMP=1 \
+bundle exec fastlane run configure_apply force:true
+      )
 
-      sh(command_compontents.join(' '))
+      sh(command)
     end
   end
 
