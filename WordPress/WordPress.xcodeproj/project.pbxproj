@@ -63,6 +63,8 @@
 		0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0807CB711CE670A800CDBDAC /* WPContentSearchHelper.swift */; };
 		080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */; };
 		0815CF461E96F22600069916 /* MediaImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0815CF451E96F22600069916 /* MediaImportService.swift */; };
+		0817A917288EC7AA0019A7F4 /* JetpackPoweredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0817A916288EC7AA0019A7F4 /* JetpackPoweredViewController.swift */; };
+		0817A918288EC7AA0019A7F4 /* JetpackPoweredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0817A916288EC7AA0019A7F4 /* JetpackPoweredViewController.swift */; };
 		081E4B4C281C019A0085E89C /* TooltipAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E4B4B281C019A0085E89C /* TooltipAnchor.swift */; };
 		08216FAA1CDBF95100304BA7 /* MenuItemEditing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */; };
 		08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */; };
@@ -4996,6 +4998,7 @@
 		080C449D1CE14A9F00B3A02F /* MenuDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsViewController.h; sourceTree = "<group>"; };
 		080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsViewController.m; sourceTree = "<group>"; };
 		0815CF451E96F22600069916 /* MediaImportService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImportService.swift; sourceTree = "<group>"; };
+		0817A916288EC7AA0019A7F4 /* JetpackPoweredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPoweredViewController.swift; sourceTree = "<group>"; };
 		081E4B4B281C019A0085E89C /* TooltipAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipAnchor.swift; sourceTree = "<group>"; };
 		08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MenuItemEditing.storyboard; sourceTree = "<group>"; };
 		08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingViewController.h; sourceTree = "<group>"; };
@@ -10109,6 +10112,7 @@
 				3FFA5ED0287612AD00830E28 /* Banner */,
 				3F5B9B44288B0521001D17E9 /* Badge */,
 				3FFA5ED32876216700830E28 /* Button */,
+				0817A916288EC7AA0019A7F4 /* JetpackPoweredViewController.swift */,
 			);
 			path = Branding;
 			sourceTree = "<group>";
@@ -18330,6 +18334,7 @@
 				E62AFB6B1DC8E593007484FC /* WPRichContentView.swift in Sources */,
 				9856A39D261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				08B6E51A1F036CAD00268F57 /* MediaFileManager.swift in Sources */,
+				0817A917288EC7AA0019A7F4 /* JetpackPoweredViewController.swift in Sources */,
 				594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */,
 				4093FE40218C384200B1D224 /* AztecVerificationPromptHelper.swift in Sources */,
 				8BC6020923900D8400EFE3D0 /* NullBlogPropertySanitizer.swift in Sources */,
@@ -22138,6 +22143,7 @@
 				FABB25C62602FC2C00C8785C /* TenorReponseParser.swift in Sources */,
 				FABB25C72602FC2C00C8785C /* WPStyleGuide+Gridicon.swift in Sources */,
 				FABB25C82602FC2C00C8785C /* RelatedPostsSettingsViewController.m in Sources */,
+				0817A918288EC7AA0019A7F4 /* JetpackPoweredViewController.swift in Sources */,
 				FABB25C92602FC2C00C8785C /* CreateButtonCoordinator.swift in Sources */,
 				3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */,
 				FABB25CA2602FC2C00C8785C /* SearchManager.swift in Sources */,
