@@ -89,25 +89,31 @@ steps:
       - label: "Slack notification"
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
-            echo "UI Test failed!"
-            echo "$$UI_TESTS_STATUS"
-            $${UI_TESTS_STATUS-failed}
-            echo "$$UI_TESTS_STATUS"
+            cat <<- YAML | buildkite-agent pipeline upload 
+              steps:
+                - label: "Notify slack about soft failed step"
+                  command: echo "UI Tests failure"
+                  notify:
+                    - slack:
+                        channels:
+                          - "#jos-testing-notif"
+                        message: "UI Tests failed! Please investigate!"
+          YAML
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env:
           IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS:
+          # UI_TESTS_STATUS:
         plugins: *common_plugins
         agents:
           queue: "default"
-        notify:
-          - slack:
-              channels:
-                - "#jos-testing-notif"
-              message: "UI Tests failed! Please investigate!"
-            if: $$UI_TESTS_STATUS == "failed"
+        # notify:
+        #   - slack:
+        #       channels:
+        #         - "#jos-testing-notif"
+        #       message: "UI Tests failed! Please investigate!"
+        #     if: $$UI_TESTS_STATUS
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
