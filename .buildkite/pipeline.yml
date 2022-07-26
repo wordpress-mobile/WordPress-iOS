@@ -90,6 +90,7 @@ steps:
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
             echo "UI Test failed!"
+            ${UI_TESTS_STATUS-failed}
             echo "1 --- $$UI_TESTS_STATUS"
             $${UI_TESTS_STATUS-1}
             echo "2 --- $$UI_TESTS_STATUS"
@@ -106,7 +107,7 @@ steps:
               channels:
                 - "#jos-testing-notif"
               message: "UI Tests failed! Please investigate!"
-            if: build.env("UI_TESTS_STATUS") == "1"
+            if: "build.env("UI_TESTS_STATUS") == 'failed'"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
