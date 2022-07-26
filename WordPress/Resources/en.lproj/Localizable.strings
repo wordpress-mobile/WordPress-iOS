@@ -10021,11 +10021,6 @@
    Title label that indicates the prompt has been answered. */
 "✓ Answered" = "✓ Answered";
 
-/* Section title for prominent suggestions */
-"suggestions.section.prominent" = "In the conversation";
-
-/* Section title for regular suggestions */
-"suggestions.section.regular" = "Site members";
 
 /* MARK: - InfoPlist.strings */
 
@@ -10071,3 +10066,4 @@
 
 /* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
 "ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
+
