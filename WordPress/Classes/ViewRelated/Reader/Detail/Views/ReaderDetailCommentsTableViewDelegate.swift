@@ -114,11 +114,29 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         return header
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView(bottomPadding: 10)
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return ReaderDetailCommentsHeader.estimatedHeight
     }
 
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return ReaderDetailCommentsHeader.estimatedHeight
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return 0
+        }
         return UITableView.automaticDimension
     }
 }
