@@ -26607,7 +26607,7 @@
 			repositoryURL = "https://github.com/buildkite/test-collector-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.1;
+				minimumVersion = 0.3.0;
 			};
 		};
 		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
