@@ -3,6 +3,7 @@ excluded:
   - Pods
   - Scripts
   - vendor
+  - DerivedData
 
 # Rules
 only_rules:
