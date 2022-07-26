@@ -561,7 +561,7 @@ extension GutenbergViewController {
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
 
-        // Explicitly set the tintColor in the editor's window to blue.
+        // Explicitly set the tintColor in the editor's window to blue, to avoid unexpected overrides.
         let appDelegate = UIApplication.shared.delegate
         let window = appDelegate?.window
         window??.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
