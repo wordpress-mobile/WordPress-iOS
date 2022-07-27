@@ -126,7 +126,11 @@ final class JetpackPoweredViewController: UIViewController {
 }
 
 extension JetpackPoweredViewController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        false
+    }
+
     var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
+        .intrinsicHeight
     }
 }
