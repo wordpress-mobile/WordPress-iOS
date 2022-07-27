@@ -116,8 +116,8 @@ steps:
           queue: "default"
 
       - wait: ~
-        continue_on_failure: true
-      # - command: "echo a command"
+      - command: "echo wait for notification to be sent"
+      - wait: ~
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
