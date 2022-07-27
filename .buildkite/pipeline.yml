@@ -102,7 +102,7 @@ steps:
                         channels:
                           - "#jos-testing-notif"
                         message: "UI Test Failed! Please investigate.""
-          YAML
+            YAML
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
