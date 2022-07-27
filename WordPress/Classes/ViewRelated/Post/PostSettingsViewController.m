@@ -147,6 +147,7 @@ FeaturedImageViewControllerDelegate>
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
+    self.tableView.tintColor = [UIColor blueColor];
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
     
