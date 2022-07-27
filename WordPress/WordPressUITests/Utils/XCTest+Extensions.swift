@@ -3,13 +3,18 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite(app: XCUIApplication = XCUIApplication()) {
+    public func setUpTestSuite(for appName: String? = nil, app: XCUIApplication = XCUIApplication()) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
+
+        if let appName = appName {
+            removeApp(appName)
+        }
+
         app.activate()
 
         // Media permissions alert handler

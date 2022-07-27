@@ -12,7 +12,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite()
+        setUpTestSuite(for: "Jetpack")
 
         // The app is already launched so we can set it up for screenshots here
         let app = XCUIApplication()
