@@ -3,13 +3,12 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite() {
+    public func setUpTestSuite(app: XCUIApplication = XCUIApplication()) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        let app = XCUIApplication()
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
         app.activate()
 
@@ -77,8 +76,7 @@ extension XCTestCase {
         static let tag = "tag \(Date().toString())"
     }
 
-    public func removeApp(_ appName: String = "WordPress") {
-        let app = XCUIApplication()
+    public func removeApp(_ appName: String = "WordPress", app: XCUIApplication = XCUIApplication()) {
         app.terminate()
 
         let home = XCUIApplication(bundleIdentifier: "com.apple.springboard")
