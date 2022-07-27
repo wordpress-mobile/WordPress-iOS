@@ -73,6 +73,7 @@ steps:
   # UI Tests
   #################
   - group: "🔬 UI Tests"
+    env: UI_TESTS_STATUS: "pending"
     steps:
       - label: "🔬 UI Tests (iPhone)"
         key: "ui-tests-iphone"
@@ -89,6 +90,7 @@ steps:
       - label: "Slack notification"
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
+            echo "$${UI_TESTS_STATUS}"
             UI_TESTS_STATUS="failed"
             echo "$${UI_TESTS_STATUS}"
           fi
@@ -96,13 +98,12 @@ steps:
         allow_dependency_failure: true
         env:
           IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS: ""
         plugins: *common_plugins
         agents:
           queue: "default"
         notify:
           - slack: "#jos-testing-notif"
-            if: build.env("UI_TESTS_STATUS") == "failed"
+            if: build.env("UI_TESTS_STATUS") == "pending"
             
 
       - label: "🔬 UI Tests (iPad)"
