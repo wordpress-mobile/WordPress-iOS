@@ -86,6 +86,9 @@ steps:
           - github_commit_status:
               context: "UI Tests (iPhone)"
 
+      - wait: ~
+        continue_on_failure: true
+
       - label: "Slack notification"
         command: |
           if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
@@ -111,7 +114,10 @@ steps:
         plugins: *common_plugins
         agents:
           queue: "default"
+
       - wait: ~
+        continue_on_failure: true
+      # - command: "echo a command"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
